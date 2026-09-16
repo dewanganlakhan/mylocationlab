@@ -1,0 +1,33 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import LocationFinder from '../../components/LocationFinder.astro';
+const breadcrumbs = [{ label: 'Home', href: '/' }, { label: 'My Location', href: '/my-location/' }, { label: 'My City' }];
+---
+
+<BaseLayout title="What City Am I In? — Find My Current City | MyLocationLab" description="Find out what city you're currently in. Instantly detect your city name, state, and country using GPS location." activeSection="my-location">
+  <div class="container">
+    <Breadcrumbs items={breadcrumbs} />
+    <section class="page-header">
+      <h1>What City <span class="text-gradient">Am I In?</span></h1>
+      <p class="page-header-desc">Instantly find out what city you're currently located in. See your city name along with state, country, and exact coordinates.</p>
+    </section>
+    <LocationFinder emphasisField="city" />
+    <section class="section">
+      <div class="prose" style="max-width: var(--max-width-narrow);">
+        <h2>How We Determine Your City</h2>
+        <p>Your city is determined by first getting your GPS coordinates, then using <strong>reverse geocoding</strong> to match those coordinates to administrative boundaries. The geocoding service identifies which city, town, or municipality your coordinates fall within.</p>
+        <p>In some cases, you might see a town, village, or municipality name instead of a major city name — this depends on the administrative structure of your area and the granularity of the mapping data.</p>
+        <h2>Why It Matters</h2>
+        <p>Knowing your current city is useful when you're traveling, navigating, or need to quickly identify your location. It's also valuable for setting up location-based services, finding local businesses, or confirming your timezone.</p>
+        <h3>Related Pages</h3>
+        <ul>
+          <li><a href="/my-location/state/">What State Am I In?</a></li>
+          <li><a href="/my-location/country/">What Country Am I In?</a></li>
+          <li><a href="/my-location/address/">My Address</a></li>
+          <li><a href="/tools/address-finder/">Address Finder</a></li>
+        </ul>
+      </div>
+    </section>
+  </div>
+</BaseLayout>

@@ -1,0 +1,154 @@
+---
+/**
+ * LocationFinder — Reusable location detection component
+ * Used across all my-location sub-pages with configurable emphasis fields.
+ */
+interface Props {
+  emphasisField?: string;
+  showMap?: boolean;
+  showAllFields?: boolean;
+}
+
+const { emphasisField = '', showMap = true, showAllFields = true } = Astro.props;
+---
+
+<div class="location-display" id="loc-finder">
+  <div class="location-display-header">
+    <div class="location-display-dot" id="loc-dot" style="background: var(--color-text-tertiary);"></div>
+    <span class="location-display-title">Your Location</span>
+    <span class="badge" id="loc-badge">Ready</span>
+  </div>
+
+  <div style="text-align: center; padding: var(--space-4) 0;" id="loc-prompt">
+    <button class="btn btn-primary btn-lg" id="loc-btn" type="button">📍 Get My Location</button>
+  </div>
+
+  <div id="loc-loading" style="display: none; text-align: center; padding: var(--space-4);">
+    <div class="spinner" style="margin: 0 auto var(--space-3);"></div>
+    <p style="color: var(--color-text-secondary); margin: 0; font-size: var(--text-sm);">Detecting location...</p>
+  </div>
+
+  <div class="location-data-grid" id="loc-data" style="display: none;">
+    <div class="location-data-item">
+      <span class="location-data-label">Latitude</span>
+      <span class={`location-data-value ${emphasisField === 'lat' ? 'highlight' : ''}`} id="loc-lat">—</span>
+    </div>
+    <div class="location-data-item">
+      <span class="location-data-label">Longitude</span>
+      <span class={`location-data-value ${emphasisField === 'lng' ? 'highlight' : ''}`} id="loc-lng">—</span>
+    </div>
+    {showAllFields && (
+      <>
+        <div class="location-data-item">
+          <span class="location-data-label">Address</span>
+          <span class={`location-data-value ${emphasisField === 'address' ? 'highlight' : ''}`} id="loc-address" style="font-family: var(--font-sans); font-size: var(--text-sm);">—</span>
+        </div>
+        <div class="location-data-item">
+          <span class="location-data-label">City</span>
+          <span class={`location-data-value ${emphasisField === 'city' ? 'highlight' : ''}`} id="loc-city" style="font-family: var(--font-sans);">—</span>
+        </div>
+        <div class="location-data-item">
+          <span class="location-data-label">State / Region</span>
+          <span class={`location-data-value ${emphasisField === 'state' ? 'highlight' : ''}`} id="loc-state" style="font-family: var(--font-sans);">—</span>
+        </div>
+        <div class="location-data-item">
+          <span class="location-data-label">Country</span>
+          <span class={`location-data-value ${emphasisField === 'country' ? 'highlight' : ''}`} id="loc-country" style="font-family: var(--font-sans);">—</span>
+        </div>
+      </>
+    )}
+    <div class="location-data-item">
+      <span class="location-data-label">Accuracy</span>
+      <span class="location-data-value" id="loc-accuracy">—</span>
+    </div>
+    <div class="location-data-item">
+      <span class="location-data-label">Altitude</span>
+      <span class="location-data-value" id="loc-altitude">—</span>
+    </div>
+  </div>
+
+  <div class="action-buttons" id="loc-actions" style="margin-top: var(--space-6); display: none;">
+    <button class="btn btn-secondary btn-sm" id="loc-copy" type="button">📋 Copy Coordinates</button>
+    <button class="btn btn-secondary btn-sm" id="loc-share" type="button">🔗 Share</button>
+    <a class="btn btn-secondary btn-sm" id="loc-maps" href="#" target="_blank" rel="noopener noreferrer">🗺️ Open in Maps</a>
+  </div>
+</div>
+
+{showMap && <div class="map-container" id="loc-map" style="margin-top: var(--space-6); display: none;"></div>}
+
+<script>
+  import GeoLocation from '../scripts/geolocation.js';
+  import Geocoding from '../scripts/geocoding.js';
+  import Sharing from '../scripts/sharing.js';
+
+  let cLat = null, cLng = null;
+
+  document.getElementById('loc-btn')?.addEventListener('click', async () => {
+    const loading = document.getElementById('loc-loading');
+    const prompt = document.getElementById('loc-prompt');
+    const data = document.getElementById('loc-data');
+    const actions = document.getElementById('loc-actions');
+    const mapEl = document.getElementById('loc-map');
+    const dot = document.getElementById('loc-dot');
+    const badge = document.getElementById('loc-badge');
+
+    prompt.style.display = 'none';
+    loading.style.display = 'block';
+
+    try {
+      const position = await GeoLocation.getCurrentPosition();
+      const pos = GeoLocation.formatPosition(position);
+      cLat = pos.latitude;
+      cLng = pos.longitude;
+
+      document.getElementById('loc-lat').textContent = pos.formattedLat;
+      document.getElementById('loc-lng').textContent = pos.formattedLng;
+      document.getElementById('loc-accuracy').textContent = pos.formattedAccuracy;
+      document.getElementById('loc-altitude').textContent = pos.altitude ? `${Math.round(pos.altitude)} m` : 'N/A';
+      document.getElementById('loc-maps').href = `https://www.google.com/maps?q=${cLat},${cLng}`;
+
+      try {
+        const addr = await Geocoding.reverseGeocode(cLat, cLng);
+        if (document.getElementById('loc-address')) document.getElementById('loc-address').textContent = addr.displayName || '—';
+        if (document.getElementById('loc-city')) document.getElementById('loc-city').textContent = addr.city || '—';
+        if (document.getElementById('loc-state')) document.getElementById('loc-state').textContent = addr.state || '—';
+        if (document.getElementById('loc-country')) document.getElementById('loc-country').textContent = addr.country || '—';
+      } catch {}
+
+      dot.style.background = 'var(--color-accent-success)';
+      badge.textContent = `± ${pos.formattedAccuracy}`;
+      badge.className = 'badge badge-success';
+      loading.style.display = 'none';
+      data.style.display = 'grid';
+      actions.style.display = 'flex';
+
+      if (mapEl) {
+        mapEl.style.display = 'block';
+        const waitL = () => {
+          if (typeof L !== 'undefined') {
+            const m = L.map('loc-map').setView([cLat, cLng], 15);
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '&copy; OpenStreetMap', maxZoom: 19 }).addTo(m);
+            const icon = L.divIcon({ html: '<div style="width:18px;height:18px;background:#00d4ff;border:3px solid white;border-radius:50%;box-shadow:0 0 10px rgba(0,212,255,0.4);"></div>', className: '', iconSize: [18,18], iconAnchor: [9,9] });
+            L.marker([cLat, cLng], { icon }).addTo(m);
+            if (pos.accuracy > 0) L.circle([cLat, cLng], { radius: pos.accuracy, color: '#00d4ff', fillColor: '#00d4ff', fillOpacity: 0.08, weight: 1 }).addTo(m);
+          } else setTimeout(waitL, 100);
+        };
+        waitL();
+      }
+    } catch (error) {
+      loading.style.display = 'none';
+      prompt.style.display = 'block';
+      dot.style.background = 'var(--color-accent-error)';
+      badge.textContent = 'Error';
+      alert(GeoLocation.getErrorMessage(error));
+    }
+  });
+
+  document.getElementById('loc-copy')?.addEventListener('click', function() {
+    if (cLat) Sharing.copyToClipboard(`${cLat}, ${cLng}`, this);
+  });
+
+  document.getElementById('loc-share')?.addEventListener('click', () => {
+    if (cLat) Sharing.shareNative({ title: 'My Location', text: `${cLat}, ${cLng}`, url: `https://www.google.com/maps?q=${cLat},${cLng}` });
+  });
+</script>

@@ -1,0 +1,207 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import AuthorEAT from '../../components/AuthorEAT.astro';
+
+const breadcrumbs = [
+  { label: 'Home', href: '/' },
+  { label: 'Share Location' }
+];
+
+const shareSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebApplication',
+  name: 'Instant Private Location Sharing Tool',
+  description: 'Share your exact GPS coordinates or address securely via WhatsApp, SMS, Google Maps, Apple Maps, or QR Code.',
+  url: 'https://mylocationlab.netlify.app/share-location/',
+  applicationCategory: 'UtilityApplication',
+  operatingSystem: 'All',
+  offers: {
+    '@type': 'Offer',
+    price: '0',
+    priceCurrency: 'USD',
+  },
+};
+---
+
+<BaseLayout
+  title="Share My Location Instantly — Free & Private | MyLocationLab"
+  description="Quickly share your current GPS location via WhatsApp, SMS, email, Google Maps, or QR code. 100% private and processed entirely in your browser."
+  activeSection="resources"
+  jsonLd={[shareSchema]}
+>
+  <div class="container">
+    <Breadcrumbs items={breadcrumbs} />
+
+    <section class="page-header" style="text-align: center; margin-bottom: var(--space-8);">
+      <h1>Share Your <span class="text-gradient">Location</span></h1>
+      <p class="page-header-desc" style="max-width: 650px; margin: 0 auto;">
+        Generate an instant, secure link to your current GPS position. Share with friends, emergency contacts, or delivery drivers with complete privacy.
+      </p>
+    </section>
+
+    <AuthorEAT 
+      reviewedBy="MyLocationLab Privacy & Security Lab" 
+      reviewerTitle="Data Protection & Privacy Specialist" 
+      lastUpdated="September 2026" 
+    />
+
+    <div class="tool-interface" style="max-width: var(--max-width-narrow); margin: 0 auto var(--space-12);">
+      <div style="text-align: center; margin-bottom: var(--space-6);">
+        <button class="btn btn-primary btn-lg" id="sl-gps-btn" type="button">
+          📍 Get &amp; Share My Location
+        </button>
+        <p id="sl-status" style="font-size: var(--text-xs); color: var(--color-text-secondary); margin-top: var(--space-2);">
+          Click to detect your current position securely
+        </p>
+      </div>
+
+      <!-- Sharing Container -->
+      <div id="sl-results" style="display: none;">
+        <!-- Location details snippet -->
+        <div class="card card-flat" style="padding: var(--space-4); margin-bottom: var(--space-6); background: var(--color-bg-tertiary);">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-2);">
+            <span style="font-size: var(--text-xs); color: var(--color-accent-primary); font-weight: 700;">DETECTED COORDINATES</span>
+            <span class="badge badge-success" id="sl-accuracy-badge">High Precision</span>
+          </div>
+          <div id="sl-coords-text" style="font-family: var(--font-mono); font-size: var(--text-lg); font-weight: 700; color: var(--color-text-heading); margin-bottom: var(--space-2);">
+            —
+          </div>
+          <div id="sl-address-text" style="font-size: var(--text-sm); color: var(--color-text-secondary);">
+            Resolving street address...
+          </div>
+        </div>
+
+        <!-- Share Actions Grid -->
+        <h3 style="font-size: var(--text-base); margin-bottom: var(--space-3); color: var(--color-text-heading);">Share Options:</h3>
+        <div class="grid grid-2" style="gap: var(--space-3); margin-bottom: var(--space-6);">
+          <button class="btn btn-secondary" id="sl-copy-link-btn" type="button">
+            📋 Copy Map Link
+          </button>
+          <button class="btn btn-secondary" id="sl-copy-coords-btn" type="button">
+            📐 Copy Coordinates
+          </button>
+          <a class="btn btn-secondary" id="sl-whatsapp-btn" href="#" target="_blank" rel="noopener noreferrer">
+            💬 Share via WhatsApp
+          </a>
+          <a class="btn btn-secondary" id="sl-sms-btn" href="#">
+            📱 Share via SMS
+          </a>
+          <a class="btn btn-secondary" id="sl-google-maps" href="#" target="_blank" rel="noopener noreferrer">
+            🗺️ Open Google Maps
+          </a>
+          <a class="btn btn-secondary" id="sl-apple-maps" href="#" target="_blank" rel="noopener noreferrer">
+            🍏 Open Apple Maps
+          </a>
+        </div>
+
+        <div style="text-align: center; border-top: 1px solid var(--color-border); padding-top: var(--space-4);">
+          <a href="/tools/location-qr-code/" class="btn btn-ghost btn-sm">
+            📱 Need a Printable QR Code? Generate QR Code →
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Educational & Privacy Prose -->
+    <article class="prose" style="max-width: var(--max-width-narrow); margin: 0 auto var(--space-16);">
+      <h2>How Location Sharing Works (Zero-Storage Guarantee)</h2>
+      <p>
+        When you share your location using MyLocationLab, your geographic coordinates are encoded directly into the share URL query parameters (e.g., <code>?lat=40.7128&lng=-74.0060</code>). 
+      </p>
+      <p>
+        Your location data is <strong>never transmitted to or saved on our servers</strong>. When your recipient opens the link, their browser reads the coordinates directly from their own URL bar.
+      </p>
+
+      <h2>When to Share Your Exact GPS Location</h2>
+      <ul>
+        <li><strong>Meeting Friends in Large Parks:</strong> Pinpoint your exact picnic blanket or festival tent where street addresses do not exist.</li>
+        <li><strong>Roadside Assistance:</strong> Provide tow truck drivers or emergency roadside crews with your exact highway mile-marker coordinates.</li>
+        <li><strong>Rural Delivery Drop-offs:</strong> Direct courier couriers to specific driveway gates on large rural properties.</li>
+      </ul>
+    </article>
+  </div>
+
+  <script>
+    import GeoLocation from '../../scripts/geolocation.js';
+    import Geocoding from '../../scripts/geocoding.js';
+
+    const gpsBtn = document.getElementById('sl-gps-btn');
+    const statusEl = document.getElementById('sl-status');
+    const resultsBox = document.getElementById('sl-results');
+    const coordsEl = document.getElementById('sl-coords-text');
+    const addressEl = document.getElementById('sl-address-text');
+    const accuracyBadge = document.getElementById('sl-accuracy-badge');
+
+    const copyLinkBtn = document.getElementById('sl-copy-link-btn');
+    const copyCoordsBtn = document.getElementById('sl-copy-coords-btn');
+    const whatsappBtn = document.getElementById('sl-whatsapp-btn');
+    const smsBtn = document.getElementById('sl-sms-btn');
+    const googleBtn = document.getElementById('sl-google-maps');
+    const appleBtn = document.getElementById('sl-apple-maps');
+
+    let currentLat = 0;
+    let currentLng = 0;
+    let shareUrl = '';
+
+    if (gpsBtn) {
+      gpsBtn.addEventListener('click', async () => {
+        gpsBtn.textContent = 'Acquiring Satellites...';
+        if (statusEl) statusEl.textContent = 'Requesting browser GPS permission...';
+
+        try {
+          const pos = await GeoLocation.getCurrentPosition({ enableHighAccuracy: true });
+          currentLat = pos.latitude;
+          currentLng = pos.longitude;
+
+          shareUrl = `https://maps.google.com/?q=${currentLat.toFixed(6)},${currentLng.toFixed(6)}`;
+
+          if (coordsEl) coordsEl.textContent = `${currentLat.toFixed(6)}, ${currentLng.toFixed(6)}`;
+          if (accuracyBadge) accuracyBadge.textContent = `Accuracy: ±${Math.round(pos.accuracy)}m`;
+
+          if (resultsBox) resultsBox.style.display = 'block';
+          if (statusEl) statusEl.textContent = 'Location successfully acquired!';
+          gpsBtn.textContent = '🔄 Refresh Position';
+
+          // Set links
+          if (googleBtn) googleBtn.setAttribute('href', `https://maps.google.com/?q=${currentLat},${currentLng}`);
+          if (appleBtn) appleBtn.setAttribute('href', `https://maps.apple.com/?ll=${currentLat},${currentLng}&q=My%20Location`);
+          
+          const shareText = `Here is my current location: https://maps.google.com/?q=${currentLat.toFixed(6)},${currentLng.toFixed(6)}`;
+          if (whatsappBtn) whatsappBtn.setAttribute('href', `https://api.whatsapp.com/send?text=${encodeURIComponent(shareText)}`);
+          if (smsBtn) smsBtn.setAttribute('href', `sms:?body=${encodeURIComponent(shareText)}`);
+
+          // Reverse geocode for address display
+          try {
+            const addr = await Geocoding.reverseGeocode(currentLat, currentLng);
+            if (addressEl) addressEl.textContent = addr.displayName || 'Address resolved';
+          } catch (e) {
+            if (addressEl) addressEl.textContent = 'Lat/Lng coordinates ready to share';
+          }
+        } catch (err) {
+          if (statusEl) statusEl.textContent = `Error: ${err.message || 'Location access denied'}`;
+          gpsBtn.textContent = '📍 Try Again';
+        }
+      });
+    }
+
+    if (copyLinkBtn) {
+      copyLinkBtn.addEventListener('click', () => {
+        navigator.clipboard.writeText(shareUrl).then(() => {
+          copyLinkBtn.textContent = '✅ Copied Link!';
+          setTimeout(() => { copyLinkBtn.textContent = '📋 Copy Map Link'; }, 2000);
+        });
+      });
+    }
+
+    if (copyCoordsBtn) {
+      copyCoordsBtn.addEventListener('click', () => {
+        const text = `${currentLat.toFixed(6)}, ${currentLng.toFixed(6)}`;
+        navigator.clipboard.writeText(text).then(() => {
+          copyCoordsBtn.textContent = '✅ Copied Coordinates!';
+          setTimeout(() => { copyCoordsBtn.textContent = '📐 Copy Coordinates'; }, 2000);
+        });
+      });
+    }
+  </script>
+</BaseLayout>

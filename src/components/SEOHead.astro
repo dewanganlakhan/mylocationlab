@@ -1,0 +1,104 @@
+---
+/**
+ * SEOHead — Advanced Semantic SEO meta engine
+ * Handles strict canonicalization, Open Graph, Twitter Cards, and Schema.org JSON-LD.
+ */
+interface Props {
+  title: string;
+  description: string;
+  canonical?: string;
+  ogImage?: string;
+  ogType?: string;
+  jsonLd?: object | object[];
+  noindex?: boolean;
+}
+
+const {
+  title,
+  description,
+  canonical: customCanonical,
+  ogImage = '/og-default.png',
+  ogType = 'website',
+  jsonLd,
+  noindex = false,
+} = Astro.props;
+
+const siteName = 'MyLocationLab';
+const siteUrl = 'https://mylocationlab.netlify.app';
+
+// Format title
+const formattedTitle = title.includes('MyLocationLab')
+  ? title
+  : (title.includes('MyLocation') ? title.replace('MyLocation', 'MyLocationLab') : `${title} — ${siteName}`);
+const fullTitle = formattedTitle;
+
+// Strict canonicalization: normalize path to https://mylocationlab.netlify.app with trailing slash
+const rawPath = Astro.url.pathname;
+const normalizedPath = rawPath === '/' ? '/' : (rawPath.endsWith('/') ? rawPath : `${rawPath}/`);
+const canonical = customCanonical || `${siteUrl}${normalizedPath}`;
+
+// Image absolute URL
+const fullOgImage = ogImage.startsWith('http') ? ogImage : `${siteUrl}${ogImage}`;
+
+// Organization Schema (E-E-A-T Entity)
+const organizationSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  '@id': `${siteUrl}/#organization`,
+  name: 'MyLocationLab',
+  url: siteUrl,
+  logo: `${siteUrl}/favicon.svg`,
+  description: 'Precision geolocation, GPS coordinates, and geospatial utility tools for web and mobile.',
+  knowsAbout: [
+    'Geographic Information Systems (GIS)',
+    'Global Positioning System (GPS)',
+    'Geodesy',
+    'HTML5 Geolocation API',
+    'WGS 84 Coordinate Reference System',
+    'Reverse Geocoding'
+  ],
+  contactPoint: {
+    '@type': 'ContactPoint',
+    contactType: 'technical support',
+    url: `${siteUrl}/contact/`
+  }
+};
+
+const combinedJsonLd = jsonLd
+  ? (Array.isArray(jsonLd) ? [organizationSchema, ...jsonLd] : [organizationSchema, jsonLd])
+  : [organizationSchema];
+---
+
+<title>{fullTitle}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={canonical} />
+
+{noindex ? (
+  <meta name="robots" content="noindex, nofollow" />
+) : (
+  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+)}
+
+<!-- Open Graph / Facebook -->
+<meta property="og:type" content={ogType} />
+<meta property="og:title" content={fullTitle} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonical} />
+<meta property="og:site_name" content={siteName} />
+<meta property="og:image" content={fullOgImage} />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:locale" content="en_US" />
+
+<!-- Twitter Cards -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={fullTitle} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={fullOgImage} />
+<meta name="twitter:site" content="@MyLocationLab" />
+
+<!-- Schema.org JSON-LD Structured Data -->
+{combinedJsonLd.map((ld) => (
+  <script type="application/ld+json" set:html={JSON.stringify(ld)} />
+))}
+

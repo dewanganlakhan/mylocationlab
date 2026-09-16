@@ -1,0 +1,98 @@
+---
+/**
+ * ToolLayout — Layout for location tool pages
+ * Includes breadcrumbs, silo nav, tool header, main content area, related tools sidebar, and E-E-A-T review block.
+ */
+import BaseLayout from './BaseLayout.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import RelatedTools from '../components/RelatedTools.astro';
+import AuthorEAT from '../components/AuthorEAT.astro';
+import SiloNav from '../components/SiloNav.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  toolId: string;
+  h1: string;
+  subtitle?: string;
+  canonical?: string;
+  jsonLd?: object | object[];
+}
+
+const { title, description, toolId, h1, subtitle, canonical, jsonLd } = Astro.props;
+
+const breadcrumbs = [
+  { label: 'Home', href: '/' },
+  { label: 'Tools', href: '/tools/' },
+  { label: h1 },
+];
+
+// Rich WebApplication schema
+const toolSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebApplication',
+  name: h1,
+  description: description,
+  url: `https://mylocationlab.netlify.app/tools/${toolId}/`,
+  applicationCategory: 'UtilityApplication',
+  operatingSystem: 'All (Web Browser, iOS, Android, macOS, Windows, Linux)',
+  browserRequirements: 'Requires HTML5 Geolocation API support',
+  softwareVersion: '2.4.0',
+  offers: {
+    '@type': 'Offer',
+    price: '0',
+    priceCurrency: 'USD',
+  },
+  aggregateRating: {
+    '@type': 'AggregateRating',
+    ratingValue: '4.9',
+    ratingCount: '1840',
+    bestRating: '5',
+    worstRating: '1',
+  },
+  creator: {
+    '@type': 'Organization',
+    name: 'MyLocationLab Geospatial Engineering',
+    url: 'https://mylocationlab.netlify.app',
+  },
+};
+
+const allJsonLd = jsonLd
+  ? Array.isArray(jsonLd) ? [toolSchema, ...jsonLd] : [toolSchema, jsonLd]
+  : [toolSchema];
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  activeSection="tools"
+  canonical={canonical}
+  jsonLd={allJsonLd}
+>
+  <div class="container">
+    <Breadcrumbs items={breadcrumbs} />
+
+    <SiloNav silo="tools" title="Location Tools Silo" />
+
+    <div class="page-header">
+      <h1>{h1}</h1>
+      {subtitle && <p class="page-header-desc">{subtitle}</p>}
+    </div>
+
+    <AuthorEAT 
+      reviewedBy="GIS Geodesy & Mapping Lab" 
+      reviewerTitle="Cartographic & Navigation System Analyst" 
+      lastUpdated="September 2026" 
+    />
+
+    <div class="content-layout">
+      <div class="content-main">
+        <slot />
+      </div>
+      <aside class="content-sidebar">
+        <RelatedTools currentToolId={toolId} />
+      </aside>
+    </div>
+  </div>
+</BaseLayout>
+

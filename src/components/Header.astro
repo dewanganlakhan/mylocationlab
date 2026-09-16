@@ -1,0 +1,158 @@
+---
+/**
+ * Header — Sticky glassmorphism navigation
+ * Includes main nav, More dropdown, mobile menu, and Find My Location CTA
+ */
+import { mainNav, moreNav } from '../data/navigation.js';
+import ThemeToggle from './ThemeToggle.astro';
+
+interface Props {
+  activeSection?: string;
+}
+
+const { activeSection } = Astro.props;
+const currentPath = Astro.url.pathname;
+---
+
+<header class="nav-header" id="site-header">
+  <nav class="nav-inner" aria-label="Main navigation">
+    <a href="/" class="nav-logo" aria-label="MyLocationLab Home">
+      <span class="nav-logo-icon">
+        <svg
+          width="28"
+          height="28"
+          viewBox="0 0 64 64"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          class="nav-logo-svg"
+          aria-hidden="true"
+        >
+          <defs>
+            <linearGradient id="header-logo-g" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#00d4ff" />
+              <stop offset="100%" stop-color="#3b82f6" />
+            </linearGradient>
+          </defs>
+          <circle class="nav-logo-pulse-circle" cx="32" cy="26" r="22" fill="url(#header-logo-g)" opacity="0.2" />
+          <path
+            class="nav-logo-pin"
+            d="M32 4C21.5 4 13 12.5 13 23c0 14.25 19 33 19 33s19-18.75 19-33C51 12.5 42.5 4 32 4zm0 28a9 9 0 110-18 9 9 0 010 18z"
+            fill="url(#header-logo-g)"
+          />
+          <circle class="nav-logo-core" cx="32" cy="23" r="5" fill="#ffffff" />
+        </svg>
+      </span>
+      <span class="nav-logo-text">MyLocationLab</span>
+    </a>
+
+    <ul class="nav-links" role="menubar">
+      {mainNav.map(item => (
+        <li role="none">
+          <a
+            href={item.href}
+            class={`nav-link ${currentPath.startsWith(item.href) || activeSection === item.id ? 'active' : ''}`}
+            role="menuitem"
+          >
+            <span class="nav-link-icon">{item.icon}</span>
+            <span class="nav-link-label">{item.label}</span>
+          </a>
+        </li>
+      ))}
+      <li class="dropdown" role="none">
+        <a href="#" class="nav-link dropdown-trigger" role="menuitem" aria-haspopup="true">
+          <span class="nav-link-icon">✨</span>
+          <span class="nav-link-label">More</span>
+          <span class="dropdown-chevron" aria-hidden="true">▾</span>
+        </a>
+        <div class="dropdown-menu" role="menu">
+          {moreNav.map(item => (
+            <a href={item.href} class="dropdown-item" role="menuitem">
+              <span class="dropdown-item-icon">{item.icon}</span>
+              <span class="dropdown-item-label">{item.label}</span>
+              <span class="dropdown-item-arrow" aria-hidden="true">→</span>
+            </a>
+          ))}
+        </div>
+      </li>
+    </ul>
+
+    <div class="nav-actions">
+      <ThemeToggle id="theme-toggle-desktop" />
+
+      <a href="/#find-location" class="btn btn-primary btn-sm nav-cta">
+        <span class="nav-cta-beacon" aria-hidden="true"></span>
+        <span class="nav-cta-icon">📍</span>
+        <span class="nav-cta-text">Find My Location</span>
+      </a>
+
+      <button
+        class="nav-mobile-toggle"
+        id="mobile-menu-toggle"
+        aria-label="Toggle navigation menu"
+        aria-expanded="false"
+      >
+        <span class="nav-mobile-toggle-icon">☰</span>
+      </button>
+    </div>
+  </nav>
+</header>
+
+<!-- Mobile Menu -->
+<div class="nav-mobile-menu" id="mobile-menu" role="navigation" aria-label="Mobile navigation">
+  <div class="theme-toggle-mobile-row">
+    <span class="theme-toggle-mobile-label">
+      <span>🌓</span>
+      <span>Color Theme</span>
+    </span>
+    <ThemeToggle id="theme-toggle-mobile" />
+  </div>
+
+  <hr style="border-color: var(--color-border); margin: var(--space-2) 0;" />
+
+  {mainNav.map(item => (
+    <a
+      href={item.href}
+      class={`nav-mobile-link ${currentPath.startsWith(item.href) || activeSection === item.id ? 'active' : ''}`}
+    >
+      <span class="nav-mobile-item-icon">{item.icon}</span>
+      <span>{item.label}</span>
+    </a>
+  ))}
+  <hr style="border-color: var(--color-border); margin: var(--space-2) 0;" />
+  {moreNav.map(item => (
+    <a href={item.href} class="nav-mobile-link">
+      <span class="nav-mobile-item-icon">{item.icon}</span>
+      <span>{item.label}</span>
+    </a>
+  ))}
+  <div style="padding: var(--space-4);">
+    <a href="/#find-location" class="btn btn-primary btn-lg" style="width: 100%;">
+      📍 Find My Location
+    </a>
+  </div>
+</div>
+
+<script>
+  // Mobile menu toggle
+  const toggle = document.getElementById('mobile-menu-toggle');
+  const menu = document.getElementById('mobile-menu');
+
+  if (toggle && menu) {
+    toggle.addEventListener('click', () => {
+      const isOpen = menu.classList.toggle('open');
+      toggle.setAttribute('aria-expanded', String(isOpen));
+      toggle.textContent = isOpen ? '✕' : '☰';
+      document.body.style.overflow = isOpen ? 'hidden' : '';
+    });
+
+    // Close on link click
+    menu.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        menu.classList.remove('open');
+        toggle.setAttribute('aria-expanded', 'false');
+        toggle.textContent = '☰';
+        document.body.style.overflow = '';
+      });
+    });
+  }
+</script>

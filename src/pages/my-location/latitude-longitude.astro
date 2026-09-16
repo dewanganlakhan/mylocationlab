@@ -1,0 +1,44 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import LocationFinder from '../../components/LocationFinder.astro';
+import SiloNav from '../../components/SiloNav.astro';
+
+const breadcrumbs = [{ label: 'Home', href: '/' }, { label: 'My Location', href: '/my-location/' }, { label: 'Latitude & Longitude' }];
+---
+
+<BaseLayout title="My Latitude and Longitude — Find Lat Long | MyLocationLab" description="Find your current latitude and longitude coordinates instantly. See your precise north-south and east-west position on an interactive map." activeSection="my-location">
+  <div class="container">
+    <Breadcrumbs items={breadcrumbs} />
+    <SiloNav silo="my-location" title="My Location Silo" />
+    <section class="page-header">
+      <h1>My Latitude & <span class="text-gradient">Longitude</span></h1>
+      <p class="page-header-desc">Find your exact latitude and longitude coordinates — the two numbers that pinpoint your precise position on Earth.</p>
+    </section>
+    <LocationFinder emphasisField="lat" />
+    <section class="section">
+      <div class="prose" style="max-width: var(--max-width-narrow);">
+        <h2>What Are Latitude and Longitude?</h2>
+        <p><strong>Latitude</strong> measures how far north or south you are from the equator. It ranges from -90° (South Pole) to +90° (North Pole). The equator is at 0° latitude.</p>
+        <p><strong>Longitude</strong> measures how far east or west you are from the Prime Meridian (which passes through Greenwich, England). It ranges from -180° to +180°.</p>
+        <p>Together, latitude and longitude form a coordinate pair that identifies any point on Earth. For example, <code>40.7128° N, 74.0060° W</code> is the location of New York City.</p>
+        <h2>How to Read Lat/Long Values</h2>
+        <ul>
+          <li><strong>Positive latitude</strong> = North of the equator</li>
+          <li><strong>Negative latitude</strong> = South of the equator</li>
+          <li><strong>Positive longitude</strong> = East of the Prime Meridian</li>
+          <li><strong>Negative longitude</strong> = West of the Prime Meridian</li>
+        </ul>
+        <p>The number of decimal places determines precision: 4 decimal places gives ~11m accuracy, 6 decimal places gives ~11cm accuracy.</p>
+        <h3>Related Pages</h3>
+        <ul>
+          <li><a href="/tools/latitude-longitude/">Latitude Longitude Finder Tool</a></li>
+          <li><a href="/my-location/gps/">My GPS Coordinates</a></li>
+          <li><a href="/comparisons/decimal-degrees-vs-dms/">Decimal Degrees vs DMS</a></li>
+          <li><a href="/guides/latitude-and-longitude-explained/">Complete Latitude &amp; Longitude Guide</a></li>
+          <li><a href="/glossary/">Geodesy Glossary</a></li>
+        </ul>
+      </div>
+    </section>
+  </div>
+</BaseLayout>

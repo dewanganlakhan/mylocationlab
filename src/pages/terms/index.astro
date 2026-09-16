@@ -1,0 +1,66 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+
+const breadcrumbs = [
+  { label: 'Home', href: '/' },
+  { label: 'Terms of Use' }
+];
+---
+
+<BaseLayout
+  title="Terms of Use — Service Agreement & Disclaimers | MyLocationLab"
+  description="Review the terms and conditions for using MyLocationLab geospatial tools, calculators, coordinate converters, and educational guides."
+  activeSection="terms"
+>
+  <div class="container">
+    <Breadcrumbs items={breadcrumbs} />
+
+    <section class="page-header" style="text-align: center; margin-bottom: var(--space-8);">
+      <h1>Terms of <span class="text-gradient">Use</span></h1>
+      <p class="page-header-desc" style="max-width: 680px; margin: 0 auto;">
+        Effective Date: September 15, 2026. Please review these terms carefully before utilizing our tools.
+      </p>
+    </section>
+
+    <article class="prose" style="max-width: var(--max-width-narrow); margin: 0 auto var(--space-16); font-size: var(--text-base); line-height: 1.8;">
+      <h2>1. Acceptance of Terms</h2>
+      <p>
+        By accessing and utilizing <strong>MyLocationLab</strong>, you agree to be bound by these Terms of Use and all applicable laws and regulations. If you do not agree with any of these terms, you are prohibited from using this website.
+      </p>
+
+      <h2>2. Emergency Services Disclaimer (Crucial Notice)</h2>
+      <p style="background: rgba(239, 68, 68, 0.1); border-left: 4px solid var(--color-accent-error); padding: var(--space-4); border-radius: 0 var(--radius-lg) var(--radius-lg) 0;">
+        <strong>NOT FOR EMERGENCY OR SAFETY-OF-LIFE USE:</strong> MyLocationLab is an informational web utility. It is not an authorized emergency dispatch system, maritime navigation aid, or certified aviation instrument. In any life-threatening emergency, call emergency services (911 / 112 / 999) directly using a telephone carrier.
+      </p>
+
+      <h2>3. Informational & Utility Use Only</h2>
+      <p>
+        All calculations, coordinate transformations, distance measurements, elevation lookups, and reverse geocoding results are provided for general informational, educational, and personal utility purposes. While we strive for extreme mathematical precision using WGS 84 models and reputable GIS datasets, we make no guarantees regarding uninterrupted availability or 100% real-world accuracy.
+      </p>
+
+      <h2>4. Acceptable Use Policy</h2>
+      <p>You agree not to:</p>
+      <ul>
+        <li>Deploy automated scrapers, bots, or crawling scripts that abuse or degrade server performance.</li>
+        <li>Attempt to reverse-engineer, decompile, or tamper with the underlying client scripts.</li>
+        <li>Use our tools for stalking, unauthorized surveillance, or harassment of any individual.</li>
+      </ul>
+
+      <h2>5. Open Source Data & Attribution</h2>
+      <p>
+        Map data and reverse geocoding data are provided by <a href="https://www.openstreetmap.org" target="_blank" rel="noopener noreferrer">OpenStreetMap</a> contributors under the Open Database License (ODbL). Cartographic styling, UI component code, and original editorial guides are copyright &copy; 2026 MyLocationLab.
+      </p>
+
+      <h2>6. Limitation of Liability</h2>
+      <p>
+        Under no circumstances shall MyLocationLab, its operators, or technical contributors be liable for any direct, indirect, incidental, or consequential damages resulting from the use or inability to use this service, or from reliance on any coordinate data obtained through our tools.
+      </p>
+
+      <h2>7. Governing Law</h2>
+      <p>
+        These terms and conditions are governed by and construed in accordance with applicable internet regulatory frameworks, without regard to conflict of law principles.
+      </p>
+    </article>
+  </div>
+</BaseLayout>

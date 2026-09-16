@@ -1,0 +1,135 @@
+---
+import ContentLayout from '../../layouts/ContentLayout.astro';
+---
+
+<ContentLayout
+  title="How GPS Location Works: Satellites, Trilateration & WGS 84 | MyLocationLab"
+  description="Learn how the Global Positioning System (GPS) calculates your location on Earth using satellite trilateration, atomic clocks, and the WGS 84 datum."
+  h1="How GPS Location Works: Satellites, Trilateration & WGS 84"
+  subtitle="The complete guide to satellite constellations, radio time-of-flight measurements, and the mathematics behind global positioning."
+  section="guides"
+  sectionLabel="Educational Guides"
+  readTime="7 min"
+  publishDate="2026-09-15"
+  modifiedDate="2026-09-15"
+>
+  <p>
+    Whether you are finding your current position on <a href="/my-location/">Where Am I</a>, navigating city streets, or checking your <a href="/tools/gps-coordinates/">GPS coordinates</a>, your device relies on the most sophisticated space-based navigation network ever engineered: the Global Positioning System (GPS).
+  </p>
+
+  <h2>The Three Segments of Global Positioning</h2>
+  <p>
+    The Global Positioning System consists of three interrelated segments working in synchronized harmony:
+  </p>
+  <ul>
+    <li>
+      <strong>The Space Segment:</strong> A constellation of at least 24 active operational satellites orbiting Earth at an altitude of approximately 20,200 kilometers (12,550 miles). These satellites orbit the planet twice every sidereal day in six orbital planes inclined at 55 degrees relative to the equator.
+    </li>
+    <li>
+      <strong>The Control Segment:</strong> A worldwide network of master control stations, monitor stations, and ground antennas operated by the U.S. Space Force. These stations track satellite orbits, compute precise clock corrections, and upload updated ephemeris data.
+    </li>
+    <li>
+      <strong>The User Segment:</strong> The GNSS receiver inside your smartphone, vehicle, smartwatch, or surveyor kit that passively listens for satellite radio broadcasts.
+    </li>
+  </ul>
+
+  <h2>The Principle of 3D Trilateration</h2>
+  <p>
+    Contrary to a common misconception, GPS satellites do not "track" your phone. GPS satellites are purely broadcast beacons transmitting one-way radio signals at the speed of light (c ≈ 299,792,458 m/s). Your device determines its location through a geometric technique called <strong>trilateration</strong>.
+  </p>
+
+  <h3>How Distance Is Measured (Time-of-Flight)</h3>
+  <p>
+    Each satellite continuously transmits its exact orbital position (ephemeris) and the precise timestamp at which the radio packet departed, measured by on-board rubidium or cesium atomic clocks:
+  </p>
+  <blockquote>
+    Distance = Speed of Light (c) × (Signal Arrival Time - Signal Transmit Time)
+  </blockquote>
+  <p>
+    Knowing the distance from one satellite places your position somewhere on the surface of an imaginary sphere centered on that satellite.
+  </p>
+
+  <h3>Why You Need at Least Four Satellites</h3>
+  <p>
+    While geometric trilateration in 3D Euclidean space requires three intersecting spheres to narrow your location down to two discrete points (one of which is on Earth and the other in deep space), a fourth satellite is mandatory in practice:
+  </p>
+  <ul>
+    <li><strong>Satellite 1:</strong> Narrows your location to a sphere of radius R1.</li>
+    <li><strong>Satellite 2:</strong> Intersects the first sphere, forming a circular ring of potential locations.</li>
+    <li><strong>Satellite 3:</strong> Intersects the circular ring at exactly two points (Earth surface and outer space).</li>
+    <li><strong>Satellite 4 (The Clock Synchronizer):</strong> Eliminates clock bias. Because smartphones use inexpensive quartz crystal oscillators rather than multimillion-dollar atomic clocks, even a microsecond (0.000001s) discrepancy would introduce a 300-meter positional error. The fourth satellite provides the algebraic equation required to solve for receiver clock bias.</li>
+  </ul>
+
+  <h2>Understanding the WGS 84 Coordinate Reference System</h2>
+  <p>
+    Once the receiver calculates its spatial (X, Y, Z) coordinates in an Earth-Centered, Earth-Fixed (ECEF) Cartesian reference frame, it converts those metrics into familiar human coordinates: <a href="/tools/latitude-longitude/">Latitude and Longitude</a>.
+  </p>
+  <p>
+    Because the Earth is an oblate spheroid (flattened at the poles and bulging at the equator due to centrifugal rotation), geographic coordinates require a mathematical model. The global standard used by GPS is <strong>WGS 84 (World Geodetic System 1984)</strong>, officially designated as EPSG:4326.
+  </p>
+
+  <h2>GNSS Multi-Constellation Support in Modern Devices</h2>
+  <p>
+    Modern mobile chipsets are no longer limited to the American GPS system. They support multiple Global Navigation Satellite Systems (GNSS):
+  </p>
+  <table>
+    <thead>
+      <tr>
+        <th>Constellation</th>
+        <th>Operator</th>
+        <th>Operational Satellites</th>
+        <th>Frequencies Used</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>GPS</strong></td>
+        <td>United States</td>
+        <td>31 active</td>
+        <td>L1 (1575.42 MHz), L5 (1176.45 MHz)</td>
+      </tr>
+      <tr>
+        <td><strong>Galileo</strong></td>
+        <td>European Union</td>
+        <td>28 active</td>
+        <td>E1, E5a, E5b</td>
+      </tr>
+      <tr>
+        <td><strong>GLONASS</strong></td>
+        <td>Russia</td>
+        <td>24 active</td>
+        <td>L1, L2 FDMA/CDMA</td>
+      </tr>
+      <tr>
+        <td><strong>BeiDou (BDS)</strong></td>
+        <td>China</td>
+        <td>35 active</td>
+        <td>B1I, B1C, B2a</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>What Factors Degrade GPS Accuracy?</h2>
+  <p>
+    Under pristine outdoor conditions, dual-frequency receivers achieve accuracy within 1 to 3 meters. However, several environmental factors introduce distortion:
+  </p>
+  <ul>
+    <li><strong>Ionospheric Delay:</strong> Charged plasma particles in the upper atmosphere refract and slow down satellite radio waves.</li>
+    <li><strong>Multipath Reflection:</strong> In dense cities with skyscrapers ("urban canyons"), signals bounce off glass and metal structures before reaching your antenna, creating artificial transit delays. You can test your signal quality using our <a href="/tools/gps-accuracy/">GPS Accuracy Monitor</a>.</li>
+    <li><strong>Satellite Geometry (GDOP):</strong> When all visible satellites cluster tightly together in one sector of the sky, triangulation precision degrades rapidly.</li>
+  </ul>
+
+  <h2>Summary & Practical Tools</h2>
+  <p>
+    By continuously calculating radio wave time-of-flight across multiple satellite constellations and projecting onto the WGS 84 geodetic datum, your device can pinpoint your exact position anywhere on the globe in milliseconds.
+  </p>
+  <p>
+    Ready to put this technology to work? Explore our connected tools:
+  </p>
+  <ul>
+    <li><a href="/my-location/gps/">View My Current GPS Coordinates</a></li>
+    <li><a href="/tools/coordinate-converter/">Convert Coordinates (Decimal vs DMS vs UTM)</a></li>
+    <li><a href="/guides/improve-gps-accuracy/">Guide: How to Improve Your Device's GPS Accuracy</a></li>
+    <li><a href="/comparisons/gps-vs-ip-location/">GPS vs. IP Location: Understanding the Trade-offs</a></li>
+  </ul>
+</ContentLayout>

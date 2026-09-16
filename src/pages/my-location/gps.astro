@@ -1,0 +1,74 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import LocationFinder from '../../components/LocationFinder.astro';
+import FAQAccordion from '../../components/FAQAccordion.astro';
+import SiloNav from '../../components/SiloNav.astro';
+
+const breadcrumbs = [{ label: 'Home', href: '/' }, { label: 'My Location', href: '/my-location/' }, { label: 'GPS Coordinates' }];
+
+const faqItems = [
+  { question: 'What are GPS coordinates?', answer: 'GPS coordinates are a pair of numbers (latitude and longitude) that define an exact position on Earth. They are determined by the Global Positioning System (GPS) using satellite signals.' },
+  { question: 'How accurate are GPS coordinates?', answer: 'GPS coordinates from a smartphone are typically accurate to within 3-10 meters outdoors. Accuracy decreases indoors or in dense urban areas. For the best results, use your device outdoors with a clear sky view.' },
+  { question: 'What format are GPS coordinates in?', answer: 'GPS coordinates are typically expressed in <strong>decimal degrees</strong> (e.g., 28.6139, 77.2090) or <strong>DMS</strong> (degrees, minutes, seconds — e.g., 28°36\'50"N 77°12\'32"E). You can <a href="/tools/coordinate-converter/">convert between formats</a> using our tool.' },
+];
+
+const gpsFaqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqItems.map(item => ({
+    '@type': 'Question',
+    name: item.question,
+    acceptedAnswer: {
+      '@type': 'Answer',
+      text: item.answer.replace(/<[^>]*>?/gm, ''),
+    },
+  })),
+};
+---
+
+<BaseLayout 
+  title="My GPS Coordinates — Find Your GPS Location | MyLocationLab" 
+  description="Find your exact GPS coordinates instantly. Get your current latitude and longitude from GPS satellites with real-time accuracy data." 
+  activeSection="my-location"
+  jsonLd={[gpsFaqSchema]}
+>
+  <div class="container">
+    <Breadcrumbs items={breadcrumbs} />
+    <SiloNav silo="my-location" title="My Location Silo" />
+
+    <section class="page-header">
+      <h1>My GPS <span class="text-gradient">Coordinates</span></h1>
+      <p class="page-header-desc">Find your exact GPS coordinates from satellite signals. See your precise latitude, longitude, accuracy, and altitude in real-time.</p>
+    </section>
+
+    <LocationFinder emphasisField="lat" />
+
+    <section class="section">
+      <div class="prose" style="max-width: var(--max-width-narrow);">
+        <h2>Understanding Your GPS Coordinates</h2>
+        <p>GPS (Global Positioning System) determines your position by triangulating signals from multiple satellites orbiting Earth. When you click "Get My Location," your device connects to at least 4 GPS satellites to calculate your exact position in three-dimensional space.</p>
+        <p>The result is a pair of coordinates — <strong>latitude</strong> (north-south position, -90° to +90°) and <strong>longitude</strong> (east-west position, -180° to +180°) — that uniquely identifies your location on the planet.</p>
+        <h2>GPS Coordinate Formats</h2>
+        <ul>
+          <li><strong>Decimal Degrees (DD):</strong> 28.613900, 77.209000 — the most common digital format</li>
+          <li><strong>Degrees Minutes Seconds (DMS):</strong> 28°36'50.0"N 77°12'32.4"E — traditional geographic notation</li>
+          <li><strong>UTM:</strong> 43R 693903 3168335 — used in military and surveying</li>
+        </ul>
+        <p>Use our <a href="/tools/coordinate-converter/">Coordinate Converter</a> to switch between these formats.</p>
+        <h3>Related Pages</h3>
+        <ul>
+          <li><a href="/tools/gps-coordinates/">GPS Coordinates Finder Tool</a></li>
+          <li><a href="/my-location/latitude-longitude/">My Latitude & Longitude</a></li>
+          <li><a href="/tools/gps-accuracy/">GPS Accuracy Checker</a></li>
+          <li><a href="/guides/how-gps-location-works/">How GPS Location Works</a></li>
+          <li><a href="/glossary/">Geodesy &amp; GPS Glossary</a></li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section">
+      <div style="max-width: var(--max-width-narrow);"><h2 class="mb-8">FAQ</h2><FAQAccordion items={faqItems} /></div>
+    </section>
+  </div>
+</BaseLayout>

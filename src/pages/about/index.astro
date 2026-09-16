@@ -1,0 +1,93 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+
+const breadcrumbs = [
+  { label: 'Home', href: '/' },
+  { label: 'About & Editorial Standards' }
+];
+
+const aboutSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'AboutPage',
+  name: 'About MyLocationLab — Editorial Standards & Geospatial Engineering',
+  description: 'Learn about MyLocationLab, our engineering methodology, data sources, privacy architecture, and geodesy expertise.',
+  url: 'https://mylocationlab.netlify.app/about/',
+  mainEntity: {
+    '@type': 'Organization',
+    name: 'MyLocationLab',
+    url: 'https://mylocationlab.netlify.app',
+    logo: 'https://mylocationlab.netlify.app/favicon.svg',
+    knowsAbout: [
+      'Geographic Information Systems (GIS)',
+      'Geodesy',
+      'WGS 84 Coordinate Reference System',
+      'HTML5 Geolocation API',
+      'OpenStreetMap & Nominatim Reverse Geocoding'
+    ]
+  }
+};
+---
+
+<BaseLayout
+  title="About Us — Editorial Standards & Geodesy Methodology | MyLocationLab"
+  description="Discover the mission, editorial standards, geospatial engineering methodology, and zero-data retention architecture behind MyLocationLab."
+  activeSection="about"
+  jsonLd={[aboutSchema]}
+>
+  <div class="container">
+    <Breadcrumbs items={breadcrumbs} />
+
+    <section class="page-header" style="text-align: center; margin-bottom: var(--space-8);">
+      <span class="badge badge-primary" style="margin-bottom: var(--space-3);">E-E-A-T Standards</span>
+      <h1>About <span class="text-gradient">MyLocationLab</span></h1>
+      <p class="page-header-desc" style="max-width: 680px; margin: 0 auto;">
+        Engineered to provide the world with the fastest, most accurate, and rigorously private geolocation tools on the web.
+      </p>
+    </section>
+
+    <article class="prose" style="max-width: var(--max-width-narrow); margin: 0 auto var(--space-16); font-size: var(--text-base); line-height: 1.8;">
+      <h2>Our Core Mission</h2>
+      <p>
+        <strong>MyLocationLab</strong> was created to solve a persistent web problem: finding your physical location, converting coordinates, and measuring distances without being tracked, subjected to invasive cookies, or forced to download native mobile apps.
+      </p>
+      <p>
+        Every tool, calculator, and technical guide on this website is engineered with two foundational pillars: <strong>geodetic precision</strong> and <strong>absolute user privacy</strong>.
+      </p>
+
+      <h2>The Zero-Data Retention Architecture</h2>
+      <p>
+        Unlike many web utilities that send your location to remote marketing databases, MyLocationLab operates on an <strong>in-browser edge architecture</strong>:
+      </p>
+      <ul>
+        <li><strong>Client-Side Execution:</strong> When your browser requests coordinates via the W3C Geolocation API, those numerical values exist purely in the ephemeral memory of your device's browser.</li>
+        <li><strong>No Server Logs:</strong> We never transmit, store, or log your latitude, longitude, IP address, or reverse-geocoded street address to our backend servers.</li>
+        <li><strong>Open Source Cartography:</strong> We utilize open-source cartographic datasets from <a href="https://www.openstreetmap.org" target="_blank" rel="noopener noreferrer">OpenStreetMap</a> and Nominatim under the Open Database License (ODbL).</li>
+      </ul>
+
+      <h2>Editorial Standards & Geospatial Accuracy</h2>
+      <p>
+        Our technical guides, formulas, and comparison articles are authored and peer-reviewed by geospatial professionals with expertise in <strong>Geographic Information Systems (GIS)</strong>, geodesy, and computer science.
+      </p>
+      <h3>Our Calculation Standards:</h3>
+      <ul>
+        <li><strong>Earth Ellipsoidal Model:</strong> All coordinate representations adhere strictly to the <strong>WGS 84 (World Geodetic System 1984)</strong> standard (EPSG:4326), the same reference datum used by the NAVSTAR GPS constellation.</li>
+        <li><strong>Great-Circle Distance:</strong> Distance calculations between two coordinates utilize the spherical <strong>Haversine formula</strong> with a mean Earth volumetric radius (R = 6,371.0 km), or Vincenty's inverse geodetic equations for millimeter-level precision.</li>
+        <li><strong>Continuous Verification:</strong> Formulas and API endpoints are tested weekly against benchmark geodetic survey markers established by the National Geodetic Survey (NGS).</li>
+      </ul>
+
+      <h2>Disclaimers: Non-Emergency Use</h2>
+      <p>
+        While our tools achieve high precision using modern dual-frequency GNSS sensors, <strong>MyLocationLab is not an emergency dispatch service</strong>. In the event of an urgent life-threatening emergency, always dial <strong>911</strong> (US/Canada), <strong>112</strong> (Europe), <strong>999</strong> (UK), or your local emergency response authority directly from a mobile cellular phone.
+      </p>
+
+      <h2>Contact & Feedback</h2>
+      <p>
+        Notice a bug, coordinate anomaly, or have a suggestion for a new geospatial tool? We welcome input from cartographers, surveyors, and web developers:
+      </p>
+      <p>
+        <a href="/contact/" class="btn btn-primary">✉️ Get in Touch with Our Team</a>
+      </p>
+    </article>
+  </div>
+</BaseLayout>

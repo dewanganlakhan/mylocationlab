@@ -1,0 +1,85 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import SiloNav from '../../components/SiloNav.astro';
+
+const breadcrumbs = [
+  { label: 'Home', href: '/' },
+  { label: 'Technical Comparisons' }
+];
+
+const comparisonsList = [
+  {
+    title: 'GPS Location vs. IP Geolocation: Accuracy, Privacy & Mechanisms',
+    description: 'Compare space-based satellite positioning against internet routing table lookups. Understand the differences in accuracy (3 meters vs 50 kilometers), latency, and privacy.',
+    url: '/comparisons/gps-vs-ip-location/',
+    icon: '⚖️',
+    tags: ['Accuracy', 'Network', 'GNSS']
+  },
+  {
+    title: 'Forward Geocoding vs. Reverse Geocoding: Which Do You Need?',
+    description: 'Understand the mathematical and database differences between converting addresses to coordinates versus converting coordinate pairs to street addresses.',
+    url: '/comparisons/geocoding-vs-reverse-geocoding/',
+    icon: '🔄',
+    tags: ['APIs', 'Geocoding', 'Addresses']
+  },
+  {
+    title: 'Decimal Degrees (DD) vs. Degrees Minutes Seconds (DMS)',
+    description: 'Technical comparison of coordinate notation systems, conversion formulas, storage efficiency in GIS databases, and human readability trade-offs.',
+    url: '/comparisons/decimal-degrees-vs-dms/',
+    icon: '📐',
+    tags: ['Coordinates', 'GIS', 'Datums']
+  }
+];
+
+const compHubSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'CollectionPage',
+  name: 'Technical Geospatial Comparisons Hub',
+  description: 'In-depth engineering comparisons of geolocation algorithms, coordinate reference formats, and positioning systems.',
+  url: 'https://mylocationlab.netlify.app/comparisons/',
+};
+---
+
+<BaseLayout
+  title="Geospatial Comparisons & Technical Benchmarks | MyLocationLab"
+  description="Compare GPS vs IP location accuracy, Forward vs Reverse Geocoding, and Decimal Degrees vs DMS formats with in-depth engineering breakdowns."
+  activeSection="comparisons"
+  jsonLd={[compHubSchema]}
+>
+  <div class="container">
+    <Breadcrumbs items={breadcrumbs} />
+    <SiloNav silo="comparisons" title="Technical Comparisons Silo" />
+
+    <section class="page-header" style="text-align: center; margin-bottom: var(--space-10);">
+      <h1>Geospatial <span class="text-gradient">Comparisons & Benchmarks</span></h1>
+      <p class="page-header-desc" style="max-width: 680px; margin: 0 auto;">
+        Technical breakdowns comparing positioning technologies, coordinate encodings, and geospatial indexing algorithms.
+      </p>
+    </section>
+
+    <div class="grid grid-auto" style="gap: var(--space-6); margin-bottom: var(--space-16);">
+      {comparisonsList.map((comp) => (
+        <a href={comp.url} class="card" style="text-decoration: none; display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <div style="font-size: 2rem; margin-bottom: var(--space-3);">{comp.icon}</div>
+            <h2 style="font-size: var(--text-xl); color: var(--color-text-heading); margin-bottom: var(--space-3); line-height: 1.4;">
+              {comp.title}
+            </h2>
+            <p style="font-size: var(--text-sm); color: var(--color-text-secondary); line-height: 1.7; margin-bottom: var(--space-4);">
+              {comp.description}
+            </p>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--color-border); padding-top: var(--space-3); font-size: var(--text-xs);">
+            <div class="flex gap-2">
+              {comp.tags.map(tag => (
+                <span class="badge badge-neutral" style="font-size: 0.65rem;">{tag}</span>
+              ))}
+            </div>
+            <span style="color: var(--color-accent-primary); font-weight: 600;">View Comparison →</span>
+          </div>
+        </a>
+      ))}
+    </div>
+  </div>
+</BaseLayout>

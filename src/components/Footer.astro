@@ -1,0 +1,107 @@
+---
+/**
+ * Footer — Site footer with SILO navigation, brand, and legal links
+ */
+import { footerNav, footerCategoryIcons } from '../data/navigation.js';
+
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="/" class="nav-logo footer-logo" style="margin-bottom: var(--space-4); display: inline-flex;" aria-label="MyLocationLab Home">
+          <span class="nav-logo-icon">
+            <svg
+              width="30"
+              height="30"
+              viewBox="0 0 64 64"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              class="nav-logo-svg footer-logo-svg"
+              aria-hidden="true"
+            >
+              <defs>
+                <linearGradient id="footer-logo-g" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#00d4ff" />
+                  <stop offset="100%" stop-color="#3b82f6" />
+                </linearGradient>
+              </defs>
+              <circle class="nav-logo-pulse-circle" cx="32" cy="26" r="22" fill="url(#footer-logo-g)" opacity="0.2" />
+              <path
+                class="nav-logo-pin"
+                d="M32 4C21.5 4 13 12.5 13 23c0 14.25 19 33 19 33s19-18.75 19-33C51 12.5 42.5 4 32 4zm0 28a9 9 0 110-18 9 9 0 010 18z"
+                fill="url(#footer-logo-g)"
+              />
+              <circle class="nav-logo-core" cx="32" cy="23" r="5" fill="#ffffff" />
+            </svg>
+          </span>
+          <span class="nav-logo-text">MyLocationLab</span>
+        </a>
+        <p class="footer-brand-desc">
+          The fastest way to find, verify, convert, and share your location.
+          Precision geolocation tools powered by HTML5 GPS, OpenStreetMap, and open geodesy engines.
+        </p>
+        <div class="footer-trust-badge">
+          <span class="footer-trust-dot"></span>
+          <span class="footer-trust-text">Zero-Data Retention &bull; 100% In-Browser</span>
+        </div>
+      </div>
+
+      {Object.entries(footerNav).map(([category, links]) => {
+        const catIcon = footerCategoryIcons[category] || '📍';
+        return (
+          <div class="footer-column">
+            <h4 class="footer-col-header">
+              <span class="footer-col-icon">{catIcon}</span>
+              <span class="footer-col-text">{category}</span>
+            </h4>
+            <ul class="footer-links">
+              {links.map(link => (
+                <li>
+                  <a href={link.href} class="footer-link-item">
+                    <span class="footer-item-icon">{link.icon}</span>
+                    <span class="footer-item-text">{link.label}</span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        );
+      })}
+    </div>
+
+    <div class="footer-bottom">
+      <div>
+        <p style="margin: 0;">&copy; {year} MyLocationLab. All rights reserved. Precision Geospatial Engineering.</p>
+        <p style="margin: var(--space-1) 0 0; font-size: var(--text-xs); color: var(--color-text-tertiary); display: flex; align-items: center; gap: var(--space-2);">
+          <span class="footer-secure-icon">🛡️</span>
+          <span>Zero Server Logs &bull; W3C Standard Geolocation API &bull; HTTPS TLS 1.3</span>
+        </p>
+      </div>
+      <div class="footer-bottom-nav">
+        <a href="/about/" class="footer-bottom-link">
+          <span class="footer-btm-icon">ℹ️</span>
+          <span>About Us</span>
+        </a>
+        <a href="/privacy/" class="footer-bottom-link">
+          <span class="footer-btm-icon">🛡️</span>
+          <span>Privacy Policy</span>
+        </a>
+        <a href="/terms/" class="footer-bottom-link">
+          <span class="footer-btm-icon">📜</span>
+          <span>Terms of Use</span>
+        </a>
+        <a href="/contact/" class="footer-bottom-link">
+          <span class="footer-btm-icon">✉️</span>
+          <span>Contact Support</span>
+        </a>
+        <a href="/sitemap/" class="footer-bottom-link">
+          <span class="footer-btm-icon">🗂️</span>
+          <span>HTML Sitemap</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</footer>

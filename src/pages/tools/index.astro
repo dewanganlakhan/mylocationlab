@@ -1,0 +1,90 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import ToolCard from '../../components/ToolCard.astro';
+import SiloNav from '../../components/SiloNav.astro';
+import FAQAccordion from '../../components/FAQAccordion.astro';
+import { tools, toolCategories, getToolsByCategory } from '../../data/tools.js';
+
+const breadcrumbs = [{ label: 'Home', href: '/' }, { label: 'Location Tools' }];
+
+// ItemList schema for tools directory
+const itemListSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'ItemList',
+  name: 'Free Online Location Tools Directory',
+  description: 'Complete collection of free GPS, coordinates, conversion, and geospatial tools.',
+  itemListElement: tools.map((tool, index) => ({
+    '@type': 'ListItem',
+    position: index + 1,
+    name: tool.title,
+    description: tool.description,
+    url: `https://mylocationlab.netlify.app${tool.url}`,
+  })),
+};
+
+const toolFaqs = [
+  {
+    question: 'Are all location tools on MyLocationLab free to use?',
+    answer: 'Yes, 100% of our tools are completely free, open-access, and do not require account registration, API keys, or downloads.'
+  },
+  {
+    question: 'Do these tools store or track my GPS coordinates?',
+    answer: 'No. All calculations (such as distance formulas, coordinate transformations, and GPS accuracy calculations) execute directly inside your browser client. We do not store or transmit your coordinates.'
+  },
+  {
+    question: 'What is the most accurate tool for finding my exact position?',
+    answer: 'The <a href="/tools/gps-coordinates/">GPS Coordinates Finder</a> and <a href="/tools/gps-accuracy/">GPS Accuracy Checker</a> utilize your device\'s hardware GNSS chip (GPS, Galileo, GLONASS) to provide coordinates accurate within 3–5 meters outdoors.'
+  }
+];
+---
+
+<BaseLayout 
+  title="Free Location Tools Directory — GPS, Coordinates & Mapping | MyLocationLab" 
+  description="Comprehensive suite of free online location tools: GPS coordinates finder, address finder, distance calculator, coordinate converter, elevation finder, and QR generator." 
+  activeSection="tools"
+  jsonLd={[itemListSchema]}
+>
+  <div class="container">
+    <Breadcrumbs items={breadcrumbs} />
+    <SiloNav silo="tools" title="Location Tools Silo" />
+
+    <section class="page-header" style="text-align: center; margin-bottom: var(--space-8);">
+      <h1>Location & Geospatial <span class="text-gradient">Tools</span></h1>
+      <p class="page-header-desc" style="max-width: 650px; margin: 0 auto;">
+        Free browser-based geospatial utilities to find, convert, measure, and share geographic data. Zero server storage, instant client-side execution.
+      </p>
+    </section>
+
+    {toolCategories.map(cat => {
+      const catTools = getToolsByCategory(cat.id);
+      if (catTools.length === 0) return null;
+      return (
+        <section class="section-sm" style="margin-bottom: var(--space-10);">
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--space-6); border-bottom: 1px solid var(--color-border); padding-bottom: var(--space-3);">
+            <h2 style="font-size: var(--text-2xl); display: flex; align-items: center; gap: var(--space-2); margin: 0;">
+              <span>{cat.icon}</span> <span>{cat.name}</span>
+            </h2>
+            <span class="badge badge-neutral">{catTools.length} {catTools.length === 1 ? 'Tool' : 'Tools'}</span>
+          </div>
+          <div class="grid grid-auto">
+            {catTools.map(tool => (
+              <ToolCard title={tool.title} description={tool.description} icon={tool.icon} url={tool.url} />
+            ))}
+          </div>
+        </section>
+      );
+    })}
+
+    <section class="section" style="margin-top: var(--space-12);">
+      <div class="section-header">
+        <h2>Frequently Asked <span class="text-gradient">Questions</span></h2>
+        <p>Common questions about using our location tools and coordinate calculations.</p>
+      </div>
+      <div style="max-width: var(--max-width-narrow); margin: 0 auto;">
+        <FAQAccordion items={toolFaqs} />
+      </div>
+    </section>
+  </div>
+</BaseLayout>
+

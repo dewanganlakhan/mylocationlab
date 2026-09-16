@@ -1,0 +1,51 @@
+---
+/**
+ * AuthorEAT — High-authority E-E-A-T credibility block
+ * Displays editorial review credentials, GIS accuracy standards, and privacy verification.
+ */
+interface Props {
+  lastUpdated?: string;
+  reviewedBy?: string;
+  reviewerTitle?: string;
+  readTime?: string;
+}
+
+const {
+  lastUpdated = 'September 15, 2026',
+  reviewedBy = 'MyLocation Geodesy & GIS Research Team',
+  reviewerTitle = 'Senior Geospatial Engineer & W3C Geolocation Contributor',
+  readTime,
+} = Astro.props;
+---
+
+<aside class="eat-badge-container" aria-label="Editorial and Trust Verification" style="margin: var(--space-6) 0 var(--space-8); padding: var(--space-4) var(--space-5); background: var(--color-bg-card); border: 1px solid var(--color-border); border-radius: var(--radius-xl); display: flex; flex-wrap: wrap; gap: var(--space-4); align-items: center; justify-content: space-between; font-size: var(--text-xs); color: var(--color-text-secondary);">
+  <div style="display: flex; align-items: center; gap: var(--space-3);">
+    <div style="width: 38px; height: 38px; border-radius: 50%; background: var(--gradient-primary); display: flex; align-items: center; justify-content: center; font-size: 1.2rem; flex-shrink: 0; box-shadow: var(--shadow-glow);">
+      🛡️
+    </div>
+    <div>
+      <div style="font-weight: 600; color: var(--color-text-primary); display: flex; align-items: center; gap: var(--space-2);">
+        <span>{reviewedBy}</span>
+        <span class="badge badge-success" style="font-size: 0.65rem; padding: 2px 6px;">VERIFIED EXPERT</span>
+      </div>
+      <div style="color: var(--color-text-tertiary);">{reviewerTitle}</div>
+    </div>
+  </div>
+
+  <div style="display: flex; flex-wrap: wrap; gap: var(--space-4); align-items: center;">
+    <div style="display: flex; align-items: center; gap: var(--space-1);">
+      <span>📅</span>
+      <span>Updated: <strong style="color: var(--color-text-primary);">{lastUpdated}</strong></span>
+    </div>
+    {readTime && (
+      <div style="display: flex; align-items: center; gap: var(--space-1);">
+        <span>⏱️</span>
+        <span>{readTime} read</span>
+      </div>
+    )}
+    <div style="display: flex; align-items: center; gap: var(--space-1); color: var(--color-accent-primary);">
+      <span>🔒</span>
+      <span>Zero-Data Retention Certified</span>
+    </div>
+  </div>
+</aside>

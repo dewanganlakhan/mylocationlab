@@ -1,0 +1,108 @@
+---
+/**
+ * BaseLayout — Root layout for all pages
+ * Handles HTML document structure, global styles, fonts, header, and footer.
+ */
+import SEOHead from '../components/SEOHead.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import '../styles/global.css';
+import '../styles/components.css';
+
+interface Props {
+  title: string;
+  description: string;
+  canonical?: string;
+  ogImage?: string;
+  ogType?: string;
+  jsonLd?: object | object[];
+  activeSection?: string;
+  noindex?: boolean;
+}
+
+const {
+  title,
+  description,
+  canonical,
+  ogImage,
+  ogType,
+  jsonLd,
+  activeSection,
+  noindex,
+} = Astro.props;
+
+// WebSite schema for all pages
+const websiteSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: 'MyLocationLab',
+  url: 'https://mylocationlab.netlify.app',
+  description: 'Find your current location instantly. Free GPS coordinates, address finder, and location tools.',
+  potentialAction: {
+    '@type': 'SearchAction',
+    target: 'https://mylocationlab.netlify.app/tools/geocoding/?q={search_term_string}',
+    'query-input': 'required name=search_term_string',
+  },
+};
+
+const allJsonLd = jsonLd
+  ? Array.isArray(jsonLd) ? [websiteSchema, ...jsonLd] : [websiteSchema, jsonLd]
+  : [websiteSchema];
+---
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+  <!-- Anti-FOUC Theme Initialization (runs synchronously before CSS/paint) -->
+  <script is:inline>
+    (function() {
+      try {
+        const stored = localStorage.getItem('theme');
+        const theme = stored ? stored : (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+        document.documentElement.setAttribute('data-theme', theme);
+      } catch (e) {
+        document.documentElement.setAttribute('data-theme', 'dark');
+      }
+    })();
+  </script>
+
+  <SEOHead
+    title={title}
+    description={description}
+    canonical={canonical}
+    ogImage={ogImage}
+    ogType={ogType}
+    jsonLd={allJsonLd}
+    noindex={noindex}
+  />
+
+  <!-- Preconnect to external resources -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" />
+  <link rel="preconnect" href="https://unpkg.com" />
+
+  <!-- Favicon (SVG for modern browsers, multi-resolution ICO fallback) -->
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="alternate icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="apple-touch-icon" href="/favicon.svg" />
+  <meta name="theme-color" content="#060a13" />
+</head>
+<body>
+  <a href="#main-content" class="sr-only skip-link">Skip to main content</a>
+  <Header activeSection={activeSection} />
+
+  <main id="main-content">
+    <slot />
+  </main>
+
+  <Footer />
+
+  <!-- Leaflet JS (deferred, loaded on first use) -->
+  <script is:inline defer src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+</body>
+</html>

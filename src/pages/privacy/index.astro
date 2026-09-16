@@ -1,0 +1,78 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+
+const breadcrumbs = [
+  { label: 'Home', href: '/' },
+  { label: 'Privacy Policy' }
+];
+---
+
+<BaseLayout
+  title="Privacy Policy — Zero-Data Retention Guarantee | MyLocationLab"
+  description="Read our clear, transparent privacy policy. Learn why MyLocationLab never records, logs, or sells your GPS coordinates or IP location."
+  activeSection="privacy"
+>
+  <div class="container">
+    <Breadcrumbs items={breadcrumbs} />
+
+    <section class="page-header" style="text-align: center; margin-bottom: var(--space-8);">
+      <h1>Privacy <span class="text-gradient">Policy</span></h1>
+      <p class="page-header-desc" style="max-width: 680px; margin: 0 auto;">
+        Effective Date: September 15, 2026. Your location data is private, personal, and belongs exclusively to you.
+      </p>
+    </section>
+
+    <article class="prose" style="max-width: var(--max-width-narrow); margin: 0 auto var(--space-16); font-size: var(--text-base); line-height: 1.8;">
+      <h2>1. The Core Principle: Zero-Data Retention</h2>
+      <p>
+        At <strong>MyLocationLab</strong>, our architecture is designed around a single unbreakable principle: <strong>we do not collect, store, log, or monetize your location data.</strong>
+      </p>
+      <p>
+        When you use any tool on our website (including <a href="/my-location/">Where Am I</a>, <a href="/tools/gps-coordinates/">GPS Coordinates Finder</a>, or <a href="/tools/address-finder/">Address Finder</a>), all calculations are performed locally inside your device's web browser.
+      </p>
+
+      <h2>2. How Location Permissions Work (W3C Geolocation API)</h2>
+      <p>
+        We access your device's position strictly via the standardized <strong>W3C HTML5 Geolocation API</strong>.
+      </p>
+      <ul>
+        <li><strong>Explicit Consent:</strong> Your browser will never expose your coordinates without showing a permission dialog (e.g., <em>"mylocationlab.netlify.app wants to know your location"</em>).</li>
+        <li><strong>No Background Tracking:</strong> We only read your position when you actively click a button or interact with a tool. Once you navigate away or close the tab, all location access immediately terminates.</li>
+        <li><strong>Revocation:</strong> You can revoke location access at any time through your browser's site settings.</li>
+      </ul>
+
+      <h2>3. Third-Party Mapping & Reverse Geocoding Requests</h2>
+      <p>
+        To translate your raw latitude and longitude coordinates into a human-readable street address or render an interactive map, your browser communicates directly with open-source mapping APIs:
+      </p>
+      <ul>
+        <li><strong>OpenStreetMap &amp; Nominatim:</strong> Used for map tile rendering and reverse geocoding under the Open Database License.</li>
+        <li><strong>Leaflet.js:</strong> An open-source client-side JavaScript library that runs locally in your browser to render map tiles.</li>
+      </ul>
+      <p>
+        Neither MyLocationLab nor our open-source cartographic partners correlate your requests with your identity.
+      </p>
+
+      <h2>4. IP Addresses & Server Logs</h2>
+      <p>
+        When you connect to any web server, your public IP address is transmitted as part of basic TCP/IP internet protocol communication. We configure our hosting edge servers to <strong>anonymize IP addresses</strong> and avoid logging persistent user identifiers. We do not maintain server-side user location profiles.
+      </p>
+
+      <h2>5. Cookies and Tracking Technologies</h2>
+      <p>
+        MyLocationLab does not use invasive cross-site tracking cookies, behavioral tracking scripts, or finger-printing beacons. If local storage is used, it is solely to remember your preferred unit preferences (e.g. Metric meters vs. Imperial feet).
+      </p>
+
+      <h2>6. GDPR, CCPA & Global Compliance</h2>
+      <p>
+        Because we do not store, process, or sell personal data or location histories, we are fully compliant with the European General Data Protection Regulation (GDPR), the California Consumer Privacy Act (CCPA), and international privacy frameworks.
+      </p>
+
+      <h2>7. Contact Our Data Protection Officer</h2>
+      <p>
+        If you have any questions or privacy concerns regarding this policy, please reach out through our <a href="/contact/">Contact Page</a>.
+      </p>
+    </article>
+  </div>
+</BaseLayout>

@@ -1,0 +1,20 @@
+---
+/**
+ * ToolCard — Reusable card for tool grids with icon, title, description, and hover animation
+ */
+interface Props {
+  title: string;
+  description: string;
+  icon: string;
+  url: string;
+  class?: string;
+}
+
+const { title, description, icon, url, class: className = '' } = Astro.props;
+---
+
+<a href={url} class={`tool-card ${className}`}>
+  <div class="tool-card-icon">{icon}</div>
+  <h3 class="tool-card-title">{title}</h3>
+  <p class="tool-card-desc">{description}</p>
+</a>

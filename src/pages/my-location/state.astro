@@ -1,0 +1,37 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import LocationFinder from '../../components/LocationFinder.astro';
+const breadcrumbs = [{ label: 'Home', href: '/' }, { label: 'My Location', href: '/my-location/' }, { label: 'My State' }];
+---
+
+<BaseLayout title="What State Am I In? — Find My Current State | MyLocationLab" description="Find out what state or region you're in right now. Instantly detect your state, province, or administrative region using GPS." activeSection="my-location">
+  <div class="container">
+    <Breadcrumbs items={breadcrumbs} />
+    <section class="page-header">
+      <h1>What State <span class="text-gradient">Am I In?</span></h1>
+      <p class="page-header-desc">Instantly find your current state, province, or administrative region. Useful for travelers, road trippers, and anyone near state borders.</p>
+    </section>
+    <LocationFinder emphasisField="state" />
+    <section class="section">
+      <div class="prose" style="max-width: var(--max-width-narrow);">
+        <h2>About State/Region Detection</h2>
+        <p>Your state or region is determined by matching your GPS coordinates against administrative boundary data. This identifies which first-level administrative division (state, province, region, or territory) your position falls within.</p>
+        <p>This is particularly useful when:</p>
+        <ul>
+          <li>You're traveling near state or provincial borders</li>
+          <li>You need to know which jurisdiction you're in for legal or tax purposes</li>
+          <li>You're road tripping and want to confirm your state</li>
+          <li>You need to fill in forms that require your current state</li>
+        </ul>
+        <h3>Related Pages</h3>
+        <ul>
+          <li><a href="/my-location/city/">What City Am I In?</a></li>
+          <li><a href="/my-location/country/">What Country Am I In?</a></li>
+          <li><a href="/my-location/address/">My Address</a></li>
+          <li><a href="/my-location/">My Full Location</a></li>
+        </ul>
+      </div>
+    </section>
+  </div>
+</BaseLayout>

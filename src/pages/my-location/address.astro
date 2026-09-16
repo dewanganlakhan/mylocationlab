@@ -1,0 +1,49 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import LocationFinder from '../../components/LocationFinder.astro';
+import SiloNav from '../../components/SiloNav.astro';
+
+const breadcrumbs = [{ label: 'Home', href: '/' }, { label: 'My Location', href: '/my-location/' }, { label: 'My Address' }];
+---
+
+<BaseLayout title="My Address — What Is My Current Address? | MyLocationLab" description="Find your current street address instantly using GPS. Reverse geocode your location to a full postal address with house number, street, city, and zip code." activeSection="my-location">
+  <div class="container">
+    <Breadcrumbs items={breadcrumbs} />
+    <SiloNav silo="my-location" title="My Location Silo" />
+    <section class="page-header">
+      <h1>What Is My <span class="text-gradient">Current Address?</span></h1>
+      <p class="page-header-desc">Find your full street address instantly using GPS and reverse geocoding. See your house number, street, city, state, postal code, and country.</p>
+    </section>
+
+    <LocationFinder emphasisField="address" />
+
+    <section class="section">
+      <div class="prose" style="max-width: var(--max-width-narrow);">
+        <h2>How Your Address Is Found</h2>
+        <p>Your address is determined through a two-step process called <strong>reverse geocoding</strong>:</p>
+        <ol>
+          <li><strong>Step 1:</strong> Your device uses GPS satellites to determine your exact latitude and longitude coordinates.</li>
+          <li><strong>Step 2:</strong> Those coordinates are sent to a geocoding service (OpenStreetMap Nominatim) which matches them to the nearest known street address.</li>
+        </ol>
+        <p>The accuracy of the address depends on both your GPS accuracy and the completeness of the mapping data in your area. In well-mapped urban areas, you'll typically get a precise street address. In rural or unmapped areas, you may see a more general location description.</p>
+        <h2>What Address Information Is Shown</h2>
+        <ul>
+          <li><strong>Street Address</strong> — House number, street name, and neighborhood</li>
+          <li><strong>City / Town</strong> — The municipality you're located in</li>
+          <li><strong>State / Region</strong> — The administrative region or state</li>
+          <li><strong>Postcode / ZIP</strong> — Your postal code</li>
+          <li><strong>Country</strong> — The country you're in</li>
+        </ul>
+        <h3>Related Pages</h3>
+        <ul>
+          <li><a href="/tools/address-finder/">Address Finder Tool</a></li>
+          <li><a href="/tools/reverse-geocoding/">Reverse Geocoder</a></li>
+          <li><a href="/my-location/city/">What City Am I In?</a></li>
+          <li><a href="/my-location/state/">What State Am I In?</a></li>
+          <li><a href="/comparisons/geocoding-vs-reverse-geocoding/">How Reverse Geocoding Works</a></li>
+        </ul>
+      </div>
+    </section>
+  </div>
+</BaseLayout>

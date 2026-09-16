@@ -1,0 +1,103 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import { footerNav } from '../data/navigation.js';
+
+const breadcrumbs = [
+  { label: 'Home', href: '/' },
+  { label: 'HTML Sitemap & Site Directory' }
+];
+
+const sitemapSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebPage',
+  name: 'MyLocationLab Complete HTML Site Directory & Sitemap',
+  description: 'Hierarchical navigation directory of all pages, geospatial tools, educational guides, comparisons, and trust pages on MyLocationLab.',
+  url: 'https://mylocationlab.netlify.app/sitemap/',
+};
+---
+
+<BaseLayout
+  title="HTML Sitemap — Complete Directory of Location Pages | MyLocationLab"
+  description="Explore the complete site directory of MyLocationLab. Access all GPS tools, coordinate converters, educational guides, comparisons, and privacy policies in 1 click."
+  activeSection="resources"
+  jsonLd={[sitemapSchema]}
+>
+  <div class="container">
+    <Breadcrumbs items={breadcrumbs} />
+
+    <section class="page-header" style="text-align: center; margin-bottom: var(--space-10);">
+      <h1>Site <span class="text-gradient">Directory & Sitemap</span></h1>
+      <p class="page-header-desc" style="max-width: 680px; margin: 0 auto;">
+        A complete hierarchical index of every tool, guide, comparison, and location attribute available on MyLocationLab. Every page is accessible within 2 clicks from Home.
+      </p>
+    </section>
+
+    <!-- Top Links & XML Sitemap Callout -->
+    <div class="card card-flat" style="padding: var(--space-4) var(--space-6); margin-bottom: var(--space-10); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: var(--space-4);">
+      <div style="font-size: var(--text-sm); color: var(--color-text-secondary);">
+        Looking for search engine bots index? View our machine-readable XML feed:
+      </div>
+      <a href="/sitemap-index.xml" class="btn btn-secondary btn-sm" target="_blank">
+        🤖 XML Sitemap Feed
+      </a>
+    </div>
+
+    <!-- SILO Directory Grid -->
+    <div class="grid grid-2" style="gap: var(--space-8); margin-bottom: var(--space-16);">
+      {Object.entries(footerNav).map(([category, links]) => (
+        <div class="card" style="padding: var(--space-6);">
+          <h2 style="font-size: var(--text-xl); color: var(--color-accent-primary); margin-bottom: var(--space-4); border-bottom: 1px solid var(--color-border); padding-bottom: var(--space-2);">
+            {category}
+          </h2>
+          <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: var(--space-3);">
+            {links.map((link) => (
+              <li>
+                <a 
+                  href={link.href} 
+                  style="color: var(--color-text-primary); text-decoration: none; display: inline-flex; align-items: center; gap: var(--space-2); font-size: var(--text-sm); transition: color var(--transition-fast);"
+                >
+                  <span style="font-size: 1rem; line-height: 1;">{link.icon || '›'}</span>
+                  <span>{link.label}</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
+
+      <!-- Trust & E-E-A-T Section in Sitemap -->
+      <div class="card" style="padding: var(--space-6);">
+        <h2 style="font-size: var(--text-xl); color: var(--color-accent-primary); margin-bottom: var(--space-4); border-bottom: 1px solid var(--color-border); padding-bottom: var(--space-2);">
+          Trust, Editorial & Legal
+        </h2>
+        <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: var(--space-3);">
+          <li>
+            <a href="/about/" style="color: var(--color-text-primary); text-decoration: none; display: inline-flex; align-items: center; gap: var(--space-2); font-size: var(--text-sm);">
+              <span style="color: var(--color-accent-secondary);">›</span>
+              <span>About Us &amp; Editorial Standards</span>
+            </a>
+          </li>
+          <li>
+            <a href="/privacy/" style="color: var(--color-text-primary); text-decoration: none; display: inline-flex; align-items: center; gap: var(--space-2); font-size: var(--text-sm);">
+              <span style="color: var(--color-accent-secondary);">›</span>
+              <span>Privacy Policy &amp; Zero-Retention Guarantee</span>
+            </a>
+          </li>
+          <li>
+            <a href="/terms/" style="color: var(--color-text-primary); text-decoration: none; display: inline-flex; align-items: center; gap: var(--space-2); font-size: var(--text-sm);">
+              <span style="color: var(--color-accent-secondary);">›</span>
+              <span>Terms of Use &amp; Service Disclaimers</span>
+            </a>
+          </li>
+          <li>
+            <a href="/contact/" style="color: var(--color-text-primary); text-decoration: none; display: inline-flex; align-items: center; gap: var(--space-2); font-size: var(--text-sm);">
+              <span style="color: var(--color-accent-secondary);">›</span>
+              <span>Contact Support &amp; Technical Feedback</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</BaseLayout>

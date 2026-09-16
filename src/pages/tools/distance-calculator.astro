@@ -1,0 +1,78 @@
+---
+import ToolLayout from '../../layouts/ToolLayout.astro';
+---
+<ToolLayout toolId="distance-calculator" title="Distance Calculator — Distance Between Two Points | MyLocationLab" description="Calculate the exact distance between two GPS coordinates or locations. Uses the Haversine formula for accurate results." h1="Distance Calculator" subtitle="Calculate the distance between any two points on Earth using GPS coordinates or place names.">
+  <div class="tool-interface">
+    <h3 style="font-size: var(--text-base); margin-bottom: var(--space-4);">Point A</h3>
+    <div class="grid grid-2" style="margin-bottom: var(--space-4);">
+      <div><label class="label">Latitude</label><input type="number" step="any" class="input" id="dc-lat1" placeholder="e.g. 28.6139" /></div>
+      <div><label class="label">Longitude</label><input type="number" step="any" class="input" id="dc-lng1" placeholder="e.g. 77.2090" /></div>
+    </div>
+    <button class="btn btn-ghost btn-sm" id="dc-gps1" type="button" style="margin-bottom: var(--space-6);">📍 Use My Location for Point A</button>
+    <h3 style="font-size: var(--text-base); margin-bottom: var(--space-4);">Point B</h3>
+    <div class="grid grid-2" style="margin-bottom: var(--space-4);">
+      <div><label class="label">Latitude</label><input type="number" step="any" class="input" id="dc-lat2" placeholder="e.g. 40.7128" /></div>
+      <div><label class="label">Longitude</label><input type="number" step="any" class="input" id="dc-lng2" placeholder="e.g. -74.0060" /></div>
+    </div>
+    <button class="btn btn-primary" id="dc-calc" type="button">Calculate Distance</button>
+    <div class="tool-result" id="dc-result" style="display: none; margin-top: var(--space-6);">
+      <div class="tool-result-row"><span class="tool-result-label">Distance (km)</span><span class="tool-result-value" id="dc-km" style="color: var(--color-accent-primary);">—</span></div>
+      <div class="tool-result-row"><span class="tool-result-label">Distance (miles)</span><span class="tool-result-value" id="dc-mi">—</span></div>
+      <div class="tool-result-row"><span class="tool-result-label">Distance (meters)</span><span class="tool-result-value" id="dc-m">—</span></div>
+      <div class="tool-result-row"><span class="tool-result-label">Distance (nautical miles)</span><span class="tool-result-value" id="dc-nm">—</span></div>
+      <div class="tool-result-row"><span class="tool-result-label">Bearing</span><span class="tool-result-value" id="dc-bearing">—</span></div>
+    </div>
+  </div>
+  <div class="map-container" id="dc-map" style="margin-top: var(--space-6); display: none;"></div>
+  <div class="prose" style="margin-top: var(--space-12);">
+    <h2>How Distance Is Calculated</h2>
+    <p>This tool uses the <strong>Haversine formula</strong> to calculate the great-circle distance between two points on a sphere. This gives the shortest distance between two points on the Earth's surface, following the curvature of the Earth.</p>
+    <p>The Haversine formula accounts for the spherical shape of Earth, making it significantly more accurate than simple Euclidean distance for long distances.</p>
+  </div>
+  <script>
+    import GeoLocation from '../../scripts/geolocation.js';
+    import CoordUtils from '../../scripts/coordinates.js';
+
+    document.getElementById('dc-gps1')?.addEventListener('click', async () => {
+      try {
+        const pos = await GeoLocation.getCurrentPosition();
+        document.getElementById('dc-lat1').value = pos.coords.latitude.toFixed(6);
+        document.getElementById('dc-lng1').value = pos.coords.longitude.toFixed(6);
+      } catch (e) { alert(GeoLocation.getErrorMessage(e)); }
+    });
+
+    document.getElementById('dc-calc')?.addEventListener('click', () => {
+      const lat1 = parseFloat(document.getElementById('dc-lat1').value);
+      const lng1 = parseFloat(document.getElementById('dc-lng1').value);
+      const lat2 = parseFloat(document.getElementById('dc-lat2').value);
+      const lng2 = parseFloat(document.getElementById('dc-lng2').value);
+      if ([lat1,lng1,lat2,lng2].some(isNaN)) { alert('Please enter valid coordinates for both points.'); return; }
+
+      const km = CoordUtils.calculateDistance(lat1, lng1, lat2, lng2, 'km');
+      const mi = CoordUtils.calculateDistance(lat1, lng1, lat2, lng2, 'mi');
+      const bearing = CoordUtils.calculateBearing(lat1, lng1, lat2, lng2);
+
+      document.getElementById('dc-km').textContent = km.toFixed(2) + ' km';
+      document.getElementById('dc-mi').textContent = mi.toFixed(2) + ' mi';
+      document.getElementById('dc-m').textContent = Math.round(km * 1000).toLocaleString() + ' m';
+      document.getElementById('dc-nm').textContent = (km / 1.852).toFixed(2) + ' nmi';
+      document.getElementById('dc-bearing').textContent = `${bearing.toFixed(1)}° (${CoordUtils.bearingToCompass(bearing)})`;
+      document.getElementById('dc-result').style.display = 'block';
+
+      // Show map with line
+      const mapEl = document.getElementById('dc-map');
+      mapEl.style.display = 'block';
+      const waitL = () => {
+        if (typeof L !== 'undefined') {
+          if (window._dcMap) window._dcMap.remove();
+          window._dcMap = L.map('dc-map').fitBounds([[lat1,lng1],[lat2,lng2]], { padding: [50,50] });
+          L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '&copy; OpenStreetMap', maxZoom: 19 }).addTo(window._dcMap);
+          L.marker([lat1, lng1]).addTo(window._dcMap).bindPopup('Point A');
+          L.marker([lat2, lng2]).addTo(window._dcMap).bindPopup('Point B');
+          L.polyline([[lat1,lng1],[lat2,lng2]], { color: '#00d4ff', weight: 2, dashArray: '8 4' }).addTo(window._dcMap);
+        } else setTimeout(waitL, 100);
+      };
+      waitL();
+    });
+  </script>
+</ToolLayout>

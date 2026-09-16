@@ -1,0 +1,462 @@
+---
+/**
+ * Homepage — "Where Am I?" money page
+ * Immediately answers the user's location query with GPS data, map, and quick tools.
+ * Target keywords: my location, where am i, what is my location, current location
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ToolCard from '../components/ToolCard.astro';
+import FAQAccordion from '../components/FAQAccordion.astro';
+import { getFeaturedTools } from '../data/tools.js';
+
+const tools = getFeaturedTools();
+
+const faqItems = [
+  {
+    question: 'What is my current location?',
+    answer: 'Click the <strong>"Get My Location"</strong> button above to instantly find your current location using your device\'s GPS. We\'ll show you your exact latitude, longitude, address, city, state, country, and accuracy radius — all on an interactive map.',
+  },
+  {
+    question: 'How does this site find my location?',
+    answer: 'We use the <strong>HTML5 Geolocation API</strong> built into your browser. When you grant permission, your device uses GPS, Wi-Fi, cell tower triangulation, and IP address data to determine your precise location. All processing happens on your device — we never store or transmit your location data.',
+  },
+  {
+    question: 'Is my location data private?',
+    answer: 'Yes, absolutely. MyLocationLab processes your location <strong>entirely in your browser</strong>. Your coordinates are never sent to our servers or stored anywhere. We use free, open-source mapping and geocoding services to display your location.',
+  },
+  {
+    question: 'Why is my location wrong?',
+    answer: 'Location accuracy depends on your device and environment. GPS is most accurate outdoors (3-5 meters). Indoors, your browser may fall back to Wi-Fi or IP-based positioning, which can be less precise. Try moving to an open area or enabling GPS on your device. Check our <a href="/guides/wrong-location/">guide to fixing wrong location</a> for more help.',
+  },
+  {
+    question: 'Can I find my location without GPS?',
+    answer: 'Yes. Even without GPS, your browser can estimate your location using Wi-Fi positioning, cell tower triangulation, or your IP address. The accuracy varies — Wi-Fi positioning is typically accurate within 15-40 meters, while IP-based location may only be accurate to the city level. Visit our <a href="/my-location/ip/">IP Location page</a> to see your IP-based location.',
+  },
+];
+
+const homeFaqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqItems.map(item => ({
+    '@type': 'Question',
+    name: item.question,
+    acceptedAnswer: {
+      '@type': 'Answer',
+      text: item.answer.replace(/<[^>]*>?/gm, ''),
+    },
+  })),
+};
+---
+
+<BaseLayout
+  title="Where Am I? — Find My Current Location Instantly | MyLocationLab"
+  description="Instantly find your current location with GPS coordinates, address, city, state, country, and interactive map. Free location finder — 100% private, no app needed."
+  jsonLd={[homeFaqSchema]}
+>
+  <!-- Hero Section -->
+  <section class="hero" id="find-location">
+    <div class="container">
+      <div class="hero-badge animate-fade-in">
+        <span>📍</span>
+        <span>Free GPS Location Finder</span>
+      </div>
+
+      <h1 class="animate-fade-in delay-1">
+        Where Am I <span class="text-gradient">Right Now?</span>
+      </h1>
+
+      <p class="hero-subtitle animate-fade-in delay-2">
+        Instantly find your current GPS location, coordinates, address, and see it on an interactive map. No app needed.
+      </p>
+
+      <div class="hero-actions animate-fade-in delay-3">
+        <button class="btn btn-primary btn-lg" id="get-location-btn" type="button">
+          📍 Get My Location
+        </button>
+        <a href="/tools/" class="btn btn-secondary btn-lg">
+          🛠️ Browse Tools
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Location Display -->
+  <section class="section-sm" id="location-result">
+    <div class="container">
+      <!-- Permission Banner (shown when needed) -->
+      <div class="permission-banner" id="permission-banner" style="display: none;">
+        <span class="permission-banner-icon">⚠️</span>
+        <p class="permission-banner-text" id="permission-text">
+          Please allow location access when your browser asks for permission.
+        </p>
+      </div>
+
+      <!-- Loading State -->
+      <div id="location-loading" style="display: none;">
+        <div class="location-display" style="text-align: center; padding: var(--space-12);">
+          <div class="spinner" style="margin: 0 auto var(--space-4);"></div>
+          <p style="color: var(--color-text-secondary); margin: 0;">Detecting your location...</p>
+        </div>
+      </div>
+
+      <!-- Location Card -->
+      <div class="location-display" id="location-card" style="display: none;">
+        <div class="location-display-header">
+          <div class="location-display-dot" id="status-dot"></div>
+          <span class="location-display-title">Your Current Location</span>
+          <span class="badge badge-success" id="accuracy-badge">—</span>
+        </div>
+
+        <div class="location-data-grid" id="location-data">
+          <div class="location-data-item">
+            <span class="location-data-label">Latitude</span>
+            <span class="location-data-value highlight" id="data-lat">—</span>
+          </div>
+          <div class="location-data-item">
+            <span class="location-data-label">Longitude</span>
+            <span class="location-data-value highlight" id="data-lng">—</span>
+          </div>
+          <div class="location-data-item">
+            <span class="location-data-label">Address</span>
+            <span class="location-data-value" id="data-address" style="font-family: var(--font-sans); font-size: var(--text-base);">—</span>
+          </div>
+          <div class="location-data-item">
+            <span class="location-data-label">City</span>
+            <span class="location-data-value" id="data-city" style="font-family: var(--font-sans);">—</span>
+          </div>
+          <div class="location-data-item">
+            <span class="location-data-label">State / Region</span>
+            <span class="location-data-value" id="data-state" style="font-family: var(--font-sans);">—</span>
+          </div>
+          <div class="location-data-item">
+            <span class="location-data-label">Country</span>
+            <span class="location-data-value" id="data-country" style="font-family: var(--font-sans);">—</span>
+          </div>
+          <div class="location-data-item">
+            <span class="location-data-label">Accuracy</span>
+            <span class="location-data-value" id="data-accuracy">—</span>
+          </div>
+          <div class="location-data-item">
+            <span class="location-data-label">Altitude</span>
+            <span class="location-data-value" id="data-altitude">—</span>
+          </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="action-buttons" style="margin-top: var(--space-6);">
+          <button class="btn btn-secondary btn-sm" id="copy-coords-btn" type="button">📋 Copy Coordinates</button>
+          <button class="btn btn-secondary btn-sm" id="share-btn" type="button">🔗 Share Location</button>
+          <a class="btn btn-secondary btn-sm" id="open-maps-btn" href="#" target="_blank" rel="noopener noreferrer">🗺️ Open in Maps</a>
+          <button class="btn btn-ghost btn-sm" id="refresh-btn" type="button">🔄 Refresh</button>
+        </div>
+      </div>
+
+      <!-- Map -->
+      <div class="map-container" id="map" style="margin-top: var(--space-6); display: none;">
+      </div>
+    </div>
+  </section>
+
+  <!-- My Location Details Links -->
+  <section class="section" id="location-details">
+    <div class="container">
+      <div class="section-header">
+        <h2>Explore Your <span class="text-gradient">Location Details</span></h2>
+        <p>Dive deeper into specific aspects of your current location.</p>
+      </div>
+
+      <div class="grid grid-auto-sm">
+        <a href="/my-location/gps/" class="tool-card">
+          <div class="tool-card-icon">🛰️</div>
+          <h3 class="tool-card-title">My GPS Coordinates</h3>
+          <p class="tool-card-desc">View your precise GPS position data.</p>
+        </a>
+        <a href="/my-location/coordinates/" class="tool-card">
+          <div class="tool-card-icon">🌐</div>
+          <h3 class="tool-card-title">My Coordinates</h3>
+          <p class="tool-card-desc">Get coordinates in multiple formats.</p>
+        </a>
+        <a href="/my-location/latitude-longitude/" class="tool-card">
+          <div class="tool-card-icon">📐</div>
+          <h3 class="tool-card-title">My Latitude & Longitude</h3>
+          <p class="tool-card-desc">Exact lat/lng with map position.</p>
+        </a>
+        <a href="/my-location/address/" class="tool-card">
+          <div class="tool-card-icon">🏠</div>
+          <h3 class="tool-card-title">My Address</h3>
+          <p class="tool-card-desc">Find your full street address.</p>
+        </a>
+        <a href="/my-location/city/" class="tool-card">
+          <div class="tool-card-icon">🏙️</div>
+          <h3 class="tool-card-title">My City</h3>
+          <p class="tool-card-desc">What city are you currently in?</p>
+        </a>
+        <a href="/my-location/state/" class="tool-card">
+          <div class="tool-card-icon">🗺️</div>
+          <h3 class="tool-card-title">My State</h3>
+          <p class="tool-card-desc">Find your current state or region.</p>
+        </a>
+        <a href="/my-location/country/" class="tool-card">
+          <div class="tool-card-icon">🌍</div>
+          <h3 class="tool-card-title">My Country</h3>
+          <p class="tool-card-desc">What country are you in right now?</p>
+        </a>
+        <a href="/my-location/ip/" class="tool-card">
+          <div class="tool-card-icon">💻</div>
+          <h3 class="tool-card-title">My IP Location</h3>
+          <p class="tool-card-desc">Location based on your IP address.</p>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Quick Tools Grid -->
+  <section class="section" id="tools">
+    <div class="container">
+      <div class="section-header">
+        <h2>Location <span class="text-gradient">Tools</span></h2>
+        <p>Free location utilities to find, convert, measure, and share coordinates.</p>
+      </div>
+
+      <div class="grid grid-auto">
+        {tools.map(tool => (
+          <ToolCard
+            title={tool.title}
+            description={tool.description}
+            icon={tool.icon}
+            url={tool.url}
+          />
+        ))}
+      </div>
+
+      <div class="text-center" style="margin-top: var(--space-8);">
+        <a href="/tools/" class="btn btn-secondary">View All Tools →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Popular Guides -->
+  <section class="section" id="guides">
+    <div class="container">
+      <div class="section-header">
+        <h2>Learn About <span class="text-gradient">Location</span></h2>
+        <p>Understand how GPS works, improve accuracy, and troubleshoot issues.</p>
+      </div>
+
+      <div class="grid grid-3">
+        <a href="/guides/how-gps-location-works/" class="tool-card">
+          <div class="tool-card-icon">📡</div>
+          <h3 class="tool-card-title">How GPS Works</h3>
+          <p class="tool-card-desc">Understand how satellites determine your location on Earth.</p>
+        </a>
+        <a href="/guides/improve-gps-accuracy/" class="tool-card">
+          <div class="tool-card-icon">🎯</div>
+          <h3 class="tool-card-title">Improve GPS Accuracy</h3>
+          <p class="tool-card-desc">Tips and techniques to get more precise location results.</p>
+        </a>
+        <a href="/guides/wrong-location/" class="tool-card">
+          <div class="tool-card-icon">🔧</div>
+          <h3 class="tool-card-title">Fix Wrong Location</h3>
+          <p class="tool-card-desc">Troubleshoot when your location shows incorrectly.</p>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- More Links -->
+  <section class="section-sm">
+    <div class="container">
+      <div class="grid grid-3">
+        <a href="/maps/" class="card" style="text-decoration: none;">
+          <h3 style="font-size: var(--text-xl); margin-bottom: var(--space-2);">🗺️ Interactive Location Map</h3>
+          <p style="margin: 0;">Full-screen interactive map with layers, radius circles, and pin coordinate inspect.</p>
+        </a>
+        <a href="/share-location/" class="card" style="text-decoration: none;">
+          <h3 style="font-size: var(--text-xl); margin-bottom: var(--space-2);">🔗 Share My Location</h3>
+          <p style="margin: 0;">Share your location via link, QR code, or messaging apps.</p>
+        </a>
+        <a href="/comparisons/gps-vs-ip-location/" class="card" style="text-decoration: none;">
+          <h3 style="font-size: var(--text-xl); margin-bottom: var(--space-2);">⚖️ GPS vs IP Location</h3>
+          <p style="margin: 0;">Understand the differences between GPS and IP-based location.</p>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ Section -->
+  <section class="section" id="faq">
+    <div class="container container-narrow">
+      <div class="section-header">
+        <h2>Frequently Asked <span class="text-gradient">Questions</span></h2>
+      </div>
+
+      <FAQAccordion items={faqItems} />
+    </div>
+  </section>
+
+  <!-- Homepage Location Script -->
+  <script>
+    import GeoLocation from '../scripts/geolocation.js';
+    import Geocoding from '../scripts/geocoding.js';
+    import Sharing from '../scripts/sharing.js';
+
+    const getBtn = document.getElementById('get-location-btn');
+    const loading = document.getElementById('location-loading');
+    const card = document.getElementById('location-card');
+    const mapEl = document.getElementById('map');
+    const permissionBanner = document.getElementById('permission-banner');
+    const permissionText = document.getElementById('permission-text');
+
+    let currentLat = null;
+    let currentLng = null;
+
+    async function findLocation() {
+      loading.style.display = 'block';
+      card.style.display = 'none';
+      permissionBanner.style.display = 'none';
+
+      try {
+        const position = await GeoLocation.getCurrentPosition();
+        const data = GeoLocation.formatPosition(position);
+        currentLat = data.latitude;
+        currentLng = data.longitude;
+
+        // Update display
+        document.getElementById('data-lat').textContent = data.formattedLat;
+        document.getElementById('data-lng').textContent = data.formattedLng;
+        document.getElementById('data-accuracy').textContent = data.formattedAccuracy;
+        document.getElementById('data-altitude').textContent = data.altitude
+          ? `${Math.round(data.altitude)} m`
+          : 'Not available';
+        document.getElementById('accuracy-badge').textContent = `± ${data.formattedAccuracy}`;
+
+        // Open in Maps link
+        document.getElementById('open-maps-btn').href = Sharing.getGoogleMapsUrl(currentLat, currentLng);
+
+        // Reverse geocode
+        try {
+          const address = await Geocoding.reverseGeocode(currentLat, currentLng);
+          document.getElementById('data-address').textContent = address.displayName || '—';
+          document.getElementById('data-city').textContent = address.city || '—';
+          document.getElementById('data-state').textContent = address.state || '—';
+          document.getElementById('data-country').textContent = address.country || '—';
+        } catch {
+          document.getElementById('data-address').textContent = 'Geocoding unavailable';
+        }
+
+        loading.style.display = 'none';
+        card.style.display = 'block';
+        mapEl.style.display = 'block';
+
+        // Initialize map
+        if (typeof L !== 'undefined') {
+          initMap(currentLat, currentLng, data.accuracy);
+        } else {
+          // Wait for Leaflet
+          const checkLeaflet = setInterval(() => {
+            if (typeof L !== 'undefined') {
+              clearInterval(checkLeaflet);
+              initMap(currentLat, currentLng, data.accuracy);
+            }
+          }, 100);
+        }
+
+      } catch (error) {
+        loading.style.display = 'none';
+        permissionBanner.style.display = 'flex';
+        permissionText.textContent = GeoLocation.getErrorMessage(error);
+
+        // Try IP fallback
+        try {
+          const ipModule = await import('../scripts/ip-location.js');
+          const ipData = await ipModule.default.getLocation();
+          currentLat = ipData.lat;
+          currentLng = ipData.lng;
+
+          document.getElementById('data-lat').textContent = ipData.lat.toFixed(6);
+          document.getElementById('data-lng').textContent = ipData.lng.toFixed(6);
+          document.getElementById('data-city').textContent = ipData.city || '—';
+          document.getElementById('data-state').textContent = ipData.region || '—';
+          document.getElementById('data-country').textContent = ipData.country || '—';
+          document.getElementById('data-address').textContent = `${ipData.city}, ${ipData.region}, ${ipData.country}`;
+          document.getElementById('data-accuracy').textContent = 'City-level (IP)';
+          document.getElementById('data-altitude').textContent = 'Not available';
+          document.getElementById('accuracy-badge').textContent = 'IP-based';
+
+          document.getElementById('open-maps-btn').href = Sharing.getGoogleMapsUrl(currentLat, currentLng);
+          document.getElementById('status-dot').style.background = 'var(--color-accent-warning)';
+
+          card.style.display = 'block';
+          mapEl.style.display = 'block';
+
+          if (typeof L !== 'undefined') {
+            initMap(currentLat, currentLng, 5000);
+          }
+
+          permissionText.textContent = 'GPS unavailable. Showing approximate location from your IP address.';
+        } catch {
+          permissionText.textContent += ' IP fallback also failed.';
+        }
+      }
+    }
+
+    let mapInstance = null;
+
+    function initMap(lat, lng, accuracy) {
+      if (mapInstance) {
+        mapInstance.remove();
+      }
+
+      mapInstance = L.map('map', { scrollWheelZoom: true }).setView([lat, lng], 14);
+
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+        maxZoom: 19,
+      }).addTo(mapInstance);
+
+      // Custom marker
+      const icon = L.divIcon({
+        html: '<div style="width:20px;height:20px;background:#00d4ff;border:3px solid white;border-radius:50%;box-shadow:0 0 12px rgba(0,212,255,0.5);"></div>',
+        className: 'custom-loc-marker',
+        iconSize: [20, 20],
+        iconAnchor: [10, 10],
+      });
+
+      L.marker([lat, lng], { icon }).addTo(mapInstance);
+
+      if (accuracy > 0) {
+        L.circle([lat, lng], {
+          radius: accuracy,
+          color: '#00d4ff',
+          fillColor: '#00d4ff',
+          fillOpacity: 0.08,
+          weight: 1,
+          opacity: 0.3,
+        }).addTo(mapInstance);
+      }
+    }
+
+    // Button handlers
+    if (getBtn) {
+      getBtn.addEventListener('click', findLocation);
+    }
+
+    document.getElementById('copy-coords-btn')?.addEventListener('click', function() {
+      if (currentLat !== null) {
+        Sharing.copyToClipboard(`${currentLat}, ${currentLng}`, this);
+      }
+    });
+
+    document.getElementById('share-btn')?.addEventListener('click', () => {
+      if (currentLat !== null) {
+        Sharing.shareNative({
+          title: 'My Location',
+          text: `My location: ${currentLat}, ${currentLng}`,
+          url: Sharing.getGoogleMapsUrl(currentLat, currentLng),
+        });
+      }
+    });
+
+    document.getElementById('refresh-btn')?.addEventListener('click', findLocation);
+  </script>
+</BaseLayout>

@@ -1,0 +1,25 @@
+{
+  "name": "mylocationlab",
+  "type": "module",
+  "version": "0.0.1",
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "postbuild": "node scripts/zip-dist.mjs",
+    "zip": "node scripts/zip-dist.mjs",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@astrojs/sitemap": "^3.7.4",
+    "astro": "^7.3.2",
+    "leaflet": "^1.9.4",
+    "qrcode": "^1.5.4"
+  },
+  "allowScripts": {
+    "esbuild": true
+  }
+}

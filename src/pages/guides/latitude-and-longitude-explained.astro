@@ -1,0 +1,146 @@
+---
+import ContentLayout from '../../layouts/ContentLayout.astro';
+---
+
+<ContentLayout
+  title="Latitude and Longitude Explained: Complete Geodesy Guide | MyLocationLab"
+  description="Master the geographic coordinate system. Learn how parallels of latitude and meridians of longitude define positions on Earth, with precision decimal tables."
+  h1="Latitude and Longitude Explained: Complete Geodesy Guide"
+  subtitle="A foundational exploration of geographic coordinate reference systems, degrees, minutes, seconds, and decimal precision."
+  section="guides"
+  sectionLabel="Educational Guides"
+  readTime="6 min"
+  publishDate="2026-09-15"
+  modifiedDate="2026-09-15"
+>
+  <p>
+    Every spot on Earth—from the summit of Mount Everest to your home doorstep—can be pinpointed by just two numbers: <strong>latitude</strong> and <strong>longitude</strong>.
+  </p>
+  <p>
+    Together, these two angular measurements form the backbone of modern geodesy, satellite navigation, cartography, and digital web mapping.
+  </p>
+
+  <h2>Understanding Latitude (The Parallels)</h2>
+  <p>
+    <strong>Latitude ($\phi$)</strong> measures how far north or south a point is located relative to the Earth's Equator. Latitude lines run horizontally around the globe and are called <em>parallels</em> because they remain equidistant from one another.
+  </p>
+  <ul>
+    <li><strong>The Equator (0°):</strong> Divides the Earth into the Northern and Southern Hemispheres.</li>
+    <li><strong>North Pole (+90° N):</strong> The northernmost axis point.</li>
+    <li><strong>South Pole (-90° S):</strong> The southernmost axis point.</li>
+    <li><strong>Tropic of Cancer (23.4365° N):</strong> The northernmost latitude where the sun can appear directly overhead.</li>
+    <li><strong>Tropic of Capricorn (23.4365° S):</strong> The southernmost latitude where the sun can appear directly overhead.</li>
+  </ul>
+
+  <h2>Understanding Longitude (The Meridians)</h2>
+  <p>
+    <strong>Longitude</strong> measures how far east or west a point is located relative to the <strong>Prime Meridian</strong>. Longitude lines run vertically from pole to pole and are called <em>meridians</em>.
+  </p>
+  <ul>
+    <li>
+      <strong>The Prime Meridian (0°):</strong> By international treaty (the 1884 International Meridian Conference), the reference meridian passes through the Royal Observatory in Greenwich, London.
+    </li>
+    <li>
+      <strong>Eastern Hemisphere (0° to +180° E):</strong> Extends eastward from Greenwich across Europe, Asia, Africa, and Australia.
+    </li>
+    <li>
+      <strong>Western Hemisphere (0° to -180° W):</strong> Extends westward across the Atlantic Ocean and the Americas.
+    </li>
+    <li>
+      <strong>The 180th Meridian / Antimeridian:</strong> Located on the opposite side of Earth, serving as the basis for the International Date Line.
+    </li>
+  </ul>
+
+  <h2>The Coordinate Formats: Decimal Degrees vs. DMS</h2>
+  <p>
+    Geographic coordinates are commonly recorded in two formats:
+  </p>
+  <h3>1. Degrees, Minutes, Seconds (DMS)</h3>
+  <p>
+    The traditional sexagesimal navigation system divides each degree into 60 minutes (') and each minute into 60 seconds ("):
+  </p>
+  <blockquote>
+    Example: 40° 42' 46.1" N, 74° 00' 21.6" W (The Empire State Building)
+  </blockquote>
+
+  <h3>2. Decimal Degrees (DD)</h3>
+  <p>
+    Modern computers, GPS units, and web mapping APIs (like Leaflet and Google Maps) use decimal fractions. Northern and Eastern coordinates are positive, while Southern and Western coordinates are negative:
+  </p>
+  <blockquote>
+    Example: 40.7128°, -74.0060°
+  </blockquote>
+  <p>
+    You can convert between these two standards instantly with our <a href="/tools/coordinate-converter/">Coordinate Converter</a>.
+  </p>
+
+  <h2>How Much Ground Does a Decimal Place Represent?</h2>
+  <p>
+    A frequent question in geospatial development is: <em>"How many decimal places of latitude and longitude do I actually need?"</em>
+  </p>
+  <table>
+    <thead>
+      <tr>
+        <th>Decimal Places</th>
+        <th>Degree Fraction</th>
+        <th>Ground Precision (at Equator)</th>
+        <th>Identifiable Object / Scale</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>0</strong></td>
+        <td>1.0°</td>
+        <td>~ 111 km (69 miles)</td>
+        <td>Country or large state</td>
+      </tr>
+      <tr>
+        <td><strong>1</strong></td>
+        <td>0.1°</td>
+        <td>~ 11.1 km (6.9 miles)</td>
+        <td>Large city or metropolitan district</td>
+      </tr>
+      <tr>
+        <td><strong>2</strong></td>
+        <td>0.01°</td>
+        <td>~ 1.11 km (0.69 miles)</td>
+        <td>Town, village, or large park</td>
+      </tr>
+      <tr>
+        <td><strong>3</strong></td>
+        <td>0.001°</td>
+        <td>~ 111 meters (364 ft)</td>
+        <td>Agricultural field or large parcel</td>
+      </tr>
+      <tr>
+        <td><strong>4</strong></td>
+        <td>0.0001°</td>
+        <td>~ 11.1 meters (36 ft)</td>
+        <td>Individual house, building parcel</td>
+      </tr>
+      <tr>
+        <td><strong>5</strong></td>
+        <td>0.00001°</td>
+        <td>~ 1.11 meters (3.6 ft)</td>
+        <td>Individual tree, doorway, lane-level GPS</td>
+      </tr>
+      <tr>
+        <td><strong>6</strong></td>
+        <td>0.000001°</td>
+        <td>~ 11.1 centimeters (4.4 in)</td>
+        <td>Survey-grade surveying marker</td>
+      </tr>
+    </tbody>
+  </table>
+  <blockquote>
+    <strong>Key Takeaway:</strong> For consumer web mapping and smartphone GPS, <strong>5 or 6 decimal places</strong> provide sub-meter accuracy. Adding 10 decimal places is unnecessary computational overhead.
+  </blockquote>
+
+  <h2>Interactive Coordinate Tools</h2>
+  <ul>
+    <li><a href="/tools/latitude-longitude/">Latitude & Longitude Map Picker</a></li>
+    <li><a href="/tools/coordinate-converter/">Coordinate Converter (DD, DMS, UTM)</a></li>
+    <li><a href="/tools/distance-calculator/">Great-Circle Distance Calculator</a></li>
+    <li><a href="/my-location/latitude-longitude/">Find My Latitude & Longitude</a></li>
+  </ul>
+</ContentLayout>

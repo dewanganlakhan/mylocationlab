@@ -1,0 +1,98 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import FAQAccordion from '../../components/FAQAccordion.astro';
+
+const breadcrumbs = [
+  { label: 'Home', href: '/' },
+  { label: 'Frequently Asked Questions' }
+];
+
+const generalFaqs = [
+  {
+    question: 'What is my current location and how do I find it?',
+    answer: 'You can find your current location immediately by visiting our <a href="/my-location/">Where Am I</a> homepage and clicking <strong>"Get My Location"</strong>. Your browser will access your device\'s GPS or Wi-Fi positioning hardware to display your exact latitude, longitude, street address, city, state, and country.'
+  },
+  {
+    question: 'How accurate is this website in determining my position?',
+    answer: 'Accuracy depends on your hardware and environment: On smartphones and mobile devices with GPS enabled outdoors, accuracy is typically within <strong>3 to 5 meters</strong> (10–16 feet). On laptops or desktop computers connected to Wi-Fi, accuracy is usually within <strong>15 to 40 meters</strong>. On wired desktop ethernet connections, accuracy falls back to regional IP geolocation (within 10 to 50 kilometers).'
+  },
+  {
+    question: 'Is my location data tracked, recorded, or stored on your servers?',
+    answer: '<strong>No. Never.</strong> All geolocation calculations, coordinate conversions, and map rendering are executed 100% locally inside your browser client using the standard W3C Geolocation API. We do not store, log, track, or sell your coordinates. Read our full <a href="/privacy/">Privacy Policy</a>.'
+  },
+  {
+    question: 'Why does my location display the wrong city or state?',
+    answer: 'If your location is off by 30–80 kilometers, you are likely on a desktop computer using your Internet Service Provider\'s IP address rather than GPS. Alternatively, if you are using an active VPN or recently moved a Wi-Fi router from another address, your network routing table may reflect the VPN or old residence. Read our comprehensive <a href="/guides/wrong-location/">Guide to Fixing Wrong Location</a>.'
+  },
+  {
+    question: 'What is the difference between GPS coordinates and IP location?',
+    answer: 'GPS uses real-time radio signals from satellites orbiting 20,200 km above Earth to calculate your exact physical position down to 3 meters. IP geolocation looks up your public internet address in a commercial routing database to estimate which city or region your ISP operates in. Learn more in our <a href="/comparisons/gps-vs-ip-location/">GPS vs. IP Location Comparison</a>.'
+  },
+  {
+    question: 'How can I convert GPS coordinates into a street address?',
+    answer: 'You can use our free <a href="/tools/reverse-geocoding/">Reverse Geocoder</a> or <a href="/tools/address-finder/">Address Finder</a> tool. Enter your latitude and longitude, and our system queries OpenStreetMap\'s global address index to return the closest street name, house number, postal code, and municipality.'
+  },
+  {
+    question: 'Can I find my elevation and altitude above sea level?',
+    answer: 'Yes! Our <a href="/tools/elevation-finder/">Elevation Finder</a> measures your altitude above mean sea level in meters and feet using satellite topographic models and device barometric sensors.'
+  },
+  {
+    question: 'How do I share my location with someone else safely?',
+    answer: 'Visit our <a href="/share-location/">Share Location Tool</a>. You can generate a private, one-click link or scannable <a href="/tools/location-qr-code/">Location QR Code</a> that opens your exact position in Google Maps, Apple Maps, or OpenStreetMap.'
+  },
+  {
+    question: 'What should I do if I accidentally clicked "Block" on the location prompt?',
+    answer: 'Click the padlock or settings icon in your browser\'s URL address bar, find <strong>Location</strong>, change the permission to <strong>Allow</strong>, and reload the webpage.'
+  }
+];
+
+// Google Rich Results FAQPage Schema
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: generalFaqs.map((faq) => ({
+    '@type': 'Question',
+    name: faq.question,
+    acceptedAnswer: {
+      '@type': 'Answer',
+      text: faq.answer.replace(/<[^>]*>?/gm, ''),
+    },
+  })),
+};
+---
+
+<BaseLayout
+  title="Frequently Asked Questions (FAQ) — Location & GPS | MyLocationLab"
+  description="Answers to the most common questions about finding your location, GPS accuracy, browser privacy, wrong city fixes, and coordinate conversions."
+  activeSection="faq"
+  jsonLd={[faqSchema]}
+>
+  <div class="container">
+    <Breadcrumbs items={breadcrumbs} />
+
+    <section class="page-header" style="text-align: center; margin-bottom: var(--space-10);">
+      <h1>Frequently Asked <span class="text-gradient">Questions</span></h1>
+      <p class="page-header-desc" style="max-width: 680px; margin: 0 auto;">
+        Everything you need to know about browser geolocation, satellite GPS accuracy, coordinate systems, and data privacy.
+      </p>
+    </section>
+
+    <div style="max-width: var(--max-width-narrow); margin: 0 auto var(--space-16);">
+      <FAQAccordion items={generalFaqs} />
+    </div>
+
+    <!-- Quick Navigation to Top Tools & Guides -->
+    <section class="card card-highlight" style="max-width: var(--max-width-narrow); margin: 0 auto var(--space-16); text-align: center; padding: var(--space-8);">
+      <h2 style="font-size: var(--text-2xl); margin-bottom: var(--space-3);">Still Have Questions?</h2>
+      <p style="color: var(--color-text-secondary); margin-bottom: var(--space-6);">
+        Explore our technical guides or contact our geospatial engineering team directly.
+      </p>
+      <div class="flex gap-4 justify-center flex-wrap">
+        <a href="/guides/" class="btn btn-primary">📚 Browse All Guides</a>
+        <a href="/glossary/" class="btn btn-secondary">📖 Geodesy Glossary</a>
+        <a href="/contact/" class="btn btn-ghost">✉️ Contact Support</a>
+      </div>
+    </section>
+  </div>
+</BaseLayout>

@@ -1,0 +1,65 @@
+---
+import ToolLayout from '../../layouts/ToolLayout.astro';
+---
+<ToolLayout toolId="coordinate-converter" title="Coordinate Converter — DD, DMS, UTM | MyLocationLab" description="Convert coordinates between Decimal Degrees, DMS, UTM, Geohash, and Plus Code formats instantly." h1="Coordinate Converter" subtitle="Convert between Decimal Degrees, DMS, UTM, Geohash, and Plus Code formats.">
+  <div class="tool-interface">
+    <label class="label">Enter Coordinates (any format)</label>
+    <div class="input-group" style="margin-bottom: var(--space-4);">
+      <input type="text" class="input" id="cc-input" placeholder="e.g. 28.6139, 77.2090 or 28°36'50&quot;N 77°12'32&quot;E" />
+      <button class="btn btn-primary" id="cc-btn" type="button">Convert</button>
+    </div>
+    <button class="btn btn-ghost btn-sm" id="cc-gps" type="button" style="margin-bottom: var(--space-4);">📍 Use My Location</button>
+    <div class="tool-result" id="cc-result" style="display: none;">
+      <div class="tool-result-row"><span class="tool-result-label">Decimal Degrees</span><span class="tool-result-value" id="cc-dd" style="color: var(--color-accent-primary);">—</span></div>
+      <div class="tool-result-row"><span class="tool-result-label">DMS (Lat)</span><span class="tool-result-value" id="cc-dms-lat">—</span></div>
+      <div class="tool-result-row"><span class="tool-result-label">DMS (Lng)</span><span class="tool-result-value" id="cc-dms-lng">—</span></div>
+      <div class="tool-result-row"><span class="tool-result-label">UTM</span><span class="tool-result-value" id="cc-utm">—</span></div>
+      <div class="tool-result-row"><span class="tool-result-label">Geohash</span><span class="tool-result-value" id="cc-geohash">—</span></div>
+      <div class="tool-result-row"><span class="tool-result-label">Plus Code</span><span class="tool-result-value" id="cc-pluscode">—</span></div>
+    </div>
+  </div>
+  <div class="prose" style="margin-top: var(--space-12);">
+    <h2>Supported Coordinate Formats</h2>
+    <ul>
+      <li><strong>Decimal Degrees (DD)</strong> — <code>28.613900, 77.209000</code> — Most common digital format</li>
+      <li><strong>Degrees Minutes Seconds (DMS)</strong> — <code>28°36'50.0"N 77°12'32.4"E</code> — Traditional notation</li>
+      <li><strong>UTM</strong> — <code>43R 693903 3168335</code> — Used in surveying and military</li>
+      <li><strong>Geohash</strong> — <code>ttncygjf8</code> — Compact alphanumeric encoding</li>
+      <li><strong>Plus Code</strong> — <code>7JVW52GR+2V</code> — Google's Open Location Code</li>
+    </ul>
+    <p>Learn more about the differences: <a href="/comparisons/decimal-degrees-vs-dms/">Decimal Degrees vs DMS</a></p>
+  </div>
+  <script>
+    import CoordUtils from '../../scripts/coordinates.js';
+    import GeoLocation from '../../scripts/geolocation.js';
+
+    function convert(lat, lng) {
+      document.getElementById('cc-dd').textContent = `${lat.toFixed(6)}, ${lng.toFixed(6)}`;
+      document.getElementById('cc-dms-lat').textContent = CoordUtils.formatDMS(lat, true);
+      document.getElementById('cc-dms-lng').textContent = CoordUtils.formatDMS(lng, false);
+      try { document.getElementById('cc-utm').textContent = CoordUtils.decimalToUTM(lat, lng).formatted; } catch { document.getElementById('cc-utm').textContent = 'N/A'; }
+      document.getElementById('cc-geohash').textContent = CoordUtils.encodeGeohash(lat, lng);
+      document.getElementById('cc-pluscode').textContent = CoordUtils.encodePlusCode(lat, lng);
+      document.getElementById('cc-result').style.display = 'block';
+    }
+
+    document.getElementById('cc-btn')?.addEventListener('click', () => {
+      const parsed = CoordUtils.parseCoordinates(document.getElementById('cc-input').value);
+      if (parsed && CoordUtils.isValidCoordinate(parsed.lat, parsed.lng)) {
+        convert(parsed.lat, parsed.lng);
+      } else { alert('Please enter valid coordinates.'); }
+    });
+
+    document.getElementById('cc-gps')?.addEventListener('click', async () => {
+      try {
+        const pos = await GeoLocation.getCurrentPosition();
+        document.getElementById('cc-input').value = `${pos.coords.latitude.toFixed(6)}, ${pos.coords.longitude.toFixed(6)}`;
+        convert(pos.coords.latitude, pos.coords.longitude);
+      } catch (e) { alert(GeoLocation.getErrorMessage(e)); }
+    });
+
+    document.getElementById('cc-input')?.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') document.getElementById('cc-btn')?.click();
+    });
+  </script>
+</ToolLayout>

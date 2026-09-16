@@ -1,0 +1,170 @@
+---
+import ToolLayout from '../../layouts/ToolLayout.astro';
+---
+
+<ToolLayout
+  toolId="location-qr-code"
+  title="Location QR Code Generator — Share GPS via QR | MyLocationLab"
+  description="Generate scannable QR codes for your current GPS coordinates, Google Maps, Apple Maps, or Geo URI. Free instant download in high-resolution."
+  h1="Location QR Code Generator"
+  subtitle="Create scannable QR codes that open your exact location in Google Maps, Apple Maps, or native navigation apps."
+>
+  <div class="tool-interface">
+    <div class="grid grid-2" style="gap: var(--space-8); align-items: start;">
+      <div>
+        <div style="margin-bottom: var(--space-4);">
+          <label style="display: block; font-size: var(--text-sm); font-weight: 600; margin-bottom: var(--space-2);">Location Source</label>
+          <div class="flex gap-2">
+            <button class="btn btn-primary btn-sm" id="qr-gps-btn" type="button">📍 Use My GPS</button>
+            <button class="btn btn-secondary btn-sm" id="qr-manual-btn" type="button">Manual Coordinates</button>
+          </div>
+        </div>
+
+        <div class="input-group" style="margin-bottom: var(--space-4);">
+          <input type="text" class="input" id="qr-lat" placeholder="Latitude (e.g. 40.7128)" value="40.7128" />
+          <input type="text" class="input" id="qr-lng" placeholder="Longitude (e.g. -74.0060)" value="-74.0060" />
+        </div>
+
+        <div style="margin-bottom: var(--space-4);">
+          <label style="display: block; font-size: var(--text-sm); font-weight: 600; margin-bottom: var(--space-2);">Target QR Link Type</label>
+          <select class="input" id="qr-type" style="cursor: pointer;">
+            <option value="google">Google Maps URL (Universal)</option>
+            <option value="apple">Apple Maps URL (iOS Optimized)</option>
+            <option value="geo">Native Geo URI (RFC 5870 - geo:lat,lng)</option>
+            <option value="osm">OpenStreetMap URL</option>
+          </select>
+        </div>
+
+        <button class="btn btn-primary" id="qr-generate-btn" type="button" style="width: 100%;">
+          ⚡ Generate Location QR Code
+        </button>
+      </div>
+
+      <!-- QR Code Preview Card -->
+      <div class="card card-flat" style="text-align: center; padding: var(--space-6);">
+        <div id="qr-container" style="background: white; padding: var(--space-4); border-radius: var(--radius-lg); display: inline-block; box-shadow: 0 4px 20px rgba(0,0,0,0.4); margin-bottom: var(--space-4);">
+          <img 
+            id="qr-image" 
+            src="https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=https://maps.google.com/?q=40.7128,-74.0060&format=png" 
+            alt="Location QR Code" 
+            width="220" 
+            height="220" 
+            style="display: block; width: 220px; height: 220px; aspect-ratio: 1/1;" 
+          />
+        </div>
+
+        <div style="font-size: var(--text-xs); color: var(--color-text-secondary); word-break: break-all; margin-bottom: var(--space-4);" id="qr-encoded-url">
+          https://maps.google.com/?q=40.7128,-74.0060
+        </div>
+
+        <div class="flex gap-2 justify-center flex-wrap">
+          <a class="btn btn-secondary btn-sm" id="qr-download-btn" href="https://api.qrserver.com/v1/create-qr-code/?size=500x500&data=https://maps.google.com/?q=40.7128,-74.0060&format=png" target="_blank" download="location-qr.png">
+            💾 Download PNG
+          </a>
+          <button class="btn btn-ghost btn-sm" id="qr-copy-url-btn" type="button">
+            📋 Copy Link
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="prose" style="margin-top: var(--space-12);">
+    <h2>How Location QR Codes Work</h2>
+    <p>
+      A Location QR code encodes geospatial coordinates into a two-dimensional matrix barcode. When scanned with any smartphone camera, the operating system decodes the embedded coordinate payload and prompts the user to open their preferred mapping application.
+    </p>
+
+    <h3>Choosing the Right Location QR Protocol</h3>
+    <ul>
+      <li><strong>Google Maps URL:</strong> Ideal for cross-platform sharing. Compatible with iOS, Android, and desktop browsers without requiring special protocol handlers.</li>
+      <li><strong>Apple Maps URL:</strong> Directly opens Apple Maps on iPhone, iPad, and macOS devices for native navigation.</li>
+      <li><strong>Geo URI (RFC 5870):</strong> The official IETF Internet standard format (<code>geo:latitude,longitude</code>). Triggers the system's default navigation application automatically.</li>
+      <li><strong>OpenStreetMap:</strong> Privacy-respecting, open-source cartography link.</li>
+    </ul>
+
+    <h2>Popular Use Cases for Location QR Codes</h2>
+    <ul>
+      <li><strong>Event Invitations & Wedding Cards:</strong> Direct guests to the exact parking entrance or reception hall coordinates.</li>
+      <li><strong>Real Estate & Property Signs:</strong> Allow prospective buyers to scan a sign and immediately view boundary lines on their phone.</li>
+      <li><strong>Emergency Checkpoints & Trailheads:</strong> Display fixed GPS coordinates for search and rescue or hiking orientation.</li>
+    </ul>
+
+    <h2>Related Tools & SILO Resources</h2>
+    <ul>
+      <li><a href="/share-location/">Instant Share Location Tool</a> — Generate a shareable location link with live preview.</li>
+      <li><a href="/tools/gps-coordinates/">GPS Coordinates Finder</a> — Get coordinates to encode.</li>
+      <li><a href="/tools/coordinate-converter/">Coordinate Converter</a> — Convert DMS to Decimal Degrees.</li>
+    </ul>
+  </div>
+
+  <script>
+    import GeoLocation from '../../scripts/geolocation.js';
+
+    const latInput = document.getElementById('qr-lat') as HTMLInputElement;
+    const lngInput = document.getElementById('qr-lng') as HTMLInputElement;
+    const typeSelect = document.getElementById('qr-type') as HTMLSelectElement;
+    const generateBtn = document.getElementById('qr-generate-btn');
+    const gpsBtn = document.getElementById('qr-gps-btn');
+    const qrImg = document.getElementById('qr-image') as HTMLImageElement;
+    const encodedUrlEl = document.getElementById('qr-encoded-url');
+    const downloadBtn = document.getElementById('qr-download-btn') as HTMLAnchorElement;
+    const copyUrlBtn = document.getElementById('qr-copy-url-btn');
+
+    function updateQR() {
+      const lat = parseFloat(latInput.value) || 0;
+      const lng = parseFloat(lngInput.value) || 0;
+      const type = typeSelect.value;
+
+      let targetUrl = '';
+      if (type === 'google') {
+        targetUrl = `https://maps.google.com/?q=${lat},${lng}`;
+      } else if (type === 'apple') {
+        targetUrl = `https://maps.apple.com/?ll=${lat},${lng}&q=Pin`;
+      } else if (type === 'geo') {
+        targetUrl = `geo:${lat},${lng}`;
+      } else {
+        targetUrl = `https://www.openstreetmap.org/?mlat=${lat}&mlon=${lng}#map=16/${lat}/${lng}`;
+      }
+
+      const qrSrc = `https://api.qrserver.com/v1/create-qr-code/?size=240x240&data=${encodeURIComponent(targetUrl)}&format=png`;
+      const dlSrc = `https://api.qrserver.com/v1/create-qr-code/?size=600x600&data=${encodeURIComponent(targetUrl)}&format=png`;
+
+      if (qrImg) qrImg.src = qrSrc;
+      if (encodedUrlEl) encodedUrlEl.textContent = targetUrl;
+      if (downloadBtn) {
+        downloadBtn.href = dlSrc;
+      }
+    }
+
+    if (generateBtn) generateBtn.addEventListener('click', updateQR);
+    if (typeSelect) typeSelect.addEventListener('change', updateQR);
+
+    if (gpsBtn) {
+      gpsBtn.addEventListener('click', async () => {
+        gpsBtn.textContent = 'Acquiring GPS...';
+        try {
+          const pos = await GeoLocation.getCurrentPosition({ enableHighAccuracy: true });
+          if (latInput) latInput.value = pos.latitude.toFixed(6);
+          if (lngInput) lngInput.value = pos.longitude.toFixed(6);
+          gpsBtn.textContent = '📍 Updated with GPS';
+          updateQR();
+          setTimeout(() => { gpsBtn.textContent = '📍 Use My GPS'; }, 2000);
+        } catch (err) {
+          alert('Could not acquire location: ' + err.message);
+          gpsBtn.textContent = '📍 Use My GPS';
+        }
+      });
+    }
+
+    if (copyUrlBtn) {
+      copyUrlBtn.addEventListener('click', () => {
+        const text = encodedUrlEl ? encodedUrlEl.textContent || '' : '';
+        navigator.clipboard.writeText(text).then(() => {
+          copyUrlBtn.textContent = '✅ Copied!';
+          setTimeout(() => { copyUrlBtn.textContent = '📋 Copy Link'; }, 2000);
+        });
+      });
+    }
+  </script>
+</ToolLayout>

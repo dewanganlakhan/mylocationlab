@@ -1,0 +1,45 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import LocationFinder from '../../components/LocationFinder.astro';
+import SiloNav from '../../components/SiloNav.astro';
+
+const breadcrumbs = [{ label: 'Home', href: '/' }, { label: 'My Location', href: '/my-location/' }, { label: 'My Coordinates' }];
+---
+
+<BaseLayout title="My Coordinates — Find Current Coordinates | MyLocationLab" description="Get your current coordinates instantly. Find your exact position in decimal degrees, DMS, UTM, and other formats." activeSection="my-location">
+  <div class="container">
+    <Breadcrumbs items={breadcrumbs} />
+    <SiloNav silo="my-location" title="My Location Silo" />
+    <section class="page-header">
+      <h1>My <span class="text-gradient">Coordinates</span></h1>
+      <p class="page-header-desc">Get your current position coordinates in multiple formats — decimal degrees, DMS, UTM, Geohash, and Plus Code.</p>
+    </section>
+    <LocationFinder emphasisField="lat" />
+    <section class="section">
+      <div class="prose" style="max-width: var(--max-width-narrow);">
+        <h2>What Are Geographic Coordinates?</h2>
+        <p>Geographic coordinates are numerical values that define a specific position on the Earth's surface. The two primary coordinates are <strong>latitude</strong> (how far north or south you are from the equator) and <strong>longitude</strong> (how far east or west you are from the Prime Meridian in Greenwich, England).</p>
+        <p>Together, these two numbers can pinpoint any location on Earth with remarkable precision. A coordinate pair like <code>28.6139, 77.2090</code> represents a unique point — in this case, near India Gate in New Delhi.</p>
+        <h2>Coordinate Systems</h2>
+        <p>While latitude and longitude are the most common system, there are several other coordinate systems used for different purposes:</p>
+        <ul>
+          <li><strong>Decimal Degrees (DD)</strong> — The standard digital format: <code>28.6139, 77.2090</code></li>
+          <li><strong>DMS</strong> — Degrees, Minutes, Seconds: <code>28°36'50"N 77°12'32"E</code></li>
+          <li><strong>UTM</strong> — Universal Transverse Mercator, used in mapping and military</li>
+          <li><strong>Geohash</strong> — An alphanumeric encoding of coordinates</li>
+          <li><strong>Plus Code</strong> — Google's Open Location Code system</li>
+        </ul>
+        <p>Use our <a href="/tools/coordinate-converter/">Coordinate Converter</a> to convert between all these formats instantly.</p>
+        <h3>Related Pages</h3>
+        <ul>
+          <li><a href="/my-location/gps/">My GPS Coordinates</a></li>
+          <li><a href="/my-location/latitude-longitude/">My Latitude & Longitude</a></li>
+          <li><a href="/tools/gps-coordinates/">GPS Coordinates Finder</a></li>
+          <li><a href="/guides/latitude-and-longitude-explained/">Guide: Latitude &amp; Longitude Explained</a></li>
+          <li><a href="/glossary/">Geodesy Glossary</a></li>
+        </ul>
+      </div>
+    </section>
+  </div>
+</BaseLayout>
