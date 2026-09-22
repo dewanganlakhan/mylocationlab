@@ -24,7 +24,7 @@ const {
 } = Astro.props;
 
 const siteName = 'MyLocationLab';
-const siteUrl = 'https://mylocationlab.netlify.app';
+const siteUrl = 'https://mylocationlab.com';
 
 // Format title
 const formattedTitle = title.includes('MyLocationLab')
@@ -32,7 +32,7 @@ const formattedTitle = title.includes('MyLocationLab')
   : (title.includes('MyLocation') ? title.replace('MyLocation', 'MyLocationLab') : `${title} — ${siteName}`);
 const fullTitle = formattedTitle;
 
-// Strict canonicalization: normalize path to https://mylocationlab.netlify.app with trailing slash
+// Strict canonicalization: normalize path to https://mylocationlab.com with trailing slash
 const rawPath = Astro.url.pathname;
 const normalizedPath = rawPath === '/' ? '/' : (rawPath.endsWith('/') ? rawPath : `${rawPath}/`);
 const canonical = customCanonical || `${siteUrl}${normalizedPath}`;

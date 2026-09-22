@@ -35,7 +35,7 @@ const {
   authorRole = 'Senior Geospatial Engineer',
 } = Astro.props;
 
-const siteUrl = 'https://mylocationlab.netlify.app';
+const siteUrl = 'https://mylocationlab.com';
 const rawPath = Astro.url.pathname;
 const normalizedPath = rawPath === '/' ? '/' : (rawPath.endsWith('/') ? rawPath : `${rawPath}/`);
 const pageCanonical = canonical || `${siteUrl}${normalizedPath}`;

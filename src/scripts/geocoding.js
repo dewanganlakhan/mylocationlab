@@ -19,7 +19,7 @@ const Geocoding = {
 
     const url = `${NOMINATIM_BASE}/reverse?format=jsonv2&lat=${lat}&lon=${lng}&addressdetails=1&zoom=18`;
     const res = await fetch(url, {
-      headers: { 'Accept-Language': 'en', 'User-Agent': 'MyLocationLab/1.0 (https://mylocationlab.netlify.app)' },
+      headers: { 'Accept-Language': 'en', 'User-Agent': 'MyLocationLab/1.0 (https://mylocationlab.com)' },
     });
     if (!res.ok) throw new Error('Geocoding request failed');
     const data = await res.json();
@@ -58,7 +58,7 @@ const Geocoding = {
 
     const url = `${NOMINATIM_BASE}/search?format=jsonv2&q=${encodeURIComponent(query)}&addressdetails=1&limit=5`;
     const res = await fetch(url, {
-      headers: { 'Accept-Language': 'en', 'User-Agent': 'MyLocationLab/1.0 (https://mylocationlab.netlify.app)' },
+      headers: { 'Accept-Language': 'en', 'User-Agent': 'MyLocationLab/1.0 (https://mylocationlab.com)' },
     });
     if (!res.ok) throw new Error('Geocoding request failed');
     const data = await res.json();

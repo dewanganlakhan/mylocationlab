@@ -4,7 +4,7 @@ import sitemap from '@astrojs/sitemap';
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://mylocationlab.netlify.app',
+  site: 'https://mylocationlab.com',
   output: 'static',
   integrations: [
     sitemap({

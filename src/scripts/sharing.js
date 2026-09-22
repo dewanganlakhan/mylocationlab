@@ -89,7 +89,7 @@ const Sharing = {
    * @returns {string}
    */
   getLocationUrl(lat, lng) {
-    return `https://mylocationlab.netlify.app/maps/coordinates/?lat=${lat}&lng=${lng}`;
+    return `https://mylocationlab.com/maps/coordinates/?lat=${lat}&lng=${lng}`;
   },
 
   /**

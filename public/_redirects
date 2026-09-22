@@ -1,0 +1,7 @@
+# ==========================================
+# 301 Permanent Redirects for Domain Migration
+# ==========================================
+
+# Netlify Host-to-Custom Domain 301 Redirect (Preserves full URL path & query parameters)
+https://mylocationlab.netlify.app/* https://mylocationlab.com/:splat 301!
+http://mylocationlab.netlify.app/*  https://mylocationlab.com/:splat 301!
