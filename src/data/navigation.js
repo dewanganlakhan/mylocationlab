@@ -50,6 +50,12 @@ export const guidesNav = [
   { label: 'Improve GPS Accuracy', href: '/guides/improve-gps-accuracy/' },
   { label: 'Fix Wrong Location', href: '/guides/wrong-location/' },
   { label: 'Lat & Long Explained', href: '/guides/latitude-and-longitude-explained/' },
+  { label: 'Share Location Safely', href: '/guides/how-to-share-location/' },
+  { label: 'IP Geolocation Accuracy', href: '/guides/ip-geolocation-accuracy/' },
+  { label: 'HTML5 Geolocation API', href: '/guides/browser-geolocation-api-guide/' },
+  { label: 'UTM Coordinates & Datums', href: '/guides/utm-coordinates-and-datums/' },
+  { label: 'GPS Privacy & Security', href: '/guides/gps-privacy-and-security/' },
+  { label: 'Mock Locations & Testing', href: '/guides/how-to-fake-or-mock-location/' },
 ];
 
 export const comparisonsNav = [
@@ -95,7 +101,12 @@ export const footerNav = {
     { label: 'How to Improve GPS Accuracy', href: '/guides/improve-gps-accuracy/', icon: '⚡' },
     { label: 'Fixing Wrong Location Issues', href: '/guides/wrong-location/', icon: '🔧' },
     { label: 'Latitude & Longitude Explained', href: '/guides/latitude-and-longitude-explained/', icon: '📐' },
-    { label: 'Interactive Fullscreen Maps', href: '/maps/', icon: '🗺️' },
+    { label: 'How to Share Location Safely', href: '/guides/how-to-share-location/', icon: '🔗' },
+    { label: 'IP Geolocation Accuracy Limits', href: '/guides/ip-geolocation-accuracy/', icon: '📡' },
+    { label: 'HTML5 Geolocation API Guide', href: '/guides/browser-geolocation-api-guide/', icon: '💻' },
+    { label: 'UTM Coordinates & Geodetic Datums', href: '/guides/utm-coordinates-and-datums/', icon: '🗺️' },
+    { label: 'GPS Privacy & Security Audit', href: '/guides/gps-privacy-and-security/', icon: '🔒' },
+    { label: 'Mock Locations & Testing', href: '/guides/how-to-fake-or-mock-location/', icon: '🧪' },
   ],
   'Comparisons & Reference': [
     { label: 'All Comparisons Hub', href: '/comparisons/', icon: '📊' },

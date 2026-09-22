@@ -1,106 +1,95 @@
 ---
 /**
- * Footer — Site footer with SILO navigation, brand, and legal links
+ * Footer — Stitch GeoPrecision System Architecture
+ * Brand, active GNSS indicator, 4-column structured SILO directory, and zero-log trust badge.
  */
-import { footerNav, footerCategoryIcons } from '../data/navigation.js';
-
 const year = new Date().getFullYear();
 ---
 
 <footer class="site-footer">
   <div class="container">
     <div class="footer-grid">
+      <!-- Brand & Telemetry Status -->
       <div class="footer-brand">
-        <a href="/" class="nav-logo footer-logo" style="margin-bottom: var(--space-4); display: inline-flex;" aria-label="MyLocationLab Home">
-          <span class="nav-logo-icon">
-            <svg
-              width="30"
-              height="30"
-              viewBox="0 0 64 64"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-              class="nav-logo-svg footer-logo-svg"
-              aria-hidden="true"
-            >
-              <defs>
-                <linearGradient id="footer-logo-g" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" stop-color="#00d4ff" />
-                  <stop offset="100%" stop-color="#3b82f6" />
-                </linearGradient>
-              </defs>
-              <circle class="nav-logo-pulse-circle" cx="32" cy="26" r="22" fill="url(#footer-logo-g)" opacity="0.2" />
-              <path
-                class="nav-logo-pin"
-                d="M32 4C21.5 4 13 12.5 13 23c0 14.25 19 33 19 33s19-18.75 19-33C51 12.5 42.5 4 32 4zm0 28a9 9 0 110-18 9 9 0 010 18z"
-                fill="url(#footer-logo-g)"
-              />
-              <circle class="nav-logo-core" cx="32" cy="23" r="5" fill="#ffffff" />
+        <a href="/" class="footer-logo" aria-label="MyLocationLab Home">
+          <span class="footer-logo-icon">
+            <svg width="28" height="28" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect width="32" height="32" rx="9" fill="#2563EB"/>
+              <circle cx="16" cy="16" r="8" stroke="#93C5FD" stroke-width="2"/>
+              <circle cx="16" cy="16" r="4" stroke="white" stroke-width="2"/>
+              <circle cx="16" cy="16" r="1.5" fill="white"/>
+              <line x1="16" y1="4.5" x2="16" y2="7.5" stroke="#93C5FD" stroke-width="1.5" stroke-linecap="round"/>
+              <line x1="16" y1="24.5" x2="16" y2="27.5" stroke="#93C5FD" stroke-width="1.5" stroke-linecap="round"/>
+              <line x1="4.5" y1="16" x2="7.5" y2="16" stroke="#93C5FD" stroke-width="1.5" stroke-linecap="round"/>
+              <line x1="24.5" y1="16" x2="27.5" y2="16" stroke="#93C5FD" stroke-width="1.5" stroke-linecap="round"/>
             </svg>
           </span>
-          <span class="nav-logo-text">MyLocationLab</span>
+          <span class="footer-logo-text">MyLocationLab</span>
         </a>
         <p class="footer-brand-desc">
-          The fastest way to find, verify, convert, and share your location.
-          Precision geolocation tools powered by HTML5 GPS, OpenStreetMap, and open geodesy engines.
+          Authoritative telemetry, datum transformation, and client-side browser positioning diagnostics.
         </p>
-        <div class="footer-trust-badge">
-          <span class="footer-trust-dot"></span>
-          <span class="footer-trust-text">Zero-Data Retention &bull; 100% In-Browser</span>
+        <div class="footer-telemetry-status">
+          <span class="pulse-dot-emerald"></span>
+          <span class="footer-status-label">GNSS CONSTELLATION ACTIVE</span>
         </div>
       </div>
 
-      {Object.entries(footerNav).map(([category, links]) => {
-        const catIcon = footerCategoryIcons[category] || '📍';
-        return (
-          <div class="footer-column">
-            <h4 class="footer-col-header">
-              <span class="footer-col-icon">{catIcon}</span>
-              <span class="footer-col-text">{category}</span>
-            </h4>
-            <ul class="footer-links">
-              {links.map(link => (
-                <li>
-                  <a href={link.href} class="footer-link-item">
-                    <span class="footer-item-icon">{link.icon}</span>
-                    <span class="footer-item-text">{link.label}</span>
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
-        );
-      })}
+      <!-- Column 1: My Location -->
+      <div class="footer-column">
+        <h4 class="footer-col-header">MY LOCATION</h4>
+        <ul class="footer-links">
+          <li><a href="/my-location/gps/" class="footer-link-item">Instant GPS Coordinates</a></li>
+          <li><a href="/guides/improve-gps-accuracy/" class="footer-link-item">Precision & Accuracy Radius</a></li>
+          <li><a href="/tools/elevation-finder/" class="footer-link-item">Barometric & Elevation Scan</a></li>
+          <li><a href="/tools/coordinate-converter/" class="footer-link-item">Export NMEA & GeoJSON</a></li>
+        </ul>
+      </div>
+
+      <!-- Column 2: Geospatial Tools -->
+      <div class="footer-column">
+        <h4 class="footer-col-header">GEOSPATIAL TOOLS</h4>
+        <ul class="footer-links">
+          <li><a href="/tools/coordinate-converter/" class="footer-link-item">Datum Converter (WGS84 / UTM)</a></li>
+          <li><a href="/tools/distance-calculator/" class="footer-link-item">Haversine Distance Calculator</a></li>
+          <li><a href="/tools/coordinate-converter/" class="footer-link-item">MGRS & USNG Grid Engine</a></li>
+          <li><a href="/comparisons/gps-vs-ip-location/" class="footer-link-item">IP vs True GNSS Resolver</a></li>
+        </ul>
+      </div>
+
+      <!-- Column 3: Knowledge & Guides -->
+      <div class="footer-column">
+        <h4 class="footer-col-header">KNOWLEDGE & GUIDES</h4>
+        <ul class="footer-links">
+          <li><a href="/guides/how-gps-location-works/" class="footer-link-item">Browser Geolocation API Spec</a></li>
+          <li><a href="/guides/improve-gps-accuracy/" class="footer-link-item">Understanding HDOP / VDOP</a></li>
+          <li><a href="/guides/wrong-location/" class="footer-link-item">Location Permissions Hardening</a></li>
+          <li><a href="/faq/" class="footer-link-item">Frequently Asked Questions</a></li>
+        </ul>
+      </div>
+
+      <!-- Column 4: Comparisons & Ref -->
+      <div class="footer-column">
+        <h4 class="footer-col-header">COMPARISONS & REF</h4>
+        <ul class="footer-links">
+          <li><a href="/guides/how-gps-location-works/" class="footer-link-item">GNSS vs Cellular Triangulation</a></li>
+          <li><a href="/guides/improve-gps-accuracy/" class="footer-link-item">Dual-Frequency L1/L5 Chips</a></li>
+          <li><a href="/comparisons/gps-vs-ip-location/" class="footer-link-item">Mobile OS Accuracy Matrix</a></li>
+          <li><a href="/guides/utm-coordinates-and-datums/" class="footer-link-item">EPSG Geodetic Parameter Registry</a></li>
+        </ul>
+      </div>
     </div>
 
+    <!-- Bottom Bar -->
     <div class="footer-bottom">
-      <div>
-        <p style="margin: 0;">&copy; {year} MyLocationLab. All rights reserved. Precision Geospatial Engineering.</p>
-        <p style="margin: var(--space-1) 0 0; font-size: var(--text-xs); color: var(--color-text-tertiary); display: flex; align-items: center; gap: var(--space-2);">
-          <span class="footer-secure-icon">🛡️</span>
-          <span>Zero Server Logs &bull; W3C Standard Geolocation API &bull; HTTPS TLS 1.3</span>
-        </p>
+      <div class="footer-bottom-trust">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="footer-shield-icon">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+        </svg>
+        <span>Zero Server Logs • W3C Standard Geolocation API • HTTPS TLS 1.3</span>
       </div>
-      <div class="footer-bottom-nav">
-        <a href="/about/" class="footer-bottom-link">
-          <span class="footer-btm-icon">ℹ️</span>
-          <span>About Us</span>
-        </a>
-        <a href="/privacy/" class="footer-bottom-link">
-          <span class="footer-btm-icon">🛡️</span>
-          <span>Privacy Policy</span>
-        </a>
-        <a href="/terms/" class="footer-bottom-link">
-          <span class="footer-btm-icon">📜</span>
-          <span>Terms of Use</span>
-        </a>
-        <a href="/contact/" class="footer-bottom-link">
-          <span class="footer-btm-icon">✉️</span>
-          <span>Contact Support</span>
-        </a>
-        <a href="/sitemap/" class="footer-bottom-link">
-          <span class="footer-btm-icon">🗂️</span>
-          <span>HTML Sitemap</span>
-        </a>
+      <div class="footer-bottom-copy">
+        &copy; {year} MyLocationLab. All rights reserved. Open Geodetic Architecture.
       </div>
     </div>
   </div>

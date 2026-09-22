@@ -62,10 +62,10 @@ const allJsonLd = jsonLd
     (function() {
       try {
         const stored = localStorage.getItem('theme');
-        const theme = stored ? stored : (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+        const theme = stored ? stored : 'light';
         document.documentElement.setAttribute('data-theme', theme);
       } catch (e) {
-        document.documentElement.setAttribute('data-theme', 'dark');
+        document.documentElement.setAttribute('data-theme', 'light');
       }
     })();
   </script>
@@ -83,7 +83,7 @@ const allJsonLd = jsonLd
   <!-- Preconnect to external resources -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" />
   <link rel="preconnect" href="https://unpkg.com" />
 
   <!-- Favicon (SVG for modern browsers, multi-resolution ICO fallback) -->

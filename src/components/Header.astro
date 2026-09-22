@@ -1,9 +1,9 @@
 ---
 /**
- * Header — Sticky glassmorphism navigation
- * Includes main nav, More dropdown, mobile menu, and Find My Location CTA
+ * Header — Stitch GeoPrecision Navigation
+ * Brand logo with GEOSPATIAL SUITE, clean active pill nav, theme toggle, and Find My Location CTA
  */
-import { mainNav, moreNav } from '../data/navigation.js';
+import { mainNav } from '../data/navigation.js';
 import ThemeToggle from './ThemeToggle.astro';
 
 interface Props {
@@ -12,78 +12,99 @@ interface Props {
 
 const { activeSection } = Astro.props;
 const currentPath = Astro.url.pathname;
+const isHome = currentPath === '/' || currentPath === '';
 ---
 
 <header class="nav-header" id="site-header">
   <nav class="nav-inner" aria-label="Main navigation">
+    <!-- Brand Logo -->
     <a href="/" class="nav-logo" aria-label="MyLocationLab Home">
       <span class="nav-logo-icon">
-        <svg
-          width="28"
-          height="28"
-          viewBox="0 0 64 64"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-          class="nav-logo-svg"
-          aria-hidden="true"
-        >
-          <defs>
-            <linearGradient id="header-logo-g" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stop-color="#00d4ff" />
-              <stop offset="100%" stop-color="#3b82f6" />
-            </linearGradient>
-          </defs>
-          <circle class="nav-logo-pulse-circle" cx="32" cy="26" r="22" fill="url(#header-logo-g)" opacity="0.2" />
-          <path
-            class="nav-logo-pin"
-            d="M32 4C21.5 4 13 12.5 13 23c0 14.25 19 33 19 33s19-18.75 19-33C51 12.5 42.5 4 32 4zm0 28a9 9 0 110-18 9 9 0 010 18z"
-            fill="url(#header-logo-g)"
-          />
-          <circle class="nav-logo-core" cx="32" cy="23" r="5" fill="#ffffff" />
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect width="32" height="32" rx="9" fill="#2563EB"/>
+          <circle cx="16" cy="16" r="8" stroke="#93C5FD" stroke-width="2"/>
+          <circle cx="16" cy="16" r="4" stroke="white" stroke-width="2"/>
+          <circle cx="16" cy="16" r="1.5" fill="white"/>
+          <line x1="16" y1="4.5" x2="16" y2="7.5" stroke="#93C5FD" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="16" y1="24.5" x2="16" y2="27.5" stroke="#93C5FD" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="4.5" y1="16" x2="7.5" y2="16" stroke="#93C5FD" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="24.5" y1="16" x2="27.5" y2="16" stroke="#93C5FD" stroke-width="1.5" stroke-linecap="round"/>
         </svg>
       </span>
-      <span class="nav-logo-text">MyLocationLab</span>
+      <div class="nav-brand-text">
+        <span class="nav-brand-name">MyLocationLab</span>
+        <span class="nav-brand-tagline">GEOSPATIAL SUITE</span>
+      </div>
     </a>
 
+    <!-- Nav Links (Clean text without emojis, active pill) -->
     <ul class="nav-links" role="menubar">
-      {mainNav.map(item => (
-        <li role="none">
-          <a
-            href={item.href}
-            class={`nav-link ${currentPath.startsWith(item.href) || activeSection === item.id ? 'active' : ''}`}
-            role="menuitem"
-          >
-            <span class="nav-link-icon">{item.icon}</span>
-            <span class="nav-link-label">{item.label}</span>
-          </a>
-        </li>
-      ))}
-      <li class="dropdown" role="none">
-        <a href="#" class="nav-link dropdown-trigger" role="menuitem" aria-haspopup="true">
-          <span class="nav-link-icon">✨</span>
-          <span class="nav-link-label">More</span>
-          <span class="dropdown-chevron" aria-hidden="true">▾</span>
+      <li role="none">
+        <a
+          href="/"
+          class={`nav-link ${isHome || activeSection === 'my-location' ? 'active' : ''}`}
+          role="menuitem"
+        >
+          <span>My Location</span>
         </a>
-        <div class="dropdown-menu" role="menu">
-          {moreNav.map(item => (
-            <a href={item.href} class="dropdown-item" role="menuitem">
-              <span class="dropdown-item-icon">{item.icon}</span>
-              <span class="dropdown-item-label">{item.label}</span>
-              <span class="dropdown-item-arrow" aria-hidden="true">→</span>
-            </a>
-          ))}
-        </div>
+      </li>
+      <li role="none">
+        <a
+          href="/tools/"
+          class={`nav-link ${currentPath.startsWith('/tools/') ? 'active' : ''}`}
+          role="menuitem"
+        >
+          <span>Tools</span>
+        </a>
+      </li>
+      <li role="none">
+        <a
+          href="/maps/"
+          class={`nav-link ${currentPath.startsWith('/maps') ? 'active' : ''}`}
+          role="menuitem"
+        >
+          <span>Maps</span>
+        </a>
+      </li>
+      <li role="none">
+        <a
+          href="/guides/"
+          class={`nav-link ${currentPath.startsWith('/guides/') ? 'active' : ''}`}
+          role="menuitem"
+        >
+          <span>Guides</span>
+        </a>
+      </li>
+      <li role="none">
+        <a
+          href="/comparisons/"
+          class={`nav-link ${currentPath.startsWith('/comparisons') ? 'active' : ''}`}
+          role="menuitem"
+        >
+          <span>Comparisons</span>
+        </a>
+      </li>
+      <li role="none">
+        <a
+          href="/faq/"
+          class={`nav-link ${currentPath.startsWith('/faq') ? 'active' : ''}`}
+          role="menuitem"
+        >
+          <span>FAQ</span>
+        </a>
       </li>
     </ul>
 
+    <!-- Actions -->
     <div class="nav-actions">
-      <ThemeToggle id="theme-toggle-desktop" />
-
-      <a href="/#find-location" class="btn btn-primary btn-sm nav-cta">
-        <span class="nav-cta-beacon" aria-hidden="true"></span>
-        <span class="nav-cta-icon">📍</span>
-        <span class="nav-cta-text">Find My Location</span>
+      <a href="/#find-location" class="nav-cta-btn">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <polygon points="3 11 22 2 13 21 11 13 3 11" fill="white" stroke="white" />
+        </svg>
+        <span>Find My Location</span>
       </a>
+
+      <ThemeToggle id="theme-toggle-desktop" />
 
       <button
         class="nav-mobile-toggle"
@@ -101,7 +122,6 @@ const currentPath = Astro.url.pathname;
 <div class="nav-mobile-menu" id="mobile-menu" role="navigation" aria-label="Mobile navigation">
   <div class="theme-toggle-mobile-row">
     <span class="theme-toggle-mobile-label">
-      <span>🌓</span>
       <span>Color Theme</span>
     </span>
     <ThemeToggle id="theme-toggle-mobile" />
@@ -109,25 +129,31 @@ const currentPath = Astro.url.pathname;
 
   <hr style="border-color: var(--color-border); margin: var(--space-2) 0;" />
 
-  {mainNav.map(item => (
-    <a
-      href={item.href}
-      class={`nav-mobile-link ${currentPath.startsWith(item.href) || activeSection === item.id ? 'active' : ''}`}
-    >
-      <span class="nav-mobile-item-icon">{item.icon}</span>
-      <span>{item.label}</span>
-    </a>
-  ))}
-  <hr style="border-color: var(--color-border); margin: var(--space-2) 0;" />
-  {moreNav.map(item => (
-    <a href={item.href} class="nav-mobile-link">
-      <span class="nav-mobile-item-icon">{item.icon}</span>
-      <span>{item.label}</span>
-    </a>
-  ))}
+  <a href="/" class={`nav-mobile-link ${isHome ? 'active' : ''}`}>
+    <span>My Location</span>
+  </a>
+  <a href="/tools/" class={`nav-mobile-link ${currentPath.startsWith('/tools/') ? 'active' : ''}`}>
+    <span>Tools</span>
+  </a>
+  <a href="/maps/" class={`nav-mobile-link ${currentPath.startsWith('/maps') ? 'active' : ''}`}>
+    <span>Maps</span>
+  </a>
+  <a href="/guides/" class={`nav-mobile-link ${currentPath.startsWith('/guides/') ? 'active' : ''}`}>
+    <span>Guides</span>
+  </a>
+  <a href="/comparisons/" class={`nav-mobile-link ${currentPath.startsWith('/comparisons') ? 'active' : ''}`}>
+    <span>Comparisons</span>
+  </a>
+  <a href="/faq/" class={`nav-mobile-link ${currentPath.startsWith('/faq') ? 'active' : ''}`}>
+    <span>FAQ</span>
+  </a>
+
   <div style="padding: var(--space-4);">
-    <a href="/#find-location" class="btn btn-primary btn-lg" style="width: 100%;">
-      📍 Find My Location
+    <a href="/#find-location" class="nav-cta-btn" style="width: 100%; justify-content: center;">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <polygon points="3 11 22 2 13 21 11 13 3 11" fill="white" stroke="white" />
+      </svg>
+      <span>Find My Location</span>
     </a>
   </div>
 </div>

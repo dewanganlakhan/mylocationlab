@@ -36,14 +36,19 @@ const sitemapSchema = {
     <!-- Top Links & XML Sitemap Callout -->
     <div class="card card-flat" style="padding: var(--space-4) var(--space-6); margin-bottom: var(--space-10); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: var(--space-4);">
       <div style="font-size: var(--text-sm); color: var(--color-text-secondary);">
-        Looking for search engine bots index? View our machine-readable XML feed:
+        Developer and machine-readable feeds:
       </div>
-      <a href="/sitemap-index.xml" class="btn btn-secondary btn-sm" target="_blank">
-        🤖 XML Sitemap Feed
+      <a href="/sitemap-index.xml" class="btn btn-secondary btn-sm" target="_blank" style="display: inline-flex; align-items: center; gap: 6px;">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M4 11a9 9 0 0 1 9 9"/>
+          <path d="M4 4a16 16 0 0 1 16 16"/>
+          <circle cx="5" cy="19" r="1"/>
+        </svg>
+        <span>XML Sitemap Feed</span>
       </a>
     </div>
 
-    <!-- SILO Directory Grid -->
+    <!-- Topics & Directory Grid -->
     <div class="grid grid-2" style="gap: var(--space-8); margin-bottom: var(--space-16);">
       {Object.entries(footerNav).map(([category, links]) => (
         <div class="card" style="padding: var(--space-6);">
