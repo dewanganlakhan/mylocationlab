@@ -4,7 +4,7 @@ import ToolLayout from '../../layouts/ToolLayout.astro';
 
 <ToolLayout
   toolId="location-qr-code"
-  title="Location QR Code Generator — Share GPS via QR | MyLocationLab"
+  title="Location QR Code Generator — Share via QR | MyLocationLab"
   description="Generate scannable QR codes for your current GPS coordinates, Google Maps, Apple Maps, or Geo URI. Free instant download in high-resolution."
   h1="Location QR Code Generator"
   subtitle="Create scannable QR codes that open your exact location in Google Maps, Apple Maps, or native navigation apps."
@@ -43,13 +43,12 @@ import ToolLayout from '../../layouts/ToolLayout.astro';
       <!-- QR Code Preview Card -->
       <div class="card card-flat" style="text-align: center; padding: var(--space-6);">
         <div id="qr-container" style="background: white; padding: var(--space-4); border-radius: var(--radius-lg); display: inline-block; box-shadow: 0 4px 20px rgba(0,0,0,0.4); margin-bottom: var(--space-4);">
-          <img 
-            id="qr-image" 
-            src="https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=https://maps.google.com/?q=40.7128,-74.0060&format=png" 
-            alt="Location QR Code" 
-            width="220" 
-            height="220" 
-            style="display: block; width: 220px; height: 220px; aspect-ratio: 1/1;" 
+          <img
+            id="qr-image"
+            alt="Location QR Code"
+            width="220"
+            height="220"
+            style="display: block; width: 220px; height: 220px; aspect-ratio: 1/1;"
           />
         </div>
 
@@ -58,7 +57,7 @@ import ToolLayout from '../../layouts/ToolLayout.astro';
         </div>
 
         <div class="flex gap-2 justify-center flex-wrap">
-          <a class="btn btn-secondary btn-sm" id="qr-download-btn" href="https://api.qrserver.com/v1/create-qr-code/?size=500x500&data=https://maps.google.com/?q=40.7128,-74.0060&format=png" target="_blank" download="location-qr.png">
+          <a class="btn btn-secondary btn-sm" id="qr-download-btn" download="location-qr.png">
             💾 Download PNG
           </a>
           <button class="btn btn-ghost btn-sm" id="qr-copy-url-btn" type="button">
@@ -100,6 +99,7 @@ import ToolLayout from '../../layouts/ToolLayout.astro';
 
   <script>
     import GeoLocation from '../../scripts/geolocation.js';
+    import QRCode from 'qrcode';
 
     const latInput = document.getElementById('qr-lat') as HTMLInputElement;
     const lngInput = document.getElementById('qr-lng') as HTMLInputElement;
@@ -111,29 +111,29 @@ import ToolLayout from '../../layouts/ToolLayout.astro';
     const downloadBtn = document.getElementById('qr-download-btn') as HTMLAnchorElement;
     const copyUrlBtn = document.getElementById('qr-copy-url-btn');
 
-    function updateQR() {
+    function buildTargetUrl(lat: number, lng: number): string {
+      const type = typeSelect.value;
+      if (type === 'apple') return `https://maps.apple.com/?ll=${lat},${lng}&q=Pin`;
+      if (type === 'geo') return `geo:${lat},${lng}`;
+      if (type === 'osm') return `https://www.openstreetmap.org/?mlat=${lat}&mlon=${lng}#map=16/${lat}/${lng}`;
+      return `https://maps.google.com/?q=${lat},${lng}`;
+    }
+
+    // QR codes are generated 100% in-browser — coordinates never leave the device.
+    async function updateQR() {
       const lat = parseFloat(latInput.value) || 0;
       const lng = parseFloat(lngInput.value) || 0;
-      const type = typeSelect.value;
+      const targetUrl = buildTargetUrl(lat, lng);
 
-      let targetUrl = '';
-      if (type === 'google') {
-        targetUrl = `https://maps.google.com/?q=${lat},${lng}`;
-      } else if (type === 'apple') {
-        targetUrl = `https://maps.apple.com/?ll=${lat},${lng}&q=Pin`;
-      } else if (type === 'geo') {
-        targetUrl = `geo:${lat},${lng}`;
-      } else {
-        targetUrl = `https://www.openstreetmap.org/?mlat=${lat}&mlon=${lng}#map=16/${lat}/${lng}`;
-      }
-
-      const qrSrc = `https://api.qrserver.com/v1/create-qr-code/?size=240x240&data=${encodeURIComponent(targetUrl)}&format=png`;
-      const dlSrc = `https://api.qrserver.com/v1/create-qr-code/?size=600x600&data=${encodeURIComponent(targetUrl)}&format=png`;
-
-      if (qrImg) qrImg.src = qrSrc;
       if (encodedUrlEl) encodedUrlEl.textContent = targetUrl;
-      if (downloadBtn) {
-        downloadBtn.href = dlSrc;
+
+      try {
+        const previewUrl = await QRCode.toDataURL(targetUrl, { width: 220, margin: 1, color: { dark: '#0f172a', light: '#ffffff' } });
+        if (qrImg) qrImg.src = previewUrl;
+        const downloadUrl = await QRCode.toDataURL(targetUrl, { width: 600, margin: 2, color: { dark: '#0f172a', light: '#ffffff' } });
+        if (downloadBtn) downloadBtn.href = downloadUrl;
+      } catch {
+        if (qrImg) qrImg.removeAttribute('src');
       }
     }
 
@@ -166,5 +166,7 @@ import ToolLayout from '../../layouts/ToolLayout.astro';
         });
       });
     }
+
+    updateQR();
   </script>
 </ToolLayout>

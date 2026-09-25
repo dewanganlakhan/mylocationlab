@@ -17,7 +17,7 @@ const contactSchema = {
 ---
 
 <BaseLayout
-  title="Contact Us — Technical Support & Feedback | MyLocationLab"
+  title="Contact Us — Support & Feedback | MyLocationLab"
   description="Have a question, feedback, or a coordinate bug report? Contact the MyLocationLab engineering and editorial team."
   activeSection="contact"
   jsonLd={[contactSchema]}
@@ -71,18 +71,18 @@ const contactSchema = {
         
         <form id="contact-form">
           <div style="margin-bottom: var(--space-4);">
-            <label style="display: block; font-size: var(--text-xs); font-weight: 600; margin-bottom: var(--space-1); color: var(--color-text-secondary);">Your Name</label>
-            <input type="text" class="input" placeholder="e.g. Alex Morgan" required style="width: 100%;" />
+            <label for="cf-name" style="display: block; font-size: var(--text-xs); font-weight: 600; margin-bottom: var(--space-1); color: var(--color-text-secondary);">Your Name</label>
+            <input type="text" id="cf-name" class="input" placeholder="e.g. Alex Morgan" required style="width: 100%;" />
           </div>
 
           <div style="margin-bottom: var(--space-4);">
-            <label style="display: block; font-size: var(--text-xs); font-weight: 600; margin-bottom: var(--space-1); color: var(--color-text-secondary);">Email Address</label>
-            <input type="email" class="input" placeholder="alex@example.com" required style="width: 100%;" />
+            <label for="cf-email" style="display: block; font-size: var(--text-xs); font-weight: 600; margin-bottom: var(--space-1); color: var(--color-text-secondary);">Email Address</label>
+            <input type="email" id="cf-email" class="input" placeholder="alex@example.com" required style="width: 100%;" />
           </div>
 
           <div style="margin-bottom: var(--space-4);">
-            <label style="display: block; font-size: var(--text-xs); font-weight: 600; margin-bottom: var(--space-1); color: var(--color-text-secondary);">Topic</label>
-            <select class="input" style="width: 100%; cursor: pointer;">
+            <label for="cf-topic" style="display: block; font-size: var(--text-xs); font-weight: 600; margin-bottom: var(--space-1); color: var(--color-text-secondary);">Topic</label>
+            <select class="input" id="cf-topic" style="width: 100%; cursor: pointer;">
               <option value="bug">Report a Coordinate / Geocoding Bug</option>
               <option value="tool">Suggest a New Location Tool</option>
               <option value="privacy">Privacy or Data Query</option>
@@ -92,33 +92,60 @@ const contactSchema = {
           </div>
 
           <div style="margin-bottom: var(--space-4);">
-            <label style="display: block; font-size: var(--text-xs); font-weight: 600; margin-bottom: var(--space-1); color: var(--color-text-secondary);">Your Message</label>
-            <textarea class="input" rows="4" placeholder="Describe the issue, include coordinate details or browser information..." required style="width: 100%; resize: vertical;"></textarea>
+            <label for="cf-message" style="display: block; font-size: var(--text-xs); font-weight: 600; margin-bottom: var(--space-1); color: var(--color-text-secondary);">Your Message</label>
+            <textarea class="input" id="cf-message" rows="4" placeholder="Describe the issue, include coordinate details or browser information..." required style="width: 100%; resize: vertical;"></textarea>
           </div>
 
           <button type="submit" class="btn btn-primary" style="width: 100%;">
             ✉️ Submit Message
           </button>
+          <p style="font-size: var(--text-xs); color: var(--color-text-tertiary); margin: var(--space-3) 0 0;">
+            Submitting opens your email app with the message pre-filled to <strong>support@mylocationlab.com</strong> — nothing is sent or stored by this website.
+          </p>
         </form>
 
         <div id="contact-success" style="display: none; text-align: center; padding: var(--space-6) 0;">
           <div style="font-size: 2.5rem; margin-bottom: var(--space-2);">✅</div>
-          <h3 style="font-size: var(--text-lg); margin-bottom: var(--space-1);">Thank You!</h3>
-          <p style="font-size: var(--text-sm); color: var(--color-text-secondary);">Your feedback has been submitted to our team.</p>
+          <h3 style="font-size: var(--text-lg); margin-bottom: var(--space-1);">Your Email App Should Be Opening</h3>
+          <p style="font-size: var(--text-sm); color: var(--color-text-secondary);">We've pre-filled your message to <strong>support@mylocationlab.com</strong> — just press send. If nothing opened, you can email us directly at that address.</p>
+          <button type="button" class="btn btn-secondary btn-sm" id="contact-reopen" style="margin-top: var(--space-4);">← Edit My Message</button>
         </div>
       </div>
     </div>
   </div>
 
   <script>
-    const form = document.getElementById('contact-form');
+    const form = document.getElementById('contact-form') as HTMLFormElement;
     const successBox = document.getElementById('contact-success');
+    const SUPPORT_EMAIL = 'support@mylocationlab.com';
+
+    const topicLabels: Record<string, string> = {
+      bug: 'Bug Report',
+      tool: 'Tool Suggestion',
+      privacy: 'Privacy Query',
+      editorial: 'Content Correction',
+      other: 'General Feedback',
+    };
 
     if (form && successBox) {
       form.addEventListener('submit', (e) => {
         e.preventDefault();
+        const name = (document.getElementById('cf-name') as HTMLInputElement).value.trim();
+        const email = (document.getElementById('cf-email') as HTMLInputElement).value.trim();
+        const topic = (document.getElementById('cf-topic') as HTMLSelectElement).value;
+        const message = (document.getElementById('cf-message') as HTMLTextAreaElement).value.trim();
+
+        const subject = `[${topicLabels[topic] || 'Feedback'}] Message from ${name || 'MyLocationLab visitor'}`;
+        const body = `Name: ${name}\nReply-to: ${email}\nTopic: ${topicLabels[topic] || topic}\n\n${message}\n`;
+
+        window.location.href = `mailto:${SUPPORT_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
         form.style.display = 'none';
         successBox.style.display = 'block';
+      });
+
+      document.getElementById('contact-reopen')?.addEventListener('click', () => {
+        successBox.style.display = 'none';
+        form.style.display = 'block';
       });
     }
   </script>

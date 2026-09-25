@@ -5,7 +5,7 @@ import LocationFinder from '../../components/LocationFinder.astro';
 const breadcrumbs = [{ label: 'Home', href: '/' }, { label: 'My Location', href: '/my-location/' }, { label: 'My City' }];
 ---
 
-<BaseLayout title="What City Am I In? — Find My Current City | MyLocationLab" description="Find out what city you're currently in. Instantly detect your city name, state, and country using GPS location." activeSection="my-location">
+<BaseLayout leaflet title="What City Am I In? — Find My Current City | MyLocationLab" description="Find out what city you're currently in. Instantly detect your city name, state, and country using GPS location." activeSection="my-location">
   <div class="container">
     <Breadcrumbs items={breadcrumbs} />
     <section class="page-header">

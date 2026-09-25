@@ -2107,7 +2107,9 @@ main > .page-header:first-child {
   gap: 6px;
   padding: 6px 15px;
   border-radius: var(--radius-full);
-  background: var(--color-accent-primary);
+  /* Fixed brand blue: white text must pass contrast in light AND dark themes
+     (--color-accent-primary flips to light sky blue in dark mode). */
+  background: #2563eb;
   color: #ffffff !important;
   font-family: var(--font-display);
   font-size: 13px;

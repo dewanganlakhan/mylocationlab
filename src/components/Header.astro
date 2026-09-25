@@ -41,8 +41,8 @@ const isHome = currentPath === '/' || currentPath === '';
     <ul class="nav-links" role="menubar">
       <li role="none">
         <a
-          href="/"
-          class={`nav-link ${isHome || activeSection === 'my-location' ? 'active' : ''}`}
+          href="/my-location/"
+          class={`nav-link ${isHome || activeSection === 'my-location' || currentPath.startsWith('/my-location') ? 'active' : ''}`}
           role="menuitem"
         >
           <span>My Location</span>
@@ -129,7 +129,7 @@ const isHome = currentPath === '/' || currentPath === '';
 
   <hr style="border-color: var(--color-border); margin: var(--space-2) 0;" />
 
-  <a href="/" class={`nav-mobile-link ${isHome ? 'active' : ''}`}>
+  <a href="/my-location/" class={`nav-mobile-link ${isHome || currentPath.startsWith('/my-location') ? 'active' : ''}`}>
     <span>My Location</span>
   </a>
   <a href="/tools/" class={`nav-mobile-link ${currentPath.startsWith('/tools/') ? 'active' : ''}`}>

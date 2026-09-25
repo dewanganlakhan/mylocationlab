@@ -7,7 +7,7 @@ import SiloNav from '../../components/SiloNav.astro';
 const breadcrumbs = [{ label: 'Home', href: '/' }, { label: 'My Location', href: '/my-location/' }, { label: 'Latitude & Longitude' }];
 ---
 
-<BaseLayout title="My Latitude and Longitude — Find Lat Long | MyLocationLab" description="Find your current latitude and longitude coordinates instantly. See your precise north-south and east-west position on an interactive map." activeSection="my-location">
+<BaseLayout leaflet title="My Latitude and Longitude — Find Lat Long | MyLocationLab" description="Find your current latitude and longitude coordinates instantly. See your precise north-south and east-west position on an interactive map." activeSection="my-location">
   <div class="container">
     <Breadcrumbs items={breadcrumbs} />
     <SiloNav silo="my-location" title="Related Location Tools" />

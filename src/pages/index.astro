@@ -42,9 +42,9 @@ const homeFaqSchema = {
 };
 ---
 
-<BaseLayout
-  title="Where Am I? — Find My Current Location Instantly | MyLocationLab"
-  description="Instantly find your current location with GPS coordinates, address, city, state, country, and interactive map. Free location finder — 100% private, no app needed."
+<BaseLayout leaflet
+  title="Where Am I? Find My Location Instantly | MyLocationLab"
+  description="Instantly find your current location: GPS coordinates, address, city, and map. 100% private, works in your browser, no app needed."
   jsonLd={[homeFaqSchema]}
 >
   <!-- Hero Section -->
@@ -138,7 +138,7 @@ const homeFaqSchema = {
             <span>Share Location</span>
           </button>
 
-          <a class="telemetry-ctrl-btn" id="open-maps-btn" href="https://maps.google.com/?q=37.774929,-122.419416" target="_blank" rel="noopener noreferrer" title="Open in Google Maps">
+          <a class="telemetry-ctrl-btn" id="open-maps-btn" href="https://www.google.com/maps" target="_blank" rel="noopener noreferrer" title="Open in Google Maps" aria-disabled="true">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21"/>
               <line x1="9" y1="3" x2="9" y2="18"/>
@@ -179,12 +179,12 @@ const homeFaqSchema = {
               <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/>
               <circle cx="12" cy="10" r="3"/>
             </svg>
-            <span id="map-coord-chip">37.7749° N, 122.4194° W</span>
+            <span id="map-coord-chip">Awaiting location fix</span>
           </div>
 
           <div class="map-overlay-chip map-chip-botright" id="map-status-chip">
             <span class="pulse-dot-emerald"></span>
-            <span>GNSS FIXED</span>
+            <span id="map-status-chip-text">STANDBY</span>
           </div>
         </div>
 
@@ -202,8 +202,8 @@ const homeFaqSchema = {
               </span>
             </div>
             <div>
-              <div class="telemetry-cell-value" id="data-lat">37.7749° N</div>
-              <div class="telemetry-cell-sub" id="data-lat-dec">Decimal: 37.774929</div>
+              <div class="telemetry-cell-value" id="data-lat">—</div>
+              <div class="telemetry-cell-sub" id="data-lat-dec">Waiting for fix</div>
             </div>
           </div>
 
@@ -219,8 +219,8 @@ const homeFaqSchema = {
               </span>
             </div>
             <div>
-              <div class="telemetry-cell-value" id="data-lng">-122.4194° W</div>
-              <div class="telemetry-cell-sub" id="data-lng-dec">Decimal: -122.419416</div>
+              <div class="telemetry-cell-value" id="data-lng">—</div>
+              <div class="telemetry-cell-sub" id="data-lng-dec">Waiting for fix</div>
             </div>
           </div>
 
@@ -236,7 +236,7 @@ const homeFaqSchema = {
               </span>
             </div>
             <div>
-              <div class="telemetry-cell-value" id="data-address" style="font-size: 16.5px;">1 Market St, Financial District</div>
+              <div class="telemetry-cell-value" id="data-address" style="font-size: 16.5px;">Click "Get My Location" to resolve your address</div>
               <div class="telemetry-cell-sub">Reverse Geocoded via OpenStreetMap Nominatim</div>
             </div>
           </div>
@@ -262,8 +262,8 @@ const homeFaqSchema = {
               </span>
             </div>
             <div>
-              <div class="telemetry-cell-value" id="data-city">San Francisco</div>
-              <div class="telemetry-cell-sub" id="data-city-sub">County: SF Metro</div>
+              <div class="telemetry-cell-value" id="data-city">—</div>
+              <div class="telemetry-cell-sub" id="data-city-sub">Detected after location fix</div>
             </div>
           </div>
 
@@ -279,8 +279,8 @@ const homeFaqSchema = {
               </span>
             </div>
             <div>
-              <div class="telemetry-cell-value" id="data-state-country">California, USA</div>
-              <div class="telemetry-cell-sub" id="data-state-sub">ISO 3166-1: US-CA</div>
+              <div class="telemetry-cell-value" id="data-state-country">—</div>
+              <div class="telemetry-cell-sub" id="data-state-sub">Detected after location fix</div>
             </div>
           </div>
 
@@ -297,8 +297,8 @@ const homeFaqSchema = {
               </span>
             </div>
             <div>
-              <div class="telemetry-cell-value text-emerald" id="data-accuracy">± 5 meters</div>
-              <div class="telemetry-cell-sub">Confidence Interval 95%</div>
+              <div class="telemetry-cell-value text-emerald" id="data-accuracy">—</div>
+              <div class="telemetry-cell-sub" id="data-accuracy-sub">Reported by your device</div>
             </div>
           </div>
 
@@ -313,7 +313,7 @@ const homeFaqSchema = {
               </span>
             </div>
             <div>
-              <div class="telemetry-cell-value" id="data-altitude">16 m (52 ft)</div>
+              <div class="telemetry-cell-value" id="data-altitude">—</div>
               <div class="telemetry-cell-sub">Above Mean Sea Level</div>
             </div>
           </div>
@@ -726,11 +726,16 @@ const homeFaqSchema = {
     const mapCoordChip = document.getElementById('map-coord-chip');
     const mapStatusChip = document.getElementById('map-status-chip');
 
-    let currentLat = 37.774929;
-    let currentLng = -122.419416;
+    let currentLat = null;
+    let currentLng = null;
     let mapInstance = null;
     let markerInstance = null;
     let circleInstance = null;
+
+    function setMapStatus(text) {
+      const el = document.getElementById('map-status-chip-text');
+      if (el) el.textContent = text;
+    }
 
     function initMap(lat, lng, accuracy = 5) {
       if (typeof window.L === 'undefined') {
@@ -739,15 +744,22 @@ const homeFaqSchema = {
       }
 
       if (!mapInstance) {
-        mapInstance = window.L.map('map', { scrollWheelZoom: false, zoomControl: true }).setView([lat, lng], 14);
+        mapInstance = window.L.map('map', { scrollWheelZoom: false, zoomControl: true });
 
         window.L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
           attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
           maxZoom: 19,
         }).addTo(mapInstance);
-      } else {
-        mapInstance.setView([lat, lng], 15);
       }
+
+      // No fix yet: neutral world view, no pin, no accuracy circle
+      if (lat === null || lng === null) {
+        mapInstance.setView([25, 5], 2);
+        return;
+      }
+
+      const zoom = accuracy >= 10000 ? 10 : accuracy >= 1000 ? 12 : 15;
+      mapInstance.setView([lat, lng], zoom);
 
       // Update or create custom pinpoint marker
       const pinIcon = window.L.divIcon({
@@ -780,11 +792,11 @@ const homeFaqSchema = {
       }
     }
 
-    // Initialize default demo map on load
+    // Initialize neutral world map on load (no location acquired yet)
     if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', () => initMap(currentLat, currentLng, 5));
+      document.addEventListener('DOMContentLoaded', () => initMap(null, null));
     } else {
-      initMap(currentLat, currentLng, 5);
+      initMap(null, null);
     }
 
     async function findLocation() {
@@ -817,17 +829,21 @@ const homeFaqSchema = {
         if (latEl) latEl.textContent = data.formattedLat;
         if (latDecEl) latDecEl.textContent = `Decimal: ${currentLat.toFixed(6)}`;
         if (lngEl) lngEl.textContent = data.formattedLng;
-        if (lngDecEl) lngDecEl.textContent = `Decimal: ${currentLng.toFixed(6)}`;
+        if (lngDecEl) lngEl.textContent = `Decimal: ${currentLng.toFixed(6)}`;
         if (accEl) accEl.textContent = `± ${Math.round(data.accuracy)} meters`;
+        const accSubEl = document.getElementById('data-accuracy-sub');
+        if (accSubEl) accSubEl.textContent = 'Reported by your device';
         if (altEl) {
-          altEl.textContent = data.altitude
+          altEl.textContent = data.altitude != null
             ? `${Math.round(data.altitude)} m (${Math.round(data.altitude * 3.28084)} ft)`
-            : '16 m (52 ft)';
+            : 'Not reported by device';
         }
 
         if (mapCoordChip) {
           mapCoordChip.textContent = `${data.formattedLat}, ${data.formattedLng}`;
         }
+
+        setMapStatus('GNSS FIXED');
 
         if (statusPill) {
           statusPill.textContent = 'GNSS LOCKED';
@@ -842,6 +858,7 @@ const homeFaqSchema = {
         const mapsBtn = document.getElementById('open-maps-btn');
         if (mapsBtn) {
           mapsBtn.setAttribute('href', Sharing.getGoogleMapsUrl(currentLat, currentLng));
+          mapsBtn.removeAttribute('aria-disabled');
         }
 
         // Update Map view
@@ -852,17 +869,29 @@ const homeFaqSchema = {
           const address = await Geocoding.reverseGeocode(currentLat, currentLng);
           const addrEl = document.getElementById('data-address');
           const cityEl = document.getElementById('data-city');
+          const citySubEl = document.getElementById('data-city-sub');
           const stateEl = document.getElementById('data-state-country');
+          const stateSubEl = document.getElementById('data-state-sub');
 
           if (addrEl) addrEl.textContent = address.displayName || address.road || 'Resolved GPS Location';
-          if (cityEl) cityEl.textContent = address.city || address.town || 'Detected City';
+          if (cityEl) cityEl.textContent = address.city || address.town || address.village || address.county || 'Detected City';
+          if (citySubEl) citySubEl.textContent = address.county ? `County: ${address.county}` : 'Resolved via GPS';
           if (stateEl) {
             const state = address.state || '';
             const country = address.country || '';
             stateEl.textContent = [state, country].filter(Boolean).join(', ') || 'Global';
           }
+          if (stateSubEl) {
+            const cc = (address.country_code || '').toUpperCase();
+            const region = address.state_district || address.state || '';
+            stateSubEl.textContent = cc ? `ISO 3166-1: ${[cc, region].filter(Boolean).join('-')}` : 'Resolved via GPS';
+          }
         } catch {
           // Geocode failed silently, coordinates are still authoritative
+          const citySubEl = document.getElementById('data-city-sub');
+          const stateSubEl = document.getElementById('data-state-sub');
+          if (citySubEl) citySubEl.textContent = 'Address lookup unavailable';
+          if (stateSubEl) stateSubEl.textContent = 'Address lookup unavailable';
         }
 
         if (privacyBanner) {
@@ -896,8 +925,11 @@ const homeFaqSchema = {
           const lngDecEl = document.getElementById('data-lng-dec');
           const addrEl = document.getElementById('data-address');
           const cityEl = document.getElementById('data-city');
+          const citySubEl = document.getElementById('data-city-sub');
           const stateEl = document.getElementById('data-state-country');
+          const stateSubEl = document.getElementById('data-state-sub');
           const accEl = document.getElementById('data-accuracy');
+          const altEl = document.getElementById('data-altitude');
 
           if (latEl) latEl.textContent = `${Math.abs(currentLat).toFixed(4)}° ${currentLat >= 0 ? 'N' : 'S'}`;
           if (latDecEl) latDecEl.textContent = `Decimal: ${currentLat.toFixed(6)}`;
@@ -905,20 +937,33 @@ const homeFaqSchema = {
           if (lngDecEl) lngDecEl.textContent = `Decimal: ${currentLng.toFixed(6)}`;
           if (addrEl) addrEl.textContent = `${ipData.city || 'Metro Area'}, ${ipData.region || ''}, ${ipData.country || ''}`;
           if (cityEl) cityEl.textContent = ipData.city || 'Detected City';
+          if (citySubEl) citySubEl.textContent = 'Approximate (IP-level precision)';
           if (stateEl) stateEl.textContent = `${ipData.region || ''}, ${ipData.country || ''}`;
+          if (stateSubEl) stateSubEl.textContent = ipData.countryCode ? `ISO 3166-1: ${ipData.countryCode}${ipData.regionCode ? '-' + ipData.regionCode : ''}` : 'Approximate (IP-level precision)';
           if (accEl) accEl.textContent = '± 10 km (IP)';
+          const accSubEl = document.getElementById('data-accuracy-sub');
+          if (accSubEl) accSubEl.textContent = 'Estimate from your IP address';
+          if (altEl) altEl.textContent = 'Not available from IP';
 
           if (mapCoordChip) {
             mapCoordChip.textContent = `${currentLat.toFixed(4)}°, ${currentLng.toFixed(4)}°`;
           }
 
+          setMapStatus('IP LOCATION');
+
           const mapsBtn = document.getElementById('open-maps-btn');
           if (mapsBtn) {
             mapsBtn.setAttribute('href', Sharing.getGoogleMapsUrl(currentLat, currentLng));
+            mapsBtn.removeAttribute('aria-disabled');
           }
 
           initMap(currentLat, currentLng, 10000);
+
+          if (bannerText) {
+            bannerText.textContent = 'Approximate location resolved from your IP address. Zero-Data Retention • 100% In-Browser.';
+          }
         } catch {
+          setMapStatus('NO FIX');
           if (bannerText) bannerText.textContent = 'Location query failed. Please ensure location permissions are enabled.';
         }
       } finally {
@@ -934,6 +979,15 @@ const homeFaqSchema = {
     document.getElementById('refresh-btn')?.addEventListener('click', findLocation);
 
     document.getElementById('copy-coords-btn')?.addEventListener('click', function() {
+      if (currentLat === null || currentLng === null) {
+        const span = this.querySelector('span');
+        if (span) {
+          const original = span.textContent;
+          span.textContent = 'No fix yet';
+          setTimeout(() => { span.textContent = original; }, 2000);
+        }
+        return;
+      }
       const coordStr = `${currentLat.toFixed(6)}, ${currentLng.toFixed(6)}`;
       navigator.clipboard.writeText(coordStr).then(() => {
         const span = this.querySelector('span');
@@ -946,6 +1000,7 @@ const homeFaqSchema = {
     });
 
     document.getElementById('share-btn')?.addEventListener('click', () => {
+      if (currentLat === null || currentLng === null) return;
       Sharing.shareNative({
         title: 'My Location',
         text: `My location coordinates: ${currentLat.toFixed(6)}, ${currentLng.toFixed(6)}`,

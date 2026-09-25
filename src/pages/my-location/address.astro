@@ -7,7 +7,7 @@ import SiloNav from '../../components/SiloNav.astro';
 const breadcrumbs = [{ label: 'Home', href: '/' }, { label: 'My Location', href: '/my-location/' }, { label: 'My Address' }];
 ---
 
-<BaseLayout title="My Address — What Is My Current Address? | MyLocationLab" description="Find your current street address instantly using GPS. Reverse geocode your location to a full postal address with house number, street, city, and zip code." activeSection="my-location">
+<BaseLayout leaflet title="My Address — What Is My Current Address? | MyLocationLab" description="Find your current street address instantly using GPS. Reverse geocode your location to a full postal address with house number, street, city, and zip code." activeSection="my-location">
   <div class="container">
     <Breadcrumbs items={breadcrumbs} />
     <SiloNav silo="my-location" title="Related Location Tools" />

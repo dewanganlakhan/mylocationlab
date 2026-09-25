@@ -17,9 +17,10 @@ interface Props {
   subtitle?: string;
   canonical?: string;
   jsonLd?: object | object[];
+  leaflet?: boolean;
 }
 
-const { title, description, toolId, h1, subtitle, canonical, jsonLd } = Astro.props;
+const { title, description, toolId, h1, subtitle, canonical, jsonLd, leaflet } = Astro.props;
 
 const breadcrumbs = [
   { label: 'Home', href: '/' },
@@ -43,16 +44,9 @@ const toolSchema = {
     price: '0',
     priceCurrency: 'USD',
   },
-  aggregateRating: {
-    '@type': 'AggregateRating',
-    ratingValue: '4.9',
-    ratingCount: '1840',
-    bestRating: '5',
-    worstRating: '1',
-  },
   creator: {
     '@type': 'Organization',
-    name: 'MyLocationLab Geospatial Engineering',
+    name: 'MyLocationLab',
     url: 'https://mylocationlab.com',
   },
 };
@@ -68,6 +62,7 @@ const allJsonLd = jsonLd
   activeSection="tools"
   canonical={canonical}
   jsonLd={allJsonLd}
+  leaflet={leaflet}
 >
   <div class="container">
     <Breadcrumbs items={breadcrumbs} />
@@ -79,10 +74,10 @@ const allJsonLd = jsonLd
       {subtitle && <p class="page-header-desc">{subtitle}</p>}
     </div>
 
-    <AuthorEAT 
-      reviewedBy="GIS Geodesy & Mapping Lab" 
-      reviewerTitle="Cartographic & Navigation System Analyst" 
-      lastUpdated="September 2026" 
+    <AuthorEAT
+      reviewedBy="MyLocationLab Editorial Team"
+      reviewerTitle="Geospatial Content Reviewer"
+      lastUpdated="September 2026"
     />
 
     <div class="content-layout">

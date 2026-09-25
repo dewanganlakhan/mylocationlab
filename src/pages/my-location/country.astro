@@ -7,7 +7,7 @@ import SiloNav from '../../components/SiloNav.astro';
 const breadcrumbs = [{ label: 'Home', href: '/' }, { label: 'My Location', href: '/my-location/' }, { label: 'My Country' }];
 ---
 
-<BaseLayout title="What Country Am I In? — Find My Current Country | MyLocationLab" description="Find out what country you're currently in. Instantly detect your country name, country code, and flag using GPS location." activeSection="my-location">
+<BaseLayout leaflet title="What Country Am I In? Find Out Now | MyLocationLab" description="Find out what country you're currently in. Instantly detect your country name, country code, and flag using GPS location." activeSection="my-location">
   <div class="container">
     <Breadcrumbs items={breadcrumbs} />
     <SiloNav silo="my-location" title="Related Location Tools" />

@@ -1,7 +1,7 @@
 ---
 import ToolLayout from '../../layouts/ToolLayout.astro';
 ---
-<ToolLayout toolId="geocoding" title="Geocoder — Address to Coordinates | MyLocationLab" description="Convert any address, city, or place name into GPS coordinates. Find the exact latitude and longitude for any location." h1="Geocoder" subtitle="Convert any address, city, or place name into GPS coordinates (latitude and longitude).">
+<ToolLayout leaflet toolId="geocoding" title="Geocoder — Address to Coordinates | MyLocationLab" description="Convert any address, city, or place name into GPS coordinates. Find the exact latitude and longitude for any location." h1="Geocoder" subtitle="Convert any address, city, or place name into GPS coordinates (latitude and longitude).">
   <div class="tool-interface">
     <label class="label">Enter an address, city, or place name</label>
     <div class="input-group" style="margin-bottom: var(--space-4);">
@@ -29,8 +29,7 @@ import ToolLayout from '../../layouts/ToolLayout.astro';
     import Geocoding from '../../scripts/geocoding.js';
     import Sharing from '../../scripts/sharing.js';
 
-    document.getElementById('gc-btn')?.addEventListener('click', async () => {
-      const query = document.getElementById('gc-input').value.trim();
+    async function runGeocodeSearch(query: string) {
       if (!query) { alert('Please enter an address or place name.'); return; }
       try {
         const results = await Geocoding.forwardGeocode(query);
@@ -60,10 +59,23 @@ import ToolLayout from '../../layouts/ToolLayout.astro';
         });
         container.style.display = 'block';
       } catch { alert('Geocoding failed. Please try again.'); }
+    }
+
+    document.getElementById('gc-btn')?.addEventListener('click', () => {
+      const query = (document.getElementById('gc-input') as HTMLInputElement).value.trim();
+      runGeocodeSearch(query);
     });
 
     document.getElementById('gc-input')?.addEventListener('keydown', (e) => {
       if (e.key === 'Enter') document.getElementById('gc-btn')?.click();
     });
+
+    // Support ?q= search queries (declared in the site's WebSite SearchAction schema)
+    const urlQuery = new URLSearchParams(window.location.search).get('q');
+    if (urlQuery && urlQuery.trim()) {
+      const input = document.getElementById('gc-input') as HTMLInputElement | null;
+      if (input) input.value = urlQuery.trim();
+      runGeocodeSearch(urlQuery.trim());
+    }
   </script>
 </ToolLayout>

@@ -7,7 +7,7 @@ import SiloNav from '../../components/SiloNav.astro';
 const breadcrumbs = [{ label: 'Home', href: '/' }, { label: 'My Location', href: '/my-location/' }, { label: 'My Coordinates' }];
 ---
 
-<BaseLayout title="My Coordinates — Find Current Coordinates | MyLocationLab" description="Get your current coordinates instantly. Find your exact position in decimal degrees, DMS, UTM, and other formats." activeSection="my-location">
+<BaseLayout leaflet title="My Coordinates — Find Current Coordinates | MyLocationLab" description="Get your current coordinates instantly. Find your exact position in decimal degrees, DMS, UTM, and other formats." activeSection="my-location">
   <div class="container">
     <Breadcrumbs items={breadcrumbs} />
     <SiloNav silo="my-location" title="Related Location Tools" />

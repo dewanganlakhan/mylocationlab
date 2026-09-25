@@ -25,8 +25,8 @@ const mapSchema = {
 ---
 
 <BaseLayout
-  title="Interactive Location Map — Live GPS & Coordinate Viewer | MyLocationLab"
-  description="Explore your current location on an interactive fullscreen map. Switch map layers, inspect coordinates with a single click, draw radius circles, and measure distances."
+  title="Interactive Location Map — Live GPS View | MyLocationLab"
+  description="Interactive fullscreen map of your location: switch layers, inspect coordinates by click, draw radius circles, measure distances."
   activeSection="maps"
   jsonLd={[mapSchema]}
 >
@@ -41,8 +41,8 @@ const mapSchema = {
     </section>
 
     <AuthorEAT 
-      reviewedBy="Geospatial Cartography Team" 
-      reviewerTitle="Cartographic & WebGIS Specialist" 
+      reviewedBy="MyLocationLab Editorial Team" 
+      reviewerTitle="Geospatial Content Reviewer" 
       lastUpdated="September 2026" 
     />
 
@@ -131,7 +131,7 @@ const mapSchema = {
       }
 
       // @ts-ignore
-      map = L.map('main-leaflet-map').setView([20, 0], 2);
+      map = L.map('main-leaflet-map', { scrollWheelZoom: false }).setView([20, 0], 2);
 
       // @ts-ignore
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -139,14 +139,20 @@ const mapSchema = {
         maxZoom: 19,
       }).addTo(map);
 
+      // Enable scroll-wheel zoom only after deliberate interaction with the map,
+      // so page scrolling over the full-width map isn't hijacked.
+      // @ts-ignore
+      map.on('click', () => {
+        // @ts-ignore
+        map.scrollWheelZoom.enable();
+      });
+
       // Map click handler
+      // @ts-ignore
       map.on('click', (e: any) => {
         const { lat, lng } = e.latlng;
         setPoint(lat, lng);
       });
-
-      // Automatically attempt initial geolocation
-      getUserLocation();
     }
 
     function setPoint(lat: number, lng: number) {

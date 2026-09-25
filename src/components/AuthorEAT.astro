@@ -12,8 +12,8 @@ interface Props {
 
 const {
   lastUpdated = 'September 15, 2026',
-  reviewedBy = 'MyLocation Geodesy & GIS Research Team',
-  reviewerTitle = 'Senior Geospatial Engineer & W3C Geolocation Contributor',
+  reviewedBy = 'MyLocationLab Editorial Team',
+  reviewerTitle = 'Geospatial Content Reviewer',
   readTime,
 } = Astro.props;
 ---
@@ -28,7 +28,7 @@ const {
     <div>
       <div style="font-weight: 600; color: var(--color-text-primary); display: flex; align-items: center; gap: var(--space-2);">
         <span>{reviewedBy}</span>
-        <span class="badge badge-success" style="font-size: 0.65rem; padding: 2px 6px;">VERIFIED EXPERT</span>
+        <span class="badge badge-success" style="font-size: 0.65rem; padding: 2px 6px;">EDITORIALLY REVIEWED</span>
       </div>
       <div style="color: var(--color-text-tertiary);">{reviewerTitle}</div>
     </div>
