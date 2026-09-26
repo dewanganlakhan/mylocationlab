@@ -3,20 +3,66 @@
  * LocationFinder — Reusable location detection component
  * Used across all my-location sub-pages with configurable emphasis fields.
  */
+import { getLangFromUrl, defaultLang, type SupportedLang } from '../i18n/config';
+import { useTranslations } from '../i18n/ui';
+
 interface Props {
   emphasisField?: string;
   showMap?: boolean;
   showAllFields?: boolean;
+  lang?: string;
 }
 
-const { emphasisField = '', showMap = true, showAllFields = true } = Astro.props;
+const { emphasisField = '', showMap = true, showAllFields = true, lang: customLang } = Astro.props;
+const lang = (customLang || getLangFromUrl(Astro.url)) as SupportedLang;
+const t = useTranslations(lang);
+
+const labels: Record<string, any> = {
+  en: {
+    header: 'Your Location', ready: 'Ready', loading: 'Detecting location...',
+    lat: 'Latitude', lng: 'Longitude', address: 'Address', city: 'City',
+    state: 'State / Region', country: 'Country', accuracy: 'Accuracy', altitude: 'Altitude',
+    copy: 'Copy Coordinates', share: 'Share', openInMaps: 'Open in Maps', refresh: 'Refresh',
+    locateTitle: 'Zoom to my current location'
+  },
+  es: {
+    header: 'Su Ubicación', ready: 'Listo', loading: 'Detectando ubicación...',
+    lat: 'Latitud', lng: 'Longitud', address: 'Dirección', city: 'Ciudad',
+    state: 'Estado / Provincia', country: 'País', accuracy: 'Precisión', altitude: 'Altitud',
+    copy: 'Copiar Coordenadas', share: 'Compartir', openInMaps: 'Abrir en Mapas', refresh: 'Actualizar',
+    locateTitle: 'Centrar y ampliar en mi ubicación'
+  },
+  fr: {
+    header: 'Votre Position', ready: 'Prêt', loading: 'Détection de la position...',
+    lat: 'Latitude', lng: 'Longitude', address: 'Adresse', city: 'Ville',
+    state: 'Région / Département', country: 'Pays', accuracy: 'Précision', altitude: 'Altitude',
+    copy: 'Copier Coordonnées', share: 'Partager', openInMaps: 'Ouvrir dans Maps', refresh: 'Actualiser',
+    locateTitle: 'Zoomer sur ma position actuelle'
+  },
+  de: {
+    header: 'Ihr Standort', ready: 'Bereit', loading: 'Standort wird ermittelt...',
+    lat: 'Breitengrad', lng: 'Längengrad', address: 'Adresse', city: 'Stadt',
+    state: 'Bundesland / Region', country: 'Land', accuracy: 'Genauigkeit', altitude: 'Höhe',
+    copy: 'Koordinaten kopieren', share: 'Teilen', openInMaps: 'In Karten öffnen', refresh: 'Aktualisieren',
+    locateTitle: 'Auf meinen aktuellen Standort zoomen'
+  },
+  pt: {
+    header: 'Sua Localização', ready: 'Pronto', loading: 'Detectando localização...',
+    lat: 'Latitude', lng: 'Longitude', address: 'Endereço', city: 'Cidade',
+    state: 'Estado', country: 'País', accuracy: 'Precisão', altitude: 'Altitude',
+    copy: 'Copiar Coordenadas', share: 'Compartilhar', openInMaps: 'Abrir no Maps', refresh: 'Atualizar',
+    locateTitle: 'Aproximar da minha localização atual'
+  }
+};
+
+const l = labels[lang] || labels.en;
 ---
 
 <div class="location-display" id="loc-finder">
   <div class="location-display-header">
     <div class="location-display-dot" id="loc-dot" style="background: var(--color-text-tertiary);"></div>
-    <span class="location-display-title">Your Location</span>
-    <span class="badge" id="loc-badge">Ready</span>
+    <span class="location-display-title">{l.header}</span>
+    <span class="badge" id="loc-badge">{l.ready}</span>
   </div>
 
   <div id="loc-prompt" style="display: none; text-align: center; padding: var(--space-4) 0;">
@@ -24,52 +70,52 @@ const { emphasisField = '', showMap = true, showAllFields = true } = Astro.props
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
         <polygon points="3 11 22 2 13 21 11 13 3 11" fill="currentColor" stroke="none" />
       </svg>
-      <span>Get My Location</span>
+      <span>{t('hero.btnGetLocation')}</span>
     </button>
   </div>
 
   <div id="loc-loading" style="display: none; text-align: center; padding: var(--space-4);">
     <div class="spinner" style="margin: 0 auto var(--space-3);"></div>
-    <p style="color: var(--color-text-secondary); margin: 0; font-size: var(--text-sm);">Detecting location...</p>
+    <p style="color: var(--color-text-secondary); margin: 0; font-size: var(--text-sm);">{l.loading}</p>
   </div>
 
   <p id="loc-error" style="display: none; margin: var(--space-3) 0 0; text-align: center; color: var(--color-accent-error, #ef4444); font-size: var(--text-sm);"></p>
 
   <div class="location-data-grid" id="loc-data" style="display: none;">
     <div class="location-data-item">
-      <span class="location-data-label">Latitude</span>
+      <span class="location-data-label">{l.lat}</span>
       <span class={`location-data-value ${emphasisField === 'lat' ? 'highlight' : ''}`} id="loc-lat">—</span>
     </div>
     <div class="location-data-item">
-      <span class="location-data-label">Longitude</span>
+      <span class="location-data-label">{l.lng}</span>
       <span class={`location-data-value ${emphasisField === 'lng' ? 'highlight' : ''}`} id="loc-lng">—</span>
     </div>
     {showAllFields && (
       <>
-        <div class="location-data-item">
-          <span class="location-data-label">Address</span>
+        <div class="location-data-item span-2">
+          <span class="location-data-label">{l.address}</span>
           <span class={`location-data-value ${emphasisField === 'address' ? 'highlight' : ''}`} id="loc-address" style="font-family: var(--font-sans); font-size: var(--text-sm);">—</span>
         </div>
         <div class="location-data-item">
-          <span class="location-data-label">City</span>
+          <span class="location-data-label">{l.city}</span>
           <span class={`location-data-value ${emphasisField === 'city' ? 'highlight' : ''}`} id="loc-city" style="font-family: var(--font-sans);">—</span>
         </div>
         <div class="location-data-item">
-          <span class="location-data-label">State / Region</span>
+          <span class="location-data-label">{l.state}</span>
           <span class={`location-data-value ${emphasisField === 'state' ? 'highlight' : ''}`} id="loc-state" style="font-family: var(--font-sans);">—</span>
         </div>
         <div class="location-data-item">
-          <span class="location-data-label">Country</span>
+          <span class="location-data-label">{l.country}</span>
           <span class={`location-data-value ${emphasisField === 'country' ? 'highlight' : ''}`} id="loc-country" style="font-family: var(--font-sans);">—</span>
         </div>
       </>
     )}
     <div class="location-data-item">
-      <span class="location-data-label">Accuracy</span>
+      <span class="location-data-label">{l.accuracy}</span>
       <span class="location-data-value" id="loc-accuracy">—</span>
     </div>
     <div class="location-data-item">
-      <span class="location-data-label">Altitude</span>
+      <span class="location-data-label">{l.altitude}</span>
       <span class="location-data-value" id="loc-altitude">—</span>
     </div>
   </div>
@@ -80,7 +126,7 @@ const { emphasisField = '', showMap = true, showAllFields = true } = Astro.props
         <rect width="14" height="14" x="8" y="8" rx="2" ry="2"/>
         <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/>
       </svg>
-      <span>Copy Coordinates</span>
+      <span>{l.copy}</span>
     </button>
     <button class="btn btn-secondary btn-sm" id="loc-share" type="button" style="display: inline-flex; align-items: center; gap: 6px;">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -90,7 +136,7 @@ const { emphasisField = '', showMap = true, showAllFields = true } = Astro.props
         <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/>
         <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
       </svg>
-      <span>Share</span>
+      <span>{l.share}</span>
     </button>
     <a class="btn btn-secondary btn-sm" id="loc-maps" href="#" target="_blank" rel="noopener noreferrer" style="display: inline-flex; align-items: center; gap: 6px;">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -98,19 +144,80 @@ const { emphasisField = '', showMap = true, showAllFields = true } = Astro.props
         <line x1="9" y1="3" x2="9" y2="18"/>
         <line x1="15" y1="6" x2="15" y2="21"/>
       </svg>
-      <span>Open in Maps</span>
+      <span>{l.openInMaps}</span>
     </a>
+    <button class="btn btn-ghost btn-sm" id="loc-refresh" type="button" style="display: inline-flex; align-items: center; gap: 6px;">
+      <span>🔄 {l.refresh || 'Refresh'}</span>
+    </button>
   </div>
 </div>
 
-{showMap && <div class="map-container" id="loc-map" style="margin-top: var(--space-6); display: none;"></div>}
+{showMap && <div class="map-container" id="loc-map" data-locate-title={l.locateTitle} style="margin-top: var(--space-6);"></div>}
 
 <script>
   import GeoLocation from '../scripts/geolocation.js';
   import Geocoding from '../scripts/geocoding.js';
   import Sharing from '../scripts/sharing.js';
+  import MapUtils from '../scripts/map.js';
+
+  const locateTitles: Record<string, string> = {
+    en: "Zoom to my current location",
+    es: "Centrar y ampliar en mi ubicación",
+    fr: "Zoomer sur ma position actuelle",
+    de: "Auf meinen aktuellen Standort zoomen",
+    pt: "Aproximar da minha localização atual"
+  };
+  const currentDocLang = document.documentElement.lang || 'en';
+  const locateTitle = document.getElementById('loc-map')?.getAttribute('data-locate-title') || locateTitles[currentDocLang] || locateTitles.en;
 
   let cLat = null, cLng = null;
+
+  function ensureMap(lat = null, lng = null, accuracy = 0, zoom = 15) {
+    const mapEl = document.getElementById('loc-map');
+    if (!mapEl) return;
+    const waitL = () => {
+      if (typeof L !== 'undefined') {
+        if (!window._locMap) {
+          const center = (lat !== null && lng !== null) ? [lat, lng] : [20, 0];
+          const initialZoom = (lat !== null && lng !== null) ? zoom : 2;
+          const m = L.map('loc-map', { scrollWheelZoom: false }).setView(center, initialZoom);
+          window._locMap = m;
+          L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; OpenStreetMap',
+            maxZoom: 19
+          }).addTo(m);
+
+          MapUtils.addLocateControl(m, {
+            title: locateTitle,
+            zoom: 16,
+            onLocate: () => locate(false),
+          });
+        }
+
+        if (lat !== null && lng !== null) {
+          window._locMap.flyTo([lat, lng], zoom, { animate: true, duration: 1.5 });
+          if (window._locMap._userLocMarker) window._locMap.removeLayer(window._locMap._userLocMarker);
+          if (window._locMap._userLocCircle) window._locMap.removeLayer(window._locMap._userLocCircle);
+
+          const icon = L.divIcon({ html: '<div class="user-pulse-dot"></div>', className: 'user-pulse-marker', iconSize: [18, 18], iconAnchor: [9, 9] });
+          window._locMap._userLocMarker = L.marker([lat, lng], { icon }).addTo(window._locMap);
+
+          if (accuracy > 0) {
+            window._locMap._userLocCircle = L.circle([lat, lng], {
+              radius: accuracy,
+              color: '#00d4ff',
+              fillColor: '#00d4ff',
+              fillOpacity: 0.1,
+              weight: 1.5
+            }).addTo(window._locMap);
+          }
+        }
+      } else {
+        setTimeout(waitL, 100);
+      }
+    };
+    waitL();
+  }
 
   async function locate(isAuto = false) {
     const loading = document.getElementById('loc-loading');
@@ -118,7 +225,6 @@ const { emphasisField = '', showMap = true, showAllFields = true } = Astro.props
     const errorEl = document.getElementById('loc-error');
     const data = document.getElementById('loc-data');
     const actions = document.getElementById('loc-actions');
-    const mapEl = document.getElementById('loc-map');
     const dot = document.getElementById('loc-dot');
     const badge = document.getElementById('loc-badge');
 
@@ -153,37 +259,25 @@ const { emphasisField = '', showMap = true, showAllFields = true } = Astro.props
       data.style.display = 'grid';
       actions.style.display = 'flex';
 
-      if (mapEl) {
-        mapEl.style.display = 'block';
-        const waitL = () => {
-          if (typeof L !== 'undefined') {
-            const m = L.map('loc-map').setView([cLat, cLng], 15);
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '&copy; OpenStreetMap', maxZoom: 19 }).addTo(m);
-            const icon = L.divIcon({ html: '<div style="width:18px;height:18px;background:#00d4ff;border:3px solid white;border-radius:50%;box-shadow:0 0 10px rgba(0,212,255,0.4);"></div>', className: '', iconSize: [18,18], iconAnchor: [9,9] });
-            L.marker([cLat, cLng], { icon }).addTo(m);
-            if (pos.accuracy > 0) L.circle([cLat, cLng], { radius: pos.accuracy, color: '#00d4ff', fillColor: '#00d4ff', fillOpacity: 0.08, weight: 1 }).addTo(m);
-          } else setTimeout(waitL, 100);
-        };
-        waitL();
-      }
+      ensureMap(cLat, cLng, pos.accuracy, 16);
     } catch (error) {
       loading.style.display = 'none';
       prompt.style.display = 'block';
       dot.style.background = 'var(--color-accent-error)';
       badge.textContent = 'Error';
-      // Auto attempt failed: keep the page usable — show the button with an inline
-      // reason instead of interrupting with an alert.
       const btnLabel = document.querySelector('#loc-btn span');
       if (btnLabel) btnLabel.textContent = isAuto ? 'Try Again' : 'Get My Location';
       errorEl.textContent = GeoLocation.getErrorMessage(error);
       errorEl.style.display = 'block';
+      ensureMap();
     }
   }
 
   document.getElementById('loc-btn')?.addEventListener('click', () => locate(false));
+  document.getElementById('loc-refresh')?.addEventListener('click', () => locate(false));
 
-  // Auto-detect on page load so no click is needed. If permission was already
-  // denied, skip straight to showing the manual button.
+  ensureMap();
+
   (async () => {
     if (await GeoLocation.checkPermission() === 'denied') {
       document.getElementById('loc-prompt').style.display = 'block';

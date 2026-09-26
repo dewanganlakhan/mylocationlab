@@ -7,6 +7,8 @@ import BaseLayout from './BaseLayout.astro';
 import Breadcrumbs from '../components/Breadcrumbs.astro';
 import AuthorEAT from '../components/AuthorEAT.astro';
 import SiloNav from '../components/SiloNav.astro';
+import { getLangFromUrl, getLocalizedPath, languages, defaultLang, type SupportedLang } from '../i18n/config';
+import { useTranslations } from '../i18n/ui';
 
 interface Props {
   title: string;
@@ -22,6 +24,7 @@ interface Props {
   readTime?: string;
   authorName?: string;
   authorRole?: string;
+  lang?: string;
 }
 
 const {
@@ -33,18 +36,23 @@ const {
   readTime = '6 min',
   authorName = 'MyLocationLab Editorial Team',
   authorRole = 'Geospatial Content Reviewer',
+  lang: customLang,
 } = Astro.props;
 
+const lang = (customLang || getLangFromUrl(Astro.url)) as SupportedLang;
+const t = useTranslations(lang);
 const siteUrl = 'https://mylocationlab.com';
 const rawPath = Astro.url.pathname;
 const normalizedPath = rawPath === '/' ? '/' : (rawPath.endsWith('/') ? rawPath : `${rawPath}/`);
 const pageCanonical = canonical || `${siteUrl}${normalizedPath}`;
 
 const breadcrumbs = [
-  { label: 'Home', href: '/' },
+  { label: t('common.home'), href: '/' },
   { label: sectionLabel, href: `/${section}/` },
   { label: h1 },
 ];
+
+const activeLangConfig = languages[lang] || languages.en;
 
 // Rich TechArticle schema
 const articleSchema = {
@@ -56,70 +64,93 @@ const articleSchema = {
   url: pageCanonical,
   datePublished: publishDate,
   dateModified: modifiedDate,
-  inLanguage: 'en-US',
+  inLanguage: activeLangConfig.locale,
   author: {
-    '@type': 'Person',
+    '@type': 'Organization',
     name: authorName,
-    jobTitle: authorRole,
-    worksFor: {
-      '@type': 'Organization',
-      name: 'MyLocationLab',
-      url: siteUrl,
-    },
+    url: siteUrl,
   },
   publisher: {
     '@type': 'Organization',
     name: 'MyLocationLab',
     url: siteUrl,
-    logo: `${siteUrl}/favicon.svg`,
+    logo: {
+      '@type': 'ImageObject',
+      url: `${siteUrl}/favicon.svg`,
+    },
   },
   mainEntityOfPage: {
     '@type': 'WebPage',
     '@id': pageCanonical,
   },
+  proficiencyLevel: 'Beginner',
+  articleSection: sectionLabel,
 };
 
 const allJsonLd = jsonLd
   ? Array.isArray(jsonLd) ? [articleSchema, ...jsonLd] : [articleSchema, jsonLd]
   : [articleSchema];
-
-const isSilo = ['guides', 'comparisons', 'my-location', 'tools'].includes(section);
 ---
 
 <BaseLayout
+  lang={lang}
   title={title}
   description={description}
   activeSection={section}
   canonical={pageCanonical}
-  ogType="article"
   jsonLd={allJsonLd}
 >
   <div class="container">
-    <Breadcrumbs items={breadcrumbs} />
+    <Breadcrumbs items={breadcrumbs} lang={lang} />
 
-    {isSilo && (
-      <SiloNav 
-        silo={section as any} 
-        title={sectionLabel} 
-      />
-    )}
+    <div class="content-layout">
+      <!-- Main Content Column -->
+      <article class="content-main" itemscope itemtype="https://schema.org/TechArticle">
+        <header class="article-header">
+          <div class="article-meta-badge">
+            <span class="badge badge-primary">{sectionLabel}</span>
+            <span class="article-read-time">{readTime} read</span>
+          </div>
 
-    <div class="page-header" style="text-align: left; max-width: var(--max-width-narrow); margin: var(--space-8) 0 var(--space-4);">
-      <span class="badge badge-primary" style="margin-bottom: var(--space-3);">{sectionLabel}</span>
-      <h1 style="font-size: var(--text-4xl); line-height: 1.25; margin-bottom: var(--space-3);">{h1}</h1>
-      {subtitle && <p class="page-header-desc" style="font-size: var(--text-lg); line-height: 1.6; color: var(--color-text-secondary); margin: 0;">{subtitle}</p>}
+          <h1 itemprop="headline">{h1}</h1>
+
+          {subtitle && (
+            <p class="article-subtitle" itemprop="description">{subtitle}</p>
+          )}
+
+          <div class="article-byline">
+            <div class="byline-author">
+              <span class="byline-avatar">ML</span>
+              <div>
+                <span class="byline-name" itemprop="author">{authorName}</span>
+                <span class="byline-role">{authorRole}</span>
+              </div>
+            </div>
+            <div class="byline-dates">
+              <time datetime={publishDate} itemprop="datePublished">Published: {publishDate}</time>
+              {modifiedDate !== publishDate && (
+                <time datetime={modifiedDate} itemprop="dateModified">Updated: {modifiedDate}</time>
+              )}
+            </div>
+          </div>
+        </header>
+
+        <div class="article-body prose" itemprop="articleBody">
+          <slot />
+        </div>
+
+        <!-- E-E-A-T Reviewer Badge at bottom of every article -->
+        <AuthorEAT
+          reviewedBy={authorName}
+          reviewerTitle={authorRole}
+          lastUpdated={modifiedDate}
+        />
+      </article>
+
+      <!-- Sidebar -->
+      <aside class="content-sidebar">
+        <SiloNav currentSection={section} currentPath={normalizedPath} lang={lang} />
+      </aside>
     </div>
-
-    <AuthorEAT 
-      reviewedBy={authorName} 
-      reviewerTitle={authorRole} 
-      lastUpdated={modifiedDate} 
-      readTime={readTime} 
-    />
-
-    <article class="prose" style="max-width: var(--max-width-narrow); margin: 0 0 var(--space-16); font-size: var(--text-base); line-height: 1.8;">
-      <slot />
-    </article>
   </div>
 </BaseLayout>
-

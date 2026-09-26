@@ -1,0 +1,375 @@
+---
+/**
+ * LocationQrCodeView — Multilingual Location QR Code Generator Tool
+ * Powers: /tools/location-qr-code/ across en, es, fr, de, pt
+ */
+import ToolLayout from '../../layouts/ToolLayout.astro';
+import { getLocalizedPath, defaultLang, type SupportedLang } from '../../i18n/config';
+
+interface Props {
+  lang?: SupportedLang | string;
+}
+
+const { lang: customLang = defaultLang } = Astro.props;
+const lang = (customLang || defaultLang) as SupportedLang;
+
+const translations: Record<string, any> = {
+  en: {
+    title: "Location QR Code Generator — Share via QR | MyLocationLab",
+    description: "Generate scannable QR codes for your current GPS coordinates, Google Maps, Apple Maps, or Geo URI. Free instant download in high-resolution.",
+    h1: "Location QR Code Generator",
+    subtitle: "Create scannable QR codes that open your exact location in Google Maps, Apple Maps, or native navigation apps.",
+    locSource: "Location Source",
+    btnUseGps: "📍 Use My GPS",
+    btnManual: "Manual Coordinates",
+    placeholderLat: "Latitude (e.g. 40.7128)",
+    placeholderLng: "Longitude (e.g. -74.0060)",
+    labelTargetType: "Target QR Link Type",
+    optGoogle: "Google Maps URL (Universal)",
+    optApple: "Apple Maps URL (iOS Optimized)",
+    optGeo: "Native Geo URI (RFC 5870 - geo:lat,lng)",
+    optOsm: "OpenStreetMap URL",
+    btnGenerate: "⚡ Generate Location QR Code",
+    btnDownload: "💾 Download PNG",
+    btnCopyLink: "📋 Copy Link",
+    btnCopied: "✅ Copied!",
+    statusAcquiring: "Acquiring GPS...",
+    statusUpdated: "📍 Updated with GPS",
+    h2How: "How Location QR Codes Work",
+    pHow: "A Location QR code encodes geospatial coordinates into a two-dimensional matrix barcode. When scanned with any smartphone camera, the operating system decodes the embedded coordinate payload and prompts the user to open their preferred mapping application.",
+    h3Choosing: "Choosing the Right Location QR Protocol",
+    liGoogle: "<strong>Google Maps URL:</strong> Ideal for cross-platform sharing. Compatible with iOS, Android, and desktop browsers without requiring special protocol handlers.",
+    liApple: "<strong>Apple Maps URL:</strong> Directly opens Apple Maps on iPhone, iPad, and macOS devices for native turn-by-turn navigation.",
+    liGeo: "<strong>Geo URI (RFC 5870):</strong> The official IETF Internet standard format (<code>geo:latitude,longitude</code>). Prompts the operating system's default navigation application automatically.",
+    liOsm: "<strong>OpenStreetMap:</strong> Privacy-respecting, open-source cartography link.",
+    h2Cases: "Popular Use Cases for Location QR Codes",
+    liCase1: "<strong>Event Invitations & Wedding Cards:</strong> Direct guests straight to the exact venue parking entrance or reception hall coordinates.",
+    liCase2: "<strong>Real Estate & Property Signs:</strong> Allow prospective buyers to scan a physical sign and instantly view cadastral property boundaries on their phone.",
+    liCase3: "<strong>Emergency Checkpoints & Trailheads:</strong> Display fixed GPS coordinates for search, rescue, or mountain trail orientation.",
+    h2Related: "Related Location Tools & Guides",
+    linkShare: "Instant Share Location Tool",
+    linkGps: "GPS Coordinates Finder",
+    linkConverter: "Coordinate Converter"
+  },
+  es: {
+    title: "Generador de Códigos QR de Ubicación | MyLocationLab",
+    description: "Genere códigos QR escaneables para sus coordenadas GPS, Google Maps, Apple Maps o Geo URI. Descarga instantánea gratuita en alta resolución.",
+    h1: "Generador de Códigos QR de Ubicación",
+    subtitle: "Cree códigos QR escaneables que abren su ubicación exacta en Google Maps, Apple Maps o aplicaciones de navegación nativas.",
+    locSource: "Origen de las Coordenadas",
+    btnUseGps: "📍 Usar Mi GPS",
+    btnManual: "Coordenadas Manuales",
+    placeholderLat: "Latitud (ej. 40.7128)",
+    placeholderLng: "Longitud (ej. -74.0060)",
+    labelTargetType: "Protocolo del Enlace QR",
+    optGoogle: "URL de Google Maps (Universal)",
+    optApple: "URL de Apple Maps (Optimizado para iOS)",
+    optGeo: "Geo URI Nativo (RFC 5870 - geo:lat,lng)",
+    optOsm: "Enlace OpenStreetMap",
+    btnGenerate: "⚡ Generar Código QR de Ubicación",
+    btnDownload: "💾 Descargar PNG",
+    btnCopyLink: "📋 Copiar Enlace",
+    btnCopied: "✅ ¡Copiado!",
+    statusAcquiring: "Buscando GPS...",
+    statusUpdated: "📍 Coordenadas Actualizadas",
+    h2How: "Cómo Funcionan los Códigos QR de Ubicación",
+    pHow: "Un código QR de ubicación codifica coordenadas geoespaciales en una matriz bidimensional. Al ser escaneado con la cámara de cualquier smartphone, el sistema operativo decodifica la información y abre la app cartográfica preferida.",
+    h3Choosing: "Elección del Protocolo QR Adecuado",
+    liGoogle: "<strong>URL de Google Maps:</strong> Óptimo para distribución multiplataforma. Compatible al 100% con Android, iOS y navegadores de escritorio.",
+    liApple: "<strong>URL de Apple Maps:</strong> Lanza de forma nativa la navegación en dispositivos iPhone, iPad y macOS.",
+    liGeo: "<strong>Geo URI (RFC 5870):</strong> Estándar oficial de Internet de la IETF (<code>geo:latitud,longitud</code>) que despierta la app de mapas por defecto del sistema.",
+    liOsm: "<strong>OpenStreetMap:</strong> Enlace cartográfico abierto y orientado a la privacidad.",
+    h2Cases: "Usos Frecuentes de Códigos QR Geográficos",
+    liCase1: "<strong>Invitaciones a Eventos y Bodas:</strong> Guíe a los asistentes al acceso exacto del aparcamiento o salón de celebraciones.",
+    liCase2: "<strong>Cartelería Inmobiliaria:</strong> Permite a los interesados escanear el cartel y ver de inmediato la finca en su terminal.",
+    liCase3: "<strong>Puntos de Control y Senderismo:</strong> Marque coordenadas GPS inmutables para operaciones de rescate o señalización de rutas.",
+    h2Related: "Herramientas y Guías Relacionadas",
+    linkShare: "Herramienta Compartir Ubicación",
+    linkGps: "Buscador de Coordenadas GPS",
+    linkConverter: "Conversor de Coordenadas"
+  },
+  fr: {
+    title: "Générateur de QR Code de Localisation | MyLocationLab",
+    description: "Créez des QR codes scannables pour vos coordonnées GPS, Google Maps, Apple Maps ou Geo URI. Téléchargement immédiat haute définition.",
+    h1: "Générateur de QR Code de Localisation",
+    subtitle: "Créez des QR codes scannables qui ouvrent votre position exacte dans Google Maps, Apple Maps ou les applications GPS natives.",
+    locSource: "Source de la Position",
+    btnUseGps: "📍 Utiliser Mon GPS",
+    btnManual: "Coordonnées Manuelles",
+    placeholderLat: "Latitude (ex. 40.7128)",
+    placeholderLng: "Longitude (ex. -74.0060)",
+    labelTargetType: "Protocole du Lien QR",
+    optGoogle: "URL Google Maps (Universel)",
+    optApple: "URL Apple Maps (Optimisé iOS)",
+    optGeo: "Geo URI Natif (RFC 5870 - geo:lat,lng)",
+    optOsm: "Lien OpenStreetMap",
+    btnGenerate: "⚡ Générer le QR Code de Position",
+    btnDownload: "💾 Télécharger en PNG",
+    btnCopyLink: "📋 Copier le Lien",
+    btnCopied: "✅ Copié !",
+    statusAcquiring: "Acquisition GPS...",
+    statusUpdated: "📍 Coordonnées Mises à Jour",
+    h2How: "Fonctionnement des QR Codes de Localisation",
+    pHow: "Un QR code de localisation encode des coordonnées géographiques dans une matrice 2D. Dès qu'un utilisateur le scanne avec son appareil photo, le smartphone lit le payload et lance directement l'application de navigation.",
+    h3Choosing: "Choisir le Bon Protocole de QR Code",
+    liGoogle: "<strong>Lien Google Maps :</strong> Idéal pour un partage universel sans contrainte d'OS (iOS, Android, PC).",
+    liApple: "<strong>Lien Apple Maps :</strong> Lance nativement le guidage sur iPhone, iPad et Mac.",
+    liGeo: "<strong>Geo URI (RFC 5870) :</strong> Format standardisé de l'IETF (<code>geo:latitude,longitude</code>) qui sollicite le logiciel de guidage par défaut.",
+    liOsm: "<strong>OpenStreetMap :</strong> Lien direct vers le projet cartographique libre et souverain.",
+    h2Cases: "Cas d'Usage Populaires",
+    liCase1: "<strong>Cartons d'Invitation et Mariages :</strong> Acheminez vos invités jusqu'à l'entrée précise du parking du domaine.",
+    liCase2: "<strong>Panneaux Immobiliers :</strong> Permettez aux acquéreurs de visualiser immédiatement les limites parcellaires sur leur mobile.",
+    liCase3: "<strong>Balisage et Randonnée :</strong> Fournissez un repère de coordonnées GPS fixe pour les secours en montagne.",
+    h2Related: "Outils et Guides Liés",
+    linkShare: "Partager Ma Position",
+    linkGps: "Coordonnées GPS",
+    linkConverter: "Convertisseur de Coordonnées"
+  },
+  de: {
+    title: "Standort-QR-Code-Generator — Position teilen | MyLocationLab",
+    description: "Generieren Sie scannbare QR-Codes für Ihre GPS-Koordinaten, Google Maps, Apple Maps oder Geo-URIs. Kostenloser High-Res PNG Download.",
+    h1: "Standort-QR-Code-Generator",
+    subtitle: "Erstellen Sie scannbare QR-Codes, die Ihren exakten Standort in Google Maps, Apple Maps oder Navigations-Apps öffnen.",
+    locSource: "Standortquelle",
+    btnUseGps: "📍 Mein GPS nutzen",
+    btnManual: "Manuelle Koordinaten",
+    placeholderLat: "Breitengrad (z.B. 40.7128)",
+    placeholderLng: "Längengrad (z.B. -74.0060)",
+    labelTargetType: "QR-Link-Zielformat",
+    optGoogle: "Google Maps URL (Universal)",
+    optApple: "Apple Maps URL (iOS-optimiert)",
+    optGeo: "Natives Geo-URI (RFC 5870 - geo:lat,lng)",
+    optOsm: "OpenStreetMap URL",
+    btnGenerate: "⚡ Standort-QR-Code generieren",
+    btnDownload: "💾 PNG herunterladen",
+    btnCopyLink: "📋 Link kopieren",
+    btnCopied: "✅ Kopiert!",
+    statusAcquiring: "Suche GPS...",
+    statusUpdated: "📍 Über GPS aktualisiert",
+    h2How: "Wie Standort-QR-Codes funktionieren",
+    pHow: "Ein Standort-QR-Code codiert Geokoordinaten in einen 2D-Matrix-Barcode. Beim Scannen mit der Smartphone-Kamera erkennt das Betriebssystem die Koordinaten und öffnet die bevorzugte Kartenanwendung.",
+    h3Choosing: "Das richtige QR-Protokoll wählen",
+    liGoogle: "<strong>Google Maps URL:</strong> Ideal für universelles Teilen auf Android, iOS und Desktop.",
+    liApple: "<strong>Apple Maps URL:</strong> Startet die native Apple Karten Navigation direkt auf iPhone und iPad.",
+    liGeo: "<strong>Geo URI (RFC 5870):</strong> Der offizielle IETF-Internetstandard (<code>geo:breite,länge</code>) zur Ansteuerung der System-Navigationsapp.",
+    liOsm: "<strong>OpenStreetMap:</strong> Datenschutzfreundlicher Link zur freien Weltkarte.",
+    h2Cases: "Typische Einsatzbereiche",
+    liCase1: "<strong>Einladungskarten & Hochzeiten:</strong> Leiten Sie Gäste exakt zum Eingang oder zum Festplatz.",
+    liCase2: "<strong>Immobilienbeschilderung:</strong> Kaufinteressenten scannen das Schild und sehen das Flurstück sofort auf der Karte.",
+    liCase3: "<strong>Rettungspunkte & Wanderwege:</strong> Feste GPS-Punkte zur schnellen Orientierung für Bergrettung und Wanderer.",
+    h2Related: "Verwandte Geotools & Ratgeber",
+    linkShare: "Standort sofort teilen",
+    linkGps: "GPS-Koordinaten-Finder",
+    linkConverter: "Koordinaten-Umrechner"
+  },
+  pt: {
+    title: "Gerador de QR Code de Localização | MyLocationLab",
+    description: "Gere códigos QR escaneáveis para suas coordenadas GPS, Google Maps, Apple Maps ou Geo URI. Download gratuito em alta resolução.",
+    h1: "Gerador de QR Code de Localização",
+    subtitle: "Crie códigos QR escaneáveis que abrem sua localização exata no Google Maps, Apple Maps ou aplicativos de navegação.",
+    locSource: "Origem da Localização",
+    btnUseGps: "📍 Usar Meu GPS",
+    btnManual: "Coordenadas Manuais",
+    placeholderLat: "Latitude (ex. 40.7128)",
+    placeholderLng: "Longitude (ex. -74.0060)",
+    labelTargetType: "Tipo de Protocolo do QR",
+    optGoogle: "URL do Google Maps (Universal)",
+    optApple: "URL do Apple Maps (Otimizado para iOS)",
+    optGeo: "Geo URI Nativo (RFC 5870 - geo:lat,lng)",
+    optOsm: "URL do OpenStreetMap",
+    btnGenerate: "⚡ Gerar QR Code de Localização",
+    btnDownload: "💾 Baixar PNG",
+    btnCopyLink: "📋 Copiar Link",
+    btnCopied: "✅ Copiado!",
+    statusAcquiring: "Obtendo GPS...",
+    statusUpdated: "📍 Atualizado com GPS",
+    h2How: "Como Funcionam os Códigos QR de Localização",
+    pHow: "Um QR Code de localização armazena coordenadas geográficas em uma matriz bidimensional. Ao ser lido pela câmera de qualquer celular, o sistema decodifica os pontos e convida o usuário a abrir o app de mapas.",
+    h3Choosing: "Escolhendo o Protocolo Correto",
+    liGoogle: "<strong>URL do Google Maps:</strong> Recomendado para compartilhamento universal multiplataforma (Android, iOS, PC).",
+    liApple: "<strong>URL do Apple Maps:</strong> Abre diretamente a navegação nos aparelhos iPhone, iPad e Mac.",
+    liGeo: "<strong>Geo URI (RFC 5870):</strong> Formato padronizado oficial da IETF (<code>geo:latitude,longitude</code>) que aciona o app padrão de mapas.",
+    liOsm: "<strong>OpenStreetMap:</strong> Link aberto com foco em privacidade da base OpenStreetMap.",
+    h2Cases: "Casos de Uso Populares",
+    liCase1: "<strong>Convites de Eventos e Casamentos:</strong> Conduza os convidados com exatidão até o estacionamento do local.",
+    liCase2: "<strong>Placas Imobiliárias:</strong> Permite que interessados leiam a placa física e visualizem a propriedade no smartphone.",
+    liCase3: "<strong>Pontos de Resgate e Trilhas:</strong> Disponibiliza coordenadas fixas para busca, salvamento e caminhadas.",
+    h2Related: "Ferramentas Relacionadas",
+    linkShare: "Compartilhar Minha Localização",
+    linkGps: "Coordenadas GPS",
+    linkConverter: "Conversor de Coordenadas"
+  }
+};
+
+const t = translations[lang] || translations.en;
+---
+
+<ToolLayout
+  toolId="location-qr-code"
+  title={t.title}
+  description={t.description}
+  h1={t.h1}
+  subtitle={t.subtitle}
+  lang={lang}
+>
+  <div class="tool-interface">
+    <div class="grid grid-2" style="gap: var(--space-8); align-items: start;">
+      <div>
+        <div style="margin-bottom: var(--space-4);">
+          <label style="display: block; font-size: var(--text-sm); font-weight: 600; margin-bottom: var(--space-2);">{t.locSource}</label>
+          <div class="flex gap-2">
+            <button class="btn btn-primary btn-sm" id="qr-gps-btn" type="button">{t.btnUseGps}</button>
+            <button class="btn btn-secondary btn-sm" id="qr-manual-btn" type="button">{t.btnManual}</button>
+          </div>
+        </div>
+
+        <div class="input-group" style="margin-bottom: var(--space-4);">
+          <input type="text" class="input" id="qr-lat" placeholder={t.placeholderLat} value="40.7128" />
+          <input type="text" class="input" id="qr-lng" placeholder={t.placeholderLng} value="-74.0060" />
+        </div>
+
+        <div style="margin-bottom: var(--space-4);">
+          <label style="display: block; font-size: var(--text-sm); font-weight: 600; margin-bottom: var(--space-2);">{t.labelTargetType}</label>
+          <select class="input" id="qr-type" style="cursor: pointer;">
+            <option value="google">{t.optGoogle}</option>
+            <option value="apple">{t.optApple}</option>
+            <option value="geo">{t.optGeo}</option>
+            <option value="osm">{t.optOsm}</option>
+          </select>
+        </div>
+
+        <button class="btn btn-primary" id="qr-generate-btn" type="button" style="width: 100%;">
+          {t.btnGenerate}
+        </button>
+      </div>
+
+      <!-- QR Code Preview Card -->
+      <div class="card card-flat" style="text-align: center; padding: var(--space-6);">
+        <div id="qr-container" style="background: white; padding: var(--space-4); border-radius: var(--radius-lg); display: inline-block; box-shadow: 0 4px 20px rgba(0,0,0,0.4); margin-bottom: var(--space-4);">
+          <img
+            id="qr-image"
+            alt="Location QR Code"
+            width="220"
+            height="220"
+            style="display: block; width: 220px; height: 220px; aspect-ratio: 1/1;"
+          />
+        </div>
+
+        <div style="font-size: var(--text-xs); color: var(--color-text-secondary); word-break: break-all; margin-bottom: var(--space-4);" id="qr-encoded-url">
+          https://maps.google.com/?q=40.7128,-74.0060
+        </div>
+
+        <div class="flex gap-2 justify-center flex-wrap">
+          <a class="btn btn-secondary btn-sm" id="qr-download-btn" download="location-qr.png">
+            {t.btnDownload}
+          </a>
+          <button class="btn btn-ghost btn-sm" id="qr-copy-url-btn" type="button">
+            {t.btnCopyLink}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="prose" style="margin-top: var(--space-12); line-height: 1.8;">
+    <h2>{t.h2How}</h2>
+    <p>{t.pHow}</p>
+
+    <h3>{t.h3Choosing}</h3>
+    <ul>
+      <li set:html={t.liGoogle}></li>
+      <li set:html={t.liApple}></li>
+      <li set:html={t.liGeo}></li>
+      <li set:html={t.liOsm}></li>
+    </ul>
+
+    <h2>{t.h2Cases}</h2>
+    <ul>
+      <li set:html={t.liCase1}></li>
+      <li set:html={t.liCase2}></li>
+      <li set:html={t.liCase3}></li>
+    </ul>
+
+    <h2>{t.h2Related}</h2>
+    <ul>
+      <li><a href={getLocalizedPath('/share-location/', lang)}>{t.linkShare}</a></li>
+      <li><a href={getLocalizedPath('/tools/gps-coordinates/', lang)}>{t.linkGps}</a></li>
+      <li><a href={getLocalizedPath('/tools/coordinate-converter/', lang)}>{t.linkConverter}</a></li>
+    </ul>
+  </div>
+
+  <script>
+    import QRCode from 'qrcode';
+
+    const latInput = document.getElementById('qr-lat') as HTMLInputElement;
+    const lngInput = document.getElementById('qr-lng') as HTMLInputElement;
+    const typeSelect = document.getElementById('qr-type') as HTMLSelectElement;
+    const generateBtn = document.getElementById('qr-generate-btn');
+    const gpsBtn = document.getElementById('qr-gps-btn');
+    const qrImg = document.getElementById('qr-image') as HTMLImageElement;
+    const encodedUrlEl = document.getElementById('qr-encoded-url');
+    const downloadBtn = document.getElementById('qr-download-btn') as HTMLAnchorElement;
+    const copyUrlBtn = document.getElementById('qr-copy-url-btn');
+
+    function buildTargetUrl(lat: number, lng: number): string {
+      const type = typeSelect ? typeSelect.value : 'google';
+      if (type === 'apple') return `https://maps.apple.com/?ll=${lat},${lng}&q=Pin`;
+      if (type === 'geo') return `geo:${lat},${lng}`;
+      if (type === 'osm') return `https://www.openstreetmap.org/?mlat=${lat}&mlon=${lng}#map=16/${lat}/${lng}`;
+      return `https://maps.google.com/?q=${lat},${lng}`;
+    }
+
+    async function updateQR() {
+      const lat = parseFloat(latInput?.value ?? '') || 0;
+      const lng = parseFloat(lngInput?.value ?? '') || 0;
+      const targetUrl = buildTargetUrl(lat, lng);
+
+      if (encodedUrlEl) encodedUrlEl.textContent = targetUrl;
+
+      try {
+        const previewUrl = await QRCode.toDataURL(targetUrl, { width: 220, margin: 1, color: { dark: '#0f172a', light: '#ffffff' } });
+        if (qrImg) qrImg.src = previewUrl;
+        const downloadUrl = await QRCode.toDataURL(targetUrl, { width: 600, margin: 2, color: { dark: '#0f172a', light: '#ffffff' } });
+        if (downloadBtn) downloadBtn.href = downloadUrl;
+      } catch {
+        if (qrImg) qrImg.removeAttribute('src');
+      }
+    }
+
+    if (generateBtn) generateBtn.addEventListener('click', updateQR);
+    if (typeSelect) typeSelect.addEventListener('change', updateQR);
+
+    if (gpsBtn) {
+      gpsBtn.addEventListener('click', () => {
+        if (!navigator.geolocation) {
+          alert('Geolocation is not supported by your browser.');
+          return;
+        }
+        navigator.geolocation.getCurrentPosition(
+          (pos) => {
+            if (latInput) latInput.value = pos.coords.latitude.toFixed(6);
+            if (lngInput) lngInput.value = pos.coords.longitude.toFixed(6);
+            updateQR();
+          },
+          (err) => {
+            alert('Could not acquire location: ' + err.message);
+          },
+          { enableHighAccuracy: true, timeout: 10000 }
+        );
+      });
+    }
+
+    if (copyUrlBtn) {
+      copyUrlBtn.addEventListener('click', () => {
+        const text = encodedUrlEl ? encodedUrlEl.textContent || '' : '';
+        navigator.clipboard.writeText(text).then(() => {
+          const orig = copyUrlBtn.textContent;
+          copyUrlBtn.textContent = '✅ Copied!';
+          setTimeout(() => { copyUrlBtn.textContent = orig; }, 2000);
+        });
+      });
+    }
+
+    updateQR();
+  </script>
+</ToolLayout>

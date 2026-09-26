@@ -2,21 +2,26 @@
 /**
  * ToolCard — Reusable card for tool grids with icon, title, description, and hover animation
  */
+import { getLangFromUrl, getLocalizedPath } from '../i18n/config';
+
 interface Props {
   title: string;
   description: string;
   icon: string;
   url: string;
   class?: string;
+  lang?: string;
 }
 
-const { title, description, icon, url, class: className = '' } = Astro.props;
+const { title, description, icon, url, class: className = '', lang: customLang } = Astro.props;
+const lang = customLang || getLangFromUrl(Astro.url);
+const resolvedUrl = url.startsWith('/') ? getLocalizedPath(url, lang) : url;
 
 // Extract slug to determine clean SVG icon
 const slug = url.replace(/^\/tools\//, '').replace(/\/$/, '');
 ---
 
-<a href={url} class={`tool-card ${className}`}>
+<a href={resolvedUrl} class={`tool-card ${className}`}>
   <div class="tool-card-icon">
     {slug === 'gps-coordinates' && (
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -30,7 +35,9 @@ const slug = url.replace(/^\/tools\//, '').replace(/\/$/, '');
     {slug === 'latitude-longitude' && (
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <circle cx="12" cy="12" r="10"/>
-        <line x1="2" y1="12" x2="22" y2="12"/>
+        <line x1="22" y1="12" x2="18" y2="12"/>
+        <line x1="6" y1="12" x2="2" y2="12"/>
+        <line x1="12" y1="2" x2="12" y2="2"/>
         <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
       </svg>
     )}

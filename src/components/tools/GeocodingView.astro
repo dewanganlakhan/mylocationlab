@@ -1,0 +1,249 @@
+---
+/**
+ * GeocodingView — Multilingual Geocoder Tool
+ * Powers: /tools/geocoding/ across en, es, fr, de, pt
+ */
+import ToolLayout from '../../layouts/ToolLayout.astro';
+import { getLocalizedPath, defaultLang, type SupportedLang } from '../../i18n/config';
+
+interface Props {
+  lang?: SupportedLang | string;
+}
+
+const { lang: customLang = defaultLang } = Astro.props;
+const lang = (customLang || defaultLang) as SupportedLang;
+
+const translations: Record<string, any> = {
+  en: {
+    title: "Geocoder — Address to Coordinates | MyLocationLab",
+    description: "Convert any address, city, or place name into GPS coordinates. Find the exact latitude and longitude for any location.",
+    h1: "Geocoder",
+    subtitle: "Convert any address, city, or place name into GPS coordinates (latitude and longitude).",
+    labelInput: "Enter an address, city, or place name",
+    placeholder: "e.g. Eiffel Tower, Paris",
+    btnFind: "Find Coordinates",
+    h3Results: "Results",
+    noResults: "No results found.",
+    lblLocation: "Location",
+    lblCoords: "Coordinates",
+    alertEmpty: "Please enter an address or place name.",
+    alertFailed: "Geocoding failed. Please try again.",
+    toastCopied: "Coordinates copied!",
+    h2What: "What Is Geocoding?",
+    pWhat: "<strong>Geocoding</strong> (also called forward geocoding) converts human-readable addresses into geographic coordinates. Enter any address, city name, landmark, or place — the tool will return the corresponding latitude and longitude.",
+    h3Related: "Related Tools & Guides",
+    linkRev: "Reverse Geocoder (Coordinates to Address)",
+    linkAddr: "Street Address Finder",
+    linkComp: "Forward vs Reverse Geocoding Comparison",
+    linkGlossary: "Geodesy Glossary",
+    locateTitle: "Zoom to my current location"
+  },
+  es: {
+    title: "Geocodificador — Dirección a Coordenadas | MyLocationLab",
+    description: "Convierta cualquier dirección, ciudad o punto de interés en coordenadas GPS. Encuentre latitud y longitud exactas.",
+    h1: "Geocodificador",
+    subtitle: "Transforme cualquier dirección postal, ciudad o punto geográfico en coordenadas GPS (latitud y longitud).",
+    labelInput: "Introduzca una dirección, ciudad o lugar",
+    placeholder: "ej. Torre Eiffel, París",
+    btnFind: "Obtener Coordenadas",
+    h3Results: "Resultados",
+    noResults: "No se encontraron resultados.",
+    lblLocation: "Ubicación",
+    lblCoords: "Coordenadas",
+    alertEmpty: "Por favor introduzca una dirección o lugar.",
+    alertFailed: "Error en la geocodificación. Inténtelo nuevamente.",
+    toastCopied: "¡Coordenadas copiadas!",
+    h2What: "¿Qué es la Geocodificación?",
+    pWhat: "La <strong>geocodificación directa</strong> (forward geocoding) transforma direcciones escritas por humanos en coordenadas matemáticas de latitud y longitud, permitiendo ubicar puntos en el mapa.",
+    h3Related: "Herramientas y Guías Relacionadas",
+    linkRev: "Geocodificador Inverso (Coordenadas a Dirección)",
+    linkAddr: "Buscador de Dirección Postal",
+    linkComp: "Comparativa Geocodificación vs Geocodificación Inversa",
+    linkGlossary: "Glosario de Geodesia",
+    locateTitle: "Centrar y ampliar en mi ubicación"
+  },
+  fr: {
+    title: "Géocodage — Adresse en Coordonnées GPS | MyLocationLab",
+    description: "Convertissez une adresse, ville ou monument en coordonnées GPS. Trouvez la latitude et la longitude exactes.",
+    h1: "Géocodage d'Adresse",
+    subtitle: "Convertissez n'importe quelle adresse, commune ou point d'intérêt en coordonnées GPS précises (latitude et longitude).",
+    labelInput: "Saisissez une adresse, ville ou monument",
+    placeholder: "ex. Tour Eiffel, Paris",
+    btnFind: "Trouver les Coordonnées",
+    h3Results: "Résultats",
+    noResults: "Aucun résultat trouvé.",
+    lblLocation: "Emplacement",
+    lblCoords: "Coordonnées",
+    alertEmpty: "Veuillez saisir une adresse ou un lieu.",
+    alertFailed: "Le géocodage a échoué. Veuillez réessayer.",
+    toastCopied: "Coordonnées copiées !",
+    h2What: "Qu'est-ce que le Géocodage ?",
+    pWhat: "Le <strong>géocodage direct</strong> consiste à traduire une adresse textuelle ou un toponyme en coordonnées géographiques normalisées afin de positionner précisément le lieu sur un globe numérique.",
+    h3Related: "Outils & Guides Associés",
+    linkRev: "Géocodage Inverse (Coordonnées vers Adresse)",
+    linkAddr: "Localisateur d'Adresse",
+    linkComp: "Comparatif Géocodage vs Géocodage Inverse",
+    linkGlossary: "Glossaire Géodésique",
+    locateTitle: "Zoomer sur ma position actuelle"
+  },
+  de: {
+    title: "Geocoder — Adresse zu GPS-Koordinaten | MyLocationLab",
+    description: "Wandeln Sie jede Adresse, Stadt oder Sehenswürdigkeit in GPS-Koordinaten um. Exakte Breiten- und Längengrade finden.",
+    h1: "Geocoder (Adresse zu Koordinaten)",
+    subtitle: "Wandeln Sie Adressen, Orte oder POIs in exakte GPS-Koordinaten (Breiten- und Längengrad) um.",
+    labelInput: "Adresse, Stadt oder Ort eingeben",
+    placeholder: "z.B. Brandenburger Tor, Berlin",
+    btnFind: "Koordinaten finden",
+    h3Results: "Suchergebnisse",
+    noResults: "Keine Treffer gefunden.",
+    lblLocation: "Standort",
+    lblCoords: "Koordinaten",
+    alertEmpty: "Bitte eine Adresse oder Ortsbezeichnung eingeben.",
+    alertFailed: "Geocoding fehlgeschlagen. Bitte erneut versuchen.",
+    toastCopied: "Koordinaten kopiert!",
+    h2What: "Was ist Geocoding?",
+    pWhat: "<strong>Geocoding</strong> (Vorwärts-Geokodierung) transformiert lesbare Adressen oder Ortsnamen in numerische Koordinaten auf dem WGS-84-Referenzsystem.",
+    h3Related: "Verwandte Tools & Leitfäden",
+    linkRev: "Reverse Geocoder (Koordinaten zu Adresse)",
+    linkAddr: "Adressen-Finder",
+    linkComp: "Vergleich Geocoding vs. Reverse Geocoding",
+    linkGlossary: "Geodäsie-Glossar",
+    locateTitle: "Auf meinen aktuellen Standort zoomen"
+  },
+  pt: {
+    title: "Geocodificador — Endereço para Coordenadas | MyLocationLab",
+    description: "Converta qualquer endereço, cidade ou ponto turístico em coordenadas GPS exatas de latitude e longitude.",
+    h1: "Geocodificador",
+    subtitle: "Converta qualquer endereço, cidade ou ponto turístico em coordenadas GPS (latitude e longitude).",
+    labelInput: "Digite um endereço, cidade ou ponto turístico",
+    placeholder: "ex. Cristo Redentor, Rio de Janeiro",
+    btnFind: "Buscar Coordenadas",
+    h3Results: "Resultados",
+    noResults: "Nenhum resultado encontrado.",
+    lblLocation: "Localização",
+    lblCoords: "Coordenadas",
+    alertEmpty: "Por favor, digite um endereço ou local.",
+    alertFailed: "Falha na geocodificação. Tente novamente.",
+    toastCopied: "Coordenadas copiadas!",
+    h2What: "O que é Geocodificação?",
+    pWhat: "A <strong>geocodificação direta</strong> é a conversão de endereços e topônimos em coordenadas espaciais georreferenciadas (latitude e longitude).",
+    h3Related: "Ferramentas Relacionadas",
+    linkRev: "Geocodificação Reversa (Coordenadas para Endereço)",
+    linkAddr: "Localizador de Endereço",
+    linkComp: "Comparativo Geocodificação vs Geocodificação Reversa",
+    linkGlossary: "Glossário Geodésico",
+    locateTitle: "Aproximar da minha localização atual"
+  }
+};
+
+const t = translations[lang] || translations.en;
+---
+
+<ToolLayout leaflet toolId="geocoding" title={t.title} description={t.description} h1={t.h1} subtitle={t.subtitle} lang={lang}>
+  <div class="tool-interface">
+    <label class="label">{t.labelInput}</label>
+    <div class="input-group" style="margin-bottom: var(--space-4);">
+      <input type="text" class="input" id="gc-input" placeholder={t.placeholder} />
+      <button class="btn btn-primary" id="gc-btn" type="button">{t.btnFind}</button>
+    </div>
+    <div id="gc-results" style="display: none;">
+      <h3 style="font-size: var(--text-base); margin-bottom: var(--space-4);">{t.h3Results}</h3>
+      <div id="gc-list"></div>
+    </div>
+  </div>
+  <div class="map-container" id="gc-map" style="margin-top: var(--space-6); display: none; min-height: 380px;"></div>
+  
+  <div class="prose" style="margin-top: var(--space-12); line-height: 1.8;">
+    <h2>{t.h2What}</h2>
+    <p set:html={t.pWhat}></p>
+    <h3>{t.h3Related}</h3>
+    <ul>
+      <li><a href={getLocalizedPath('/tools/reverse-geocoding/', lang)}>{t.linkRev}</a></li>
+      <li><a href={getLocalizedPath('/tools/address-finder/', lang)}>{t.linkAddr}</a></li>
+      <li><a href={getLocalizedPath('/comparisons/geocoding-vs-reverse-geocoding/', lang)}>{t.linkComp}</a></li>
+      <li><a href={getLocalizedPath('/glossary/', lang)}>{t.linkGlossary}</a></li>
+    </ul>
+  </div>
+
+  <script define:vars={{ tData: t }}>
+    async function runGeocodeSearch(query) {
+      if (!query) { alert(tData.alertEmpty); return; }
+      try {
+        const res = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}&limit=5&addressdetails=1`, {
+          headers: { 'User-Agent': 'MyLocationLab/1.0' }
+        });
+        if (!res.ok) throw new Error('Geocoding service unavailable');
+        const data = await res.json();
+        const list = document.getElementById('gc-list');
+        const container = document.getElementById('gc-results');
+        if (!list || !container) return;
+
+        list.innerHTML = '';
+        if (data.length === 0) {
+          list.innerHTML = `<p style="color: var(--color-text-tertiary);">${tData.noResults}</p>`;
+          container.style.display = 'block';
+          return;
+        }
+
+        data.forEach(r => {
+          const lat = parseFloat(r.lat);
+          const lng = parseFloat(r.lon);
+          const div = document.createElement('div');
+          div.className = 'tool-result';
+          div.style.marginBottom = 'var(--space-3)';
+          div.style.cursor = 'pointer';
+          div.innerHTML = `<div class="tool-result-row"><span class="tool-result-label">${tData.lblLocation}</span><span class="tool-result-value" style="font-family:var(--font-sans);font-size:var(--text-sm);">${r.display_name}</span></div><div class="tool-result-row"><span class="tool-result-label">${tData.lblCoords}</span><span class="tool-result-value" style="color:var(--color-accent-primary); font-family:var(--font-mono); font-weight:700;">${lat.toFixed(6)}, ${lng.toFixed(6)}</span></div>`;
+          div.addEventListener('click', () => {
+            navigator.clipboard.writeText(`${lat.toFixed(6)}, ${lng.toFixed(6)}`).then(() => {
+              const prevBg = div.style.background;
+              div.style.background = 'rgba(0, 212, 255, 0.15)';
+              setTimeout(() => { div.style.background = prevBg; }, 1000);
+            });
+            const mapEl = document.getElementById('gc-map');
+            if (mapEl) mapEl.style.display = 'block';
+            // @ts-ignore
+            if (typeof L !== 'undefined') {
+              // @ts-ignore
+              if (window._gcMap) window._gcMap.remove();
+              // @ts-ignore
+              window._gcMap = L.map('gc-map').setView([lat, lng], 14);
+              // @ts-ignore
+              L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '&copy; OpenStreetMap', maxZoom: 19 }).addTo(window._gcMap);
+              // @ts-ignore
+              L.marker([lat, lng]).addTo(window._gcMap).bindPopup(r.display_name).openPopup();
+
+              // @ts-ignore
+              if (typeof window.addMapLocateControl === 'function') {
+                // @ts-ignore
+                window.addMapLocateControl(window._gcMap, {
+                  title: tData.locateTitle || 'Zoom to my current location',
+                  zoom: 16,
+                });
+              }
+            }
+          });
+          list.appendChild(div);
+        });
+        container.style.display = 'block';
+      } catch {
+        alert(tData.alertFailed);
+      }
+    }
+
+    document.getElementById('gc-btn')?.addEventListener('click', () => {
+      const query = document.getElementById('gc-input')?.value.trim();
+      runGeocodeSearch(query);
+    });
+
+    document.getElementById('gc-input')?.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') document.getElementById('gc-btn')?.click();
+    });
+
+    const urlQuery = new URLSearchParams(window.location.search).get('q');
+    if (urlQuery && urlQuery.trim()) {
+      const input = document.getElementById('gc-input');
+      if (input) input.value = urlQuery.trim();
+      runGeocodeSearch(urlQuery.trim());
+    }
+  </script>
+</ToolLayout>

@@ -1,0 +1,613 @@
+---
+/**
+ * GpsAccuracyView — Multilingual GPS Accuracy Checker Tool
+ * Powers: /tools/gps-accuracy/ across en, es, fr, de, pt
+ */
+import ToolLayout from '../../layouts/ToolLayout.astro';
+import { getLocalizedPath, defaultLang, type SupportedLang } from '../../i18n/config';
+
+interface Props {
+  lang?: SupportedLang | string;
+}
+
+const { lang: customLang = defaultLang } = Astro.props;
+const lang = (customLang || defaultLang) as SupportedLang;
+
+const translations: Record<string, any> = {
+  en: {
+    title: "GPS Accuracy Checker — Live Precision Test | MyLocationLab",
+    description: "Check your device's live GPS accuracy in real-time. Measure horizontal dilution of precision (HDOP), signal confidence radius in meters, speed, and heading.",
+    h1: "GPS Accuracy Checker",
+    subtitle: "Monitor your device's real-time GNSS satellite positioning accuracy, horizontal precision radius, and sensor telemetry.",
+    btnStart: "🛰️ Start Live GPS Monitor",
+    btnStop: "⏹️ Stop Monitor",
+    statusStandby: "Standby",
+    statusAcquiring: "Acquiring satellites...",
+    statusActive: "Live GNSS Active",
+    liveRadiusTitle: "Live Horizontal Accuracy Radius",
+    awaitingLock: "Awaiting GPS Lock",
+    updatesEverySec: "Updates every second",
+    lblHdop: "Estimated HDOP",
+    lblSpeed: "Ground Speed",
+    lblHeading: "Compass Heading",
+    lblAlt: "Altitude",
+    lblValt: "Vertical Accuracy",
+    lblCoords: "Active Coordinates",
+    btnCopy: "📋 Copy Snapshot",
+    btnCopied: "✅ Copied!",
+    ratingExceptional: "Exceptional Accuracy (Dual-Band Precision)",
+    ratingHigh: "High Accuracy (Standard GNSS Lock)",
+    ratingModerate: "Moderate Accuracy (Wi-Fi / Multi-source)",
+    ratingLow: "Low Precision (Cellular / Regional)",
+    hdopExcellent: "Excellent",
+    hdopGood: "Good",
+    hdopModerate: "Moderate",
+    speedStationary: "Stationary / 0 km/h",
+    headingStatic: "Static (No Heading)",
+    notAvailable: "Not Available",
+    h2Understanding: "Understanding GPS Accuracy & Dilution of Precision (DOP)",
+    pUnderstanding: "Browser and smartphone geolocation accuracy is expressed as a <strong>95% confidence radius</strong>. If your device reports an accuracy of ±5 meters, there is a 95% probability that your true geographic position lies within a circle of 5 meters around the reported coordinates.",
+    h3Classifications: "Accuracy Classifications",
+    thRadius: "Accuracy Radius",
+    thRating: "Rating",
+    thSource: "Typical Source",
+    thSuitability: "Use Case Suitability",
+    row1Rating: "Exceptional",
+    row1Source: "Dual-Frequency L1/L5 GNSS",
+    row1Use: "Precision mapping, surveying, lane-level navigation",
+    row2Rating: "High",
+    row2Source: "Standard Mobile GPS / GLONASS",
+    row2Use: "Turn-by-turn driving, hiking, fitness tracking",
+    row3Rating: "Moderate",
+    row3Source: "Wi-Fi Positioning (WPS) / Indoor",
+    row3Use: "Neighborhood-level delivery, local search",
+    row4Rating: "Low",
+    row4Source: "Cell Tower Triangulation / IP Geo",
+    row4Use: "City-level regional discovery only",
+    h2Improve: "How to Improve Your Device's GPS Accuracy",
+    li1: "<strong>Enable Wi-Fi and Bluetooth Scanning:</strong> Mobile operating systems use nearby Wi-Fi router BSSIDs to accelerate initial satellite acquisition (Assisted GPS).",
+    li2: "<strong>Step Away from 'Urban Canyons':</strong> Tall concrete and glass skyscrapers reflect satellite signals, creating <em>multipath interference</em> that degrades accuracy.",
+    li3: "<strong>Calibrate the Internal Magnetometer:</strong> Move your device in a figure-8 motion to recalibrate the electronic compass for accurate heading bearings.",
+    li4: "<strong>Ensure Unobstructed Sky View:</strong> Heavy foliage, subterranean basements, and metallic structures attenuate high-frequency satellite microwave signals.",
+    h2Related: "Related Geospatial Tools",
+    linkGps: "GPS Coordinates Finder",
+    linkGuideAccuracy: "Comprehensive Guide to Improving GPS Accuracy",
+    linkComp: "GPS vs. IP Location Comparison"
+  },
+  es: {
+    title: "Comprobador de Precisión GPS — Test en Tiempo Real | MyLocationLab",
+    description: "Verifique la precisión GPS en tiempo real de su dispositivo. Mida el radio de incertidumbre horizontal (HDOP), velocidad de desplazamiento y rumbo.",
+    h1: "Comprobador de Precisión GPS",
+    subtitle: "Supervise en tiempo real la exactitud de posicionamiento por satélite GNSS, el radio de incertidumbre y la telemetría de sensores.",
+    btnStart: "🛰️ Iniciar Monitor GPS en Vivo",
+    btnStop: "⏹️ Detener Monitor",
+    statusStandby: "En espera",
+    statusAcquiring: "Buscando satélites...",
+    statusActive: "GNSS en Vivo Activo",
+    liveRadiusTitle: "Radio de Precisión Horizontal en Vivo",
+    awaitingLock: "Esperando fijación GPS",
+    updatesEverySec: "Actualización continua cada segundo",
+    lblHdop: "HDOP Estimado",
+    lblSpeed: "Velocidad de Desplazamiento",
+    lblHeading: "Rumbo de Brújula",
+    lblAlt: "Altitud",
+    lblValt: "Precisión Vertical",
+    lblCoords: "Coordenadas Activas",
+    btnCopy: "📋 Copiar Registro",
+    btnCopied: "✅ ¡Copiado!",
+    ratingExceptional: "Precisión Excepcional (Banda Dual L1/L5)",
+    ratingHigh: "Alta Precisión (Fijación GNSS Estándar)",
+    ratingModerate: "Precisión Moderada (Wi-Fi / Mixta)",
+    ratingLow: "Baja Precisión (Antenas Celulares / IP)",
+    hdopExcellent: "Excelente",
+    hdopGood: "Bueno",
+    hdopModerate: "Moderado",
+    speedStationary: "Estacionario / 0 km/h",
+    headingStatic: "Estático (Sin rumbo)",
+    notAvailable: "No disponible",
+    h2Understanding: "Comprensión de la Precisión GPS y Dilución de Precisión (DOP)",
+    pUnderstanding: "La precisión de geolocalización en smartphones se expresa como un <strong>radio de confianza del 95%</strong>. Si el dispositivo indica ±5 metros, existe un 95% de probabilidad matemática de que su posición real se encuentre dentro de un círculo de 5 metros.",
+    h3Classifications: "Clasificación de Precisión",
+    thRadius: "Radio de Precisión",
+    thRating: "Calificación",
+    thSource: "Fuente Habitual",
+    thSuitability: "Aplicación Idónea",
+    row1Rating: "Excepcional",
+    row1Source: "GNSS de Doble Frecuencia L1/L5",
+    row1Use: "Cartografía de precisión, agrimensura, navegación por carril",
+    row2Rating: "Alta",
+    row2Source: "GPS / GLONASS Móvil Estándar",
+    row2Use: "Navegación paso a paso en carretera, senderismo",
+    row3Rating: "Moderada",
+    row3Source: "Posicionamiento Wi-Fi (WPS) / Interiores",
+    row3Use: "Servicios de entrega local, búsqueda de proximidad",
+    row4Rating: "Baja",
+    row4Source: "Triangulación Celular / GeoIP",
+    row4Use: "Descubrimiento regional a escala de ciudad",
+    h2Improve: "Cómo Mejorar la Precisión GPS de su Dispositivo",
+    li1: "<strong>Activar Wi-Fi y Bluetooth:</strong> Los sistemas operativos móviles analizan señales de routers circundantes para acelerar el cálculo orbital (A-GPS).",
+    li2: "<strong>Alejarse de cañones urbanos:</strong> Rascacielos de hormigón y cristal reflejan las microondas satelitales creando <em>errores por multitrayectoria</em>.",
+    li3: "<strong>Calibrar la brújula electrónica:</strong> Realice un movimiento en forma de '8' en el aire con su smartphone para reiniciar el magnetómetro.",
+    li4: "<strong>Buscar vista despejada al cielo:</strong> Follaje denso, túneles y techos metálicos atenúan las señales de radio de los satélites GNSS.",
+    h2Related: "Herramientas Geoespaciales Relacionadas",
+    linkGps: "Buscador de Coordenadas GPS",
+    linkGuideAccuracy: "Guía Completa para Mejorar la Precisión GPS",
+    linkComp: "Comparativa GPS vs Ubicación IP"
+  },
+  fr: {
+    title: "Test de Précision GPS — Mesure en Temps Réel | MyLocationLab",
+    description: "Vérifiez la précision GPS en temps réel de votre appareil. Mesurez le rayon d'incertitude horizontal (HDOP), la vitesse de déplacement et le cap.",
+    h1: "Test de Précision GPS",
+    subtitle: "Surveillez en direct la précision de positionnement par satellite GNSS, le rayon d'incertitude horizontal et la télémétrie de vos capteurs.",
+    btnStart: "🛰️ Démarrer le Moniteur GPS",
+    btnStop: "⏹️ Arrêter le Moniteur",
+    statusStandby: "En attente",
+    statusAcquiring: "Recherche de satellites...",
+    statusActive: "GNSS Actif en Direct",
+    liveRadiusTitle: "Rayon de Précision Horizontale en Direct",
+    awaitingLock: "En attente du verrouillage GPS",
+    updatesEverySec: "Mise à jour chaque seconde",
+    lblHdop: "HDOP Estimé",
+    lblSpeed: "Vitesse au Sol",
+    lblHeading: "Cap Magnétique",
+    lblAlt: "Altitude",
+    lblValt: "Précision Verticale",
+    lblCoords: "Coordonnées Actives",
+    btnCopy: "📋 Copier l'Instantané",
+    btnCopied: "✅ Copié !",
+    ratingExceptional: "Précision Exceptionnelle (Double Fréquence L1/L5)",
+    ratingHigh: "Haute Précision (Verrouillage GNSS Standard)",
+    ratingModerate: "Précision Modérée (Wi-Fi / Multi-sources)",
+    ratingLow: "Faible Précision (Antennes Relais / IP)",
+    hdopExcellent: "Excellent",
+    hdopGood: "Bon",
+    hdopModerate: "Modéré",
+    speedStationary: "Immobile / 0 km/h",
+    headingStatic: "Statique (Aucun cap)",
+    notAvailable: "Non disponible",
+    h2Understanding: "Comprendre la Précision GPS et la Dilution de Précision (DOP)",
+    pUnderstanding: "La précision géolocalisée d'un smartphone est mesurée selon un <strong>rayon de confiance à 95%</strong>. Un rayon de ±5 mètres signifie qu'il y a 95% de certitude que vos coordonnées réelles se trouvent dans ce cercle.",
+    h3Classifications: "Classes de Précision",
+    thRadius: "Rayon de Précision",
+    thRating: "Niveau",
+    thSource: "Source Typique",
+    thSuitability: "Usage Recommandé",
+    row1Rating: "Exceptionnel",
+    row1Source: "GNSS Bi-fréquence L1/L5",
+    row1Use: "Topographie fine, cadastre, guidage de voie",
+    row2Rating: "Élevé",
+    row2Source: "GPS / GLONASS Standard",
+    row2Use: "Guidage routier virage par virage, randonnée",
+    row3Rating: "Modéré",
+    row3Source: "Positionnement Wi-Fi (WPS) / Intérieur",
+    row3Use: "Livraison locale, recherche de quartier",
+    row4Rating: "Faible",
+    row4Source: "Triangulation Cellulaire / Géolocalisation IP",
+    row4Use: "Découverte régionale à l'échelle d'une ville",
+    h2Improve: "Comment Améliorer la Précision GPS de votre Appareil",
+    li1: "<strong>Activer le Wi-Fi et le Bluetooth :</strong> Les systèmes d'exploitation mobiles scannent les box Wi-Fi environnantes pour accélérer l'acquisition satellite (A-GPS).",
+    li2: "<strong>Éviter les canyons urbains :</strong> Les façades vitrées et les hauts buildings provoquent des réverbérations radioélectriques (multitrajets).",
+    li3: "<strong>Calibrer le magnétomètre :</strong> Tracez un '8' horizontal avec votre téléphone pour réétalonner la boussole interne.",
+    li4: "<strong>Dégager la vue vers le ciel :</strong> Les parkings souterrains, toits métalliques et feuillages denses affaiblissent le signal satellitaire.",
+    h2Related: "Outils Géospatiaux Liés",
+    linkGps: "Coordonnées GPS Actuelles",
+    linkGuideAccuracy: "Guide Complet pour Améliorer la Précision GPS",
+    linkComp: "Comparatif GPS vs Géolocalisation IP"
+  },
+  de: {
+    title: "GPS-Genauigkeit prüfen — Echtzeit-Präzisionstest | MyLocationLab",
+    description: "Überprüfen Sie die GPS-Genauigkeit Ihres Geräts in Echtzeit. Messen Sie HDOP, Konfidenzradius in Metern, Geschwindigkeit und Kompasskurs.",
+    h1: "GPS-Genauigkeitsprüfer",
+    subtitle: "Echtzeit-Überwachung der GNSS-Satellitenortung, des horizontalen Unsicherheitsradius und der Sensortelemetrie.",
+    btnStart: "🛰️ Live-GPS-Monitor starten",
+    btnStop: "⏹️ Monitor stoppen",
+    statusStandby: "Bereit",
+    statusAcquiring: "Suche Satelliten...",
+    statusActive: "Live-GNSS aktiv",
+    liveRadiusTitle: "Horizontaler Genauigkeitsradius (Live)",
+    awaitingLock: "Warte auf GPS-Signal",
+    updatesEverySec: "Aktualisierung im Sekundentakt",
+    lblHdop: "Geschätztes HDOP",
+    lblSpeed: "Geschwindigkeit",
+    lblHeading: "Kompasskurs",
+    lblAlt: "Höhe über NN",
+    lblValt: "Vertikale Genauigkeit",
+    lblCoords: "Aktive Koordinaten",
+    btnCopy: "📋 Schnappschuss kopieren",
+    btnCopied: "✅ Kopiert!",
+    ratingExceptional: "Hervorragende Präzision (Dual-Band L1/L5)",
+    ratingHigh: "Hohe Genauigkeit (Standard-GNSS-Signal)",
+    ratingModerate: "Moderate Genauigkeit (WLAN / Hybridsensorik)",
+    ratingLow: "Geringe Präzision (Funkzellen / IP)",
+    hdopExcellent: "Hervorragend",
+    hdopGood: "Gut",
+    hdopModerate: "Mäßig",
+    speedStationary: "Stillstand / 0 km/h",
+    headingStatic: "Statisch (Kein Kurs)",
+    notAvailable: "Nicht verfügbar",
+    h2Understanding: "GPS-Genauigkeit und Dilution of Precision (DOP) verstehen",
+    pUnderstanding: "Die Standortgenauigkeit von Smartphones wird als <strong>95%-Konfidenzradius</strong> angegeben. Ein Wert von ±5 Metern bedeutet, dass Sie sich mit 95%iger Wahrscheinlichkeit innerhalb dieses Kreises befinden.",
+    h3Classifications: "Genauigkeitsklassen",
+    thRadius: "Genauigkeitsradius",
+    thRating: "Bewertung",
+    thSource: "Typische Signalquelle",
+    thSuitability: "Einsatzzweck",
+    row1Rating: "Hervorragend",
+    row1Source: "Zweifrequenz-GNSS L1/L5",
+    row1Use: "Vermessungswesen, hochpräzise Spurführung",
+    row2Rating: "Hoch",
+    row2Source: "Standard-GPS / GLONASS",
+    row2Use: "Straßennavigation, Wandern, Outdoor-Tracking",
+    row3Rating: "Moderat",
+    row3Source: "WLAN-Ortung (WPS) / Indoor",
+    row3Use: "Lieferdienste, Umkreissuche",
+    row4Rating: "Niedrig",
+    row4Source: "Mobilfunkmasten / GeoIP",
+    row4Use: "Grobe regionale Stadterkennung",
+    h2Improve: "So verbessern Sie die GPS-Genauigkeit Ihres Geräts",
+    li1: "<strong>WLAN- und Bluetooth-Suche aktivieren:</strong> Unterstützt schnelles Assisted-GPS (A-GPS) durch Abgleich bekannter Router-IDs.",
+    li2: "<strong>Straßenschluchten meiden:</strong> Hohe Beton- und Glasbauten reflektieren Satellitenwellen und erzeugen Mehrwegeffekte (Multipath).",
+    li3: "<strong>Kompass kalibrieren:</strong> Bewegen Sie das Smartphone in einer liegenden Acht, um das Magnetometer neu auszurichten.",
+    li4: "<strong>Freie Sicht zum Himmel sichern:</strong> Dichte Baumkronen, Parkgaragen und Metalldächer dämpfen die Funkwellen der Satelliten.",
+    h2Related: "Verwandte Geotools",
+    linkGps: "GPS-Koordinaten-Finder",
+    linkGuideAccuracy: "Ausführlicher Ratgeber: GPS-Genauigkeit optimieren",
+    linkComp: "Vergleich: GPS vs. IP-Standort"
+  },
+  pt: {
+    title: "Verificador de Precisão GPS — Teste em Tempo Real | MyLocationLab",
+    description: "Verifique a precisão do GPS do seu dispositivo em tempo real. Meça o raio de incerteza horizontal (HDOP), velocidade e direção da bússola.",
+    h1: "Verificador de Precisão GPS",
+    subtitle: "Monitore em tempo real o posicionamento por satélites GNSS, o raio de precisão horizontal e a telemetria dos sensores.",
+    btnStart: "🛰️ Iniciar Monitor GPS em Tempo Real",
+    btnStop: "⏹️ Parar Monitor",
+    statusStandby: "Em espera",
+    statusAcquiring: "Adquirindo satélites...",
+    statusActive: "GNSS Ativo em Tempo Real",
+    liveRadiusTitle: "Raio de Precisão Horizontal em Tempo Real",
+    awaitingLock: "Aguardando sinal GPS",
+    updatesEverySec: "Atualização contínua a cada segundo",
+    lblHdop: "HDOP Estimado",
+    lblSpeed: "Velocidade de Deslocamento",
+    lblHeading: "Rumo da Bússola",
+    lblAlt: "Altitude",
+    lblValt: "Precisão Vertical",
+    lblCoords: "Coordenadas Ativas",
+    btnCopy: "📋 Copiar Instantâneo",
+    btnCopied: "✅ Copiado!",
+    ratingExceptional: "Precisão Excepcional (Banda Dupla L1/L5)",
+    ratingHigh: "Alta Precisão (Sinal GNSS Padrão)",
+    ratingModerate: "Precisão Moderada (Wi-Fi / Multi-fontes)",
+    ratingLow: "Baixa Precisão (Torres Celulares / IP)",
+    hdopExcellent: "Excelente",
+    hdopGood: "Bom",
+    hdopModerate: "Moderado",
+    speedStationary: "Estacionário / 0 km/h",
+    headingStatic: "Estático (Sem rumo)",
+    notAvailable: "Não disponível",
+    h2Understanding: "Entendendo a Precisão GPS e Diluição de Precisão (DOP)",
+    pUnderstanding: "A precisão da geolocalização no smartphone é expressa como um <strong>raio de confiança de 95%</strong>. Se o dispositivo indicar ±5 metros, há 95% de probabilidade de que sua posição real esteja dentro de um círculo de 5 metros.",
+    h3Classifications: "Classificações de Precisão",
+    thRadius: "Raio de Precisão",
+    thRating: "Classificação",
+    thSource: "Fonte Típica",
+    thSuitability: "Aplicação Recomendada",
+    row1Rating: "Excepcional",
+    row1Source: "GNSS de Frequência Dupla L1/L5",
+    row1Use: "Agrimensura, cartografia de precisão, navegação por faixas",
+    row2Rating: "Alta",
+    row2Source: "GPS / GLONASS Móvel Convencional",
+    row2Use: "Navegação automotiva curva a curva, trilhas",
+    row3Rating: "Moderada",
+    row3Source: "Posicionamento Wi-Fi (WPS) / Interior",
+    row3Use: "Entregas em bairros, buscas locais de proximidade",
+    row4Rating: "Baixa",
+    row4Source: "Triangulação de Torres Celulares / GeoIP",
+    row4Use: "Descoberta regional em nível de cidade",
+    h2Improve: "Como Melhorar a Precisão do GPS no seu Dispositivo",
+    li1: "<strong>Ativar busca por Wi-Fi e Bluetooth:</strong> Os sistemas móveis leem sinais de roteadores locais para acelerar a sincronização inicial (A-GPS).",
+    li2: "<strong>Evitar cânions urbanos:</strong> Prédios espelhados e de concreto refletem sinais, gerando erros de <em>multitrajeto</em>.",
+    li3: "<strong>Calibrar a bússola digital:</strong> Movimente o aparelho desenhando o número 8 no ar para redefinir o sensor magnético.",
+    li4: "<strong>Manter linha de visada desobstruída para o céu:</strong> Galhos densos, garagens subterrâneas e tetos de metal reduzem a intensidade do sinal GNSS.",
+    h2Related: "Ferramentas Geoespaciais Relacionadas",
+    linkGps: "Coordenadas GPS",
+    linkGuideAccuracy: "Guia Completo para Melhorar a Precisão GPS",
+    linkComp: "Comparativo GPS vs Localização por IP"
+  }
+};
+
+const t = translations[lang] || translations.en;
+---
+
+<ToolLayout
+  toolId="gps-accuracy"
+  title={t.title}
+  description={t.description}
+  h1={t.h1}
+  subtitle={t.subtitle}
+  lang={lang}
+>
+  <div class="tool-interface">
+    <div class="flex gap-4 flex-wrap" style="margin-bottom: var(--space-6);">
+      <button class="btn btn-primary" id="acc-start-btn" type="button">{t.btnStart}</button>
+      <button class="btn btn-secondary" id="acc-stop-btn" type="button" style="display: none;">{t.btnStop}</button>
+      <span id="acc-status-indicator" style="display: inline-flex; align-items: center; gap: var(--space-2); color: var(--color-text-secondary); font-size: var(--text-sm);">
+        <span style="width: 10px; height: 10px; border-radius: 50%; background: #64748b;"></span> {t.statusStandby}
+      </span>
+    </div>
+
+    <!-- Live Accuracy Gauge Card -->
+    <div class="card card-highlight" id="acc-card" style="text-align: center; padding: var(--space-8) var(--space-4); margin-bottom: var(--space-6);">
+      <span style="font-size: var(--text-xs); font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: var(--color-accent-primary);">{t.liveRadiusTitle}</span>
+      
+      <div style="font-size: clamp(2.5rem, 5vw, 4.5rem); font-weight: 900; font-family: var(--font-mono); margin: var(--space-3) 0; color: var(--color-text-heading);">
+        ± <span id="acc-val-meters">—</span> <span style="font-size: var(--text-2xl); color: var(--color-accent-primary);">m</span>
+        <span style="color: var(--color-text-tertiary); font-size: var(--text-3xl); margin: 0 var(--space-2);">/</span>
+        ± <span id="acc-val-feet">—</span> <span style="font-size: var(--text-2xl); color: var(--color-accent-secondary);">ft</span>
+      </div>
+
+      <div style="display: flex; justify-content: center; gap: var(--space-3); align-items: center; flex-wrap: wrap;">
+        <span class="badge badge-neutral" id="acc-rating-badge">{t.awaitingLock}</span>
+        <span style="font-size: var(--text-xs); color: var(--color-text-tertiary);" id="acc-update-time">{t.updatesEverySec}</span>
+      </div>
+
+      <!-- Accuracy progress bar -->
+      <div style="width: 100%; max-width: 420px; height: 8px; background: var(--color-bg-tertiary); border-radius: var(--radius-full); margin: var(--space-6) auto 0; overflow: hidden; border: 1px solid var(--color-border);">
+        <div id="acc-meter-bar" style="width: 0%; height: 100%; background: var(--gradient-primary); transition: width 0.4s ease;"></div>
+      </div>
+    </div>
+
+    <!-- Sensor Metrics Grid -->
+    <div class="location-data-grid" id="acc-grid">
+      <div class="location-data-item">
+        <span class="location-data-label">{t.lblHdop}</span>
+        <span class="location-data-value highlight" id="acc-hdop">—</span>
+      </div>
+      <div class="location-data-item">
+        <span class="location-data-label">{t.lblSpeed}</span>
+        <span class="location-data-value" id="acc-speed">—</span>
+      </div>
+      <div class="location-data-item">
+        <span class="location-data-label">{t.lblHeading}</span>
+        <span class="location-data-value" id="acc-heading">—</span>
+      </div>
+      <div class="location-data-item">
+        <span class="location-data-label">{t.lblAlt}</span>
+        <span class="location-data-value" id="acc-alt">—</span>
+      </div>
+      <div class="location-data-item">
+        <span class="location-data-label">{t.lblValt}</span>
+        <span class="location-data-value" id="acc-valt">—</span>
+      </div>
+      <div class="location-data-item">
+        <span class="location-data-label">{t.lblCoords}</span>
+        <span class="location-data-value" id="acc-coords" style="font-size: var(--text-xs);">—</span>
+      </div>
+    </div>
+
+    <div class="action-buttons" style="margin-top: var(--space-6); display: flex;">
+      <button class="btn btn-secondary btn-sm" id="acc-copy" type="button">{t.btnCopy}</button>
+    </div>
+  </div>
+
+  <div class="prose" style="margin-top: var(--space-12); line-height: 1.8;">
+    <h2>{t.h2Understanding}</h2>
+    <p set:html={t.pUnderstanding}></p>
+
+    <h3>{t.h3Classifications}</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>{t.thRadius}</th>
+          <th>{t.thRating}</th>
+          <th>{t.thSource}</th>
+          <th>{t.thSuitability}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>&lt; 3 m (10 ft)</td>
+          <td><strong style="color: var(--color-accent-success);">{t.row1Rating}</strong></td>
+          <td>{t.row1Source}</td>
+          <td>{t.row1Use}</td>
+        </tr>
+        <tr>
+          <td>3 - 8 m (10–26 ft)</td>
+          <td><strong style="color: var(--color-accent-primary);">{t.row2Rating}</strong></td>
+          <td>{t.row2Source}</td>
+          <td>{t.row2Use}</td>
+        </tr>
+        <tr>
+          <td>8 - 25 m (26–82 ft)</td>
+          <td><strong style="color: var(--color-accent-warning);">{t.row3Rating}</strong></td>
+          <td>{t.row3Source}</td>
+          <td>{t.row3Use}</td>
+        </tr>
+        <tr>
+          <td>&gt; 25 m (82+ ft)</td>
+          <td><strong style="color: var(--color-accent-error);">{t.row4Rating}</strong></td>
+          <td>{t.row4Source}</td>
+          <td>{t.row4Use}</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>{t.h2Improve}</h2>
+    <ul>
+      <li set:html={t.li1}></li>
+      <li set:html={t.li2}></li>
+      <li set:html={t.li3}></li>
+      <li set:html={t.li4}></li>
+    </ul>
+
+    <h2>{t.h2Related}</h2>
+    <ul>
+      <li><a href={getLocalizedPath('/tools/gps-coordinates/', lang)}>{t.linkGps}</a></li>
+      <li><a href={getLocalizedPath('/guides/improve-gps-accuracy/', lang)}>{t.linkGuideAccuracy}</a></li>
+      <li><a href={getLocalizedPath('/comparisons/gps-vs-ip-location/', lang)}>{t.linkComp}</a></li>
+    </ul>
+  </div>
+
+  <script define:vars={{ tData: t }}>
+    let watchId = null;
+    const startBtn = document.getElementById('acc-start-btn');
+    const stopBtn = document.getElementById('acc-stop-btn');
+    const statusIndicator = document.getElementById('acc-status-indicator');
+    const valMeters = document.getElementById('acc-val-meters');
+    const valFeet = document.getElementById('acc-val-feet');
+    const ratingBadge = document.getElementById('acc-rating-badge');
+    const updateTime = document.getElementById('acc-update-time');
+    const meterBar = document.getElementById('acc-meter-bar');
+
+    const hdopEl = document.getElementById('acc-hdop');
+    const speedEl = document.getElementById('acc-speed');
+    const headingEl = document.getElementById('acc-heading');
+    const altEl = document.getElementById('acc-alt');
+    const valtEl = document.getElementById('acc-valt');
+    const coordsEl = document.getElementById('acc-coords');
+
+    function startTracking() {
+      if (!navigator.geolocation) {
+        alert('Geolocation is not supported by your browser.');
+        return;
+      }
+
+      if (statusIndicator) {
+        statusIndicator.innerHTML = `<span style="width: 10px; height: 10px; border-radius: 50%; background: #00d4ff; box-shadow: 0 0 8px #00d4ff;"></span> ${tData.statusAcquiring}`;
+      }
+
+      watchId = navigator.geolocation.watchPosition(
+        (pos) => {
+          const acc = pos.coords.accuracy;
+          const accFeet = Math.round(acc * 3.28084);
+          const roundAcc = Math.round(acc * 10) / 10;
+
+          if (valMeters) valMeters.textContent = String(roundAcc);
+          if (valFeet) valFeet.textContent = String(accFeet);
+          if (updateTime) updateTime.textContent = `${new Date().toLocaleTimeString()}`;
+
+          if (coordsEl) {
+            coordsEl.textContent = `${pos.coords.latitude.toFixed(6)}, ${pos.coords.longitude.toFixed(6)}`;
+          }
+
+          if (ratingBadge && meterBar) {
+            if (acc <= 4) {
+              ratingBadge.textContent = tData.ratingExceptional;
+              ratingBadge.className = 'badge badge-success';
+              meterBar.style.width = '100%';
+              meterBar.style.background = '#10b981';
+            } else if (acc <= 10) {
+              ratingBadge.textContent = tData.ratingHigh;
+              ratingBadge.className = 'badge badge-primary';
+              meterBar.style.width = '80%';
+              meterBar.style.background = '#00d4ff';
+            } else if (acc <= 30) {
+              ratingBadge.textContent = tData.ratingModerate;
+              ratingBadge.className = 'badge badge-warning';
+              meterBar.style.width = '45%';
+              meterBar.style.background = '#f59e0b';
+            } else {
+              ratingBadge.textContent = tData.ratingLow;
+              ratingBadge.className = 'badge badge-error';
+              meterBar.style.width = '20%';
+              meterBar.style.background = '#ef4444';
+            }
+          }
+
+          if (hdopEl) {
+            const hdop = (acc / 4.0).toFixed(2);
+            const qual = hdop < 1.5 ? tData.hdopExcellent : hdop < 3 ? tData.hdopGood : tData.hdopModerate;
+            hdopEl.textContent = `~${hdop} (${qual})`;
+          }
+
+          if (speedEl) {
+            if (pos.coords.speed !== null && pos.coords.speed !== undefined) {
+              const kmh = (pos.coords.speed * 3.6).toFixed(1);
+              const mph = (pos.coords.speed * 2.23694).toFixed(1);
+              speedEl.textContent = `${kmh} km/h (${mph} mph)`;
+            } else {
+              speedEl.textContent = tData.speedStationary;
+            }
+          }
+
+          if (headingEl) {
+            if (pos.coords.heading !== null && pos.coords.heading !== undefined && !isNaN(pos.coords.heading)) {
+              const deg = Math.round(pos.coords.heading);
+              const dirs = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'];
+              const dir = dirs[Math.round(deg / 45) % 8];
+              headingEl.textContent = `${deg}° (${dir})`;
+            } else {
+              headingEl.textContent = tData.headingStatic;
+            }
+          }
+
+          if (altEl) {
+            if (pos.coords.altitude !== null && pos.coords.altitude !== undefined) {
+              altEl.textContent = `${Math.round(pos.coords.altitude)} m (${Math.round(pos.coords.altitude * 3.28084)} ft)`;
+            } else {
+              altEl.textContent = tData.notAvailable;
+            }
+          }
+
+          if (valtEl) {
+            if (pos.coords.altitudeAccuracy !== null && pos.coords.altitudeAccuracy !== undefined) {
+              valtEl.textContent = `± ${Math.round(pos.coords.altitudeAccuracy)} m`;
+            } else {
+              valtEl.textContent = 'N/A';
+            }
+          }
+
+          if (statusIndicator) {
+            statusIndicator.innerHTML = `<span style="width: 10px; height: 10px; border-radius: 50%; background: #10b981; box-shadow: 0 0 8px #10b981;"></span> ${tData.statusActive}`;
+          }
+        },
+        (err) => {
+          if (statusIndicator) {
+            statusIndicator.innerHTML = `<span style="width: 10px; height: 10px; border-radius: 50%; background: #ef4444;"></span> ${err.message}`;
+          }
+        },
+        { enableHighAccuracy: true, maximumAge: 1000, timeout: 15000 }
+      );
+
+      if (startBtn) startBtn.style.display = 'none';
+      if (stopBtn) stopBtn.style.display = 'inline-flex';
+    }
+
+    function stopTracking() {
+      if (watchId !== null) {
+        navigator.geolocation.clearWatch(watchId);
+        watchId = null;
+      }
+      if (startBtn) startBtn.style.display = 'inline-flex';
+      if (stopBtn) stopBtn.style.display = 'none';
+      if (statusIndicator) {
+        statusIndicator.innerHTML = `<span style="width: 10px; height: 10px; border-radius: 50%; background: #64748b;"></span> ${tData.statusStandby}`;
+      }
+    }
+
+    if (startBtn) startBtn.addEventListener('click', startTracking);
+    if (stopBtn) stopBtn.addEventListener('click', stopTracking);
+
+    document.getElementById('acc-copy')?.addEventListener('click', function () {
+      const meters = valMeters?.textContent.trim();
+      if (!meters || meters === '—') return;
+      const t = (id) => document.getElementById(id)?.textContent.trim() || '—';
+      const lines = [
+        `GPS Accuracy Snapshot — ${new Date().toLocaleString()}`,
+        `Accuracy: ± ${meters} m (± ${t('acc-val-feet')} ft)`,
+        `Rating: ${t('acc-rating-badge')}`,
+        `Coordinates: ${t('acc-coords')}`,
+        `HDOP: ${t('acc-hdop')}`,
+        `Ground Speed: ${t('acc-speed')}`,
+        `Heading: ${t('acc-heading')}`,
+        `Altitude: ${t('acc-alt')}`,
+        `Vertical Accuracy: ${t('acc-valt')}`,
+      ];
+      navigator.clipboard.writeText(lines.join('\n')).then(() => {
+        const orig = this.textContent;
+        this.textContent = tData.btnCopied;
+        setTimeout(() => { this.textContent = orig; }, 2000);
+      });
+    });
+  </script>
+</ToolLayout>

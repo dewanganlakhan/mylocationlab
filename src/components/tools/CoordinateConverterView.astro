@@ -1,0 +1,226 @@
+---
+/**
+ * CoordinateConverterView — Multilingual Coordinate Converter Tool
+ * Powers: /tools/coordinate-converter/ across en, es, fr, de, pt
+ */
+import ToolLayout from '../../layouts/ToolLayout.astro';
+import { getLocalizedPath, defaultLang, type SupportedLang } from '../../i18n/config';
+
+interface Props {
+  lang?: SupportedLang | string;
+}
+
+const { lang: customLang = defaultLang } = Astro.props;
+const lang = (customLang || defaultLang) as SupportedLang;
+
+const translations: Record<string, any> = {
+  en: {
+    title: "Coordinate Converter — DD, DMS, UTM | MyLocationLab",
+    description: "Convert coordinates between Decimal Degrees, DMS, UTM, Geohash, and Plus Code formats instantly.",
+    h1: "Coordinate Converter",
+    subtitle: "Convert between Decimal Degrees, DMS, UTM, Geohash, and Plus Code formats.",
+    labelInput: "Enter Coordinates (any format)",
+    placeholder: "e.g. 28.6139, 77.2090 or 28°36'50\"N 77°12'32\"E",
+    btnConvert: "Convert",
+    btnGps: "📍 Use My Location",
+    lblDd: "Decimal Degrees",
+    lblDmsLat: "DMS (Lat)",
+    lblDmsLng: "DMS (Lng)",
+    lblUtm: "UTM",
+    lblGeohash: "Geohash",
+    lblPlusCode: "Plus Code",
+    h2Formats: "Supported Coordinate Formats",
+    fmt1: "Decimal Degrees (DD) — 28.613900, 77.209000 — Most common digital format",
+    fmt2: "Degrees Minutes Seconds (DMS) — 28°36'50.0\"N 77°12'32.4\"E — Traditional notation",
+    fmt3: "UTM — 43R 693903 3168335 — Used in surveying and military",
+    fmt4: "Geohash — ttncygjf8 — Compact alphanumeric encoding",
+    fmt5: "Plus Code — 7JVW52GR+2V — Google's Open Location Code",
+    compLinkText: "Decimal Degrees vs DMS Comparison"
+  },
+  es: {
+    title: "Conversor de Coordenadas — DD, DMS, UTM | MyLocationLab",
+    description: "Convierta coordenadas entre Grados Decimales, DMS, UTM, Geohash y Plus Code al instante.",
+    h1: "Conversor de Coordenadas",
+    subtitle: "Transforme coordenadas entre Grados Decimales, DMS, UTM, Geohash y Plus Code.",
+    labelInput: "Introduzca Coordenadas (cualquier formato)",
+    placeholder: "ej. 28.6139, 77.2090 o 28°36'50\"N 77°12'32\"E",
+    btnConvert: "Convertir",
+    btnGps: "📍 Usar Mi Ubicación",
+    lblDd: "Grados Decimales",
+    lblDmsLat: "DMS (Latitud)",
+    lblDmsLng: "DMS (Longitud)",
+    lblUtm: "UTM",
+    lblGeohash: "Geohash",
+    lblPlusCode: "Plus Code",
+    h2Formats: "Formatos de Coordenadas Admitidos",
+    fmt1: "Grados Decimales (DD) — 28.613900, 77.209000 — Estándar digital generalizado",
+    fmt2: "Grados Minutos Segundos (DMS) — 28°36'50.0\"N 77°12'32.4\"E — Notación geográfica clásica",
+    fmt3: "UTM — 43R 693903 3168335 — Empleado en topografía y defensa",
+    fmt4: "Geohash — ttncygjf8 — Indexación espacial alfanumérica compacta",
+    fmt5: "Plus Code — 7JVW52GR+2V — Código de ubicación abierto de Google",
+    compLinkText: "Comparativa Grados Decimales vs DMS"
+  },
+  fr: {
+    title: "Convertisseur de Coordonnées — DD, DMS, UTM | MyLocationLab",
+    description: "Convertissez instantanément des coordonnées entre Degrés Décimaux, DMS, UTM, Geohash et Plus Code.",
+    h1: "Convertisseur de Coordonnées",
+    subtitle: "Convertissez entre Degrés Décimaux, DMS, UTM, Geohash et Plus Code.",
+    labelInput: "Saisissez des Coordonnées (tout format)",
+    placeholder: "ex. 28.6139, 77.2090 ou 28°36'50\"N 77°12'32\"E",
+    btnConvert: "Convertir",
+    btnGps: "📍 Utiliser Ma Position",
+    lblDd: "Degrés Décimaux",
+    lblDmsLat: "DMS (Latitude)",
+    lblDmsLng: "DMS (Longitude)",
+    lblUtm: "UTM",
+    lblGeohash: "Geohash",
+    lblPlusCode: "Plus Code",
+    h2Formats: "Formats de Coordonnées Pris en Charge",
+    fmt1: "Degrés Décimaux (DD) — 28.613900, 77.209000 — Format numérique de référence",
+    fmt2: "Degrés Minutes Secondes (DMS) — 28°36'50.0\"N 77°12'32.4\"E — Notation classique",
+    fmt3: "UTM — 43R 693903 3168335 — Utilisé en topographie et SIG",
+    fmt4: "Geohash — ttncygjf8 — Encodage spatial compact",
+    fmt5: "Plus Code — 7JVW52GR+2V — Système Open Location Code",
+    compLinkText: "Comparatif Degrés Décimaux vs DMS"
+  },
+  de: {
+    title: "Koordinaten-Umrechner — DD, GMS, UTM | MyLocationLab",
+    description: "Rechnen Sie Koordinaten zwischen Dezimalgrad, GMS, UTM, Geohash und Plus Code sofort um.",
+    h1: "Koordinaten-Umrechner",
+    subtitle: "Konvertieren Sie zwischen Dezimalgrad, GMS, UTM, Geohash und Plus Code.",
+    labelInput: "Koordinaten eingeben (beliebiges Format)",
+    placeholder: "z.B. 28.6139, 77.2090 oder 28°36'50\"N 77°12'32\"E",
+    btnConvert: "Umrechnen",
+    btnGps: "📍 Meinen Standort nutzen",
+    lblDd: "Dezimalgrad",
+    lblDmsLat: "GMS (Breite)",
+    lblDmsLng: "GMS (Länge)",
+    lblUtm: "UTM",
+    lblGeohash: "Geohash",
+    lblPlusCode: "Plus Code",
+    h2Formats: "Unterstützte Koordinatenformate",
+    fmt1: "Dezimalgrad (DD) — 28.613900, 77.209000 — Digitaler Web-Standard",
+    fmt2: "Grad Minuten Sekunden (GMS) — 28°36'50.0\"N 77°12'32.4\"E — Traditionelle Notation",
+    fmt3: "UTM — 43R 693903 3168335 — Vermessung und militärische Gitter",
+    fmt4: "Geohash — ttncygjf8 — Kompakte alphanumerische Kodierung",
+    fmt5: "Plus Code — 7JVW52GR+2V — Googles Open Location Code",
+    compLinkText: "Vergleich Dezimalgrad vs GMS"
+  },
+  pt: {
+    title: "Conversor de Coordenadas — DD, GMS, UTM | MyLocationLab",
+    description: "Converta coordenadas entre Graus Decimais, GMS, UTM, Geohash e Plus Code instantaneamente.",
+    h1: "Conversor de Coordenadas",
+    subtitle: "Converta entre Graus Decimais, GMS, UTM, Geohash e Plus Code.",
+    labelInput: "Insira as Coordenadas (qualquer formato)",
+    placeholder: "ex. 28.6139, 77.2090 ou 28°36'50\"N 77°12'32\"E",
+    btnConvert: "Converter",
+    btnGps: "📍 Usar Minha Localização",
+    lblDd: "Graus Decimais",
+    lblDmsLat: "GMS (Latitude)",
+    lblDmsLng: "GMS (Longitude)",
+    lblUtm: "UTM",
+    lblGeohash: "Geohash",
+    lblPlusCode: "Plus Code",
+    h2Formats: "Formatos Suportados",
+    fmt1: "Graus Decimais (DD) — 28.613900, 77.209000 — Formato digital padrão",
+    fmt2: "Graus Minutos Segundos (GMS) — 28°36'50.0\"N 77°12'32.4\"E — Notação tradicional",
+    fmt3: "UTM — 43R 693903 3168335 — Agrimensura e mapas topográficos",
+    fmt4: "Geohash — ttncygjf8 — Código alfanumérico compacto",
+    fmt5: "Plus Code — 7JVW52GR+2V — Código Open Location da Google",
+    compLinkText: "Comparativo Graus Decimais vs GMS"
+  }
+};
+
+const c = translations[lang] || translations.en;
+---
+
+<ToolLayout
+  lang={lang}
+  toolId="coordinate-converter"
+  title={c.title}
+  description={c.description}
+  h1={c.h1}
+  subtitle={c.subtitle}
+>
+  <div class="tool-interface">
+    <label class="label">{c.labelInput}</label>
+    <div class="input-group" style="margin-bottom: var(--space-4);">
+      <input type="text" class="input" id="cc-input" placeholder={c.placeholder} />
+      <button class="btn btn-primary" id="cc-btn" type="button">{c.btnConvert}</button>
+    </div>
+    <button class="btn btn-ghost btn-sm" id="cc-gps" type="button" style="margin-bottom: var(--space-4);">{c.btnGps}</button>
+    <div class="tool-result" id="cc-result" style="display: none;">
+      <div class="tool-result-row"><span class="tool-result-label">{c.lblDd}</span><span class="tool-result-value" id="cc-dd" style="color: var(--color-accent-primary);">—</span></div>
+      <div class="tool-result-row"><span class="tool-result-label">{c.lblDmsLat}</span><span class="tool-result-value" id="cc-dms-lat">—</span></div>
+      <div class="tool-result-row"><span class="tool-result-label">{c.lblDmsLng}</span><span class="tool-result-value" id="cc-dms-lng">—</span></div>
+      <div class="tool-result-row"><span class="tool-result-label">{c.lblUtm}</span><span class="tool-result-value" id="cc-utm">—</span></div>
+      <div class="tool-result-row"><span class="tool-result-label">{c.lblGeohash}</span><span class="tool-result-value" id="cc-geohash">—</span></div>
+      <div class="tool-result-row"><span class="tool-result-label">{c.lblPlusCode}</span><span class="tool-result-value" id="cc-pluscode">—</span></div>
+    </div>
+  </div>
+
+  <div class="prose" style="margin-top: var(--space-12);">
+    <h2>{c.h2Formats}</h2>
+    <ul>
+      <li>{c.fmt1}</li>
+      <li>{c.fmt2}</li>
+      <li>{c.fmt3}</li>
+      <li>{c.fmt4}</li>
+      <li>{c.fmt5}</li>
+    </ul>
+    <p>
+      <a href={getLocalizedPath('/comparisons/decimal-degrees-vs-dms/', lang)}>{c.compLinkText} →</a>
+    </p>
+  </div>
+
+  <script>
+    import CoordUtils from '../../scripts/coordinates.js';
+    import GeoLocation from '../../scripts/geolocation.js';
+
+    function convert(lat: number, lng: number) {
+      const dd = document.getElementById('cc-dd');
+      const dmsLat = document.getElementById('cc-dms-lat');
+      const dmsLng = document.getElementById('cc-dms-lng');
+      const utm = document.getElementById('cc-utm');
+      const geohash = document.getElementById('cc-geohash');
+      const pluscode = document.getElementById('cc-pluscode');
+      const res = document.getElementById('cc-result');
+
+      if (dd) dd.textContent = `${lat.toFixed(6)}, ${lng.toFixed(6)}`;
+      if (dmsLat) dmsLat.textContent = CoordUtils.formatDMS(lat, true);
+      if (dmsLng) dmsLng.textContent = CoordUtils.formatDMS(lng, false);
+      try {
+        if (utm) utm.textContent = CoordUtils.decimalToUTM(lat, lng).formatted;
+      } catch {
+        if (utm) utm.textContent = 'N/A';
+      }
+      if (geohash) geohash.textContent = CoordUtils.encodeGeohash(lat, lng);
+      if (pluscode) pluscode.textContent = CoordUtils.encodePlusCode(lat, lng);
+      if (res) res.style.display = 'block';
+    }
+
+    document.getElementById('cc-btn')?.addEventListener('click', () => {
+      const inputEl = document.getElementById('cc-input') as HTMLInputElement;
+      if (!inputEl) return;
+      const parsed = CoordUtils.parseCoordinates(inputEl.value);
+      if (parsed && CoordUtils.isValidCoordinate(parsed.lat, parsed.lng)) {
+        convert(parsed.lat, parsed.lng);
+      } else {
+        alert('Please enter valid coordinates.');
+      }
+    });
+
+    document.getElementById('cc-gps')?.addEventListener('click', async () => {
+      try {
+        const pos = await GeoLocation.getCurrentPosition();
+        const inputEl = document.getElementById('cc-input') as HTMLInputElement;
+        if (inputEl) {
+          inputEl.value = `${pos.coords.latitude.toFixed(6)}, ${pos.coords.longitude.toFixed(6)}`;
+        }
+        convert(pos.coords.latitude, pos.coords.longitude);
+      } catch (e: any) {
+        alert(GeoLocation.getErrorMessage(e));
+      }
+    });
+  </script>
+</ToolLayout>

@@ -1,0 +1,79 @@
+---
+/**
+ * GlossaryView — Multilingual Geodesy & Location Glossary View
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from './Breadcrumbs.astro';
+import { getLocalizedPath, type SupportedLang, defaultLang } from '../i18n/config';
+import { glossaryPageTranslations } from '../i18n/glossaryPage';
+import { useTranslations } from '../i18n/ui';
+
+interface Props {
+  lang?: SupportedLang;
+}
+
+const { lang = defaultLang } = Astro.props;
+const t = useTranslations(lang);
+const c = glossaryPageTranslations[lang] || glossaryPageTranslations.en;
+
+const breadcrumbs = [
+  { label: t('common.home'), href: '/' },
+  { label: c.breadcrumb }
+];
+
+const pageUrl = getLocalizedPath('/glossary/', lang);
+const glossarySchema = {
+  '@context': 'https://schema.org',
+  '@type': 'DefinedTermSet',
+  name: c.metaTitle,
+  description: c.metaDescription,
+  url: `https://mylocationlab.com${pageUrl}`,
+  hasDefinedTerm: c.terms.map((item) => ({
+    '@type': 'DefinedTerm',
+    name: item.term,
+    description: item.definition,
+  })),
+};
+---
+
+<BaseLayout
+  lang={lang}
+  title={c.metaTitle}
+  description={c.metaDescription}
+  activeSection="resources"
+  jsonLd={[glossarySchema]}
+>
+  <div class="container">
+    <Breadcrumbs items={breadcrumbs} lang={lang} />
+
+    <section class="page-header" style="text-align: center; margin-bottom: var(--space-10);">
+      <h1>{c.titlePrefix} <span class="text-gradient">{c.titleHighlight}</span></h1>
+      <p class="page-header-desc" style="max-width: 680px; margin: 0 auto;">
+        {c.subtitle}
+      </p>
+    </section>
+
+    <div class="grid grid-2" style="gap: var(--space-6); margin-bottom: var(--space-16);">
+      {c.terms.map((item) => (
+        <div class="card card-flat" style="padding: var(--space-6);">
+          <h2 style="font-size: var(--text-lg); color: var(--color-accent-primary); margin-bottom: var(--space-2); font-family: var(--font-mono);">
+            {item.term}
+          </h2>
+          <p style="font-size: var(--text-sm); color: var(--color-text-secondary); line-height: 1.7; margin: 0;">
+            {item.definition}
+          </p>
+        </div>
+      ))}
+    </div>
+
+    <!-- Cross-links to Tools and Guides -->
+    <div style="text-align: center; margin-bottom: var(--space-16);">
+      <h3 style="margin-bottom: var(--space-4);">{c.crossLinkTitle}</h3>
+      <div class="flex gap-4 justify-center flex-wrap">
+        <a href={getLocalizedPath('/tools/coordinate-converter/', lang)} class="btn btn-secondary">{c.tool1Btn}</a>
+        <a href={getLocalizedPath('/tools/gps-accuracy/', lang)} class="btn btn-secondary">{c.tool2Btn}</a>
+        <a href={getLocalizedPath('/guides/how-gps-location-works/', lang)} class="btn btn-secondary">{c.guideBtn}</a>
+      </div>
+    </div>
+  </div>
+</BaseLayout>

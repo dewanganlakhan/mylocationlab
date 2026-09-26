@@ -1,0 +1,382 @@
+---
+/**
+ * GpsVsIpView — Multilingual Comparison: GPS Location vs IP Geolocation
+ */
+import ContentLayout from '../../layouts/ContentLayout.astro';
+import { getLocalizedPath, type SupportedLang, defaultLang } from '../../i18n/config';
+
+interface Props {
+  lang?: SupportedLang;
+}
+
+const { lang = defaultLang } = Astro.props;
+
+const translations: Record<string, any> = {
+  en: {
+    title: "GPS vs IP Location: Accuracy & Privacy | MyLocationLab",
+    description: "Compare GPS positioning with IP address geolocation. Learn how accuracy (3m vs 50km), hardware dependencies, privacy models, and latency compare.",
+    h1: "GPS Location vs. IP Geolocation: The Definitive Comparison",
+    subtitle: "A side-by-side technical evaluation of satellite trilateration versus network routing table geolocation.",
+    calloutBadge: "⚖️ Live Side-by-Side Test",
+    calloutTitle: "Compare Your Live GPS vs IP Geolocation",
+    calloutDesc: "See the real-time difference between your device's direct GPS satellite fix and your public network IP location.",
+    calloutBtn: "Check IP Location →",
+    matrixHeading: "Head-to-Head Comparison Matrix",
+    thAttr: "Attribute",
+    thGps: "GPS Positioning (GNSS)",
+    thIp: "IP Address Geolocation",
+    row1: ["Typical Accuracy", "3 to 5 meters (10 to 16 ft) outdoors", "10 to 80 kilometers (City/Region level)"],
+    row2: ["Underlying Technology", "Satellite radio signal time-of-flight trilateration", "ISP Autonomous System Number (ASN) database tables"],
+    row3: ["User Permission Required?", "Yes (Explicit browser prompt mandatory)", "No (Inferred passively from incoming network socket)"],
+    row4: ["Hardware Requirement", "Dedicated GNSS antenna & chipset (smartphone/tablet)", "Any internet-connected device (PC, server, router)"],
+    row5: ["Indoor Reliability", "Weak (Attenuated by concrete/metal roofs)", "100% functional indoors"],
+    row6: ["VPN / Proxy Impact", "Unaltered (Hardware GPS reads true sky signals)", "Completely masked / routed to VPN server location"],
+    row7: ["Battery Consumption", "Moderate (continuous radio reception)", "Zero additional battery drain"],
+    h2Gps: "How GPS Location Works",
+    pGps1: "GPS determines location via physical physics. Your phone contains a miniaturized antenna that captures radio waves transmitted from 20,200 km above in medium Earth orbit.",
+    pGps2: "Because the signals travel at the speed of light, calculating arrival time differences allows your phone's processor to compute its precise latitude, longitude, and altitude relative to the WGS 84 ellipsoid.",
+    h2Ip: "How IP Geolocation Works",
+    pIp1: "IP geolocation is not a physical measurement—it is a database correlation. Every packet sent across the internet contains your public IP address. Companies like MaxMind, IPinfo, and DB-IP maintain proprietary databases that map IP blocks to:",
+    ipBullet1: "The ISP owning that block of IP addresses (e.g., Comcast, AT&T, Vodafone).",
+    ipBullet2: "The geographical coordinates of the ISP's regional gateway router or data center.",
+    pIp2: "Because an ISP might assign the same block of IPs across an entire metropolitan area or county, IP-based positioning will never be able to identify your street address.",
+    h2Privacy: "Privacy Comparison: Which Is Safer?",
+    h3GpsPrivacy: "Browser W3C Geolocation (GPS):",
+    pGpsPrivacy: "Under the W3C Geolocation API standard, no website can read your GPS coordinates without your explicit, opt-in consent. The prompt displays every time unless you permanently whitelist the domain. On MyLocationLab, your coordinates are processed 100% locally in your browser and never logged.",
+    h3IpPrivacy: "IP Address:",
+    pIpPrivacy: "Every web server you visit automatically receives your public IP address to deliver the HTML page. While it cannot pinpoint your house, it routinely reveals your city, state, postal code, and Internet Service Provider without prompting for permission.",
+    h2Which: "Which Method Should You Use?",
+    useGpsWhen: "Use GPS When: You need turn-by-turn navigation, exact street addresses, elevation calculations, or precise distances.",
+    useIpWhen: "Use IP Geolocation When: You are on a desktop workstation without GPS, want a coarse regional weather forecast, or need to detect which country or currency to default to on an e-commerce site.",
+    connectedGuides: "🔗 Connected Guides & Practical Tools",
+    tool1Title: "GPS Coordinates Finder",
+    tool1Desc: "Inspect exact satellite fix",
+    tool2Title: "IP Accuracy Limits",
+    tool2Desc: "How GeoIP databases work",
+    tool3Title: "Fix Wrong Location",
+    tool3Desc: "Resolve ISP & VPN conflicts",
+    tool4Title: "GPS Accuracy Monitor",
+    tool4Desc: "Live error radius testing"
+  },
+  es: {
+    title: "GPS vs Ubicación IP: Comparativa de Precisión y Privacidad | MyLocationLab",
+    description: "Compare el posicionamiento GPS con la geolocalización por IP. Descubra diferencias de precisión (3m vs 50km), hardware, privacidad y latencia.",
+    h1: "Ubicación GPS vs. Geolocalización IP: La Comparativa Definitiva",
+    subtitle: "Evaluación técnica de la trilateración satelital frente a las tablas de enrutamiento web.",
+    calloutBadge: "⚖️ Prueba en Vivo",
+    calloutTitle: "Compare su GPS Real frente a su Ubicación IP",
+    calloutDesc: "Compruebe la discrepancia en tiempo real entre el cálculo de satélites de su dispositivo y la IP de su red.",
+    calloutBtn: "Comprobar Ubicación IP →",
+    matrixHeading: "Matriz Comparativa Cara a Cara",
+    thAttr: "Atributo",
+    thGps: "Posicionamiento GPS (GNSS)",
+    thIp: "Geolocalización por Dirección IP",
+    row1: ["Precisión Típica", "3 a 5 metros al aire libre", "10 a 80 kilómetros (nivel ciudad/región)"],
+    row2: ["Tecnología Subyacente", "Trilateración orbital por tiempo de vuelo de radio", "Tablas de bases de datos ASN de proveedores ISP"],
+    row3: ["¿Requiere Permiso?", "Sí (Aviso explícito obligatorio en el navegador)", "No (Se deduce pasivamente de la conexión de red)"],
+    row4: ["Requisito de Hardware", "Antena GNSS y chip dedicado (teléfono o tablet)", "Cualquier dispositivo conectado a Internet (PC, servidor)"],
+    row5: ["Fiabilidad en Interiores", "Débil (Atenuada por techos y hormigón)", "100% funcional en interiores"],
+    row6: ["Impacto de VPN / Proxy", "Sin cambios (El GPS lee señales físicas del cielo)", "Enmascarado por completo hacia el servidor VPN"],
+    row7: ["Consumo de Batería", "Moderado (Recepción constante de radio)", "Cero consumo adicional de batería"],
+    h2Gps: "Cómo Funciona la Ubicación GPS",
+    pGps1: "El GPS calcula la posición mediante física pura. Su teléfono posee una antena miniaturizada que sintoniza ondas de radio emitidas desde 20.200 km de altitud en órbita terrestre media.",
+    pGps2: "Al viajar las señales a la velocidad de la luz, el procesador calcula las diferencias de tiempo de llegada para computar latitud, longitud y altitud con respecto al elipsoide WGS 84.",
+    h2Ip: "Cómo Funciona la Geolocalización IP",
+    pIp1: "La geolocalización IP no es una medición física: es una correlación en bases de datos. Cada paquete de red contiene su IP pública. Empresas como MaxMind o DB-IP mantienen registros que asocian bloques IP con:",
+    ipBullet1: "El proveedor ISP propietario del bloque (ej. Telefónica, Movistar, Vodafone, Claro).",
+    ipBullet2: "Las coordenadas de la central o centro de datos del proveedor.",
+    pIp2: "Dado que un proveedor puede asignar un mismo rango de direcciones IP a toda una provincia o comarca, la posición por IP jamás podrá identificar el nombre de su calle.",
+    h2Privacy: "Comparativa de Privacidad: ¿Cuál es más segura?",
+    h3GpsPrivacy: "Geolocalización W3C del Navegador (GPS):",
+    pGpsPrivacy: "Bajo el estándar W3C, ninguna página web puede leer sus coordenadas GPS sin su consentimiento explícito y previo. En MyLocationLab, sus coordenadas se procesan 100% de manera local y jamás se envían a servidores.",
+    h3IpPrivacy: "Dirección IP:",
+    pIpPrivacy: "Cualquier servidor web recibe de forma automática su IP pública para responder a la solicitud. Aunque no localiza su domicilio, revela rutinariamente su ciudad, código postal y proveedor de telecomunicaciones sin pedir autorización.",
+    h2Which: "¿Qué método debe utilizar?",
+    useGpsWhen: "Utilice GPS cuando: Necesite navegación paso a paso, direcciones postales exactas, cálculo de altitud o distancias métricas precisas.",
+    useIpWhen: "Utilice Geolocalización IP cuando: Esté en un ordenador de escritorio sin receptor GPS, requiera el pronóstico del tiempo regional o configuración de país por defecto.",
+    connectedGuides: "🔗 Guías y Herramientas Relacionadas",
+    tool1Title: "Buscador de Coordenadas GPS",
+    tool1Desc: "Inspeccione la posición satelital",
+    tool2Title: "Límites de Precisión IP",
+    tool2Desc: "Cómo operan las bases GeoIP",
+    tool3Title: "Corregir Ubicación Errónea",
+    tool3Desc: "Resuelva conflictos de ISP y VPN",
+    tool4Title: "Monitor de Precisión GPS",
+    tool4Desc: "Pruebas de radio de error en vivo"
+  },
+  fr: {
+    title: "GPS vs Position IP : Comparatif Précision & Vie Privée | MyLocationLab",
+    description: "Comparez la géolocalisation GPS et le repérage par adresse IP. Tout savoir sur la précision (3 m vs 50 km), le matériel et la confidentialité.",
+    h1: "Localisation GPS vs. Géolocalisation IP : Le Comparatif Complet",
+    subtitle: "Évaluation technique détaillée entre la trilatération satellitaire et les tables de routage Internet.",
+    calloutBadge: "⚖️ Test en Direct",
+    calloutTitle: "Comparez votre GPS et votre IP en Temps Réel",
+    calloutDesc: "Visualisez l'écart entre le point satellite direct de votre terminal et la position déduite de votre réseau IP public.",
+    calloutBtn: "Tester la Position IP →",
+    matrixHeading: "Matrice de Comparaison Directe",
+    thAttr: "Critère",
+    thGps: "Positionnement GPS (GNSS)",
+    thIp: "Géolocalisation par Adresse IP",
+    row1: ["Précision Typique", "3 à 5 mètres en extérieur", "10 à 80 kilomètres (échelle métropole/région)"],
+    row2: ["Technologie Sous-jacente", "Trilatération temps de vol d'ondes satellitaires", "Bases de données ASN des fournisseurs d'accès (FAI)"],
+    row3: ["Autorisation Requise ?", "Oui (Fenêtre de consentement obligatoire)", "Non (Déduit de manière passive de la socket réseau)"],
+    row4: ["Matériel Nécessaire", "Puce et antenne GNSS (smartphone, tablette)", "Tout équipement connecté au réseau (PC, serveur)"],
+    row5: ["Fonctionnement en Intérieur", "Faible (Atténué par le béton armé et le métal)", "100 % opérationnel en intérieur"],
+    row6: ["Impact d'un VPN / Proxy", "Aucun (Le GPS interroge directement le ciel)", "Entièrement faussé / redirigé vers le serveur VPN"],
+    row7: ["Consommation Batterie", "Modérée (Réception radio permanente)", "Aucune consommation supplémentaire"],
+    h2Gps: "Comment Fonctionne le Signal GPS",
+    pGps1: "Le GPS repose sur des principes physiques précis. Votre appareil capte les signaux radio émis par des satellites orbitant à 20 200 km d'altitude.",
+    pGps2: "En mesurant le temps de propagation de la lumière, la puce électronique calcule sa latitude, sa longitude et son altitude par rapport à l'ellipsoïde WGS 84.",
+    h2Ip: "Comment Fonctionne la Géolocalisation IP",
+    pIp1: "La géolocalisation IP n'est pas une mesure physique : c'est une corrélation informatique. Chaque paquet émis transmet votre IP publique. Des bases comme MaxMind ou DB-IP cartographient :",
+    ipBullet1: "Le FAI titulaire de la plage d'adresses (Orange, Free, SFR, Proximus, etc.).",
+    ipBullet2: "Les coordonnées du routeur passerelle ou du centre de données régional.",
+    pIp2: "Puisqu'un même bloc IP dessert souvent des agglomérations entières, la localisation IP ne permettra jamais d'identifier votre adresse de rue.",
+    h2Privacy: "Comparatif Vie Privée : Quelle méthode est la plus sûre ?",
+    h3GpsPrivacy: "API Geolocation W3C (GPS) :",
+    pGpsPrivacy: "Le standard W3C interdit à tout site d'accéder au GPS sans autorisation explicite de l'utilisateur. Sur MyLocationLab, toutes les coordonnées sont traitées localement dans votre navigateur sans enregistrement distant.",
+    h3IpPrivacy: "Adresse IP :",
+    pIpPrivacy: "Tout serveur consulté reçoit obligatoirement votre IP pour vous renvoyer la page web. Elle révèle votre ville et votre FAI sans demander d'autorisation préalable.",
+    h2Which: "Quelle méthode privilégier selon vos besoins ?",
+    useGpsWhen: "Utilisez le GPS pour : Le guidage pas à pas, la détection d'adresse exacte, la mesure d'altitude ou le calcul métrique de distances.",
+    useIpWhen: "Utilisez l'IP pour : Obtenir des prévisions météo générales sur ordinateur fixe ou configurer automatiquement une devise e-commerce.",
+    connectedGuides: "🔗 Guides Liés & Outils Pratiques",
+    tool1Title: "Coordonnées GPS",
+    tool1Desc: "Consulter la position satellite",
+    tool2Title: "Limites de Précision IP",
+    tool2Desc: "Fonctionnement des bases GeoIP",
+    tool3Title: "Corriger l'Erreur de Ville",
+    tool3Desc: "Résoudre les conflits VPN et FAI",
+    tool4Title: "Moniteur de Précision GPS",
+    tool4Desc: "Test du rayon de précision"
+  },
+  de: {
+    title: "GPS vs IP-Ortung: Genauigkeit & Datenschutz | MyLocationLab",
+    description: "Vergleichen Sie Satelliten-GPS mit IP-Adressen-Ortung. Alle Unterschiede bei Präzision (3 m vs. 50 km), Hardware und Privatsphäre.",
+    h1: "GPS-Ortung vs. IP-Geolokalisierung: Der direkte Vergleich",
+    subtitle: "Eine fundierte technische Gegenüberstellung von Satelliten-Trilateration und Internet-Routingtabellen.",
+    calloutBadge: "⚖️ Live-Vergleich",
+    calloutTitle: "Live-Vergleich: GPS vs. IP-Standort",
+    calloutDesc: "Erleben Sie den realen Unterschied zwischen den echten Satellitendaten Ihres Geräts und der IP-Netzwerk-Ortung.",
+    calloutBtn: "IP-Standort prüfen →",
+    matrixHeading: "Vergleichsmatrix im Überblick",
+    thAttr: "Kriterium",
+    thGps: "GPS-Positionsbestimmung (GNSS)",
+    thIp: "IP-Adressen-Geolokalisierung",
+    row1: ["Typische Genauigkeit", "3 bis 5 Meter im Freien", "10 bis 80 Kilometer (Stadt-/Regionalebene)"],
+    row2: ["Technologie", "Satelliten-Laufzeitmessung (Trilateration)", "Datenbankabgleich via ASN des Internet-Providers"],
+    row3: ["Nutzerzustimmung nötig?", "Ja (Explizite Browserabfrage zwingend)", "Nein (Wird passiv aus Netzwerkpaketen ausgelesen)"],
+    row4: ["Hardware-Bedarf", "GNSS-Antenne & Empfängerchip (Smartphone/Tablet)", "Jedes internetfähige Endgerät (PC, Server, Router)"],
+    row5: ["Gebäude-Tauglichkeit", "Schwach (Signaldämpfung durch Wände & Dächer)", "100 % in Innenräumen funktionsfähig"],
+    row6: ["Einfluss von VPN / Proxy", "Keiner (GPS empfängt echte Satellitensignale)", "Vollständig verfälscht / auf VPN-Server verlagert"],
+    row7: ["Akkubelastung", "Moderat (Permanenter Funkempfang)", "Kein zusätzlicher Akkuverbrauch"],
+    h2Gps: "Funktionsweise der GPS-Ortung",
+    pGps1: "GPS funktioniert nach strengen physikalischen Gesetzen. Das Smartphone empfängt Funksignale von Satelliten in 20.200 Kilometern Höhe.",
+    pGps2: "Da sich Funksignale mit Lichtgeschwindigkeit ausbreiten, ermittelt der GNSS-Chip anhand von Laufzeitunterschieden exakte Koordinaten auf dem WGS-84-Ellipsoid.",
+    h2Ip: "Funktionsweise der IP-Geolokalisierung",
+    pIp1: "Die IP-Ortung basiert nicht auf physischen Messungen, sondern auf Datenbankzuordnungen. GeoIP-Anbieter wie MaxMind hinterlegen:",
+    ipBullet1: "Den Betreiber (Provider wie Telekom, Vodafone, Telefónica) des Adressblocks.",
+    ipBullet2: "Die Koordinaten des regionalen Einwahlknotens oder Rechenzentrums.",
+    pIp2: "Da ein Adressblock oft ein ganzes Bundesland oder einen Landkreis abdeckt, kann eine IP-Ortung niemals eine Hausnummer oder Straße bestimmen.",
+    h2Privacy: "Datenschutz-Vergleich: Was ist sicherer?",
+    h3GpsPrivacy: "Browser-Geolocation-API (GPS):",
+    pGpsPrivacy: "Laut W3C-Standard darf keine Website ohne Ihre ausdrückliche Erlaubnis auf GPS-Daten zugreifen. Bei MyLocationLab erfolgt die gesamte Auswertung lokal in Ihrem Browser.",
+    h3IpPrivacy: "IP-Adresse:",
+    pIpPrivacy: "Jeder besuchte Webserver empfängt zwangsläufig Ihre öffentliche IP. Diese gibt ohne Nachfrage Ihre ungefähre Region und Ihren Netzanbieter preis.",
+    h2Which: "Welche Methode eignet sich wofür?",
+    useGpsWhen: "Nutzen Sie GPS für: Navigation, Adressauflösung, Höhenmeter-Messungen und metergenaue Distanzberechnungen.",
+    useIpWhen: "Nutzen Sie IP-Ortung für: Stationäre PCs ohne GPS, grobe Wetterberichte oder automatische Landesvoreinstellungen.",
+    connectedGuides: "🔗 Weiterführende Leitfäden & Werkzeuge",
+    tool1Title: "GPS-Koordinaten Finder",
+    tool1Desc: "Genaue Satellitenposition",
+    tool2Title: "IP-Genauigkeitsgrenzen",
+    tool2Desc: "So arbeiten GeoIP-Datenbanken",
+    tool3Title: "Falschen Ort korrigieren",
+    tool3Desc: "VPN- und Router-Konflikte lösen",
+    tool4Title: "GPS-Genauigkeitsprüfer",
+    tool4Desc: "Live-Fehlerradius testen"
+  },
+  pt: {
+    title: "GPS vs Localização IP: Comparativo de Precisão e Privacidade | MyLocationLab",
+    description: "Compare o posicionamento GPS com a geolocalização por IP. Entenda as diferenças de precisão (3m vs 50km), hardware, privacidade e latência.",
+    h1: "Localização GPS vs. Geolocalização IP: O Comparativo Definitivo",
+    subtitle: "Uma análise técnica entre a trilateração por satélite e as tabelas de roteamento da Internet.",
+    calloutBadge: "⚖️ Teste em Tempo Real",
+    calloutTitle: "Compare seu GPS e seu IP Lado a Lado",
+    calloutDesc: "Veja a discrepância entre a localização real do seu chip de satélite e a estimativa do seu endereço IP de rede.",
+    calloutBtn: "Verificar Localização IP →",
+    matrixHeading: "Matriz de Comparação Direta",
+    thAttr: "Atributo",
+    thGps: "Posicionamento GPS (GNSS)",
+    thIp: "Geolocalização por Endereço IP",
+    row1: ["Precisão Típica", "3 a 5 metros ao ar livre", "10 a 80 quilômetros (nível cidade/região)"],
+    row2: ["Tecnologia de Fundo", "Trilateração orbital por tempo de voo de ondas de rádio", "Tabelas de provedores de internet (ASN / BGP)"],
+    row3: ["Exige Permissão?", "Sim (Janela explícita obrigatória no navegador)", "Não (Deduzido diretamente da conexão do pacote)"],
+    row4: ["Requisito de Hardware", "Antena e receptor GNSS dedicado (celular, tablet)", "Qualquer aparelho conectado à internet (PC, servidor)"],
+    row5: ["Desempenho em Interiores", "Fraco (Atenuado por concreto e lajes metálicas)", "100% operacional em ambientes fechados"],
+    row6: ["Impacto de VPN / Proxy", "Inalterado (O GPS recebe sinais físicos das antenas)", "Completamente mascarado pelo servidor VPN"],
+    row7: ["Consumo de Bateria", "Moderado (Recepção de rádio contínua)", "Nenhum consumo adicional de energia"],
+    h2Gps: "Como Funciona o Posicionamento GPS",
+    pGps1: "O GPS opera com base na física clássica e relativística. O aparelho capta ondas de rádio emitidas por satélites a 20.200 km de altitude.",
+    pGps2: "Ao comparar o tempo exato de chegada das transmissões, o processador calcula latitude, longitude e altitude no elipsoide WGS 84.",
+    h2Ip: "Como Funciona a Localização por IP",
+    pIp1: "A localização por IP não é uma medição física de ondas: trata-se de um cruzamento estatístico em bases de dados comerciais mantidas por serviços como MaxMind:",
+    ipBullet1: "Identifica a operadora de internet detentora daquele bloco IP.",
+    ipBullet2: "Mapeia as coordenadas da central de distribuição ou data center regional.",
+    pIp2: "Como as operadoras distribuem os mesmos blocos IP por cidades inteiras, a localização IP nunca conseguirá apontar seu endereço residencial.",
+    h2Privacy: "Comparativo de Privacidade: Qual é mais seguro?",
+    h3GpsPrivacy: "API Geolocation W3C (GPS):",
+    pGpsPrivacy: "O protocolo W3C impede que páginas leiam o GPS sem aprovação prévia. No MyLocationLab, as coordenadas são processadas estritamente no seu navegador e nunca salvas.",
+    h3IpPrivacy: "Endereço IP:",
+    pIpPrivacy: "Qualquer página web recebe o seu IP público para poder entregar o conteúdo. Ele expõe a sua cidade e seu provedor sem solicitar permissão.",
+    h2Which: "Qual método você deve escolher?",
+    useGpsWhen: "Utilize GPS quando: Precisar de navegação em tempo real, endereços com número e rua, cálculo de altitude ou medições métricas.",
+    useIpWhen: "Utilize Localização IP quando: Estiver em computadores de mesa sem GPS, para previsões meteorológicas gerais ou seleção automática de moeda.",
+    connectedGuides: "🔗 Guias Relacionados e Ferramentas Práticas",
+    tool1Title: "Coordenadas GPS",
+    tool1Desc: "Verifique a posição do satélite",
+    tool2Title: "Limites do GeoIP",
+    tool2Desc: "Como operam as bases de IP",
+    tool3Title: "Corrigir Cidade Errada",
+    tool3Desc: "Resolva conflitos de VPN e rede",
+    tool4Title: "Monitor de Precisão GPS",
+    tool4Desc: "Teste o raio de erro em metros"
+  }
+};
+
+const c = translations[lang] || translations.en;
+---
+
+<ContentLayout
+  lang={lang}
+  title={c.title}
+  description={c.description}
+  h1={c.h1}
+  subtitle={c.subtitle}
+  section="comparisons"
+  sectionLabel={lang === 'es' ? 'Comparativas Técnicas' : lang === 'fr' ? 'Comparatifs Techniques' : lang === 'de' ? 'Technische Vergleiche' : lang === 'pt' ? 'Comparações Técnicas' : 'Technical Comparisons'}
+  readTime="7 min"
+  publishDate="2026-09-15"
+  modifiedDate="2026-09-22"
+>
+  <p>{c.pGps1}</p>
+  <p>{c.pGps2}</p>
+
+  <div class="tool-callout">
+    <div class="tool-callout-content">
+      <span class="tool-callout-badge">{c.calloutBadge}</span>
+      <h3 class="tool-callout-title">{c.calloutTitle}</h3>
+      <p class="tool-callout-desc">{c.calloutDesc}</p>
+    </div>
+    <div class="tool-callout-action">
+      <a href={getLocalizedPath('/my-location/ip/', lang)} class="btn btn-primary">{c.calloutBtn}</a>
+    </div>
+  </div>
+
+  <h2>{c.matrixHeading}</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>{c.thAttr}</th>
+        <th>{c.thGps}</th>
+        <th>{c.thIp}</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>{c.row1[0]}</strong></td>
+        <td><strong>{c.row1[1]}</strong></td>
+        <td>{c.row1[2]}</td>
+      </tr>
+      <tr>
+        <td><strong>{c.row2[0]}</strong></td>
+        <td>{c.row2[1]}</td>
+        <td>{c.row2[2]}</td>
+      </tr>
+      <tr>
+        <td><strong>{c.row3[0]}</strong></td>
+        <td><strong>{c.row3[1]}</strong></td>
+        <td>{c.row3[2]}</td>
+      </tr>
+      <tr>
+        <td><strong>{c.row4[0]}</strong></td>
+        <td>{c.row4[1]}</td>
+        <td>{c.row4[2]}</td>
+      </tr>
+      <tr>
+        <td><strong>{c.row5[0]}</strong></td>
+        <td>{c.row5[1]}</td>
+        <td>{c.row5[2]}</td>
+      </tr>
+      <tr>
+        <td><strong>{c.row6[0]}</strong></td>
+        <td>{c.row6[1]}</td>
+        <td>{c.row6[2]}</td>
+      </tr>
+      <tr>
+        <td><strong>{c.row7[0]}</strong></td>
+        <td>{c.row7[1]}</td>
+        <td>{c.row7[2]}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>{c.h2Gps}</h2>
+  <p>{c.pGps1}</p>
+  <p>{c.pGps2} <a href={getLocalizedPath('/guides/how-gps-location-works/', lang)}>→</a></p>
+
+  <h2>{c.h2Ip}</h2>
+  <p>{c.pIp1}</p>
+  <ul>
+    <li>{c.ipBullet1}</li>
+    <li>{c.ipBullet2}</li>
+  </ul>
+  <p>{c.pIp2}</p>
+
+  <h2>{c.h2Privacy}</h2>
+  <h3>{c.h3GpsPrivacy}</h3>
+  <p>{c.pGpsPrivacy}</p>
+
+  <h3>{c.h3IpPrivacy}</h3>
+  <p>{c.pIpPrivacy}</p>
+
+  <h2>{c.h2Which}</h2>
+  <ul>
+    <li><strong>{c.useGpsWhen}</strong></li>
+    <li><strong>{c.useIpWhen}</strong></li>
+  </ul>
+
+  <div class="contextual-next-box">
+    <h3 class="contextual-next-title">{c.connectedGuides}</h3>
+    <div class="contextual-next-grid">
+      <a href={getLocalizedPath('/tools/gps-coordinates/', lang)} class="contextual-link-card">
+        <span class="contextual-link-icon">🛰️</span>
+        <div class="contextual-link-info">
+          <div class="contextual-link-title">{c.tool1Title}</div>
+          <div class="contextual-link-sub">{c.tool1Desc}</div>
+        </div>
+      </a>
+      <a href={getLocalizedPath('/guides/ip-geolocation-accuracy/', lang)} class="contextual-link-card">
+        <span class="contextual-link-icon">📡</span>
+        <div class="contextual-link-info">
+          <div class="contextual-link-title">{c.tool2Title}</div>
+          <div class="contextual-link-sub">{c.tool2Desc}</div>
+        </div>
+      </a>
+      <a href={getLocalizedPath('/guides/wrong-location/', lang)} class="contextual-link-card">
+        <span class="contextual-link-icon">🔧</span>
+        <div class="contextual-link-info">
+          <div class="contextual-link-title">{c.tool3Title}</div>
+          <div class="contextual-link-sub">{c.tool3Desc}</div>
+        </div>
+      </a>
+      <a href={getLocalizedPath('/tools/gps-accuracy/', lang)} class="contextual-link-card">
+        <span class="contextual-link-icon">🎯</span>
+        <div class="contextual-link-info">
+          <div class="contextual-link-title">{c.tool4Title}</div>
+          <div class="contextual-link-sub">{c.tool4Desc}</div>
+        </div>
+      </a>
+    </div>
+  </div>
+</ContentLayout>

@@ -1,13 +1,14 @@
 ---
 /**
  * BaseLayout — Root layout for all pages
- * Handles HTML document structure, global styles, fonts, header, and footer.
+ * Handles HTML document structure, global styles, fonts, header, footer, and i18n attributes.
  */
 import SEOHead from '../components/SEOHead.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import '../styles/global.css';
 import '../styles/components.css';
+import { getLangFromUrl, languages, type SupportedLang } from '../i18n/config';
 
 interface Props {
   title: string;
@@ -19,6 +20,7 @@ interface Props {
   activeSection?: string;
   noindex?: boolean;
   leaflet?: boolean;
+  lang?: string;
 }
 
 const {
@@ -31,7 +33,13 @@ const {
   activeSection,
   noindex,
   leaflet = false,
+  lang: customLang,
 } = Astro.props;
+
+const currentLang = (customLang || getLangFromUrl(Astro.url)) as SupportedLang;
+const activeLangConfig = languages[currentLang] || languages.en;
+const docLang = activeLangConfig.code;
+const docDir = activeLangConfig.dir;
 
 // WebSite schema for all pages
 const websiteSchema = {
@@ -53,7 +61,7 @@ const allJsonLd = jsonLd
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang={docLang} dir={docDir}>
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -80,6 +88,7 @@ const allJsonLd = jsonLd
     ogType={ogType}
     jsonLd={allJsonLd}
     noindex={noindex}
+    lang={docLang}
   />
 
   <!-- Preconnect to external resources -->
@@ -97,13 +106,13 @@ const allJsonLd = jsonLd
 </head>
 <body>
   <a href="#main-content" class="sr-only skip-link">Skip to main content</a>
-  <Header activeSection={activeSection} />
+  <Header activeSection={activeSection} lang={docLang} />
 
   <main id="main-content">
     <slot />
   </main>
 
-  <Footer />
+  <Footer lang={docLang} />
 
   <!-- Leaflet JS (self-hosted, only on pages that render maps) -->
   {leaflet && <script is:inline defer src="/vendor/leaflet/leaflet.js"></script>}

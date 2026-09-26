@@ -1,0 +1,334 @@
+---
+/**
+ * LatitudeLongitudeView — Multilingual Latitude & Longitude Tool
+ * Supports en, es, fr, de, pt with interactive Leaflet map and instant geolocation.
+ */
+import ToolLayout from '../../layouts/ToolLayout.astro';
+import { getLocalizedPath, defaultLang, type SupportedLang } from '../../i18n/config';
+
+interface Props {
+  lang?: SupportedLang | string;
+}
+
+const { lang: customLang = defaultLang } = Astro.props;
+const lang = (customLang || defaultLang) as SupportedLang;
+
+const toolData: Record<string, {
+  title: string;
+  desc: string;
+  h1: string;
+  subtitle: string;
+  promptText: string;
+  btnUseLocation: string;
+  labelLat: string;
+  labelLng: string;
+  labelAddr: string;
+  btnCopy: string;
+  btnShare: string;
+  howTitle: string;
+  steps: string[];
+  underTitle: string;
+  underText: string;
+  guideLinkText: string;
+  glossaryLinkText: string;
+}> = {
+  en: {
+    title: 'Latitude Longitude Finder — Find Lat Long | MyLocationLab',
+    desc: 'Find the latitude and longitude of any location. Click on the map or use GPS to get precise lat/lng coordinates.',
+    h1: 'Latitude Longitude Finder',
+    subtitle: 'Find latitude and longitude for any location by clicking on the map, entering an address, or using your GPS.',
+    promptText: 'Detecting your position automatically — or click anywhere on the map below.',
+    btnUseLocation: '📍 Use My Location',
+    labelLat: 'Latitude',
+    labelLng: 'Longitude',
+    labelAddr: 'Address',
+    btnCopy: '📋 Copy',
+    btnShare: '🔗 Share',
+    howTitle: 'How to Use This Tool',
+    steps: [
+      'Click "Use My Location" to find your current latitude and longitude using GPS.',
+      'Click anywhere on the map to find the lat/lng of that point.',
+      'Copy or share the coordinates using the buttons provided.',
+    ],
+    underTitle: 'Understanding Latitude and Longitude',
+    underText: 'Latitude measures north-south position (-90° to +90°). Longitude measures east-west position (-180° to +180°). Together they uniquely identify any point on Earth.',
+    guideLinkText: 'Latitude and Longitude Explained Guide',
+    glossaryLinkText: 'Geodesy Glossary',
+  },
+  es: {
+    title: 'Buscador de Latitud y Longitud — Consultar Coordenadas | MyLocationLab',
+    desc: 'Encuentra la latitud y longitud de cualquier ubicación. Haz clic en el mapa o usa el GPS para obtener coordenadas exactas.',
+    h1: 'Buscador de Latitud y Longitud',
+    subtitle: 'Encuentra la latitud y longitud de cualquier punto haciendo clic en el mapa, buscando una dirección o mediante GPS.',
+    promptText: 'Detectando tu posición automáticamente — o haz clic en cualquier lugar del mapa inferior.',
+    btnUseLocation: '📍 Usar Mi Ubicación',
+    labelLat: 'Latitud',
+    labelLng: 'Longitud',
+    labelAddr: 'Dirección',
+    btnCopy: '📋 Copiar',
+    btnShare: '🔗 Compartir',
+    howTitle: 'Cómo Usar Esta Herramienta',
+    steps: [
+      'Pulsa "Usar Mi Ubicación" para obtener tu latitud y longitud actuales mediante señal GPS.',
+      'Haz clic en cualquier punto del mapa para consultar sus coordenadas geodésicas.',
+      'Copia o comparte las coordenadas con los botones de acción rápida.',
+    ],
+    underTitle: 'Comprender la Latitud y la Longitud',
+    underText: 'La latitud mide la posición norte-sur (-90° a +90°). La longitud mide la posición este-oeste (-180° a +180°). Juntas determinan cualquier punto de la Tierra.',
+    guideLinkText: 'Guía Explicativa de Latitud y Longitud',
+    glossaryLinkText: 'Glosario de Geodesia',
+  },
+  fr: {
+    title: 'Trouver Latitude et Longitude — Coordonnées GPS | MyLocationLab',
+    desc: 'Trouvez la latitude et la longitude de n\'importe quel lieu. Cliquez sur la carte ou utilisez le GPS pour obtenir vos coordonnées.',
+    h1: 'Trouver Latitude et Longitude',
+    subtitle: 'Identifiez la latitude et la longitude de n\'importe quelle position sur la carte ou via votre capteur GPS.',
+    promptText: 'Détection automatique de votre position — ou cliquez sur la carte ci-dessous.',
+    btnUseLocation: '📍 Utiliser Ma Position',
+    labelLat: 'Latitude',
+    labelLng: 'Longitude',
+    labelAddr: 'Adresse',
+    btnCopy: '📋 Copier',
+    btnShare: '🔗 Partager',
+    howTitle: 'Comment Utiliser Cet Outil',
+    steps: [
+      'Cliquez sur "Utiliser Ma Position" pour acquérir vos coordonnées par satellite.',
+      'Cliquez n\'importe où sur la carte pour mesurer la latitude et la longitude précises.',
+      'Copiez ou partagez vos coordonnées géographiques instantanément.',
+    ],
+    underTitle: 'Comprendre la Latitude et la Longitude',
+    underText: 'La latitude mesure la position nord-sud (-90° à +90°). La longitude mesure la position est-ouest (-180° à +180°). Ensemble, elles définissent chaque lieu du globe.',
+    guideLinkText: 'Guide Explicatif Latitude et Longitude',
+    glossaryLinkText: 'Glossaire Géodésique',
+  },
+  de: {
+    title: 'Breitengrad & Längengrad Finder — Koordinaten Ermitteln | MyLocationLab',
+    desc: 'Ermitteln Sie Breiten- und Längengrad jedes Standorts. Klicken Sie auf die Karte oder nutzen Sie GPS für präzise Koordinaten.',
+    h1: 'Breitengrad & Längengrad Finder',
+    subtitle: 'Finden Sie Breiten- und Längengrad jedes beliebigen Ortes durch Klick auf die Karte oder per GPS-Ortung.',
+    promptText: 'Standort wird automatisch ermittelt — oder klicken Sie auf die Karte unten.',
+    btnUseLocation: '📍 Meinen Standort Nutzen',
+    labelLat: 'Breitengrad',
+    labelLng: 'Längengrad',
+    labelAddr: 'Adresse',
+    btnCopy: '📋 Kopieren',
+    btnShare: '🔗 Teilen',
+    howTitle: 'So Nutzen Sie Dieses Tool',
+    steps: [
+      'Klicken Sie auf "Meinen Standort Nutzen", um Ihre aktuellen Koordinaten per GPS abzurufen.',
+      'Klicken Sie auf einen beliebigen Punkt auf der Karte, um dessen Breiten- und Längengrad anzuzeigen.',
+      'Kopieren oder teilen Sie die Koordinaten mit den Aktionsschaltflächen.',
+    ],
+    underTitle: 'Breiten- und Längengrad Verstehen',
+    underText: 'Der Breitengrad misst die Nord-Süd-Position (-90° bis +90°). Der Längengrad misst die Ost-West-Position (-180° bis +180°). Zusammen bestimmen sie jeden Punkt der Erde.',
+    guideLinkText: 'Ratgeber zu Breiten- und Längengrad',
+    glossaryLinkText: 'Geodäsie-Glossar',
+  },
+  pt: {
+    title: 'Localizador de Latitude e Longitude — Coordenadas GPS | MyLocationLab',
+    desc: 'Descubra a latitude e longitude de qualquer local. Clique no mapa ou use o GPS para obter coordenadas exatas.',
+    h1: 'Localizador de Latitude e Longitude',
+    subtitle: 'Encontre latitude e longitude clicando no mapa ou através do sinal de GPS do seu dispositivo.',
+    promptText: 'Detectando sua posição automaticamente — ou clique em qualquer ponto do mapa abaixo.',
+    btnUseLocation: '📍 Usar Minha Localização',
+    labelLat: 'Latitude',
+    labelLng: 'Longitude',
+    labelAddr: 'Endereço',
+    btnCopy: '📋 Copiar',
+    btnShare: '🔗 Compartilhar',
+    howTitle: 'Como Usar Esta Ferramenta',
+    steps: [
+      'Clique em "Usar Minha Localização" para obter suas coordenadas por GPS.',
+      'Clique em qualquer ponto do mapa para verificar a latitude e longitude.',
+      'Copie ou compartilhe as coordenadas nos botões rápidos.',
+    ],
+    underTitle: 'Entendendo Latitude e Longitude',
+    underText: 'A latitude mede a posição norte-sul (-90° a +90°). A longitude mede a posição leste-oeste (-180° a +180°). Juntas, elas definem qualquer ponto da Terra.',
+    guideLinkText: 'Guia de Latitude e Longitude',
+    glossaryLinkText: 'Glossário de Geodésia',
+  },
+};
+
+const c = toolData[lang] || toolData.en;
+
+const locateTitle = ({
+  en: "Zoom to my current location",
+  es: "Centrar y ampliar en mi ubicación",
+  fr: "Zoomer sur ma position actuelle",
+  de: "Auf meinen aktuellen Standort zoomen",
+  pt: "Aproximar da minha localização atual"
+})[lang] || "Zoom to my current location";
+---
+
+<ToolLayout
+  leaflet
+  lang={lang}
+  toolId="latitude-longitude"
+  title={c.title}
+  description={c.desc}
+  h1={c.h1}
+  subtitle={c.subtitle}
+>
+  <div class="tool-interface">
+    <div style="text-align: center; padding: var(--space-4) 0;" id="ll-prompt">
+      <p style="color: var(--color-text-secondary); margin-bottom: var(--space-4);">{c.promptText}</p>
+      <button class="btn btn-primary btn-lg" id="ll-btn" type="button">{c.btnUseLocation}</button>
+      <p id="ll-error" style="display: none; margin: var(--space-3) 0 0; color: var(--color-accent-error, #ef4444); font-size: var(--text-sm);"></p>
+    </div>
+
+    <div class="tool-result" id="ll-result" style="display: none;">
+      <div class="tool-result-row">
+        <span class="tool-result-label">{c.labelLat}</span>
+        <span class="tool-result-value" id="ll-lat" style="color: var(--color-accent-primary);">—</span>
+      </div>
+      <div class="tool-result-row">
+        <span class="tool-result-label">{c.labelLng}</span>
+        <span class="tool-result-value" id="ll-lng" style="color: var(--color-accent-primary);">—</span>
+      </div>
+      <div class="tool-result-row">
+        <span class="tool-result-label">{c.labelAddr}</span>
+        <span class="tool-result-value" id="ll-addr" style="font-family: var(--font-sans); font-size: var(--text-sm);">—</span>
+      </div>
+      <div class="action-buttons" style="margin-top: var(--space-4);">
+        <button class="btn btn-secondary btn-sm" id="ll-copy" type="button">{c.btnCopy}</button>
+        <button class="btn btn-secondary btn-sm" id="ll-share" type="button">{c.btnShare}</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="map-container" id="ll-map" data-locate-title={locateTitle} style="margin-top: var(--space-6); cursor: crosshair;"></div>
+
+  <div class="prose" style="margin-top: var(--space-12); line-height: 1.8;">
+    <h2>{c.howTitle}</h2>
+    <ol style="line-height: 1.8; margin-bottom: 2rem;">
+      {c.steps.map((step) => (
+        <li style="margin-bottom: 0.5rem;" set:html={step} />
+      ))}
+    </ol>
+    <h2>{c.underTitle}</h2>
+    <p style="line-height: 1.8; margin-bottom: 1.5rem;">
+      {c.underText} <a href={getLocalizedPath('/guides/latitude-and-longitude-explained/', lang)}>{c.guideLinkText}</a> {lang === 'en' ? 'or check the' : '•'} <a href={getLocalizedPath('/glossary/', lang)}>{c.glossaryLinkText}</a>.
+    </p>
+  </div>
+
+  <script>
+    import GeoLocation from '../../scripts/geolocation.js';
+    import Geocoding from '../../scripts/geocoding.js';
+    import Sharing from '../../scripts/sharing.js';
+    import MapUtils from '../../scripts/map.js';
+
+    const locateTitles: Record<string, string> = {
+      en: "Zoom to my current location",
+      es: "Centrar y ampliar en mi ubicación",
+      fr: "Zoomer sur ma position actuelle",
+      de: "Auf meinen aktuellen Standort zoomen",
+      pt: "Aproximar da minha localização atual"
+    };
+    const currentDocLang = document.documentElement.lang || 'en';
+    const locateTitle = document.getElementById('ll-map')?.getAttribute('data-locate-title') || locateTitles[currentDocLang] || locateTitles.en;
+
+    let lat: number | null = null;
+    let lng: number | null = null;
+    let map: any = null;
+    let marker: any = null;
+
+    function plotOnMap(la: number, ln: number) {
+      const L = (window as any).L;
+      if (!map || !L) return;
+      if (marker) map.removeLayer(marker);
+      const icon = L.divIcon({
+        html: '<div style="width:18px;height:18px;background:#00d4ff;border:3px solid white;border-radius:50%;box-shadow:0 0 10px rgba(0,212,255,0.4);"></div>',
+        className: '',
+        iconSize: [18, 18],
+        iconAnchor: [9, 9],
+      });
+      marker = L.marker([la, ln], { icon }).addTo(map);
+      map.flyTo([la, ln], 15);
+    }
+
+    function showResult(la: number, ln: number) {
+      lat = la;
+      lng = ln;
+      const latEl = document.getElementById('ll-lat');
+      const lngEl = document.getElementById('ll-lng');
+      const resEl = document.getElementById('ll-result');
+
+      if (latEl) latEl.textContent = la.toFixed(6);
+      if (lngEl) lngEl.textContent = ln.toFixed(6);
+      if (resEl) resEl.style.display = 'block';
+
+      Geocoding.getShortAddress(la, ln).then((addr: string) => {
+        const addrEl = document.getElementById('ll-addr');
+        if (addrEl) addrEl.textContent = addr;
+      }).catch(() => {});
+
+      if (map) plotOnMap(la, ln);
+    }
+
+    const waitL = () => {
+      const L = (window as any).L;
+      if (typeof L !== 'undefined') {
+        map = L.map('ll-map').setView([20, 0], 2);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          attribution: '&copy; OpenStreetMap',
+          maxZoom: 19,
+        }).addTo(map);
+        map.on('click', (e: any) => showResult(e.latlng.lat, e.latlng.lng));
+
+        MapUtils.addLocateControl(map, {
+          title: locateTitle,
+          zoom: 16,
+          onLocate: (uLat: number, uLng: number) => {
+            showResult(uLat, uLng);
+          }
+        });
+
+        if (lat !== null && lng !== null) {
+          plotOnMap(lat, lng);
+        }
+      } else {
+        setTimeout(waitL, 100);
+      }
+    };
+    waitL();
+
+    document.getElementById('ll-btn')?.addEventListener('click', () => {
+      const btn = document.getElementById('ll-btn') as HTMLButtonElement;
+      const err = document.getElementById('ll-error');
+      if (btn) btn.disabled = true;
+      if (err) err.style.display = 'none';
+
+      GeoLocation.getCurrentPosition()
+        .then((pos: any) => {
+          showResult(pos.coords.latitude, pos.coords.longitude);
+        })
+        .catch((e: any) => {
+          if (err) {
+            err.textContent = e.message || 'Location error';
+            err.style.display = 'block';
+          }
+        })
+        .finally(() => {
+          if (btn) btn.disabled = false;
+        });
+    });
+
+    document.getElementById('ll-copy')?.addEventListener('click', function(this: HTMLButtonElement) {
+      if (lat === null || lng === null) return;
+      navigator.clipboard.writeText(`${lat.toFixed(6)}, ${lng.toFixed(6)}`).then(() => {
+        const orig = this.textContent;
+        this.textContent = '✓ Copied!';
+        setTimeout(() => { this.textContent = orig; }, 2000);
+      });
+    });
+
+    document.getElementById('ll-share')?.addEventListener('click', () => {
+      if (lat === null || lng === null) return;
+      Sharing.shareNative({
+        title: 'Coordinates',
+        text: `Latitude: ${lat.toFixed(6)}, Longitude: ${lng.toFixed(6)}`,
+        url: Sharing.getGoogleMapsUrl(lat, lng),
+      });
+    });
+  </script>
+</ToolLayout>

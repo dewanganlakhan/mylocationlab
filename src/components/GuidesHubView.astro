@@ -1,0 +1,103 @@
+---
+/**
+ * GuidesHubView — Multilingual Educational Guides & Knowledge Hub View
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from './Breadcrumbs.astro';
+import { getLocalizedPath, type SupportedLang, defaultLang } from '../i18n/config';
+import { guidesHubTranslations } from '../i18n/guidesHub';
+import { useTranslations } from '../i18n/ui';
+
+interface Props {
+  lang?: SupportedLang;
+}
+
+const { lang = defaultLang } = Astro.props;
+const t = useTranslations(lang);
+const content = guidesHubTranslations[lang] || guidesHubTranslations.en;
+
+const breadcrumbs = [
+  { label: t('common.home'), href: '/' },
+  { label: `${content.titlePrefix} ${content.titleHighlight}`.trim() }
+];
+
+const hubUrl = getLocalizedPath('/guides/', lang);
+const hubSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'CollectionPage',
+  name: content.metaTitle,
+  description: content.metaDescription,
+  url: `https://mylocationlab.com${hubUrl}`,
+};
+---
+
+<BaseLayout
+  lang={lang}
+  title={content.metaTitle}
+  description={content.metaDescription}
+  activeSection="guides"
+  jsonLd={[hubSchema]}
+>
+  <div class="container">
+    <Breadcrumbs items={breadcrumbs} lang={lang} />
+
+    <section class="page-header" style="text-align: center; margin-bottom: var(--space-12);">
+      <span class="badge badge-primary" style="margin-bottom: var(--space-3);">{content.badge}</span>
+      <h1>{content.titlePrefix} <span class="text-gradient">{content.titleHighlight}</span></h1>
+      <p class="page-header-desc" style="max-width: 740px; margin: 0 auto;">
+        {content.subtitle}
+      </p>
+    </section>
+
+    <!-- Category Sections -->
+    <div style="display: flex; flex-direction: column; gap: var(--space-16); margin-bottom: var(--space-20);">
+      {content.categories.map((section) => (
+        <div>
+          <div style="margin-bottom: var(--space-6);">
+            <h2 style="font-size: var(--text-2xl); color: var(--color-text-heading); margin-bottom: var(--space-2);">
+              {section.category}
+            </h2>
+            <p style="font-size: var(--text-sm); color: var(--color-text-secondary); margin-bottom: 0;">
+              {section.description}
+            </p>
+          </div>
+
+          <div class="grid grid-auto" style="gap: var(--space-6);">
+            {section.guides.map((guide) => (
+              <a href={getLocalizedPath(guide.url, lang)} class="guide-card">
+                <div>
+                  <div class="guide-card-header">
+                    <span class="guide-card-icon">{guide.icon}</span>
+                    <span class="badge badge-neutral">{guide.tag}</span>
+                  </div>
+                  <h3 class="guide-card-title">{guide.title}</h3>
+                  <p class="guide-card-desc">{guide.description}</p>
+                </div>
+                <div>
+                  <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--color-border); padding-top: var(--space-3); margin-top: var(--space-2);">
+                    <span class="guide-card-readtime">⏱️ {guide.readTime}</span>
+                    <span class="guide-card-footer">{content.readGuide}</span>
+                  </div>
+                </div>
+              </a>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+
+    <!-- Quick Tools CTA Strip -->
+    <section class="card card-highlight" style="padding: var(--space-8); text-align: center; margin-bottom: var(--space-16);">
+      <h2 style="font-size: var(--text-2xl); margin-bottom: var(--space-3);">{content.ctaTitle}</h2>
+      <p style="max-width: 620px; margin: 0 auto var(--space-6); color: var(--color-text-secondary);">
+        {content.ctaDesc}
+      </p>
+      <div style="display: flex; justify-content: center; gap: var(--space-4); flex-wrap: wrap;">
+        <a href={getLocalizedPath('/tools/gps-coordinates/', lang)} class="btn btn-primary">{content.ctaGpsBtn}</a>
+        <a href={getLocalizedPath('/tools/coordinate-converter/', lang)} class="btn btn-secondary">{content.ctaConverterBtn}</a>
+        <a href={getLocalizedPath('/tools/elevation-finder/', lang)} class="btn btn-secondary">{content.ctaElevationBtn}</a>
+        <a href={getLocalizedPath('/tools/', lang)} class="btn btn-ghost">{content.ctaAllToolsBtn}</a>
+      </div>
+    </section>
+  </div>
+</BaseLayout>

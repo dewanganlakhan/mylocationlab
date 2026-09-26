@@ -1,0 +1,75 @@
+---
+/**
+ * ComparisonsHubView — Multilingual Comparisons Hub Component
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from './Breadcrumbs.astro';
+import { getLocalizedPath, type SupportedLang, defaultLang } from '../i18n/config';
+import { comparisonsHubTranslations } from '../i18n/comparisonsHub';
+import { useTranslations } from '../i18n/ui';
+
+interface Props {
+  lang?: SupportedLang;
+}
+
+const { lang = defaultLang } = Astro.props;
+const t = useTranslations(lang);
+const content = comparisonsHubTranslations[lang] || comparisonsHubTranslations.en;
+
+const breadcrumbs = [
+  { label: t('common.home'), href: '/' },
+  { label: content.breadcrumb }
+];
+
+const hubUrl = getLocalizedPath('/comparisons/', lang);
+const compHubSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'CollectionPage',
+  name: content.metaTitle,
+  description: content.metaDescription,
+  url: `https://mylocationlab.com${hubUrl}`,
+};
+---
+
+<BaseLayout
+  lang={lang}
+  title={content.metaTitle}
+  description={content.metaDescription}
+  activeSection="comparisons"
+  jsonLd={[compHubSchema]}
+>
+  <div class="container">
+    <Breadcrumbs items={breadcrumbs} lang={lang} />
+
+    <section class="page-header" style="text-align: center; margin-bottom: var(--space-10);">
+      <h1>{content.titlePrefix} <span class="text-gradient">{content.titleHighlight}</span></h1>
+      <p class="page-header-desc" style="max-width: 680px; margin: 0 auto;">
+        {content.subtitle}
+      </p>
+    </section>
+
+    <div class="grid grid-auto" style="gap: var(--space-6); margin-bottom: var(--space-16);">
+      {content.items.map((comp) => (
+        <a href={getLocalizedPath(comp.url, lang)} class="card" style="text-decoration: none; display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <div style="font-size: 2rem; margin-bottom: var(--space-3);">{comp.icon}</div>
+            <h2 style="font-size: var(--text-xl); color: var(--color-text-heading); margin-bottom: var(--space-3); line-height: 1.4;">
+              {comp.title}
+            </h2>
+            <p style="font-size: var(--text-sm); color: var(--color-text-secondary); line-height: 1.7; margin-bottom: var(--space-4);">
+              {comp.description}
+            </p>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--color-border); padding-top: var(--space-3); font-size: var(--text-xs);">
+            <div class="flex gap-2">
+              {comp.tags.map(tag => (
+                <span class="badge badge-neutral" style="font-size: 0.65rem;">{tag}</span>
+              ))}
+            </div>
+            <span style="color: var(--color-accent-primary); font-weight: 600;">{content.viewComparison}</span>
+          </div>
+        </a>
+      ))}
+    </div>
+  </div>
+</BaseLayout>

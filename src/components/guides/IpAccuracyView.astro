@@ -1,0 +1,449 @@
+---
+/**
+ * IpAccuracyView — Multilingual Guide: IP Geolocation Accuracy
+ */
+import ContentLayout from '../../layouts/ContentLayout.astro';
+import { getLocalizedPath, type SupportedLang, defaultLang } from '../../i18n/config';
+
+interface Props {
+  lang?: SupportedLang;
+}
+
+const { lang = defaultLang } = Astro.props;
+
+const translations: Record<string, any> = {
+  en: {
+    title: "IP Geolocation Accuracy: How GeoIP Works | MyLocationLab",
+    description: "How IP geolocation works, how databases like MaxMind map IPs to cities, and why lookups are often miles from your true location.",
+    h1: "IP Geolocation Accuracy: How GeoIP Works & Why It Fails",
+    subtitle: "An in-depth analysis of BGP routing tables, ISP subnet allocations, anycast networks, and the statistical accuracy limits of IP-based positioning.",
+    sectionLabel: "Educational Guides",
+    p1: "When you visit a website on a desktop computer or connected device without built-in GPS, the server immediately attempts to guess your city and country based on your IP (Internet Protocol) address.",
+    p2: "Sometimes this guess is accurate down to your metropolitan area. Other times, it places you 50 to 200 miles away in an adjacent city, or even across international borders. In this guide, we explore the mechanics of GeoIP databases, why IP geolocation is fundamentally non-physical, and how to verify your real IP location using our IP Location Checker.",
+    calloutBadge: "🌐 Live IP Lookup",
+    calloutTitle: "Check What Your IP Address Reveals",
+    calloutDesc: "View your public IPv4/IPv6 address, detected ISP, autonomous system number (ASN), estimated city, and compare it against satellite GPS.",
+    calloutBtn: "Check My IP Location →",
+    h2HowItWorks: "1. How IP Geolocation Actually Works",
+    pHowItWorks1: "Unlike GPS—which measures time-of-flight radio waves from satellites—IP addresses contain zero geographic coordinates in their packet headers. IP addresses are logical routing addresses designed to forward internet packets through routers across the global Border Gateway Protocol (BGP) mesh.",
+    pHowItWorks2: "To determine physical location from an IP, companies like MaxMind (GeoIP2), IPinfo, Digital Element, and DB-IP aggregate data from multiple non-physical sources:",
+    step1Title: "Regional Internet Registry (RIR) Records",
+    step1Desc: "When ISPs and corporations lease IP blocks from ARIN, RIPE NCC, APNIC, LACNIC, or AFRINIC, they register organization mailing addresses and point-of-presence (PoP) metadata in WHOIS registries.",
+    step2Title: "ISP Subnet Infrastructure & Cable Heads",
+    step2Desc: "Internet Service Providers allocate large CIDR blocks (/16 or /20) to regional Central Offices (COs), DSLAMs, or CMTS cable head-ends. All subscribers connected to that regional gateway share the same IP pool.",
+    step3Title: "Mobile App & Wi-Fi Triangulation Feedback",
+    step3Desc: "When millions of smartphone users access weather or mapping apps with both Wi-Fi and GPS enabled, ad networks and SDKs cross-reference the device's public IP with its exact GPS coordinates, continuously calibrating GeoIP database clusters.",
+    h2Benchmarks: "2. Accuracy Benchmarks: What Can IP Geolocation Actually Guarantee?",
+    pBenchmarks: "GeoIP accuracy varies drastically depending on the granularity of the query:",
+    thGranularity: "Geographic Granularity",
+    thAccuracy: "Typical Accuracy Rate",
+    thAssessment: "Reliability Assessment",
+    countryAcc: "98% – 99.5%",
+    countryDesc: "Extremely reliable (ideal for regulatory compliance & currency selection)",
+    stateAcc: "80% – 92%",
+    stateDesc: "High reliability for fixed-line broadband; moderate for mobile networks",
+    cityAcc: "50% – 75%",
+    cityDesc: "Frequently pinpoints the ISP distribution hub rather than user's municipality",
+    postalAcc: "20% – 40%",
+    postalDesc: "Unreliable; usually returns the ZIP code of the ISP's regional headquarters",
+    streetAcc: "0%",
+    streetDesc: "Technically Impossible. IP addresses can never reveal street or house numbers.",
+    h2Fails: "3. Why Does IP Geolocation Frequently Fail?",
+    pFails: "Several technical network architectures cause major discrepancies between your IP and physical location:",
+    fail1: "Cellular Carrier CGNAT (Carrier-Grade NAT): On 4G/5G mobile networks, thousands of smartphones in a state share a single pool of public IPv4 addresses routed through a centralized regional Gateway GPRS Support Node (GGSN). A phone in San Diego may appear in Los Angeles.",
+    fail2: "Anycast Routing & CDNs: Cloudflare, Google, and AWS use Anycast DNS where the same IP address is broadcast simultaneously from 300+ data centers globally. GeoIP databases can become desynchronized.",
+    fail3: "Corporate VPNs & Proxies: When routing through a corporate VPN or iCloud Private Relay, your traffic emerges from an egress server in another city or country.",
+    fail4: "ISP Subnet Reallocation: When an ISP reassigns a block of 10,000 IP addresses from Miami to Atlanta, it can take 3 to 6 weeks for third-party GeoIP vendors to update their offline databases.",
+    callout2Badge: "🛰️ Satellite Fix vs IP",
+    callout2Title: "Compare GPS Precision Against Your IP",
+    callout2Desc: "Read our detailed technical comparison exploring the speed, accuracy, privacy trade-offs, and failure points of GPS versus IP positioning.",
+    callout2Btn: "Read GPS vs IP Guide →",
+    connectedTitle: "🔗 Connected Guides & Diagnostics",
+    tool1Title: "My IP Location",
+    tool1Desc: "Inspect detected city & ISP",
+    tool2Title: "Fix Wrong Location",
+    tool2Desc: "Troubleshooting steps",
+    tool3Title: "GPS Coordinates Finder",
+    tool3Desc: "High-precision satellite lock",
+    tool4Title: "How GPS Works",
+    tool4Desc: "Trilateration & atomic clocks"
+  },
+  es: {
+    title: "Precisión de Geolocalización IP: Cómo Funciona GeoIP | MyLocationLab",
+    description: "Cómo funciona la geolocalización IP, cómo bases de datos como MaxMind ubican IPs por ciudad y por qué a menudo fallan por kilómetros.",
+    h1: "Precisión de Geolocalización IP: Cómo Funciona GeoIP y Por Qué Falla",
+    subtitle: "Análisis exhaustivo de tablas de enrutamiento BGP, subredes de operadores ISP, redes Anycast y límites estadísticos de precisión.",
+    sectionLabel: "Guías Educativas",
+    p1: "Cuando visita un sitio web desde un ordenador o dispositivo sin receptor GPS, el servidor intenta deducir su ciudad y país a partir de su dirección IP pública.",
+    p2: "En ocasiones este cálculo aproxima su área metropolitana; en otras, sitúa su conexión a más de 100 kilómetros en otra provincia. En esta guía analizamos la tecnología de las bases de datos GeoIP, sus fundamentos de red y cómo verificar su IP con nuestro comprobador.",
+    calloutBadge: "🌐 Consulta de IP en Vivo",
+    calloutTitle: "Compruebe los Datos que Revela su Dirección IP",
+    calloutDesc: "Descubra su dirección IPv4/IPv6 pública, proveedor ISP, número de sistema autónomo (ASN), ciudad estimada y compárelo con el GPS satelital.",
+    calloutBtn: "Comprobar Mi Ubicación por IP →",
+    h2HowItWorks: "1. Cómo Opera Realmente la Geolocalización por IP",
+    pHowItWorks1: "A diferencia del GPS—que mide ondas de radio satelitales—los paquetes de red IP no contienen coordenadas geográficas. Son identificadores lógicos diseñados para transferir paquetes mediante el protocolo de pasarela fronteriza (BGP).",
+    pHowItWorks2: "Para vincular una IP a una ubicación física, proveedores como MaxMind (GeoIP2), IPinfo y DB-IP recopilan datos de múltiples registros de red:",
+    step1Title: "Registros de Registros Regionales de Internet (RIR)",
+    step1Desc: "Cuando los ISP y corporaciones alquilan bloques IP de ARIN, RIPE NCC, LACNIC o APNIC, inscriben datos postales y de puntos de presencia (PoP) en directorios WHOIS públicos.",
+    step2Title: "Infraestructura de Subredes y Centrales de Telecomunicaciones",
+    step2Desc: "Los operadores asignan rangos CIDR a centrales comarcales o cabeceras de fibra. Todos los abonados vinculados a esa pasarela comparten el mismo grupo de direcciones.",
+    step3Title: "Retroalimentación de Apps Móviles y Triangulación Wi-Fi",
+    step3Desc: "Cuando millones de usuarios abren aplicaciones con Wi-Fi y GPS activos, las redes de datos cotejan la IP pública con las coordenadas satelitales exactas, ajustando periódicamente los clústeres GeoIP.",
+    h2Benchmarks: "2. Niveles de Precisión: ¿Qué Garantiza la Geolocalización IP?",
+    pBenchmarks: "La exactitud de la geolocalización IP varía drásticamente según la escala geográfica solicitada:",
+    thGranularity: "Nivel Geográfico",
+    thAccuracy: "Tasa Típica de Precisión",
+    thAssessment: "Evaluación de Fiabilidad",
+    countryAcc: "98% – 99,5%",
+    countryDesc: "Extremadamente fiable (ideal para cumplimiento legal y divisas)",
+    stateAcc: "80% – 92%",
+    stateDesc: "Alta fiabilidad en banda ancha fija; moderada en redes móviles",
+    cityAcc: "50% – 75%",
+    cityDesc: "Suele señalar el nodo de distribución del proveedor y no su municipio real",
+    postalAcc: "20% – 40%",
+    postalDesc: "Muy poco fiable; a menudo refleja la sede regional del operador",
+    streetAcc: "0%",
+    streetDesc: "Técnicamente Imposible. Las direcciones IP jamás pueden identificar una calle o portal.",
+    h2Fails: "3. ¿Por Qué Falla la Localización por IP con Frecuencia?",
+    pFails: "Diversos factores arquitectónicos de Internet provocan discrepancias entre la IP y su ubicación real:",
+    fail1: "CGNAT en Redes Móviles 4G/5G: Miles de teléfonos móviles de una provincia comparten una misma dirección IPv4 pública canalizada hacia una pasarela central (GGSN/PGW).",
+    fail2: "Enrutamiento Anycast y Redes CDN: Proveedores como Cloudflare y AWS anuncian la misma IP desde cientos de centros de datos en todo el mundo, desincronizando las bases GeoIP.",
+    fail3: "VPNs Corporativas y Proxies: Al navegar a través de túneles VPN o iCloud Private Relay, el tráfico sale por servidores alojados en otras ciudades o países.",
+    fail4: "Reasignación de Bloques de Red: Si un ISP reasigna un rango de 10.000 direcciones a otra demarcación, las bases de datos externas tardan semanas en sincronizarse.",
+    callout2Badge: "🛰️ GPS Satelital vs IP",
+    callout2Title: "Compare la Precisión de GPS frente a su IP",
+    callout2Desc: "Consulte nuestra comparativa técnica detallada sobre velocidad, privacidad y márgenes de error entre GPS y geolocalización IP.",
+    callout2Btn: "Ver Comparativa GPS vs IP →",
+    connectedTitle: "🔗 Guías y Diagnósticos Conectados",
+    tool1Title: "Mi Ubicación por IP",
+    tool1Desc: "Inspeccione ciudad e ISP",
+    tool2Title: "Corregir Ubicación Errónea",
+    tool2Desc: "Pasos de resolución",
+    tool3Title: "Buscador de Coordenadas GPS",
+    tool3Desc: "Fijación satelital precisa",
+    tool4Title: "Cómo Funciona el GPS",
+    tool4Desc: "Trilateración y física orbital"
+  },
+  fr: {
+    title: "Précision de la Géolocalisation IP : Fonctionnement GeoIP | MyLocationLab",
+    description: "Comprenez le fonctionnement de la géolocalisation IP, le rôle de MaxMind et pourquoi la position déduite est souvent imprécise.",
+    h1: "Précision de la Géolocalisation IP : Comment Fonctionne GeoIP et Pourquoi Elle Échoue",
+    subtitle: "Analyse approfondie des tables de routage BGP, des sous-réseaux FAI, des réseaux Anycast et des limites statistiques du repérage IP.",
+    sectionLabel: "Guides Pédagogiques",
+    p1: "Lorsque vous naviguez depuis un ordinateur sans récepteur GPS, le serveur distant déduit approximativement votre ville et votre pays d'après votre adresse IP publique.",
+    p2: "Parfois cette estimation s'avère correcte à l'échelle de l'agglomération ; d'autres fois, elle vous localise à des centaines de kilomètres dans une région voisine. Ce guide détaille les coulisses des bases de données GeoIP et explique comment tester votre IP.",
+    calloutBadge: "🌐 Diagnostic IP en Direct",
+    calloutTitle: "Découvrez ce que Révèle Votre Adresse IP",
+    calloutDesc: "Affichez votre IPv4/IPv6 publique, votre FAI, votre numéro ASN, votre ville estimée et comparez ces données au signal GPS direct.",
+    calloutBtn: "Vérifier Ma Position par IP →",
+    h2HowItWorks: "1. Comment Fonctionne Réellement la Géolocalisation IP",
+    pHowItWorks1: "À la différence du GPS qui mesure les signaux radio satellitaires, les paquets réseau ne contiennent aucune coordonnée géographique. L'adresse IP est un identifiant de routage BGP à travers le maillage Internet mondial.",
+    pHowItWorks2: "Pour convertir une adresse IP en coordonnées géographiques, des sociétés telles que MaxMind (GeoIP2), IPinfo et DB-IP synthétisent plusieurs sources de données réseau :",
+    step1Title: "Registres Internet Régionaux (RIR)",
+    step1Desc: "Les opérateurs et entreprises déclarent des adresses administratives et des métadonnées de points de présence (PoP) dans les registres WHOIS (RIPE NCC, ARIN, etc.).",
+    step2Title: "Sous-réseaux et Répartiteurs des FAI",
+    step2Desc: "Les fournisseurs d'accès affectent des plages d'adresses CIDR à des répartiteurs régionaux (DSLAM, OLT). Tous les abonnés raccordés à ce concentrateur partagent le même ensemble d'adresses.",
+    step3Title: "Recoupement Wi-Fi et Applications Mobiles",
+    step3Desc: "Lorsque des téléphones utilisent des applications avec Wi-Fi et GPS activés, les réseaux publicitaires associent l'IP publique aux coordonnées satellitaires précises, affinant les bases GeoIP.",
+    h2Benchmarks: "2. Barème de Précision : Que Peut Garantir la Géolocalisation IP ?",
+    pBenchmarks: "La fiabilité d'une détection IP dépend strictement de l'échelle d'observation demandée :",
+    thGranularity: "Échelle Géographique",
+    thAccuracy: "Taux de Précision Typique",
+    thAssessment: "Fiabilité Constatée",
+    countryAcc: "98 % – 99,5 %",
+    countryDesc: "Excellente (parfait pour conformité légale et devises monétaires)",
+    stateAcc: "80 % – 92 %",
+    stateDesc: "Élevée sur box ADSL/Fibre ; moyenne sur réseaux mobiles",
+    cityAcc: "50 % – 75 %",
+    cityDesc: "Désigne fréquemment le routeur central du FAI plutôt que la commune réelle",
+    postalAcc: "20 % – 40 %",
+    postalDesc: "Très peu fiable ; pointe souvent le code postal du siège régional du FAI",
+    streetAcc: "0 %",
+    streetDesc: "Techniquement Impossible. Une adresse IP ne révélera jamais un numéro de rue.",
+    h2Fails: "3. Pourquoi la Localisation par IP Est-elle Souvent Erronée ?",
+    pFails: "Plusieurs caractéristiques fondamentales des réseaux Internet faussent les calculs de positionnement IP :",
+    fail1: "CGNAT sur Réseaux 4G/5G : Des milliers d'abonnés mobiles d'une région partagent une même adresse IPv4 routée vers une passerelle centrale (GGSN).",
+    fail2: "Routage Anycast & CDN : Cloudflare et AWS annoncent la même adresse IP depuis des centaines de datacenters à l'échelle mondiale, déphasant les bases GeoIP.",
+    fail3: "VPN et Proxies Chiffrés : En passant par un VPN ou iCloud Private Relay, votre trafic émerge depuis un serveur relais distant.",
+    fail4: "Réallocation de Plages d'Adresses : Lorsqu'un FAI déplace un bloc de 10 000 adresses vers une autre région, les bases de données mettent des semaines à se mettre à jour.",
+    callout2Badge: "🛰️ GPS vs IP",
+    callout2Title: "Comparez la Précision GPS à Votre IP",
+    callout2Desc: "Consultez notre analyse technique comparative sur la précision, la latence et la protection de la vie privée entre GPS et IP.",
+    callout2Btn: "Lire le Comparatif GPS vs IP →",
+    connectedTitle: "🔗 Guides et Outils Recommandés",
+    tool1Title: "Ma Position par IP",
+    tool1Desc: "Tester la détection de ville",
+    tool2Title: "Corriger Position Erronée",
+    tool2Desc: "Guide de dépannage",
+    tool3Title: "Buscador Coordonnées GPS",
+    tool3Desc: "Mesure satellite directe",
+    tool4Title: "Comment Fonctionne le GPS",
+    tool4Desc: "Trilatération et physique spatiale"
+  },
+  de: {
+    title: "IP-Geolokalisierungsgenauigkeit: Wie GeoIP funktioniert | MyLocationLab",
+    description: "Wie IP-Standortbestimmung abläuft, wie MaxMind IP-Adressen Städten zuordnet und warum Ergebnisse oft kilometerweit abweichen.",
+    h1: "IP-Geolokalisierungsgenauigkeit: Wie GeoIP funktioniert & warum sie scheitert",
+    subtitle: "Detaillierte Analyse von BGP-Routingtabellen, Provider-Subnetzen, Anycast-Netzwerken und statistischen Genauigkeitsgrenzen.",
+    sectionLabel: "Lehr-Ratgeber",
+    p1: "Besuchen Sie eine Website auf einem PC ohne GPS-Empfänger, versucht der Webserver sofort, anhand Ihrer öffentlichen IP-Adresse Ihr Land und Ihre Stadt zu ermitteln.",
+    p2: "Manchmal trifft diese Schätzung den Ballungsraum; oft liegt sie jedoch 50 bis 100 Kilometer entfernt im nächsten Rechenzentrum. In diesem Leitfaden beleuchten wir die Funktionsweise von GeoIP-Datenbanken und erklären, wie Sie Ihren IP-Standort überprüfen.",
+    calloutBadge: "🌐 Live-IP-Abfrage",
+    calloutTitle: "Was Ihre IP-Adresse über Ihren Standort verrät",
+    calloutDesc: "Sehen Sie Ihre öffentliche IPv4/IPv6-Adresse, Ihren Internetanbieter, Ihre ASN und die geschätzte Stadt im Vergleich zu echtem GPS.",
+    calloutBtn: "Meinen IP-Standort prüfen →",
+    h2HowItWorks: "1. Wie IP-Geolokalisierung technisch funktioniert",
+    pHowItWorks1: "Im Gegensatz zu GPS—das Signale von Satelliten misst—enthalten IP-Datenpakete keinerlei geografische Koordinaten. Sie dienen ausschließlich der logischen Weiterleitung von Datenpaketen im BGP-Mesh.",
+    pHowItWorks2: "Um einer IP eine reale Position zuzuordnen, aggregieren Anbieter wie MaxMind (GeoIP2), IPinfo und DB-IP mehrere Informationsquellen:",
+    step1Title: "Regionale Internet-Registrierungsdaten (RIR)",
+    step1Desc: "Beziehen Provider IP-Blöcke von RIPE NCC oder ARIN, hinterlegen sie Adressdaten und Point-of-Presence-Informationen (PoP) in WHOIS-Datenbanken.",
+    step2Title: "Provider-Subnetze und Verteilerknoten",
+    step2Desc: "Internetanbieter weisen CIDR-Blöcke regionalen Verteilern oder Kabelkopfstationen zu. Alle Anschlüsse dieser Station teilen sich denselben Adresspool.",
+    step3Title: "App- & WLAN-Triangulationsdaten",
+    step3Desc: "Nutzen Millionen Smartphones standortbezogene Apps bei aktiviertem WLAN und GPS, verknüpfen Werbenetze die öffentliche IP mit exakten GPS-Koordinaten.",
+    h2Benchmarks: "2. Genauigkeits-Benchmarks: Was leistet IP-Geolokalisierung?",
+    pBenchmarks: "Die Treffsicherheit schwankt drastisch mit der gewünschten geografischen Detailtiefe:",
+    thGranularity: "Geografische Ebene",
+    thAccuracy: "Typische Trefferquote",
+    thAssessment: "Praktische Zuverlässigkeit",
+    countryAcc: "98% – 99,5%",
+    countryDesc: "Extrem hoch (ideal für Währungswahl und gesetzliche Vorgaben)",
+    stateAcc: "80% – 92%",
+    stateDesc: "Sehr hoch bei Festnetz-Breitband; mittel bei Mobilfunk",
+    cityAcc: "50% – 75%",
+    cityDesc: "Zeigt oft den regionalen Einspeisepunkt des Providers, nicht die Gemeinde",
+    postalAcc: "20% – 40%",
+    postalDesc: "Sehr unzuverlässig; oft Postleitzahl des Provider-Hauptsitzes",
+    streetAcc: "0%",
+    streetDesc: "Technisch unmöglich. IP-Adressen können niemals Straßennamen erfassen.",
+    h2Fails: "3. Warum schlägt die IP-Standortbestimmung so oft fehl?",
+    pFails: "Wesentliche Netzwerktechnologien verhindern eine punktgenaue Zuordnung:",
+    fail1: "Mobilfunk-CGNAT (Carrier-Grade NAT): Im 4G/5G-Netz teilen sich tausende Geräte gemeinsame öffentliche IP-Pools zentraler Gateways (GGSN).",
+    fail2: "Anycast-Routing & CDNs: Netzwerke wie Cloudflare oder AWS routen dieselbe IP-Adresse weltweit über Hunderte Rechenzentren.",
+    fail3: "Unternehmens-VPNs & Proxys: Bei VPN-Nutzung oder Apple iCloud Private Relay verlässt der Datenverkehr das Netz an einem entfernten Serverstandort.",
+    fail4: "Subnetz-Umgruppierungen: Weist ein Provider Adressblöcke einer anderen Stadt zu, benötigen externe GeoIP-Datenbanken Wochen für die Aktualisierung.",
+    callout2Badge: "🛰️ GPS vs. IP",
+    callout2Title: "GPS-Präzision mit IP vergleichen",
+    callout2Desc: "Lesen Sie unseren ausführlichen Vergleich zu Genauigkeit, Datenschutz und Fehlerszenarien beider Ortungsmethoden.",
+    callout2Btn: "Zum GPS vs IP Vergleich →",
+    connectedTitle: "🔗 Verwandte Ratgeber & Diagnose",
+    tool1Title: "Mein IP-Standort",
+    tool1Desc: "Erkannte Stadt & ISP prüfen",
+    tool2Title: "Falschen Standort beheben",
+    tool2Desc: "Schritt-für-Schritt-Hilfe",
+    tool3Title: "GPS-Koordinaten-Finder",
+    tool3Desc: "Echte Satellitentelemetrie",
+    tool4Title: "Wie GPS funktioniert",
+    tool4Desc: "Trilateration & Atomuhren"
+  },
+  pt: {
+    title: "Precisão da Geolocalização por IP: Como Opera o GeoIP | MyLocationLab",
+    description: "Entenda como funciona a localização por IP, o papel de bases como MaxMind e por que os resultados divergem do seu endereço real.",
+    h1: "Precisão da Geolocalização por IP: Como Funciona o GeoIP e Por Que Falha",
+    subtitle: "Uma análise técnica sobre tabelas BGP, sub-redes de provedores ISP, redes Anycast e limites estatísticos de precisão.",
+    sectionLabel: "Guias Educativos",
+    p1: "Ao acessar um site em um computador de mesa sem GPS integrado, o servidor tenta deduzir sua cidade e país baseando-se no endereço IP público da sua conexão.",
+    p2: "Por vezes essa estimativa acerta a região metropolitana; em outras, posiciona você a mais de 100 quilômetros de distância. Neste guia, examinamos a mecânica das bases GeoIP e explicamos como testar seu IP.",
+    calloutBadge: "🌐 Diagnóstico de IP ao Vivo",
+    calloutTitle: "Descubra o que seu Endereço IP Revela",
+    calloutDesc: "Verifique seu IPv4/IPv6 público, provedor de internet (ISP), número de sistema autônomo (ASN), cidade prevista e compare com o sinal GPS.",
+    calloutBtn: "Verificar Minha Localização por IP →",
+    h2HowItWorks: "1. Como Opera a Geolocalização por IP na Prática",
+    pHowItWorks1: "Diferente do GPS—que calcula o tempo de voo de ondas de rádio orbitais—pacotes de rede IP não carregam coordenadas de latitude ou longitude. São apenas endereços lógicos de roteamento BGP.",
+    pHowItWorks2: "Para mapear IPs a pontos geográficos, empresas como MaxMind (GeoIP2), IPinfo e DB-IP combinam múltiplas bases de dados de infraestrutura:",
+    step1Title: "Registros Regionais de Internet (RIR)",
+    step1Desc: "Quando operadoras alugam blocos IP do LACNIC, ARIN ou RIPE NCC, registram endereços corporativos e dados de pontos de presença em cadastros WHOIS.",
+    step2Title: "Sub-redes e Centrais Telefônicas de Provedores",
+    step2Desc: "Os provedores distribuem faixas CIDR para centrais comarcais (DSLAMs/OLTs). Todos os clientes conectados àquele concentrador compartilham a mesma faixa de IP.",
+    step3Title: "Calibração por Wi-Fi e Aplicativos Móveis",
+    step3Desc: "Quando milhões de usuários usam apps com GPS e Wi-Fi ligados, redes de telemetria vinculam o IP público às coordenadas de satélite, calibrando os dados GeoIP.",
+    h2Benchmarks: "2. Escala de Precisão: O que a Geolocalização IP Garante?",
+    pBenchmarks: "A confiabilidade da localização por IP varia muito de acordo com o nível territorial consultado:",
+    thGranularity: "Nível Geográfico",
+    thAccuracy: "Taxa Típica de Acerto",
+    thAssessment: "Avaliação de Confiabilidade",
+    countryAcc: "98% – 99,5%",
+    countryDesc: "Extremamente confiável (ideal para moedas e conformidade legal)",
+    stateAcc: "80% – 92%",
+    stateDesc: "Alta precisão em banda larga fixa; moderada em conexões 4G/5G",
+    cityAcc: "50% – 75%",
+    cityDesc: "Geralmente indica a central de distribuição do provedor, não seu bairro",
+    postalAcc: "20% – 40%",
+    postalDesc: "Pouco confiável; frequentemente retorna o CEP da sede regional da operadora",
+    streetAcc: "0%",
+    streetDesc: "Tecnicamente Impossível. Endereços IP jamais conseguem identificar nome de rua ou número.",
+    h2Fails: "3. Por Que a Geolocalização IP Falha Frequentemente?",
+    pFails: "Diversos fatores de arquitetura de rede causam discrepâncias entre o IP e sua posição real:",
+    fail1: "CGNAT em Redes Celulares: No 4G e 5G, milhares de celulares compartilham os mesmos IPs públicos através de nós de controle centrais (GGSN/PGW).",
+    fail2: "Roteamento Anycast e CDNs: Redes como Cloudflare e AWS anunciam o mesmo IP a partir de centenas de data centers ao mesmo tempo.",
+    fail3: "VPNs e Proxies Corporativos: Ao utilizar uma VPN ou iCloud Private Relay, a conexão sai por um servidor em outra cidade ou país.",
+    fail4: "Realocação de Faixas de IP: Quando uma operadora transfere 10.000 IPs para outro estado, bases de dados levam semanas para atualizar seus cadastros.",
+    callout2Badge: "🛰️ GPS vs IP",
+    callout2Title: "Compare a Precisão do GPS com seu IP",
+    callout2Desc: "Acesse nosso comparativo técnico detalhado sobre precisão, latência e privacidade entre GPS e geolocalização IP.",
+    callout2Btn: "Ver Comparativo GPS vs IP →",
+    connectedTitle: "🔗 Guias e Diagnósticos Conectados",
+    tool1Title: "Minha Localização por IP",
+    tool1Desc: "Verifique cidade e provedor",
+    tool2Title: "Corrigir Local Incorreto",
+    tool2Desc: "Soluções passo a passo",
+    tool3Title: "Buscador Coordenadas GPS",
+    tool3Desc: "Sinal direto de satélites",
+    tool4Title: "Como Funciona o GPS",
+    tool4Desc: "Trilateração e relógios atômicos"
+  }
+};
+
+const c = translations[lang] || translations.en;
+---
+
+<ContentLayout
+  lang={lang}
+  title={c.title}
+  description={c.description}
+  h1={c.h1}
+  subtitle={c.subtitle}
+  section="guides"
+  sectionLabel={c.sectionLabel}
+  readTime="8 min"
+  publishDate="2026-09-22"
+  modifiedDate="2026-09-22"
+>
+  <p>{c.p1}</p>
+  <p>{c.p2}</p>
+
+  <div class="tool-callout">
+    <div class="tool-callout-content">
+      <span class="tool-callout-badge">{c.calloutBadge}</span>
+      <h3 class="tool-callout-title">{c.calloutTitle}</h3>
+      <p class="tool-callout-desc">{c.calloutDesc}</p>
+    </div>
+    <div class="tool-callout-action">
+      <a href={getLocalizedPath('/my-location/ip/', lang)} class="btn btn-primary">{c.calloutBtn}</a>
+    </div>
+  </div>
+
+  <h2>{c.h2HowItWorks}</h2>
+  <p>{c.pHowItWorks1}</p>
+  <p>{c.pHowItWorks2}</p>
+
+  <div class="step-container">
+    <div class="step-card">
+      <div class="step-number">1</div>
+      <div class="step-body">
+        <h4 class="step-title">{c.step1Title}</h4>
+        <p class="step-desc">{c.step1Desc}</p>
+      </div>
+    </div>
+
+    <div class="step-card">
+      <div class="step-number">2</div>
+      <div class="step-body">
+        <h4 class="step-title">{c.step2Title}</h4>
+        <p class="step-desc">{c.step2Desc}</p>
+      </div>
+    </div>
+
+    <div class="step-card">
+      <div class="step-number">3</div>
+      <div class="step-body">
+        <h4 class="step-title">{c.step3Title}</h4>
+        <p class="step-desc">{c.step3Desc}</p>
+      </div>
+    </div>
+  </div>
+
+  <h2>{c.h2Benchmarks}</h2>
+  <p>{c.pBenchmarks}</p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>{c.thGranularity}</th>
+        <th>{c.thAccuracy}</th>
+        <th>{c.thAssessment}</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Country Level</strong></td>
+        <td>{c.countryAcc}</td>
+        <td>{c.countryDesc}</td>
+      </tr>
+      <tr>
+        <td><strong>State / Region Level</strong></td>
+        <td>{c.stateAcc}</td>
+        <td>{c.stateDesc}</td>
+      </tr>
+      <tr>
+        <td><strong>City / Metropolitan Level</strong></td>
+        <td>{c.cityAcc}</td>
+        <td>{c.cityDesc}</td>
+      </tr>
+      <tr>
+        <td><strong>Postal / ZIP Code Level</strong></td>
+        <td>{c.postalAcc}</td>
+        <td>{c.postalDesc}</td>
+      </tr>
+      <tr>
+        <td><strong>Street / House Address Level</strong></td>
+        <td>{c.streetAcc}</td>
+        <td>{c.streetDesc}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>{c.h2Fails}</h2>
+  <p>{c.pFails}</p>
+  <ul>
+    <li>{c.fail1}</li>
+    <li>{c.fail2}</li>
+    <li>{c.fail3}</li>
+    <li>{c.fail4}</li>
+  </ul>
+
+  <div class="tool-callout">
+    <div class="tool-callout-content">
+      <span class="tool-callout-badge">{c.callout2Badge}</span>
+      <h3 class="tool-callout-title">{c.callout2Title}</h3>
+      <p class="tool-callout-desc">{c.callout2Desc}</p>
+    </div>
+    <div class="tool-callout-action">
+      <a href={getLocalizedPath('/comparisons/gps-vs-ip-location/', lang)} class="btn btn-secondary">{c.callout2Btn}</a>
+    </div>
+  </div>
+
+  <div class="contextual-next-box">
+    <h3 class="contextual-next-title">{c.connectedTitle}</h3>
+    <div class="contextual-next-grid">
+      <a href={getLocalizedPath('/my-location/ip/', lang)} class="contextual-link-card">
+        <span class="contextual-link-icon">💻</span>
+        <div class="contextual-link-info">
+          <div class="contextual-link-title">{c.tool1Title}</div>
+          <div class="contextual-link-sub">{c.tool1Desc}</div>
+        </div>
+      </a>
+      <a href={getLocalizedPath('/guides/wrong-location/', lang)} class="contextual-link-card">
+        <span class="contextual-link-icon">🔧</span>
+        <div class="contextual-link-info">
+          <div class="contextual-link-title">{c.tool2Title}</div>
+          <div class="contextual-link-sub">{c.tool2Desc}</div>
+        </div>
+      </a>
+      <a href={getLocalizedPath('/tools/gps-coordinates/', lang)} class="contextual-link-card">
+        <span class="contextual-link-icon">🛰️</span>
+        <div class="contextual-link-info">
+          <div class="contextual-link-title">{c.tool3Title}</div>
+          <div class="contextual-link-sub">{c.tool3Desc}</div>
+        </div>
+      </a>
+      <a href={getLocalizedPath('/guides/how-gps-location-works/', lang)} class="contextual-link-card">
+        <span class="contextual-link-icon">📡</span>
+        <div class="contextual-link-info">
+          <div class="contextual-link-title">{c.tool4Title}</div>
+          <div class="contextual-link-sub">{c.tool4Desc}</div>
+        </div>
+      </a>
+    </div>
+  </div>
+</ContentLayout>

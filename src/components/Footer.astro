@@ -3,7 +3,19 @@
  * Footer — Stitch GeoPrecision System Architecture
  * Brand, active GNSS indicator, 4-column structured SILO directory, and zero-log trust badge.
  */
+import { getLangFromUrl, getLocalizedPath } from '../i18n/config';
+import { useTranslations } from '../i18n/ui';
+
+interface Props {
+  lang?: string;
+}
+
+const { lang: customLang } = Astro.props;
+const lang = customLang || getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
 const year = new Date().getFullYear();
+
+const homePath = getLocalizedPath('/', lang);
 ---
 
 <footer class="site-footer">
@@ -11,7 +23,7 @@ const year = new Date().getFullYear();
     <div class="footer-grid">
       <!-- Brand & Telemetry Status -->
       <div class="footer-brand">
-        <a href="/" class="footer-logo" aria-label="MyLocationLab Home">
+        <a href={homePath} class="footer-logo" aria-label="MyLocationLab Home">
           <span class="footer-logo-icon">
             <svg width="28" height="28" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
               <rect width="32" height="32" rx="9" fill="#2563EB"/>
@@ -27,55 +39,55 @@ const year = new Date().getFullYear();
           <span class="footer-logo-text">MyLocationLab</span>
         </a>
         <p class="footer-brand-desc">
-          Authoritative telemetry, datum transformation, and client-side browser positioning diagnostics.
+          {t('footer.brandDesc')}
         </p>
         <div class="footer-telemetry-status">
           <span class="pulse-dot-emerald"></span>
-          <span class="footer-status-label">GNSS CONSTELLATION ACTIVE</span>
+          <span class="footer-status-label">{t('footer.statusLabel')}</span>
         </div>
       </div>
 
       <!-- Column 1: My Location -->
       <div class="footer-column">
-        <h4 class="footer-col-header">MY LOCATION</h4>
+        <h4 class="footer-col-header">{t('footer.colMyLocation')}</h4>
         <ul class="footer-links">
-          <li><a href="/my-location/gps/" class="footer-link-item">Instant GPS Coordinates</a></li>
-          <li><a href="/guides/improve-gps-accuracy/" class="footer-link-item">Precision & Accuracy Radius</a></li>
-          <li><a href="/tools/elevation-finder/" class="footer-link-item">Barometric & Elevation Scan</a></li>
-          <li><a href="/tools/coordinate-converter/" class="footer-link-item">Export NMEA & GeoJSON</a></li>
+          <li><a href={getLocalizedPath('/my-location/gps/', lang)} class="footer-link-item">{t('footer.link.gpsCoords')}</a></li>
+          <li><a href={getLocalizedPath('/my-location/address/', lang)} class="footer-link-item">{t('footer.link.address')}</a></li>
+          <li><a href={getLocalizedPath('/tools/elevation-finder/', lang)} class="footer-link-item">{t('footer.link.elevation')}</a></li>
+          <li><a href={getLocalizedPath('/my-location/ip/', lang)} class="footer-link-item">{t('footer.link.ipLocation')}</a></li>
         </ul>
       </div>
 
       <!-- Column 2: Geospatial Tools -->
       <div class="footer-column">
-        <h4 class="footer-col-header">GEOSPATIAL TOOLS</h4>
+        <h4 class="footer-col-header">{t('footer.colTools')}</h4>
         <ul class="footer-links">
-          <li><a href="/tools/coordinate-converter/" class="footer-link-item">Datum Converter (WGS84 / UTM)</a></li>
-          <li><a href="/tools/distance-calculator/" class="footer-link-item">Haversine Distance Calculator</a></li>
-          <li><a href="/tools/coordinate-converter/" class="footer-link-item">MGRS & USNG Grid Engine</a></li>
-          <li><a href="/comparisons/gps-vs-ip-location/" class="footer-link-item">IP vs True GNSS Resolver</a></li>
+          <li><a href={getLocalizedPath('/tools/coordinate-converter/', lang)} class="footer-link-item">{t('footer.link.converter')}</a></li>
+          <li><a href={getLocalizedPath('/tools/distance-calculator/', lang)} class="footer-link-item">{t('footer.link.distance')}</a></li>
+          <li><a href={getLocalizedPath('/tools/location-qr-code/', lang)} class="footer-link-item">{t('footer.link.qrCode')}</a></li>
+          <li><a href={getLocalizedPath('/tools/gps-accuracy/', lang)} class="footer-link-item">{t('footer.link.accuracy')}</a></li>
         </ul>
       </div>
 
       <!-- Column 3: Knowledge & Guides -->
       <div class="footer-column">
-        <h4 class="footer-col-header">KNOWLEDGE & GUIDES</h4>
+        <h4 class="footer-col-header">{t('footer.colGuides')}</h4>
         <ul class="footer-links">
-          <li><a href="/guides/how-gps-location-works/" class="footer-link-item">Browser Geolocation API Spec</a></li>
-          <li><a href="/guides/improve-gps-accuracy/" class="footer-link-item">Understanding HDOP / VDOP</a></li>
-          <li><a href="/guides/wrong-location/" class="footer-link-item">Location Permissions Hardening</a></li>
-          <li><a href="/faq/" class="footer-link-item">Frequently Asked Questions</a></li>
+          <li><a href={getLocalizedPath('/guides/how-gps-location-works/', lang)} class="footer-link-item">{t('footer.link.howGpsWorks')}</a></li>
+          <li><a href={getLocalizedPath('/guides/improve-gps-accuracy/', lang)} class="footer-link-item">{t('footer.link.improveGps')}</a></li>
+          <li><a href={getLocalizedPath('/guides/wrong-location/', lang)} class="footer-link-item">{t('footer.link.wrongLocation')}</a></li>
+          <li><a href={getLocalizedPath('/guides/latitude-and-longitude-explained/', lang)} class="footer-link-item">{t('footer.link.latLongGuide')}</a></li>
         </ul>
       </div>
 
       <!-- Column 4: Comparisons & Ref -->
       <div class="footer-column">
-        <h4 class="footer-col-header">COMPARISONS & REF</h4>
+        <h4 class="footer-col-header">{t('footer.colComparisons')}</h4>
         <ul class="footer-links">
-          <li><a href="/guides/how-gps-location-works/" class="footer-link-item">GNSS vs Cellular Triangulation</a></li>
-          <li><a href="/guides/improve-gps-accuracy/" class="footer-link-item">Dual-Frequency L1/L5 Chips</a></li>
-          <li><a href="/comparisons/gps-vs-ip-location/" class="footer-link-item">Mobile OS Accuracy Matrix</a></li>
-          <li><a href="/guides/utm-coordinates-and-datums/" class="footer-link-item">EPSG Geodetic Parameter Registry</a></li>
+          <li><a href={getLocalizedPath('/comparisons/gps-vs-ip-location/', lang)} class="footer-link-item">{t('footer.link.gpsVsIp')}</a></li>
+          <li><a href={getLocalizedPath('/comparisons/geocoding-vs-reverse-geocoding/', lang)} class="footer-link-item">{t('footer.link.geocodingComp')}</a></li>
+          <li><a href={getLocalizedPath('/comparisons/decimal-degrees-vs-dms/', lang)} class="footer-link-item">{t('footer.link.decimalVsDms')}</a></li>
+          <li><a href={getLocalizedPath('/faq/', lang)} class="footer-link-item">{t('footer.link.faq')}</a></li>
         </ul>
       </div>
     </div>
@@ -86,10 +98,10 @@ const year = new Date().getFullYear();
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="footer-shield-icon">
           <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
         </svg>
-        <span>Zero Server Logs • W3C Standard Geolocation API • HTTPS TLS 1.3</span>
+        <span>{t('footer.trust')}</span>
       </div>
       <div class="footer-bottom-copy">
-        &copy; {year} MyLocationLab. All rights reserved. Open Geodetic Architecture.
+        &copy; {year} MyLocationLab. {t('footer.copyright')}
       </div>
     </div>
   </div>

@@ -1,8 +1,10 @@
 ---
 /**
  * SEOHead — Advanced Semantic SEO meta engine
- * Handles strict canonicalization, Open Graph, Twitter Cards, and Schema.org JSON-LD.
+ * Handles strict canonicalization, hreflang alternates, Open Graph, Twitter Cards, and Schema.org JSON-LD.
  */
+import { getLangFromUrl, getAlternateLinks, languages, type SupportedLang } from '../i18n/config';
+
 interface Props {
   title: string;
   description: string;
@@ -11,6 +13,7 @@ interface Props {
   ogType?: string;
   jsonLd?: object | object[];
   noindex?: boolean;
+  lang?: string;
 }
 
 const {
@@ -21,10 +24,14 @@ const {
   ogType = 'website',
   jsonLd,
   noindex = false,
+  lang: customLang,
 } = Astro.props;
 
 const siteName = 'MyLocationLab';
 const siteUrl = 'https://mylocationlab.com';
+
+const currentLang = (customLang || getLangFromUrl(Astro.url)) as SupportedLang;
+const activeLangConfig = languages[currentLang] || languages.en;
 
 // Format title
 const formattedTitle = title.includes('MyLocationLab')
@@ -39,6 +46,9 @@ const canonical = customCanonical || `${siteUrl}${normalizedPath}`;
 
 // Image absolute URL
 const fullOgImage = ogImage.startsWith('http') ? ogImage : `${siteUrl}${ogImage}`;
+
+// Multilingual alternate links (hreflang)
+const alternateLinks = getAlternateLinks(siteUrl, normalizedPath);
 
 // Organization Schema (E-E-A-T Entity)
 const organizationSchema = {
@@ -73,6 +83,11 @@ const combinedJsonLd = jsonLd
 <meta name="description" content={description} />
 <link rel="canonical" href={canonical} />
 
+<!-- Multilingual SEO Hreflang Tags -->
+{alternateLinks.map(({ lang: altLang, href }) => (
+  <link rel="alternate" hreflang={altLang} href={href} />
+))}
+
 {noindex ? (
   <meta name="robots" content="noindex, nofollow" />
 ) : (
@@ -88,7 +103,7 @@ const combinedJsonLd = jsonLd
 <meta property="og:image" content={fullOgImage} />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
-<meta property="og:locale" content="en_US" />
+<meta property="og:locale" content={activeLangConfig.locale} />
 
 <!-- Twitter Cards -->
 <meta name="twitter:card" content="summary_large_image" />
@@ -101,4 +116,3 @@ const combinedJsonLd = jsonLd
 {combinedJsonLd.map((ld) => (
   <script type="application/ld+json" set:html={JSON.stringify(ld)} />
 ))}
-

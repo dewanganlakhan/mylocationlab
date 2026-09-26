@@ -3,21 +3,24 @@
  * RelatedTools — Sidebar/footer grid of related tool links
  */
 import { getRelatedTools } from '../data/tools.js';
+import { getLangFromUrl, getLocalizedPath } from '../i18n/config';
 
 interface Props {
   currentToolId: string;
   limit?: number;
   title?: string;
+  lang?: string;
 }
 
-const { currentToolId, limit = 5, title = 'Related Tools' } = Astro.props;
+const { currentToolId, limit = 5, title = 'Related Tools', lang: customLang } = Astro.props;
+const lang = customLang || getLangFromUrl(Astro.url);
 const related = getRelatedTools(currentToolId, limit);
 ---
 
 <div class="related-tools">
   <h4 class="related-tools-title">{title}</h4>
-  {related.map(tool => (
-    <a href={tool.url} class="related-tool-item">
+  {related.map((tool) => (
+    <a href={getLocalizedPath(tool.url, lang)} class="related-tool-item">
       <span class="related-tool-icon">{tool.icon}</span>
       <span class="related-tool-name">{tool.title}</span>
     </a>

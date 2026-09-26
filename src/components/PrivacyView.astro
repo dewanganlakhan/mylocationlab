@@ -1,0 +1,79 @@
+---
+/**
+ * PrivacyView — Multilingual Privacy Policy View
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from './Breadcrumbs.astro';
+import { getLocalizedPath, type SupportedLang, defaultLang } from '../i18n/config';
+import { privacyPageTranslations } from '../i18n/privacyPage';
+import { useTranslations } from '../i18n/ui';
+
+interface Props {
+  lang?: SupportedLang;
+}
+
+const { lang = defaultLang } = Astro.props;
+const t = useTranslations(lang);
+const c = privacyPageTranslations[lang] || privacyPageTranslations.en;
+
+const breadcrumbs = [
+  { label: t('common.home'), href: '/' },
+  { label: c.breadcrumb }
+];
+
+const pageUrl = getLocalizedPath('/privacy/', lang);
+---
+
+<BaseLayout
+  lang={lang}
+  title={c.metaTitle}
+  description={c.metaDescription}
+  activeSection="privacy"
+>
+  <div class="container">
+    <Breadcrumbs items={breadcrumbs} lang={lang} />
+
+    <section class="page-header" style="text-align: center; margin-bottom: var(--space-8);">
+      <h1>{c.titlePrefix} <span class="text-gradient">{c.titleHighlight}</span></h1>
+      <p class="page-header-desc" style="max-width: 680px; margin: 0 auto;">
+        {c.effectiveDate}
+      </p>
+    </section>
+
+    <article class="prose" style="max-width: var(--max-width-narrow); margin: 0 auto var(--space-16); font-size: var(--text-base); line-height: 1.8;">
+      <h2>{c.h2Principle}</h2>
+      <p>{c.pPrinciple1}</p>
+      <p>{c.pPrinciple2}</p>
+
+      <h2>{c.h2Perms}</h2>
+      <p>{c.pPerms}</p>
+      <ul>
+        <li><strong>{c.perm1Title}</strong> {c.perm1Desc}</li>
+        <li><strong>{c.perm2Title}</strong> {c.perm2Desc}</li>
+        <li><strong>{c.perm3Title}</strong> {c.perm3Desc}</li>
+      </ul>
+
+      <h2>{c.h2ThirdParty}</h2>
+      <p>{c.pThirdParty}</p>
+      <ul>
+        <li><strong>{c.tp1Title}</strong> {c.tp1Desc}</li>
+        <li><strong>{c.tp2Title}</strong> {c.tp2Desc}</li>
+      </ul>
+      <p>{c.pThirdParty2}</p>
+
+      <h2>{c.h2Ip}</h2>
+      <p>{c.pIp}</p>
+
+      <h2>{c.h2Cookies}</h2>
+      <p>{c.pCookies}</p>
+
+      <h2>{c.h2Compliance}</h2>
+      <p>{c.pCompliance}</p>
+
+      <h2>{c.h2Contact}</h2>
+      <p>
+        {c.pContact} <a href={getLocalizedPath('/contact/', lang)}>→</a>
+      </p>
+    </article>
+  </div>
+</BaseLayout>

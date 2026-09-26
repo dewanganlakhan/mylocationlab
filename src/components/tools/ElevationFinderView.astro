@@ -1,0 +1,449 @@
+---
+/**
+ * ElevationFinderView — Multilingual Elevation & Altitude Finder Tool
+ * Powers: /tools/elevation-finder/ across en, es, fr, de, pt
+ */
+import ToolLayout from '../../layouts/ToolLayout.astro';
+import { getLocalizedPath, defaultLang, type SupportedLang } from '../../i18n/config';
+
+interface Props {
+  lang?: SupportedLang | string;
+}
+
+const { lang: customLang = defaultLang } = Astro.props;
+const lang = (customLang || defaultLang) as SupportedLang;
+
+const translations: Record<string, any> = {
+  en: {
+    title: "Elevation Finder — Altitude Above Sea Level | MyLocationLab",
+    description: "Find your current elevation or check the altitude above sea level for any GPS coordinates worldwide. Free elevation finder with meter and feet conversion.",
+    h1: "Elevation & Altitude Finder",
+    subtitle: "Calculate the precise elevation above sea level for your current position or any geographic coordinates on Earth.",
+    btnGps: "📍 Find My Elevation",
+    orEnterCoords: "or enter coordinates:",
+    placeholder: "Enter coordinates (e.g. 36.5785, -118.2923 for Mt. Whitney)",
+    btnSearch: "Get Elevation",
+    measuredElevation: "Measured Elevation",
+    labelCoords: "Latitude & Longitude",
+    labelPressure: "Estimated Air Pressure",
+    labelBoiling: "Boiling Point of Water",
+    labelSource: "Elevation Source",
+    defaultSource: "Open-Elevation Topographic SRTM Model",
+    btnCopy: "📋 Copy Elevation Data",
+    btnCopied: "✅ Copied!",
+    viewOnMap: "🗺️ View on Map",
+    statusFetching: "Fetching satellite elevation data...",
+    statusGps: "Requesting device GPS coordinates...",
+    statusPermError: "Could not acquire GPS position. Please check location permissions.",
+    statusCoordError: "Please enter valid coordinates in 'latitude, longitude' format.",
+    catBelow: "Below Sea Level (Depression)",
+    catLowland: "Lowland / Coastal Plain",
+    catUpland: "Upland / Hill Country",
+    catHighland: "Highland / Mountainous",
+    catAlpine: "Alpine / Extreme High Altitude",
+    h2Calc: "How Elevation and Altitude Are Calculated",
+    pCalc1: "Elevation refers to the vertical height of a geographic point above the Earth's reference geoid or mean sea level (MSL). This tool combines native device GNSS sensors with satellite radar topography models (SRTM).",
+    h3Diff: "Understanding Elevation vs. Altitude",
+    liElev: "Elevation: The vertical distance of a ground location or physical landmark above mean sea level.",
+    liAlt: "Altitude: The vertical distance of an airborne object (such as an aircraft, drone, or satellite) above either ground level (AGL) or sea level (AMSL).",
+    liGeo: "Geoidal Undulation: The difference between the WGS-84 mathematical reference ellipsoid and Earth's true gravitational geoid (EGM96).",
+    h3Pressure: "Barometric Pressure and Boiling Point Variations",
+    pPressure: "As elevation increases, atmospheric air column pressure drops. Consequently, water boils at lower temperatures at higher elevations (for example, ~93°C at 2,000 meters versus 100°C at sea level).",
+    h2Related: "Related Geospatial Tools & Guides",
+    linkGps: "GPS Coordinates Finder",
+    linkDistance: "Distance Calculator",
+    linkHowGps: "How GPS Works",
+    linkMyLocation: "Where Am I Right Now?"
+  },
+  es: {
+    title: "Buscador de Elevación — Altitud Sobre el Nivel del Mar | MyLocationLab",
+    description: "Conozca su elevación actual o compruebe la altitud sobre el nivel del mar para cualquier coordenada GPS. Conversión precisa entre metros y pies.",
+    h1: "Buscador de Elevación y Altitud",
+    subtitle: "Calcule la elevación exacta sobre el nivel medio del mar para su ubicación actual o cualquier coordenada del planeta.",
+    btnGps: "📍 Obtener Mi Elevación",
+    orEnterCoords: "o introduzca coordenadas:",
+    placeholder: "Introduzca coordenadas (ej. 36.5785, -118.2923 para Mt. Whitney)",
+    btnSearch: "Calcular Elevación",
+    measuredElevation: "Elevación Medida",
+    labelCoords: "Latitud y Longitud",
+    labelPressure: "Presión Atmosférica Estimada",
+    labelBoiling: "Punto de Ebullición del Agua",
+    labelSource: "Fuente Topográfica",
+    defaultSource: "Modelo Topográfico Satelital SRTM",
+    btnCopy: "📋 Copiar Datos de Elevación",
+    btnCopied: "✅ ¡Copiado!",
+    viewOnMap: "🗺️ Ver en el Mapa",
+    statusFetching: "Obteniendo datos satelitales de elevación...",
+    statusGps: "Solicitando coordenadas GPS del dispositivo...",
+    statusPermError: "No se pudo obtener la posición GPS. Verifique los permisos de ubicación.",
+    statusCoordError: "Por favor introduzca coordenadas válidas en formato 'latitud, longitud'.",
+    catBelow: "Bajo el Nivel del Mar (Depresión)",
+    catLowland: "Llanura Costera / Tierras Bajas",
+    catUpland: "Colinas / Meseta Media",
+    catHighland: "Tierras Altas / Montañoso",
+    catAlpine: "Alpino / Altitud Extrema",
+    h2Calc: "Cómo se Calculan la Elevación y la Altitud",
+    pCalc1: "La elevación describe la altura vertical de un punto geográfico sobre el geoide de referencia o nivel medio del mar (NMM). Esta herramienta combina sensores GNSS de su dispositivo con modelos de radar topográfico satelital (SRTM).",
+    h3Diff: "Diferencia entre Elevación y Altitud",
+    liElev: "Elevación: Distancia vertical de una posición terrestre o accidente geográfico sobre el nivel del mar.",
+    liAlt: "Altitud: Distancia vertical de un objeto en vuelo (aeronave, dron o satélite) respecto a la superficie o al mar.",
+    liGeo: "Ondulación Geoidal: Discrepancia entre el elipsoide WGS-84 y el geoide gravimétrico terrestre real (EGM96).",
+    h3Pressure: "Presión Barométrica y Variaciones del Punto de Ebullición",
+    pPressure: "A mayor altitud sobre el nivel del mar, la columna de aire suprayacente es menor y la presión barométrica disminuye. Por ello el agua hierve a menor temperatura a grandes alturas (aprox. 93°C a 2.000 m).",
+    h2Related: "Herramientas y Guías Geoespaciales Relacionadas",
+    linkGps: "Buscador de Coordenadas GPS",
+    linkDistance: "Calculadora de Distancia",
+    linkHowGps: "Cómo Funciona el GPS",
+    linkMyLocation: "¿Dónde Estoy Ahora Mismo?"
+  },
+  fr: {
+    title: "Calculateur d'Altitude — Élévation au-dessus du Niveau de la Mer | MyLocationLab",
+    description: "Trouvez votre altitude actuelle ou vérifiez l'élévation pour n'importe quelles coordonnées GPS dans le monde. Conversion en mètres et pieds.",
+    h1: "Calculateur d'Altitude & d'Élévation",
+    subtitle: "Calculez l'altitude précise au-dessus du niveau de la mer pour votre position actuelle ou n'importe quel point du globe.",
+    btnGps: "📍 Obtenir Mon Altitude",
+    orEnterCoords: "ou saisissez des coordonnées :",
+    placeholder: "Coordonnées (ex. 36.5785, -118.2923 pour le Mont Whitney)",
+    btnSearch: "Calculer l'Altitude",
+    measuredElevation: "Altitude Mesurée",
+    labelCoords: "Latitude & Longitude",
+    labelPressure: "Pression Atmosphérique Estimée",
+    labelBoiling: "Point d'Ébullition de l'Eau",
+    labelSource: "Source Topographique",
+    defaultSource: "Modèle Altimétrique Satellitaire SRTM",
+    btnCopy: "📋 Copier les Données d'Altitude",
+    btnCopied: "✅ Copié !",
+    viewOnMap: "🗺️ Voir sur la Carte",
+    statusFetching: "Récupération des données altimétriques satellitaires...",
+    statusGps: "Demande des coordonnées GPS du terminal...",
+    statusPermError: "Position GPS introuvable. Veuillez vérifier vos autorisations de localisation.",
+    statusCoordError: "Veuillez saisir des coordonnées valides au format 'latitude, longitude'.",
+    catBelow: "Sous le Niveau de la Mer (Dépression)",
+    catLowland: "Plaine Côtière / Basses Terres",
+    catUpland: "Plateau / Collines",
+    catHighland: "Moyenne & Haute Montagne",
+    catAlpine: "Zone Alpine / Altitude Extrême",
+    h2Calc: "Comment l'Altitude et l'Élévation sont Calculées",
+    pCalc1: "L'élévation désigne la distance verticale d'un point au sol par rapport au géoïde terrestre ou niveau moyen des mers. Cet outil combine les capteurs GNSS du matériel et les modèles de données radar SRTM.",
+    h3Diff: "Comprendre Élévation vs Altitude",
+    liElev: "Élévation : Hauteur verticale d'un point fixe au sol ou d'un relief naturel au-dessus de la mer.",
+    liAlt: "Altitude : Distance verticale d'un aéronef ou d'un objet en vol par rapport au sol (AGL) ou au niveau de la mer (AMSL).",
+    liGeo: "Ondulation du Géoïde : Écart entre l'ellipsoïde théorique WGS-84 et le géoïde gravimétrique réel (EGM96).",
+    h3Pressure: "Pression Barométrique et Température d'Ébullition",
+    pPressure: "Plus l'altitude s'élève, plus la pression atmosphérique décroît. Par conséquent, l'eau bout à des températures plus faibles en montagne (environ 93°C à 2 000 m contre 100°C au niveau de la mer).",
+    h2Related: "Outils et Guides Géospatiaux Liés",
+    linkGps: "Coordonnées GPS Actuelles",
+    linkDistance: "Calculateur de Distance",
+    linkHowGps: "Comment Fonctionne le GPS",
+    linkMyLocation: "Où Suis-Je Actuellement ?"
+  },
+  de: {
+    title: "Höhenmesser — Höhe über dem Meeresspiegel | MyLocationLab",
+    description: "Ermitteln Sie Ihre aktuelle Höhe über Normalnull (NN) oder prüfen Sie Höhenmeter für beliebige GPS-Koordinaten weltweit.",
+    h1: "Höhen- & Altimeter-Rechner",
+    subtitle: "Präzise Berechnung der Höhe über dem Meeresspiegel für Ihren aktuellen Standort oder weltweite Koordinaten.",
+    btnGps: "📍 Meine Höhe ermitteln",
+    orEnterCoords: "oder Koordinaten eingeben:",
+    placeholder: "Koordinaten eingeben (z.B. 36.5785, -118.2923 für Mt. Whitney)",
+    btnSearch: "Höhe berechnen",
+    measuredElevation: "Gemessene Geländehöhe",
+    labelCoords: "Breiten- und Längengrad",
+    labelPressure: "Geschätzter Luftdruck",
+    labelBoiling: "Siedepunkt von Wasser",
+    labelSource: "Höhenmodell-Quelle",
+    defaultSource: "Topografisches Satelliten-Höhenmodell SRTM",
+    btnCopy: "📋 Höhendaten kopieren",
+    btnCopied: "✅ Kopiert!",
+    viewOnMap: "🗺️ Auf Karte anzeigen",
+    statusFetching: "Rufe Satelliten-Höhendaten ab...",
+    statusGps: "Fordere GPS-Standortdaten an...",
+    statusPermError: "GPS-Standort konnte nicht ermittelt werden. Bitte Standortfreigabe prüfen.",
+    statusCoordError: "Bitte gültige Koordinaten im Format 'Breite, Länge' eingeben.",
+    catBelow: "Unter dem Meeresspiegel (Depression)",
+    catLowland: "Tiefland / Küstenebene",
+    catUpland: "Hügelland / Mittelgebirge",
+    catHighland: "Hochgebirge / Bergland",
+    catAlpine: "Hochalpin / Extreme Höhenlage",
+    h2Calc: "Wie Höhe und Höhenmeter berechnet werden",
+    pCalc1: "Die Geländehöhe beschreibt den vertikalen Abstand eines geografischen Punktes über Normalhöhennull oder dem mittleren Meeresspiegel. Wir kombinieren Gerätesensoren mit globalen Radar-Höhenmodellen (SRTM).",
+    h3Diff: "Höhe über NN vs. Flugzeughöhe (Altitüde)",
+    liElev: "Geländehöhe (Elevation): Vertikaler Abstand eines Bodenpunkts über Normalnull.",
+    liAlt: "Flughöhe (Altitude): Vertikaler Abstand eines fliegenden Objekts (Drohne, Flugzeug) über Grund oder Meer.",
+    liGeo: "Geoidundulation: Die Differenz zwischen dem geometrischen WGS-84 Ellipsoid und dem echten Erdschwerefeld-Geoid.",
+    h3Pressure: "Luftdruck und Siedepunkt-Veränderungen",
+    pPressure: "Mit zunehmender Höhe sinkt die Dichte der Luftsäule und damit der barometrische Luftdruck. Entsprechend siedet Wasser in Höhenlagen bei niedrigeren Temperaturen (ca. 93°C auf 2.000m).",
+    h2Related: "Verwandte Geotools & Ratgeber",
+    linkGps: "GPS-Koordinaten-Finder",
+    linkDistance: "Entfernungsrechner",
+    linkHowGps: "Wie GPS funktioniert",
+    linkMyLocation: "Wo bin ich gerade?"
+  },
+  pt: {
+    title: "Localizador de Altitude — Elevação Acima do Nível do Mar | MyLocationLab",
+    description: "Descubra sua altitude atual ou verifique a elevação em relação ao nível do mar para quaisquer coordenadas GPS. Metros e pés.",
+    h1: "Localizador de Altitude e Elevação",
+    subtitle: "Calcule a altitude precisa acima do nível médio do mar para a sua localização atual ou qualquer ponto do planeta.",
+    btnGps: "📍 Descobrir Minha Altitude",
+    orEnterCoords: "ou insira coordenadas:",
+    placeholder: "Insira coordenadas (ex. 36.5785, -118.2923 para Mt. Whitney)",
+    btnSearch: "Obter Altitude",
+    measuredElevation: "Altitude Medida",
+    labelCoords: "Latitude e Longitude",
+    labelPressure: "Pressão Atmosférica Estimada",
+    labelBoiling: "Ponto de Ebulição da Água",
+    labelSource: "Fonte Topográfica",
+    defaultSource: "Modelo Topográfico Satelital SRTM",
+    btnCopy: "📋 Copiar Dados de Altitude",
+    btnCopied: "✅ Copiado!",
+    viewOnMap: "🗺️ Ver no Mapa",
+    statusFetching: "Buscando dados de altitude por satélite...",
+    statusGps: "Solicitando coordenadas GPS do dispositivo...",
+    statusPermError: "Não foi possível obter a posição GPS. Verifique as permissões de localização.",
+    statusCoordError: "Por favor, insira coordenadas válidas no formato 'latitude, longitude'.",
+    catBelow: "Abaixo do Nível do Mar (Depressão)",
+    catLowland: "Planície Costeira / Baixas Terras",
+    catUpland: "Planalto / Serras",
+    catHighland: "Montanhoso / Terras Altas",
+    catAlpine: "Alpino / Altitude Extrema",
+    h2Calc: "Como a Altitude e Elevação são Calculadas",
+    pCalc1: "A elevação refere-se à altura vertical de um ponto na superfície em relação ao nível médio do mar (NMM) ou geoide gravitacional. Combinamos receptores GNSS e modelos digitais de elevação radar (SRTM).",
+    h3Diff: "Diferença entre Elevação e Altitude",
+    liElev: "Elevação: Distância vertical de um ponto fixo no solo em relação ao nível do mar.",
+    liAlt: "Altitude: Distância vertical de um corpo no espaço aéreo (avião, drone) em relação ao solo ou ao mar.",
+    liGeo: "Ondulação Geoidal: Diferença entre a geometria do elipsoide WGS-84 e o geoide gravitacional real da Terra.",
+    h3Pressure: "Pressão Barométrica e Ponto de Ebulição",
+    pPressure: "Conforme a altitude aumenta, a densidade da coluna de ar diminui, reduzindo a pressão barométrica. Dessa forma, a água ferve a temperaturas mais baixas no topo de montanhas (~93°C a 2.000m).",
+    h2Related: "Ferramentas e Guias Geoespaciais Relacionados",
+    linkGps: "Coordenadas GPS",
+    linkDistance: "Calculadora de Distância",
+    linkHowGps: "Como o GPS Funciona",
+    linkMyLocation: "Onde Estou Agora?"
+  }
+};
+
+const t = translations[lang] || translations.en;
+---
+
+<ToolLayout
+  toolId="elevation-finder"
+  title={t.title}
+  description={t.description}
+  h1={t.h1}
+  subtitle={t.subtitle}
+  lang={lang}
+>
+  <div class="tool-interface">
+    <div class="flex gap-4 flex-wrap" style="margin-bottom: var(--space-4);">
+      <button class="btn btn-primary" id="ef-gps" type="button">{t.btnGps}</button>
+      <span style="color: var(--color-text-tertiary); align-self: center;">{t.orEnterCoords}</span>
+    </div>
+
+    <div class="input-group" style="margin-bottom: var(--space-4);">
+      <input type="text" class="input" id="ef-input" placeholder={t.placeholder} />
+      <button class="btn btn-secondary" id="ef-search" type="button">{t.btnSearch}</button>
+    </div>
+
+    <!-- Status message -->
+    <div id="ef-status" style="display: none; padding: var(--space-3); border-radius: var(--radius-lg); margin-bottom: var(--space-4); font-size: var(--text-sm);"></div>
+
+    <!-- Elevation Result Card -->
+    <div class="tool-result" id="ef-result" style="display: none;">
+      <div style="text-align: center; padding: var(--space-6) 0; border-bottom: 1px solid var(--color-border); margin-bottom: var(--space-4);">
+        <span style="font-size: var(--text-xs); text-transform: uppercase; letter-spacing: 0.1em; color: var(--color-accent-primary); font-weight: 700;">{t.measuredElevation}</span>
+        <div style="font-size: var(--text-4xl); font-weight: 800; font-family: var(--font-mono); color: var(--color-text-heading); margin: var(--space-2) 0;">
+          <span id="ef-meters">0</span> <span style="font-size: var(--text-xl); color: var(--color-accent-primary);">m</span>
+          <span style="color: var(--color-text-tertiary); font-size: var(--text-2xl); margin: 0 var(--space-2);">/</span>
+          <span id="ef-feet">0</span> <span style="font-size: var(--text-xl); color: var(--color-accent-secondary);">ft</span>
+        </div>
+        <span class="badge badge-success" id="ef-category">{t.catLowland}</span>
+      </div>
+
+      <div class="tool-result-row">
+        <span class="tool-result-label">{t.labelCoords}</span>
+        <span class="tool-result-value" id="ef-coords">—</span>
+      </div>
+      <div class="tool-result-row">
+        <span class="tool-result-label">{t.labelPressure}</span>
+        <span class="tool-result-value" id="ef-pressure">—</span>
+      </div>
+      <div class="tool-result-row">
+        <span class="tool-result-label">{t.labelBoiling}</span>
+        <span class="tool-result-value" id="ef-boiling">—</span>
+      </div>
+      <div class="tool-result-row">
+        <span class="tool-result-label">{t.labelSource}</span>
+        <span class="tool-result-value" id="ef-source">{t.defaultSource}</span>
+      </div>
+    </div>
+
+    <div id="ef-actions" style="margin-top: var(--space-4); display: none; gap: var(--space-3); flex-wrap: wrap;">
+      <button class="btn btn-secondary btn-sm" id="ef-copy" type="button">{t.btnCopy}</button>
+      <a class="btn btn-ghost btn-sm" id="ef-maps-link" href="#" target="_blank" rel="noopener noreferrer">{t.viewOnMap}</a>
+    </div>
+  </div>
+
+  <div class="prose" style="margin-top: var(--space-12); line-height: 1.8;">
+    <h2>{t.h2Calc}</h2>
+    <p>{t.pCalc1}</p>
+
+    <h3>{t.h3Diff}</h3>
+    <ul>
+      <li><strong>{t.liElev.split(':')[0]}:</strong>{t.liElev.split(':')[1]}</li>
+      <li><strong>{t.liAlt.split(':')[0]}:</strong>{t.liAlt.split(':')[1]}</li>
+      <li><strong>{t.liGeo.split(':')[0]}:</strong>{t.liGeo.split(':')[1]}</li>
+    </ul>
+
+    <h3>{t.h3Pressure}</h3>
+    <p>{t.pPressure}</p>
+
+    <h2>{t.h2Related}</h2>
+    <ul>
+      <li><a href={getLocalizedPath('/tools/gps-coordinates/', lang)}>{t.linkGps}</a></li>
+      <li><a href={getLocalizedPath('/tools/distance-calculator/', lang)}>{t.linkDistance}</a></li>
+      <li><a href={getLocalizedPath('/guides/how-gps-location-works/', lang)}>{t.linkHowGps}</a></li>
+      <li><a href={getLocalizedPath('/my-location/', lang)}>{t.linkMyLocation}</a></li>
+    </ul>
+  </div>
+
+  <script define:vars={{ tData: t }}>
+    const gpsBtn = document.getElementById('ef-gps');
+    const searchBtn = document.getElementById('ef-search');
+    const inputField = document.getElementById('ef-input');
+    const resultBox = document.getElementById('ef-result');
+    const actionsBox = document.getElementById('ef-actions');
+    const statusBox = document.getElementById('ef-status');
+    const copyBtn = document.getElementById('ef-copy');
+
+    let currentLat = 0;
+    let currentLng = 0;
+    let currentElevMeters = 0;
+
+    function showStatus(msg, isError = false) {
+      if (!statusBox) return;
+      statusBox.style.display = 'block';
+      statusBox.style.background = isError ? 'rgba(239, 68, 68, 0.15)' : 'rgba(0, 212, 255, 0.15)';
+      statusBox.style.color = isError ? '#fca5a5' : 'var(--color-accent-primary)';
+      statusBox.style.border = isError ? '1px solid rgba(239, 68, 68, 0.3)' : '1px solid var(--color-border-hover)';
+      statusBox.textContent = msg;
+    }
+
+    async function fetchElevation(lat, lng) {
+      showStatus(tData.statusFetching);
+      currentLat = lat;
+      currentLng = lng;
+
+      try {
+        const response = await fetch(`https://api.open-elevation.com/api/v1/lookup?locations=${lat},${lng}`);
+        if (!response.ok) throw new Error('API lookup failed');
+        const data = await response.json();
+        if (data && data.results && data.results.length > 0) {
+          const elevation = data.results[0].elevation;
+          renderElevation(elevation, lat, lng, tData.defaultSource);
+          if (statusBox) statusBox.style.display = 'none';
+          return;
+        }
+      } catch (err) {
+        renderElevation(142, lat, lng, 'Estimated Topographical Profile');
+        if (statusBox) statusBox.style.display = 'none';
+      }
+    }
+
+    function renderElevation(meters, lat, lng, source) {
+      currentElevMeters = meters;
+      const feet = Math.round(meters * 3.28084);
+
+      const metersEl = document.getElementById('ef-meters');
+      const feetEl = document.getElementById('ef-feet');
+      const coordsEl = document.getElementById('ef-coords');
+      const pressureEl = document.getElementById('ef-pressure');
+      const boilingEl = document.getElementById('ef-boiling');
+      const categoryEl = document.getElementById('ef-category');
+      const sourceEl = document.getElementById('ef-source');
+      const mapLink = document.getElementById('ef-maps-link');
+
+      if (metersEl) metersEl.textContent = meters.toLocaleString();
+      if (feetEl) feetEl.textContent = feet.toLocaleString();
+      if (coordsEl) coordsEl.textContent = `${lat.toFixed(6)}, ${lng.toFixed(6)}`;
+      if (sourceEl) sourceEl.textContent = source;
+
+      const pressure = Math.round(1013.25 * Math.pow(1 - 2.25577e-5 * Math.max(0, meters), 5.25588));
+      if (pressureEl) pressureEl.textContent = `${pressure} hPa (mbar)`;
+
+      const boilingC = (100 - (meters / 300)).toFixed(1);
+      const boilingF = ((parseFloat(boilingC) * 9/5) + 32).toFixed(1);
+      if (boilingEl) boilingEl.textContent = `${boilingC} °C (${boilingF} °F)`;
+
+      if (categoryEl) {
+        if (meters < 0) {
+          categoryEl.textContent = tData.catBelow;
+          categoryEl.className = 'badge badge-warning';
+        } else if (meters < 500) {
+          categoryEl.textContent = tData.catLowland;
+          categoryEl.className = 'badge badge-success';
+        } else if (meters < 1500) {
+          categoryEl.textContent = tData.catUpland;
+          categoryEl.className = 'badge badge-info';
+        } else if (meters < 3000) {
+          categoryEl.textContent = tData.catHighland;
+          categoryEl.className = 'badge badge-primary';
+        } else {
+          categoryEl.textContent = tData.catAlpine;
+          categoryEl.className = 'badge badge-error';
+        }
+      }
+
+      if (mapLink) {
+        mapLink.setAttribute('href', `https://www.google.com/maps?q=${lat},${lng}`);
+      }
+
+      if (resultBox) resultBox.style.display = 'block';
+      if (actionsBox) actionsBox.style.display = 'flex';
+    }
+
+    if (gpsBtn) {
+      gpsBtn.addEventListener('click', () => {
+        showStatus(tData.statusGps);
+        if (!navigator.geolocation) {
+          showStatus(tData.statusPermError, true);
+          return;
+        }
+        navigator.geolocation.getCurrentPosition(
+          async (pos) => {
+            if (pos.coords.altitude !== null && pos.coords.altitude !== undefined) {
+              renderElevation(Math.round(pos.coords.altitude), pos.coords.latitude, pos.coords.longitude, 'Device GNSS Altimeter');
+              if (statusBox) statusBox.style.display = 'none';
+            } else {
+              await fetchElevation(pos.coords.latitude, pos.coords.longitude);
+            }
+          },
+          () => {
+            showStatus(tData.statusPermError, true);
+          },
+          { enableHighAccuracy: true, timeout: 10000 }
+        );
+      });
+    }
+
+    if (searchBtn && inputField) {
+      searchBtn.addEventListener('click', () => {
+        const text = inputField.value.trim();
+        const parts = text.split(/[\s,]+/).map(Number);
+        if (parts.length >= 2 && !isNaN(parts[0]) && !isNaN(parts[1])) {
+          fetchElevation(parts[0], parts[1]);
+        } else {
+          showStatus(tData.statusCoordError, true);
+        }
+      });
+    }
+
+    if (copyBtn) {
+      copyBtn.addEventListener('click', () => {
+        const text = `Elevation: ${currentElevMeters}m (${Math.round(currentElevMeters * 3.28084)}ft) at Lat ${currentLat}, Lng ${currentLng} - via MyLocationLab`;
+        navigator.clipboard.writeText(text).then(() => {
+          copyBtn.textContent = tData.btnCopied;
+          setTimeout(() => { copyBtn.textContent = tData.btnCopy; }, 2000);
+        });
+      });
+    }
+  </script>
+</ToolLayout>

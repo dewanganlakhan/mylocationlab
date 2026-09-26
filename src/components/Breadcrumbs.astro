@@ -2,6 +2,8 @@
 /**
  * Breadcrumbs — Navigation breadcrumb trail with Google Rich Results compliant BreadcrumbList schema
  */
+import { getLangFromUrl, getLocalizedPath } from '../i18n/config';
+
 interface BreadcrumbItem {
   label: string;
   href?: string;
@@ -9,9 +11,11 @@ interface BreadcrumbItem {
 
 interface Props {
   items: BreadcrumbItem[];
+  lang?: string;
 }
 
-const { items } = Astro.props;
+const { items, lang: customLang } = Astro.props;
+const lang = customLang || getLangFromUrl(Astro.url);
 const siteUrl = 'https://mylocationlab.com';
 const currentPath = Astro.url.pathname.endsWith('/') ? Astro.url.pathname : `${Astro.url.pathname}/`;
 
@@ -19,8 +23,9 @@ const jsonLd = {
   '@context': 'https://schema.org',
   '@type': 'BreadcrumbList',
   itemListElement: items.map((item, index) => {
-    let itemUrl = item.href 
-      ? (item.href.startsWith('http') ? item.href : `${siteUrl}${item.href}`)
+    let resolvedHref = item.href ? (item.href.startsWith('/') ? getLocalizedPath(item.href, lang) : item.href) : undefined;
+    let itemUrl = resolvedHref 
+      ? (resolvedHref.startsWith('http') ? resolvedHref : `${siteUrl}${resolvedHref}`)
       : `${siteUrl}${currentPath}`;
     return {
       '@type': 'ListItem',
@@ -36,30 +41,32 @@ const jsonLd = {
 
 <nav class="breadcrumbs" aria-label="Breadcrumb">
   <ol class="breadcrumbs-list">
-    {items.map((item, index) => (
-      <li class="breadcrumbs-item">
-        {index > 0 && (
-          <svg class="breadcrumbs-separator" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <polyline points="9 18 15 12 9 6" />
-          </svg>
-        )}
-        {item.href ? (
-          <a href={item.href} class="breadcrumbs-link">
-            {index === 0 && (
-              <svg class="breadcrumbs-home-icon" width="13.5" height="13.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
-                <polyline points="9 22 9 12 15 12 15 22"/>
-              </svg>
-            )}
-            <span>{item.label}</span>
-          </a>
-        ) : (
-          <span class="breadcrumbs-current" aria-current="page">
-            {item.label}
-          </span>
-        )}
-      </li>
-    ))}
+    {items.map((item, index) => {
+      const resolvedHref = item.href ? (item.href.startsWith('/') ? getLocalizedPath(item.href, lang) : item.href) : undefined;
+      return (
+        <li class="breadcrumbs-item">
+          {index > 0 && (
+            <svg class="breadcrumbs-separator" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <polyline points="9 18 15 12 9 6" />
+            </svg>
+          )}
+          {resolvedHref ? (
+            <a href={resolvedHref} class="breadcrumbs-link">
+              {index === 0 && (
+                <svg class="breadcrumbs-home-icon" width="13.5" height="13.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                  <polyline points="9 22 9 12 15 12 15 22"/>
+                </svg>
+              )}
+              <span>{item.label}</span>
+            </a>
+          ) : (
+            <span class="breadcrumbs-current" aria-current="page">
+              {item.label}
+            </span>
+          )}
+        </li>
+      );
+    })}
   </ol>
 </nav>
-

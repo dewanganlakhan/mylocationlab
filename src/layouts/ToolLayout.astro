@@ -9,6 +9,8 @@ import BaseLayout from './BaseLayout.astro';
 import Breadcrumbs from '../components/Breadcrumbs.astro';
 import RelatedTools from '../components/RelatedTools.astro';
 import AuthorEAT from '../components/AuthorEAT.astro';
+import { getLangFromUrl, getLocalizedPath, defaultLang, type SupportedLang } from '../i18n/config';
+import { useTranslations } from '../i18n/ui';
 
 interface Props {
   title: string;
@@ -19,15 +21,31 @@ interface Props {
   canonical?: string;
   jsonLd?: object | object[];
   leaflet?: boolean;
+  lang?: string;
 }
 
-const { title, description, toolId, h1, subtitle, canonical, jsonLd, leaflet } = Astro.props;
+const {
+  title,
+  description,
+  toolId,
+  h1,
+  subtitle,
+  canonical,
+  jsonLd,
+  leaflet,
+  lang: customLang,
+} = Astro.props;
+
+const lang = (customLang || getLangFromUrl(Astro.url)) as SupportedLang;
+const t = useTranslations(lang);
 
 const breadcrumbs = [
-  { label: 'Home', href: '/' },
-  { label: 'Tools', href: '/tools/' },
+  { label: t('common.home'), href: '/' },
+  { label: t('nav.tools'), href: '/tools/' },
   { label: h1 },
 ];
+
+const localizedToolUrl = `https://mylocationlab.com${getLocalizedPath(`/tools/${toolId}/`, lang)}`;
 
 // Rich WebApplication schema
 const toolSchema = {
@@ -35,7 +53,7 @@ const toolSchema = {
   '@type': 'WebApplication',
   name: h1,
   description: description,
-  url: `https://mylocationlab.com/tools/${toolId}/`,
+  url: localizedToolUrl,
   applicationCategory: 'UtilityApplication',
   operatingSystem: 'All (Web Browser, iOS, Android, macOS, Windows, Linux)',
   browserRequirements: 'Requires HTML5 Geolocation API support',
@@ -58,6 +76,7 @@ const allJsonLd = jsonLd
 ---
 
 <BaseLayout
+  lang={lang}
   title={title}
   description={description}
   activeSection="tools"
@@ -66,7 +85,7 @@ const allJsonLd = jsonLd
   leaflet={leaflet}
 >
   <div class="container">
-    <Breadcrumbs items={breadcrumbs} />
+    <Breadcrumbs items={breadcrumbs} lang={lang} />
 
     <header class="page-header page-header-tight">
       <h1>{h1}</h1>
@@ -78,33 +97,13 @@ const allJsonLd = jsonLd
         <slot />
       </div>
       <aside class="content-sidebar">
-        <RelatedTools currentToolId={toolId} />
-        <div class="related-tools">
-          <h4 class="related-tools-title">Keep Exploring</h4>
-          <a href="/my-location/" class="related-tool-item">
-            <span class="related-tool-icon">🎯</span>
-            <span class="related-tool-name">Where Am I Right Now?</span>
-          </a>
-          <a href="/guides/" class="related-tool-item">
-            <span class="related-tool-icon">📚</span>
-            <span class="related-tool-name">GPS &amp; Location Guides</span>
-          </a>
-          <a href="/comparisons/" class="related-tool-item">
-            <span class="related-tool-icon">⚖️</span>
-            <span class="related-tool-name">GPS vs IP, DD vs DMS</span>
-          </a>
-          <a href="/maps/" class="related-tool-item">
-            <span class="related-tool-icon">🗺️</span>
-            <span class="related-tool-name">Interactive Location Map</span>
-          </a>
-        </div>
+        <RelatedTools currentToolId={toolId} lang={lang} />
+        <AuthorEAT 
+          reviewedBy="MyLocationLab Technical Team"
+          reviewerTitle="GIS & Geospatial Specialist"
+          lastUpdated="September 2026"
+        />
       </aside>
     </div>
-
-    <AuthorEAT
-      reviewedBy="MyLocationLab Editorial Team"
-      reviewerTitle="Geospatial Content Reviewer"
-      lastUpdated="September 2026"
-    />
   </div>
 </BaseLayout>

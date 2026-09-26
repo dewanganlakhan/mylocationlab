@@ -1,34 +1,8 @@
 ---
-import BaseLayout from '../../layouts/BaseLayout.astro';
-import Breadcrumbs from '../../components/Breadcrumbs.astro';
-import LocationFinder from '../../components/LocationFinder.astro';
-import SiloNav from '../../components/SiloNav.astro';
-
-const breadcrumbs = [{ label: 'Home', href: '/' }, { label: 'My Location', href: '/my-location/' }, { label: 'My Country' }];
+/**
+ * /my-location/country/ — What Country Am I In? (English)
+ */
+import MyLocationAttributeView from '../../components/my-location/MyLocationAttributeView.astro';
 ---
 
-<BaseLayout leaflet title="What Country Am I In? Find Out Now | MyLocationLab" description="Find out what country you're currently in. Instantly detect your country name, country code, and flag using GPS location." activeSection="my-location">
-  <div class="container">
-    <Breadcrumbs items={breadcrumbs} />
-    <SiloNav silo="my-location" title="Related Location Tools" />
-    <section class="page-header">
-      <h1>What Country <span class="text-gradient">Am I In?</span></h1>
-      <p class="page-header-desc">Instantly find your current country using GPS. See your country name, country code, and position on a map.</p>
-    </section>
-    <LocationFinder emphasisField="country" />
-    <section class="section">
-      <div class="prose" style="max-width: var(--max-width-narrow);">
-        <h2>About Country Detection</h2>
-        <p>Your country is determined by matching your GPS coordinates to international boundary data. The result includes your country's full name and ISO country code (like US, GB, IN, DE).</p>
-        <p>This is useful for travelers crossing borders, verifying your VPN location, or confirming which country's laws and regulations apply to your current position.</p>
-        <h3>Related Pages</h3>
-        <ul>
-          <li><a href="/my-location/state/">What State Am I In?</a></li>
-          <li><a href="/my-location/city/">What City Am I In?</a></li>
-          <li><a href="/my-location/ip/">My IP Location</a></li>
-          <li><a href="/guides/wrong-location/">Why Is My Location Wrong?</a></li>
-        </ul>
-      </div>
-    </section>
-  </div>
-</BaseLayout>
+<MyLocationAttributeView attribute="country" lang="en" />

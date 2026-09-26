@@ -1,0 +1,736 @@
+---
+/**
+ * HomeView — Core Homepage Engine
+ * Multilingual implementation supporting en, es, fr, de, pt with dynamic Leaflet telemetry map.
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { homeTranslations } from '../i18n/home';
+import { getLocalizedPath, defaultLang, type SupportedLang } from '../i18n/config';
+
+interface Props {
+  lang?: SupportedLang | string;
+}
+
+const { lang: customLang = defaultLang } = Astro.props;
+const lang = (customLang in homeTranslations ? customLang : defaultLang) as SupportedLang;
+const content = homeTranslations[lang] || homeTranslations.en;
+
+const locateTitle = ({
+  en: "Zoom to my current location",
+  es: "Centrar y ampliar en mi ubicación",
+  fr: "Zoomer sur ma position actuelle",
+  de: "Auf meinen aktuellen Standort zoomen",
+  pt: "Aproximar da minha localização atual"
+})[lang] || "Zoom to my current location";
+
+const homeFaqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: content.faqSection.items.map((item) => ({
+    '@type': 'Question',
+    name: item.question,
+    acceptedAnswer: {
+      '@type': 'Answer',
+      text: item.answer.replace(/<[^>]*>?/gm, ''),
+    },
+  })),
+};
+---
+
+<BaseLayout
+  leaflet
+  lang={lang}
+  title={content.metaTitle}
+  description={content.metaDesc}
+  jsonLd={[homeFaqSchema]}
+>
+  <!-- Hero Section -->
+  <section class="stitch-hero" id="find-location">
+    <div class="container">
+      <!-- Free GPS Location Finder Badge -->
+      <div class="hero-pill-badge">
+        <span class="pulse-dot-cyan"></span>
+        <span>{content.heroBadge}</span>
+      </div>
+
+      <!-- Main Headline -->
+      <h1 class="hero-title-stitch">
+        {content.heroTitle} <span class="hero-title-highlight">{content.heroTitleHighlight}</span>
+      </h1>
+
+      <!-- Subtitle -->
+      <p class="hero-subtitle-stitch">
+        {content.heroSubtitle}
+      </p>
+
+      <!-- Action Buttons -->
+      <div class="hero-actions-stitch">
+        <button class="btn-stitch-primary" id="get-location-btn" type="button">
+          <span class="pulse-dot-cyan" style="background: #ffffff;"></span>
+          <span>{content.btnGetLocation}</span>
+        </button>
+
+        <a href={getLocalizedPath('/tools/', lang)} class="btn-stitch-secondary">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" />
+          </svg>
+          <span>{content.btnBrowseTools}</span>
+        </a>
+      </div>
+
+      <!-- Permission Notice Banner -->
+      <div class="privacy-banner-stitch" id="privacy-banner">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0; color: #d97706;">
+          <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/>
+          <line x1="12" y1="9" x2="12" y2="13"/>
+          <line x1="12" y1="17" x2="12.01" y2="17"/>
+        </svg>
+        <span id="banner-text">{content.privacyBanner}</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Telemetry & Map Card Dashboard -->
+  <section class="telemetry-card-wrapper" id="telemetry-section">
+    <div class="telemetry-dashboard">
+      <!-- Top Bar -->
+      <div class="telemetry-top-bar">
+        <div class="telemetry-header-info">
+          <div class="telemetry-radar-box">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4.9 19.1C1 15.2 1 8.8 4.9 4.9"/>
+              <path d="M7.8 16.2c-2.3-2.3-2.3-6.1 0-8.5"/>
+              <circle cx="12" cy="12" r="2"/>
+              <path d="M16.2 7.8c2.3 2.3 2.3 6.1 0 8.5"/>
+              <path d="M19.1 4.9C23 8.8 23 15.1 19.1 19"/>
+            </svg>
+          </div>
+          <div class="telemetry-title-block">
+            <div class="telemetry-title-badge-row">
+              <h2 class="telemetry-heading-title">{content.telemetryTitle}</h2>
+              <span class="telemetry-status-pill" id="telemetry-status-pill">READY TO ACQUIRE</span>
+            </div>
+            <p class="telemetry-subtext" id="telemetry-subtext">{content.telemetrySubtext}</p>
+          </div>
+        </div>
+
+        <!-- Action Controls -->
+        <div class="telemetry-controls">
+          <button class="telemetry-ctrl-btn" id="copy-coords-btn" type="button" title={content.btnCopy}>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect width="14" height="14" x="8" y="8" rx="2" ry="2"/>
+              <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/>
+            </svg>
+            <span>{content.btnCopy}</span>
+          </button>
+
+          <button class="telemetry-ctrl-btn" id="share-btn" type="button" title={content.btnShare}>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="18" cy="5" r="3"/>
+              <circle cx="6" cy="12" r="3"/>
+              <circle cx="18" cy="19" r="3"/>
+              <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/>
+              <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
+            </svg>
+            <span>{content.btnShare}</span>
+          </button>
+
+          <a class="telemetry-ctrl-btn" id="open-maps-btn" href="https://www.google.com/maps" target="_blank" rel="noopener noreferrer" title={content.btnOpenMaps} aria-disabled="true">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21"/>
+              <line x1="9" y1="3" x2="9" y2="18"/>
+              <line x1="15" y1="6" x2="15" y2="21"/>
+            </svg>
+            <span>{content.btnOpenMaps}</span>
+          </a>
+
+          <button class="telemetry-ctrl-btn telemetry-ctrl-icon-btn" id="refresh-btn" type="button" title="Refresh Position">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+              <path d="M3 3v5h5"/>
+              <path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/>
+              <path d="M16 16h5v5"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Two-Column Telemetry Viewport -->
+      <div class="telemetry-viewport-grid">
+        <!-- Left Column: Map Container -->
+        <div class="telemetry-map-box">
+          <div id="map" data-locate-title={locateTitle}></div>
+
+          <!-- Overlay Chips -->
+          <div class="map-overlay-chip map-chip-topleft">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"/>
+              <line x1="2" y1="12" x2="22" y2="12"/>
+              <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+            </svg>
+            <span>WGS 84 • EPSG:4326</span>
+          </div>
+
+          <div class="map-overlay-chip map-chip-botleft">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/>
+              <circle cx="12" cy="10" r="3"/>
+            </svg>
+            <span id="map-coord-chip">{content.mapWaiting}</span>
+          </div>
+
+          <div class="map-overlay-chip map-chip-botright" id="map-status-chip">
+            <span class="pulse-dot-emerald"></span>
+            <span id="map-status-chip-text">{content.mapStandby}</span>
+          </div>
+        </div>
+
+        <!-- Right Column: Telemetry Cells -->
+        <div class="telemetry-data-cells">
+          <!-- Cell 1: Latitude -->
+          <div class="telemetry-cell">
+            <div class="telemetry-cell-top">
+              <span class="telemetry-cell-label">{content.labels.latitude}</span>
+              <span class="telemetry-cell-icon">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="12" y1="19" x2="12" y2="5"/>
+                  <polyline points="5 12 12 5 19 12"/>
+                </svg>
+              </span>
+            </div>
+            <div>
+              <div class="telemetry-cell-value" id="data-lat">—</div>
+              <div class="telemetry-cell-sub" id="data-lat-dec">{content.labels.waiting}</div>
+            </div>
+          </div>
+
+          <!-- Cell 2: Longitude -->
+          <div class="telemetry-cell">
+            <div class="telemetry-cell-top">
+              <span class="telemetry-cell-label">{content.labels.longitude}</span>
+              <span class="telemetry-cell-icon">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="19" y1="12" x2="5" y2="12"/>
+                  <polyline points="12 19 5 12 12 5"/>
+                </svg>
+              </span>
+            </div>
+            <div>
+              <div class="telemetry-cell-value" id="data-lng">—</div>
+              <div class="telemetry-cell-sub" id="data-lng-dec">{content.labels.waiting}</div>
+            </div>
+          </div>
+
+          <!-- Cell 3: Street Address -->
+          <div class="telemetry-cell cell-full">
+            <div class="telemetry-cell-top">
+              <span class="telemetry-cell-label">{content.labels.streetAddress}</span>
+              <span class="telemetry-cell-icon">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/>
+                  <circle cx="12" cy="10" r="3"/>
+                </svg>
+              </span>
+            </div>
+            <div>
+              <div class="telemetry-cell-value" id="data-address" style="font-size: 16.5px;">{content.labels.resolvingAddress}</div>
+              <div class="telemetry-cell-sub">{content.labels.reverseGeocoded}</div>
+            </div>
+          </div>
+
+          <!-- Cell 4: City -->
+          <div class="telemetry-cell">
+            <div class="telemetry-cell-top">
+              <span class="telemetry-cell-label">{content.labels.city}</span>
+              <span class="telemetry-cell-icon">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="4" y="2" width="16" height="20" rx="2" ry="2"/>
+                  <line x1="9" y1="22" x2="9" y2="22.01"/>
+                  <line x1="15" y1="22" x2="15" y2="22.01"/>
+                </svg>
+              </span>
+            </div>
+            <div>
+              <div class="telemetry-cell-value" id="data-city">—</div>
+              <div class="telemetry-cell-sub" id="data-city-sub">{content.labels.waiting}</div>
+            </div>
+          </div>
+
+          <!-- Cell 5: State & Country -->
+          <div class="telemetry-cell">
+            <div class="telemetry-cell-top">
+              <span class="telemetry-cell-label">{content.labels.state}</span>
+              <span class="telemetry-cell-icon">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21"/>
+                  <line x1="9" y1="3" x2="9" y2="18"/>
+                  <line x1="15" y1="6" x2="15" y2="21"/>
+                </svg>
+              </span>
+            </div>
+            <div>
+              <div class="telemetry-cell-value" id="data-state-country">—</div>
+              <div class="telemetry-cell-sub" id="data-state-sub">{content.labels.waiting}</div>
+            </div>
+          </div>
+
+          <!-- Cell 6: Accuracy Radius -->
+          <div class="telemetry-cell">
+            <div class="telemetry-cell-top">
+              <span class="telemetry-cell-label">{content.labels.accuracy}</span>
+              <span class="telemetry-cell-icon">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="10"/>
+                  <circle cx="12" cy="12" r="6"/>
+                  <circle cx="12" cy="12" r="2"/>
+                </svg>
+              </span>
+            </div>
+            <div>
+              <div class="telemetry-cell-value text-emerald" id="data-accuracy">—</div>
+              <div class="telemetry-cell-sub" id="data-accuracy-sub">{content.labels.deviceReported}</div>
+            </div>
+          </div>
+
+          <!-- Cell 7: Elevation / Altitude -->
+          <div class="telemetry-cell">
+            <div class="telemetry-cell-top">
+              <span class="telemetry-cell-label">{content.labels.elevation}</span>
+              <span class="telemetry-cell-icon">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="m8 3 4 8 5-5 5 15H2L8 3z"/>
+                </svg>
+              </span>
+            </div>
+            <div>
+              <div class="telemetry-cell-value" id="data-altitude">—</div>
+              <div class="telemetry-cell-sub">{content.labels.aboveSeaLevel}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section: Explore Your Location Details -->
+  <section class="section" id="location-details" style="padding-top: 0;">
+    <div class="container">
+      <div class="stitch-section-header">
+        <span class="section-subtag-stitch">{content.detailsSection.subtag}</span>
+        <h2 class="section-title-stitch">{content.detailsSection.title} <span class="accent">{content.detailsSection.titleAccent}</span></h2>
+        <p class="section-desc-stitch">{content.detailsSection.desc}</p>
+      </div>
+
+      <div class="stitch-grid-4">
+        {content.detailsSection.cards.map((card) => (
+          <a href={card.href.startsWith('/') ? getLocalizedPath(card.href, lang) : card.href} class="stitch-card">
+            <div class="card-squircle-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"/>
+                <circle cx="12" cy="12" r="4"/>
+                <line x1="4.93" y1="4.93" x2="9.17" y2="9.17"/>
+                <line x1="14.83" y1="14.83" x2="19.07" y2="19.07"/>
+              </svg>
+            </div>
+            <h3 class="stitch-card-title">{card.title}</h3>
+            <p class="stitch-card-text">{card.desc}</p>
+            <span class="stitch-card-link">{card.link}</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Section: Location Tools -->
+  <section class="section" id="location-tools" style="background: var(--color-bg-primary); padding-top: var(--space-12);">
+    <div class="container">
+      <div class="stitch-section-header">
+        <span class="section-subtag-stitch">{content.toolsSection.subtag}</span>
+        <h2 class="section-title-stitch">{content.toolsSection.title} <span class="accent">{content.toolsSection.titleAccent}</span></h2>
+        <p class="section-desc-stitch">{content.toolsSection.desc}</p>
+      </div>
+
+      <div class="stitch-grid-4">
+        {content.toolsSection.cards.map((tool) => (
+          <a href={tool.href.startsWith('/') ? getLocalizedPath(tool.href, lang) : tool.href} class="stitch-card">
+            <div class="card-squircle-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/>
+                <circle cx="12" cy="10" r="3"/>
+              </svg>
+            </div>
+            <h3 class="stitch-card-title">{tool.title}</h3>
+            <p class="stitch-card-text">{tool.desc}</p>
+            <span class="stitch-card-link">{tool.link}</span>
+          </a>
+        ))}
+      </div>
+
+      <div class="stitch-center-action">
+        <a href={getLocalizedPath('/tools/', lang)} class="btn-stitch-pill-outline">
+          <span>{content.toolsSection.btnAll}</span>
+          <span>&rarr;</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section: Learn About Location / Guides -->
+  <section class="section" id="learn-location" style="padding-top: var(--space-12);">
+    <div class="container">
+      <div class="stitch-section-header">
+        <span class="section-subtag-stitch">{content.guidesSection.subtag}</span>
+        <h2 class="section-title-stitch">{content.guidesSection.title} <span class="accent">{content.guidesSection.titleAccent}</span></h2>
+        <p class="section-desc-stitch">{content.guidesSection.desc}</p>
+      </div>
+
+      <div class="stitch-grid-3">
+        {content.guidesSection.cards.map((guide) => (
+          <a href={guide.href.startsWith('/') ? getLocalizedPath(guide.href, lang) : guide.href} class="stitch-card">
+            <div class="card-squircle-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"/>
+                <line x1="2" y1="12" x2="22" y2="12"/>
+                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+              </svg>
+            </div>
+            <h3 class="stitch-card-title">{guide.title}</h3>
+            <p class="stitch-card-text">{guide.desc}</p>
+            <span class="stitch-card-link">{guide.link}</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Section: Frequently Asked Questions -->
+  <section class="section" id="faq" style="padding-top: var(--space-12);">
+    <div class="container">
+      <div class="stitch-section-header">
+        <span class="section-subtag-stitch">{content.faqSection.subtag}</span>
+        <h2 class="section-title-stitch">{content.faqSection.title} <span class="accent">{content.faqSection.titleAccent}</span></h2>
+        <p class="section-desc-stitch">{content.faqSection.desc}</p>
+      </div>
+
+      <div class="faq-stitch-container">
+        {content.faqSection.items.map((item) => (
+          <details class="faq-stitch-item">
+            <summary class="faq-stitch-summary">
+              <span>{item.question}</span>
+              <span class="faq-stitch-icon">+</span>
+            </summary>
+            <div class="faq-stitch-body">
+              <p set:html={item.answer} />
+            </div>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Homepage Location Logic Script -->
+  <script>
+    import GeoLocation from '../scripts/geolocation.js';
+    import Geocoding from '../scripts/geocoding.js';
+    import Sharing from '../scripts/sharing.js';
+    import MapUtils from '../scripts/map.js';
+
+    const locateTitles: Record<string, string> = {
+      en: "Zoom to my current location",
+      es: "Centrar y ampliar en mi ubicación",
+      fr: "Zoomer sur ma position actuelle",
+      de: "Auf meinen aktuellen Standort zoomen",
+      pt: "Aproximar da minha localização atual"
+    };
+    const currentDocLang = document.documentElement.lang || 'en';
+    const locateTitle = document.getElementById('map')?.getAttribute('data-locate-title') || locateTitles[currentDocLang] || locateTitles.en;
+
+    const getBtn = document.getElementById('get-location-btn');
+    const statusPill = document.getElementById('telemetry-status-pill');
+    const subtext = document.getElementById('telemetry-subtext');
+    const privacyBanner = document.getElementById('privacy-banner');
+    const bannerText = document.getElementById('banner-text');
+    const mapCoordChip = document.getElementById('map-coord-chip');
+    const mapStatusChip = document.getElementById('map-status-chip');
+
+    let currentLat: number | null = null;
+    let currentLng: number | null = null;
+    let mapInstance: any = null;
+    let markerInstance: any = null;
+    let circleInstance: any = null;
+
+    function setMapStatus(text: string) {
+      const el = document.getElementById('map-status-chip-text');
+      if (el) el.textContent = text;
+    }
+
+    function initMap(lat: number | null, lng: number | null, accuracy: number = 5) {
+      const L = (window as any).L;
+      if (typeof L === 'undefined') {
+        setTimeout(() => initMap(lat, lng, accuracy), 150);
+        return;
+      }
+
+      if (!mapInstance) {
+        mapInstance = L.map('map', { scrollWheelZoom: false, zoomControl: true });
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+          maxZoom: 19,
+        }).addTo(mapInstance);
+
+        MapUtils.addLocateControl(mapInstance, {
+          title: locateTitle,
+          zoom: 16,
+          onLocate: (uLat, uLng, acc) => {
+            currentLat = uLat;
+            currentLng = uLng;
+            initMap(uLat, uLng, acc);
+          }
+        });
+      }
+
+      if (lat === null || lng === null) {
+        mapInstance.setView([25, 5], 2);
+        return;
+      }
+
+      mapInstance.setView([lat, lng], 16);
+
+      const pulsePinIcon = L.divIcon({
+        className: 'custom-gps-marker',
+        html: `
+          <div class="pulse-marker-wrapper">
+            <div class="marker-pulse-wave"></div>
+            <div class="marker-core-dot"></div>
+          </div>
+        `,
+        iconSize: [32, 32],
+        iconAnchor: [16, 16],
+      });
+
+      if (markerInstance) {
+        markerInstance.setLatLng([lat, lng]);
+      } else {
+        markerInstance = L.marker([lat, lng], { icon: pulsePinIcon }).addTo(mapInstance);
+      }
+
+      if (circleInstance) {
+        circleInstance.setLatLng([lat, lng]);
+        circleInstance.setRadius(accuracy);
+      } else {
+        circleInstance = L.circle([lat, lng], {
+          radius: accuracy,
+          color: '#2563EB',
+          fillColor: '#60A5FA',
+          fillOpacity: 0.15,
+          weight: 1.5,
+        }).addTo(mapInstance);
+      }
+    }
+
+    async function findLocation() {
+      if (statusPill) {
+        statusPill.textContent = 'ACQUIRING GNSS...';
+        statusPill.className = 'telemetry-status-pill';
+      }
+      if (subtext) {
+        subtext.textContent = 'Querying browser positioning hardware and GNSS satellites...';
+      }
+      if (getBtn) {
+        getBtn.style.opacity = '0.75';
+        getBtn.style.pointerEvents = 'none';
+      }
+
+      try {
+        const position = await GeoLocation.getCurrentPosition();
+        const data = GeoLocation.formatPosition(position);
+        currentLat = data.latitude;
+        currentLng = data.longitude;
+
+        const latEl = document.getElementById('data-lat');
+        const latDecEl = document.getElementById('data-lat-dec');
+        const lngEl = document.getElementById('data-lng');
+        const lngDecEl = document.getElementById('data-lng-dec');
+        const accEl = document.getElementById('data-accuracy');
+        const altEl = document.getElementById('data-altitude');
+
+        if (latEl) latEl.textContent = data.formattedLat;
+        if (latDecEl) latDecEl.textContent = `Decimal: ${currentLat.toFixed(6)}`;
+        if (lngEl) lngEl.textContent = data.formattedLng;
+        if (lngDecEl) lngDecEl.textContent = `Decimal: ${currentLng.toFixed(6)}`;
+        if (accEl) accEl.textContent = `± ${Math.round(data.accuracy)} meters`;
+        const accSubEl = document.getElementById('data-accuracy-sub');
+        if (accSubEl) accSubEl.textContent = 'Reported by your device';
+        if (altEl) {
+          altEl.textContent = data.altitude != null
+            ? `${Math.round(data.altitude)} m (${Math.round(data.altitude * 3.28084)} ft)`
+            : 'Not reported by device';
+        }
+
+        if (mapCoordChip) {
+          mapCoordChip.textContent = `${data.formattedLat}, ${data.formattedLng}`;
+        }
+
+        setMapStatus('GNSS FIXED');
+
+        if (statusPill) {
+          statusPill.textContent = 'GNSS LOCKED';
+          statusPill.className = 'telemetry-status-pill status-fixed';
+        }
+
+        if (subtext) {
+          subtext.textContent = `High precision fix acquired with ${Math.round(data.accuracy)}m confidence.`;
+        }
+
+        const mapsBtn = document.getElementById('open-maps-btn');
+        if (mapsBtn) {
+          mapsBtn.setAttribute('href', Sharing.getGoogleMapsUrl(currentLat, currentLng));
+          mapsBtn.removeAttribute('aria-disabled');
+        }
+
+        initMap(currentLat, currentLng, data.accuracy);
+
+        try {
+          const address = await Geocoding.reverseGeocode(currentLat, currentLng);
+          const addrEl = document.getElementById('data-address');
+          const cityEl = document.getElementById('data-city');
+          const citySubEl = document.getElementById('data-city-sub');
+          const stateEl = document.getElementById('data-state-country');
+          const stateSubEl = document.getElementById('data-state-sub');
+
+          if (addrEl) addrEl.textContent = address.displayName || address.road || 'Resolved GPS Location';
+          if (cityEl) cityEl.textContent = address.city || address.town || address.village || address.county || 'Detected City';
+          if (citySubEl) citySubEl.textContent = address.county ? `County: ${address.county}` : 'Resolved via GPS';
+          if (stateEl) {
+            const state = address.state || '';
+            const country = address.country || '';
+            stateEl.textContent = [state, country].filter(Boolean).join(', ') || 'Global';
+          }
+          if (stateSubEl) {
+            const cc = (address.country_code || '').toUpperCase();
+            const region = address.state_district || address.state || '';
+            stateSubEl.textContent = cc ? `ISO 3166-1: ${[cc, region].filter(Boolean).join('-')}` : 'Resolved via GPS';
+          }
+        } catch {
+          const citySubEl = document.getElementById('data-city-sub');
+          const stateSubEl = document.getElementById('data-state-sub');
+          if (citySubEl) citySubEl.textContent = 'Address lookup unavailable';
+          if (stateSubEl) stateSubEl.textContent = 'Address lookup unavailable';
+        }
+
+        if (privacyBanner) {
+          privacyBanner.style.background = '#ecfdf5';
+          privacyBanner.style.borderColor = '#a7f3d0';
+          privacyBanner.style.color = '#065f46';
+        }
+        if (bannerText) {
+          bannerText.textContent = 'Location acquired successfully. Zero-Data Retention • 100% In-Browser.';
+        }
+
+      } catch (err) {
+        if (statusPill) {
+          statusPill.textContent = 'IP FALLBACK';
+          statusPill.className = 'telemetry-status-pill';
+        }
+        if (subtext) {
+          subtext.textContent = 'GPS permission denied or unavailable. Resolving approximate IP location.';
+        }
+
+        try {
+          const ipModule = await import('../scripts/ip-location.js');
+          const ipData = await ipModule.default.getLocation();
+          currentLat = ipData.lat;
+          currentLng = ipData.lng;
+
+          const latEl = document.getElementById('data-lat');
+          const latDecEl = document.getElementById('data-lat-dec');
+          const lngEl = document.getElementById('data-lng');
+          const lngDecEl = document.getElementById('data-lng-dec');
+          const addrEl = document.getElementById('data-address');
+          const cityEl = document.getElementById('data-city');
+          const citySubEl = document.getElementById('data-city-sub');
+          const stateEl = document.getElementById('data-state-country');
+          const stateSubEl = document.getElementById('data-state-sub');
+          const accEl = document.getElementById('data-accuracy');
+          const altEl = document.getElementById('data-altitude');
+
+          if (latEl) latEl.textContent = `${Math.abs(currentLat).toFixed(4)}° ${currentLat >= 0 ? 'N' : 'S'}`;
+          if (latDecEl) latDecEl.textContent = `Decimal: ${currentLat.toFixed(6)}`;
+          if (lngEl) lngEl.textContent = `${Math.abs(currentLng).toFixed(4)}° ${currentLng >= 0 ? 'E' : 'W'}`;
+          if (lngDecEl) lngDecEl.textContent = `Decimal: ${currentLng.toFixed(6)}`;
+          if (addrEl) addrEl.textContent = `${ipData.city || 'Metro Area'}, ${ipData.region || ''}, ${ipData.country || ''}`;
+          if (cityEl) cityEl.textContent = ipData.city || 'Detected City';
+          if (citySubEl) citySubEl.textContent = 'Approximate (IP-level precision)';
+          if (stateEl) stateEl.textContent = `${ipData.region || ''}, ${ipData.country || ''}`;
+          if (stateSubEl) stateSubEl.textContent = ipData.countryCode ? `ISO 3166-1: ${ipData.countryCode}${ipData.regionCode ? '-' + ipData.regionCode : ''}` : 'Approximate (IP-level precision)';
+          if (accEl) accEl.textContent = '± 10 km (IP)';
+          const accSubEl = document.getElementById('data-accuracy-sub');
+          if (accSubEl) accSubEl.textContent = 'Estimate from your IP address';
+          if (altEl) altEl.textContent = 'Not available from IP';
+
+          if (mapCoordChip) {
+            mapCoordChip.textContent = `${currentLat.toFixed(4)}°, ${currentLng.toFixed(4)}°`;
+          }
+
+          setMapStatus('IP LOCATION');
+
+          const mapsBtn = document.getElementById('open-maps-btn');
+          if (mapsBtn) {
+            mapsBtn.setAttribute('href', Sharing.getGoogleMapsUrl(currentLat, currentLng));
+            mapsBtn.removeAttribute('aria-disabled');
+          }
+
+          initMap(currentLat, currentLng, 10000);
+
+          if (bannerText) {
+            bannerText.textContent = 'Approximate location resolved from your IP address. Zero-Data Retention • 100% In-Browser.';
+          }
+        } catch {
+          setMapStatus('NO FIX');
+          if (bannerText) bannerText.textContent = 'Location query failed. Please ensure location permissions are enabled.';
+        }
+      } finally {
+        if (getBtn) {
+          getBtn.style.opacity = '1';
+          getBtn.style.pointerEvents = 'auto';
+        }
+      }
+    }
+
+    getBtn?.addEventListener('click', findLocation);
+    document.getElementById('refresh-btn')?.addEventListener('click', findLocation);
+
+    findLocation();
+
+    document.getElementById('copy-coords-btn')?.addEventListener('click', function(this: HTMLButtonElement) {
+      if (currentLat === null || currentLng === null) {
+        const span = this.querySelector('span');
+        if (span) {
+          const original = span.textContent;
+          span.textContent = 'No fix yet';
+          setTimeout(() => { span.textContent = original; }, 2000);
+        }
+        return;
+      }
+      const coordStr = `${currentLat.toFixed(6)}, ${currentLng.toFixed(6)}`;
+      navigator.clipboard.writeText(coordStr).then(() => {
+        const span = this.querySelector('span');
+        if (span) {
+          const original = span.textContent;
+          span.textContent = 'Copied!';
+          setTimeout(() => { span.textContent = original; }, 2000);
+        }
+      });
+    });
+
+    document.getElementById('share-btn')?.addEventListener('click', () => {
+      if (currentLat === null || currentLng === null) return;
+      Sharing.shareNative({
+        title: 'My Location',
+        text: `My location coordinates: ${currentLat.toFixed(6)}, ${currentLng.toFixed(6)}`,
+        url: Sharing.getGoogleMapsUrl(currentLat, currentLng),
+      });
+    });
+  </script>
+</BaseLayout>

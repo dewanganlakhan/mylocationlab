@@ -1,0 +1,429 @@
+---
+/**
+ * UtmCoordinatesView — Multilingual Guide: UTM Coordinates & Geodetic Datums
+ */
+import ContentLayout from '../../layouts/ContentLayout.astro';
+import { getLocalizedPath, type SupportedLang, defaultLang } from '../../i18n/config';
+
+interface Props {
+  lang?: SupportedLang;
+}
+
+const { lang = defaultLang } = Astro.props;
+
+const translations: Record<string, any> = {
+  en: {
+    title: "UTM Coordinates & Datums: WGS84, NAD83 | MyLocationLab",
+    description: "Master the Universal Transverse Mercator (UTM) coordinate system, military grid reference system (MGRS), geodetic datums, false eastings, and zone projections.",
+    h1: "UTM Coordinates & Geodetic Datums: The Complete GIS Guide",
+    subtitle: "Understand how metric grid projections, UTM 6-degree zones, false northing/easting, and regional datums (NAD83, ETRS89, WGS84) shape professional surveying.",
+    sectionLabel: "Educational Guides",
+    p1: "While consumer web maps and smartphones use spherical angular coordinates (Latitude and Longitude), civil engineers, land surveyors, topographers, and military tacticians require metric Cartesian grids.",
+    p2: "The most ubiquitous metric system in global GIS is the Universal Transverse Mercator (UTM) projection. In this guide, we demystify how UTM divides the curved Earth into flat zones, how false eastings eliminate negative numbers, and how geodetic datums like WGS 84, NAD83, and ETRS89 ensure millimeter precision.",
+    calloutBadge: "🧭 Instant Conversion",
+    calloutTitle: "Convert Between UTM, Decimal Degrees & DMS",
+    calloutDesc: "Input any coordinate to calculate its UTM Zone, Easting, Northing, and hemisphere projection automatically.",
+    calloutBtn: "Open UTM Converter →",
+    h2WhatIsUtm: "1. What Is the Universal Transverse Mercator (UTM) System?",
+    pUtm1: "The UTM system is not a single map projection; it is a specialized grid system developed by the United States Army Corps of Engineers in the 1940s. It maps the Earth between 80° South latitude and 84° North latitude using a conformal Transverse Mercator cylindrical projection.",
+    h3Zones: "The 60 Longitudinal Zones (6° Width Each)",
+    pZones: "To minimize scale distortion that occurs when flattening a spherical surface, UTM divides the globe into 60 longitudinal zones numbered 1 through 60:",
+    zoneLi1: "Each zone spans 6 degrees of longitude wide (60 × 6° = 360°).",
+    zoneLi2: "Zone 1 begins at the 180th meridian (180° W to 174° W) and counts eastward.",
+    zoneLi3: "Each zone has a Central Meridian running precisely down its middle (3° from either border).",
+    h2EastingNorthing: "2. Understanding Easting, Northing & False Offsets",
+    pEastingNorthing: "Within each 6° UTM zone, any position is expressed in standard meters using two coordinates:",
+    eastingTitle: "Easting (X-Axis) & The 500,000 m False Easting",
+    eastingDesc: "To prevent negative numbers when moving west of a zone's Central Meridian, the central meridian is assigned an arbitrary False Easting of 500,000 meters. Locations west of center have eastings < 500,000 m; locations east of center have eastings > 500,000 m.",
+    northingTitle: "Northing (Y-Axis) & The Equator Baseline",
+    northingDesc: "In the Northern Hemisphere, the Equator is assigned a Northing of 0 meters. In the Southern Hemisphere, to avoid negative values, the Equator is assigned a False Northing of 10,000,000 meters, decreasing toward the South Pole.",
+    h2Datums: "3. What Is a Geodetic Datum? (WGS84 vs NAD83 vs ETRS89)",
+    pDatums: "Coordinates are meaningless without a reference frame. A geodetic datum defines the size, shape, and orientation of the mathematical ellipsoid modeling the Earth:",
+    thDatum: "Datum Name",
+    thModel: "Ellipsoid Model",
+    thCoverage: "Coverage Area",
+    thFrame: "Tectonic Frame & Key Application",
+    wgs84Desc: "Geocentric, Earth-fixed. The default global standard for GPS and consumer web mapping.",
+    nad83Desc: "Fixed to the North American tectonic plate. Used by USGS, US government, and state surveyors.",
+    etrs89Desc: "Fixed to the stable Eurasian tectonic plate. Mandated by the European Union for geospatial data.",
+    nad27Desc: "Historical regional datum centered on Meades Ranch, Kansas. Offsets of ~100m compared to WGS84.",
+    driftNote: "Tectonic Drift Note: Because the North American plate moves ~1 to 2 cm per year westward relative to the Earth's center of mass, WGS84 and NAD83 coordinates currently differ by ~1.0 to 1.5 meters across the United States.",
+    h2Mgrs: "4. Military Grid Reference System (MGRS)",
+    pMgrs: "The Military Grid Reference System (MGRS) is an alphanumeric extension of UTM developed by NATO armed forces. It divides each UTM zone into 8° latitude bands (labeled C through X) and further subdivides zones into 100,000-meter grid squares represented by two letters (e.g., 18TWK12345678).",
+    callout2Badge: "📐 Distance & Great-Circle",
+    callout2Title: "Calculate Geodesic Distances",
+    callout2Desc: "Measure the exact geodesic distance between metric or angular waypoints across the globe using our Haversine solver.",
+    callout2Btn: "Open Distance Calculator →",
+    connectedTitle: "🔗 Connected Guides & Geospatial Utilities",
+    tool1Title: "Coordinate Converter",
+    tool1Desc: "UTM, DMS, DD converter",
+    tool2Title: "Latitude & Longitude",
+    tool2Desc: "Spherical geodesy guide",
+    tool3Title: "Decimal Degrees vs DMS",
+    tool3Desc: "Coordinate notation comparison",
+    tool4Title: "How GPS Works",
+    tool4Desc: "WGS84 satellite orbits"
+  },
+  es: {
+    title: "Coordenadas UTM y Dátums: WGS84, NAD83 | MyLocationLab",
+    description: "Domine el sistema Universal Transverse Mercator (UTM), sistema MGRS militar, dátums geodésicos, falso este y proyecciones cartográficas.",
+    h1: "Coordenadas UTM y Dátums Geodésicos: La Guía SIG Completa",
+    subtitle: "Comprenda cómo las proyecciones métricas en cuadrícula, husos UTM de 6 grados y dátums regionales (NAD83, ETRS89, WGS84) definen la topografía.",
+    sectionLabel: "Guías Educativas",
+    p1: "Mientras que los mapas web de consumo y los teléfonos móviles emplean coordenadas angulares esféricas (Latitud y Longitud), los ingenieros civiles, topógrafos y especialistas en SIG requieren cuadrículas cartesianas métricas.",
+    p2: "El sistema métrico más extendido en los SIG globales es la proyección Universal Transverse Mercator (UTM). En esta guía explicamos cómo la proyección UTM aplana la Tierra esférica en husos, cómo el falso este evita números negativos y cómo dátums como WGS 84, NAD83 y ETRS89 garantizan precisión milimétrica.",
+    calloutBadge: "🧭 Conversión Inmediata",
+    calloutTitle: "Convierta entre UTM, Grados Decimales y DMS",
+    calloutDesc: "Introduzca cualquier coordenada para calcular su Huso UTM, Este, Norte y proyección de hemisferio de manera automática.",
+    calloutBtn: "Abrir Conversor UTM →",
+    h2WhatIsUtm: "1. ¿Qué es el Sistema Universal Transversal de Mercator (UTM)?",
+    pUtm1: "El sistema UTM no es una simple proyección de mapa; es un sistema de cuadrícula especializado desarrollado por el Cuerpo de Ingenieros del Ejército de EE. UU. en la década de 1940. Cartografía la Tierra entre los 80° de latitud Sur y los 84° de latitud Norte utilizando una proyección cilíndrica conforme transversa.",
+    h3Zones: "Los 60 Husos Longitudinales (6° de Anchura Cada Uno)",
+    pZones: "Para minimizar la distorsión de escala que ocurre al aplanar una superficie curva, el sistema UTM divide el globo en 60 husos numerados del 1 al 60:",
+    zoneLi1: "Cada huso abarca 6 grados de longitud de ancho (60 × 6° = 360°).",
+    zoneLi2: "El Huso 1 comienza en el meridiano 180° (180° O a 174° O) y avanza hacia el este.",
+    zoneLi3: "Cada huso posee un Meridiano Central que discurre exactamente por su punto medio (a 3° de cada límite).",
+    h2EastingNorthing: "2. Entendiendo el Este, Norte y Falsos Orígenes",
+    pEastingNorthing: "Dentro de cada huso UTM de 6°, cualquier ubicación se expresa en metros estándar mediante dos valores numéricos:",
+    eastingTitle: "Coordenada Este (Eje X) y el Falso Este de 500.000 m",
+    eastingDesc: "Para prevenir valores negativos al desplazarse al oeste del Meridiano Central, a dicho meridiano se le asigna un Falso Este arbitrario de 500.000 metros. Las posiciones al oeste del centro tienen un Este < 500.000 m; al este, un Este > 500.000 m.",
+    northingTitle: "Coordenada Norte (Eje Y) y la Línea Base del Ecuador",
+    northingDesc: "En el Hemisferio Norte, al Ecuador se le asigna un Norte de 0 metros. En el Hemisferio Sur, para evitar cifras negativas, al Ecuador se le asigna un Falso Norte de 10.000.000 de metros que desciende hacia el Polo Sur.",
+    h2Datums: "3. ¿Qué es un Dátum Geodésico? (WGS84 vs NAD83 vs ETRS89)",
+    pDatums: "Las coordenadas carecen de sentido sin un marco de referencia. Un dátum geodésico define el tamaño, la forma y la orientación del elipsoide matemático que modela la Tierra:",
+    thDatum: "Nombre del Dátum",
+    thModel: "Modelo Elipsoidal",
+    thCoverage: "Área de Cobertura",
+    thFrame: "Marco Tectónico y Aplicación Principal",
+    wgs84Desc: "Geocéntrico y anclado a la Tierra. Estándar global por defecto para GPS y cartografía web.",
+    nad83Desc: "Fijado a la placa tectónica norteamericana. Utilizado por el USGS y organismos oficiales en EE. UU.",
+    etrs89Desc: "Fijado a la placa euroasiática estable. Obligatorio por normativa de la Unión Europea para datos geoespaciales.",
+    nad27Desc: "Dátum regional histórico centrado en Meades Ranch, Kansas. Desplazamientos de ~100m respecto a WGS84.",
+    driftNote: "Nota de Deriva Tectónica: Debido a que la placa norteamericana se desplaza de 1 a 2 cm al año hacia el oeste, las coordenadas WGS84 y NAD83 difieren actualmente entre 1,0 y 1,5 metros en territorio estadounidense.",
+    h2Mgrs: "4. Sistema de Referencia de Cuadrícula Militar (MGRS)",
+    pMgrs: "El MGRS es una extensión alfanumérica del sistema UTM diseñada por las fuerzas de la OTAN. Divide cada huso en bandas de latitud de 8° (identificadas con letras de la C a la X) y subdivide cada zona en cuadrados métricos de 100.000 metros (ej. 18TWK12345678).",
+    callout2Badge: "📐 Distancia Ortodrómica",
+    callout2Title: "Calcule Distancias Geodésicas",
+    callout2Desc: "Mida la distancia ortodrómica exacta entre coordenadas angulares o métricas con nuestra herramienta de cálculo Haversine.",
+    callout2Btn: "Abrir Calculadora de Distancia →",
+    connectedTitle: "🔗 Guías y Utilidades Relacionadas",
+    tool1Title: "Conversor de Coordenadas",
+    tool1Desc: "Conversión UTM, DMS y DD",
+    tool2Title: "Latitud y Longitud",
+    tool2Desc: "Guía de geodesia esférica",
+    tool3Title: "Grados Decimales vs DMS",
+    tool3Desc: "Comparativa de notaciones",
+    tool4Title: "Cómo Funciona el GPS",
+    tool4Desc: "Órbitas y elipsoide WGS84"
+  },
+  fr: {
+    title: "Coordonnées UTM & Datums : WGS84, NAD83 | MyLocationLab",
+    description: "Maîtrisez le système Universal Transverse Mercator (UTM), le quadrillage militaire MGRS, les datums géodésiques et les projections cartographiques.",
+    h1: "Coordonnées UTM & Datums Géodésiques : Le Guide SIG Complet",
+    subtitle: "Comprenez le fonctionnement des projections métriques, des fuseaux UTM de 6 degrés et des datums régionaux (NAD83, ETRS89, WGS84).",
+    sectionLabel: "Guides Pédagogiques",
+    p1: "Alors que les cartes web grand public et les smartphones utilisent des coordonnées angulaires sphériques (Latitude et Longitude), les géomètres, topographes et ingénieurs SIG travaillent sur des grilles métriques planes.",
+    p2: "Le système métrique le plus répandu en géomatique est la projection Universal Transverse Mercator (UTM). Ce guide explique le découpage de la Terre en fuseaux, le rôle du faux-est pour éviter les valeurs négatives, et l'importance des datums WGS 84, NAD83 et ETRS89 pour garantir la précision centimétrique.",
+    calloutBadge: "🧭 Conversion Immédiate",
+    calloutTitle: "Convertissez entre UTM, Degrés Décimaux et DMS",
+    calloutDesc: "Saisissez n'importe quelle coordonnée pour calculer automatiquement son fuseau UTM, son Easting, son Northing et son hémisphère.",
+    calloutBtn: "Ouvrir le Convertisseur UTM →",
+    h2WhatIsUtm: "1. Qu'est-ce que le Système UTM (Universal Transverse Mercator) ?",
+    pUtm1: "Le système UTM n'est pas une projection cartographique unique, mais un système de quadrillage développé dans les années 1940 par l'armée américaine. Il cartographie la surface terrestre entre 80° Sud et 84° Nord à l'aide d'une projection cylindrique conforme transverse de Mercator.",
+    h3Zones: "Les 60 Fuseaux Longitudinaux (6° de Largeur)",
+    pZones: "Afin de limiter la distorsion d'échelle inhérente à l'aplatissement d'une sphère, l'UTM segmente le globe en 60 fuseaux numérotés de 1 à 60 :",
+    zoneLi1: "Chaque fuseau couvre 6 degrés de longitude (60 × 6° = 360°).",
+    zoneLi2: "Le Fuseau 1 débute à l'antiméridien 180° (180° O à 174° O) et progresse vers l'est.",
+    zoneLi3: "Chaque fuseau dispose d'un Méridien Central en son milieu parfait (à 3° des limites).",
+    h2EastingNorthing: "2. Comprendre l'Easting, le Northing et les Faux Décalages",
+    pEastingNorthing: "À l'intérieur de chaque fuseau de 6°, une position métrique est déterminée par deux valeurs :",
+    eastingTitle: "Easting (Axe X) et le Faux-Est de 500 000 m",
+    eastingDesc: "Pour bannir les nombres négatifs à l'ouest du Méridien Central, ce dernier se voit attribuer un Faux-Est forfaitaire de 500 000 mètres. Les points à l'ouest ont un Easting < 500 000 m ; ceux à l'est ont un Easting > 500 000 m.",
+    northingTitle: "Northing (Axe Y) et la Ligne Équatoriale",
+    northingDesc: "Dans l'Hémisphère Nord, l'Équateur correspond à un Northing de 0 mètre. Dans l'Hémisphère Sud, pour éviter toute coordonnée négative, l'Équateur reçoit un Faux-Nord de 10 000 000 de mètres qui décroît vers le Pôle Sud.",
+    h2Datums: "3. Qu'est-ce qu'un Datum Géodésique ? (WGS84 vs NAD83 vs ETRS89)",
+    pDatums: "Des coordonnées sont dénuées de sens sans système géodésique de référence. Un datum fixe la forme, le rayon et la position de l'ellipsoïde mathématique modélisant le géoïde terrestre :",
+    thDatum: "Nom du Datum",
+    thModel: "Modèle d'Ellipsoïde",
+    thCoverage: "Zone d'Application",
+    thFrame: "Cadre Tectonique et Usage",
+    wgs84Desc: "Géocentrique et lié à la Terre. Référence universelle du GPS et de la cartographie numérique en ligne.",
+    nad83Desc: "Lié à la plaque tectonique nord-américaine. Utilisé par l'USGS et les services publics américains.",
+    etrs89Desc: "Lié à la plaque eurasienne stable. Standard officiel obligatoire dans l'Union européenne.",
+    nad27Desc: "Ancien datum régional centré sur Meades Ranch (Kansas). Écarts d'environ 100 m par rapport au WGS84.",
+    driftNote: "Dérive Tectonique : La plaque nord-américaine se déplaçant de 1 à 2 cm par an vers l'ouest, les coordonnées WGS84 et NAD83 divergent actuellement de 1,0 à 1,5 mètre aux États-Unis.",
+    h2Mgrs: "4. Le Système de Référence Militaire (MGRS)",
+    pMgrs: "Le système MGRS est une déclinaison militaire alphanumérique de l'UTM créée pour les armées de l'OTAN. Il découpe chaque fuseau en bandes de latitude de 8° (lettres C à X) et en carrés métriques de 100 000 mètres (ex. 18TWK12345678).",
+    callout2Badge: "📐 Calcul Géodésique",
+    callout2Title: "Calculez des Distances Géodésiques",
+    callout2Desc: "Mesurez la distance exacte du grand cercle entre deux repères métriques ou angulaires grâce à notre formule de Haversine.",
+    callout2Btn: "Ouvrir le Calculateur de Distance →",
+    connectedTitle: "🔗 Guides et Outils Associés",
+    tool1Title: "Convertisseur de Coordonnées",
+    tool1Desc: "Conversion UTM, DMS et DD",
+    tool2Title: "Latitude et Longitude",
+    tool2Desc: "Guide de géodésie sphérique",
+    tool3Title: "Degrés Décimaux vs DMS",
+    tool3Desc: "Comparatif des formats",
+    tool4Title: "Comment Fonctionne le GPS",
+    tool4Desc: "Constellations et ellipsoïde WGS84"
+  },
+  de: {
+    title: "UTM-Koordinaten & Geodätische Daten: WGS84, NAD83 | MyLocationLab",
+    description: "Leitfaden zum Universal Transverse Mercator (UTM) Koordinatensystem, MGRS-Militärgitter, Referenzellipsoiden und Zonenprojektionen.",
+    h1: "UTM-Koordinaten & Geodätische Daten: Das Vollständige GIS-Handbuch",
+    subtitle: "Erfahren Sie, wie metrische Gitterprojektionen, 6-Grad-Zonen, False Easting und Datumsreferenzen (NAD83, ETRS89, WGS84) die Vermessung prägen.",
+    sectionLabel: "Lehr-Ratgeber",
+    p1: "Während Kartendienste für Endnutzer und Smartphones sphärische Winkelkoordinaten (Breiten- und Längengrade) verwenden, arbeiten Bauingenieure, Vermesser und GIS-Spezialisten mit kartesischen metrischen Gittern.",
+    p2: "Das verbreitetste metrische Gittersystem ist die UTM-Projektion (Universal Transverse Mercator). In diesem Handbuch erklären wir, wie UTM die gekrümmte Erde in ebene Streifen zerlegt, wie False Easting negative Werte verhindert und wie Referenzdaten wie WGS 84, NAD83 und ETRS89 Millimetergenauigkeit sichern.",
+    calloutBadge: "🧭 Sofortige Umrechnung",
+    calloutTitle: "Zwischen UTM, Dezimalgrad & GMS umrechnen",
+    calloutDesc: "Geben Sie beliebige Koordinaten ein, um UTM-Zone, Ostwert, Nordwert und Hemisphäre automatisch zu berechnen.",
+    calloutBtn: "UTM-Umrechner öffnen →",
+    h2WhatIsUtm: "1. Was ist das Universal Transverse Mercator (UTM) System?",
+    pUtm1: "Das UTM-System ist nicht bloß eine Kartenprojektion, sondern ein spezialisiertes Gitternetzsystem, das in den 1940er Jahren vom US Army Corps of Engineers entwickelt wurde. Es bildet die Erdoberfläche zwischen 80° südlicher und 84° nördlicher Breite mit einer konformen transversalen Zylinderprojektion ab.",
+    h3Zones: "Die 60 Längenzonen (jeweils 6° Breite)",
+    pZones: "Um Maßstabsverzerrungen beim Abflachen der Kugelfläche zu minimieren, teilt UTM die Erde in 60 Längenzonen (1 bis 60) ein:",
+    zoneLi1: "Jede Zone erstreckt sich über 6 Längengrade (60 × 6° = 360°).",
+    zoneLi2: "Zone 1 beginnt am 180. Längengrad (180° W bis 174° W) und verläuft ostwärts.",
+    zoneLi3: "Jede Zone besitzt einen Mittelmeridian (Central Meridian) exakt in der Mitte.",
+    h2EastingNorthing: "2. Ostwert (Easting), Nordwert (Northing) & Falsche Nullpunkte",
+    pEastingNorthing: "Innerhalb jeder 6°-Zone wird jede Koordinate in Metern über zwei Werte angegeben:",
+    eastingTitle: "Ostwert (Easting) & das 500.000 m False Easting",
+    eastingDesc: "Um negative Zahlen westlich des Mittelmeridians auszuschließen, erhält dieser einen willkürlichen Ostwert von 500.000 Metern (False Easting). Punkte westlich davon haben Werte < 500.000 m; Punkte östlich Werte > 500.000 m.",
+    northingTitle: "Nordwert (Northing) & Äquator-Bezugslinie",
+    northingDesc: "Auf der Nordhalbkugel hat der Äquator den Nordwert 0 m. Auf der Südhalbkugel wird ihm ein False Northing von 10.000.000 m zugewiesen, der nach Süden hin abnimmt.",
+    h2Datums: "3. Was ist ein geodätisches Datum? (WGS84 vs NAD83 vs ETRS89)",
+    pDatums: "Koordinaten sind ohne Bezugsrahmen bedeutungslos. Ein geodätisches Datum definiert Größe, Form und Ausrichtung des mathematischen Erdellipsoids:",
+    thDatum: "Datumsname",
+    thModel: "Ellipsoid-Modell",
+    thCoverage: "Abdeckungsbereich",
+    thFrame: "Tektonischer Rahmen & Anwendung",
+    wgs84Desc: "Geozentrisch, erdfest. Weltweiter Standard für GPS und Webkartendienste.",
+    nad83Desc: "Fest an die nordamerikanische Kontinentalplatte gekoppelt. Maßstab für US-Behörden und das USGS.",
+    etrs89Desc: "An die eurasische Kontinentalplatte gekoppelt. Von der Europäischen Union für Geodaten vorgeschrieben.",
+    nad27Desc: "Historisches Regionaldatum (Meades Ranch, Kansas). Zeigt rund 100 m Versatz gegenüber WGS84.",
+    driftNote: "Tektonische Verschiebung: Da sich die nordamerikanische Platte jährlich um 1 bis 2 cm westwärts bewegt, weichen WGS84- und NAD83-Koordinaten in den USA heute um 1,0 bis 1,5 Meter voneinander ab.",
+    h2Mgrs: "4. Militär-Geogitter-Referenzsystem (MGRS)",
+    pMgrs: "Das Military Grid Reference System (MGRS) ist eine alphanumerische Erweiterung von UTM für NATO-Streitkräfte. Es unterteilt Zonen in 8°-Breitenbänder (Buchstaben C bis X) und 100.000-Meter-Gitterquadrate (z. B. 18TWK12345678).",
+    callout2Badge: "📐 Geodätische Distanzen",
+    callout2Title: "Großkreisdistanzen berechnen",
+    callout2Desc: "Messen Sie die exakte geodätische Distanz zwischen metrischen oder Winkelkoordinaten mit unserer Haversine-Berechnung.",
+    callout2Btn: "Entfernungsrechner öffnen →",
+    connectedTitle: "🔗 Verwandte Ratgeber & Werkzeuge",
+    tool1Title: "Koordinaten-Umrechner",
+    tool1Desc: "UTM-, GMS- & DD-Konvertierung",
+    tool2Title: "Breitengrad & Längengrad",
+    tool2Desc: "Leitfaden sphärische Geodäsie",
+    tool3Title: "Dezimalgrad vs GMS",
+    tool3Desc: "Vergleich der Notationsformate",
+    tool4Title: "Wie GPS funktioniert",
+    tool4Desc: "WGS84-Umlaufbahnen & Satelliten"
+  },
+  pt: {
+    title: "Coordenadas UTM e Data Geodésicos: WGS84, NAD83 | MyLocationLab",
+    description: "Domine o sistema Universal Transverse Mercator (UTM), grade militar MGRS, data geodésicos, falso este e projeções de zonas cartográficas.",
+    h1: "Coordenadas UTM e Data Geodésicos: O Guia SIG Definitivo",
+    subtitle: "Entenda como projeções métricas em grade, fusos UTM de 6 graus e data regionais (NAD83, ETRS89, WGS84) estruturam a topografia.",
+    sectionLabel: "Guias Educativos",
+    p1: "Enquanto mapas digitais e smartphones utilizam coordenadas angulares esféricas (Latitude e Longitude), engenheiros civis, agrimensores e analistas de SIG exigem grades cartesianas métricas.",
+    p2: "O sistema métrico mais consolidado em SIG global é a projeção Universal Transverse Mercator (UTM). Neste guia, explicamos como a UTM projeta a Terra curva em fusos planos, como o falso este elimina números negativos e como data como WGS 84, NAD83 e ETRS89 mantêm precisão milimétrica.",
+    calloutBadge: "🧭 Conversão Imediata",
+    calloutTitle: "Converta entre UTM, Graus Decimais e GMS",
+    calloutDesc: "Insira qualquer coordenada para calcular automaticamente seu fuso UTM, Este, Norte e projeção de hemisfério.",
+    calloutBtn: "Abrir Conversor UTM →",
+    h2WhatIsUtm: "1. O que é o Sistema Universal Transverse Mercator (UTM)?",
+    pUtm1: "O sistema UTM não é uma projeção cartográfica comum; trata-se de um sistema de grade especializada criado pelo Corpo de Engenheiros do Exército dos EUA na década de 1940. Ele mapeia o planeta entre 80° Sul e 84° Norte através de uma projeção cilíndrica transversa conforme.",
+    h3Zones: "Os 60 Fusos Longitudinais (6° de Largura Cada)",
+    pZones: "Para conter distorções de escala causadas pela planificação esférica, a UTM divide a Terra em 60 fusos longitudinais de 1 a 60:",
+    zoneLi1: "Cada fuso abrange 6 graus de longitude (60 × 6° = 360°).",
+    zoneLi2: "O Fuso 1 se inicia no meridiano 180° (180° W a 174° W) e progride a leste.",
+    zoneLi3: "Cada fuso tem um Meridiano Central exatamente no centro (a 3° de suas bordas).",
+    h2EastingNorthing: "2. Compreendendo Este, Norte e Falsas Origens",
+    pEastingNorthing: "Em cada fuso de 6°, a localização é descrita em metros por meio de dois eixos:",
+    eastingTitle: "Coordenada Este (Eixo X) e o Falso Este de 500.000 m",
+    eastingDesc: "Para impedir números negativos a oeste do Meridiano Central, atribui-se ao meridiano um Falso Este fixo de 500.000 metros. Pontos a oeste possuem Este < 500.000 m; a leste, Este > 500.000 m.",
+    northingTitle: "Coordenada Norte (Eixo Y) e a Referência Equatorial",
+    northingDesc: "No Hemisfério Norte, o Equador recebe Norte 0 m. No Hemisfério Sul, para evitar valores negativos, o Equador recebe um Falso Norte de 10.000.000 m, diminuindo em direção ao Polo Sul.",
+    h2Datums: "3. O que é um Datum Geodésico? (WGS84 vs NAD83 vs ETRS89)",
+    pDatums: "Coordenadas não têm valor sem um modelo de referência. Um datum geodésico estipula as dimensões e orientação do elipsoide geométrico que aproxima a forma real da Terra:",
+    thDatum: "Nome do Datum",
+    thModel: "Modelo Elipsoidal",
+    thCoverage: "Área de Cobertura",
+    thFrame: "Quadro Tectônico e Aplicação",
+    wgs84Desc: "Geocêntrico e fixo à Terra. Padrão universal do GPS e de mapas digitais.",
+    nad83Desc: "Vinculado à placa tectônica norte-americana. Usado pelo USGS e agências governamentais dos EUA.",
+    etrs89Desc: "Vinculado à placa estável da Eurásia. Exigido pela União Europeia para conjuntos de dados espaciais.",
+    nad27Desc: "Datum regional antigo com origem em Meades Ranch (Kansas). Apresenta desvios de ~100m em relação ao WGS84.",
+    driftNote: "Nota sobre Deriva Tectônica: Com a placa norte-americana deslizando de 1 a 2 cm ao ano para oeste, as coordenadas WGS84 e NAD83 divergem hoje entre 1,0 e 1,5 metro nos Estados Unidos.",
+    h2Mgrs: "4. Sistema de Referência de Grade Militar (MGRS)",
+    pMgrs: "O MGRS é uma variante alfanumérica do UTM concebida pelas forças da OTAN. Ele divide fusos em faixas de latitude de 8° (letras C a X) e em quadrados métricos de 100.000 metros (ex. 18TWK12345678).",
+    callout2Badge: "📐 Geodésia & Distâncias",
+    callout2Title: "Calcule Distâncias Geodésicas",
+    callout2Desc: "Meça a distância exata de círculo máximo entre coordenadas com a fórmula de Haversine em nossa ferramenta online.",
+    callout2Btn: "Abrir Calculadora de Distância →",
+    connectedTitle: "🔗 Guias e Ferramentas Relacionadas",
+    tool1Title: "Conversor de Coordenadas",
+    tool1Desc: "Conversão UTM, GMS e DD",
+    tool2Title: "Latitude e Longitude",
+    tool2Desc: "Guia de geodésia esférica",
+    tool3Title: "Graus Decimais vs GMS",
+    tool3Desc: "Comparação de formatos",
+    tool4Title: "Como Funciona o GPS",
+    tool4Desc: "Constelações e elipsoide WGS84"
+  }
+};
+
+const c = translations[lang] || translations.en;
+---
+
+<ContentLayout
+  lang={lang}
+  title={c.title}
+  description={c.description}
+  h1={c.h1}
+  subtitle={c.subtitle}
+  section="guides"
+  sectionLabel={c.sectionLabel}
+  readTime="9 min"
+  publishDate="2026-09-22"
+  modifiedDate="2026-09-22"
+>
+  <p>{c.p1}</p>
+  <p>{c.p2}</p>
+
+  <div class="tool-callout">
+    <div class="tool-callout-content">
+      <span class="tool-callout-badge">{c.calloutBadge}</span>
+      <h3 class="tool-callout-title">{c.calloutTitle}</h3>
+      <p class="tool-callout-desc">{c.calloutDesc}</p>
+    </div>
+    <div class="tool-callout-action">
+      <a href={getLocalizedPath('/tools/coordinate-converter/', lang)} class="btn btn-primary">{c.calloutBtn}</a>
+    </div>
+  </div>
+
+  <h2>{c.h2WhatIsUtm}</h2>
+  <p>{c.pUtm1}</p>
+
+  <h3>{c.h3Zones}</h3>
+  <p>{c.pZones}</p>
+  <ul>
+    <li>{c.zoneLi1}</li>
+    <li>{c.zoneLi2}</li>
+    <li>{c.zoneLi3}</li>
+  </ul>
+
+  <h2>{c.h2EastingNorthing}</h2>
+  <p>{c.pEastingNorthing}</p>
+
+  <div class="step-container">
+    <div class="step-card">
+      <div class="step-number">E</div>
+      <div class="step-body">
+        <h4 class="step-title">{c.eastingTitle}</h4>
+        <p class="step-desc">{c.eastingDesc}</p>
+      </div>
+    </div>
+
+    <div class="step-card">
+      <div class="step-number">N</div>
+      <div class="step-body">
+        <h4 class="step-title">{c.northingTitle}</h4>
+        <p class="step-desc">{c.northingDesc}</p>
+      </div>
+    </div>
+  </div>
+
+  <h2>{c.h2Datums}</h2>
+  <p>{c.pDatums}</p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>{c.thDatum}</th>
+        <th>{c.thModel}</th>
+        <th>{c.thCoverage}</th>
+        <th>{c.thFrame}</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>WGS 84</strong> (EPSG:4326)</td>
+        <td>WGS 84 Ellipsoid</td>
+        <td>Global</td>
+        <td>{c.wgs84Desc}</td>
+      </tr>
+      <tr>
+        <td><strong>NAD83</strong> (North American Datum)</td>
+        <td>GRS 80</td>
+        <td>North America</td>
+        <td>{c.nad83Desc}</td>
+      </tr>
+      <tr>
+        <td><strong>ETRS89</strong> (European Terrestrial Ref)</td>
+        <td>GRS 80</td>
+        <td>Europe</td>
+        <td>{c.etrs89Desc}</td>
+      </tr>
+      <tr>
+        <td><strong>NAD27</strong> (Legacy)</td>
+        <td>Clarke 1866</td>
+        <td>North America (Historical)</td>
+        <td>{c.nad27Desc}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <blockquote>
+    <strong>{c.driftNote}</strong>
+  </blockquote>
+
+  <h2>{c.h2Mgrs}</h2>
+  <p>{c.pMgrs}</p>
+
+  <div class="tool-callout">
+    <div class="tool-callout-content">
+      <span class="tool-callout-badge">{c.callout2Badge}</span>
+      <h3 class="tool-callout-title">{c.callout2Title}</h3>
+      <p class="tool-callout-desc">{c.callout2Desc}</p>
+    </div>
+    <div class="tool-callout-action">
+      <a href={getLocalizedPath('/tools/distance-calculator/', lang)} class="btn btn-primary">{c.callout2Btn}</a>
+    </div>
+  </div>
+
+  <div class="contextual-next-box">
+    <h3 class="contextual-next-title">{c.connectedTitle}</h3>
+    <div class="contextual-next-grid">
+      <a href={getLocalizedPath('/tools/coordinate-converter/', lang)} class="contextual-link-card">
+        <span class="contextual-link-icon">🧭</span>
+        <div class="contextual-link-info">
+          <div class="contextual-link-title">{c.tool1Title}</div>
+          <div class="contextual-link-sub">{c.tool1Desc}</div>
+        </div>
+      </a>
+      <a href={getLocalizedPath('/guides/latitude-and-longitude-explained/', lang)} class="contextual-link-card">
+        <span class="contextual-link-icon">🌐</span>
+        <div class="contextual-link-info">
+          <div class="contextual-link-title">{c.tool2Title}</div>
+          <div class="contextual-link-sub">{c.tool2Desc}</div>
+        </div>
+      </a>
+      <a href={getLocalizedPath('/comparisons/decimal-degrees-vs-dms/', lang)} class="contextual-link-card">
+        <span class="contextual-link-icon">⚖️</span>
+        <div class="contextual-link-info">
+          <div class="contextual-link-title">{c.tool3Title}</div>
+          <div class="contextual-link-sub">{c.tool3Desc}</div>
+        </div>
+      </a>
+      <a href={getLocalizedPath('/guides/how-gps-location-works/', lang)} class="contextual-link-card">
+        <span class="contextual-link-icon">🛰️</span>
+        <div class="contextual-link-info">
+          <div class="contextual-link-title">{c.tool4Title}</div>
+          <div class="contextual-link-sub">{c.tool4Desc}</div>
+        </div>
+      </a>
+    </div>
+  </div>
+</ContentLayout>

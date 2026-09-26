@@ -1,24 +1,40 @@
 ---
 /**
  * Header — Stitch GeoPrecision Navigation
- * Brand logo with GEOSPATIAL SUITE, clean active pill nav, theme toggle, and Find My Location CTA
+ * Brand logo with GEOSPATIAL SUITE, clean active pill nav, language switcher, theme toggle, and Find My Location CTA
  */
 import { mainNav } from '../data/navigation.js';
 import ThemeToggle from './ThemeToggle.astro';
+import LanguageSelector from './LanguageSelector.astro';
+import { getLangFromUrl, getLocalizedPath } from '../i18n/config';
+import { useTranslations } from '../i18n/ui';
 
 interface Props {
   activeSection?: string;
+  lang?: string;
 }
 
-const { activeSection } = Astro.props;
+const { activeSection, lang: customLang } = Astro.props;
 const currentPath = Astro.url.pathname;
-const isHome = currentPath === '/' || currentPath === '';
+const lang = customLang || getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+const homePath = getLocalizedPath('/', lang);
+const myLocationPath = getLocalizedPath('/my-location/', lang);
+const toolsPath = getLocalizedPath('/tools/', lang);
+const mapsPath = getLocalizedPath('/maps/', lang);
+const guidesPath = getLocalizedPath('/guides/', lang);
+const comparisonsPath = getLocalizedPath('/comparisons/', lang);
+const faqPath = getLocalizedPath('/faq/', lang);
+const ctaPath = `${homePath}#find-location`;
+
+const isHome = currentPath === homePath || currentPath === '/' || currentPath === `/${lang}/` || currentPath === `/${lang}`;
 ---
 
 <header class="nav-header" id="site-header">
   <nav class="nav-inner" aria-label="Main navigation">
     <!-- Brand Logo -->
-    <a href="/" class="nav-logo" aria-label="MyLocationLab Home">
+    <a href={homePath} class="nav-logo" aria-label="MyLocationLab Home">
       <span class="nav-logo-icon">
         <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
           <rect width="32" height="32" rx="9" fill="#2563EB"/>
@@ -33,7 +49,7 @@ const isHome = currentPath === '/' || currentPath === '';
       </span>
       <div class="nav-brand-text">
         <span class="nav-brand-name">MyLocationLab</span>
-        <span class="nav-brand-tagline">GEOSPATIAL SUITE</span>
+        <span class="nav-brand-tagline">{t('nav.tagline')}</span>
       </div>
     </a>
 
@@ -41,69 +57,73 @@ const isHome = currentPath === '/' || currentPath === '';
     <ul class="nav-links" role="menubar">
       <li role="none">
         <a
-          href="/my-location/"
-          class={`nav-link ${isHome || activeSection === 'my-location' || currentPath.startsWith('/my-location') ? 'active' : ''}`}
+          href={myLocationPath}
+          class={`nav-link ${isHome || activeSection === 'my-location' || currentPath.includes('/my-location') ? 'active' : ''}`}
           role="menuitem"
         >
-          <span>My Location</span>
+          <span>{t('nav.myLocation')}</span>
         </a>
       </li>
       <li role="none">
         <a
-          href="/tools/"
-          class={`nav-link ${currentPath.startsWith('/tools/') ? 'active' : ''}`}
+          href={toolsPath}
+          class={`nav-link ${currentPath.includes('/tools') ? 'active' : ''}`}
           role="menuitem"
         >
-          <span>Tools</span>
+          <span>{t('nav.tools')}</span>
         </a>
       </li>
       <li role="none">
         <a
-          href="/maps/"
-          class={`nav-link ${currentPath.startsWith('/maps') ? 'active' : ''}`}
+          href={mapsPath}
+          class={`nav-link ${currentPath.includes('/maps') ? 'active' : ''}`}
           role="menuitem"
         >
-          <span>Maps</span>
+          <span>{t('nav.maps')}</span>
         </a>
       </li>
       <li role="none">
         <a
-          href="/guides/"
-          class={`nav-link ${currentPath.startsWith('/guides/') ? 'active' : ''}`}
+          href={guidesPath}
+          class={`nav-link ${currentPath.includes('/guides') ? 'active' : ''}`}
           role="menuitem"
         >
-          <span>Guides</span>
+          <span>{t('nav.guides')}</span>
         </a>
       </li>
       <li role="none">
         <a
-          href="/comparisons/"
-          class={`nav-link ${currentPath.startsWith('/comparisons') ? 'active' : ''}`}
+          href={comparisonsPath}
+          class={`nav-link ${currentPath.includes('/comparisons') ? 'active' : ''}`}
           role="menuitem"
         >
-          <span>Comparisons</span>
+          <span>{t('nav.comparisons')}</span>
         </a>
       </li>
       <li role="none">
         <a
-          href="/faq/"
-          class={`nav-link ${currentPath.startsWith('/faq') ? 'active' : ''}`}
+          href={faqPath}
+          class={`nav-link ${currentPath.includes('/faq') ? 'active' : ''}`}
           role="menuitem"
         >
-          <span>FAQ</span>
+          <span>{t('nav.faq')}</span>
         </a>
       </li>
     </ul>
 
     <!-- Actions -->
     <div class="nav-actions">
-      <a href="/#find-location" class="nav-cta-btn">
+      <a href={ctaPath} class="nav-cta-btn">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <polygon points="3 11 22 2 13 21 11 13 3 11" fill="white" stroke="white" />
         </svg>
-        <span>Find My Location</span>
+        <span>{t('nav.findLocation')}</span>
       </a>
 
+      <!-- Language Selector -->
+      <LanguageSelector currentLang={lang} currentPath={currentPath} id="lang-selector-desktop" />
+
+      <!-- Theme Switcher -->
       <ThemeToggle id="theme-toggle-desktop" />
 
       <button
@@ -118,42 +138,46 @@ const isHome = currentPath === '/' || currentPath === '';
   </nav>
 </header>
 
-<!-- Mobile Menu -->
+<!-- Mobile Menu Drawer -->
 <div class="nav-mobile-menu" id="mobile-menu" role="navigation" aria-label="Mobile navigation">
   <div class="theme-toggle-mobile-row">
     <span class="theme-toggle-mobile-label">
-      <span>Color Theme</span>
+      <span>{t('nav.colorTheme')}</span>
     </span>
     <ThemeToggle id="theme-toggle-mobile" />
   </div>
 
+  <div class="mobile-lang-row" style="padding: 0 var(--space-4) var(--space-2);">
+    <LanguageSelector currentLang={lang} currentPath={currentPath} id="lang-selector-mobile" isMobileDrawer />
+  </div>
+
   <hr style="border-color: var(--color-border); margin: var(--space-2) 0;" />
 
-  <a href="/my-location/" class={`nav-mobile-link ${isHome || currentPath.startsWith('/my-location') ? 'active' : ''}`}>
-    <span>My Location</span>
+  <a href={myLocationPath} class={`nav-mobile-link ${isHome || currentPath.includes('/my-location') ? 'active' : ''}`}>
+    <span>{t('nav.myLocation')}</span>
   </a>
-  <a href="/tools/" class={`nav-mobile-link ${currentPath.startsWith('/tools/') ? 'active' : ''}`}>
-    <span>Tools</span>
+  <a href={toolsPath} class={`nav-mobile-link ${currentPath.includes('/tools') ? 'active' : ''}`}>
+    <span>{t('nav.tools')}</span>
   </a>
-  <a href="/maps/" class={`nav-mobile-link ${currentPath.startsWith('/maps') ? 'active' : ''}`}>
-    <span>Maps</span>
+  <a href={mapsPath} class={`nav-mobile-link ${currentPath.includes('/maps') ? 'active' : ''}`}>
+    <span>{t('nav.maps')}</span>
   </a>
-  <a href="/guides/" class={`nav-mobile-link ${currentPath.startsWith('/guides/') ? 'active' : ''}`}>
-    <span>Guides</span>
+  <a href={guidesPath} class={`nav-mobile-link ${currentPath.includes('/guides') ? 'active' : ''}`}>
+    <span>{t('nav.guides')}</span>
   </a>
-  <a href="/comparisons/" class={`nav-mobile-link ${currentPath.startsWith('/comparisons') ? 'active' : ''}`}>
-    <span>Comparisons</span>
+  <a href={comparisonsPath} class={`nav-mobile-link ${currentPath.includes('/comparisons') ? 'active' : ''}`}>
+    <span>{t('nav.comparisons')}</span>
   </a>
-  <a href="/faq/" class={`nav-mobile-link ${currentPath.startsWith('/faq') ? 'active' : ''}`}>
-    <span>FAQ</span>
+  <a href={faqPath} class={`nav-mobile-link ${currentPath.includes('/faq') ? 'active' : ''}`}>
+    <span>{t('nav.faq')}</span>
   </a>
 
   <div style="padding: var(--space-4);">
-    <a href="/#find-location" class="nav-cta-btn" style="width: 100%; justify-content: center;">
+    <a href={ctaPath} class="nav-cta-btn" style="width: 100%; justify-content: center;">
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
         <polygon points="3 11 22 2 13 21 11 13 3 11" fill="white" stroke="white" />
       </svg>
-      <span>Find My Location</span>
+      <span>{t('nav.findLocation')}</span>
     </a>
   </div>
 </div>

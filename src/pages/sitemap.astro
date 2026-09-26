@@ -2,6 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Breadcrumbs from '../components/Breadcrumbs.astro';
 import { footerNav } from '../data/navigation.js';
+import { languages, supportedLocales } from '../i18n/config';
 
 const breadcrumbs = [
   { label: 'Home', href: '/' },
@@ -12,14 +13,81 @@ const sitemapSchema = {
   '@context': 'https://schema.org',
   '@type': 'WebPage',
   name: 'MyLocationLab Complete HTML Site Directory & Sitemap',
-  description: 'Hierarchical navigation directory of all pages, geospatial tools, educational guides, comparisons, and trust pages on MyLocationLab.',
+  description: 'Hierarchical navigation directory of all pages, geospatial tools, educational guides, comparisons, international editions, and trust pages on MyLocationLab.',
   url: 'https://mylocationlab.com/sitemap/',
 };
+
+const intlSections = [
+  {
+    code: 'es',
+    name: 'Español (Spanish)',
+    flag: '🇪🇸',
+    links: [
+      { label: 'Página Principal (Buscador GPS)', href: '/es/' },
+      { label: 'Mi Ubicación Actual', href: '/es/my-location/' },
+      { label: 'Herramientas Geoespaciales', href: '/es/tools/' },
+      { label: 'Guías y Base de Conocimiento', href: '/es/guides/' },
+      { label: 'Comparativas Técnicas', href: '/es/comparisons/' },
+      { label: 'Preguntas Frecuentes (FAQ)', href: '/es/faq/' },
+      { label: 'Compartir Mi Ubicación', href: '/es/share-location/' },
+      { label: 'Mapa Interactivo', href: '/es/maps/' },
+      { label: 'Glosario de Geodesia', href: '/es/glossary/' },
+    ],
+  },
+  {
+    code: 'fr',
+    name: 'Français (French)',
+    flag: '🇫🇷',
+    links: [
+      { label: 'Page d\'Accueil (Localisateur GPS)', href: '/fr/' },
+      { label: 'Ma Position Actuelle', href: '/fr/my-location/' },
+      { label: 'Outils Géospatiaux', href: '/fr/tools/' },
+      { label: 'Guides & Connaissances', href: '/fr/guides/' },
+      { label: 'Comparatifs Techniques', href: '/fr/comparisons/' },
+      { label: 'Foire Aux Questions (FAQ)', href: '/fr/faq/' },
+      { label: 'Partager Ma Position', href: '/fr/share-location/' },
+      { label: 'Carte Interactive', href: '/fr/maps/' },
+      { label: 'Glossaire Géodésique', href: '/fr/glossary/' },
+    ],
+  },
+  {
+    code: 'de',
+    name: 'Deutsch (German)',
+    flag: '🇩🇪',
+    links: [
+      { label: 'Startseite (GPS-Standortfinder)', href: '/de/' },
+      { label: 'Mein Aktueller Standort', href: '/de/my-location/' },
+      { label: 'Geodaten- & Standort-Tools', href: '/de/tools/' },
+      { label: 'Ratgeber & Fachwissen', href: '/de/guides/' },
+      { label: 'Technische Vergleiche', href: '/de/comparisons/' },
+      { label: 'Häufige Fragen (FAQ)', href: '/de/faq/' },
+      { label: 'Standort Teilen', href: '/de/share-location/' },
+      { label: 'Interaktive Karte', href: '/de/maps/' },
+      { label: 'Geodaten-Glossar', href: '/de/glossary/' },
+    ],
+  },
+  {
+    code: 'pt',
+    name: 'Português (Portuguese)',
+    flag: '🇵🇹',
+    links: [
+      { label: 'Página Inicial (Localizador GPS)', href: '/pt/' },
+      { label: 'Minha Localização Atual', href: '/pt/my-location/' },
+      { label: 'Ferramentas Geoespaciais', href: '/pt/tools/' },
+      { label: 'Guias e Base de Conhecimento', href: '/pt/guides/' },
+      { label: 'Comparações Técnicas', href: '/pt/comparisons/' },
+      { label: 'Perguntas Frequentes (FAQ)', href: '/pt/faq/' },
+      { label: 'Compartilhar Localização', href: '/pt/share-location/' },
+      { label: 'Mapa Interativo', href: '/pt/maps/' },
+      { label: 'Glossário de Geodésia', href: '/pt/glossary/' },
+    ],
+  },
+];
 ---
 
 <BaseLayout
   title="HTML Sitemap — All Pages | MyLocationLab"
-  description="Complete site directory of MyLocationLab: all GPS tools, converters, guides, comparisons, and policies in one place."
+  description="Complete site directory of MyLocationLab: all GPS tools, converters, guides, comparisons, international language versions, and policies in one place."
   activeSection="resources"
   jsonLd={[sitemapSchema]}
 >
@@ -29,14 +97,14 @@ const sitemapSchema = {
     <section class="page-header" style="text-align: center; margin-bottom: var(--space-10);">
       <h1>Site <span class="text-gradient">Directory & Sitemap</span></h1>
       <p class="page-header-desc" style="max-width: 680px; margin: 0 auto;">
-        A complete hierarchical index of every tool, guide, comparison, and location attribute available on MyLocationLab. Every page is accessible within 2 clicks from Home.
+        A complete hierarchical index of every tool, guide, comparison, international language edition, and location attribute available on MyLocationLab. Every page is accessible within 2 clicks from Home.
       </p>
     </section>
 
     <!-- Top Links & XML Sitemap Callout -->
     <div class="card card-flat" style="padding: var(--space-4) var(--space-6); margin-bottom: var(--space-10); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: var(--space-4);">
       <div style="font-size: var(--text-sm); color: var(--color-text-secondary);">
-        Developer and machine-readable feeds:
+        Developer and search engine feeds:
       </div>
       <a href="/sitemap-index.xml" class="btn btn-secondary btn-sm" target="_blank" style="display: inline-flex; align-items: center; gap: 6px;">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -70,6 +138,35 @@ const sitemapSchema = {
           </ul>
         </div>
       ))}
+
+      <!-- International Editions (Multilingual Directory) -->
+      <div class="card" style="padding: var(--space-6);">
+        <h2 style="font-size: var(--text-xl); color: var(--color-accent-primary); margin-bottom: var(--space-4); border-bottom: 1px solid var(--color-border); padding-bottom: var(--space-2);">
+          🌍 International Editions (Multilingual)
+        </h2>
+        <div style="display: flex; flex-direction: column; gap: var(--space-4);">
+          {intlSections.map((sec) => (
+            <div>
+              <div style="font-weight: 600; font-size: var(--text-sm); color: var(--color-text-heading); margin-bottom: 4px; display: flex; align-items: center; gap: 6px;">
+                <span>{sec.flag}</span>
+                <span>{sec.name}</span>
+              </div>
+              <ul style="list-style: none; padding-left: var(--space-4); margin: 0; display: flex; flex-direction: column; gap: 4px;">
+                {sec.links.map((link) => (
+                  <li>
+                    <a
+                      href={link.href}
+                      style="color: var(--color-text-secondary); text-decoration: none; font-size: 0.825rem; transition: color var(--transition-fast);"
+                    >
+                      › {link.label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+      </div>
 
       <!-- Trust & E-E-A-T Section in Sitemap -->
       <div class="card" style="padding: var(--space-6);">

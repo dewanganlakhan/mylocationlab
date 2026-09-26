@@ -1,0 +1,414 @@
+---
+/**
+ * GpsCoordinatesView — Multilingual GPS Coordinates Finder Tool
+ * Powers: /tools/gps-coordinates/ across en, es, fr, de, pt
+ */
+import ToolLayout from '../../layouts/ToolLayout.astro';
+import FAQAccordion from '../FAQAccordion.astro';
+import { getLocalizedPath, defaultLang, type SupportedLang } from '../../i18n/config';
+
+interface Props {
+  lang?: SupportedLang | string;
+}
+
+const { lang: customLang = defaultLang } = Astro.props;
+const lang = (customLang || defaultLang) as SupportedLang;
+
+const translations: Record<string, any> = {
+  en: {
+    title: "GPS Coordinates Finder — Exact Location | MyLocationLab",
+    description: "Find your exact GPS coordinates instantly. Get your current latitude, longitude, accuracy, and altitude from GPS satellites.",
+    h1: "GPS Coordinates Finder",
+    subtitle: "Get your precise GPS coordinates in real-time. Shows latitude, longitude, accuracy, and altitude from satellite signals.",
+    promptText: "Detecting your GPS coordinates automatically — no click needed.",
+    btnFind: "📍 Find My GPS Coordinates",
+    loadingText: "Connecting to GPS satellites...",
+    lblLat: "Latitude",
+    lblLng: "Longitude",
+    lblLatDms: "Latitude (DMS)",
+    lblLngDms: "Longitude (DMS)",
+    lblAccuracy: "Accuracy",
+    lblAltitude: "Altitude",
+    lblTimestamp: "Timestamp",
+    btnCopy: "📋 Copy Coordinates",
+    btnShare: "🔗 Share",
+    btnMaps: "🗺️ Open in Maps",
+    btnRefresh: "🔄 Refresh",
+    h2How: "How the GPS Coordinates Finder Works",
+    pHow1: "This tool uses your device's built-in GPS receiver to determine your exact position using satellite signals. When you click 'Find My GPS Coordinates,' your browser's Geolocation API requests a position fix from your device's location hardware.",
+    pHow2: "The GPS system works by triangulating signals from multiple satellites orbiting Earth at approximately 20,200 km altitude. Your device needs signals from at least 4 satellites to calculate a precise 3D position (latitude, longitude, and altitude).",
+    h2Results: "Understanding the Results",
+    resLi1: "Latitude & Longitude — Your exact position in decimal degrees and DMS format",
+    resLi2: "Accuracy — The estimated error radius. A lower number means higher precision",
+    resLi3: "Altitude — Your height above sea level (WGS84 ellipsoid), when available",
+    h2Tips: "Tips for Better GPS Accuracy",
+    tipLi1: "Go outdoors with a clear view of the sky",
+    tipLi2: "Wait 10-30 seconds for the GPS to lock on to more satellites",
+    tipLi3: "Enable 'High Accuracy' mode in your device's location settings",
+    tipLi4: "Avoid areas near tall buildings or dense tree cover",
+    faqItems: [
+      { question: 'How do I find my GPS coordinates?', answer: 'This tool detects your GPS coordinates <strong>automatically</strong> when the page loads — your browser will ask for location permission the first time. If detection fails or you deny permission, a button appears so you can retry manually.' },
+      { question: 'What format are the GPS coordinates in?', answer: 'By default, coordinates are shown in <strong>decimal degrees</strong> (DD) format, which is the most widely used format for digital applications. You can convert to DMS, UTM, or other formats.' },
+      { question: 'How accurate are the GPS coordinates?', answer: 'Accuracy depends on your device and environment. Modern smartphones provide 3-5 meter accuracy outdoors. Indoors, accuracy may drop to 10-50 meters. The accuracy radius is shown alongside your coordinates.' }
+    ]
+  },
+  es: {
+    title: "Buscador de Coordenadas GPS — Ubicación Exacta | MyLocationLab",
+    description: "Obtenga sus coordenadas GPS exactas al instante. Consulte su latitud, longitud, altitud y precisión con señales satelitales.",
+    h1: "Buscador de Coordenadas GPS",
+    subtitle: "Obtenga sus coordenadas GPS precisas en tiempo real. Muestra latitud, longitud, radio de error y altitud de satélites.",
+    promptText: "Detectando sus coordenadas GPS automáticamente — sin necesidad de hacer clic.",
+    btnFind: "📍 Obtener Coordenadas GPS",
+    loadingText: "Conectando con satélites GPS...",
+    lblLat: "Latitud",
+    lblLng: "Longitud",
+    lblLatDms: "Latitud (DMS)",
+    lblLngDms: "Longitud (DMS)",
+    lblAccuracy: "Precisión",
+    lblAltitude: "Altitud",
+    lblTimestamp: "Hora de Captura",
+    btnCopy: "📋 Copiar Coordenadas",
+    btnShare: "🔗 Compartir",
+    btnMaps: "🗺️ Abrir en Mapas",
+    btnRefresh: "🔄 Actualizar",
+    h2How: "Cómo Funciona el Buscador de Coordenadas GPS",
+    pHow1: "Esta herramienta emplea el receptor GPS integrado de su dispositivo para computar su posición física mediante señales satelitales. La API Geolocation del navegador solicita la fijación al chip de posicionamiento.",
+    pHow2: "El sistema GPS trilatera señales de radio transmitidas desde más de 20.200 km de altitud. Se requiere el enlace con un mínimo de 4 satélites para resolver las coordenadas tridimensionales.",
+    h2Results: "Interpretación de los Resultados",
+    resLi1: "Latitud y Longitud — Su posición angular en Grados Decimales y formato DMS",
+    resLi2: "Radio de Precisión — Margen de incertidumbre estimado en metros (menor es mejor)",
+    resLi3: "Altitud — Elevación sobre el elipsoide geodésico WGS84 cuando está disponible",
+    h2Tips: "Consejos para Mejorar la Señal GPS",
+    tipLi1: "Sitúese al aire libre con visión despejada del cielo",
+    tipLi2: "Espere de 10 a 30 segundos para que el receptor sincronice más satélites",
+    tipLi3: "Active el modo 'Alta Precisión' en los ajustes de ubicación del sistema",
+    tipLi4: "Aléjese de cañones urbanos o estructuras metálicas densas",
+    faqItems: [
+      { question: '¿Cómo obtengo mis coordenadas GPS?', answer: 'La herramienta detecta sus coordenadas de forma <strong>automática</strong> al cargar la página tras aceptar el aviso de permisos del navegador.' },
+      { question: '¿En qué formato se presentan?', answer: 'Por defecto se expresan en <strong>grados decimales</strong> (DD), el formato estándar para cartografía digital y navegación.' },
+      { question: '¿Qué precisión tienen estas coordenadas?', answer: 'En exteriores despejados, un smartphone ofrece una precisión de 3 a 5 metros. En interiores el radio puede situarse entre 10 y 50 metros.' }
+    ]
+  },
+  fr: {
+    title: "Recherche de Coordonnées GPS — Position Exacte | MyLocationLab",
+    description: "Trouvez vos coordonnées GPS exactes en direct. Affichez votre latitude, longitude, précision et altitude mesurées par satellite.",
+    h1: "Recherche de Coordonnées GPS",
+    subtitle: "Relevez vos coordonnées GPS précises en temps réel. Latitude, longitude, altitude et rayon d'erreur satellite.",
+    promptText: "Détection automatique de vos coordonnées GPS — aucun clic nécessaire.",
+    btnFind: "📍 Trouver Mes Coordonnées GPS",
+    loadingText: "Connexion aux satellites GPS en cours...",
+    lblLat: "Latitude",
+    lblLng: "Longitude",
+    lblLatDms: "Latitude (DMS)",
+    lblLngDms: "Longitude (DMS)",
+    lblAccuracy: "Précision",
+    lblAltitude: "Altitude",
+    lblTimestamp: "Horodatage",
+    btnCopy: "📋 Copier Coordonnées",
+    btnShare: "🔗 Partager",
+    btnMaps: "🗺️ Ouvrir dans Maps",
+    btnRefresh: "🔄 Actualiser",
+    h2How: "Comment Fonctionne ce Localisateur GPS",
+    pHow1: "Cet outil interroge le récepteur GNSS interne de votre terminal via l'API standard Geolocation du navigateur web afin de mesurer votre position exacte.",
+    pHow2: "Le réseau GPS procède par trilatération de signaux radio émis depuis 20 200 km d'altitude. La synchronisation d'au moins 4 satellites est nécessaire pour obtenir un point complet en trois dimensions.",
+    h2Results: "Comprendre les Données Obtenues",
+    resLi1: "Latitude & Longitude — Position angulaire exacte en degrés décimaux et notation DMS",
+    resLi2: "Rayon de Précision — Rayon d'incertitude métrique estimé par la puce GPS",
+    resLi3: "Altitude — Élévation calculée au-dessus du modèle ellipsoïdal WGS 84",
+    h2Tips: "Conseils pour Maximiser la Précision",
+    tipLi1: "Placez-vous en extérieur sous un ciel parfaitement dégagé",
+    tipLi2: "Patientez 10 à 30 secondes pour que la puce verrouille davantage de satellites",
+    tipLi3: "Activez le mode 'Haute Précision' dans les paramètres de localisation du téléphone",
+    tipLi4: "Évitez la proximité immédiate d'immeubles massifs ou de toitures métalliques",
+    faqItems: [
+      { question: 'Comment relever mes coordonnées GPS ?', answer: 'La détection s\'exécute <strong>automatiquement</strong> dès l\'ouverture de la page après acceptation de la demande d\'autorisation.' },
+      { question: 'Quel est le format des coordonnées ?', answer: 'Elles sont affichées en <strong>degrés décimaux</strong> (DD), le format standard des applications et cartes numériques.' },
+      { question: 'Quelle est la précision obtenue ?', answer: 'Sur un smartphone récent en extérieur, la précision se situe entre 3 et 5 mètres.' }
+    ]
+  },
+  de: {
+    title: "GPS-Koordinaten Finder — Exakte Position | MyLocationLab",
+    description: "Ermitteln Sie Ihre exakten GPS-Koordinaten sofort. Breitengrad, Längengrad, Genauigkeitsradius und Höhe über Satellitensignale.",
+    h1: "GPS-Koordinaten Finder",
+    subtitle: "Ermitteln Sie Ihre genauen GPS-Koordinaten in Echtzeit. Zeigt Breitengrad, Längengrad, Genauigkeit und Höhe von Satelliten.",
+    promptText: "Automatische Erkennung Ihrer GPS-Koordinaten — kein Klick erforderlich.",
+    btnFind: "📍 GPS-Koordinaten abrufen",
+    loadingText: "Verbindung zu GPS-Satelliten wird aufgebaut...",
+    lblLat: "Breitengrad",
+    lblLng: "Längengrad",
+    lblLatDms: "Breitengrad (GMS)",
+    lblLngDms: "Längengrad (GMS)",
+    lblAccuracy: "Genauigkeit",
+    lblAltitude: "Höhe",
+    lblTimestamp: "Zeitstempel",
+    btnCopy: "📋 Koordinaten kopieren",
+    btnShare: "🔗 Teilen",
+    btnMaps: "🗺️ In Karten öffnen",
+    btnRefresh: "🔄 Aktualisieren",
+    h2How: "Funktionsweise des GPS-Koordinaten-Finders",
+    pHow1: "Dieses Tool nutzt den internen GPS-Empfänger Ihres Geräts, um Ihre Position anhand von Satellitensignalen über die Geolocation-API des Browsers zu ermitteln.",
+    pHow2: "Das GPS-System arbeitet mittels Signallaufzeitmessung aus rund 20.200 km Höhe. Mindestens 4 Satelliten müssen empfangen werden, um eine vollständige 3D-Position zu errechnen.",
+    h2Results: "Ergebnisse verstehen",
+    resLi1: "Breitengrad & Längengrad — Exakte Position in Dezimalgrad und GMS-Notation",
+    resLi2: "Genauigkeitsradius — Geschätzter Fehlerkreis in Metern (niedriger ist besser)",
+    resLi3: "Höhe — Höhe über dem WGS-84-Referenzellipsoid",
+    h2Tips: "Tipps für optimale GPS-Genauigkeit",
+    tipLi1: "Begeben Sie sich ins Freie mit freier Sicht zum Himmel",
+    tipLi2: "Warten Sie 10 bis 30 Sekunden für das Satelliten-Locking",
+    tipLi3: "Aktivieren Sie die Funktion 'Hohe Genauigkeit' in den Geräteeinstellungen",
+    tipLi4: "Vermeiden Sie Häuserschluchten und dichte Überdachungen",
+    faqItems: [
+      { question: 'Wie finde ich meine GPS-Koordinaten?', answer: 'Das Tool ermittelt Ihre Position <strong>automatisch</strong> beim Laden der Seite nach Bestätigung der Browser-Berechtigung.' },
+      { question: 'In welchem Format werden die Daten angezeigt?', answer: 'Standardmäßig in <strong>Dezimalgrad</strong> (DD), dem universellen Format für digitale Karten.' },
+      { question: 'Wie präzise sind die Messwerte?', answer: 'Moderne Smartphones erreichen im Freien 3 bis 5 Meter Genauigkeit. In geschlossenen Räumen sinkt der Wert auf 10 bis 50 Meter.' }
+    ]
+  },
+  pt: {
+    title: "Buscador de Coordenadas GPS — Localização Exata | MyLocationLab",
+    description: "Encontre suas coordenadas GPS exatas instantaneamente. Veja latitude, longitude, altitude e precisão de satélites em tempo real.",
+    h1: "Buscador de Coordenadas GPS",
+    subtitle: "Obtenha suas coordenadas GPS precisas em tempo real. Exibe latitude, longitude, raio de precisão e altitude via satélite.",
+    promptText: "Detectando suas coordenadas GPS automaticamente — sem necessidade de clique.",
+    btnFind: "📍 Obter Minhas Coordenadas GPS",
+    loadingText: "Conectando aos satélites GPS...",
+    lblLat: "Latitude",
+    lblLng: "Longitude",
+    lblLatDms: "Latitude (GMS)",
+    lblLngDms: "Longitude (GMS)",
+    lblAccuracy: "Precisão",
+    lblAltitude: "Altitude",
+    lblTimestamp: "Horário",
+    btnCopy: "📋 Copiar Coordenadas",
+    btnShare: "🔗 Compartilhar",
+    btnMaps: "🗺️ Abrir no Maps",
+    btnRefresh: "🔄 Atualizar",
+    h2How: "Como Opera o Buscador de Coordenadas GPS",
+    pHow1: "Esta ferramenta interroga o receptor GPS do aparelho através da API Geolocation padrão do navegador web para calcular sua posição espacial precisa.",
+    pHow2: "O sistema GPS trilatera ondas de rádio emitidas por satélites a mais de 20.200 km de altitude. É necessária a leitura de ao menos 4 satélites para fechar a posição 3D.",
+    h2Results: "Compreendendo os Resultados",
+    resLi1: "Latitude e Longitude — Sua posição em Graus Decimais e formato GMS",
+    resLi2: "Raio de Precisão — Margem de erro estimada em metros (quanto menor, mais preciso)",
+    resLi3: "Altitude — Elevação calculada sobre o elipsoide WGS84",
+    h2Tips: "Dicas para Maior Precisão GPS",
+    tipLi1: "Fique ao ar livre com visão ampla do céu",
+    tipLi2: "Aguarde de 10 a 30 segundos para o receptor sincronizar mais satélites",
+    tipLi3: "Habilite o modo 'Alta Precisão' nos ajustes de localização do aparelho",
+    tipLi4: "Evite proximidade com prédios muito altos ou estruturas metálicas",
+    faqItems: [
+      { question: 'Como descubro minhas coordenadas GPS?', answer: 'A ferramenta detecta suas coordenadas <strong>automaticamente</strong> após você autorizar o acesso à localização.' },
+      { question: 'Qual é o formato das coordenadas?', answer: 'Por padrão são expressas em <strong>graus decimais</strong> (DD), formato universal da cartografia digital.' },
+      { question: 'Qual a precisão obtida?', answer: 'Em céu aberto, smartphones modernos oferecem precisão de 3 a 5 metros.' }
+    ]
+  }
+};
+
+const c = translations[lang] || translations.en;
+
+const locateTitle = ({
+  en: "Zoom to my current location",
+  es: "Centrar y ampliar en mi ubicación",
+  fr: "Zoomer sur ma position actuelle",
+  de: "Auf meinen aktuellen Standort zoomen",
+  pt: "Aproximar da minha localização atual"
+})[lang] || "Zoom to my current location";
+---
+
+<ToolLayout
+  leaflet
+  lang={lang}
+  toolId="gps-coordinates"
+  title={c.title}
+  description={c.description}
+  h1={c.h1}
+  subtitle={c.subtitle}
+>
+  <div class="tool-interface">
+    <div style="text-align: center; padding: var(--space-4) 0;" id="gps-prompt">
+      <p style="color: var(--color-text-secondary); margin-bottom: var(--space-4);">{c.promptText}</p>
+      <button class="btn btn-primary btn-lg" id="gps-btn" type="button">{c.btnFind}</button>
+    </div>
+
+    <div id="gps-loading" style="display: none; text-align: center; padding: var(--space-6);">
+      <div class="spinner" style="margin: 0 auto var(--space-3);"></div>
+      <p style="color: var(--color-text-secondary); margin: 0;">{c.loadingText}</p>
+    </div>
+
+    <p id="gps-error" style="display: none; margin: var(--space-3) 0 0; text-align: center; color: var(--color-accent-error, #ef4444); font-size: var(--text-sm);"></p>
+
+    <div class="tool-result" id="gps-result" style="display: none;">
+      <div class="tool-result-row">
+        <span class="tool-result-label">{c.lblLat}</span>
+        <span class="tool-result-value" id="gps-lat" style="color: var(--color-accent-primary);">—</span>
+      </div>
+      <div class="tool-result-row">
+        <span class="tool-result-label">{c.lblLng}</span>
+        <span class="tool-result-value" id="gps-lng" style="color: var(--color-accent-primary);">—</span>
+      </div>
+      <div class="tool-result-row">
+        <span class="tool-result-label">{c.lblLatDms}</span>
+        <span class="tool-result-value" id="gps-lat-dms">—</span>
+      </div>
+      <div class="tool-result-row">
+        <span class="tool-result-label">{c.lblLngDms}</span>
+        <span class="tool-result-value" id="gps-lng-dms">—</span>
+      </div>
+      <div class="tool-result-row">
+        <span class="tool-result-label">{c.lblAccuracy}</span>
+        <span class="tool-result-value" id="gps-acc">—</span>
+      </div>
+      <div class="tool-result-row">
+        <span class="tool-result-label">{c.lblAltitude}</span>
+        <span class="tool-result-value" id="gps-alt">—</span>
+      </div>
+      <div class="tool-result-row">
+        <span class="tool-result-label">{c.lblTimestamp}</span>
+        <span class="tool-result-value" id="gps-time" style="font-size: var(--text-sm);">—</span>
+      </div>
+    </div>
+
+    <div class="action-buttons" id="gps-actions" style="margin-top: var(--space-4); display: none;">
+      <button class="btn btn-secondary btn-sm" id="gps-copy" type="button">{c.btnCopy}</button>
+      <button class="btn btn-secondary btn-sm" id="gps-share" type="button">{c.btnShare}</button>
+      <a class="btn btn-secondary btn-sm" id="gps-maps" href="#" target="_blank" rel="noopener noreferrer">{c.btnMaps}</a>
+      <button class="btn btn-ghost btn-sm" id="gps-refresh" type="button">{c.btnRefresh}</button>
+    </div>
+  </div>
+
+  <div class="map-container" id="gps-map" data-locate-title={locateTitle} style="margin-top: var(--space-6); display: none;"></div>
+
+  <!-- Content -->
+  <div class="prose" style="margin-top: var(--space-12);">
+    <h2>{c.h2How}</h2>
+    <p>{c.pHow1}</p>
+    <p>{c.pHow2}</p>
+
+    <h2>{c.h2Results}</h2>
+    <ul>
+      <li>{c.resLi1}</li>
+      <li>{c.resLi2}</li>
+      <li>{c.resLi3}</li>
+    </ul>
+
+    <h2>{c.h2Tips}</h2>
+    <ol>
+      <li>{c.tipLi1}</li>
+      <li>{c.tipLi2}</li>
+      <li>{c.tipLi3}</li>
+      <li>{c.tipLi4}</li>
+    </ol>
+  </div>
+
+  <div style="margin-top: var(--space-12);">
+    <h2 class="mb-8">FAQ</h2>
+    <FAQAccordion items={c.faqItems} />
+  </div>
+
+  <script>
+    import GeoLocation from '../../scripts/geolocation.js';
+    import CoordUtils from '../../scripts/coordinates.js';
+    import Sharing from '../../scripts/sharing.js';
+    import MapUtils from '../../scripts/map.js';
+
+    const locateTitles: Record<string, string> = {
+      en: "Zoom to my current location",
+      es: "Centrar y ampliar en mi ubicación",
+      fr: "Zoomer sur ma position actuelle",
+      de: "Auf meinen aktuellen Standort zoomen",
+      pt: "Aproximar da minha localização atual"
+    };
+    const currentDocLang = document.documentElement.lang || 'en';
+    const locateTitle = document.getElementById('gps-map')?.getAttribute('data-locate-title') || locateTitles[currentDocLang] || locateTitles.en;
+
+    let lat: any = null, lng: any = null;
+
+    async function findGPS(isAuto = false) {
+      const prompt = document.getElementById('gps-prompt');
+      const loading = document.getElementById('gps-loading');
+      const errorEl = document.getElementById('gps-error');
+      const result = document.getElementById('gps-result');
+      const actions = document.getElementById('gps-actions');
+      const mapEl = document.getElementById('gps-map');
+
+      if (prompt) prompt.style.display = 'none';
+      if (errorEl) errorEl.style.display = 'none';
+      if (loading) loading.style.display = 'block';
+      if (result) result.style.display = 'none';
+
+      try {
+        const position = await GeoLocation.getCurrentPosition();
+        const pos = GeoLocation.formatPosition(position);
+        lat = pos.latitude;
+        lng = pos.longitude;
+
+        const latEl = document.getElementById('gps-lat');
+        const lngEl = document.getElementById('gps-lng');
+        const latDmsEl = document.getElementById('gps-lat-dms');
+        const lngDmsEl = document.getElementById('gps-lng-dms');
+        const accEl = document.getElementById('gps-acc');
+        const altEl = document.getElementById('gps-alt');
+        const timeEl = document.getElementById('gps-time');
+        const mapsLink = document.getElementById('gps-maps') as HTMLAnchorElement;
+
+        if (latEl) latEl.textContent = pos.formattedLat;
+        if (lngEl) lngEl.textContent = pos.formattedLng;
+        if (latDmsEl) latDmsEl.textContent = CoordUtils.formatDMS(lat, true);
+        if (lngDmsEl) lngDmsEl.textContent = CoordUtils.formatDMS(lng, false);
+        if (accEl) accEl.textContent = pos.formattedAccuracy;
+        if (altEl) altEl.textContent = pos.altitude ? `${pos.altitude.toFixed(1)} m` : 'Not available';
+        if (timeEl) timeEl.textContent = new Date(pos.timestamp).toLocaleString();
+        if (mapsLink) mapsLink.href = `https://www.google.com/maps?q=${lat},${lng}`;
+
+        if (loading) loading.style.display = 'none';
+        if (result) result.style.display = 'block';
+        if (actions) actions.style.display = 'flex';
+        if (mapEl) mapEl.style.display = 'block';
+
+        const waitL = () => {
+          if (typeof (window as any).L !== 'undefined') {
+            const L = (window as any).L;
+            if ((window as any)._gpsMap) (window as any)._gpsMap.remove();
+            const m = L.map('gps-map').setView([lat, lng], 16);
+            (window as any)._gpsMap = m;
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '&copy; OpenStreetMap', maxZoom: 19 }).addTo(m);
+            const icon = L.divIcon({ html: '<div class="user-pulse-dot"></div>', className: 'user-pulse-marker', iconSize: [18,18], iconAnchor: [9,9] });
+            L.marker([lat, lng], { icon }).addTo(m);
+            if (pos.accuracy > 0) L.circle([lat, lng], { radius: pos.accuracy, color: '#00d4ff', fillColor: '#00d4ff', fillOpacity: 0.08, weight: 1 }).addTo(m);
+
+            MapUtils.addLocateControl(m, {
+              title: locateTitle,
+              zoom: 16,
+              onLocate: () => findGPS(false),
+            });
+          } else setTimeout(waitL, 100);
+        };
+        waitL();
+      } catch (error) {
+        if (loading) loading.style.display = 'none';
+        if (prompt) prompt.style.display = 'block';
+        if (errorEl) {
+          errorEl.textContent = GeoLocation.getErrorMessage(error);
+          errorEl.style.display = 'block';
+        }
+      }
+    }
+
+    document.getElementById('gps-btn')?.addEventListener('click', () => findGPS(false));
+    document.getElementById('gps-refresh')?.addEventListener('click', () => findGPS(false));
+
+    (async () => {
+      if (await GeoLocation.checkPermission() === 'denied') {
+        const p = document.getElementById('gps-prompt');
+        if (p) p.style.display = 'block';
+        return;
+      }
+      findGPS(true);
+    })();
+
+    document.getElementById('gps-copy')?.addEventListener('click', function(this: HTMLElement) {
+      if (lat) Sharing.copyToClipboard(`${lat}, ${lng}`, this);
+    });
+    document.getElementById('gps-share')?.addEventListener('click', () => {
+      if (lat) Sharing.shareNative({ title: 'GPS Coordinates', text: `${lat}, ${lng}`, url: `https://www.google.com/maps?q=${lat},${lng}` });
+    });
+  </script>
+</ToolLayout>

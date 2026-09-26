@@ -6,6 +6,21 @@ import sitemap from '@astrojs/sitemap';
 export default defineConfig({
   site: 'https://mylocationlab.com',
   output: 'static',
+  i18n: {
+    defaultLocale: 'en',
+    locales: ['en', 'es', 'fr', 'de', 'pt'],
+    fallback: {
+      es: 'en',
+      fr: 'en',
+      de: 'en',
+      pt: 'en',
+    },
+    routing: {
+      prefixDefaultLocale: false,
+      redirectToDefaultLocale: false,
+      fallbackType: 'rewrite',
+    },
+  },
   integrations: [
     sitemap({
       changefreq: 'weekly',

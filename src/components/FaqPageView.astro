@@ -1,0 +1,87 @@
+---
+/**
+ * FaqPageView — Multilingual FAQ Page Component
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from './Breadcrumbs.astro';
+import FAQAccordion from './FAQAccordion.astro';
+import { getLocalizedPath, type SupportedLang, defaultLang } from '../i18n/config';
+import { faqPageTranslations } from '../i18n/faqPage';
+import { useTranslations } from '../i18n/ui';
+
+interface Props {
+  lang?: SupportedLang;
+}
+
+const { lang = defaultLang } = Astro.props;
+const t = useTranslations(lang);
+const content = faqPageTranslations[lang] || faqPageTranslations.en;
+
+const breadcrumbs = [
+  { label: t('common.home'), href: '/' },
+  { label: content.breadcrumb }
+];
+
+// Helper to localize hrefs inside raw HTML
+function localizeHtmlLinks(html: string, currentLang: SupportedLang): string {
+  if (currentLang === defaultLang) return html;
+  return html.replace(/href="(\/[^"]*)"/g, (match, path) => {
+    return `href="${getLocalizedPath(path, currentLang)}"`;
+  });
+}
+
+const localizedFaqs = content.faqs.map(faq => ({
+  question: faq.question,
+  answer: localizeHtmlLinks(faq.answerHtml, lang),
+}));
+
+// Google Rich Results FAQPage Schema
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: localizedFaqs.map((faq) => ({
+    '@type': 'Question',
+    name: faq.question,
+    acceptedAnswer: {
+      '@type': 'Answer',
+      text: faq.answer.replace(/<[^>]*>?/gm, ''),
+    },
+  })),
+};
+---
+
+<BaseLayout
+  lang={lang}
+  title={content.metaTitle}
+  description={content.metaDescription}
+  activeSection="faq"
+  jsonLd={[faqSchema]}
+>
+  <div class="container">
+    <Breadcrumbs items={breadcrumbs} lang={lang} />
+
+    <section class="page-header" style="text-align: center; margin-bottom: var(--space-10);">
+      <h1>{content.titlePrefix} <span class="text-gradient">{content.titleHighlight}</span></h1>
+      <p class="page-header-desc" style="max-width: 680px; margin: 0 auto;">
+        {content.subtitle}
+      </p>
+    </section>
+
+    <div style="max-width: var(--max-width-narrow); margin: 0 auto var(--space-16);">
+      <FAQAccordion items={localizedFaqs} />
+    </div>
+
+    <!-- Quick Navigation to Top Tools & Guides -->
+    <section class="card card-highlight" style="max-width: var(--max-width-narrow); margin: 0 auto var(--space-16); text-align: center; padding: var(--space-8);">
+      <h2 style="font-size: var(--text-2xl); margin-bottom: var(--space-3);">{content.stillQuestionsTitle}</h2>
+      <p style="color: var(--color-text-secondary); margin-bottom: var(--space-6);">
+        {content.stillQuestionsDesc}
+      </p>
+      <div class="flex gap-4 justify-center flex-wrap">
+        <a href={getLocalizedPath('/guides/', lang)} class="btn btn-primary">{content.browseGuidesBtn}</a>
+        <a href={getLocalizedPath('/glossary/', lang)} class="btn btn-secondary">{content.glossaryBtn}</a>
+        <a href={getLocalizedPath('/contact/', lang)} class="btn btn-ghost">{content.contactBtn}</a>
+      </div>
+    </section>
+  </div>
+</BaseLayout>

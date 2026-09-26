@@ -1,0 +1,410 @@
+---
+/**
+ * MyIpView — Multilingual IP Location View
+ * Powers: /my-location/ip/ across en, es, fr, de, pt
+ */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../Breadcrumbs.astro';
+import FAQAccordion from '../FAQAccordion.astro';
+import SiloNav from '../SiloNav.astro';
+import { getLocalizedPath, defaultLang, type SupportedLang } from '../../i18n/config';
+import { useTranslations } from '../../i18n/ui';
+
+interface Props {
+  lang?: SupportedLang | string;
+}
+
+const { lang: customLang = defaultLang } = Astro.props;
+const lang = (customLang || defaultLang) as SupportedLang;
+const t = useTranslations(lang);
+
+const translations: Record<string, any> = {
+  en: {
+    title: "My IP Location — Check Your IP Address | MyLocationLab",
+    description: "Find your current location based on your IP address. View your public IP, ISP, city, region, country, and approximate coordinates.",
+    h1: "My IP",
+    h1Accent: "Location",
+    subtitle: "See your location as determined by your IP address. No GPS required — this shows where the internet thinks you are.",
+    cardTitle: "Your IP Location",
+    loadingText: "Detecting your IP location...",
+    lblIp: "IP Address",
+    lblLat: "Latitude",
+    lblLng: "Longitude",
+    lblCity: "City",
+    lblRegion: "Region",
+    lblCountry: "Country",
+    lblTz: "Timezone",
+    lblIsp: "ISP",
+    btnCopy: "📋 Copy IP",
+    btnMaps: "🗺️ Open in Maps",
+    h2What: "What Is IP Geolocation?",
+    pWhat1: "IP geolocation determines your approximate location based on your IP address — the numerical label assigned to your internet connection by your Internet Service Provider (ISP). Unlike GPS, it doesn't require any device sensors or user permission.",
+    pWhat2: "IP location databases map IP address ranges to geographic locations. While not as precise as GPS, it's useful as a fallback when GPS is unavailable, or for quickly identifying your approximate location without any permissions.",
+    h2Limit: "Limitations of IP Geolocation",
+    bullets: [
+      "Accuracy — Typically city-level only (10 to 80 km error radius)",
+      "VPN / Proxy Impact — Shows the egress server's location, not your physical house",
+      "Mobile CGNAT Networks — May show the carrier's regional gateway rather than your local town",
+      "Corporate Networks — Reflects centralized headquarters or proxy gateways"
+    ],
+    h3Related: "Related Location Tools",
+    faq: [
+      { question: "What is an IP address?", answer: "An IP (Internet Protocol) address is a unique numerical identifier assigned to your device when connected to the internet. It acts like a digital return address for web traffic." },
+      { question: "How accurate is IP-based location?", answer: "IP location is typically accurate to the city or region level (10-50 km). It cannot pinpoint your exact street address. For precise location, use our GPS tools." },
+      { question: "Why does my IP location show a different city?", answer: "Your IP is assigned by your ISP, and its registered location might be their regional office or routing center, not your physical address." },
+      { question: "Can anyone track me by my IP address?", answer: "An IP address reveals your approximate city and ISP, but NOT your name, street address, or exact location." }
+    ]
+  },
+  es: {
+    title: "Mi Ubicación por IP — Comprobar Dirección IP | MyLocationLab",
+    description: "Consulte su ubicación a partir de su dirección IP pública. Vea su IP, proveedor ISP, ciudad, provincia, país y mapa aproximado.",
+    h1: "Mi Ubicación",
+    h1Accent: "por IP Pública",
+    subtitle: "Consulte su posición determinada por su dirección IP. Sin necesidad de GPS: muestra la ubicación que la red asigna a su conexión.",
+    cardTitle: "Su Ubicación por IP",
+    loadingText: "Detectando su ubicación por IP...",
+    lblIp: "Dirección IP",
+    lblLat: "Latitud",
+    lblLng: "Longitud",
+    lblCity: "Ciudad",
+    lblRegion: "Provincia / Región",
+    lblCountry: "País",
+    lblTz: "Zona Horaria",
+    lblIsp: "Proveedor ISP",
+    btnCopy: "📋 Copiar IP",
+    btnMaps: "🗺️ Abrir en Mapas",
+    h2What: "¿Qué es la Geolocalización por IP?",
+    pWhat1: "La geolocalización por IP calcula su ubicación aproximada a partir de su dirección IP pública, identificador asignado por su proveedor de telecomunicaciones (ISP). A diferencia del GPS, no requiere receptores satelitales ni autorizaciones previas.",
+    pWhat2: "Bases de datos especializadas asocian bloques de direcciones IP a demarcaciones cartográficas. Resulta idóneo cuando no se dispone de chip GPS.",
+    h2Limit: "Limitaciones de la Localización por IP",
+    bullets: [
+      "Precisión — Margen de error de 10 a 80 km (escala metropolitana o comarcal)",
+      "Impacto de VPNs — Muestra la ubicación del servidor intermediario y no su domicilio",
+      "Redes Móviles 4G/5G — Refleja la cabecera regional del operador y no su calle",
+      "Redes de Empresa — Señala la central o cortafuegos corporativo"
+    ],
+    h3Related: "Herramientas Relacionadas",
+    faq: [
+      { question: "¿Qué es una dirección IP?", answer: "Es un identificador numérico que conecta su dispositivo a Internet, operando como un remite digital de red." },
+      { question: "¿Qué precisión tiene la ubicación por IP?", answer: "Es fiable a escala de país y ciudad (10 a 50 km). No puede determinar una calle o portal." },
+      { question: "¿Por qué señala una ciudad diferente?", answer: "Los proveedores asignan rangos de IP a nodos comarcales que pueden estar en municipios vecinos." },
+      { question: "¿Pueden rastrearme por mi IP?", answer: "Revela la comarca y el operador, pero jamás su identidad ni su domicilio exacto." }
+    ]
+  },
+  fr: {
+    title: "Ma Position par IP — Tester Mon Adresse IP | MyLocationLab",
+    description: "Identifiez votre position approximative à partir de votre adresse IP publique. Ville, région, FAI et coordonnées réseau en direct.",
+    h1: "Ma Position",
+    h1Accent: "par Adresse IP",
+    subtitle: "Découvrez la localisation déduite de votre adresse IP. Sans GPS requis : visualisez où le réseau Internet vous situe.",
+    cardTitle: "Votre Position par IP",
+    loadingText: "Détection de votre position par IP...",
+    lblIp: "Adresse IP",
+    lblLat: "Latitude",
+    lblLng: "Longitude",
+    lblCity: "Ville",
+    lblRegion: "Région",
+    lblCountry: "Pays",
+    lblTz: "Fuseau Horaire",
+    lblIsp: "Fournisseur FAI",
+    btnCopy: "📋 Copier l'IP",
+    btnMaps: "🗺️ Ouvrir dans Maps",
+    h2What: "Qu'est-ce que la Géolocalisation par IP ?",
+    pWhat1: "La géolocalisation par IP identifie votre position générale à partir de l'adresse numérique attribuée à votre box ou connexion par votre Fournisseur d'Accès Internet (FAI). Aucun capteur GPS n'est nécessaire.",
+    pWhat2: "Des registres mettent en correspondance les sous-réseaux IP avec des métropoles. C'est la solution par défaut sur les postes fixes de bureau.",
+    h2Limit: "Limites de la Géolocalisation IP",
+    bullets: [
+      "Précision — Rayon d'incertitude de 10 à 80 km (niveau agglomération)",
+      "Impact des VPN — Affiche la passerelle du serveur distant et non votre adresse",
+      "Réseaux Mobiles — Pointe souvent vers le concentrateur régional du FAI",
+      "Réseaux d'Entreprise — Indique le siège social ou le proxy central"
+    ],
+    h3Related: "Outils de Localisation Associés",
+    faq: [
+      { question: "Qu'est-ce qu'une adresse IP ?", answer: "C'est un matricule numérique attribué à votre liaison Internet pour acheminer les paquets de données." },
+      { question: "Quelle est la précision réelle ?", answer: "Elle est précise à l'échelle d'une ville ou région (10 à 50 km). Elle ne localise jamais un numéro de rue." },
+      { question: "Pourquoi la ville est-elle décalée ?", answer: "L'adresse IP est rattachée au répartiteur régional de votre opérateur, qui peut se trouver dans une ville limitrophe." },
+      { question: "Peut-on me pister avec mon IP ?", answer: "Elle révèle votre FAI et votre région approximative, sans jamais divulguer votre nom ou adresse." }
+    ]
+  },
+  de: {
+    title: "Mein IP-Standort — IP-Adresse prüfen | MyLocationLab",
+    description: "Ermitteln Sie Ihren Standort anhand Ihrer IP-Adresse. Öffentliche IP, Internetanbieter, Stadt, Bundesland und ungefähre Koordinaten.",
+    h1: "Mein",
+    h1Accent: "IP-Standort",
+    subtitle: "Sehen Sie Ihren Standort basierend auf Ihrer IP-Adresse. Ganz ohne GPS-Sensor – zeigt, wo das Internet Sie verortet.",
+    cardTitle: "Ihr IP-Standort",
+    loadingText: "IP-Standort wird ermittelt...",
+    lblIp: "IP-Adresse",
+    lblLat: "Breitengrad",
+    lblLng: "Längengrad",
+    lblCity: "Stadt",
+    lblRegion: "Bundesland / Region",
+    lblCountry: "Land",
+    lblTz: "Zeitzone",
+    lblIsp: "Internetanbieter (ISP)",
+    btnCopy: "📋 IP kopieren",
+    btnMaps: "🗺️ In Karten öffnen",
+    h2What: "Was ist IP-Geolokalisierung?",
+    pWhat1: "Die IP-Geolokalisierung ermittelt Ihren ungefähren Standort anhand der öffentlichen IP-Adresse Ihres Internetanschlusses. Im Gegensatz zu GPS sind dafür keine Gerätesensoren oder Freigaben nötig.",
+    pWhat2: "Datenbanken ordnen IP-Blöcke geografischen Regionen zu. Dies dient als idealer Ersatz, wenn kein Satellitenempfänger verfügbar ist.",
+    h2Limit: "Grenzen der IP-Ortung",
+    bullets: [
+      "Genauigkeit — Meist nur auf Stadt- oder Regionsebene (10 bis 80 km Abweichung)",
+      "VPN- & Proxy-Einfluss — Zeigt den Serverstandort des VPN-Betreibers an",
+      "Mobilfunknetze — Weist oft den regionalen Netzknotenpunkt des Providers aus",
+      "Firmennetzwerke — Zeigt den Unternehmenssitz oder das zentrale Gateway"
+    ],
+    h3Related: "Verwandte Standort-Werkzeuge",
+    faq: [
+      { question: "Was ist eine IP-Adresse?", answer: "Eine eindeutige Netzwerknummer, die Ihrem Gerät im Internet für die Datenübertragung zugewiesen wird." },
+      { question: "Wie genau ist die IP-Ortung?", answer: "Treffsicher auf Stadtebene (10 bis 50 km). Straßen und Hausnummern können niemals erfasst werden." },
+      { question: "Warum weicht die Stadt ab?", answer: "Ihr Provider speist IP-Pools oft in regionalen Rechenzentren ein, die in der Nachbarstadt liegen." },
+      { question: "Kann man mich per IP tracken?", answer: "Sie zeigt lediglich den Provider und die Region an, keine persönlichen Kontaktdaten." }
+    ]
+  },
+  pt: {
+    title: "Minha Localização por IP — Consultar Endereço IP | MyLocationLab",
+    description: "Descubra sua localização a partir do seu endereço IP público. Veja sua IP, provedor ISP, cidade, estado, país e mapa aproximado.",
+    h1: "Minha Localização",
+    h1Accent: "por IP Público",
+    subtitle: "Veja sua localização determinada pelo seu endereço IP. Sem GPS: mostra onde a rede identifica sua conexão.",
+    cardTitle: "Sua Localização por IP",
+    loadingText: "Identificando localização por IP...",
+    lblIp: "Endereço IP",
+    lblLat: "Latitude",
+    lblLng: "Longitude",
+    lblCity: "Cidade",
+    lblRegion: "Estado / Região",
+    lblCountry: "País",
+    lblTz: "Fuso Horário",
+    lblIsp: "Provedor ISP",
+    btnCopy: "📋 Copiar IP",
+    btnMaps: "🗺️ Abrir no Maps",
+    h2What: "O que é Geolocalização por IP?",
+    pWhat1: "A geolocalização por IP deduz sua posição aproximada baseando-se no endereço IP atribuído pelo seu provedor de internet (ISP). Não demanda sensores de GPS nem autorizações de navegador.",
+    pWhat2: "Bases de dados relacionam blocos de IPs a cidades e regiões administrativas. É o método padrão para computadores de mesa sem antena GPS.",
+    h2Limit: "Limitações da Localização por IP",
+    bullets: [
+      "Precisão — Margem de erro típica de 10 a 80 km (nível metropolitano)",
+      "Efeito de VPNs — Mostra o servidor de saída e não seu endereço real",
+      "Redes Celulares — Aponta com frequência a central regional da operadora",
+      "Redes Corporativas — Identifica o datacenter ou sede da empresa"
+    ],
+    h3Related: "Ferramentas Relacionadas",
+    faq: [
+      { question: "O que é um endereço IP?", answer: "É o identificador numérico que conecta seu dispositivo à rede mundial de computadores." },
+      { question: "Qual a precisão da localização por IP?", answer: "Geralmente em nível de cidade (10 a 50 km). Não identifica ruas ou residências." },
+      { question: "Por que a cidade exibida é diferente?", answer: "Provedores alocam lotes de IPs em centrais regionais que podem ficar em municípios vizinhos." },
+      { question: "Alguém pode me rastrear pelo IP?", answer: "O IP expõe apenas a operadora e a região aproximada, jamais sua identidade ou residência." }
+    ]
+  }
+};
+
+const c = translations[lang] || translations.en;
+
+const locateTitle = ({
+  en: "Zoom to my current location",
+  es: "Centrar y ampliar en mi ubicación",
+  fr: "Zoomer sur ma position actuelle",
+  de: "Auf meinen aktuellen Standort zoomen",
+  pt: "Aproximar da minha localização atual"
+})[lang] || "Zoom to my current location";
+
+const breadcrumbs = [
+  { label: t('common.home'), href: '/' },
+  { label: t('nav.myLocation'), href: '/my-location/' },
+  { label: `${c.h1} ${c.h1Accent}` }
+];
+
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: c.faq.map((item: any) => ({
+    '@type': 'Question',
+    name: item.question,
+    acceptedAnswer: {
+      '@type': 'Answer',
+      text: item.answer.replace(/<[^>]*>?/gm, '')
+    }
+  }))
+};
+---
+
+<BaseLayout
+  leaflet
+  lang={lang}
+  title={c.title}
+  description={c.description}
+  activeSection="my-location"
+  jsonLd={[faqSchema]}
+>
+  <div class="container">
+    <Breadcrumbs items={breadcrumbs} lang={lang} />
+    <SiloNav silo="my-location" lang={lang} title={c.h3Related} />
+
+    <section class="page-header">
+      <h1>{c.h1} <span class="text-gradient">{c.h1Accent}</span></h1>
+      <p class="page-header-desc">{c.subtitle}</p>
+    </section>
+
+    <!-- IP Location Card -->
+    <div class="location-display" id="ip-card">
+      <div class="location-display-header">
+        <div class="location-display-dot" id="ip-dot" style="background: var(--color-text-tertiary);"></div>
+        <span class="location-display-title">{c.cardTitle}</span>
+        <span class="badge" id="ip-badge">Loading...</span>
+      </div>
+
+      <div id="ip-loading" style="text-align: center; padding: var(--space-6);">
+        <div class="spinner" style="margin: 0 auto var(--space-3);"></div>
+        <p style="color: var(--color-text-secondary); margin: 0; font-size: var(--text-sm);">{c.loadingText}</p>
+      </div>
+
+      <div class="location-data-grid" id="ip-data" style="display: none;">
+        <div class="location-data-item">
+          <span class="location-data-label">{c.lblIp}</span>
+          <span class="location-data-value highlight" id="ip-address">—</span>
+        </div>
+        <div class="location-data-item">
+          <span class="location-data-label">{c.lblLat}</span>
+          <span class="location-data-value" id="ip-lat">—</span>
+        </div>
+        <div class="location-data-item">
+          <span class="location-data-label">{c.lblLng}</span>
+          <span class="location-data-value" id="ip-lng">—</span>
+        </div>
+        <div class="location-data-item">
+          <span class="location-data-label">{c.lblCity}</span>
+          <span class="location-data-value" id="ip-city" style="font-family: var(--font-sans);">—</span>
+        </div>
+        <div class="location-data-item">
+          <span class="location-data-label">{c.lblRegion}</span>
+          <span class="location-data-value" id="ip-region" style="font-family: var(--font-sans);">—</span>
+        </div>
+        <div class="location-data-item">
+          <span class="location-data-label">{c.lblCountry}</span>
+          <span class="location-data-value" id="ip-country" style="font-family: var(--font-sans);">—</span>
+        </div>
+        <div class="location-data-item">
+          <span class="location-data-label">{c.lblTz}</span>
+          <span class="location-data-value" id="ip-tz" style="font-family: var(--font-sans);">—</span>
+        </div>
+        <div class="location-data-item">
+          <span class="location-data-label">{c.lblIsp}</span>
+          <span class="location-data-value" id="ip-isp" style="font-family: var(--font-sans); font-size: var(--text-sm);">—</span>
+        </div>
+      </div>
+
+      <div class="action-buttons" id="ip-actions" style="margin-top: var(--space-6); display: none;">
+        <button class="btn btn-secondary btn-sm" id="ip-copy" type="button">{c.btnCopy}</button>
+        <a class="btn btn-secondary btn-sm" id="ip-maps" href="#" target="_blank" rel="noopener noreferrer">{c.btnMaps}</a>
+      </div>
+    </div>
+
+    <div class="map-container" id="ip-map" data-locate-title={locateTitle} style="margin-top: var(--space-6); display: none;"></div>
+
+    <section class="section">
+      <div class="prose" style="max-width: var(--max-width-narrow);">
+        <h2>{c.h2What}</h2>
+        <p>{c.pWhat1}</p>
+        <p>{c.pWhat2}</p>
+
+        <h2>{c.h2Limit}</h2>
+        <ul>
+          {c.bullets.map((b: string) => (
+            <li>{b}</li>
+          ))}
+        </ul>
+
+        <h3>{c.h3Related}</h3>
+        <ul>
+          <li><a href={getLocalizedPath('/comparisons/gps-vs-ip-location/', lang)}>{t('footer.link.gpsVsIp')}</a></li>
+          <li><a href={getLocalizedPath('/my-location/gps/', lang)}>{t('footer.link.gpsCoords')}</a></li>
+          <li><a href={getLocalizedPath('/guides/wrong-location/', lang)}>{t('footer.link.wrongLocation')}</a></li>
+          <li><a href={getLocalizedPath('/guides/ip-geolocation-accuracy/', lang)}>{t('footer.link.ipLocation')}</a></li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section">
+      <div style="max-width: var(--max-width-narrow);">
+        <h2 class="mb-8">FAQ</h2>
+        <FAQAccordion items={c.faq} />
+      </div>
+    </section>
+  </div>
+
+  <script>
+    import IpLocation from '../../scripts/ip-location.js';
+    import Sharing from '../../scripts/sharing.js';
+    import MapUtils from '../../scripts/map.js';
+
+    const locateTitles: Record<string, string> = {
+      en: "Zoom to my current location",
+      es: "Centrar y ampliar en mi ubicación",
+      fr: "Zoomer sur ma position actuelle",
+      de: "Auf meinen aktuellen Standort zoomen",
+      pt: "Aproximar da minha localização atual"
+    };
+    const currentDocLang = document.documentElement.lang || 'en';
+    const locateTitle = document.getElementById('ip-map')?.getAttribute('data-locate-title') || locateTitles[currentDocLang] || locateTitles.en;
+
+    (async () => {
+      const loading = document.getElementById('ip-loading');
+      const data = document.getElementById('ip-data');
+      const actions = document.getElementById('ip-actions');
+      const mapEl = document.getElementById('ip-map');
+      const dot = document.getElementById('ip-dot');
+      const badge = document.getElementById('ip-badge');
+
+      try {
+        const loc = await IpLocation.getLocation();
+
+        document.getElementById('ip-address').textContent = loc.ip;
+        document.getElementById('ip-lat').textContent = loc.lat?.toFixed(4) || '—';
+        document.getElementById('ip-lng').textContent = loc.lng?.toFixed(4) || '—';
+        document.getElementById('ip-city').textContent = loc.city || '—';
+        document.getElementById('ip-region').textContent = loc.region || '—';
+        document.getElementById('ip-country').textContent = `${loc.country} (${loc.countryCode})`;
+        document.getElementById('ip-tz').textContent = loc.timezone || '—';
+        document.getElementById('ip-isp').textContent = loc.isp || '—';
+        document.getElementById('ip-maps').href = `https://www.google.com/maps?q=${loc.lat},${loc.lng}`;
+
+        dot.style.background = 'var(--color-accent-success)';
+        badge.textContent = `Source: ${loc.source}`;
+        badge.className = 'badge badge-success';
+
+        loading.style.display = 'none';
+        data.style.display = 'grid';
+        actions.style.display = 'flex';
+        mapEl.style.display = 'block';
+
+        const waitL = () => {
+          if (typeof L !== 'undefined') {
+            const m = L.map('ip-map').setView([loc.lat, loc.lng], 10);
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '&copy; OpenStreetMap', maxZoom: 19 }).addTo(m);
+            L.marker([loc.lat, loc.lng]).addTo(m).bindPopup(`IP Location: ${loc.city}, ${loc.country}`).openPopup();
+            L.circle([loc.lat, loc.lng], { radius: 5000, color: '#f59e0b', fillColor: '#f59e0b', fillOpacity: 0.08, weight: 1 }).addTo(m);
+
+            MapUtils.addLocateControl(m, {
+              title: locateTitle,
+              zoom: 16,
+            });
+          } else setTimeout(waitL, 100);
+        };
+        waitL();
+
+      } catch (error) {
+        loading.innerHTML = '<p style="color: var(--color-accent-error);">Unable to detect IP location. Please try again later.</p>';
+        dot.style.background = 'var(--color-accent-error)';
+        badge.textContent = 'Error';
+      }
+    })();
+
+    document.getElementById('ip-copy')?.addEventListener('click', function() {
+      const ip = document.getElementById('ip-address')?.textContent;
+      if (ip && ip !== '—') Sharing.copyToClipboard(ip, this);
+    });
+  </script>
+</BaseLayout>

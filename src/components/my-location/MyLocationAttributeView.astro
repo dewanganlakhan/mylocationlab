@@ -1,0 +1,828 @@
+---
+/**
+ * MyLocationAttributeView — Multilingual View for My Location Attribute Pages
+ * Powers: address, city, coordinates, country, gps, latitude-longitude, state
+ * Across: en, es, fr, de, pt
+ */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../Breadcrumbs.astro';
+import LocationFinder from '../LocationFinder.astro';
+import SiloNav from '../SiloNav.astro';
+import FAQAccordion from '../FAQAccordion.astro';
+import { getLocalizedPath, defaultLang, type SupportedLang } from '../../i18n/config';
+import { useTranslations } from '../../i18n/ui';
+
+export type AttributeType = 'address' | 'city' | 'coordinates' | 'country' | 'gps' | 'latitude-longitude' | 'state';
+
+interface Props {
+  attribute: AttributeType;
+  lang?: SupportedLang | string;
+}
+
+const { attribute, lang: customLang = defaultLang } = Astro.props;
+const lang = (customLang || defaultLang) as SupportedLang;
+const t = useTranslations(lang);
+
+interface AttributeConfig {
+  title: string;
+  description: string;
+  h1Prefix: string;
+  h1Accent: string;
+  subtitle: string;
+  emphasisField: string;
+  h2How: string;
+  pHow1: string;
+  pHow2: string;
+  h2What: string;
+  bullets: string[];
+  h3Related: string;
+  faq?: { question: string; answer: string }[];
+}
+
+const dict: Record<AttributeType, Record<string, AttributeConfig>> = {
+  address: {
+    en: {
+      title: "My Address — What Is My Current Address? | MyLocationLab",
+      description: "Find your current street address instantly using GPS. Reverse geocode your location to a full postal address with house number, street, city, and zip code.",
+      h1Prefix: "What Is My",
+      h1Accent: "Current Address?",
+      subtitle: "Find your full street address instantly using GPS and reverse geocoding. See your house number, street, city, state, postal code, and country.",
+      emphasisField: "address",
+      h2How: "How Your Address Is Found",
+      pHow1: "Your address is determined through a two-step process called reverse geocoding: your device uses GPS satellites to determine your exact latitude and longitude coordinates, and those coordinates are matched against OpenStreetMap Nominatim to find the nearest street address.",
+      pHow2: "In well-mapped urban areas, you will receive an exact building number and street name. In rural regions, the service returns the nearest thoroughfare or administrative locality.",
+      h2What: "Address Information Provided",
+      bullets: [
+        "Street Address — House or building number, street name, and neighborhood",
+        "City / Municipality — The local administrative town or city",
+        "State / Region — Administrative district or province",
+        "Postal / ZIP Code — Delivery postal code",
+        "Country & ISO Code — Sovereign territory and country code"
+      ],
+      h3Related: "Related Location Tools"
+    },
+    es: {
+      title: "Mi Dirección — ¿Cuál Es Mi Dirección Postal Actual? | MyLocationLab",
+      description: "Descubra su dirección postal exacta mediante GPS y geocodificación inversa. Conozca calle, número, ciudad, código postal y provincia.",
+      h1Prefix: "¿Cuál Es Mi",
+      h1Accent: "Dirección Actual?",
+      subtitle: "Consulte su dirección completa al instante mediante GPS y geocodificación inversa. Compruebe calle, número, ciudad, código postal y país.",
+      emphasisField: "address",
+      h2How: "Cómo se Determina su Dirección Postal",
+      pHow1: "Su dirección se obtiene mediante un procedimiento en dos fases denominado geocodificación inversa: su terminal calcula coordenadas GPS exactas que se cotejan en OpenStreetMap para localizar la dirección de calle más cercana.",
+      pHow2: "En zonas urbanas obtendrá el número de portal y nombre de vía precisos; en áreas rurales o no parceladas, se identificará la localidad o término municipal más próximo.",
+      h2What: "Información de Dirección Incluida",
+      bullets: [
+        "Dirección Postal — Nombre de calle, vía o avenida y número",
+        "Municipio / Ciudad — Población o término municipal",
+        "Provincia / Comunidad — Demarcación territorial administrativa",
+        "Código Postal — Código postal de reparto",
+        "País y Código — Territorio nacional y código ISO"
+      ],
+      h3Related: "Herramientas Relacionadas"
+    },
+    fr: {
+      title: "Mon Adresse — Quelle Est Mon Adresse Postale Actuelle ? | MyLocationLab",
+      description: "Trouvez votre adresse de rue actuelle par GPS et géocodage inverse. Numéro de voie, rue, ville, code postal et région en direct.",
+      h1Prefix: "Quelle Est Mon",
+      h1Accent: "Adresse Actuelle ?",
+      subtitle: "Identifiez votre adresse complète instantanément par géocodage inverse GPS. Visualisez le numéro, la rue, la commune et le code postal.",
+      emphasisField: "address",
+      h2How: "Comment Votre Adresse Est Identifiée",
+      pHow1: "Votre adresse est calculée par géocodage inverse : votre appareil détermine vos coordonnées GPS par satellite, puis interroge la base géographique OpenStreetMap pour rattacher ce point à la voie publique la plus proche.",
+      pHow2: "Dans les agglomérations bien référencées, vous obtiendrez le numéro de voirie exact. En zone rurale, le résultat indiquera le lieu-dit ou la commune de rattachement.",
+      h2What: "Détail des Données d'Adresse",
+      bullets: [
+        "Numéro et Voie — Numéro d'immeuble, nom de rue ou boulevard",
+        "Commune / Ville — Municipalité de rattachement",
+        "Département / Région — Division administrative territoriale",
+        "Code Postal — Code postal d'acheminement",
+        "Pays et Code ISO — Territoire national officiel"
+      ],
+      h3Related: "Outils de Localisation Associés"
+    },
+    de: {
+      title: "Meine Adresse — Wie lautet meine aktuelle Adresse? | MyLocationLab",
+      description: "Finden Sie Ihre genaue Straßenadresse per GPS und Rückwärts-Geokodierung. Hausnummer, Straße, Postleitzahl und Stadt sofort abrufen.",
+      h1Prefix: "Wie lautet meine",
+      h1Accent: "aktuelle Adresse?",
+      subtitle: "Ermitteln Sie Ihre vollständige Postanschrift per GPS-Satellitenortung. Hausnummer, Straßenname, Postleitzahl, Stadt und Bundesland im Überblick.",
+      emphasisField: "address",
+      h2How: "Wie Ihre Adresse ermittelt wird",
+      pHow1: "Ihre Adresse wird durch Rückwärts-Geokodierung bestimmt: Ihr Gerät ermittelt exakte GPS-Koordinaten, die mit den Kartendaten von OpenStreetMap abgeglichen werden, um die nächstgelegene Anschrift zu finden.",
+      pHow2: "In städtischen Gebieten erhalten Sie eine zentimetergenaue Hausnummernzuordnung; im ländlichen Raum wird die nächstgelegene Straße oder Ortsgemeinde ausgegeben.",
+      h2What: "Enthaltene Adressbestandteile",
+      bullets: [
+        "Straßenadresse — Straßenname und Hausnummer",
+        "Stadt / Gemeinde — Kommunale Gebietskörperschaft",
+        "Bundesland / Region — Zuständige Landesverwaltung",
+        "Postleitzahl (PLZ) — Postalische Zustellungszone",
+        "Land & Ländercode — Staatliches Hoheitsgebiet"
+      ],
+      h3Related: "Verwandte Standort-Werkzeuge"
+    },
+    pt: {
+      title: "Meu Endereço — Qual É Meu Endereço Atual? | MyLocationLab",
+      description: "Descubra seu endereço completo instantaneamente via GPS e geocodificação reversa. Nome da rua, número, cidade, CEP e estado em tempo real.",
+      h1Prefix: "Qual É o Meu",
+      h1Accent: "Endereço Atual?",
+      subtitle: "Encontre seu endereço postal completo usando GPS e geocodificação reversa. Veja rua, número, cidade, estado, CEP e país.",
+      emphasisField: "address",
+      h2How: "Como Seu Endereço É Identificado",
+      pHow1: "Seu endereço é localizado através da geocodificação reversa: o aparelho capta coordenadas precisas de satélites GPS e faz a correspondência com a malha viária do OpenStreetMap.",
+      pHow2: "Em áreas urbanas com mapeamento detalhado, exibe-se o número do imóvel e o logradouro. Em áreas rurais, é apresentada a localidade ou município correspondente.",
+      h2What: "Dados de Endereço Fornecidos",
+      bullets: [
+        "Logradouro — Nome da rua ou avenida e numeração",
+        "Cidade / Município — Cidade de localização",
+        "Estado / Região — Divisão administrativa estadual",
+        "CEP / Código Postal — Zona de entrega postal",
+        "País e Código ISO — Nação e identificador territorial"
+      ],
+      h3Related: "Ferramentas Relacionadas"
+    }
+  },
+  city: {
+    en: {
+      title: "What City Am I In? — Find My Current City | MyLocationLab",
+      description: "Find out what city you're currently in. Instantly detect your city name, state, and country using GPS location.",
+      h1Prefix: "What City",
+      h1Accent: "Am I In?",
+      subtitle: "Instantly find out what city you're currently located in. See your city name along with state, country, and exact coordinates.",
+      emphasisField: "city",
+      h2How: "How We Determine Your City",
+      pHow1: "Your city is determined by first getting your GPS coordinates, then using reverse geocoding to match those coordinates to administrative boundaries. The geocoding service identifies which municipality your coordinates fall within.",
+      pHow2: "Depending on local governance boundaries, you may see a metropolitan city, borough, township, or municipality name.",
+      h2What: "Why Identifying Your City Matters",
+      bullets: [
+        "Travel & Transit — Confirm your metropolitan district when exploring unfamiliar regions",
+        "Local Business Services — Find municipal government desks, emergency services, and transit hubs",
+        "Timezone Alignment — Verify local solar and administrative timekeeping zones",
+        "Emergency Coordination — Inform first responders of your jurisdictional township"
+      ],
+      h3Related: "Related Location Pages"
+    },
+    es: {
+      title: "¿En Qué Ciudad Estoy? — Mi Ciudad Actual | MyLocationLab",
+      description: "Identifique en qué ciudad o municipio se encuentra ahora mismo. Detección instantánea de localidad, provincia y país con GPS.",
+      h1Prefix: "¿En Qué Ciudad",
+      h1Accent: "Estoy Ahora?",
+      subtitle: "Descubra al instante en qué ciudad o municipio se encuentra ubicado. Conozca su localidad, provincia, país y coordenadas.",
+      emphasisField: "city",
+      h2How: "Cómo se Identifica su Ciudad o Municipio",
+      pHow1: "Su municipio se determina calculando las coordenadas satelitales y cotejándolas con los límites administrativos oficiales mediante geocodificación inversa.",
+      pHow2: "Según la demarcación local, puede mostrarse el nombre de la capital comarcal, término municipal, pedanía o distrito metropolitano.",
+      h2What: "Utilidad de Conocer su Municipio Actual",
+      bullets: [
+        "Viajes y Desplazamientos — Confirme en qué demarcación territorial se encuentra al viajar",
+        "Servicios Locales — Localice oficinas municipales, servicios sanitarios y paradas de transporte",
+        "Alineación Horaria — Verifique la franja horaria oficial de la zona",
+        "Emergencias — Proporcione el término municipal exacto a los equipos de auxilio"
+      ],
+      h3Related: "Herramientas Relacionadas"
+    },
+    fr: {
+      title: "Dans Quelle Ville Suis-Je ? — Ma Commune Actuelle | MyLocationLab",
+      description: "Identifiez immédiatement la commune ou ville dans laquelle vous vous trouvez grâce au GPS. Commune, département et pays en direct.",
+      h1Prefix: "Dans Quelle Ville",
+      h1Accent: "Suis-Je en Ce Moment ?",
+      subtitle: "Identifiez instantanément votre commune ou ville actuelle. Retrouvez le nom de votre municipalité, votre département et vos coordonnées.",
+      emphasisField: "city",
+      h2How: "Comment Votre Commune Est Reconnue",
+      pHow1: "Votre commune est identifiée en recoupant vos coordonnées satellites avec les polygones des limites administratives officielles du territoire.",
+      pHow2: "Selon l'organisation territoriale, le système indiquera une ville principale, un arrondissement ou une commune rurale.",
+      h2What: "Pourquoi Connaître Sa Commune Est Précieux",
+      bullets: [
+        "Voyages & Déplacements — Sachez précisément sur quel territoire municipal vous vous trouvez",
+        "Services Publics — Identifiez les administrations locales et réseaux de transports urbains",
+        "Fuseau Horaire — Validez le fuseau administratif de votre zone géographique",
+        "Secours & Urgences — Indiquez immédiatement votre commune de rattachement"
+      ],
+      h3Related: "Outils de Localisation Associés"
+    },
+    de: {
+      title: "In welcher Stadt bin ich? — Aktuelle Stadt ermitteln | MyLocationLab",
+      description: "Erfahren Sie sofort, in welcher Stadt oder Gemeinde Sie sich befinden. GPS-gestützte Erkennung von Stadtname, Bundesland und Region.",
+      h1Prefix: "In welcher Stadt",
+      h1Accent: "bin ich gerade?",
+      subtitle: "Ermitteln Sie sekundenschnell Ihre aktuelle Stadt oder Gemeinde. Stadtname, Bundesland, Land und exakte Geodaten im Überblick.",
+      emphasisField: "city",
+      h2How: "Wie Ihre Stadt oder Gemeinde ermittelt wird",
+      pHow1: "Ihre Stadt wird festgestellt, indem Ihr Gerät GPS-Koordinaten erfasst und diese über Geodatenbanken mit behördlichen Verwaltungsgrenzen abgleicht.",
+      pHow2: "Je nach regionaler Gliederung wird Ihnen eine kreisfreie Großstadt, eine Ortsgemeinde oder ein Stadtbezirk ausgegeben.",
+      h2What: "Warum die genaue Stadtzuordnung wichtig ist",
+      bullets: [
+        "Reisen & Transit — Orientierung bei Fahrten durch fremde Ballungsräume",
+        "Lokale Dienste — Auffinden zuständiger Bürgerämter und Nahverkehrszonen",
+        "Zeitzonenbestimmung — Verifizierung der regionalen Standardzeit",
+        "Notfallkoordination — Schnelle Durchgabe der genauen Gemeinde an Rettungskräfte"
+      ],
+      h3Related: "Verwandte Standort-Werkzeuge"
+    },
+    pt: {
+      title: "Em Que Cidade Estou? — Descobrir Minha Cidade Atual | MyLocationLab",
+      description: "Descubra em qual cidade ou município você está neste momento. Identificação instantânea de cidade, estado e país com GPS.",
+      h1Prefix: "Em Que Cidade",
+      h1Accent: "Estou Agora?",
+      subtitle: "Descubra instantaneamente em qual cidade ou município você se encontra. Veja o nome do município, estado, país e coordenadas.",
+      emphasisField: "city",
+      h2How: "Como Sua Cidade É Identificada",
+      pHow1: "Sua cidade é descoberta cruzando suas coordenadas GPS com os polígonos dos limites municipais oficiais por geocodificação reversa.",
+      pHow2: "Dependendo da estrutura territorial da região, pode ser exibido um município polo, distrito ou região metropolitana.",
+      h2What: "Vantagens de Confirmar Sua Cidade",
+      bullets: [
+        "Viagens e Trânsito — Confirme o município exato durante viagens rodoviárias",
+        "Serviços Municipais — Encontre postos de saúde, órgãos públicos e transporte local",
+        "Fuso Horário — Valide o fuso horário oficial da sua área",
+        "Resgate e Emergências — Repasse o município com precisão para os serviços de socorro"
+      ],
+      h3Related: "Ferramentas Relacionadas"
+    }
+  },
+  coordinates: {
+    en: {
+      title: "My Coordinates — Find Current Coordinates | MyLocationLab",
+      description: "Get your current coordinates instantly. Find your exact position in decimal degrees, DMS, UTM, and other formats.",
+      h1Prefix: "My",
+      h1Accent: "Coordinates",
+      subtitle: "Get your current position coordinates in multiple formats — decimal degrees, DMS, UTM, Geohash, and Plus Code.",
+      emphasisField: "lat",
+      h2How: "What Are Geographic Coordinates?",
+      pHow1: "Geographic coordinates define a specific position on Earth. Latitude measures distance north/south of the Equator, while Longitude measures distance east/west of the Greenwich Prime Meridian.",
+      pHow2: "Together, these two values describe a unique location on Earth. For instance, (28.6139, 77.2090) pinpoints India Gate in New Delhi.",
+      h2What: "Standard Coordinate Systems",
+      bullets: [
+        "Decimal Degrees (DD) — Standard digital format: 28.613900, 77.209000",
+        "Degrees Minutes Seconds (DMS) — Traditional notation: 28°36'50.0\"N 77°12'32.4\"E",
+        "UTM — Universal Transverse Mercator metric grid: Zone 43R, Easting, Northing",
+        "Geohash — Alphanumeric hierarchical spatial index for database querying",
+        "Plus Code — Google Open Location Code alphanumeric addressing"
+      ],
+      h3Related: "Related Coordinate Utilities"
+    },
+    es: {
+      title: "Mis Coordenadas — Consultar Coordenadas Actuales | MyLocationLab",
+      description: "Consulte sus coordenadas geográficas al instante. Obtenga su posición en Grados Decimales, DMS, UTM y otros formatos cartográficos.",
+      h1Prefix: "Mis",
+      h1Accent: "Coordenadas",
+      subtitle: "Compruebe sus coordenadas actuales en múltiples estándares: grados decimales, DMS, cuadrícula UTM, Geohash y Plus Code.",
+      emphasisField: "lat",
+      h2How: "¿Qué son las Coordenadas Geográficas?",
+      pHow1: "Las coordenadas definen un punto específico sobre la Tierra. La Latitud mide la separación angular con el Ecuador y la Longitud la separación con el Meridiano de Greenwich.",
+      pHow2: "Juntos, ambos valores definen una posición inequívoca sobre el globo terráqueo referenciada al elipsoide WGS 84.",
+      h2What: "Sistemas de Coordenadas Principales",
+      bullets: [
+        "Grados Decimales (DD) — Estándar digital universal: 28.613900, 77.209000",
+        "Grados Minutos Segundos (DMS) — Notación clásica: 28°36'50.0\"N 77°12'32.4\"E",
+        "UTM — Proyección métrica Universal Transversa de Mercator: Huso, Este y Norte",
+        "Geohash — Codificación alfanumérica para indexación en bases de datos espaciales",
+        "Plus Code — Sistema de códigos de ubicación abiertos de Google"
+      ],
+      h3Related: "Herramientas Relacionadas"
+    },
+    fr: {
+      title: "Mes Coordonnées — Obtenir Mes Coordonnées Géographiques | MyLocationLab",
+      description: "Obtenez vos coordonnées actuelles en direct. Degrés décimaux, DMS, projection UTM et formats SIG pour repérer votre position.",
+      h1Prefix: "Mes",
+      h1Accent: "Coordonnées",
+      subtitle: "Relevez vos coordonnées géographiques sous tous les formats : degrés décimaux, DMS, UTM métrique, Geohash et Plus Code.",
+      emphasisField: "lat",
+      h2How: "Que Sont les Coordonnées Géographiques ?",
+      pHow1: "Les coordonnées géographiques positionnent n'importe quel point sur le globe terrestre. La latitude mesure la distance par rapport à l'Équateur, et la longitude par rapport au Méridien de Greenwich.",
+      pHow2: "La combinaison de ces deux angles définit sans ambiguïté une localisation spatiale par rapport au modèle WGS 84.",
+      h2What: "Formats de Coordonnées Standards",
+      bullets: [
+        "Degrés Décimaux (DD) — Format informatique universel : 28.613900, 77.209000",
+        "Degrés Minutes Secondes (DMS) — Notation cartographique classique : 28°36'50.0\"N 77°12'32.4\"E",
+        "UTM — Quadrillage métrique Universal Transverse Mercator : Fuseau, Easting, Northing",
+        "Geohash — Index spatial alphanumérique pour bases de données géomatiques",
+        "Plus Code — Système de repérage ouvert Open Location Code"
+      ],
+      h3Related: "Outils de Coordonnées Associés"
+    },
+    de: {
+      title: "Meine Koordinaten — Aktuelle Geodaten ermitteln | MyLocationLab",
+      description: "Erfassen Sie Ihre aktuellen Geokoordinaten sofort. Exakte Position in Dezimalgrad, GMS, UTM und GIS-Formaten.",
+      h1Prefix: "Meine",
+      h1Accent: "Koordinaten",
+      subtitle: "Ermitteln Sie Ihre Positionsdaten in allen gängigen Formaten: Dezimalgrad, Grad-Minuten-Sekunden (GMS), UTM-Gitter und Geohash.",
+      emphasisField: "lat",
+      h2How: "Was sind geografische Koordinaten?",
+      pHow1: "Geografische Koordinaten beschreiben einen eindeutigen Punkt auf der Erdoberfläche. Die geografische Breite (Latitude) misst den Abstand zum Äquator, die geografische Länge (Longitude) zum Nullmeridian von Greenwich.",
+      pHow2: "Gemeinsam bilden beide Werte die Basis des weltweiten WGS-84-Referenzellipsoids für Satellitennavigation.",
+      h2What: "Übliche Koordinatensysteme",
+      bullets: [
+        "Dezimalgrad (DD) — Digitaler Standard: 28.613900, 77.209000",
+        "Grad Minuten Sekunden (GMS) — Traditionelle Schreibweise: 28°36'50.0\"N 77°12'32.4\"E",
+        "UTM — Metrisches Gitternetz (Universal Transverse Mercator): Zone, Ostwert, Nordwert",
+        "Geohash — Alphanumerische Zeichenkette zur räumlichen Indizierung in Datenbanken",
+        "Plus Code — Googles Open Location Code Adressierungsmodell"
+      ],
+      h3Related: "Verwandte Koordinaten-Werkzeuge"
+    },
+    pt: {
+      title: "Minhas Coordenadas — Coordenadas Geográficas Atuais | MyLocationLab",
+      description: "Descubra suas coordenadas geográficas agora. Veja sua posição exata em Graus Decimais, GMS, UTM e formatos cartográficos.",
+      h1Prefix: "Minhas",
+      h1Accent: "Coordenadas",
+      subtitle: "Obtenha as coordenadas da sua localização atual em vários formatos: graus decimais, GMS, grade métrica UTM, Geohash e Plus Code.",
+      emphasisField: "lat",
+      h2How: "O que são Coordenadas Geográficas?",
+      pHow1: "Coordenadas geográficas definem uma posição exata no globo. A Latitude indica o afastamento em relação à linha do Equador e a Longitude o afastamento em relação ao Meridiano de Greenwich.",
+      pHow2: "Combinados, esses dois números delimitam qualquer lugar do planeta no elipsoide WGS 84 com alta precisão métrica.",
+      h2What: "Sistemas de Notação de Coordenadas",
+      bullets: [
+        "Graus Decimais (DD) — Padrão digital de computação: 28.613900, 77.209000",
+        "Graus Minutos Segundos (GMS) — Notação tradicional de navegação: 28°36'50.0\"N 77°12'32.4\"E",
+        "UTM — Projeção métrica Universal Transverse Mercator: Fuso, Este e Norte",
+        "Geohash — Índice alfanumérico para consultas espaciais em bancos de dados",
+        "Plus Code — Código de localização aberto da Google"
+      ],
+      h3Related: "Ferramentas Relacionadas"
+    }
+  },
+  country: {
+    en: {
+      title: "What Country Am I In? — Find My Current Country | MyLocationLab",
+      description: "Instantly detect what country you are currently located in using satellite GPS. Includes ISO country code and capital data.",
+      h1Prefix: "What Country",
+      h1Accent: "Am I In?",
+      subtitle: "Determine your current sovereign country, official ISO alpha-2/alpha-3 country code, and territory borders via GPS.",
+      emphasisField: "country",
+      h2How: "How Sovereign Borders Are Calculated",
+      pHow1: "Your device acquires latitude and longitude via satellite navigation, and our reverse geocoding engine performs a point-in-polygon lookup against sovereign international territorial boundaries.",
+      pHow2: "This ensures instantaneous country detection whether you are at an international border, on an island, or in territorial waters.",
+      h2What: "Why Country Geolocation Is Critical",
+      bullets: [
+        "Customs & Immigration — Confirm entry into new national jurisdictions",
+        "Roaming & Telephony — Identify international mobile carrier zones and calling codes",
+        "Currency & Legal Standards — Know local regulatory frameworks and default tender",
+        "Tax & Trade Compliance — Determine applicable cross-border tax rules"
+      ],
+      h3Related: "Related Location Tools"
+    },
+    es: {
+      title: "¿En Qué País Estoy? — Detectar Mi País Actual | MyLocationLab",
+      description: "Detecte al instante en qué país se encuentra mediante satélites GPS. Códigos ISO, fronteras nacionales y territorio en vivo.",
+      h1Prefix: "¿En Qué País",
+      h1Accent: "Estoy Ahora?",
+      subtitle: "Compruebe su país soberano actual, código ISO alfa-2/alfa-3 y límites territoriales oficiales mediante señal GPS.",
+      emphasisField: "country",
+      h2How: "Cómo se Calculan las Fronteras Nacionales",
+      pHow1: "Su dispositivo obtiene latitud y longitud satelital y nuestro motor compara el punto con los polígonos fronterizos reconocidos internacionalmente.",
+      pHow2: "Esto garantiza una detección certera tanto en pasos fronterizos como en islas o zonas costeras.",
+      h2What: "Importancia de la Geolocalización de País",
+      bullets: [
+        "Aduanas y Pasaportes — Confirme la entrada en nuevas jurisdicciones estatales",
+        "Itinerancia Móvil — Identifique prefijos telefónicos internacionales y redes operadoras",
+        "Divisas y Normativa — Conozca la moneda en curso y el marco legal aplicable",
+        "Comercio Transfronterizo — Determine normativas tributarias y aduaneras"
+      ],
+      h3Related: "Herramientas Relacionadas"
+    },
+    fr: {
+      title: "Dans Quel Pays Suis-Je ? — Détecter Mon Pays Actuel | MyLocationLab",
+      description: "Identifiez instantanément dans quel pays vous vous trouvez par GPS. Code ISO officiel, frontières et territoire national en direct.",
+      h1Prefix: "Dans Quel Pays",
+      h1Accent: "Suis-Je en Ce Moment ?",
+      subtitle: "Identifiez le pays souverain où vous vous situez, son code ISO officiel et ses limites territoriales via le signal GPS de votre appareil.",
+      emphasisField: "country",
+      h2How: "Comment Sont Calculées les Frontières Nationales",
+      pHow1: "Votre appareil relève vos coordonnées spatiales précises et le moteur de géocodage effectue un calcul géométrique d'inclusion dans les frontières internationales.",
+      pHow2: "La détection s'effectue sans ambiguïté, même à proximité immédiate des lignes frontalières ou en mer territoriale.",
+      h2What: "Pourquoi la Détection du Pays Est Essentielle",
+      bullets: [
+        "Douanes & Passages de Frontière — Vérifiez votre entrée dans un nouvel espace juridique",
+        "Itinérance Téléphonique — Identifiez les indicatifs téléphoniques et réseaux mobiles locaux",
+        "Monnaie & Cadre Légal — Reconnaissez la devise officielle et les réglementations en vigueur",
+        "Fiscalité Transfrontalière — Appliquez les règles fiscales du pays de résidence temporaire"
+      ],
+      h3Related: "Outils de Localisation Associés"
+    },
+    de: {
+      title: "In welchem Land bin ich? — Aktuelles Land ermitteln | MyLocationLab",
+      description: "Ermitteln Sie sofort, in welchem Land Sie sich aufhalten. GPS-gestützte Landeserkennung, ISO-Ländercodes und Staatsgrenzen.",
+      h1Prefix: "In welchem Land",
+      h1Accent: "bin ich gerade?",
+      subtitle: "Stellen Sie Ihren aktuellen Aufenthaltsstaat, offizielle ISO-Ländercodes und Hoheitsgrenzen sekundenschnell per GPS fest.",
+      emphasisField: "country",
+      h2How: "Wie Staatsgrenzen berechnet werden",
+      pHow1: "Ihr Empfänger ermittelt Koordinaten über GNSS-Satelliten, die mit Vektorpolygonen völkerrechtlicher Staatsgrenzen abgeglichen werden.",
+      pHow2: "Dies gewährleistet eine zuverlässige Zuordnung auch in Grenzregionen, auf Inseln oder in Küstengewässern.",
+      h2What: "Bedeutung der Landesortung",
+      bullets: [
+        "Zoll & Einreise — Verifizierung des Grenzübertritts in neue Hoheitsgebiete",
+        "Mobilfunk-Roaming — Erkennung lokaler Vorwahlen und Mobilfunkstandards",
+        "Währung & Recht — Kenntnis der geltenden Währung und Gesetzesvorgaben",
+        "Steuerliche Rahmenbedingungen — Ermittlung lokaler Umsatzsteuer- und Zollregeln"
+      ],
+      h3Related: "Verwandte Standort-Werkzeuge"
+    },
+    pt: {
+      title: "Em Que País Estou? — Descobrir Meu País Atual | MyLocationLab",
+      description: "Descubra imediatamente em qual país você está usando sinal GPS. Identificação de código ISO, fronteiras e dados nacionais ao vivo.",
+      h1Prefix: "Em Que País",
+      h1Accent: "Estou Agora?",
+      subtitle: "Identifique seu país soberano atual, código ISO oficial e fronteiras territoriais com precisão via satélite GPS.",
+      emphasisField: "country",
+      h2How: "Como Fronteiras Nacionais São Calculadas",
+      pHow1: "Seu smartphone capta a latitude e longitude via satélite e o mecanismo de geocodificação realiza o cruzamento com as fronteiras internacionais.",
+      pHow2: "Garante resposta precisa mesmo em áreas de fronteira seca, arquipélagos ou águas territoriais.",
+      h2What: "Aplicações Práticas da Detecção de País",
+      bullets: [
+        "Imigração e Fronteiras — Confirme o ingresso em novos territórios nacionais",
+        "Roaming Internacional — Identifique operadoras locais e códigos DDI de discagem",
+        "Moeda e Legislação — Conheça a moeda local e normas jurídicas aplicáveis",
+        "Tributação Internacional — Saiba quais regras alfandegárias vigoram no local"
+      ],
+      h3Related: "Ferramentas Relacionadas"
+    }
+  },
+  gps: {
+    en: {
+      title: "My GPS Coordinates — Find Your GPS Location | MyLocationLab",
+      description: "Find your exact GPS coordinates instantly. Get your current latitude and longitude from GPS satellites with real-time accuracy data.",
+      h1Prefix: "My GPS",
+      h1Accent: "Coordinates",
+      subtitle: "Find your exact GPS coordinates from satellite signals. See your precise latitude, longitude, accuracy, and altitude in real-time.",
+      emphasisField: "lat",
+      h2How: "Understanding Your GPS Coordinates",
+      pHow1: "GPS (Global Positioning System) determines your position by triangulating signals from satellites orbiting 20,200 km above Earth. Your device connects to at least 4 satellites to calculate a 3D position fix.",
+      pHow2: "The resulting latitude and longitude numbers identify your point on the planet within meters of accuracy.",
+      h2What: "GPS Data Parameters Explained",
+      bullets: [
+        "Latitude & Longitude — Geographic position relative to the Equator and Prime Meridian",
+        "Accuracy Radius — Estimated uncertainty boundary expressed in meters",
+        "Altitude — Vertical height calculated above the WGS 84 reference ellipsoid",
+        "Telemetry Timestamp — Exact satellite atomic time synchronization instant"
+      ],
+      h3Related: "Related GPS & Telemetry Tools",
+      faq: [
+        { question: "What are GPS coordinates?", answer: "GPS coordinates are a pair of numbers (latitude and longitude) that define an exact position on Earth, calculated via satellite trilateration." },
+        { question: "How accurate are smartphone GPS coordinates?", answer: "Modern smartphones provide 3 to 5 meter accuracy outdoors with an open sky view. Accuracy drops indoors or in dense urban canyons." },
+        { question: "What coordinate format is used?", answer: "Coordinates are shown in Decimal Degrees (DD) and can be converted into Degrees Minutes Seconds (DMS) or UTM grid coordinates." }
+      ]
+    },
+    es: {
+      title: "Mis Coordenadas GPS — Consultar Ubicación por Satélite | MyLocationLab",
+      description: "Obtenga sus coordenadas GPS exactas al instante. Consulte latitud, longitud, altitud y radio de precisión calculados por satélites.",
+      h1Prefix: "Mis Coordenadas",
+      h1Accent: "GPS en Directo",
+      subtitle: "Encuentre sus coordenadas satelitales exactas en tiempo real. Inspeccione latitud, longitud, radio de error y altitud sobre el elipsoide WGS84.",
+      emphasisField: "lat",
+      h2How: "Cómo se Calculan sus Coordenadas GPS",
+      pHow1: "El GPS calcula su posición mediante la trilateración de señales de radio emitidas por satélites situados a 20.200 km de altitud. Se requiere la sintonía de al menos 4 satélites para resolver las coordenadas espaciales.",
+      pHow2: "Los valores obtenidos expresan su posición métrica exacta con respecto al elipsoide geodésico de referencia WGS 84.",
+      h2What: "Parámetros de Telemetría GPS",
+      bullets: [
+        "Latitud y Longitud — Coordenadas angulares respecto al Ecuador y al Meridiano de Greenwich",
+        "Radio de Precisión — Margen de incertidumbre horizontal expresado en metros",
+        "Altitud — Elevación vertical calculada sobre el elipsoide geométrico WGS 84",
+        "Marca de Tiempo — Registro exacto de sincronización con los relojes atómicos orbitales"
+      ],
+      h3Related: "Herramientas Relacionadas",
+      faq: [
+        { question: "¿Qué son las coordenadas GPS?", answer: "Son un par de cifras (latitud y longitud) que definen una ubicación física exacta en la Tierra mediante cálculos satelitales." },
+        { question: "¿Qué precisión tiene el GPS de un móvil?", answer: "Los móviles modernos alcanzan precisiones de 3 a 5 metros en exteriores despejados. En interiores la señal se atenúa." },
+        { question: "¿En qué formato se presentan?", answer: "Se visualizan en Grados Decimales (DD) y pueden convertirse a Grados Minutos Segundos (DMS) o UTM." }
+      ]
+    },
+    fr: {
+      title: "Mes Coordonnées GPS — Localisation Satellite Directe | MyLocationLab",
+      description: "Trouvez vos coordonnées GPS exactes en temps réel. Latitude, longitude, altitude et précision mesurées directement depuis les satellites.",
+      h1Prefix: "Mes Coordonnées",
+      h1Accent: "GPS en Direct",
+      subtitle: "Relevez vos coordonnées GPS précises issues des signaux satellites. Latitude, longitude, altitude et rayon d'erreur en temps réel.",
+      emphasisField: "lat",
+      h2How: "Comment Sont Établies Vos Coordonnées GPS",
+      pHow1: "Le GPS détermine votre position par trilatération d'ondes radio provenant de satellites orbitant à 20 200 km. La réception d'au moins 4 satellites est indispensable pour résoudre la position en 3 dimensions.",
+      pHow2: "Les données calculées correspondent à une précision métrique sur l'ellipsoïde géodésique WGS 84.",
+      h2What: "Paramètres de Télémétrie Mesurés",
+      bullets: [
+        "Latitude & Longitude — Coordonnées angulaires par rapport à l'Équateur et au Méridien de Greenwich",
+        "Rayon de Précision — Marge d'incertitude horizontale exprimée en mètres",
+        "Altitude — Hauteur géométrique calculée par rapport à l'ellipsoïde WGS 84",
+        "Horodatage Satellite — Heure atomique exacte de la mesure physique"
+      ],
+      h3Related: "Outils de Géolocalisation Associés",
+      faq: [
+        { question: "Que représentent les coordonnées GPS ?", answer: "Ce sont deux valeurs numériques (latitude et longitude) définissant une position sur Terre par trilatération satellitaire." },
+        { question: "Quelle est la précision du GPS d'un smartphone ?", answer: "Elle est généralement de 3 à 5 mètres en extérieur dégagé. Elle diminue à l'intérieur des bâtiments." },
+        { question: "Quel est le format utilisé ?", answer: "Le format par défaut est en Degrés Décimaux (DD), convertible en DMS ou projection métrique UTM." }
+      ]
+    },
+    de: {
+      title: "Meine GPS-Koordinaten — Echtzeit-Satellitenortung | MyLocationLab",
+      description: "Ermitteln Sie Ihre exakten GPS-Koordinaten sofort. Breitengrad, Längengrad, Höhe und Genauigkeitsradius von Satelliten.",
+      h1Prefix: "Meine",
+      h1Accent: "GPS-Koordinaten",
+      subtitle: "Erfassen Sie Ihre Satellitenkoordinaten in Echtzeit. Exakter Breitengrad, Längengrad, Fehlerkreis und Höhe über dem Meeresspiegel.",
+      emphasisField: "lat",
+      h2How: "So funktioniert Ihre GPS-Positionsbestimmung",
+      pHow1: "Das Global Positioning System (GPS) errechnet Ihren Standort durch Laufzeitmessung von Signalen aus 20.200 km Höhe. Mindestens 4 Satelliten sind für eine exakte 3D-Positionierung erforderlich.",
+      pHow2: "Die Koordinaten basieren auf dem weltweiten geodätischen Bezugssystem WGS 84 mit sub-metrischer Genauigkeit.",
+      h2What: "Erfasste Telemetriedaten",
+      bullets: [
+        "Breitengrad & Längengrad — Geometrische Winkelposition bezüglich Äquator und Nullmeridian",
+        "Genauigkeitsradius — Horizontale Unsicherheitsspanne in Metern",
+        "Höhe — Höhenwert bezogen auf das mathematische WGS-84-Ellipsoid",
+        "Zeitstempel — Atomuhr-synchronisierter Zeitpunkt der Signalmessung"
+      ],
+      h3Related: "Verwandte GPS-Werkzeuge",
+      faq: [
+        { question: "Was sind GPS-Koordinaten?", answer: "Ein Zahlenpaar aus Breitengrad und Längengrad, das einen Ort auf der Erde mittels Satellitentrilateration eindeutig definiert." },
+        { question: "Wie genau ist das Smartphone-GPS?", answer: "Im Freien bei freier Sicht zum Himmel beträgt die Genauigkeit 3 bis 5 Meter. In Gebäuden sinkt sie." },
+        { question: "Welches Format wird angezeigt?", answer: "Standardmäßig Dezimalgrad (DD), umrechenbar in GMS oder das UTM-Gittersystem." }
+      ]
+    },
+    pt: {
+      title: "Minhas Coordenadas GPS — Localização por Satélite | MyLocationLab",
+      description: "Obtenha suas coordenadas GPS exatas em tempo real. Veja sua latitude, longitude, altitude e precisão fornecidas por satélites.",
+      h1Prefix: "Minhas Coordenadas",
+      h1Accent: "GPS em Tempo Real",
+      subtitle: "Encontre suas coordenadas satelitais em tempo real. Consulte latitude, longitude, raio de precisão e altitude no elipsoide WGS84.",
+      emphasisField: "lat",
+      h2How: "Como Suas Coordenadas GPS São Determinadas",
+      pHow1: "O GPS calcula sua posição através da trilateração de ondas de rádio emitidas por satélites a 20.200 km da Terra. É necessária a sintonia com no mínimo 4 satélites para obter uma leitura tridimensional.",
+      pHow2: "Os números obtidos indicam o posicionamento métrico exato sobre o elipsoide WGS 84.",
+      h2What: "Parâmetros de Telemetria GPS",
+      bullets: [
+        "Latitude e Longitude — Posição angular em relação ao Equador e a Greenwich",
+        "Raio de Precisão — Margem de incerteza métrica horizontal",
+        "Altitude — Altura vertical calculada sobre o elipsoide WGS 84",
+        "Timestamp — Registro de sincronização com relógios atômicos orbitais"
+      ],
+      h3Related: "Ferramentas Relacionadas",
+      faq: [
+        { question: "O que são coordenadas GPS?", answer: "São dois números (latitude e longitude) que especificam uma posição exata na Terra via trilateração de satélites." },
+        { question: "Qual a precisão do GPS no celular?", answer: "Smartphones modernos atingem precisão de 3 a 5 metros em céu aberto. Em ambientes fechados o sinal é atenuado." },
+        { question: "Qual o formato utilizado?", answer: "Exibição padrão em Graus Decimais (DD), conversível para GMS ou coordenadas UTM." }
+      ]
+    }
+  },
+  'latitude-longitude': {
+    en: {
+      title: "My Latitude and Longitude — Exact Coordinates | MyLocationLab",
+      description: "Find your current latitude and longitude instantly using GPS. High precision coordinates in Decimal Degrees and DMS.",
+      h1Prefix: "My Latitude",
+      h1Accent: "& Longitude",
+      subtitle: "Discover your exact latitude and longitude coordinates. High precision GPS positioning with instant map visualization.",
+      emphasisField: "lat",
+      h2How: "Understanding Latitude and Longitude",
+      pHow1: "Latitude lines (parallels) circle the Earth horizontally from 0° at the Equator to 90° at the poles. Longitude lines (meridians) run vertically from 0° at Greenwich to 180° at the Antimeridian.",
+      pHow2: "Together, latitude and longitude provide an unequivocal angular coordinate reference for any location on Earth.",
+      h2What: "Key Precision Metrics",
+      bullets: [
+        "Decimal Degrees (DD) — Easy calculation format used by Google Maps and web applications",
+        "Degrees Minutes Seconds (DMS) — Nautical and aviation standard notation",
+        "Sub-meter Accuracy — Modern GNSS chips resolve up to 6 decimal places (~0.1m precision)"
+      ],
+      h3Related: "Related Coordinate Pages"
+    },
+    es: {
+      title: "Mi Latitud y Longitud — Coordenadas Exactas | MyLocationLab",
+      description: "Descubra su latitud y longitud actual al instante con GPS. Coordenadas de alta precisión en Grados Decimales y DMS con mapa.",
+      h1Prefix: "Mi Latitud",
+      h1Accent: "y Longitud",
+      subtitle: "Consulte sus coordenadas angulares exactas. Posicionamiento GPS de alta precisión con visualización inmediata en mapa.",
+      emphasisField: "lat",
+      h2How: "Comprendiendo la Latitud y Longitud",
+      pHow1: "Las líneas de latitud (paralelos) rodean la Tierra de 0° en el Ecuador a 90° en los polos. Las líneas de longitud (meridianos) van de 0° en Greenwich a 180° en el antimeridiano.",
+      pHow2: "Ambas coordenadas constituyen el sistema de referencia angular universal para geolocalización física.",
+      h2What: "Métricas de Precisión Clave",
+      bullets: [
+        "Grados Decimales (DD) — Formato estándar empleado en aplicaciones web y cartografía digital",
+        "Grados Minutos Segundos (DMS) — Notación clásica empleada en navegación marítima y aérea",
+        "Resolución Submétrica — Chips GNSS modernos proporcionan hasta 6 decimales (~0,1 metros)"
+      ],
+      h3Related: "Herramientas Relacionadas"
+    },
+    fr: {
+      title: "Ma Latitude et Longitude — Coordonnées Précises | MyLocationLab",
+      description: "Relevez votre latitude et longitude en direct avec le GPS. Coordonnées de haute précision en Degrés Décimaux et DMS avec carte.",
+      h1Prefix: "Ma Latitude",
+      h1Accent: "& Longitude",
+      subtitle: "Découvrez vos coordonnées angulaires exactes. Mesure de haute précision par satellite avec affichage cartographique instantané.",
+      emphasisField: "lat",
+      h2How: "Comprendre la Latitude et la Longitude",
+      pHow1: "Les parallèles de latitude ceinturent le globe de 0° à l'Équateur jusqu'à 90° aux pôles. Les méridiens de longitude relient les pôles de 0° à Greenwich jusqu'à 180°.",
+      pHow2: "Ce maillage géométrique permet de localiser n'importe quel point terrestre avec une exactitude absolue.",
+      h2What: "Indicateurs de Précision",
+      bullets: [
+        "Degrés Décimaux (DD) — Format informatique universel utilisé par Google Maps et le web",
+        "Degrés Minutes Secondes (DMS) — Standard de la navigation maritime et de l'aviation",
+        "Résolution Submétrique — Précision jusqu'à 6 décimales pour les puces GNSS modernes (~0,1 m)"
+      ],
+      h3Related: "Outils de Coordonnées Associés"
+    },
+    de: {
+      title: "Mein Breitengrad und Längengrad — Exakte Koordinaten | MyLocationLab",
+      description: "Erfahren Sie Ihren aktuellen Breiten- und Längengrad per GPS. Hochpräzise Koordinaten in Dezimalgrad und GMS mit Karte.",
+      h1Prefix: "Mein Breiten-",
+      h1Accent: "& Längengrad",
+      subtitle: "Erfassen Sie Ihre genauen Winkelkoordinaten. Hochpräzise GPS-Ortung mit sofortiger Kartendarstellung.",
+      emphasisField: "lat",
+      h2How: "Breitengrad und Längengrad verstehen",
+      pHow1: "Breitenkreise verlaufen parallel zum Äquator (0° bis 90° Nord/Süd). Längenmeridiane verlaufen vertikal von 0° (Greenwich) bis 180° (Antimeridian).",
+      pHow2: "Gemeinsam bilden sie das universelle Referenzgitter zur Lokalisierung auf dem WGS-84-Erdmodell.",
+      h2What: "Wichtige Genauigkeitsmerkmale",
+      bullets: [
+        "Dezimalgrad (DD) — Standardformat für Webkarten und mobile Anwendungen",
+        "Grad Minuten Sekunden (GMS) — Traditionelles Format für Nautik und Luftfahrt",
+        "Sub-Meter-Auflösung — 6 Dezimalstellen ermöglichen ~0,1 Meter Auflösung"
+      ],
+      h3Related: "Verwandte Koordinaten-Werkzeuge"
+    },
+    pt: {
+      title: "Minha Latitude e Longitude — Coordenadas Exatas | MyLocationLab",
+      description: "Descubra sua latitude e longitude atual com sinal GPS. Coordenadas de alta precisão em Graus Decimais e GMS com mapa interativo.",
+      h1Prefix: "Minha Latitude",
+      h1Accent: "e Longitude",
+      subtitle: "Verifique suas coordenadas angulares exatas. Posicionamento de precisão via satélite com visualização imediata no mapa.",
+      emphasisField: "lat",
+      h2How: "Entendendo Latitude e Longitude",
+      pHow1: "Linhas de latitude (paralelos) circundam a Terra de 0° no Equador a 90° nos polos. Linhas de longitude (meridianos) vão de 0° em Greenwich a 180° no antimeridiano.",
+      pHow2: "Essa malha geométrica permite referenciar qualquer local do planeta com precisão métrica no elipsoide WGS 84.",
+      h2What: "Formatos de Precisão",
+      bullets: [
+        "Graus Decimais (DD) — Formato padrão de mapas digitais e sistemas web",
+        "Graus Minutos Segundos (GMS) — Notação tradicional da navegação marítima e aérea",
+        "Precisão Submétrica — Receptores modernos oferecem até 6 casas decimais (~0,1 m)"
+      ],
+      h3Related: "Ferramentas Relacionadas"
+    }
+  },
+  state: {
+    en: {
+      title: "What State Am I In? — Find My Current State | MyLocationLab",
+      description: "Find out what state, province, or region you're currently in using GPS. Real-time administrative territory detection.",
+      h1Prefix: "What State",
+      h1Accent: "Am I In?",
+      subtitle: "Detect your current state, province, department, or administrative region instantly using GPS positioning.",
+      emphasisField: "state",
+      h2How: "How Administrative Boundaries Are Identified",
+      pHow1: "Your state or province is identified by cross-referencing your GPS coordinates with official first-level administrative territory boundaries in GIS registries.",
+      pHow2: "Whether you are crossing US state lines, Canadian provinces, European regions, or Australian states, the border change is detected immediately.",
+      h2What: "Why State-Level Geolocation Matters",
+      bullets: [
+        "Tax & Commerce — Identify sales tax jurisdictions and commerce regulations",
+        "Legal & Regulatory — Understand regional driving laws, licensing, and civil policies",
+        "Emergency Services — Route communications to statewide dispatch and state highway patrols",
+        "Regional Governance — Access state-specific public service portals"
+      ],
+      h3Related: "Related Location Tools"
+    },
+    es: {
+      title: "¿En Qué Estado o Comunidad Estoy? | MyLocationLab",
+      description: "Descubra en qué estado, provincia o comunidad autónoma se encuentra. Detección instantánea de territorio administrativo mediante GPS.",
+      h1Prefix: "¿En Qué Estado o",
+      h1Accent: "Comunidad Estoy?",
+      subtitle: "Identifique su estado, provincia, comunidad autónoma o región administrativa de manera inmediata mediante señal GPS.",
+      emphasisField: "state",
+      h2How: "Cómo se Identifican los Límites Administrativos",
+      pHow1: "Su provincia o estado se detecta comparando sus coordenadas GPS con los límites territoriales de primer nivel en bases de datos cartográficas oficiales.",
+      pHow2: "Al cruzar fronteras autonómicas o estatales, el cambio de demarcación se refleja de forma inmediata.",
+      h2What: "Utilidad de la Geolocalización Autonómica o Estatal",
+      bullets: [
+        "Tributación y Comercio — Conozca la fiscalidad local e impuestos de transmisiones",
+        "Marco Normativo — Identifique normativas viales y leyes territoriales vigentes",
+        "Servicios de Emergencia — Canalice llamadas a centrales autonómicas de protección civil",
+        "Administración Pública — Acceda a los portales gubernamentales de la región"
+      ],
+      h3Related: "Herramientas Relacionadas"
+    },
+    fr: {
+      title: "Dans Quel Département ou Région Suis-Je ? | MyLocationLab",
+      description: "Identifiez dans quel département ou région vous vous trouvez avec le GPS. Détection territoriale administrative en direct.",
+      h1Prefix: "Dans Quel Département",
+      h1Accent: "ou Région Suis-Je ?",
+      subtitle: "Déterminez instantanément votre département, région administrative ou province grâce à votre positionnement GPS.",
+      emphasisField: "state",
+      h2How: "Comment Sont Identifiées les Limites Régionales",
+      pHow1: "Votre département ou région est identifié en superposant vos coordonnées géodésiques aux polygones des divisions administratives officielles.",
+      pHow2: "La transition est immédiate lors du franchissement des limites départementales ou régionales.",
+      h2What: "Pourquoi Connaître Sa Région Administrative",
+      bullets: [
+        "Fiscalité & Réglementations — Reconnaissez les taux de taxes locales et spécificités territoriales",
+        "Sécurité Routière — Respectez les règles de circulation et décrets préfectoraux locaux",
+        "Services de Secours — Acheminez les alertes vers le centre opérationnel départemental (CODIS)",
+        "Services Publics — Accédez aux guichets des conseils régionaux et préfectures"
+      ],
+      h3Related: "Outils de Localisation Associés"
+    },
+    de: {
+      title: "In welchem Bundesland bin ich? — Aktuelles Bundesland | MyLocationLab",
+      description: "Erfahren Sie sofort, in welchem Bundesland oder Kanton Sie sich befinden. Präzise Erkennung administrativer Landesgrenzen per GPS.",
+      h1Prefix: "In welchem",
+      h1Accent: "Bundesland bin ich?",
+      subtitle: "Ermitteln Sie Ihr Bundesland, Ihren Kanton oder Regierungsbezirk sekundenschnell über GPS-Satellitenortung.",
+      emphasisField: "state",
+      h2How: "Wie Landesgrenzen bestimmt werden",
+      pHow1: "Ihr Bundesland wird ermittelt, indem Ihre Koordinaten mit amtlichen GIS-Katastergrenzen der Länder abgeglichen werden.",
+      pHow2: "Beim Überqueren von Bundeslandgrenzen wird der Wechsel unmittelbar erfasst.",
+      h2What: "Bedeutung der regionalen Bundeslandzuordnung",
+      bullets: [
+        "Gesetzgebung & Verordnungen — Kenntnis der geltenden Landesbauordnungen und Feiertagsgesetze",
+        "Polizei & Rettungskräfte — Verbindung zur zuständigen Landespolizei und Leitstelle",
+        "Schul- & Verwaltungswesen — Zugriff auf länderspezifische Bildungs- und Bürgerportale",
+        "Steuern & Abgaben — Zuordnung regionaler Grunderwerbsteuer- und Hebesätze"
+      ],
+      h3Related: "Verwandte Standort-Werkzeuge"
+    },
+    pt: {
+      title: "Em Que Estado Estou? — Descobrir Meu Estado Atual | MyLocationLab",
+      description: "Descubra em qual estado ou província você está usando GPS. Identificação de limites administrativos territoriais em tempo real.",
+      h1Prefix: "Em Que Estado",
+      h1Accent: "Estou Agora?",
+      subtitle: "Identifique seu estado, província ou região administrativa de localização instantaneamente via posicionamento GPS.",
+      emphasisField: "state",
+      h2How: "Como os Limites Estaduais São Identificados",
+      pHow1: "Seu estado é identificado pelo cruzamento das coordenadas GPS com as divisões federativas oficiais registradas em órgãos cartográficos.",
+      pHow2: "Ao transitar entre estados ou divisas regionais, o sistema atualiza a jurisdição imediatamente.",
+      h2What: "Importância de Confirmar o Estado de Localização",
+      bullets: [
+        "Legislação e Trânsito — Conheça as normas de tráfego e regras estaduais de circulação",
+        "Tributação — Verifique alíquotas de ICMS e regulamentações fiscais locais",
+        "Serviços de Emergência — Direcione chamadas para as centrais de polícia e bombeiros do estado",
+        "Administração Pública — Acesse serviços e portais do governo estadual correspondente"
+      ],
+      h3Related: "Ferramentas Relacionadas"
+    }
+  }
+};
+
+const c = dict[attribute]?.[lang] || dict[attribute]?.en;
+
+const breadcrumbs = [
+  { label: t('common.home'), href: '/' },
+  { label: t('nav.myLocation'), href: '/my-location/' },
+  { label: `${c.h1Prefix} ${c.h1Accent}` }
+];
+
+const faqSchema = c.faq ? {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: c.faq.map(item => ({
+    '@type': 'Question',
+    name: item.question,
+    acceptedAnswer: {
+      '@type': 'Answer',
+      text: item.answer.replace(/<[^>]*>?/gm, '')
+    }
+  }))
+} : undefined;
+---
+
+<BaseLayout
+  leaflet
+  lang={lang}
+  title={c.title}
+  description={c.description}
+  activeSection="my-location"
+  jsonLd={faqSchema ? [faqSchema] : undefined}
+>
+  <div class="container">
+    <Breadcrumbs items={breadcrumbs} lang={lang} />
+    <SiloNav silo="my-location" lang={lang} title={c.h3Related} />
+
+    <section class="page-header">
+      <h1>{c.h1Prefix} <span class="text-gradient">{c.h1Accent}</span></h1>
+      <p class="page-header-desc">{c.subtitle}</p>
+    </section>
+
+    <LocationFinder emphasisField={c.emphasisField} lang={lang} />
+
+    <section class="section">
+      <div class="prose" style="max-width: var(--max-width-narrow);">
+        <h2>{c.h2How}</h2>
+        <p>{c.pHow1}</p>
+        <p>{c.pHow2}</p>
+
+        <h2>{c.h2What}</h2>
+        <ul>
+          {c.bullets.map((b) => (
+            <li>{b}</li>
+          ))}
+        </ul>
+
+        {c.faq && c.faq.length > 0 && (
+          <div style="margin-top: var(--space-8);">
+            <h2>FAQ</h2>
+            <FAQAccordion items={c.faq} />
+          </div>
+        )}
+
+        <h3>{c.h3Related}</h3>
+        <ul>
+          <li><a href={getLocalizedPath('/my-location/gps/', lang)}>{t('footer.link.gpsCoords')}</a></li>
+          <li><a href={getLocalizedPath('/my-location/address/', lang)}>{t('footer.link.address')}</a></li>
+          <li><a href={getLocalizedPath('/my-location/coordinates/', lang)}>{t('nav.tools')}</a></li>
+          <li><a href={getLocalizedPath('/my-location/city/', lang)}>City Finder</a></li>
+          <li><a href={getLocalizedPath('/my-location/state/', lang)}>State Finder</a></li>
+          <li><a href={getLocalizedPath('/my-location/country/', lang)}>Country Finder</a></li>
+          <li><a href={getLocalizedPath('/tools/coordinate-converter/', lang)}>{t('footer.link.converter')}</a></li>
+        </ul>
+      </div>
+    </section>
+  </div>
+</BaseLayout>

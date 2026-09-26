@@ -1,0 +1,370 @@
+---
+/**
+ * MyLocationView — Multilingual /my-location/ Engine
+ * Supports en, es, fr, de, pt with dynamic Leaflet map and instant browser telemetry.
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from './Breadcrumbs.astro';
+import FAQAccordion from './FAQAccordion.astro';
+import AuthorEAT from './AuthorEAT.astro';
+import { myLocationTranslations } from '../i18n/myLocation';
+import { useTranslations } from '../i18n/ui';
+import { getLocalizedPath, defaultLang, type SupportedLang } from '../i18n/config';
+
+interface Props {
+  lang?: SupportedLang | string;
+}
+
+const { lang: customLang = defaultLang } = Astro.props;
+const lang = (customLang in myLocationTranslations ? customLang : defaultLang) as SupportedLang;
+const content = myLocationTranslations[lang] || myLocationTranslations.en;
+const t = useTranslations(lang);
+
+const locateTitle = ({
+  en: "Zoom to my current location",
+  es: "Centrar y ampliar en mi ubicación",
+  fr: "Zoomer sur ma position actuelle",
+  de: "Auf meinen aktuellen Standort zoomen",
+  pt: "Aproximar da minha localização atual"
+})[lang] || "Zoom to my current location";
+
+const breadcrumbs = [
+  { label: t('common.home'), href: '/' },
+  { label: `${content.pageTitle} ${content.pageTitleAccent}` },
+];
+
+const myLocFaqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: content.faqItems.map((item) => ({
+    '@type': 'Question',
+    name: item.question,
+    acceptedAnswer: {
+      '@type': 'Answer',
+      text: item.answer.replace(/<[^>]*>?/gm, ''),
+    },
+  })),
+};
+---
+
+<BaseLayout
+  leaflet
+  lang={lang}
+  title={content.metaTitle}
+  description={content.metaDesc}
+  activeSection="my-location"
+  jsonLd={[myLocFaqSchema]}
+>
+  <div class="container">
+    <Breadcrumbs items={breadcrumbs} lang={lang} />
+
+    <section class="page-header">
+      <h1>{content.pageTitle} <span class="text-gradient">{content.pageTitleAccent}</span></h1>
+      <p class="page-header-desc">
+        {content.pageDesc}
+      </p>
+    </section>
+
+    <AuthorEAT 
+      reviewedBy={content.reviewedBy} 
+      reviewerTitle={content.reviewerTitle} 
+      lastUpdated="September 2026" 
+    />
+
+    <!-- Location Finder Card -->
+    <div class="location-display" id="location-card">
+      <div class="location-display-header">
+        <div class="location-display-dot" id="status-dot" style="background: var(--color-text-tertiary);"></div>
+        <span class="location-display-title">{content.cardTitle}</span>
+        <span class="badge" id="status-badge">Ready</span>
+      </div>
+
+      <div id="location-prompt" style="display: none; text-align: center; padding: var(--space-6) 0;">
+        <button class="btn btn-primary btn-lg" id="get-location-btn" type="button">
+          {content.btnGetLocation}
+        </button>
+      </div>
+
+      <div id="location-loading" style="display: none; text-align: center; padding: var(--space-6);">
+        <div class="spinner" style="margin: 0 auto var(--space-4);"></div>
+        <p style="color: var(--color-text-secondary); margin: 0;">{content.detectingText}</p>
+      </div>
+
+      <p id="location-error" style="display: none; margin: var(--space-3) 0 0; text-align: center; color: var(--color-accent-error, #ef4444); font-size: var(--text-sm);"></p>
+
+      <div class="location-data-grid" id="location-data" style="display: none;">
+        <div class="location-data-item">
+          <span class="location-data-label">{content.labels.lat}</span>
+          <span class="location-data-value highlight" id="data-lat">—</span>
+        </div>
+        <div class="location-data-item">
+          <span class="location-data-label">{content.labels.lng}</span>
+          <span class="location-data-value highlight" id="data-lng">—</span>
+        </div>
+        <div class="location-data-item span-2">
+          <span class="location-data-label">{content.labels.address}</span>
+          <span class="location-data-value" id="data-address" style="font-family: var(--font-sans); font-size: var(--text-sm);">—</span>
+        </div>
+        <div class="location-data-item">
+          <span class="location-data-label">{content.labels.city}</span>
+          <span class="location-data-value" id="data-city" style="font-family: var(--font-sans);">—</span>
+        </div>
+        <div class="location-data-item">
+          <span class="location-data-label">{content.labels.state}</span>
+          <span class="location-data-value" id="data-state" style="font-family: var(--font-sans);">—</span>
+        </div>
+        <div class="location-data-item">
+          <span class="location-data-label">{content.labels.country}</span>
+          <span class="location-data-value" id="data-country" style="font-family: var(--font-sans);">—</span>
+        </div>
+        <div class="location-data-item">
+          <span class="location-data-label">{content.labels.accuracy}</span>
+          <span class="location-data-value" id="data-accuracy">—</span>
+        </div>
+        <div class="location-data-item">
+          <span class="location-data-label">{content.labels.altitude}</span>
+          <span class="location-data-value" id="data-altitude">—</span>
+        </div>
+      </div>
+
+      <div class="action-buttons" id="action-buttons" style="margin-top: var(--space-6); display: none;">
+        <button class="btn btn-secondary btn-sm" id="copy-coords-btn" type="button">{content.actions.copy}</button>
+        <button class="btn btn-secondary btn-sm" id="share-btn" type="button">{content.actions.share}</button>
+        <a class="btn btn-secondary btn-sm" id="open-maps-btn" href="#" target="_blank" rel="noopener noreferrer">{content.actions.openMaps}</a>
+      </div>
+    </div>
+
+    <div class="map-container" id="map" data-locate-title={locateTitle} style="margin-top: var(--space-6); display: none;"></div>
+
+    <!-- Sub-pages Navigation -->
+    <section class="section">
+      <h2 class="mb-8">{content.exploreTitle} <span class="text-gradient">{content.exploreTitleAccent}</span></h2>
+      <div class="grid grid-auto-sm">
+        {content.subNav.map((item) => (
+          <a href={item.href.startsWith('/') ? getLocalizedPath(item.href, lang) : item.href} class="tool-card">
+            <h3 class="tool-card-title" style="font-size: var(--text-base);">{item.label}</h3>
+          </a>
+        ))}
+      </div>
+    </section>
+
+    <!-- Content / Article Section with Typographic Excellence -->
+    <section class="section">
+      <div class="prose" style="max-width: var(--max-width-narrow); line-height: 1.8;">
+        <h2>{content.article.whatShowsTitle}</h2>
+        <p style="line-height: 1.8; margin-bottom: 1.5rem;">
+          {content.article.whatShowsLead}
+        </p>
+        <ul style="line-height: 1.8; margin-bottom: 2rem;">
+          {content.article.whatShowsList.map((li) => (
+            <li style="margin-bottom: 0.75rem;"><strong>{li.bold}</strong> — {li.text}</li>
+          ))}
+        </ul>
+
+        <h2>{content.article.howDeterminedTitle}</h2>
+        <p style="line-height: 1.8; margin-bottom: 1.5rem;">
+          {content.article.howDeterminedLead}
+        </p>
+        <ul style="line-height: 1.8; margin-bottom: 2rem;">
+          {content.article.howDeterminedList.map((li) => (
+            <li style="margin-bottom: 0.75rem;"><strong>{li.bold}</strong> — {li.text}</li>
+          ))}
+        </ul>
+
+        <h2>{content.article.privacyTitle}</h2>
+        <p style="line-height: 1.8; margin-bottom: 1.5rem;">
+          {content.article.privacyText}
+        </p>
+      </div>
+    </section>
+
+    <!-- FAQ Accordion -->
+    <section class="section" style="margin-top: var(--space-8);">
+      <div class="section-header">
+        <h2>{content.faqTitle} <span class="text-gradient">{content.faqTitleAccent}</span></h2>
+      </div>
+      <div style="max-width: var(--max-width-narrow); margin: 0 auto;">
+        <FAQAccordion items={content.faqItems} />
+      </div>
+    </section>
+  </div>
+
+  <script>
+    import GeoLocation from '../scripts/geolocation.js';
+    import Geocoding from '../scripts/geocoding.js';
+    import Sharing from '../scripts/sharing.js';
+    import MapUtils from '../scripts/map.js';
+
+    const locateTitles: Record<string, string> = {
+      en: "Zoom to my current location",
+      es: "Centrar y ampliar en mi ubicación",
+      fr: "Zoomer sur ma position actuelle",
+      de: "Auf meinen aktuellen Standort zoomen",
+      pt: "Aproximar da minha localização atual"
+    };
+    const currentDocLang = document.documentElement.lang || 'en';
+    const locateTitle = document.getElementById('map')?.getAttribute('data-locate-title') || locateTitles[currentDocLang] || locateTitles.en;
+
+    let currentLat: number | null = null;
+    let currentLng: number | null = null;
+    let currentAccuracy: number = 0;
+    let mapInstance: any = null;
+    let markerInstance: any = null;
+    let circleInstance: any = null;
+
+    const statusDot = document.getElementById('status-dot');
+    const statusBadge = document.getElementById('status-badge');
+    const promptEl = document.getElementById('location-prompt');
+    const loadingEl = document.getElementById('location-loading');
+    const errorEl = document.getElementById('location-error');
+    const dataGrid = document.getElementById('location-data');
+    const actionBtns = document.getElementById('action-buttons');
+    const mapEl = document.getElementById('map');
+    const getBtn = document.getElementById('get-location-btn');
+
+    function setStatus(state: string, label: string) {
+      if (!statusDot || !statusBadge) return;
+      statusDot.className = 'location-display-dot';
+      statusBadge.className = 'badge';
+
+      if (state === 'active') {
+        statusDot.classList.add('active');
+        statusBadge.classList.add('badge-success');
+      } else if (state === 'loading') {
+        statusDot.style.background = 'var(--color-accent-amber)';
+        statusBadge.classList.add('badge-amber');
+      } else if (state === 'error') {
+        statusBadge.classList.add('badge-danger');
+      }
+      statusBadge.textContent = label;
+    }
+
+    function initMap(lat: number, lng: number, accuracy: number) {
+      const L = (window as any).L;
+      if (typeof L === 'undefined') {
+        setTimeout(() => initMap(lat, lng, accuracy), 150);
+        return;
+      }
+      if (!mapEl) return;
+      mapEl.style.display = 'block';
+
+      if (!mapInstance) {
+        mapInstance = L.map('map', { scrollWheelZoom: false }).setView([lat, lng], 15);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+          maxZoom: 19,
+        }).addTo(mapInstance);
+
+        MapUtils.addLocateControl(mapInstance, {
+          title: locateTitle,
+          zoom: 16,
+          onLocate: (uLat, uLng, acc) => {
+            initMap(uLat, uLng, acc);
+          }
+        });
+
+        const customIcon = L.divIcon({
+          className: 'custom-gps-marker',
+          html: '<div class="pulse-marker-wrapper"><div class="marker-pulse-wave"></div><div class="marker-core-dot"></div></div>',
+          iconSize: [32, 32],
+          iconAnchor: [16, 16],
+        });
+        markerInstance = L.marker([lat, lng], { icon: customIcon }).addTo(mapInstance);
+        circleInstance = L.circle([lat, lng], {
+          radius: accuracy,
+          color: '#2563EB',
+          fillColor: '#60A5FA',
+          fillOpacity: 0.15,
+          weight: 1.5,
+        }).addTo(mapInstance);
+      } else {
+        mapInstance.setView([lat, lng], 15);
+        markerInstance.setLatLng([lat, lng]);
+        circleInstance.setLatLng([lat, lng]);
+        circleInstance.setRadius(accuracy);
+      }
+    }
+
+    async function detectLocation() {
+      if (promptEl) promptEl.style.display = 'none';
+      if (errorEl) errorEl.style.display = 'none';
+      if (loadingEl) loadingEl.style.display = 'block';
+      setStatus('loading', 'Locating...');
+
+      try {
+        const position = await GeoLocation.getCurrentPosition();
+        const data = GeoLocation.formatPosition(position);
+        currentLat = data.latitude;
+        currentLng = data.longitude;
+        currentAccuracy = data.accuracy;
+
+        const latEl = document.getElementById('data-lat');
+        const lngEl = document.getElementById('data-lng');
+        const accEl = document.getElementById('data-accuracy');
+        const altEl = document.getElementById('data-altitude');
+
+        if (latEl) latEl.textContent = data.formattedLat;
+        if (lngEl) lngEl.textContent = data.formattedLng;
+        if (accEl) accEl.textContent = `± ${Math.round(data.accuracy)}m`;
+        if (altEl) altEl.textContent = data.altitude !== null ? `${Math.round(data.altitude)}m` : 'N/A';
+
+        if (loadingEl) loadingEl.style.display = 'none';
+        if (dataGrid) dataGrid.style.display = 'grid';
+        if (actionBtns) actionBtns.style.display = 'flex';
+        setStatus('active', 'Located');
+
+        initMap(currentLat, currentLng, currentAccuracy);
+
+        try {
+          const address = await Geocoding.reverseGeocode(currentLat, currentLng);
+          const addrEl = document.getElementById('data-address');
+          const cityEl = document.getElementById('data-city');
+          const stateEl = document.getElementById('data-state');
+          const countryEl = document.getElementById('data-country');
+
+          if (addrEl) addrEl.textContent = address.displayName || '—';
+          if (cityEl) cityEl.textContent = address.city || address.town || address.village || '—';
+          if (stateEl) stateEl.textContent = address.state || '—';
+          if (countryEl) countryEl.textContent = address.country || '—';
+        } catch {
+          // address reverse geocode fallback
+        }
+
+        const mapsBtn = document.getElementById('open-maps-btn');
+        if (mapsBtn && currentLat && currentLng) {
+          mapsBtn.setAttribute('href', Sharing.getGoogleMapsUrl(currentLat, currentLng));
+        }
+
+      } catch (err: any) {
+        if (loadingEl) loadingEl.style.display = 'none';
+        if (promptEl) promptEl.style.display = 'block';
+        if (errorEl) {
+          errorEl.textContent = err.message || 'Location error';
+          errorEl.style.display = 'block';
+        }
+        setStatus('error', 'Error');
+      }
+    }
+
+    getBtn?.addEventListener('click', detectLocation);
+    detectLocation();
+
+    document.getElementById('copy-coords-btn')?.addEventListener('click', function(this: HTMLButtonElement) {
+      if (currentLat === null || currentLng === null) return;
+      navigator.clipboard.writeText(`${currentLat.toFixed(6)}, ${currentLng.toFixed(6)}`).then(() => {
+        const orig = this.textContent;
+        this.textContent = '✓ Copied!';
+        setTimeout(() => { this.textContent = orig; }, 2000);
+      });
+    });
+
+    document.getElementById('share-btn')?.addEventListener('click', () => {
+      if (currentLat === null || currentLng === null) return;
+      Sharing.shareNative({
+        title: 'My Location',
+        text: `My location: ${currentLat.toFixed(6)}, ${currentLng.toFixed(6)}`,
+        url: Sharing.getGoogleMapsUrl(currentLat, currentLng),
+      });
+    });
+  </script>
+</BaseLayout>

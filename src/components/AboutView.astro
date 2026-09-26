@@ -1,0 +1,97 @@
+---
+/**
+ * AboutView — Multilingual About & Editorial Standards Page View
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from './Breadcrumbs.astro';
+import { getLocalizedPath, type SupportedLang, defaultLang } from '../i18n/config';
+import { aboutPageTranslations } from '../i18n/aboutPage';
+import { useTranslations } from '../i18n/ui';
+
+interface Props {
+  lang?: SupportedLang;
+}
+
+const { lang = defaultLang } = Astro.props;
+const t = useTranslations(lang);
+const c = aboutPageTranslations[lang] || aboutPageTranslations.en;
+
+const breadcrumbs = [
+  { label: t('common.home'), href: '/' },
+  { label: c.breadcrumb }
+];
+
+const pageUrl = getLocalizedPath('/about/', lang);
+const aboutSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'AboutPage',
+  name: c.metaTitle,
+  description: c.metaDescription,
+  url: `https://mylocationlab.com${pageUrl}`,
+  mainEntity: {
+    '@type': 'Organization',
+    name: 'MyLocationLab',
+    url: 'https://mylocationlab.com',
+    logo: 'https://mylocationlab.com/favicon.svg',
+    knowsAbout: [
+      'Geographic Information Systems (GIS)',
+      'Geodesy',
+      'WGS 84 Coordinate Reference System',
+      'HTML5 Geolocation API',
+      'OpenStreetMap & Nominatim Reverse Geocoding'
+    ]
+  }
+};
+---
+
+<BaseLayout
+  lang={lang}
+  title={c.metaTitle}
+  description={c.metaDescription}
+  activeSection="about"
+  jsonLd={[aboutSchema]}
+>
+  <div class="container">
+    <Breadcrumbs items={breadcrumbs} lang={lang} />
+
+    <section class="page-header" style="text-align: center; margin-bottom: var(--space-8);">
+      <span class="badge badge-primary" style="margin-bottom: var(--space-3);">{c.badge}</span>
+      <h1>{c.titlePrefix} <span class="text-gradient">{c.titleHighlight}</span></h1>
+      <p class="page-header-desc" style="max-width: 680px; margin: 0 auto;">
+        {c.subtitle}
+      </p>
+    </section>
+
+    <article class="prose" style="max-width: var(--max-width-narrow); margin: 0 auto var(--space-16); font-size: var(--text-base); line-height: 1.8;">
+      <h2>{c.h2Mission}</h2>
+      <p>{c.pMission1}</p>
+      <p>{c.pMission2}</p>
+
+      <h2>{c.h2ZeroData}</h2>
+      <p>{c.pZeroData}</p>
+      <ul>
+        <li><strong>{c.b1Title}</strong> {c.b1Desc}</li>
+        <li><strong>{c.b2Title}</strong> {c.b2Desc}</li>
+        <li><strong>{c.b3Title}</strong> {c.b3Desc}</li>
+      </ul>
+
+      <h2>{c.h2Editorial}</h2>
+      <p>{c.pEditorial}</p>
+      <h3>{c.h3CalcStandards}</h3>
+      <ul>
+        <li><strong>{c.c1Title}</strong> {c.c1Desc}</li>
+        <li><strong>{c.c2Title}</strong> {c.c2Desc}</li>
+        <li><strong>{c.c3Title}</strong> {c.c3Desc}</li>
+      </ul>
+
+      <h2>{c.h2Disclaimers}</h2>
+      <p>{c.pDisclaimers}</p>
+
+      <h2>{c.h2Contact}</h2>
+      <p>{c.pContact}</p>
+      <p>
+        <a href={getLocalizedPath('/contact/', lang)} class="btn btn-primary">{c.contactBtn}</a>
+      </p>
+    </article>
+  </div>
+</BaseLayout>

@@ -1,0 +1,236 @@
+---
+/**
+ * ShareLocationView — Multilingual Share Location Page View
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from './Breadcrumbs.astro';
+import AuthorEAT from './AuthorEAT.astro';
+import { getLocalizedPath, type SupportedLang, defaultLang } from '../i18n/config';
+import { shareLocationTranslations } from '../i18n/shareLocation';
+import { useTranslations } from '../i18n/ui';
+
+interface Props {
+  lang?: SupportedLang;
+}
+
+const { lang = defaultLang } = Astro.props;
+const t = useTranslations(lang);
+const c = shareLocationTranslations[lang] || shareLocationTranslations.en;
+
+const breadcrumbs = [
+  { label: t('common.home'), href: '/' },
+  { label: c.breadcrumb }
+];
+
+const pageUrl = getLocalizedPath('/share-location/', lang);
+const shareSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebApplication',
+  name: c.metaTitle,
+  description: c.metaDescription,
+  url: `https://mylocationlab.com${pageUrl}`,
+  applicationCategory: 'UtilityApplication',
+  operatingSystem: 'All',
+  offers: {
+    '@type': 'Offer',
+    price: '0',
+    priceCurrency: 'USD',
+  },
+};
+---
+
+<BaseLayout
+  lang={lang}
+  title={c.metaTitle}
+  description={c.metaDescription}
+  activeSection="resources"
+  jsonLd={[shareSchema]}
+>
+  <div class="container">
+    <Breadcrumbs items={breadcrumbs} lang={lang} />
+
+    <section class="page-header" style="text-align: center; margin-bottom: var(--space-8);">
+      <h1>{c.titlePrefix} <span class="text-gradient">{c.titleHighlight}</span></h1>
+      <p class="page-header-desc" style="max-width: 650px; margin: 0 auto;">
+        {c.subtitle}
+      </p>
+    </section>
+
+    <AuthorEAT 
+      reviewedBy="MyLocationLab Editorial Team" 
+      reviewerTitle={c.eatRole} 
+      lastUpdated="September 2026" 
+    />
+
+    <div class="tool-interface" style="max-width: var(--max-width-narrow); margin: 0 auto var(--space-12);"
+      data-status-requesting={c.statusRequesting}
+      data-status-acquired={c.statusAcquired}
+      data-btn-refresh={c.btnRefresh}
+      data-copied-link={c.copiedLink}
+      data-copy-link={c.copyLinkBtn}
+      data-copied-coords={c.copiedCoords}
+      data-copy-coords={c.copyCoordsBtn}
+    >
+      <div style="text-align: center; margin-bottom: var(--space-6);">
+        <button class="btn btn-primary btn-lg" id="sl-gps-btn" type="button">
+          {c.getShareBtn}
+        </button>
+        <p id="sl-status" style="font-size: var(--text-xs); color: var(--color-text-secondary); margin-top: var(--space-2);">
+          {c.statusInitial}
+        </p>
+      </div>
+
+      <!-- Sharing Container -->
+      <div id="sl-results" style="display: none;">
+        <!-- Location details snippet -->
+        <div class="card card-flat" style="padding: var(--space-4); margin-bottom: var(--space-6); background: var(--color-bg-tertiary);">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-2);">
+            <span style="font-size: var(--text-xs); color: var(--color-accent-primary); font-weight: 700;">{c.coordsLabel}</span>
+            <span class="badge badge-success" id="sl-accuracy-badge">{c.accuracyLabel}</span>
+          </div>
+          <div id="sl-coords-text" style="font-family: var(--font-mono); font-size: var(--text-lg); font-weight: 700; color: var(--color-text-heading); margin-bottom: var(--space-2);">
+            —
+          </div>
+          <div id="sl-address-text" style="font-size: var(--text-sm); color: var(--color-text-secondary);">
+            {c.resolvingAddr}
+          </div>
+        </div>
+
+        <!-- Share Actions Grid -->
+        <h3 style="font-size: var(--text-base); margin-bottom: var(--space-3); color: var(--color-text-heading);">{c.shareOptions}</h3>
+        <div class="grid grid-2" style="gap: var(--space-3); margin-bottom: var(--space-6);">
+          <button class="btn btn-secondary" id="sl-copy-link-btn" type="button">
+            {c.copyLinkBtn}
+          </button>
+          <button class="btn btn-secondary" id="sl-copy-coords-btn" type="button">
+            {c.copyCoordsBtn}
+          </button>
+          <a class="btn btn-secondary" id="sl-whatsapp-btn" href="#" target="_blank" rel="noopener noreferrer">
+            {c.shareWhatsApp}
+          </a>
+          <a class="btn btn-secondary" id="sl-sms-btn" href="#">
+            {c.shareSms}
+          </a>
+          <a class="btn btn-secondary" id="sl-google-maps" href="#" target="_blank" rel="noopener noreferrer">
+            {c.openGoogle}
+          </a>
+          <a class="btn btn-secondary" id="sl-apple-maps" href="#" target="_blank" rel="noopener noreferrer">
+            {c.openApple}
+          </a>
+        </div>
+
+        <div style="text-align: center; border-top: 1px solid var(--color-border); padding-top: var(--space-4);">
+          <a href={getLocalizedPath('/tools/location-qr-code/', lang)} class="btn btn-ghost btn-sm">
+            {c.needQrBtn}
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Educational & Privacy Prose -->
+    <article class="prose" style="max-width: var(--max-width-narrow); margin: 0 auto var(--space-16);">
+      <h2>{c.h2How}</h2>
+      <p>{c.pHow1}</p>
+      <p>{c.pHow2}</p>
+
+      <h2>{c.h2When}</h2>
+      <ul>
+        <li><strong>{c.when1Title}</strong> {c.when1Desc}</li>
+        <li><strong>{c.when2Title}</strong> {c.when2Desc}</li>
+        <li><strong>{c.when3Title}</strong> {c.when3Desc}</li>
+      </ul>
+    </article>
+  </div>
+
+  <script>
+    import GeoLocation from '../scripts/geolocation.js';
+    import Geocoding from '../scripts/geocoding.js';
+
+    const container = document.querySelector('.tool-interface');
+    const msgRequesting = container?.getAttribute('data-status-requesting') || 'Requesting browser GPS permission...';
+    const msgAcquired = container?.getAttribute('data-status-acquired') || 'Location successfully acquired!';
+    const btnRefreshTxt = container?.getAttribute('data-btn-refresh') || '🔄 Refresh Position';
+    const copiedLinkTxt = container?.getAttribute('data-copied-link') || '✅ Copied Link!';
+    const copyLinkOriginal = container?.getAttribute('data-copy-link') || '📋 Copy Map Link';
+    const copiedCoordsTxt = container?.getAttribute('data-copied-coords') || '✅ Copied Coordinates!';
+    const copyCoordsOriginal = container?.getAttribute('data-copy-coords') || '📐 Copy Coordinates';
+
+    const gpsBtn = document.getElementById('sl-gps-btn');
+    const statusEl = document.getElementById('sl-status');
+    const resultsBox = document.getElementById('sl-results');
+    const coordsEl = document.getElementById('sl-coords-text');
+    const addressEl = document.getElementById('sl-address-text');
+    const accuracyBadge = document.getElementById('sl-accuracy-badge');
+
+    const copyLinkBtn = document.getElementById('sl-copy-link-btn');
+    const copyCoordsBtn = document.getElementById('sl-copy-coords-btn');
+    const whatsappBtn = document.getElementById('sl-whatsapp-btn');
+    const smsBtn = document.getElementById('sl-sms-btn');
+    const googleBtn = document.getElementById('sl-google-maps');
+    const appleBtn = document.getElementById('sl-apple-maps');
+
+    let currentLat = 0;
+    let currentLng = 0;
+    let shareUrl = '';
+
+    if (gpsBtn) {
+      gpsBtn.addEventListener('click', async () => {
+        gpsBtn.textContent = '...';
+        if (statusEl) statusEl.textContent = msgRequesting;
+
+        try {
+          const pos = await GeoLocation.getCurrentPosition({ enableHighAccuracy: true });
+          currentLat = pos.latitude;
+          currentLng = pos.longitude;
+
+          shareUrl = `https://maps.google.com/?q=${currentLat.toFixed(6)},${currentLng.toFixed(6)}`;
+
+          if (coordsEl) coordsEl.textContent = `${currentLat.toFixed(6)}, ${currentLng.toFixed(6)}`;
+          if (accuracyBadge) accuracyBadge.textContent = `±${Math.round(pos.accuracy)}m`;
+
+          if (resultsBox) resultsBox.style.display = 'block';
+          if (statusEl) statusEl.textContent = msgAcquired;
+          gpsBtn.textContent = btnRefreshTxt;
+
+          // Set links
+          if (googleBtn) googleBtn.setAttribute('href', `https://maps.google.com/?q=${currentLat},${currentLng}`);
+          if (appleBtn) appleBtn.setAttribute('href', `https://maps.apple.com/?ll=${currentLat},${currentLng}&q=My%20Location`);
+          
+          const shareText = `Here is my current location: https://maps.google.com/?q=${currentLat.toFixed(6)},${currentLng.toFixed(6)}`;
+          if (whatsappBtn) whatsappBtn.setAttribute('href', `https://api.whatsapp.com/send?text=${encodeURIComponent(shareText)}`);
+          if (smsBtn) smsBtn.setAttribute('href', `sms:?body=${encodeURIComponent(shareText)}`);
+
+          // Reverse geocode for address display
+          try {
+            const addr = await Geocoding.reverseGeocode(currentLat, currentLng);
+            if (addressEl) addressEl.textContent = addr.displayName || 'Address resolved';
+          } catch (e) {
+            if (addressEl) addressEl.textContent = `${currentLat.toFixed(6)}, ${currentLng.toFixed(6)}`;
+          }
+        } catch (err: any) {
+          if (statusEl) statusEl.textContent = `Error: ${err.message || 'Location access denied'}`;
+          gpsBtn.textContent = '📍 Try Again';
+        }
+      });
+    }
+
+    if (copyLinkBtn) {
+      copyLinkBtn.addEventListener('click', () => {
+        navigator.clipboard.writeText(shareUrl).then(() => {
+          copyLinkBtn.textContent = copiedLinkTxt;
+          setTimeout(() => { copyLinkBtn.textContent = copyLinkOriginal; }, 2000);
+        });
+      });
+    }
+
+    if (copyCoordsBtn) {
+      copyCoordsBtn.addEventListener('click', () => {
+        const text = `${currentLat.toFixed(6)}, ${currentLng.toFixed(6)}`;
+        navigator.clipboard.writeText(text).then(() => {
+          copyCoordsBtn.textContent = copiedCoordsTxt;
+          setTimeout(() => { copyCoordsBtn.textContent = copyCoordsOriginal; }, 2000);
+        });
+      });
+    }
+  </script>
+</BaseLayout>

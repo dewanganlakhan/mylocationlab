@@ -6,14 +6,19 @@
  * below the fold. Replaces the old boxed "Geospatial Utilities & Tools" card.
  */
 import { myLocationSubNav, toolsNav, guidesNav, comparisonsNav } from '../data/navigation.js';
+import { getLangFromUrl, getLocalizedPath, type SupportedLang } from '../i18n/config';
 
 interface Props {
-  silo: 'my-location' | 'tools' | 'guides' | 'comparisons' | 'maps';
+  silo?: 'my-location' | 'tools' | 'guides' | 'comparisons' | 'maps';
+  currentSection?: string;
   currentPath?: string;
   title?: string;
+  lang?: string;
 }
 
-const { silo, currentPath = Astro.url.pathname, title } = Astro.props;
+const { silo: propSilo, currentSection, currentPath = Astro.url.pathname, title, lang: customLang } = Astro.props;
+const silo = propSilo || (currentSection as any);
+const lang = (customLang || getLangFromUrl(Astro.url)) as SupportedLang;
 
 let items: { label: string; href: string; icon?: string }[] = [];
 let siloTitle = '';
@@ -45,7 +50,7 @@ if (silo === 'my-location') {
 
 {items.length > 0 && (
   <nav class="quicknav" aria-label={`${title || siloTitle} quick links`}>
-    <a href={siloHubHref} class="quicknav-hub">
+    <a href={getLocalizedPath(siloHubHref, lang)} class="quicknav-hub">
       <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
         <rect x="3" y="3" width="7" height="7" rx="1.5"/>
         <rect x="14" y="3" width="7" height="7" rx="1.5"/>
@@ -57,9 +62,10 @@ if (silo === 'my-location') {
     <span class="quicknav-divider" aria-hidden="true"></span>
     <div class="quicknav-track">
       {items.map((item) => {
-        const isActive = currentPath === item.href || (item.href !== '/' && currentPath.startsWith(item.href) && currentPath.length === item.href.length);
+        const itemLocalizedHref = getLocalizedPath(item.href, lang);
+        const isActive = currentPath === itemLocalizedHref || currentPath === item.href;
         return (
-          <a href={item.href} class={`quicknav-chip ${isActive ? 'active' : ''}`} aria-current={isActive ? 'page' : undefined}>
+          <a href={itemLocalizedHref} class={`quicknav-chip ${isActive ? 'active' : ''}`} aria-current={isActive ? 'page' : undefined}>
             {item.label}
           </a>
         );

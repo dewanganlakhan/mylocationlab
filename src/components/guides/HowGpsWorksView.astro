@@ -1,0 +1,297 @@
+---
+/**
+ * HowGpsWorksView — Multilingual Guide: How GPS Location Works
+ */
+import ContentLayout from '../../layouts/ContentLayout.astro';
+import { getLocalizedPath, type SupportedLang, defaultLang } from '../../i18n/config';
+
+interface Props {
+  lang?: SupportedLang;
+}
+
+const { lang = defaultLang } = Astro.props;
+
+const translations: Record<string, any> = {
+  en: {
+    title: "How GPS Works — Trilateration & Satellites | MyLocationLab",
+    description: "How GPS computes real-time coordinates using satellite trilateration, atomic clock corrections, and the WGS 84 datum.",
+    h1: "How GPS Location Works: Satellites, Trilateration & WGS 84",
+    subtitle: "A deep-dive exploration into satellite constellations, radio time-of-flight physics, relativistic time dilation, and modern multi-GNSS receivers.",
+    pIntro1: "Whether you are checking Where Am I on your phone, measuring terrain elevation, or converting coordinates, your device is listening to a symphony of atomic time pulses originating 20,200 kilometers above the Earth.",
+    pIntro2: "The Global Positioning System (GPS)—formally NAVSTAR GPS—is the world's most pervasive positioning utility. In this guide, we explore the mathematical principles and physical phenomena that transform orbital radio signals into sub-meter coordinates on your screen.",
+    calloutBadge: "🛰️ Live Hardware Diagnostic",
+    calloutTitle: "Inspect Your Device's Live GPS Fix",
+    calloutDesc: "See real-time latitude, longitude, altitude, and horizontal accuracy radius calculated directly from your browser's GNSS receiver.",
+    calloutBtn: "Check GPS Coordinates →",
+    h2Segments: "1. The Architecture: The Three GPS Segments",
+    seg1Title: "The Space Segment (Satellite Constellations)",
+    seg1Desc: "A baseline constellation of 31 operational satellites in Medium Earth Orbit (MEO) at ~20,200 km altitude. Distributed across 6 orbital planes inclined at 55°, ensuring at least 6 to 10 satellites are visible from virtually any spot on Earth with an open sky view.",
+    seg2Title: "The Control Segment (Ground Tracking & Correction)",
+    seg2Desc: "Global monitoring stations and ground antennas track orbits, measure clock drift, and upload updated orbital parameters (ephemeris) and system health data (almanac).",
+    seg3Title: "The User Segment (Your Phone & Receivers)",
+    seg3Desc: "GPS receivers are completely passive: they only receive radio signals and never transmit data back to satellites. Your privacy is preserved at the orbital level.",
+    h2Trilateration: "2. The Mathematical Engine: 3D Trilateration",
+    pTrilateration1: "Trilateration determines an unknown position by measuring distances from known reference points. Because radio waves travel at the speed of light (c ≈ 299,792,458 m/s), distance equals propagation time multiplied by c.",
+    pTrilateration2: "Four satellites are needed: three to resolve (X, Y, Z) Cartesian coordinates, and a fourth satellite to resolve receiver clock bias against high-precision atomic clocks.",
+    h2Relativity: "3. Relativistic Time Dilation: Einstein in Your Pocket",
+    pRelativity1: "Without accounting for Einstein's theories of relativity, GPS navigation would accumulate an error of approximately 10 kilometers every single day.",
+    pRelativity2: "Special Relativity causes satellite clocks to tick slower due to orbital speed (~7 µs/day), while General Relativity causes satellite clocks to tick faster due to weaker gravity (~45 µs/day). The net difference of +38 µs/day is mathematically compensated.",
+    h2Wgs84: "4. The Coordinate Reference: WGS 84",
+    pWgs84: "Earth is not a perfect sphere—it is an oblate spheroid bulging at the equator. All GPS calculations reference the WGS 84 (EPSG:4326) reference ellipsoid, defining the mathematical frame for global latitude and longitude.",
+    connectedGuides: "🔗 Connected Guides & Practical Tools",
+    tool1Title: "GPS Coordinates Finder",
+    tool1Desc: "Live satellite telemetry",
+    tool2Title: "GPS Accuracy Monitor",
+    tool2Desc: "Inspect error radius",
+    tool3Title: "Elevation Finder",
+    tool3Desc: "Satellite altitude models",
+    tool4Title: "GPS vs IP Comparison",
+    tool4Desc: "Satellite vs network positioning"
+  },
+  es: {
+    title: "Cómo Funciona el GPS — Satélites y Trilateración | MyLocationLab",
+    description: "Comprenda cómo el GPS calcula coordenadas mediante trilateración satelital, correcciones atómicas y el elipsoide WGS 84.",
+    h1: "Cómo Funciona el GPS: Satélites, Trilateración y WGS 84",
+    subtitle: "Análisis técnico de constelaciones orbitales, física del tiempo de vuelo, dilatación relativista y receptores multi-GNSS.",
+    pIntro1: "Tanto si consulta Dónde Estoy en su teléfono, calcula la altitud de una montaña o convierte coordenadas, su dispositivo sintoniza pulsos atómicos emitidos desde 20.200 km de altura.",
+    pIntro2: "El Sistema de Posicionamiento Global (GPS) es el estándar universal de posicionamiento. En esta guía exploramos la física, geometría esférica y computación espacial que convierten ondas de radio en coordenadas métricas en su pantalla.",
+    calloutBadge: "🛰️ Diagnóstico de Hardware en Vivo",
+    calloutTitle: "Inspeccione la Señal GPS de su Dispositivo",
+    calloutDesc: "Compruebe latitud, longitud, altitud y radio de error calculados directamente por el receptor GNSS de su equipo.",
+    calloutBtn: "Consultar Coordenadas GPS →",
+    h2Segments: "1. La Arquitectura: Los Tres Segmentos del GPS",
+    seg1Title: "Segmento Espacial (Constelación de Satélites)",
+    seg1Desc: "Constelación de al menos 31 satélites operativos en Órbita Terrestre Media (MEO) a ~20.200 km. Distribuidos en 6 planos orbitales con 55° de inclinación, garantizando entre 6 y 10 satélites a la vista desde cualquier punto con cielo despejado.",
+    seg2Title: "Segmento de Control (Seguimiento Terrestre)",
+    seg2Desc: "Estaciones de monitorización y antenas globales miden desviaciones de órbita y reloj atómico, actualizando las efemérides y el almanaque del sistema continuamente.",
+    seg3Title: "Segmento de Usuario (Receptores y Smartphones)",
+    seg3Desc: "Los receptores GPS son estrictamente pasivos: reciben radiofrecuencias del espacio pero jamás emiten señales hacia los satélites, garantizando privacidad total en órbita.",
+    h2Trilateration: "2. El Motor Matemático: Trilateración 3D",
+    pTrilateration1: "La trilateración determina una posición desconocida midiendo distancias a puntos conocidos. Dado que las ondas de radio viajan a la velocidad de la luz (c ≈ 299.792.458 m/s), la distancia equivale al tiempo multiplicado por c.",
+    pTrilateration2: "Se requieren como mínimo 4 satélites: 3 para triangular las coordenadas espaciales (X, Y, Z) y un cuarto para corregir el desfase del reloj de cuarzo del móvil con los relojes atómicos.",
+    h2Relativity: "3. Dilatación Temporal Relativista: Einstein en su Bolsillo",
+    pRelativity1: "Sin las correcciones de la Teoría de la Relatividad de Einstein, el sistema GPS acumularía un error de posición de más de 10 kilómetros cada día.",
+    pRelativity2: "La Relatividad Especial retrasa los relojes satelitales (~7 µs/día por velocidad), mientras que la Relatividad General los acelera (~45 µs/día por menor gravedad). El desvío neto de +38 µs/día se compensa electrónicamente.",
+    h2Wgs84: "4. Marco de Referencia Geodésico: WGS 84",
+    pWgs84: "La Tierra no es una esfera perfecta, sino un esferoide achatado en los polos. Todos los cálculos GPS toman como referencia el elipsoide WGS 84 (EPSG:4326), definiendo latitud y longitud global.",
+    connectedGuides: "🔗 Guías y Herramientas Conectadas",
+    tool1Title: "Buscador de Coordenadas",
+    tool1Desc: "Telemetría satelital en vivo",
+    tool2Title: "Monitor de Precisión GPS",
+    tool2Desc: "Inspección de radio de error",
+    tool3Title: "Buscador de Elevación",
+    tool3Desc: "Modelos de altitud satelital",
+    tool4Title: "Comparativa GPS vs IP",
+    tool4Desc: "Satélites vs geolocalización web"
+  },
+  fr: {
+    title: "Comment Fonctionne le GPS — Trilatération & WGS 84 | MyLocationLab",
+    description: "Comprenez le calcul de coordonnées GPS par trilatération satellitaire, horloges atomiques et modèle ellipsoïdal WGS 84.",
+    h1: "Comment Fonctionne le GPS : Satellites, Trilatération & WGS 84",
+    subtitle: "Plongée technique dans les constellations orbitales, la physique du temps de vol et les récepteurs multi-GNSS modernes.",
+    pIntro1: "Que vous consultiez Où Suis-Je sur votre smartphone, mesuriez l'altitude d'un relief ou convertissiez des coordonnées, votre terminal capte des signaux atomiques émis à 20 200 kilomètres d'altitude.",
+    pIntro2: "Le système GPS (NAVSTAR) est l'infrastructure de positionnement la plus universelle. Ce guide détaille les équations mathématiques et la relativité einsteinienne qui permettent d'afficher vos coordonnées métriques.",
+    calloutBadge: "🛰️ Diagnostic Hardware",
+    calloutTitle: "Inspectez le Point GPS Réel de votre Appareil",
+    calloutDesc: "Visualisez en direct la latitude, longitude, altitude et le rayon de précision fournis par la puce GNSS de votre navigateur.",
+    calloutBtn: "Vérifier les Coordonnées GPS →",
+    h2Segments: "1. L'Architecture Globale : Les Trois Segments du GPS",
+    seg1Title: "Le Segment Spatial (Constellation de Satellites)",
+    seg1Desc: "31 satellites actifs en orbite terrestre moyenne (MEO) à environ 20 200 km d'altitude. Répartis sur 6 plans orbitaux inclinés à 55°, ils garantissent la visibilité permanente de 6 à 10 satellites sous ciel ouvert.",
+    seg2Title: "Le Segment de Contrôle (Télémétrie Terrestre)",
+    seg2Desc: "Stations de poursuite terrestres et antennes d'injection vérifiant en continu les dérives d'horloge et téléversant les éphémérides orbitales actualisées.",
+    seg3Title: "Le Segment Utilisateur (Smartphones & Récepteurs)",
+    seg3Desc: "Les puces GPS sont totalement passives : elles écoutent les fréquences radio sans émettre le moindre paquet vers l'espace, assurant une parfaite confidentialité spatiale.",
+    h2Trilateration: "2. Le Cœur Mathématique : La Trilatération 3D",
+    pTrilateration1: "La trilatération détermine une position en mesurant la distance par rapport à des émetteurs connus. Les ondes radio se propageant à la vitesse de la lumière (c ≈ 300 000 km/s), la distance découle du temps de vol.",
+    pTrilateration2: "Quatre satellites sont indispensables : trois pour résoudre la position spatiale (X, Y, Z) et un quatrième pour éliminer le biais d'horloge du récepteur face aux horloges atomiques embarquées.",
+    h2Relativity: "3. Dilatation Temporelle Relativiste : Einstein dans votre Poche",
+    pRelativity1: "Sans prise en compte de la relativité générale et restreinte d'Einstein, les calculs GPS accumuleraient plus de 10 kilomètres d'erreur chaque jour.",
+    pRelativity2: "La vitesse orbitale retarde les horloges (-7 µs/jour), tandis que la moindre gravité les accélère (+45 µs/jour). Le différentiel net de +38 µs/jour est compensé logiciellement à la nanoseconde près.",
+    h2Wgs84: "4. Le Référentiel Cartographique : WGS 84",
+    pWgs84: "La Terre n'étant pas une sphère parfaite, l'ensemble des équations GPS s'appuie sur l'ellipsoïde de révolution WGS 84 (EPSG:4326), standard international de géodésie.",
+    connectedGuides: "🔗 Outils & Guides Liés",
+    tool1Title: "Coordonnées GPS",
+    tool1Desc: "Télémétrie satellite en direct",
+    tool2Title: "Moniteur de Précision",
+    tool2Desc: "Contrôle du rayon d'erreur",
+    tool3Title: "Calculateur d'Altitude",
+    tool3Desc: "Modèles topographiques MNT",
+    tool4Title: "Comparatif GPS vs IP",
+    tool4Desc: "Position satellite vs réseau"
+  },
+  de: {
+    title: "Wie GPS funktioniert — Trilateration & WGS 84 | MyLocationLab",
+    description: "Verstehen Sie, wie GPS Satelliten-Trilateration, Atomuhren und das WGS-84-Ellipsoid zur Koordinatenberechnung nutzt.",
+    h1: "Wie GPS funktioniert: Satelliten, Trilateration & WGS 84",
+    subtitle: "Eine fundierte Analyse von Satellitenkonstellationen, Signallaufzeiten, Einsteins Relativitätstheorie und GNSS-Empfängern.",
+    pIntro1: "Egal ob Sie Wo bin ich aufrufen, Höhenprofile abfragen oder Koordinaten konvertieren: Ihr Gerät empfängt Funksignale aus 20.200 Kilometern Höhe.",
+    pIntro2: "Das Global Positioning System (GPS) ist das Rückgrat moderner Mobilität. Dieser Leitfaden erklärt die Physik, mathematische Trilateration und relativistische Korrekturen hinter Ihren Standortkoordinaten.",
+    calloutBadge: "🛰️ Live-Diagnose",
+    calloutTitle: "Live-Satellitendaten Ihres Geräts prüfen",
+    calloutDesc: "Ermitteln Sie Breitengrad, Längengrad, Höhe und Genauigkeitsradius direkt über Ihren GNSS-Browser-Sensor.",
+    calloutBtn: "GPS-Koordinaten prüfen →",
+    h2Segments: "1. Die Systemarchitektur: Die drei GPS-Segmente",
+    seg1Title: "Das Weltraumsegment (Satellitenkonstellation)",
+    seg1Desc: "Mindestens 31 aktive Satelliten in mittlerer Erdumlaufbahn (MEO) bei ca. 20.200 km Höhe, aufgeteilt auf 6 Bahnebenen mit 55° Neigung, sodass an jedem Ort der Erde stets 6 bis 10 Satelliten sichtbar sind.",
+    seg2Title: "Das Kontrollsegment (Bodenstationen)",
+    seg2Desc: "Weltweite Überwachungsstationen messen Umlaufbahnen und Uhrendrift, um Ephemeriden und Systemalmanach kontinuierlich zu korrigieren.",
+    seg3Title: "Das Nutzersegment (Smartphones & Empfänger)",
+    seg3Desc: "GPS-Chips arbeiten rein passiv: Sie empfangen Funksignale, senden jedoch keinerlei Signale an Satelliten zurück. Absolute Privatsphäre im Orbit.",
+    h2Trilateration: "2. Der mathematische Kern: 3D-Trilateration",
+    pTrilateration1: "Trilateration bestimmt unbekannte Orte über Distanzmessungen zu bekannten Punkten. Da sich Radiowellen mit Lichtgeschwindigkeit ausbreiten, ergibt sich die Distanz aus der Signallaufzeit.",
+    pTrilateration2: "Vier Satelliten sind mathematisch erforderlich: Drei bestimmen die Raumkoordinaten (X, Y, Z), der vierte gleicht den Zeitversatz der Empfängerquarzuhr zu den Atomuhren ab.",
+    h2Relativity: "3. Relativistische Zeitdilatation: Einstein im Smartphone",
+    pRelativity1: "Ohne Einsteins Relativitätstheorie würde die GPS-Positionsbestimmung jeden Tag um rund 10 Kilometer abweichen.",
+    pRelativity2: "Die Bahngeschwindigkeit verlangsamt die Satellitenuhren (-7 µs/Tag), während die geringere Erdanziehungskraft sie beschleunigt (+45 µs/Tag). Die Differenz von +38 µs/Tag wird hardwareseitig kompensiert.",
+    h2Wgs84: "4. Das geodätische Bezugssystem: WGS 84",
+    pWgs84: "Da die Erde ein abgeflachtes Rotationsellipsoid bildet, basieren alle GPS-Berechnungen auf dem WGS-84-Referenzellipsoid (EPSG:4326).",
+    connectedGuides: "🔗 Weiterführende Leitfäden & Werkzeuge",
+    tool1Title: "GPS-Koordinaten Finder",
+    tool1Desc: "Satellitendaten in Echtzeit",
+    tool2Title: "GPS-Genauigkeitstester",
+    tool2Desc: "Fehlerradius analysieren",
+    tool3Title: "Höhen-Finder",
+    tool3Desc: "Satellitengestützte Höhenmodelle",
+    tool4Title: "GPS vs. IP Vergleich",
+    tool4Desc: "Satellit vs. Netzwerk-Ortung"
+  },
+  pt: {
+    title: "Como Funciona o GPS — Trilateração e WGS 84 | MyLocationLab",
+    description: "Descubra como o GPS calcula coordenadas por trilateração de satélites, relógios atômicos e o elipsoide de referência WGS 84.",
+    h1: "Como Funciona o GPS: Satélites, Trilateração e WGS 84",
+    subtitle: "Uma análise aprofundada de constelações orbitais, física do tempo de voo, dilatação relativística e receptores GNSS modernos.",
+    pIntro1: "Ao abrir o Onde Estou no celular, medir a altitude de um terreno ou converter formatos de coordenadas, seu aparelho sintoniza sinais emitidos a 20.200 km de altitude.",
+    pIntro2: "O Sistema de Posicionamento Global (GPS) é o referencial moderno de localização. Neste guia, desvendamos as equações matemáticas, a física de ondas e a teoria da relatividade que trazem coordenadas submétricas para sua tela.",
+    calloutBadge: "🛰️ Diagnóstico ao Vivo",
+    calloutTitle: "Inspecione o Sinal GPS do seu Aparelho",
+    calloutDesc: "Veja latitude, longitude, altitude e margem de erro calculados pelo receptor GNSS integrado do seu navegador.",
+    calloutBtn: "Consultar Coordenadas GPS →",
+    h2Segments: "1. Arquitetura Geral: Os Três Segmentos do GPS",
+    seg1Title: "Segmento Espacial (Constelação de Satélites)",
+    seg1Desc: "Mais de 31 satélites em Órbita Terrestre Média (MEO) a ~20.200 km de altitude. Distribuídos em 6 planos orbitais inclinados a 55°, asseguram de 6 a 10 satélites visíveis em qualquer ponto com céu aberto.",
+    seg2Title: "Segmento de Controle (Rastreamento Terrestre)",
+    seg2Desc: "Estações em terra monitoram variações de órbita e desvios de relógios atômicos, transmitindo efemérides e dados de saúde do sistema diariamente.",
+    seg3Title: "Segmento de Usuário (Smartphones e Receptores)",
+    seg3Desc: "Os receptores operam de forma estritamente passiva: captam sinais sem emitir transmissões aos satélites, garantindo privacidade orbital absoluta.",
+    h2Trilateration: "2. O Mecanismo Matemático: Trilateração 3D",
+    pTrilateration1: "A trilateração determina posições desconhecidas medindo distâncias até pontos de referência. Como as ondas de rádio viajam na velocidade da luz (c ≈ 300.000 km/s), a distância é calculada pelo tempo de percurso.",
+    pTrilateration2: "Quatro satélites são indispensáveis: três triangulam a posição tridimensional (X, Y, Z) e o quarto sincroniza o relógio de quartzo do aparelho com os relógios atômicos orbitais.",
+    h2Relativity: "3. Dilatação Temporal Relativística: Einstein no seu Bolso",
+    pRelativity1: "Sem as correções das Teorias da Relatividade de Einstein, a localização por satélite acumularia mais de 10 km de erro a cada 24 horas.",
+    pRelativity2: "A velocidade dos satélites atrasa os relógios (-7 µs/dia), enquanto a menor gravidade os acelera (+45 µs/dia). A diferença líquida de +38 µs/dia é corrigida eletronicamente no sistema.",
+    h2Wgs84: "4. O Modelo de Referência Espacial: WGS 84",
+    pWgs84: "Como a Terra é um esferoide oblato, todos os cálculos da constelação GPS utilizam o elipsoide WGS 84 (EPSG:4326) como datum matemático universal.",
+    connectedGuides: "🔗 Guias e Ferramentas Conectadas",
+    tool1Title: "Coordenadas GPS",
+    tool1Desc: "Telemetria via satélite",
+    tool2Title: "Monitor de Precisão",
+    tool2Desc: "Raio de erro em tempo real",
+    tool3Title: "Medidor de Altitude",
+    tool3Desc: "Modelos topográficos de elevação",
+    tool4Title: "Comparação GPS vs IP",
+    tool4Desc: "Satélites vs geolocalização IP"
+  }
+};
+
+const c = translations[lang] || translations.en;
+---
+
+<ContentLayout
+  lang={lang}
+  title={c.title}
+  description={c.description}
+  h1={c.h1}
+  subtitle={c.subtitle}
+  section="guides"
+  sectionLabel={lang === 'es' ? 'Guías Educativas' : lang === 'fr' ? 'Guides Pédagogiques' : lang === 'de' ? 'Fachratgeber' : lang === 'pt' ? 'Guias Educativos' : 'Educational Guides'}
+  readTime="9 min"
+  publishDate="2026-09-15"
+  modifiedDate="2026-09-22"
+>
+  <p>{c.pIntro1}</p>
+  <p>{c.pIntro2}</p>
+
+  <div class="tool-callout">
+    <div class="tool-callout-content">
+      <span class="tool-callout-badge">{c.calloutBadge}</span>
+      <h3 class="tool-callout-title">{c.calloutTitle}</h3>
+      <p class="tool-callout-desc">{c.calloutDesc}</p>
+    </div>
+    <div class="tool-callout-action">
+      <a href={getLocalizedPath('/tools/gps-coordinates/', lang)} class="btn btn-primary">{c.calloutBtn}</a>
+    </div>
+  </div>
+
+  <h2>{c.h2Segments}</h2>
+  <div class="step-container">
+    <div class="step-card">
+      <div class="step-number">1</div>
+      <div class="step-body">
+        <h4 class="step-title">{c.seg1Title}</h4>
+        <p class="step-desc">{c.seg1Desc}</p>
+      </div>
+    </div>
+
+    <div class="step-card">
+      <div class="step-number">2</div>
+      <div class="step-body">
+        <h4 class="step-title">{c.seg2Title}</h4>
+        <p class="step-desc">{c.seg2Desc}</p>
+      </div>
+    </div>
+
+    <div class="step-card">
+      <div class="step-number">3</div>
+      <div class="step-body">
+        <h4 class="step-title">{c.seg3Title}</h4>
+        <p class="step-desc">{c.seg3Desc}</p>
+      </div>
+    </div>
+  </div>
+
+  <h2>{c.h2Trilateration}</h2>
+  <p>{c.pTrilateration1}</p>
+  <p>{c.pTrilateration2}</p>
+
+  <h2>{c.h2Relativity}</h2>
+  <p>{c.pRelativity1}</p>
+  <p>{c.pRelativity2}</p>
+
+  <h2>{c.h2Wgs84}</h2>
+  <p>{c.pWgs84}</p>
+
+  <div class="contextual-next-box">
+    <h3 class="contextual-next-title">{c.connectedGuides}</h3>
+    <div class="contextual-next-grid">
+      <a href={getLocalizedPath('/tools/gps-coordinates/', lang)} class="contextual-link-card">
+        <span class="contextual-link-icon">🛰️</span>
+        <div class="contextual-link-info">
+          <div class="contextual-link-title">{c.tool1Title}</div>
+          <div class="contextual-link-sub">{c.tool1Desc}</div>
+        </div>
+      </a>
+      <a href={getLocalizedPath('/tools/gps-accuracy/', lang)} class="contextual-link-card">
+        <span class="contextual-link-icon">🎯</span>
+        <div class="contextual-link-info">
+          <div class="contextual-link-title">{c.tool2Title}</div>
+          <div class="contextual-link-sub">{c.tool2Desc}</div>
+        </div>
+      </a>
+      <a href={getLocalizedPath('/tools/elevation-finder/', lang)} class="contextual-link-card">
+        <span class="contextual-link-icon">⛰️</span>
+        <div class="contextual-link-info">
+          <div class="contextual-link-title">{c.tool3Title}</div>
+          <div class="contextual-link-sub">{c.tool3Desc}</div>
+        </div>
+      </a>
+      <a href={getLocalizedPath('/comparisons/gps-vs-ip-location/', lang)} class="contextual-link-card">
+        <span class="contextual-link-icon">⚖️</span>
+        <div class="contextual-link-info">
+          <div class="contextual-link-title">{c.tool4Title}</div>
+          <div class="contextual-link-sub">{c.tool4Desc}</div>
+        </div>
+      </a>
+    </div>
+  </div>
+</ContentLayout>

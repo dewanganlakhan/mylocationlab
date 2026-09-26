@@ -1,0 +1,369 @@
+---
+/**
+ * GeocodingVsReverseView — Multilingual Comparison: Forward vs Reverse Geocoding
+ */
+import ContentLayout from '../../layouts/ContentLayout.astro';
+import { getLocalizedPath, type SupportedLang, defaultLang } from '../../i18n/config';
+
+interface Props {
+  lang?: SupportedLang;
+}
+
+const { lang = defaultLang } = Astro.props;
+
+const translations: Record<string, any> = {
+  en: {
+    title: "Geocoding vs Reverse Geocoding: Differences | MyLocationLab",
+    description: "Compare Forward Geocoding (address to coordinates) with Reverse Geocoding (coordinates to address). Learn spatial indexing, R-trees, algorithms, and use cases.",
+    h1: "Forward Geocoding vs. Reverse Geocoding: What Is the Difference?",
+    subtitle: "An architectural breakdown of geospatial translation: converting human addresses to machine coordinates and vice versa.",
+    p1: "Computers understand Earth through floating-point numerical vectors: latitude and longitude. Humans understand Earth through semantic place names: street names, house numbers, cities, and postal codes.",
+    p2: "The dual processes of Forward Geocoding and Reverse Geocoding serve as the mathematical bridge between these two worlds.",
+    calloutBadge: "🔄 Live Translation Tool",
+    calloutTitle: "Try Reverse Geocoding Right Now",
+    calloutDesc: "Convert your current GPS coordinates into a formatted street address, postal code, and administrative district in real-time.",
+    calloutBtn: "Try Reverse Geocoder →",
+    matrixHeading: "Direct Comparison Matrix",
+    thFeature: "Feature",
+    thForward: "Forward Geocoding",
+    thReverse: "Reverse Geocoding",
+    row1: ["Input", "Textual street address or place name (e.g., '1600 Pennsylvania Ave')", "Geographic coordinate pair (e.g., 38.8977, -77.0365)"],
+    row2: ["Output", "Latitude, Longitude, Bounding Box, Confidence Score", "Structured street address (House number, road, city, postcode, country)"],
+    row3: ["Primary Algorithm", "Text normalization, phonetic fuzzy matching, address parsing", "Spatial k-nearest neighbor (k-NN) search, polygon containment test"],
+    row4: ["Ambiguity Challenge", "Duplicate street names in different cities, spelling typos", "Rural coordinates far from recorded road vectors, offshore coordinates"],
+    row5: ["Interactive Tool", "Forward Geocoder", "Reverse Geocoder & Address Finder"],
+    h2Forward: "How Forward Geocoding Works (Text → Coordinates)",
+    pForward: "Forward geocoding is essentially an advanced spatial search engine:",
+    step1Title: "Tokenization & Address Parsing",
+    step1Desc: "The input string is tokenized to separate numbers, street names, street types ('Avenue', 'Blvd'), and administrative boundaries.",
+    step2Title: "Gazetteer Index Lookup",
+    step2Desc: "The parsed tokens are matched against an indexed geospatial database (such as OpenStreetMap Nominatim or GeoNames).",
+    step3Title: "Road Vector Interpolation",
+    step3Desc: "If a specific house number is not individually surveyed, the geocoder interpolates its coordinate position along the road vector between known corner address ranges.",
+    h2Reverse: "How Reverse Geocoding Works (Coordinates → Address)",
+    pReverse: "Reverse geocoding performs spatial geometry queries:",
+    revBullet1: "Spatial Indexing (R-Trees & Geohashes): Millions of street lines and administrative boundary polygons are stored in multi-dimensional R-tree data structures.",
+    revBullet2: "Nearest Neighbor (k-NN) Road Search: The database searches for the closest road line segment to the query coordinate point.",
+    revBullet3: "Point-in-Polygon (PIP) Ray Casting: The system determines which administrative polygons (city boundaries, postal codes, state lines) enclose the coordinate point.",
+    connectedGuides: "🔗 Connected Tools & Geocoding Guides",
+    tool1Title: "Forward Geocoder",
+    tool1Desc: "Address to coordinates",
+    tool2Title: "Reverse Geocoder",
+    tool2Desc: "Coordinates to address",
+    tool3Title: "Address Finder",
+    tool3Desc: "What is my current address",
+    tool4Title: "Lat & Long Explained",
+    tool4Desc: "Geodesy coordinate primer"
+  },
+  es: {
+    title: "Geocodificación Directa vs Inversa: Diferencias | MyLocationLab",
+    description: "Compare geocodificación directa (dirección a coordenadas) con inversa (coordenadas a dirección). Algoritmos, índices espaciales R-tree y casos prácticos.",
+    h1: "Geocodificación Directa vs. Inversa: ¿Cuál es la Diferencia?",
+    subtitle: "Desglose técnico de la traducción geoespacial: de direcciones humanas a coordenadas de máquina y viceversa.",
+    p1: "Los ordenadores interpretan el planeta mediante vectores numéricos: latitud y longitud. Los seres humanos comprenden la geografía a través de nombres semánticos: calles, números de portal, ciudades y códigos postales.",
+    p2: "Los procesos complementarios de Geocodificación Directa e Inversa constituyen el puente matemático entre ambos mundos.",
+    calloutBadge: "🔄 Herramienta en Vivo",
+    calloutTitle: "Pruebe la Geocodificación Inversa Ahora",
+    calloutDesc: "Transforme sus coordenadas GPS actuales en una dirección con calle, portal, código postal y municipio en tiempo real.",
+    calloutBtn: "Probar Geocodificador Inverso →",
+    matrixHeading: "Matriz de Comparación Directa",
+    thFeature: "Característica",
+    thForward: "Geocodificación Directa",
+    thReverse: "Geocodificación Inversa",
+    row1: ["Entrada", "Dirección postal escrita o nombre de lugar (ej. 'Gran Vía 1, Madrid')", "Par de coordenadas geográficas (ej. 40.4200, -3.7015)"],
+    row2: ["Salida", "Latitud, Longitud, Caja Delimitadora, Nivel de Confianza", "Dirección estructurada (Calle, número, barrio, ciudad, código postal, país)"],
+    row3: ["Algoritmo Principal", "Normalización de texto, correspondencia fonética difusa y parsing", "Búsqueda espacial de vecinos más cercanos (k-NN) y punto en polígono (PIP)"],
+    row4: ["Reto de Ambigüedad", "Calles duplicadas con el mismo nombre en distintas ciudades, erratas tipográficas", "Coordenadas en zonas rurales sin vías digitalizadas, puntos en el mar"],
+    row5: ["Herramienta Interactiva", "Geocodificador Directo", "Geocodificador Inverso y Buscador de Direcciones"],
+    h2Forward: "Cómo Funciona la Geocodificación Directa (Texto → Coordenadas)",
+    pForward: "La geocodificación directa funciona como un potente motor de búsqueda espacial:",
+    step1Title: "Tokenización y Análisis Léxico",
+    step1Desc: "La cadena se divide en unidades semánticas: números cívicos, nombres de vías, tipos de calle ('Avenida', 'Calle') y divisiones administrativas.",
+    step2Title: "Búsqueda en Nomenclátores (Gazetteer)",
+    step2Desc: "Los elementos analizados se cruzan con índices geoespaciales globales (como OpenStreetMap Nominatim o GeoNames).",
+    step3Title: "Interpolación de Vectores Viales",
+    step3Desc: "Si el portal exacto no está registrado individualmente, el algoritmo calcula su posición relativa interpolando el rango numérico del tramo de calle.",
+    h2Reverse: "Cómo Funciona la Geocodificación Inversa (Coordenadas → Dirección)",
+    pReverse: "La geocodificación inversa ejecuta consultas de geometría espacial avanzada:",
+    revBullet1: "Indexación Espacial (R-Trees y Geohashes): Millones de segmentos de calles y polígonos de distritos se organizan en árboles R jerárquicos.",
+    revBullet2: "Búsqueda del Vecino más Cercano (k-NN): La base de datos ubica el segmento de calzada más próximo al punto de consulta.",
+    revBullet3: "Punto en Polígono (PIP): El sistema evalúa qué polígonos administrativos (municipio, provincia, país) contienen las coordenadas.",
+    connectedGuides: "🔗 Herramientas y Guías Conectadas",
+    tool1Title: "Geocodificador Directo",
+    tool1Desc: "Dirección a coordenadas",
+    tool2Title: "Geocodificador Inverso",
+    tool2Desc: "Coordenadas a dirección",
+    tool3Title: "Buscador de Direcciones",
+    tool3Desc: "¿Cuál es mi dirección actual?",
+    tool4Title: "Latitud y Longitud",
+    tool4Desc: "Fundamentos de geodesia"
+  },
+  fr: {
+    title: "Géocodage Direct vs Inverse : Différences Clés | MyLocationLab",
+    description: "Comparez le géocodage direct (adresse vers coordonnées) et inverse (coordonnées vers adresse). Indexation spatiale R-trees, algorithmes et usages.",
+    h1: "Géocodage Direct vs. Inverse : Quelles Différences ?",
+    subtitle: "Décryptage technique de la traduction spatiale : convertir les adresses postales en coordonnées machine et vice-versa.",
+    p1: "Les ordinateurs se repèrent sur Terre grâce à des valeurs numériques flottantes : la latitude et la longitude. Les êtres humains utilisent des désignations textuelles : rues, numéros, villes et codes postaux.",
+    p2: "Le géocodage direct et le géocodage inverse constituent le pont mathématique fondamental entre ces deux univers.",
+    calloutBadge: "🔄 Outil de Traduction",
+    calloutTitle: "Testez le Géocodage Inverse Instantanément",
+    calloutDesc: "Transformez vos coordonnées GPS en adresse postale complète, ville et code postal en temps réel.",
+    calloutBtn: "Tester le Géocodage Inverse →",
+    matrixHeading: "Matrice de Comparaison Directe",
+    thFeature: "Caractéristique",
+    thForward: "Géocodage Direct",
+    thReverse: "Géocodage Inverse",
+    row1: ["Donnée d'Entrée", "Texte d'adresse ou toponyme (ex. '10 Rue de la Paix, Paris')", "Paire de coordonnées géographiques (ex. 48.8698, 2.3308)"],
+    row2: ["Résultat Produit", "Latitude, Longitude, Emprise Spatiale, Score de Confiance", "Adresse structurée (Numéro, voie, quartier, commune, code postal, pays)"],
+    row3: ["Algorithme Principal", "Normalisation phonétique, parsing d'adresse et recherche textuelle", "Recherche spatiale du plus proche voisin (k-NN) et inclusion dans le polygone (PIP)"],
+    row4: ["Défi Majeur", "Homonymies de rues entre communes, fautes d'orthographe", "Zones rurales isolées de tout réseau routier, coordonnées en mer"],
+    row5: ["Outils Interactifs", "Géocodage Direct", "Géocodage Inverse & Détecteur d'Adresse"],
+    h2Forward: "Comment Fonctionne le Géocodage Direct (Texte → Coordonnées)",
+    pForward: "Le géocodage direct s'apparente à un moteur de recherche géographique haute précision :",
+    step1Title: "Découpage Lexical & Parsing d'Adresse",
+    step1Desc: "La chaîne est segmentée pour identifier numéros, voies ('Rue', 'Boulevard') et entités administratives.",
+    step2Title: "Interrogation du Nomenclateur",
+    step2Desc: "Les termes analysés sont confrontés à une base de données SIG (OpenStreetMap Nominatim, GeoNames).",
+    step3Title: "Interpolation Linéaire sur Tronçon",
+    step3Desc: "Si le numéro n'est pas cartographié individuellement, le système calcule sa position par interpolation entre les extrémités du tronçon.",
+    h2Reverse: "Comment Fonctionne le Géocodage Inverse (Coordonnées → Adresse)",
+    pReverse: "Le géocodage inverse procède par requêtes spatiales géométriques :",
+    revBullet1: "Indexation Spatiale (R-Trees & Geohashes) : Des millions de segments de voirie et de polygones sont stockés dans des arbres géométriques hiérarchiques.",
+    revBullet2: "Recherche du Plus Proche Voisin (k-NN) : La base recherche le tronçon de rue le plus proche de la coordonnée fournie.",
+    revBullet3: "Point dans un Polygone (PIP) : L'algorithme vérifie dans quel polygone administratif (commune, département, pays) se situe le point.",
+    connectedGuides: "🔗 Outils & Guides Associés",
+    tool1Title: "Géocodeur Direct",
+    tool1Desc: "Adresse vers coordonnées",
+    tool2Title: "Géocodeur Inverse",
+    tool2Desc: "Coordonnées vers adresse",
+    tool3Title: "Détecteur d'Adresse",
+    tool3Desc: "Quelle est mon adresse actuelle ?",
+    tool4Title: "Latitude & Longitude",
+    tool4Desc: "Les bases de la géodésie"
+  },
+  de: {
+    title: "Vorwärts- vs Rückwärts-Geokodierung: Unterschiede | MyLocationLab",
+    description: "Vorwärts-Geokodierung (Adresse zu Koordinaten) und Rückwärts-Geokodierung (Koordinaten zu Adresse) im Vergleich. R-Trees, Algorithmen und Praxis.",
+    h1: "Vorwärts- vs. Rückwärts-Geokodierung: Was ist der Unterschied?",
+    subtitle: "Eine methodische Analyse der raumbezogenen Übersetzung von Textadressen in Geokoordinaten und umgekehrt.",
+    p1: "Computer erfassen die Erde über Fließkommazahlen: Breitengrad und Längengrad. Menschen hingegen orientieren sich an Straßennamen, Hausnummern, Postleitzahlen und Städten.",
+    p2: "Die Verfahren der Vorwärts- und Rückwärts-Geokodierung bilden die mathematische Brücke zwischen diesen beiden Welten.",
+    calloutBadge: "🔄 Live-Übersetzung",
+    calloutTitle: "Rückwärts-Geokodierung jetzt ausprobieren",
+    calloutDesc: "Konvertieren Sie Ihre aktuellen GPS-Koordinaten in Echtzeit in eine vollständige Straßenadresse mit Postleitzahl und Stadt.",
+    calloutBtn: "Reverse Geocoder starten →",
+    matrixHeading: "Direkte Vergleichsmatrix",
+    thFeature: "Merkmal",
+    thForward: "Vorwärts-Geokodierung",
+    thReverse: "Rückwärts-Geokodierung",
+    row1: ["Eingabe", "Textuelle Straßenadresse oder Ortsname (z. B. 'Unter den Linden 1, Berlin')", "Geografisches Koordinatenpaar (z. B. 52.5169, 13.3888)"],
+    row2: ["Ausgabe", "Breitengrad, Längengrad, Bounding Box, Konfidenzwert", "Strukturierte Adresse (Hausnummer, Straße, Stadtteil, PLZ, Land)"],
+    row3: ["Hauptalgorithmus", "Textnormalisierung, phonetischer Fuzzy-Abgleich, Adress-Parsing", "Räumliche k-Nearest-Neighbor (k-NN) Suche, Punkt-in-Polygon (PIP) Test"],
+    row4: ["Herausforderung", "Mehrdeutige Straßennamen in verschiedenen Städten, Schreibfehler", "Ländliche Gebiete abseits kartierter Straßennetze, Offshore-Punkte"],
+    row5: ["Interaktives Werkzeug", "Vorwärts-Geocoder", "Reverse Geocoder & Adress-Finder"],
+    h2Forward: "Funktionsweise der Vorwärts-Geokodierung (Text → Koordinaten)",
+    pForward: "Die Vorwärts-Geokodierung arbeitet wie eine hochspezialisierte Geodaten-Suchmaschine:",
+    step1Title: "Tokenisierung & Adress-Parsing",
+    step1Desc: "Der Adressstring wird in logische Einheiten zerlegt: Hausnummer, Straßenname, Straßentyp und Verwaltungseinheiten.",
+    step2Title: "Gazetteer-Abgleich",
+    step2Desc: "Die Token werden mit georeferenzierten Datenbanken (wie OpenStreetMap Nominatim) abgeglichen.",
+    step3Title: "Straßenvektor-Interpolation",
+    step3Desc: "Fehlt eine exakte Hausnummer, berechnet der Algorithmus die Position durch Interpolation entlang des Straßenvektors.",
+    h2Reverse: "Funktionsweise der Rückwärts-Geokodierung (Koordinaten → Adresse)",
+    pReverse: "Die Rückwärts-Geokodierung führt geometrische Raumanalysen aus:",
+    revBullet1: "Räumliche Indexierung (R-Trees & Geohashes): Millionen Vektorsegmente und Grenzpolygone sind in hierarchischen R-Trees strukturiert.",
+    revBullet2: "Nächster-Nachbar-Suche (k-NN): Die Datenbank ermittelt das straßengeometrische Vektorsegment, das der Koordinate am nächsten liegt.",
+    revBullet3: "Punkt-in-Polygon-Verfahren (PIP): Das System prüft, welche Verwaltungspolygone (Stadt, Bundesland, Staat) den Punkt umschließen.",
+    connectedGuides: "🔗 Relevante Werkzeuge & Leitfäden",
+    tool1Title: "Vorwärts-Geocoder",
+    tool1Desc: "Adresse zu Koordinaten",
+    tool2Title: "Reverse Geocoder",
+    tool2Desc: "Koordinaten zu Adresse",
+    tool3Title: "Adress-Finder",
+    tool3Desc: "Wie lautet meine aktuelle Adresse?",
+    tool4Title: "Breiten- & Längengrad",
+    tool4Desc: "Grundlagen der Geodäsie"
+  },
+  pt: {
+    title: "Geocodificação Direta vs Reversa: Diferenças | MyLocationLab",
+    description: "Compare a geocodificação direta (endereço para coordenadas) com a reversa (coordenadas para endereço). Algoritmos, índices espaciais e aplicações.",
+    h1: "Geocodificação Direta vs. Reversa: Qual é a Diferença?",
+    subtitle: "Um comparativo detalhado da conversão espacial: traduzindo endereços humanos em coordenadas de máquina e vice-versa.",
+    p1: "Sistemas computacionais compreendem o espaço através de números decimais contínuos: latitude e longitude. Seres humanos compreendem o território por nomes semânticos: ruas, números prediais, bairros e cidades.",
+    p2: "Os processos de Geocodificação Direta e Geocodificação Reversa funcionam como a ponte matemática entre essas duas realidades.",
+    calloutBadge: "🔄 Ferramenta em Tempo Real",
+    calloutTitle: "Experimente a Geocodificação Reversa Agora",
+    calloutDesc: "Transforme suas coordenadas GPS em endereço com rua, número, bairro, CEP e município em tempo real.",
+    calloutBtn: "Abrir Geocodificador Reverso →",
+    matrixHeading: "Matriz de Comparação Direta",
+    thFeature: "Recurso",
+    thForward: "Geocodificação Direta",
+    thReverse: "Geocodificação Reversa",
+    row1: ["Entrada", "Endereço textual ou ponto de interesse (ex.: 'Av. Paulista 1000, São Paulo')", "Par de coordenadas geográficas (ex.: -23.5654, -46.6517)"],
+    row2: ["Saída", "Latitude, Longitude, Caixa Delimitadora, Índice de Confiança", "Endereço estruturado (Logradouro, número, bairro, cidade, CEP, país)"],
+    row3: ["Algoritmo Principal", "Normalização léxica, correspondência fonética difusa e análise de texto", "Busca espacial de vizinho mais próximo (k-NN) e ponto em polígono (PIP)"],
+    row4: ["Desafio Principal", "Nomes de ruas duplicados em cidades diferentes, erros ortográficos", "Coordenadas em áreas rurais sem malha viária, pontos em alto-mar"],
+    row5: ["Ferramenta Interativa", "Geocodificador Direto", "Geocodificador Reverso e Localizador de Endereço"],
+    h2Forward: "Como Funciona a Geocodificação Direta (Texto → Coordenadas)",
+    pForward: "A geocodificação direta opera como um motor de busca espacial de alta precisão:",
+    step1Title: "Tokenização e Decomposição de Endereço",
+    step1Desc: "A entrada de texto é fracionada em números, vias ('Avenida', 'Rua') e divisões político-administrativas.",
+    step2Title: "Consulta ao Nomenclator (Gazetteer)",
+    step2Desc: "Os termos analisados são cruzados com uma base geoespacial indexada (OpenStreetMap Nominatim ou GeoNames).",
+    step3Title: "Interpolação de Vetores Viários",
+    step3Desc: "Se o número predial não estiver mapeado individualmente, o algoritmo estima a posição interpolando a numeração viária ao longo do segmento.",
+    h2Reverse: "Como Funciona a Geocodificação Reversa (Coordenadas → Endereço)",
+    pReverse: "A geocodificação reversa executa análises de geometria espacial vetorial:",
+    revBullet1: "Indexação Espacial (R-Trees e Geohashes): Milhões de vias e polígonos são indexados em estruturas em árvore R multidimensionais.",
+    revBullet2: "Busca por Vizinho mais Próximo (k-NN): O banco de dados localiza o segmento viário mais próximo do ponto de coordenadas.",
+    revBullet3: "Ponto em Polígono (PIP): O sistema identifica quais polígonos administrativos (bairro, município, estado) contêm o ponto.",
+    connectedGuides: "🔗 Ferramentas e Guias Relacionados",
+    tool1Title: "Geocodificador Direto",
+    tool1Desc: "Endereço para coordenadas",
+    tool2Title: "Geocodificador Reverso",
+    tool2Desc: "Coordenadas para endereço",
+    tool3Title: "Localizador de Endereço",
+    tool3Desc: "Qual é meu endereço atual?",
+    tool4Title: "Latitude e Longitude",
+    tool4Desc: "Fundamentos de geodésia"
+  }
+};
+
+const c = translations[lang] || translations.en;
+---
+
+<ContentLayout
+  lang={lang}
+  title={c.title}
+  description={c.description}
+  h1={c.h1}
+  subtitle={c.subtitle}
+  section="comparisons"
+  sectionLabel={lang === 'es' ? 'Comparativas Técnicas' : lang === 'fr' ? 'Comparatifs Techniques' : lang === 'de' ? 'Technische Vergleiche' : lang === 'pt' ? 'Comparações Técnicas' : 'Technical Comparisons'}
+  readTime="6 min"
+  publishDate="2026-09-15"
+  modifiedDate="2026-09-22"
+>
+  <p>{c.p1}</p>
+  <p>{c.p2}</p>
+
+  <div class="tool-callout">
+    <div class="tool-callout-content">
+      <span class="tool-callout-badge">{c.calloutBadge}</span>
+      <h3 class="tool-callout-title">{c.calloutTitle}</h3>
+      <p class="tool-callout-desc">{c.calloutDesc}</p>
+    </div>
+    <div class="tool-callout-action">
+      <a href={getLocalizedPath('/tools/reverse-geocoding/', lang)} class="btn btn-primary">{c.calloutBtn}</a>
+    </div>
+  </div>
+
+  <h2>{c.matrixHeading}</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>{c.thFeature}</th>
+        <th>{c.thForward}</th>
+        <th>{c.thReverse}</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>{c.row1[0]}</strong></td>
+        <td>{c.row1[1]}</td>
+        <td><code>{c.row1[2]}</code></td>
+      </tr>
+      <tr>
+        <td><strong>{c.row2[0]}</strong></td>
+        <td>{c.row2[1]}</td>
+        <td>{c.row2[2]}</td>
+      </tr>
+      <tr>
+        <td><strong>{c.row3[0]}</strong></td>
+        <td>{c.row3[1]}</td>
+        <td>{c.row3[2]}</td>
+      </tr>
+      <tr>
+        <td><strong>{c.row4[0]}</strong></td>
+        <td>{c.row4[1]}</td>
+        <td>{c.row4[2]}</td>
+      </tr>
+      <tr>
+        <td><strong>{c.row5[0]}</strong></td>
+        <td><a href={getLocalizedPath('/tools/geocoding/', lang)}>{c.row5[1]}</a></td>
+        <td><a href={getLocalizedPath('/tools/reverse-geocoding/', lang)}>{c.row5[2]}</a></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>{c.h2Forward}</h2>
+  <p>{c.pForward}</p>
+
+  <div class="step-container">
+    <div class="step-card">
+      <div class="step-number">1</div>
+      <div class="step-body">
+        <h4 class="step-title">{c.step1Title}</h4>
+        <p class="step-desc">{c.step1Desc}</p>
+      </div>
+    </div>
+
+    <div class="step-card">
+      <div class="step-number">2</div>
+      <div class="step-body">
+        <h4 class="step-title">{c.step2Title}</h4>
+        <p class="step-desc">{c.step2Desc}</p>
+      </div>
+    </div>
+
+    <div class="step-card">
+      <div class="step-number">3</div>
+      <div class="step-body">
+        <h4 class="step-title">{c.step3Title}</h4>
+        <p class="step-desc">{c.step3Desc}</p>
+      </div>
+    </div>
+  </div>
+
+  <h2>{c.h2Reverse}</h2>
+  <p>{c.pReverse}</p>
+  <ul>
+    <li>{c.revBullet1}</li>
+    <li>{c.revBullet2}</li>
+    <li>{c.revBullet3}</li>
+  </ul>
+
+  <div class="contextual-next-box">
+    <h3 class="contextual-next-title">{c.connectedGuides}</h3>
+    <div class="contextual-next-grid">
+      <a href={getLocalizedPath('/tools/geocoding/', lang)} class="contextual-link-card">
+        <span class="contextual-link-icon">🔍</span>
+        <div class="contextual-link-info">
+          <div class="contextual-link-title">{c.tool1Title}</div>
+          <div class="contextual-link-sub">{c.tool1Desc}</div>
+        </div>
+      </a>
+      <a href={getLocalizedPath('/tools/reverse-geocoding/', lang)} class="contextual-link-card">
+        <span class="contextual-link-icon">🔄</span>
+        <div class="contextual-link-info">
+          <div class="contextual-link-title">{c.tool2Title}</div>
+          <div class="contextual-link-sub">{c.tool2Desc}</div>
+        </div>
+      </a>
+      <a href={getLocalizedPath('/tools/address-finder/', lang)} class="contextual-link-card">
+        <span class="contextual-link-icon">🏠</span>
+        <div class="contextual-link-info">
+          <div class="contextual-link-title">{c.tool3Title}</div>
+          <div class="contextual-link-sub">{c.tool3Desc}</div>
+        </div>
+      </a>
+      <a href={getLocalizedPath('/guides/latitude-and-longitude-explained/', lang)} class="contextual-link-card">
+        <span class="contextual-link-icon">📐</span>
+        <div class="contextual-link-info">
+          <div class="contextual-link-title">{c.tool4Title}</div>
+          <div class="contextual-link-sub">{c.tool4Desc}</div>
+        </div>
+      </a>
+    </div>
+  </div>
+</ContentLayout>

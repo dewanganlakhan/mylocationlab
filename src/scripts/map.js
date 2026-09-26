@@ -59,6 +59,14 @@ const MapUtils = {
       maxZoom: 19,
     }).addTo(this._map);
 
+    if (opts.locateControl !== false) {
+      this.addLocateControl(this._map, {
+        position: opts.locatePosition || 'bottomright',
+        title: opts.locateTitle || 'Zoom to my current location',
+        zoom: opts.locateZoom || 16,
+      });
+    }
+
     return this._map;
   },
 
@@ -167,13 +175,129 @@ const MapUtils = {
    * Get the map instance.
    * @returns {L.Map|null}
    */
+  /**
+   * Get the map instance.
+   * @returns {L.Map|null}
+   */
   getMap() {
     return this._map;
   },
+
+  /**
+   * Adds a Google Maps-style "Zoom & Go to My Location" control button to a Leaflet map.
+   * @param {L.Map} map
+   * @param {Object} [options={}]
+   * @param {string} [options.position='bottomright']
+   * @param {string} [options.title='Zoom to my current location']
+   * @param {number} [options.zoom=16]
+   * @param {function} [options.onLocate]
+   * @returns {L.Control|null}
+   */
+  addLocateControl(map, options = {}) {
+    if (!map || typeof L === 'undefined') return null;
+
+    const {
+      position = 'bottomright',
+      title = 'Zoom to my current location',
+      zoom = 16,
+      onLocate = null,
+    } = options;
+
+    const LocateControl = L.Control.extend({
+      options: { position },
+      onAdd: function() {
+        const container = L.DomUtil.create('div', 'leaflet-bar leaflet-control leaflet-control-locate-container');
+        const button = L.DomUtil.create('button', 'leaflet-control-locate-btn', container);
+        button.type = 'button';
+        button.title = title;
+        button.setAttribute('aria-label', title);
+        button.innerHTML = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="7"></circle>
+          <line x1="12" y1="1" x2="12" y2="4"></line>
+          <line x1="12" y1="20" x2="12" y2="23"></line>
+          <line x1="1" y1="12" x2="4" y1="12"></line>
+          <line x1="20" y1="12" x2="23" y2="12"></line>
+          <circle cx="12" cy="12" r="2.5" fill="currentColor"></circle>
+        </svg>`;
+
+        L.DomEvent.disableClickPropagation(container);
+        L.DomEvent.disableScrollPropagation(container);
+
+        L.DomEvent.on(button, 'click', function(e) {
+          L.DomEvent.preventDefault(e);
+          if (!navigator.geolocation) {
+            alert('Geolocation is not supported by your browser.');
+            return;
+          }
+
+          button.classList.add('locating');
+          navigator.geolocation.getCurrentPosition(
+            (pos) => {
+              button.classList.remove('locating');
+              button.classList.add('active');
+              const lat = pos.coords.latitude;
+              const lng = pos.coords.longitude;
+              const acc = pos.coords.accuracy || 0;
+
+              // Smoothly fly and zoom to the user's location
+              map.flyTo([lat, lng], zoom, {
+                animate: true,
+                duration: 1.5,
+              });
+
+              // Add/update glowing pulse marker
+              if (map._userLocMarker) map.removeLayer(map._userLocMarker);
+              if (map._userLocCircle) map.removeLayer(map._userLocCircle);
+
+              const icon = L.divIcon({
+                html: '<div class="user-pulse-dot"></div>',
+                className: 'user-pulse-marker',
+                iconSize: [20, 20],
+                iconAnchor: [10, 10],
+              });
+
+              map._userLocMarker = L.marker([lat, lng], {
+                icon,
+                zIndexOffset: 1000,
+              }).addTo(map);
+
+              if (acc > 0) {
+                map._userLocCircle = L.circle([lat, lng], {
+                  radius: acc,
+                  color: '#00d4ff',
+                  fillColor: '#00d4ff',
+                  fillOpacity: 0.1,
+                  weight: 1.5,
+                }).addTo(map);
+              }
+
+              if (typeof onLocate === 'function') {
+                onLocate(lat, lng, acc, pos);
+              }
+            },
+            (err) => {
+              button.classList.remove('locating');
+              alert('Could not get your location: ' + err.message);
+            },
+            { enableHighAccuracy: true, timeout: 10000 }
+          );
+        });
+
+        return container;
+      }
+    });
+
+    const control = new LocateControl();
+    control.addTo(map);
+    return control;
+  },
 };
+
+export const addLocateControl = MapUtils.addLocateControl;
 
 if (typeof window !== 'undefined') {
   window.MapUtils = MapUtils;
+  window.addMapLocateControl = MapUtils.addLocateControl;
 }
 
 export default MapUtils;

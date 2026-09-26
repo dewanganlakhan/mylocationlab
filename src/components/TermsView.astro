@@ -1,0 +1,71 @@
+---
+/**
+ * TermsView — Multilingual Terms of Use View
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from './Breadcrumbs.astro';
+import { type SupportedLang, defaultLang } from '../i18n/config';
+import { termsPageTranslations } from '../i18n/termsPage';
+import { useTranslations } from '../i18n/ui';
+
+interface Props {
+  lang?: SupportedLang;
+}
+
+const { lang = defaultLang } = Astro.props;
+const t = useTranslations(lang);
+const c = termsPageTranslations[lang] || termsPageTranslations.en;
+
+const breadcrumbs = [
+  { label: t('common.home'), href: '/' },
+  { label: c.breadcrumb }
+];
+---
+
+<BaseLayout
+  lang={lang}
+  title={c.metaTitle}
+  description={c.metaDescription}
+  activeSection="terms"
+>
+  <div class="container">
+    <Breadcrumbs items={breadcrumbs} lang={lang} />
+
+    <section class="page-header" style="text-align: center; margin-bottom: var(--space-8);">
+      <h1>{c.titlePrefix} <span class="text-gradient">{c.titleHighlight}</span></h1>
+      <p class="page-header-desc" style="max-width: 680px; margin: 0 auto;">
+        {c.effectiveDate}
+      </p>
+    </section>
+
+    <article class="prose" style="max-width: var(--max-width-narrow); margin: 0 auto var(--space-16); font-size: var(--text-base); line-height: 1.8;">
+      <h2>{c.h2Acceptance}</h2>
+      <p>{c.pAcceptance}</p>
+
+      <h2>{c.h2Emergency}</h2>
+      <p style="background: rgba(239, 68, 68, 0.1); border-left: 4px solid var(--color-accent-error); padding: var(--space-4); border-radius: 0 var(--radius-lg) var(--radius-lg) 0;">
+        {c.pEmergencyAlert}
+      </p>
+
+      <h2>{c.h2Informational}</h2>
+      <p>{c.pInformational}</p>
+
+      <h2>{c.h2Acceptable}</h2>
+      <p>{c.pAcceptable}</p>
+      <ul>
+        <li>{c.a1}</li>
+        <li>{c.a2}</li>
+        <li>{c.a3}</li>
+      </ul>
+
+      <h2>{c.h2Attribution}</h2>
+      <p>{c.pAttribution}</p>
+
+      <h2>{c.h2Liability}</h2>
+      <p>{c.pLiability}</p>
+
+      <h2>{c.h2Law}</h2>
+      <p>{c.pLaw}</p>
+    </article>
+  </div>
+</BaseLayout>

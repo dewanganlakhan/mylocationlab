@@ -1,0 +1,242 @@
+---
+/**
+ * ReverseGeocodingView — Multilingual Reverse Geocoder Tool
+ * Powers: /tools/reverse-geocoding/ across en, es, fr, de, pt
+ */
+import ToolLayout from '../../layouts/ToolLayout.astro';
+import { getLocalizedPath, defaultLang, type SupportedLang } from '../../i18n/config';
+
+interface Props {
+  lang?: SupportedLang | string;
+}
+
+const { lang: customLang = defaultLang } = Astro.props;
+const lang = (customLang || defaultLang) as SupportedLang;
+
+const translations: Record<string, any> = {
+  en: {
+    title: "Reverse Geocoder — Coordinates to Address | MyLocationLab",
+    description: "Convert GPS coordinates to a street address. Enter latitude and longitude to find the corresponding postal address.",
+    h1: "Reverse Geocoder",
+    subtitle: "Convert GPS coordinates into a human-readable street address. Enter any lat/lng to find its address.",
+    lblLat: "Latitude",
+    lblLng: "Longitude",
+    btnConvert: "Convert to Address",
+    btnGps: "📍 Use My Location",
+    labelFull: "Full Address",
+    labelCity: "City",
+    labelState: "State",
+    labelCountry: "Country",
+    labelPostcode: "Postcode",
+    btnCopy: "📋 Copy Address",
+    alertInvalid: "Please enter valid coordinates.",
+    alertUnable: "Unable to reverse geocode these coordinates.",
+    h2What: "What Is Reverse Geocoding?",
+    pWhat1: "<strong>Reverse geocoding</strong> is the process of converting geographic coordinates (latitude and longitude) into a human-readable postal address. It's the inverse of forward geocoding, which converts text addresses into numeric coordinates.",
+    pWhat2: "This tool uses OpenStreetMap's Nominatim index to identify the closest building, road, and administrative boundary to the queried coordinates.",
+    h3Related: "Related Tools & Guides",
+    linkGeo: "Geocoder (Address to Coordinates)",
+    linkAddr: "Street Address Finder",
+    linkComp: "Geocoding vs Reverse Geocoding Technical Comparison",
+    linkGlossary: "Geodesy Glossary"
+  },
+  es: {
+    title: "Geocodificador Inverso — Coordenadas a Dirección | MyLocationLab",
+    description: "Convierta coordenadas GPS en una dirección postal. Ingrese latitud y longitud para conocer la dirección exacta.",
+    h1: "Geocodificador Inverso",
+    subtitle: "Convierta coordenadas GPS en una dirección postal inteligible. Introduzca latitud y longitud para ver la dirección.",
+    lblLat: "Latitud",
+    lblLng: "Longitud",
+    btnConvert: "Convertir a Dirección",
+    btnGps: "📍 Usar Mi Ubicación",
+    labelFull: "Dirección Completa",
+    labelCity: "Ciudad",
+    labelState: "Estado / Provincia",
+    labelCountry: "País",
+    labelPostcode: "Código Postal",
+    btnCopy: "📋 Copiar Dirección",
+    alertInvalid: "Por favor introduzca coordenadas válidas.",
+    alertUnable: "No se pudo geocodificar inversamente estas coordenadas.",
+    h2What: "¿Qué es la Geocodificación Inversa?",
+    pWhat1: "La <strong>geocodificación inversa</strong> es la técnica que transforma coordenadas geográficas numéricas (latitud y longitud) en una dirección postal legible para humanos.",
+    pWhat2: "Esta herramienta consulta el motor Nominatim de OpenStreetMap para encontrar la edificación, calle y municipio más próximos a las coordenadas indicadas.",
+    h3Related: "Herramientas y Guías Relacionadas",
+    linkGeo: "Geocodificador (Dirección a Coordenadas)",
+    linkAddr: "Buscador de Dirección Postal",
+    linkComp: "Comparativa Técnica: Geocodificación vs Inversa",
+    linkGlossary: "Glosario de Geodesia"
+  },
+  fr: {
+    title: "Géocodage Inverse — Coordonnées en Adresse | MyLocationLab",
+    description: "Convertissez des coordonnées GPS en adresse postale. Saisissez latitude et longitude pour obtenir l'adresse complète.",
+    h1: "Géocodage Inverse",
+    subtitle: "Convertissez des coordonnées GPS en une adresse postale lisible. Renseignez la latitude et la longitude.",
+    lblLat: "Latitude",
+    lblLng: "Longitude",
+    btnConvert: "Convertir en Adresse",
+    btnGps: "📍 Utiliser Ma Position",
+    labelFull: "Adresse Complète",
+    labelCity: "Ville",
+    labelState: "Région / Département",
+    labelCountry: "Pays",
+    labelPostcode: "Code Postal",
+    btnCopy: "📋 Copier l'Adresse",
+    alertInvalid: "Veuillez saisir des coordonnées valides.",
+    alertUnable: "Impossible de résoudre cette position géographique.",
+    h2What: "Qu'est-ce que le Géocodage Inverse ?",
+    pWhat1: "Le <strong>géocodage inverse</strong> transforme une paire de coordonnées GPS numériques en un libellé d'adresse postale complet et compréhensible.",
+    pWhat2: "L'outil interroge l'API Nominatim d'OpenStreetMap pour identifier le bâtiment, la voie et la commune les plus proches.",
+    h3Related: "Outils & Guides Associés",
+    linkGeo: "Géocodage Direct (Adresse vers Coordonnées)",
+    linkAddr: "Localisateur d'Adresse",
+    linkComp: "Comparatif Technique : Direct vs Inverse",
+    linkGlossary: "Glossaire Géodésique"
+  },
+  de: {
+    title: "Reverse Geocoder — Koordinaten zu Adresse | MyLocationLab",
+    description: "GPS-Koordinaten in Straßenadressen umwandeln. Breitengrad und Längengrad eingeben und Postadresse abrufen.",
+    h1: "Reverse Geocoder (Koordinaten zu Adresse)",
+    subtitle: "Wandeln Sie GPS-Koordinaten in eine lesbare Postanschrift um. Geben Sie Breite und Länge ein.",
+    lblLat: "Breitengrad",
+    lblLng: "Längengrad",
+    btnConvert: "In Adresse umwandeln",
+    btnGps: "📍 Meinen Standort nutzen",
+    labelFull: "Vollständige Adresse",
+    labelCity: "Stadt / Gemeinde",
+    labelState: "Bundesland",
+    labelCountry: "Land",
+    labelPostcode: "Postleitzahl",
+    btnCopy: "📋 Adresse kopieren",
+    alertInvalid: "Bitte gültige Koordinaten eingeben.",
+    alertUnable: "Adresse für diese Koordinaten konnte nicht ermittelt werden.",
+    h2What: "Was ist Reverse Geocoding?",
+    pWhat1: "<strong>Reverse Geocoding</strong> bezeichnet die Übersetzung geografischer Koordinaten in eine für Menschen verständliche Anschrift.",
+    pWhat2: "Unser System gleicht die Koordinaten mit dem weltweiten OpenStreetMap-Kataster ab, um Straßennamen und Postleitzahlen zu bestimmen.",
+    h3Related: "Verwandte Werkzeuge & Ratgeber",
+    linkGeo: "Geocoder (Adresse zu Koordinaten)",
+    linkAddr: "Adressen-Finder",
+    linkComp: "Technischer Vergleich: Geocoding vs. Reverse Geocoding",
+    linkGlossary: "Geodäsie-Glossar"
+  },
+  pt: {
+    title: "Geocodificador Reverso — Coordenadas para Endereço | MyLocationLab",
+    description: "Converta coordenadas GPS em endereço postal completo. Insira latitude e longitude para encontrar a rua e o CEP.",
+    h1: "Geocodificador Reverso",
+    subtitle: "Converta coordenadas GPS em um endereço postal legível. Digite latitude e longitude.",
+    lblLat: "Latitude",
+    lblLng: "Longitude",
+    btnConvert: "Converter para Endereço",
+    btnGps: "📍 Usar Minha Localização",
+    labelFull: "Endereço Completo",
+    labelCity: "Cidade",
+    labelState: "Estado",
+    labelCountry: "País",
+    labelPostcode: "CEP / Código Postal",
+    btnCopy: "📋 Copiar Endereço",
+    alertInvalid: "Por favor, insira coordenadas válidas.",
+    alertUnable: "Não foi possível converter estas coordenadas em endereço.",
+    h2What: "O que é Geocodificação Reversa?",
+    pWhat1: "A <strong>geocodificação reversa</strong> é o processo de transformar coordenadas geográficas de latitude e longitude em um endereço físico formal.",
+    pWhat2: "A ferramenta pesquisa a base de dados Nominatim do OpenStreetMap para apontar a rua, número e município mais próximos.",
+    h3Related: "Ferramentas Relacionadas",
+    linkGeo: "Geocodificador (Endereço para Coordenadas)",
+    linkAddr: "Localizador de Endereço",
+    linkComp: "Comparativo Técnico: Direta vs Reversa",
+    linkGlossary: "Glossário Geodésico"
+  }
+};
+
+const t = translations[lang] || translations.en;
+---
+
+<ToolLayout toolId="reverse-geocoding" title={t.title} description={t.description} h1={t.h1} subtitle={t.subtitle} lang={lang}>
+  <div class="tool-interface">
+    <div class="grid grid-2" style="margin-bottom: var(--space-4);">
+      <div><label class="label">{t.lblLat}</label><input type="number" step="any" class="input" id="rg-lat" placeholder="e.g. 28.6139" /></div>
+      <div><label class="label">{t.lblLng}</label><input type="number" step="any" class="input" id="rg-lng" placeholder="e.g. 77.2090" /></div>
+    </div>
+    <div class="flex gap-3">
+      <button class="btn btn-primary" id="rg-btn" type="button">{t.btnConvert}</button>
+      <button class="btn btn-secondary" id="rg-gps" type="button">{t.btnGps}</button>
+    </div>
+    <div class="tool-result" id="rg-result" style="display: none; margin-top: var(--space-6);">
+      <div class="tool-result-row"><span class="tool-result-label">{t.labelFull}</span><span class="tool-result-value" id="rg-addr" style="font-family: var(--font-sans); font-size: var(--text-sm);">—</span></div>
+      <div class="tool-result-row"><span class="tool-result-label">{t.labelCity}</span><span class="tool-result-value" id="rg-city" style="font-family: var(--font-sans);">—</span></div>
+      <div class="tool-result-row"><span class="tool-result-label">{t.labelState}</span><span class="tool-result-value" id="rg-state" style="font-family: var(--font-sans);">—</span></div>
+      <div class="tool-result-row"><span class="tool-result-label">{t.labelCountry}</span><span class="tool-result-value" id="rg-country" style="font-family: var(--font-sans);">—</span></div>
+      <div class="tool-result-row"><span class="tool-result-label">{t.labelPostcode}</span><span class="tool-result-value" id="rg-zip">—</span></div>
+      <div style="margin-top: var(--space-4);"><button class="btn btn-secondary btn-sm" id="rg-copy" type="button">{t.btnCopy}</button></div>
+    </div>
+  </div>
+  <div class="prose" style="margin-top: var(--space-12); line-height: 1.8;">
+    <h2>{t.h2What}</h2>
+    <p set:html={t.pWhat1}></p>
+    <p set:html={t.pWhat2}></p>
+    <h3>{t.h3Related}</h3>
+    <ul>
+      <li><a href={getLocalizedPath('/tools/geocoding/', lang)}>{t.linkGeo}</a></li>
+      <li><a href={getLocalizedPath('/tools/address-finder/', lang)}>{t.linkAddr}</a></li>
+      <li><a href={getLocalizedPath('/comparisons/geocoding-vs-reverse-geocoding/', lang)}>{t.linkComp}</a></li>
+      <li><a href={getLocalizedPath('/glossary/', lang)}>{t.linkGlossary}</a></li>
+    </ul>
+  </div>
+
+  <script define:vars={{ tData: t }}>
+    async function reverseGeo() {
+      const lat = parseFloat(document.getElementById('rg-lat').value);
+      const lng = parseFloat(document.getElementById('rg-lng').value);
+      if (isNaN(lat) || isNaN(lng) || Math.abs(lat) > 90 || Math.abs(lng) > 180) {
+        alert(tData.alertInvalid);
+        return;
+      }
+      try {
+        const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&zoom=18&addressdetails=1`, {
+          headers: { 'User-Agent': 'MyLocationLab/1.0' }
+        });
+        if (!res.ok) throw new Error('Geocoding service unavailable');
+        const data = await res.json();
+        const addr = data.address || {};
+
+        document.getElementById('rg-addr').textContent = data.display_name || '—';
+        document.getElementById('rg-city').textContent = addr.city || addr.town || addr.village || '—';
+        document.getElementById('rg-state').textContent = addr.state || '—';
+        document.getElementById('rg-country').textContent = addr.country || '—';
+        document.getElementById('rg-zip').textContent = addr.postcode || '—';
+        document.getElementById('rg-result').style.display = 'block';
+      } catch {
+        alert(tData.alertUnable);
+      }
+    }
+
+    document.getElementById('rg-btn')?.addEventListener('click', reverseGeo);
+
+    document.getElementById('rg-copy')?.addEventListener('click', function () {
+      const addr = document.getElementById('rg-addr').textContent.trim();
+      if (addr && addr !== '—') {
+        navigator.clipboard.writeText(addr).then(() => {
+          const orig = this.textContent;
+          this.textContent = '✓ Copied!';
+          setTimeout(() => { this.textContent = orig; }, 2000);
+        });
+      }
+    });
+
+    document.getElementById('rg-gps')?.addEventListener('click', () => {
+      if (!navigator.geolocation) {
+        alert('Geolocation is not supported by your browser.');
+        return;
+      }
+      navigator.geolocation.getCurrentPosition(
+        (pos) => {
+          document.getElementById('rg-lat').value = pos.coords.latitude.toFixed(6);
+          document.getElementById('rg-lng').value = pos.coords.longitude.toFixed(6);
+          reverseGeo();
+        },
+        (err) => {
+          alert(err.message);
+        },
+        { enableHighAccuracy: true, timeout: 10000 }
+      );
+    });
+  </script>
+</ToolLayout>
