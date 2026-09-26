@@ -28,6 +28,7 @@ const mapSchema = {
   title="Interactive Location Map — Live GPS View | MyLocationLab"
   description="Interactive fullscreen map of your location: switch layers, inspect coordinates by click, draw radius circles, measure distances."
   activeSection="maps"
+  leaflet
   jsonLd={[mapSchema]}
 >
   <div class="container">
@@ -142,14 +143,9 @@ const mapSchema = {
       // Enable scroll-wheel zoom only after deliberate interaction with the map,
       // so page scrolling over the full-width map isn't hijacked.
       // @ts-ignore
-      map.on('click', () => {
+      map.on('click', (e: any) => {
         // @ts-ignore
         map.scrollWheelZoom.enable();
-      });
-
-      // Map click handler
-      // @ts-ignore
-      map.on('click', (e: any) => {
         const { lat, lng } = e.latlng;
         setPoint(lat, lng);
       });
@@ -214,12 +210,25 @@ const mapSchema = {
           }).addTo(map).bindPopup('Your Current Location').openPopup();
         }
       } catch (err) {
-        // Default to a scenic overview if permissions denied
-        map.setView([40.7128, -74.0060], 12);
+        // Auto-detect failed (denied/unavailable): keep the world view — the
+        // "Center on My Location" button stays available for a manual retry.
+        if (!locateBtn.dataset.autoFailed) {
+          locateBtn.dataset.autoFailed = '1';
+        }
       }
     }
 
-    if (locateBtn) locateBtn.addEventListener('click', getUserLocation);
+    if (locateBtn) locateBtn.addEventListener('click', () => getUserLocation());
+
+    // Auto-center on the user once the map has initialized — no click needed.
+    // If permission is already denied, the world view stays and the button
+    // above remains for a manual retry.
+    (async () => {
+      while (!map) await new Promise((r) => setTimeout(r, 200));
+      if (await GeoLocation.checkPermission() !== 'denied') {
+        getUserLocation();
+      }
+    })();
 
     if (clearBtn) {
       clearBtn.addEventListener('click', () => {

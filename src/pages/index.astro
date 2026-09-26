@@ -113,7 +113,7 @@ const homeFaqSchema = {
               <h2 class="telemetry-heading-title">Active GPS Telemetry</h2>
               <span class="telemetry-status-pill" id="telemetry-status-pill">READY TO ACQUIRE</span>
             </div>
-            <p class="telemetry-subtext" id="telemetry-subtext">Click 'Get My Location' to initiate high-precision browser positioning.</p>
+            <p class="telemetry-subtext" id="telemetry-subtext">Acquiring high-precision browser positioning automatically — no click needed.</p>
           </div>
         </div>
 
@@ -236,7 +236,7 @@ const homeFaqSchema = {
               </span>
             </div>
             <div>
-              <div class="telemetry-cell-value" id="data-address" style="font-size: 16.5px;">Click "Get My Location" to resolve your address</div>
+              <div class="telemetry-cell-value" id="data-address" style="font-size: 16.5px;">Resolving your address automatically…</div>
               <div class="telemetry-cell-sub">Reverse Geocoded via OpenStreetMap Nominatim</div>
             </div>
           </div>
@@ -977,6 +977,11 @@ const homeFaqSchema = {
     // Button Events
     getBtn?.addEventListener('click', findLocation);
     document.getElementById('refresh-btn')?.addEventListener('click', findLocation);
+
+    // Auto-acquire location on page load — no click needed. The hero button and
+    // refresh button remain as manual retries. On failure the handler falls back
+    // to IP-based location on its own.
+    findLocation();
 
     document.getElementById('copy-coords-btn')?.addEventListener('click', function() {
       if (currentLat === null || currentLng === null) {

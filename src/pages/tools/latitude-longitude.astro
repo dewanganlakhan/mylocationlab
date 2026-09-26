@@ -5,9 +5,10 @@ import ToolLayout from '../../layouts/ToolLayout.astro';
 <ToolLayout leaflet toolId="latitude-longitude" title="Latitude Longitude Finder — Find Lat Long | MyLocationLab" description="Find the latitude and longitude of any location. Click on the map or use GPS to get precise lat/lng coordinates." h1="Latitude Longitude Finder" subtitle="Find latitude and longitude for any location by clicking on the map, entering an address, or using your GPS.">
 
   <div class="tool-interface">
-    <div style="text-align: center; padding: var(--space-4) 0;" id="ll-prompt">
-      <p style="color: var(--color-text-secondary); margin-bottom: var(--space-4);">Click the button to use your current position, or click anywhere on the map below.</p>
+    <div style="text-align: center; padding: var(--space-4) 0;" id="ll-prompt" >
+      <p style="color: var(--color-text-secondary); margin-bottom: var(--space-4);">Detecting your position automatically — or click anywhere on the map below.</p>
       <button class="btn btn-primary btn-lg" id="ll-btn" type="button">📍 Use My Location</button>
+      <p id="ll-error" style="display: none; margin: var(--space-3) 0 0; color: var(--color-accent-error, #ef4444); font-size: var(--text-sm);"></p>
     </div>
 
     <div class="tool-result" id="ll-result" style="display: none;">
@@ -78,12 +79,34 @@ import ToolLayout from '../../layouts/ToolLayout.astro';
     };
     waitL();
 
-    document.getElementById('ll-btn')?.addEventListener('click', async () => {
+    async function locateMe() {
+      const promptEl = document.getElementById('ll-prompt');
+      const errorEl = document.getElementById('ll-error');
+      promptEl.style.display = 'none';
+      if (errorEl) errorEl.style.display = 'none';
       try {
         const pos = await GeoLocation.getCurrentPosition();
         showResult(pos.coords.latitude, pos.coords.longitude);
-      } catch (e) { alert(GeoLocation.getErrorMessage(e)); }
-    });
+      } catch (e) {
+        promptEl.style.display = 'block';
+        if (errorEl) {
+          errorEl.textContent = GeoLocation.getErrorMessage(e);
+          errorEl.style.display = 'block';
+        }
+      }
+    }
+
+    document.getElementById('ll-btn')?.addEventListener('click', locateMe);
+
+    // Auto-detect on page load so no click is needed; fall back to the button
+    // if permission was already denied.
+    (async () => {
+      if (await GeoLocation.checkPermission() === 'denied') {
+        document.getElementById('ll-prompt').style.display = 'block';
+        return;
+      }
+      locateMe();
+    })();
 
     document.getElementById('ll-copy')?.addEventListener('click', function() {
       if (lat) Sharing.copyToClipboard(`${lat.toFixed(6)}, ${lng.toFixed(6)}`, this);

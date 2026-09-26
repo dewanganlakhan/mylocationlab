@@ -6,7 +6,6 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Breadcrumbs from '../../components/Breadcrumbs.astro';
 import FAQAccordion from '../../components/FAQAccordion.astro';
-import SiloNav from '../../components/SiloNav.astro';
 import AuthorEAT from '../../components/AuthorEAT.astro';
 import { myLocationSubNav } from '../../data/navigation.js';
 
@@ -16,7 +15,7 @@ const breadcrumbs = [
 ];
 
 const faqItems = [
-  { question: 'How do I find my current location?', answer: 'Click the <strong>"Get My Location"</strong> button on this page. Your browser will ask for permission to access your location. Once granted, your exact GPS coordinates, address, city, state, and country will be displayed instantly.' },
+  { question: 'How do I find my current location?', answer: 'This page detects your location <strong>automatically</strong> — your browser will ask for permission the first time you visit. Once granted, your exact GPS coordinates, address, city, state, and country are displayed instantly. If detection fails or you deny permission, a "Get My Location" button appears so you can retry manually.' },
   { question: 'Why does my browser ask for location permission?', answer: 'For your privacy, browsers require explicit permission before sharing your location with any website. This is a security feature — your location is only shared when you actively allow it. You can revoke permission at any time in your browser settings.' },
   { question: 'What information does "My Location" show?', answer: 'We show your <strong>latitude and longitude coordinates</strong>, full street address (via reverse geocoding), city, state/region, country, GPS accuracy radius, altitude (if available), and your position on an interactive map.' },
   { question: 'Is GPS location the same as IP location?', answer: 'No. GPS location uses satellite signals and is accurate to 3-10 meters. IP location uses your internet address and is typically only accurate to the city level (1-50 km). <a href="/comparisons/gps-vs-ip-location/">Learn more about GPS vs IP location</a>.' },
@@ -44,7 +43,6 @@ const myLocFaqSchema = {
 >
   <div class="container">
     <Breadcrumbs items={breadcrumbs} />
-    <SiloNav silo="my-location" title="Related Location Tools" />
 
     <section class="page-header">
       <h1>My <span class="text-gradient">Location</span></h1>
@@ -68,7 +66,7 @@ const myLocFaqSchema = {
         <span class="badge" id="status-badge">Ready</span>
       </div>
 
-      <div style="text-align: center; padding: var(--space-6) 0;">
+      <div id="location-prompt" style="display: none; text-align: center; padding: var(--space-6) 0;">
         <button class="btn btn-primary btn-lg" id="get-location-btn" type="button">
           📍 Get My Location
         </button>
@@ -78,6 +76,8 @@ const myLocFaqSchema = {
         <div class="spinner" style="margin: 0 auto var(--space-4);"></div>
         <p style="color: var(--color-text-secondary); margin: 0;">Detecting your location...</p>
       </div>
+
+      <p id="location-error" style="display: none; margin: var(--space-3) 0 0; text-align: center; color: var(--color-accent-error, #ef4444); font-size: var(--text-sm);"></p>
 
       <div class="location-data-grid" id="location-data" style="display: none;">
         <div class="location-data-item">
@@ -197,14 +197,18 @@ const myLocFaqSchema = {
 
     let currentLat = null, currentLng = null;
 
-    document.getElementById('get-location-btn')?.addEventListener('click', async () => {
+    async function findLocation(isAuto = false) {
       const loading = document.getElementById('location-loading');
+      const prompt = document.getElementById('location-prompt');
+      const errorEl = document.getElementById('location-error');
       const data = document.getElementById('location-data');
       const actions = document.getElementById('action-buttons');
       const mapEl = document.getElementById('map');
       const dot = document.getElementById('status-dot');
       const badge = document.getElementById('status-badge');
 
+      prompt.style.display = 'none';
+      errorEl.style.display = 'none';
       loading.style.display = 'block';
       data.style.display = 'none';
 
@@ -263,12 +267,26 @@ const myLocFaqSchema = {
 
       } catch (error) {
         loading.style.display = 'none';
+        prompt.style.display = 'block';
         dot.style.background = 'var(--color-accent-error)';
         badge.textContent = 'Error';
         badge.className = 'badge badge-warning';
-        alert(GeoLocation.getErrorMessage(error));
+        errorEl.textContent = GeoLocation.getErrorMessage(error);
+        errorEl.style.display = 'block';
       }
-    });
+    }
+
+    document.getElementById('get-location-btn')?.addEventListener('click', () => findLocation(false));
+
+    // Auto-detect on page load so no click is needed; fall back to the button
+    // if permission was already denied.
+    (async () => {
+      if (await GeoLocation.checkPermission() === 'denied') {
+        document.getElementById('location-prompt').style.display = 'block';
+        return;
+      }
+      findLocation(true);
+    })();
 
     document.getElementById('copy-coords-btn')?.addEventListener('click', function() {
       if (currentLat) Sharing.copyToClipboard(`${currentLat}, ${currentLng}`, this);

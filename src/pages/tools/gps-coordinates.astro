@@ -3,7 +3,7 @@ import ToolLayout from '../../layouts/ToolLayout.astro';
 import FAQAccordion from '../../components/FAQAccordion.astro';
 
 const faqItems = [
-  { question: 'How do I find my GPS coordinates?', answer: 'Click the "Find My GPS Coordinates" button above. Your browser will request location permission. Once granted, your exact latitude and longitude will be displayed in decimal degrees format, along with accuracy and altitude data.' },
+  { question: 'How do I find my GPS coordinates?', answer: 'This tool detects your GPS coordinates <strong>automatically</strong> when the page loads — your browser will ask for location permission the first time. If detection fails or you deny permission, a button appears so you can retry manually.' },
   { question: 'What format are the GPS coordinates in?', answer: 'By default, coordinates are shown in <strong>decimal degrees</strong> (DD) format, which is the most widely used format for digital applications. You can use our <a href="/tools/coordinate-converter/">Coordinate Converter</a> to convert to DMS, UTM, or other formats.' },
   { question: 'How accurate are the GPS coordinates?', answer: 'Accuracy depends on your device and environment. Modern smartphones provide 3-5 meter accuracy outdoors. Indoors, accuracy may drop to 10-50 meters. The accuracy radius is shown alongside your coordinates.' },
 ];
@@ -12,8 +12,8 @@ const faqItems = [
 <ToolLayout leaflet toolId="gps-coordinates" title="GPS Coordinates Finder — Exact Location | MyLocationLab" description="Find your exact GPS coordinates instantly. Get your current latitude, longitude, accuracy, and altitude from GPS satellites." h1="GPS Coordinates Finder" subtitle="Get your precise GPS coordinates in real-time. Shows latitude, longitude, accuracy, and altitude from satellite signals.">
 
   <div class="tool-interface">
-    <div style="text-align: center; padding: var(--space-4) 0;" id="gps-prompt">
-      <p style="color: var(--color-text-secondary); margin-bottom: var(--space-4);">Click below to detect your GPS coordinates.</p>
+    <div style="text-align: center; padding: var(--space-4) 0;" id="gps-prompt" >
+      <p style="color: var(--color-text-secondary); margin-bottom: var(--space-4);">Detecting your GPS coordinates automatically — no click needed.</p>
       <button class="btn btn-primary btn-lg" id="gps-btn" type="button">📍 Find My GPS Coordinates</button>
     </div>
 
@@ -21,6 +21,8 @@ const faqItems = [
       <div class="spinner" style="margin: 0 auto var(--space-3);"></div>
       <p style="color: var(--color-text-secondary); margin: 0;">Connecting to GPS satellites...</p>
     </div>
+
+    <p id="gps-error" style="display: none; margin: var(--space-3) 0 0; text-align: center; color: var(--color-accent-error, #ef4444); font-size: var(--text-sm);"></p>
 
     <div class="tool-result" id="gps-result" style="display: none;">
       <div class="tool-result-row">
@@ -95,14 +97,16 @@ const faqItems = [
 
     let lat = null, lng = null;
 
-    async function findGPS() {
+    async function findGPS(isAuto = false) {
       const prompt = document.getElementById('gps-prompt');
       const loading = document.getElementById('gps-loading');
+      const errorEl = document.getElementById('gps-error');
       const result = document.getElementById('gps-result');
       const actions = document.getElementById('gps-actions');
       const mapEl = document.getElementById('gps-map');
 
       prompt.style.display = 'none';
+      errorEl.style.display = 'none';
       loading.style.display = 'block';
       result.style.display = 'none';
 
@@ -139,12 +143,23 @@ const faqItems = [
       } catch (error) {
         loading.style.display = 'none';
         prompt.style.display = 'block';
-        alert(GeoLocation.getErrorMessage(error));
+        errorEl.textContent = GeoLocation.getErrorMessage(error);
+        errorEl.style.display = 'block';
       }
     }
 
-    document.getElementById('gps-btn')?.addEventListener('click', findGPS);
-    document.getElementById('gps-refresh')?.addEventListener('click', findGPS);
+    document.getElementById('gps-btn')?.addEventListener('click', () => findGPS(false));
+    document.getElementById('gps-refresh')?.addEventListener('click', () => findGPS(false));
+
+    // Auto-detect on page load so no click is needed; fall back to the button
+    // if permission was already denied.
+    (async () => {
+      if (await GeoLocation.checkPermission() === 'denied') {
+        document.getElementById('gps-prompt').style.display = 'block';
+        return;
+      }
+      findGPS(true);
+    })();
     document.getElementById('gps-copy')?.addEventListener('click', function() {
       if (lat) Sharing.copyToClipboard(`${lat}, ${lng}`, this);
     });
