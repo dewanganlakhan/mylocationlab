@@ -22,6 +22,7 @@ import ToolLayout from '../../layouts/ToolLayout.astro';
       <div class="tool-result-row"><span class="tool-result-label">Distance (meters)</span><span class="tool-result-value" id="dc-m">—</span></div>
       <div class="tool-result-row"><span class="tool-result-label">Distance (nautical miles)</span><span class="tool-result-value" id="dc-nm">—</span></div>
       <div class="tool-result-row"><span class="tool-result-label">Bearing from A to B</span><span class="tool-result-value" id="dc-bearing">—</span></div>
+      <div style="margin-top: var(--space-4);"><button class="btn btn-secondary btn-sm" id="dc-copy" type="button">📋 Copy Result</button></div>
     </div>
   </div>
 
@@ -45,6 +46,7 @@ import ToolLayout from '../../layouts/ToolLayout.astro';
   <script>
     import GeoLocation from '../../scripts/geolocation.js';
     import CoordUtils from '../../scripts/coordinates.js';
+    import Sharing from '../../scripts/sharing.js';
 
     let map = null;
     let markerA = null;
@@ -249,6 +251,18 @@ import ToolLayout from '../../layouts/ToolLayout.astro';
       [lat1El, lng1El, lat2El, lng2El].forEach((el) => { if (el) el.value = ''; });
       clicks = 0;
       setHint('Click on the map below to place <strong>Point A</strong>, then click again for <strong>Point B</strong> — the distance line appears automatically.');
+    });
+
+    document.getElementById('dc-copy')?.addEventListener('click', function () {
+      if (!resultEl || resultEl.style.display === 'none') return;
+      const val = (id: string) => document.getElementById(id)?.textContent?.trim() ?? '—';
+      const lines = [
+        `Distance: ${val('dc-km')} (${val('dc-mi')} / ${val('dc-m')} / ${val('dc-nm')})`,
+        `Bearing A→B: ${val('dc-bearing')}`,
+        `Point A: ${lat1El.value}, ${lng1El.value}`,
+        `Point B: ${lat2El.value}, ${lng2El.value}`,
+      ];
+      Sharing.copyToClipboard(lines.join('\n'), this);
     });
 
     [lat1El, lng1El, lat2El, lng2El].forEach((el) => {

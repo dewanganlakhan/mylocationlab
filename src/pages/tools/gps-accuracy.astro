@@ -66,6 +66,10 @@ import ToolLayout from '../../layouts/ToolLayout.astro';
         <span class="location-data-value" id="acc-coords" style="font-size: var(--text-xs);">—</span>
       </div>
     </div>
+
+    <div class="action-buttons" style="margin-top: var(--space-6); display: flex;">
+      <button class="btn btn-secondary btn-sm" id="acc-copy" type="button">📋 Copy Snapshot</button>
+    </div>
   </div>
 
   <div class="prose" style="margin-top: var(--space-12);">
@@ -129,6 +133,8 @@ import ToolLayout from '../../layouts/ToolLayout.astro';
   </div>
 
   <script>
+    import Sharing from '../../scripts/sharing.js';
+
     let watchId = null;
     const startBtn = document.getElementById('acc-start-btn');
     const stopBtn = document.getElementById('acc-stop-btn');
@@ -272,5 +278,28 @@ import ToolLayout from '../../layouts/ToolLayout.astro';
 
     if (startBtn) startBtn.addEventListener('click', startTracking);
     if (stopBtn) stopBtn.addEventListener('click', stopTracking);
+
+    document.getElementById('acc-copy')?.addEventListener('click', function () {
+      const meters = valMeters?.textContent.trim();
+      if (!meters || meters === '—') {
+        const orig = this.textContent;
+        this.textContent = 'Start tracking first';
+        setTimeout(() => { this.textContent = orig; }, 2000);
+        return;
+      }
+      const t = (id) => document.getElementById(id)?.textContent.trim() || '—';
+      const lines = [
+        `GPS Accuracy Snapshot — ${new Date().toLocaleString()}`,
+        `Accuracy: ± ${meters} m (± ${t('acc-val-feet')} ft)`,
+        `Rating: ${t('acc-rating-badge')}`,
+        `Coordinates: ${t('acc-coords')}`,
+        `HDOP: ${t('acc-hdop')}`,
+        `Ground Speed: ${t('acc-speed')}`,
+        `Heading: ${t('acc-heading')}`,
+        `Altitude: ${t('acc-alt')}`,
+        `Vertical Accuracy: ${t('acc-valt')}`,
+      ];
+      Sharing.copyToClipboard(lines.join('\n'), this);
+    });
   </script>
 </ToolLayout>

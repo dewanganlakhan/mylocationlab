@@ -107,5 +107,16 @@ const allJsonLd = jsonLd
 
   <!-- Leaflet JS (self-hosted, only on pages that render maps) -->
   {leaflet && <script is:inline defer src="/vendor/leaflet/leaflet.js"></script>}
+
+  <!-- Copy chips: attach a small copy icon next to every id'd data value, site-wide -->
+  <script>
+    import Sharing from '../scripts/sharing.js';
+    const wireCopyChips = () => Sharing.attachCopyChips();
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', wireCopyChips);
+    } else {
+      wireCopyChips();
+    }
+  </script>
 </body>
 </html>

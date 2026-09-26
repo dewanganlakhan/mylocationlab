@@ -2864,3 +2864,66 @@ html[data-theme="dark"] .card-squircle-icon {
 }
 
 
+
+/* ---------- Copy chip — small inline copy icon for data cells & result rows ---------- */
+.copy-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  padding: 0;
+  flex-shrink: 0;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-bg-tertiary);
+  color: var(--color-text-tertiary);
+  cursor: pointer;
+  opacity: 0.7;
+  transition: opacity var(--transition-fast), color var(--transition-fast), border-color var(--transition-fast);
+}
+
+.copy-chip:hover {
+  opacity: 1;
+  color: var(--color-accent-primary);
+  border-color: var(--color-accent-primary);
+}
+
+.copy-chip.copied {
+  opacity: 1;
+  color: var(--color-accent-success);
+  border-color: var(--color-accent-success);
+}
+
+.copy-chip:focus-visible {
+  outline: 2px solid var(--color-accent-primary);
+  outline-offset: 2px;
+  opacity: 1;
+}
+
+/* Copy chip placement inside the three data containers */
+.telemetry-cell-top .telemetry-cell-icon {
+  margin-left: auto;
+}
+
+.telemetry-cell-top .copy-chip {
+  margin-left: 6px;
+}
+
+.tool-result-row .tool-result-value {
+  margin-left: auto;
+}
+
+.tool-result-row .copy-chip {
+  margin-left: 8px;
+}
+
+.location-data-item {
+  position: relative;
+}
+
+.location-data-item > .copy-chip {
+  position: absolute;
+  top: 0;
+  right: 0;
+}

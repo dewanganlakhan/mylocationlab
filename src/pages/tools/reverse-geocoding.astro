@@ -14,6 +14,7 @@ import ToolLayout from '../../layouts/ToolLayout.astro';
       <div class="tool-result-row"><span class="tool-result-label">State</span><span class="tool-result-value" id="rg-state" style="font-family: var(--font-sans);">—</span></div>
       <div class="tool-result-row"><span class="tool-result-label">Country</span><span class="tool-result-value" id="rg-country" style="font-family: var(--font-sans);">—</span></div>
       <div class="tool-result-row"><span class="tool-result-label">Postcode</span><span class="tool-result-value" id="rg-zip">—</span></div>
+      <div style="margin-top: var(--space-4);"><button class="btn btn-secondary btn-sm" id="rg-copy" type="button">📋 Copy Address</button></div>
     </div>
   </div>
   <div class="prose" style="margin-top: var(--space-12);">
@@ -31,6 +32,7 @@ import ToolLayout from '../../layouts/ToolLayout.astro';
   <script>
     import GeoLocation from '../../scripts/geolocation.js';
     import Geocoding from '../../scripts/geocoding.js';
+    import Sharing from '../../scripts/sharing.js';
 
     async function reverseGeo() {
       const lat = parseFloat(document.getElementById('rg-lat').value);
@@ -48,6 +50,11 @@ import ToolLayout from '../../layouts/ToolLayout.astro';
     }
 
     document.getElementById('rg-btn')?.addEventListener('click', reverseGeo);
+
+    document.getElementById('rg-copy')?.addEventListener('click', function () {
+      const addr = document.getElementById('rg-addr').textContent.trim();
+      if (addr && addr !== '—') Sharing.copyToClipboard(addr, this);
+    });
     document.getElementById('rg-gps')?.addEventListener('click', async () => {
       try {
         const pos = await GeoLocation.getCurrentPosition();
