@@ -1685,6 +1685,22 @@ main > .page-header:first-child {
   margin-bottom: 0;
 }
 
+/* Compact variant — keeps the page's main tool above the fold */
+.page-header-tight {
+  padding-top: var(--space-2);
+  padding-bottom: var(--space-5);
+}
+
+.page-header-tight h1 {
+  font-size: var(--text-4xl);
+  margin-bottom: var(--space-2);
+}
+
+.page-header-tight .page-header-desc {
+  font-size: var(--text-base);
+  line-height: 1.6;
+}
+
 /* -------------------- Content Layout -------------------- */
 .content-layout {
   display: grid;
@@ -1708,8 +1724,10 @@ main > .page-header:first-child {
     grid-template-columns: 1fr;
   }
 
+  /* Sidebar (related links) flows AFTER the tool so it never
+     pushes the main tool below the fold on mobile */
   .content-sidebar {
-    order: -1;
+    margin-top: var(--space-8);
   }
 }
 

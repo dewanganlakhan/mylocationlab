@@ -2,7 +2,6 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Breadcrumbs from '../../components/Breadcrumbs.astro';
 import ToolCard from '../../components/ToolCard.astro';
-import SiloNav from '../../components/SiloNav.astro';
 import FAQAccordion from '../../components/FAQAccordion.astro';
 import { tools, toolCategories, getToolsByCategory } from '../../data/tools.js';
 
@@ -47,7 +46,6 @@ const toolFaqs = [
 >
   <div class="container">
     <Breadcrumbs items={breadcrumbs} />
-    <SiloNav silo="tools" title="Geospatial Utilities & Tools" />
 
     <section class="page-header" style="text-align: center; margin-bottom: var(--space-8);">
       <h1>Location & Geospatial <span class="text-gradient">Tools</span></h1>

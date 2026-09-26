@@ -1,7 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Breadcrumbs from '../../components/Breadcrumbs.astro';
-import SiloNav from '../../components/SiloNav.astro';
 
 const breadcrumbs = [
   { label: 'Home', href: '/' },
@@ -126,7 +125,6 @@ const hubSchema = {
 >
   <div class="container">
     <Breadcrumbs items={breadcrumbs} />
-    <SiloNav silo="guides" title="Location Guides & Tutorials" />
 
     <section class="page-header" style="text-align: center; margin-bottom: var(--space-12);">
       <span class="badge badge-primary" style="margin-bottom: var(--space-3);">Geospatial Knowledge Base</span>

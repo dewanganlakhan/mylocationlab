@@ -1,13 +1,14 @@
 ---
 /**
  * ToolLayout — Layout for location tool pages
- * Includes breadcrumbs, silo nav, tool header, main content area, related tools sidebar, and E-E-A-T review block.
+ * The tool renders immediately after a compact title (above the fold on
+ * mobile and desktop, like inchcalculator). Breadcrumbs, related-tool
+ * links, and E-E-A-T review block surround the tool without delaying it.
  */
 import BaseLayout from './BaseLayout.astro';
 import Breadcrumbs from '../components/Breadcrumbs.astro';
 import RelatedTools from '../components/RelatedTools.astro';
 import AuthorEAT from '../components/AuthorEAT.astro';
-import SiloNav from '../components/SiloNav.astro';
 
 interface Props {
   title: string;
@@ -67,18 +68,10 @@ const allJsonLd = jsonLd
   <div class="container">
     <Breadcrumbs items={breadcrumbs} />
 
-    <SiloNav silo="tools" title="Geospatial Utilities & Tools" />
-
-    <div class="page-header">
+    <header class="page-header page-header-tight">
       <h1>{h1}</h1>
       {subtitle && <p class="page-header-desc">{subtitle}</p>}
-    </div>
-
-    <AuthorEAT
-      reviewedBy="MyLocationLab Editorial Team"
-      reviewerTitle="Geospatial Content Reviewer"
-      lastUpdated="September 2026"
-    />
+    </header>
 
     <div class="content-layout">
       <div class="content-main">
@@ -86,8 +79,32 @@ const allJsonLd = jsonLd
       </div>
       <aside class="content-sidebar">
         <RelatedTools currentToolId={toolId} />
+        <div class="related-tools">
+          <h4 class="related-tools-title">Keep Exploring</h4>
+          <a href="/my-location/" class="related-tool-item">
+            <span class="related-tool-icon">🎯</span>
+            <span class="related-tool-name">Where Am I Right Now?</span>
+          </a>
+          <a href="/guides/" class="related-tool-item">
+            <span class="related-tool-icon">📚</span>
+            <span class="related-tool-name">GPS &amp; Location Guides</span>
+          </a>
+          <a href="/comparisons/" class="related-tool-item">
+            <span class="related-tool-icon">⚖️</span>
+            <span class="related-tool-name">GPS vs IP, DD vs DMS</span>
+          </a>
+          <a href="/maps/" class="related-tool-item">
+            <span class="related-tool-icon">🗺️</span>
+            <span class="related-tool-name">Interactive Location Map</span>
+          </a>
+        </div>
       </aside>
     </div>
+
+    <AuthorEAT
+      reviewedBy="MyLocationLab Editorial Team"
+      reviewerTitle="Geospatial Content Reviewer"
+      lastUpdated="September 2026"
+    />
   </div>
 </BaseLayout>
-

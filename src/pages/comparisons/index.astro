@@ -1,7 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Breadcrumbs from '../../components/Breadcrumbs.astro';
-import SiloNav from '../../components/SiloNav.astro';
 
 const breadcrumbs = [
   { label: 'Home', href: '/' },
@@ -49,7 +48,6 @@ const compHubSchema = {
 >
   <div class="container">
     <Breadcrumbs items={breadcrumbs} />
-    <SiloNav silo="comparisons" title="GPS & Accuracy Comparisons" />
 
     <section class="page-header" style="text-align: center; margin-bottom: var(--space-10);">
       <h1>Geospatial <span class="text-gradient">Comparisons & Benchmarks</span></h1>
