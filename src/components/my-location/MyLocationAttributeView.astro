@@ -751,7 +751,219 @@ const dict: Record<AttributeType, Record<string, AttributeConfig>> = {
   }
 };
 
+/**
+ * Per-attribute FAQ bank. FAQPage JSON-LD is emitted once at page level
+ * (faqSchema below), so the accordion is rendered with includeSchema={false}.
+ */
+const faqBank: Record<AttributeType, Record<string, { question: string; answer: string }[]>> = {
+  city: {
+    en: [
+      { question: "How does my phone know what city I'm in?", answer: "Your phone combines GPS satellite signals, nearby Wi-Fi networks, and cell towers to compute your coordinates. This page then matches those coordinates against city boundary data to return the municipality you are standing in." },
+      { question: "Why does it show a different city than I expected?", answer: "Administrative boundaries don't always match postal zones or metropolitan areas. You may live in one municipality but be served by a neighboring city's post office or media market. The result reflects official municipal boundaries." },
+      { question: "Can I be in two cities at once?", answer: "No — a point can only be inside one municipal boundary at a time. On the outskirts, however, the addresses and postal zones of a neighboring city may apply, which is why the result can differ from your postal address." },
+      { question: "Does this work indoors?", answer: "Yes, but accuracy drops. Without a clear view of the sky, your phone relies on Wi-Fi and cell positioning, which can be off by several hundred meters — enough to matter near a city boundary." }
+    ],
+    es: [
+      { question: "¿Cómo sabe mi teléfono en qué ciudad estoy?", answer: "Su teléfono combina señales de satélites GPS, redes Wi-Fi cercanas y antenas móviles para calcular sus coordenadas. Esta página las coteja con los límites municipales para devolver el municipio en el que se encuentra." },
+      { question: "¿Por qué aparece una ciudad distinta a la esperada?", answer: "Los límites administrativos no siempre coinciden con las zonas postales o las áreas metropolitanas. Puede residir en un municipio y que su correo o sus servicios dependan de la ciudad vecina. El resultado refleja los límites municipales oficiales." },
+      { question: "¿Puedo estar en dos ciudades a la vez?", answer: "No: un punto solo puede pertenecer a un municipio. En las afueras, sin embargo, pueden aplicarse las direcciones y zonas postales de la ciudad colindante, por lo que el resultado puede diferir de su dirección postal." },
+      { question: "¿Funciona en interiores?", answer: "Sí, aunque con menor precisión. Sin visión despejada del cielo, el teléfono usa Wi-Fi y antenas celulares, lo que puede desviar la posición varios cientos de metros: suficiente para importar cerca de un límite municipal." }
+    ],
+    fr: [
+      { question: "Comment mon téléphone sait-il dans quelle ville je suis ?", answer: "Votre téléphone combine les signaux GPS, les réseaux Wi-Fi voisins et les antennes mobiles pour calculer vos coordonnées ; la page les recroise ensuite avec les limites communales pour identifier la commune où vous vous trouvez." },
+      { question: "Pourquoi une autre ville que celle attendue ?", answer: "Les limites administratives ne coïncident pas toujours avec les zones postales ou les aires urbaines. Vous pouvez relever d'une commune tout en dépendant des services de la ville voisine. Le résultat suit les limites communales officielles." },
+      { question: "Peut-on être dans deux villes à la fois ?", answer: "Non : un point n'appartient qu'à une seule commune. En périphérie, l'adresse postale d'une ville limitrophe peut toutefois s'appliquer, d'où un résultat parfois différent de votre adresse postale." },
+      { question: "Cela fonctionne-t-il en intérieur ?", answer: "Oui, mais avec moins de précision. Sans vue dégagée sur le ciel, le téléphone s'appuie sur le Wi-Fi et les antennes, ce qui peut décaler la position de quelques centaines de mètres — significatif près d'une limite communale." }
+    ],
+    de: [
+      { question: "Woher weiß mein Handy, in welcher Stadt ich bin?", answer: "Ihr Handy kombiniert GPS-Satellitensignale, nahe WLAN-Netze und Mobilfunkmasten, um Ihre Koordinaten zu berechnen. Die Seite gleicht diese dann mit den Gemeindegrenzen ab und nennt die Kommune, in der Sie sich befinden." },
+      { question: "Warum wird eine andere Stadt angezeigt als erwartet?", answer: "Verwaltungsgrenzen decken sich nicht immer mit Postgebieten oder Metropolregionen. Sie können in einer Gemeinde liegen und dennoch von der Nachbarstadt versorgt werden. Das Ergebnis folgt den offiziellen Gemeindegrenzen." },
+      { question: "Kann ich in zwei Städten gleichzeitig sein?", answer: "Nein — ein Punkt gehört immer nur zu einer Gemeinde. Am Stadtrand können jedoch Adresse und Postzone der Nachbarstadt gelten, weshalb das Ergebnis von Ihrer Postanschrift abweichen kann." },
+      { question: "Funktioniert das auch in Gebäuden?", answer: "Ja, aber ungenauer. Ohne freie Himmelsicht nutzt das Handy WLAN und Mobilfunk, was die Position um mehrere hundert Meter verschieben kann — nahe einer Stadtgrenze durchaus relevant." }
+    ],
+    pt: [
+      { question: "Como meu celular sabe em que cidade estou?", answer: "Seu aparelho combina sinais de satélites GPS, redes Wi-Fi próximas e antenas celulares para calcular suas coordenadas. A página então cruza esses dados com os limites municipais para identificar o município em que você está." },
+      { question: "Por que aparece uma cidade diferente da esperada?", answer: "Os limites administrativos nem sempre coincidem com zonas postais ou regiões metropolitanas. Você pode estar em um município e ser atendido pelos serviços da cidade vizinha. O resultado segue os limites municipais oficiais." },
+      { question: "Posso estar em duas cidades ao mesmo tempo?", answer: "Não — um ponto pertence a apenas um município. Na periferia, porém, o endereço postal da cidade limítrofe pode se aplicar, e por isso o resultado pode diferir do seu CEP." },
+      { question: "Funciona dentro de casa?", answer: "Sim, mas com menos precisão. Sem visão clara do céu, o celular usa Wi-Fi e antenas, o que pode deslocar a posição em algumas centenas de metros — o que importa perto de um limite municipal." }
+    ]
+  },
+  state: {
+    en: [
+      { question: "What counts as a 'state' here?", answer: "The first-level administrative division of your country — states in the US, Australia, or Germany (Länder), provinces in Canada, Spain, or Argentina, cantons in Switzerland, and regions in France." },
+      { question: "Why is my state wrong near a border?", answer: "State lines are digitized in GIS databases with finite precision. Within a few hundred meters of a border, your device's accuracy radius may straddle the line and return the neighboring state." },
+      { question: "Can I check when I cross a state line?", answer: "Yes. Keep this page open while traveling and press the refresh button — each new fix re-resolves your position and updates the state the moment you cross." },
+      { question: "Is state detection available worldwide?", answer: "Almost. Any country with digitized first-level administrative boundaries works, which covers the vast majority. Very small nations may not have a state level at all." }
+    ],
+    es: [
+      { question: "¿Qué cuenta como «estado» aquí?", answer: "La primera división administrativa de su país: estados en EE. UU., Australia o Alemania (Länder), provincias en Canadá, España o Argentina, cantones en Suiza y regiones en Francia." },
+      { question: "¿Por qué aparece un estado equivocado cerca de una frontera?", answer: "Las líneas estatales se digitalizan con precisión finita. A pocos cientos de metros de una frontera, el radio de precisión de su dispositivo puede cruzar la línea y devolver el estado vecino." },
+      { question: "¿Puedo comprobar cuándo cruzo una frontera estatal?", answer: "Sí. Mantenga esta página abierta durante el viaje y pulse el botón de actualizar: cada nueva lectura resuelve su posición y actualiza el estado en cuanto lo cruce." },
+      { question: "¿Está disponible la detección de estado en todo el mundo?", answer: "Casi. Funciona en cualquier país con límites administrativos de primer nivel digitalizados, es decir, la gran mayoría. Algunos países muy pequeños carecen de ese nivel." }
+    ],
+    fr: [
+      { question: "Qu'est-ce qui compte comme « région » ici ?", answer: "La première division administrative du pays : États aux États-Unis, en Australie ou en Allemagne (Länder), provinces au Canada, en Espagne ou en Argentine, cantons en Suisse, régions ou départements en France." },
+      { question: "Pourquoi un département erroné près d'une limite ?", answer: "Les limites sont numérisées avec une précision finie. À quelques centaines de mètres d'une frontière administrative, le rayon de précision de votre appareil peut chevaucher la ligne et renvoyer le département voisin." },
+      { question: "Puis-je vérifier quand je franchis une limite ?", answer: "Oui. Gardez cette page ouverte pendant votre trajet et appuyez sur le bouton d'actualisation : chaque nouvelle mesure recalcule votre position et met à jour le département dès que vous le traversez." },
+      { question: "La détection fonctionne-t-elle partout ?", answer: "Presque. Tous les pays disposant de divisions administratives de premier niveau numérisées sont couverts, c'est-à-dire la grande majorité. Certains très petits pays n'ont pas ce niveau." }
+    ],
+    de: [
+      { question: "Was gilt hier als „Bundesland“?", answer: "Die erste Verwaltungsebene Ihres Landes: Bundesstaaten in den USA, Australien oder Deutschland (Länder), Provinzen in Kanada, Spanien oder Argentinien, Kantone in der Schweiz, Regionen in Frankreich." },
+      { question: "Warum nahe einer Grenze das falsche Bundesland?", answer: "Grenzen werden in GIS-Datenbanken mit endlicher Präzision erfasst. Wenige hundert Meter vor einer Grenze kann der Genauigkeitsradius Ihres Geräts die Linie überschneiden und das Nachbarbundesland liefern." },
+      { question: "Kann ich prüfen, wann ich eine Grenze überquere?", answer: "Ja. Lassen Sie diese Seite auf Reisen offen und tippen Sie auf Aktualisieren — jede neue Messung bestimmt Ihre Position neu und aktualisiert das Bundesland, sobald Sie die Grenze überqueren." },
+      { question: "Funktioniert die Erkennung weltweit?", answer: "Fast. Alle Länder mit digitalisierten Verwaltungsgrenzen der ersten Ebene funktionieren — also die große Mehrheit. Sehr kleine Staaten haben diese Ebene teils gar nicht." }
+    ],
+    pt: [
+      { question: "O que conta como “estado” aqui?", answer: "A primeira divisão administrativa do país: estados nos EUA, Austrália ou Alemanha (Länder), províncias no Canadá, Espanha ou Argentina, cantões na Suíça e regiões na França." },
+      { question: "Por que o estado errado perto de uma divisa?", answer: "As divisas são digitalizadas com precisão finita. A poucas centenas de metros de uma divisa, o raio de precisão do aparelho pode cruzar a linha e retornar o estado vizinho." },
+      { question: "Posso verificar quando cruzo uma divisa estadual?", answer: "Sim. Mantenha a página aberta durante a viagem e toque em atualizar: cada nova leitura recalcula sua posição e atualiza o estado assim que você cruzar a divisa." },
+      { question: "A detecção funciona no mundo todo?", answer: "Quase. Todos os países com divisas administrativas de primeiro nível digitalizadas funcionam — a grande maioria. Países muito pequenos podem não ter esse nível." }
+    ]
+  },
+  country: {
+    en: [
+      { question: "How accurate is country detection?", answer: "Essentially 100% when GPS is available. Country borders are large, so even a rough fix (±1 km) almost always lands in the correct country. The main exceptions are disputed territories and border enclaves." },
+      { question: "Does it work without GPS permission?", answer: "If you deny location access, the page falls back to IP-based geolocation, which usually still identifies your country correctly — just not your street address." },
+      { question: "Why would I need my ISO country code?", answer: "ISO 3166 codes (like US, DE, BR) are used in forms, shipping, banking, and apps. This page shows your live code along with the country name." },
+      { question: "Will it detect the country I'm roaming in?", answer: "Yes — the country comes from your device position, not your SIM card or phone number, so it reflects where you physically are." }
+    ],
+    es: [
+      { question: "¿Qué precisión tiene la detección de país?", answer: "Prácticamente el 100% con GPS activo. Las fronteras nacionales son enormes: incluso una posición aproximada (±1 km) casi siempre cae en el país correcto. Las excepciones son los territorios en disputa y los enclaves fronterizos." },
+      { question: "¿Funciona si deniego el permiso de ubicación?", answer: "Si deniega el acceso, la página recurre a la geolocalización por IP, que normalmente sigue identificando su país correctamente, aunque no su dirección." },
+      { question: "¿Para qué sirve el código ISO del país?", answer: "Los códigos ISO 3166 (US, DE, BR…) se usan en formularios, envíos, banca y aplicaciones. Esta página muestra su código en vivo junto al nombre del país." },
+      { question: "¿Detecta el país en el que estoy en itinerancia?", answer: "Sí: el país se deduce de la posición del dispositivo, no de su tarjeta SIM ni de su número, por lo que refleja dónde está físicamente." }
+    ],
+    fr: [
+      { question: "Quelle est la précision de la détection du pays ?", answer: "Quasi 100 % avec le GPS actif. Les frontières nationales sont immenses : même une position approximative (±1 km) tombe presque toujours dans le bon pays. Les exceptions sont les territoires disputés et les enclaves frontalières." },
+      { question: "Fonctionne-t-il si je refuse la géolocalisation ?", answer: "Si vous refusez l'accès, la page bascule sur la géolocalisation par IP, qui identifie généralement correctement votre pays — mais pas votre adresse." },
+      { question: "À quoi sert le code ISO du pays ?", answer: "Les codes ISO 3166 (US, DE, BR…) servent dans les formulaires, la logistique, la banque et les applications. Cette page affiche votre code en direct avec le nom du pays." },
+      { question: "Détecte-t-il le pays où je suis en itinérance ?", answer: "Oui : le pays provient de la position de l'appareil, et non de la carte SIM ou du numéro, donc il reflète l'endroit où vous vous trouvez réellement." }
+    ],
+    de: [
+      { question: "Wie genau ist die Ländererkennung?", answer: "Praktisch 100 % mit GPS. Staatsgrenzen sind riesig — selbst eine grobe Position (±1 km) trifft fast immer das richtige Land. Ausnahmen sind umstrittene Gebiete und Grenzenklaven." },
+      { question: "Funktioniert es, wenn ich den Standortzugriff verweigere?", answer: "Bei verweigertem Zugriff fällt die Seite auf IP-Geolokalisierung zurück, die Ihr Land meist trotzdem korrekt erkennt — nur Ihre Adresse eben nicht." },
+      { question: "Wozu brauche ich den ISO-Ländercode?", answer: "ISO-3166-Codes (US, DE, BR …) werden in Formularen, Versand, Banking und Apps verwendet. Diese Seite zeigt Ihren Live-Code zusammen mit dem Ländernamen." },
+      { question: "Erkennt es das Land, in dem ich im Roaming bin?", answer: "Ja — das Land stammt aus der Geräteposition, nicht aus SIM-Karte oder Rufnummer. Es zeigt also, wo Sie sich wirklich befinden." }
+    ],
+    pt: [
+      { question: "Qual a precisão da detecção de país?", answer: "Praticamente 100% com GPS ativo. As fronteiras nacionais são enormes: mesmo uma posição aproximada (±1 km) cai quase sempre no país correto. As exceções são territórios disputados e enclaves fronteiriços." },
+      { question: "Funciona se eu negar a permissão de localização?", answer: "Se você negar o acesso, a página recorre à geolocalização por IP, que normalmente ainda identifica seu país corretamente — mas não o seu endereço." },
+      { question: "Para que serve o código ISO do país?", answer: "Os códigos ISO 3166 (US, DE, BR…) são usados em formulários, envios, bancos e aplicativos. Esta página mostra seu código em tempo real junto com o nome do país." },
+      { question: "Detecta o país em que estou em roaming?", answer: "Sim — o país vem da posição do aparelho, não do chip ou do número, então reflete onde você está fisicamente." }
+    ]
+  },
+  coordinates: {
+    en: [
+      { question: "What format should I use to share my coordinates?", answer: "Decimal degrees (e.g., 40.7128, -74.0060) is the most universal — it works in Google Maps, Apple Maps, and most apps. Use DMS only when a document or instrument specifically asks for it." },
+      { question: "How many decimal places do I need?", answer: "Four decimals (~11 m) is enough to describe a building; six decimals (~0.1 m) exceeds what consumer GPS can actually measure. Extra digits add precision on paper, not in reality." },
+      { question: "Why do my coordinates change slightly while I stand still?", answer: "Satellite signals, atmospheric conditions, and multipath reflections cause small fluctuations of a few meters. That's normal — the accuracy circle shows the range your true position likely falls in." }
+    ],
+    es: [
+      { question: "¿Qué formato debo usar para compartir mis coordenadas?", answer: "Los grados decimales (ej. 40.7128, -74.0060) son el formato más universal: funcionan en Google Maps, Apple Maps y la mayoría de aplicaciones. Reserve los GMS para documentos o instrumentos que lo exijan." },
+      { question: "¿Cuántos decimales necesito?", answer: "Con cuatro decimales (~11 m) basta para describir un edificio; seis (~0,1 m) superan lo que un GPS doméstico mide realmente. Más dígitos añaden precisión en el papel, no en la realidad." },
+      { question: "¿Por qué varían mis coordenadas si estoy quieto?", answer: "Las señales satelitales, la atmósfera y los rebotes de señal (multipath) provocan fluctuaciones de unos pocos metros. Es normal: el círculo de precisión indica el rango probable de su posición real." }
+    ],
+    fr: [
+      { question: "Quel format utiliser pour partager mes coordonnées ?", answer: "Les degrés décimaux (ex. 40.7128, -74.0060) sont les plus universels : ils fonctionnent dans Google Maps, Apple Maps et la plupart des applications. Réservez le DMS aux documents ou instruments qui l'exigent." },
+      { question: "Combien de décimales me faut-il ?", answer: "Quatre décimales (~11 m) suffisent pour décrire un bâtiment ; six (~0,1 m) dépassent ce qu'un GPS grand public mesure réellement. Les chiffres supplémentaires n'apportent de précision que sur le papier." },
+      { question: "Pourquoi mes coordonnées bougent-elles à l'arrêt ?", answer: "Signaux satellitaires, atmosphère et réflexions multipath provoquent des fluctuations de quelques mètres. C'est normal : le cercle de précision indique la zone probable de votre position réelle." }
+    ],
+    de: [
+      { question: "Welches Format soll ich zum Teilen nutzen?", answer: "Dezimalgrad (z. B. 40.7128, -74.0060) ist am universellsten — es funktioniert in Google Maps, Apple Maps und den meisten Apps. GMS nur verwenden, wenn ein Dokument oder Gerät es verlangt." },
+      { question: "Wie viele Nachkommastellen brauche ich?", answer: "Vier Stellen (~11 m) reichen für ein Gebäude; sechs (~0,1 m) übersteigen, was ein handelsübliches GPS wirklich misst. Weitere Stellen bringen Präzision auf dem Papier, nicht in der Wirklichkeit." },
+      { question: "Warum schwanken meine Koordinaten im Stehen?", answer: "Satellitensignale, Atmosphäre und Mehrwegeffekte verursachen Schwankungen von wenigen Metern. Das ist normal — der Genauigkeitskreis zeigt den wahrscheinlichen Bereich Ihrer echten Position." }
+    ],
+    pt: [
+      { question: "Qual formato usar para compartilhar minhas coordenadas?", answer: "Graus decimais (ex. 40.7128, -74.0060) são os mais universais: funcionam no Google Maps, Apple Maps e na maioria dos apps. Reserve o GMS para documentos ou instrumentos que o exijam." },
+      { question: "Quantas casas decimais eu preciso?", answer: "Quatro casas (~11 m) bastam para descrever um prédio; seis (~0,1 m) superam o que um GPS comum mede de fato. Dígitos extras dão precisão no papel, não na realidade." },
+      { question: "Por que minhas coordenadas mudam mesmo parado?", answer: "Sinais de satélite, atmosfera e reflexões multipath causam flutuações de poucos metros. É normal: o círculo de precisão mostra a faixa provável da sua posição real." }
+    ]
+  },
+  'latitude-longitude': {
+    en: [
+      { question: "Which number is latitude and which is longitude?", answer: "Latitude comes first in the pair (e.g., 51.5007, -0.1246 for Big Ben). Latitude runs from -90° to +90° (south to north); longitude from -180° to +180° (west to east of Greenwich)." },
+      { question: "What do the N, S, E, W letters mean?", answer: "They replace the sign: N/S says whether you're north or south of the Equator, E/W whether you're east or west of the Prime Meridian. 40.7128° N is the same as +40.7128." },
+      { question: "How precise are six decimal places?", answer: "About 11 centimeters — far finer than any phone GPS. Five decimals (~1.1 m) already pinpoints a parking spot; beyond that, the digits are noise." }
+    ],
+    es: [
+      { question: "¿Qué número es la latitud y cuál la longitud?", answer: "La latitud va primero en el par (ej. 51.5007, -0.1246 para el Big Ben). La latitud abarca de -90° a +90° (sur a norte) y la longitud de -180° a +180° (oeste a este del meridiano de Greenwich)." },
+      { question: "¿Qué significan las letras N, S, E y O?", answer: "Sustituyen al signo: N/S indica si está al norte o al sur del Ecuador y E/O si está al este o al oeste del meridiano cero. 40.7128° N equivale a +40.7128." },
+      { question: "¿Qué precisión aportan seis decimales?", answer: "Unos 11 centímetros, mucho más fino que cualquier GPS de móvil. Con cinco decimales (~1,1 m) ya se ubica una plaza de aparcamiento; más allá, los dígitos son ruido." }
+    ],
+    fr: [
+      { question: "Quel nombre est la latitude, quel nombre la longitude ?", answer: "La latitude vient en premier (ex. 51.5007, -0.1246 pour Big Ben). Elle s'étend de -90° à +90° (sud vers nord) ; la longitude de -180° à +180° (ouest vers est du méridien de Greenwich)." },
+      { question: "Que signifient les lettres N, S, E et O ?", answer: "Elles remplacent le signe : N/S indique si vous êtes au nord ou au sud de l'Équateur, E/O à l'est ou à l'ouest du méridien d'origine. 40,7128° N équivaut à +40.7128." },
+      { question: "Que vaut la précision de six décimales ?", answer: "Environ 11 centimètres, bien plus fin que n'importe quel GPS de smartphone. Cinq décimales (~1,1 m) suffisent à désigner une place de parking ; au-delà, ce sont des chiffres parasites." }
+    ],
+    de: [
+      { question: "Welche Zahl ist Breite, welche Länge?", answer: "Der Breitengrad steht zuerst (z. B. 51.5007, -0.1246 für den Big Ben). Die Breite läuft von -90° bis +90° (Süd nach Nord), die Länge von -180° bis +180° (West nach Ost von Greenwich)." },
+      { question: "Was bedeuten N, S, E und W?", answer: "Sie ersetzen das Vorzeichen: N/S sagt, ob Sie nördlich oder südlich des Äquators sind, E/W ob östlich oder westlich des Nullmeridians. 40.7128° N entspricht +40.7128." },
+      { question: "Wie genau sind sechs Nachkommastellen?", answer: "Rund 11 Zentimeter — deutlich feiner als jedes Handy-GPS. Fünf Stellen (~1,1 m) genügen bereits, um einen Parkplatz zu markieren; darüber hinaus sind die Ziffern Rauschen." }
+    ],
+    pt: [
+      { question: "Qual número é latitude e qual é longitude?", answer: "A latitude vem primeiro no par (ex. 51.5007, -0.1246 para o Big Ben). A latitude vai de -90° a +90° (sul a norte); a longitude de -180° a +180° (oeste a leste de Greenwich)." },
+      { question: "O que significam as letras N, S, L e O?", answer: "Elas substituem o sinal: N/S indica se você está ao norte ou ao sul do Equador; L/O se está a leste ou a oeste do meridiano de Greenwich. 40.7128° N equivale a +40.7128." },
+      { question: "Qual a precisão de seis casas decimais?", answer: "Cerca de 11 centímetros, muito além do que qualquer GPS de celular alcança. Cinco casas (~1,1 m) já marcam uma vaga de estacionamento; além disso, são ruído." }
+    ]
+  },
+  address: {
+    en: [
+      { question: "Why is my address missing a house number?", answer: "OpenStreetMap may lack building-level data in some areas, so the nearest street segment is returned instead. This is common in rural areas and newer developments." },
+      { question: "Why does it show a neighboring street?", answer: "Reverse geocoding snaps your coordinates to the closest mapped address point. With GPS accuracy of ±10–30 m, the algorithm sometimes picks the other side of the street or the next doorway." },
+      { question: "Is my address lookup private?", answer: "Your coordinates are sent directly from your browser to OpenStreetMap's public geocoding service to resolve the address. MyLocationLab stores nothing — no address, no coordinates, no logs." },
+      { question: "Can I find the address of another place?", answer: "Yes — use the Address Finder tool to enter any coordinates and get their street address, or paste an address into the Geocoder to get coordinates." }
+    ],
+    es: [
+      { question: "¿Por qué falta el número de la calle?", answer: "OpenStreetMap puede carecer de datos a nivel de edificio en algunas zonas y devuelve el tramo de vía más cercano. Es habitual en zonas rurales y urbanizaciones nuevas." },
+      { question: "¿Por qué aparece una calle vecina?", answer: "La geocodificación inversa ajusta sus coordenadas al punto de dirección mapeado más próximo. Con una precisión GPS de ±10–30 m, a veces se elige la acera de enfrente o el portal contiguo." },
+      { question: "¿Es privada la consulta de mi dirección?", answer: "Sus coordenadas viajan directamente desde su navegador al servicio público de geocodificación de OpenStreetMap. MyLocationLab no almacena nada: ni dirección, ni coordenadas, ni registros." },
+      { question: "¿Puedo obtener la dirección de otro lugar?", answer: "Sí: use la herramienta Buscador de Dirección para introducir cualquier coordenada y obtener su dirección, o el Geocodificador para convertir una dirección en coordenadas." }
+    ],
+    fr: [
+      { question: "Pourquoi le numéro de rue manque-t-il ?", answer: "OpenStreetMap peut ne pas disposer de données au niveau du bâtiment dans certaines zones ; le tronçon de voie le plus proche est alors renvoyé. C'est fréquent en zone rurale et dans les lotissements récents." },
+      { question: "Pourquoi une rue voisine s'affiche-t-elle ?", answer: "Le géocodage inverse rattache vos coordonnées au point d'adresse cartographié le plus proche. Avec une précision GPS de ±10–30 m, l'algorithme choisit parfois le trottoir d'en face ou la porte voisine." },
+      { question: "Ma recherche d'adresse est-elle privée ?", answer: "Vos coordonnées sont envoyées directement depuis votre navigateur au service public de géocodage d'OpenStreetMap. MyLocationLab ne stocke rien : ni adresse, ni coordonnées, ni journaux." },
+      { question: "Puis-je obtenir l'adresse d'un autre lieu ?", answer: "Oui — utilisez le Localisateur d'Adresse pour saisir des coordonnées quelconques, ou le Géocodeur pour convertir une adresse en coordonnées." }
+    ],
+    de: [
+      { question: "Warum fehlt die Hausnummer?", answer: "OpenStreetMap verfügt nicht überall über gebäudescharfe Daten; dann wird der nächstgelegene Straßenabschnitt ausgegeben. Häufig in ländlichen Gebieten und Neubaugebieten." },
+      { question: "Warum wird eine Nachbarstraße angezeigt?", answer: "Beim Reverse-Geocoding wird Ihre Position auf den nächstgelegenen erfassten Adresspunkt gesetzt. Bei ±10–30 m GPS-Genauigkeit landet der Algorithmus manchmal auf der gegenüberliegenden Straßenseite." },
+      { question: "Ist die Adressabfrage privat?", answer: "Ihre Koordinaten werden direkt von Ihrem Browser an den öffentlichen Geokodierungsdienst von OpenStreetMap gesendet. MyLocationLab speichert nichts — keine Adresse, keine Koordinaten, keine Protokolle." },
+      { question: "Kann ich die Adresse eines anderen Ortes finden?", answer: "Ja — mit dem Adressen-Finder geben Sie beliebige Koordinaten ein und erhalten die Straßenadresse; der Geocoder wandelt eine Adresse in Koordinaten um." }
+    ],
+    pt: [
+      { question: "Por que falta o número da casa?", answer: "O OpenStreetMap pode não ter dados no nível do edifício em algumas áreas, retornando o trecho de via mais próximo. É comum em zonas rurais e loteamentos novos." },
+      { question: "Por que aparece uma rua vizinha?", answer: "A geocodificação reversa ajusta suas coordenadas ao ponto de endereço mapeado mais próximo. Com precisão de ±10–30 m, o algoritmo às vezes escolhe a calçada oposta ou o portão ao lado." },
+      { question: "A consulta do meu endereço é privada?", answer: "Suas coordenadas vão diretamente do seu navegador para o serviço público de geocodificação do OpenStreetMap. O MyLocationLab não armazena nada: nem endereço, nem coordenadas, nem registros." },
+      { question: "Posso descobrir o endereço de outro lugar?", answer: "Sim — use o Localizador de Endereço para inserir quaisquer coordenadas e obter o endereço, ou o Geocodificador para converter um endereço em coordenadas." }
+    ]
+  }
+};
+
+/** Localized labels for the cross-silo related-link list. */
+const relatedLinkLabels: Record<string, Record<string, string>> = {
+  en: { gps: 'My GPS Coordinates', address: 'My Current Address', coordinates: 'My Coordinates', latLong: 'My Latitude & Longitude', city: 'What City Am I In?', state: 'What State Am I In?', country: 'What Country Am I In?', converter: 'Coordinate Converter (DD/DMS/UTM)', addressFinder: 'Address Finder (any coordinates)' },
+  es: { gps: 'Mis Coordenadas GPS', address: 'Mi Dirección Actual', coordinates: 'Mis Coordenadas', latLong: 'Mi Latitud y Longitud', city: '¿En Qué Ciudad Estoy?', state: '¿En Qué Estado Estoy?', country: '¿En Qué País Estoy?', converter: 'Conversor de Coordenadas (DD/GMS/UTM)', addressFinder: 'Buscador de Dirección (cualquier coordenada)' },
+  fr: { gps: 'Mes Coordonnées GPS', address: 'Mon Adresse Actuelle', coordinates: 'Mes Coordonnées', latLong: 'Ma Latitude et Longitude', city: 'Dans Quelle Ville Suis-Je ?', state: 'Dans Quel Département Suis-Je ?', country: 'Dans Quel Pays Suis-Je ?', converter: 'Convertisseur de Coordonnées (DD/DMS/UTM)', addressFinder: "Localisateur d'Adresse (toute coordonnée)" },
+  de: { gps: 'Meine GPS-Koordinaten', address: 'Meine Aktuelle Adresse', coordinates: 'Meine Koordinaten', latLong: 'Mein Breiten- & Längengrad', city: 'In Welcher Stadt Bin Ich?', state: 'In Welchem Bundesland Bin Ich?', country: 'In Welchem Land Bin Ich?', converter: 'Koordinaten-Umrechner (DD/GMS/UTM)', addressFinder: 'Adressen-Finder (beliebige Koordinaten)' },
+  pt: { gps: 'Minhas Coordenadas GPS', address: 'Meu Endereço Atual', coordinates: 'Minhas Coordenadas', latLong: 'Minha Latitude e Longitude', city: 'Em Que Cidade Estou?', state: 'Em Que Estado Estou?', country: 'Em Que País Estou?', converter: 'Conversor de Coordenadas (DD/GMS/UTM)', addressFinder: 'Localizador de Endereço (quaisquer coordenadas)' }
+};
+
 const c = dict[attribute]?.[lang] || dict[attribute]?.en;
+const linkLabels = relatedLinkLabels[lang] || relatedLinkLabels.en;
+const faq = c.faq ?? faqBank[attribute]?.[lang] ?? faqBank[attribute]?.en;
+
+const relatedLinks = [
+  { label: linkLabels.gps, href: getLocalizedPath('/my-location/gps/', lang) },
+  { label: linkLabels.address, href: getLocalizedPath('/my-location/address/', lang) },
+  { label: linkLabels.coordinates, href: getLocalizedPath('/my-location/coordinates/', lang) },
+  { label: linkLabels.latLong, href: getLocalizedPath('/my-location/latitude-longitude/', lang) },
+  { label: linkLabels.city, href: getLocalizedPath('/my-location/city/', lang) },
+  { label: linkLabels.state, href: getLocalizedPath('/my-location/state/', lang) },
+  { label: linkLabels.country, href: getLocalizedPath('/my-location/country/', lang) },
+  { label: linkLabels.converter, href: getLocalizedPath('/tools/coordinate-converter/', lang) },
+  ...(attribute === 'address' ? [{ label: linkLabels.addressFinder, href: getLocalizedPath('/tools/address-finder/', lang) }] : [])
+];
 
 const breadcrumbs = [
   { label: t('common.home'), href: '/' },
@@ -759,10 +971,10 @@ const breadcrumbs = [
   { label: `${c.h1Prefix} ${c.h1Accent}` }
 ];
 
-const faqSchema = c.faq ? {
+const faqSchema = faq ? {
   '@context': 'https://schema.org',
   '@type': 'FAQPage',
-  mainEntity: c.faq.map(item => ({
+  mainEntity: faq.map(item => ({
     '@type': 'Question',
     name: item.question,
     acceptedAnswer: {
@@ -805,22 +1017,18 @@ const faqSchema = c.faq ? {
           ))}
         </ul>
 
-        {c.faq && c.faq.length > 0 && (
+        {faq && faq.length > 0 && (
           <div style="margin-top: var(--space-8);">
             <h2>FAQ</h2>
-            <FAQAccordion items={c.faq} />
+            <FAQAccordion items={faq} includeSchema={false} />
           </div>
         )}
 
         <h3>{c.h3Related}</h3>
         <ul>
-          <li><a href={getLocalizedPath('/my-location/gps/', lang)}>{t('footer.link.gpsCoords')}</a></li>
-          <li><a href={getLocalizedPath('/my-location/address/', lang)}>{t('footer.link.address')}</a></li>
-          <li><a href={getLocalizedPath('/my-location/coordinates/', lang)}>{t('nav.tools')}</a></li>
-          <li><a href={getLocalizedPath('/my-location/city/', lang)}>City Finder</a></li>
-          <li><a href={getLocalizedPath('/my-location/state/', lang)}>State Finder</a></li>
-          <li><a href={getLocalizedPath('/my-location/country/', lang)}>Country Finder</a></li>
-          <li><a href={getLocalizedPath('/tools/coordinate-converter/', lang)}>{t('footer.link.converter')}</a></li>
+          {relatedLinks.map((l) => (
+            <li><a href={l.href}>{l.label}</a></li>
+          ))}
         </ul>
       </div>
     </section>

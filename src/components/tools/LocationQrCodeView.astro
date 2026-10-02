@@ -4,6 +4,7 @@
  * Powers: /tools/location-qr-code/ across en, es, fr, de, pt
  */
 import ToolLayout from '../../layouts/ToolLayout.astro';
+import FAQAccordion from '../FAQAccordion.astro';
 import { getLocalizedPath, defaultLang, type SupportedLang } from '../../i18n/config';
 
 interface Props {
@@ -49,7 +50,20 @@ const translations: Record<string, any> = {
     h2Related: "Related Location Tools & Guides",
     linkShare: "Instant Share Location Tool",
     linkGps: "GPS Coordinates Finder",
-    linkConverter: "Coordinate Converter"
+    linkConverter: "Coordinate Converter",
+    h2Scan: "How to Scan a Location QR Code",
+    pScan: "No app is needed. Open your phone's camera (or any QR scanner), point it at the code, and tap the notification that appears — your map app opens centered on the encoded coordinates. On iPhone and Android the built-in camera handles this natively; on older phones, use the scanner inside Google Lens.",
+    liScan1: "Open the camera app and hold it steady over the code for 1–2 seconds",
+    liScan2: "Tap the banner or notification that appears",
+    liScan3: "Choose your preferred map app when prompted",
+    h2Print: "Printing a Location QR Code That Scans Reliably",
+    pPrint: "Printed codes need more contrast and quiet space than on-screen ones. Keep at least a 4-module white margin around the code, print at 3 cm (1.2 in) or larger, and never invert the colors — scanners expect dark modules on a light background. Test the print with two different phones before distributing it.",
+    faqItems: [
+      { question: "Do location QR codes expire?", answer: "No. The QR code encodes a plain link or geo URI — it contains no account or server reference, so it keeps working as long as phones understand the target format. Static coordinates never change." },
+      { question: "Can I generate a QR code for coordinates I type in?", answer: "Yes — switch to 'Manual Coordinates', enter any latitude and longitude, and the QR code updates instantly. This works for planning meeting points, trailheads, or venue entrances." },
+      { question: "Is my location stored when I generate a QR code?", answer: "No. The QR code is generated entirely in your browser and never uploaded. Nothing about your position leaves your device unless you choose to share the printed or downloaded code." },
+      { question: "Which QR link type should I choose?", answer: "Google Maps URLs are the safest cross-platform choice. Choose Apple Maps for iPhone-only audiences, Geo URI for maximal standards compliance, and OpenStreetMap when privacy matters most." }
+    ]
   },
   es: {
     title: "Generador de Códigos QR de Ubicación | MyLocationLab",
@@ -86,7 +100,20 @@ const translations: Record<string, any> = {
     h2Related: "Herramientas y Guías Relacionadas",
     linkShare: "Herramienta Compartir Ubicación",
     linkGps: "Buscador de Coordenadas GPS",
-    linkConverter: "Conversor de Coordenadas"
+    linkConverter: "Conversor de Coordenadas",
+    h2Scan: "Cómo Escanear un Código QR de Ubicación",
+    pScan: "No necesita ninguna aplicación adicional. Abra la cámara del teléfono (o cualquier lector de QR), apúntela al código y toque la notificación que aparece: su app de mapas se abrirá centrada en las coordenadas codificadas. En iPhone y Android la cámara nativa lo hace automáticamente; en modelos antiguos, use el escáner de Google Lens.",
+    liScan1: "Abra la cámara y manténgala estable sobre el código durante 1–2 segundos",
+    liScan2: "Toque el banner o la notificación que aparece",
+    liScan3: "Elija su aplicación de mapas preferida cuando se le solicite",
+    h2Print: "Imprimir un Código QR de Ubicación Fiable",
+    pPrint: "Los códigos impresos requieren más contraste y margen blanco que los digitales. Deje un margen blanco de al menos 4 módulos, imprima a 3 cm o más y nunca invierta los colores: los lectores esperan módulos oscuros sobre fondo claro. Pruebe la impresión con dos teléfonos distintos antes de distribuirla.",
+    faqItems: [
+      { question: "¿Caducan los códigos QR de ubicación?", answer: "No. El código codifica un enlace o Geo URI plano, sin referencia a cuentas ni servidores, por lo que sigue funcionando mientras los teléfonos comprendan el formato. Las coordenadas estáticas nunca cambian." },
+      { question: "¿Puedo generar un QR para coordenadas que yo escriba?", answer: "Sí: cambie a «Coordenadas Manuales», introduzca cualquier latitud y longitud y el código se actualiza al instante. Ideal para puntos de encuentro, inicios de sendero o entradas de recinto." },
+      { question: "¿Se guarda mi ubicación al generar el QR?", answer: "No. El código se genera íntegramente en su navegador y nunca se sube. Nada de su posición sale del dispositivo a menos que usted decida compartir el código impreso o descargado." },
+      { question: "¿Qué tipo de enlace QR debo elegir?", answer: "Las URL de Google Maps son la opción más segura entre plataformas. Apple Maps para audiencias solo iPhone, Geo URI para máxima compatibilidad con el estándar y OpenStreetMap cuando prima la privacidad." }
+    ]
   },
   fr: {
     title: "Générateur de QR Code de Localisation | MyLocationLab",
@@ -123,7 +150,20 @@ const translations: Record<string, any> = {
     h2Related: "Outils et Guides Liés",
     linkShare: "Partager Ma Position",
     linkGps: "Coordonnées GPS",
-    linkConverter: "Convertisseur de Coordonnées"
+    linkConverter: "Convertisseur de Coordonnées",
+    h2Scan: "Comment Scanner un QR Code de Localisation",
+    pScan: "Aucune application n'est nécessaire. Ouvrez l'appareil photo du téléphone (ou n'importe quel lecteur QR), pointez-le vers le code et touchez la notification qui apparaît : votre appli cartographique s'ouvre centrée sur les coordonnées. Sur iPhone et Android, l'appareil photo natif s'en charge ; sur les modèles plus anciens, utilisez le scanner de Google Lens.",
+    liScan1: "Ouvrez l'appareil photo et maintenez-le immobile sur le code pendant 1 à 2 secondes",
+    liScan2: "Touchez la bannière ou la notification qui apparaît",
+    liScan3: "Choisissez votre application cartographique préférée lorsque c'est demandé",
+    h2Print: "Imprimer un QR Code de Localisation Fiable",
+    pPrint: "Un code imprimé exige plus de contraste et de marge blanche qu'à l'écran. Gardez une marge d'au moins 4 modules, imprimez à 3 cm ou plus et n'inversez jamais les couleurs : les lecteurs attendent des modules sombres sur fond clair. Testez l'impression avec deux téléphones différents avant de la diffuser.",
+    faqItems: [
+      { question: "Les QR codes de localisation expirent-ils ?", answer: "Non. Le code encode un simple lien ou Geo URI, sans référence à un compte ni à un serveur : il fonctionne tant que les téléphones comprennent le format. Des coordonnées statiques ne changent jamais." },
+      { question: "Puis-je générer un QR pour des coordonnées saisies moi-même ?", answer: "Oui — passez en « Coordonnées Manuelles », saisissez la latitude et la longitude souhaitées, et le QR se met à jour instantanément. Idéal pour un point de rendez-vous, un départ de sentier ou l'entrée d'un lieu." },
+      { question: "Ma position est-elle enregistrée lors de la génération ?", answer: "Non. Le QR est généré entièrement dans votre navigateur et n'est jamais téléversé. Rien ne quitte votre appareil tant que vous ne partagez pas le code imprimé ou téléchargé." },
+      { question: "Quel type de lien QR choisir ?", answer: "Les liens Google Maps sont le choix le plus sûr toutes plateformes. Apple Maps pour un public uniquement iPhone, Geo URI pour la conformité maximale au standard, OpenStreetMap quand la confidentialité prime." }
+    ]
   },
   de: {
     title: "Standort-QR-Code-Generator — Position teilen | MyLocationLab",
@@ -160,7 +200,20 @@ const translations: Record<string, any> = {
     h2Related: "Verwandte Geotools & Ratgeber",
     linkShare: "Standort sofort teilen",
     linkGps: "GPS-Koordinaten-Finder",
-    linkConverter: "Koordinaten-Umrechner"
+    linkConverter: "Koordinaten-Umrechner",
+    h2Scan: "So scannen Sie einen Standort-QR-Code",
+    pScan: "Keine zusätzliche App nötig. Öffnen Sie die Kamera des Telefons (oder einen beliebigen QR-Scanner), richten Sie sie auf den Code und tippen Sie auf die Benachrichtigung — Ihre Karten-App öffnet sich zentriert auf den Koordinaten. Auf iPhone und Android erledigt das die native Kamera; bei älteren Modellen nutzen Sie den Scanner in Google Lens.",
+    liScan1: "Öffnen Sie die Kamera und halten Sie sie 1–2 Sekunden ruhig über den Code",
+    liScan2: "Tippen Sie auf den eingeblendeten Banner oder die Benachrichtigung",
+    liScan3: "Wählen Sie die gewünschte Karten-App, wenn Sie danach gefragt werden",
+    h2Print: "Standort-QR-Code drucken, der zuverlässig scannt",
+    pPrint: "Gedruckte Codes brauchen mehr Kontrast und weißen Rand als auf dem Bildschirm. Halten Sie mindestens 4 Module weißen Rand ein, drucken Sie ab 3 cm Größe und invertieren Sie nie die Farben — Scanner erwarten dunkle Module auf hellem Grund. Testen Sie den Ausdruck mit zwei verschiedenen Handys, bevor Sie ihn verteilen.",
+    faqItems: [
+      { question: "Laufen Standort-QR-Codes ab?", answer: "Nein. Der Code enthält nur einen einfachen Link oder Geo-URI — ohne Konto- oder Serverbezug — und funktioniert, solange Phones das Zielformat verstehen. Statische Koordinaten ändern sich nie." },
+      { question: "Kann ich einen QR für eigene Koordinaten erzeugen?", answer: "Ja — wechseln Sie zu „Manuelle Koordinaten“, geben Sie beliebige Breite und Länge ein, und der QR-Code aktualisiert sich sofort. Praktisch für Treffpunkte, Wanderstartpunkte oder Zugangstore." },
+      { question: "Wird mein Standort beim Erzeugen gespeichert?", answer: "Nein. Der QR-Code entsteht komplett in Ihrem Browser und wird nie hochgeladen. Nichts verlässt Ihr Gerät, solange Sie den Code nicht selbst teilen." },
+      { question: "Welchen QR-Linktyp soll ich wählen?", answer: "Google-Maps-URLs sind die sicherste Wahl für alle Plattformen. Apple Maps für reines iPhone-Publikum, Geo-URI für maximale Standardkonformität, OpenStreetMap, wenn Privatsphäre zählt." }
+    ]
   },
   pt: {
     title: "Gerador de QR Code de Localização | MyLocationLab",
@@ -197,7 +250,20 @@ const translations: Record<string, any> = {
     h2Related: "Ferramentas Relacionadas",
     linkShare: "Compartilhar Minha Localização",
     linkGps: "Coordenadas GPS",
-    linkConverter: "Conversor de Coordenadas"
+    linkConverter: "Conversor de Coordenadas",
+    h2Scan: "Como Escanear um QR Code de Localização",
+    pScan: "Não é preciso aplicativo nenhum. Abra a câmera do celular (ou qualquer leitor de QR), aponte para o código e toque na notificação que aparecer: seu app de mapas abrirá centralizado nas coordenadas. Em iPhone e Android a câmera nativa já faz isso; em modelos mais antigos, use o leitor do Google Lens.",
+    liScan1: "Abra a câmera e mantenha-a firme sobre o código por 1–2 segundos",
+    liScan2: "Toque no banner ou na notificação que aparecer",
+    liScan3: "Escolha o seu app de mapas preferido quando solicitado",
+    h2Print: "Imprimindo um QR Code de Localização Confiável",
+    pPrint: "Códigos impressos exigem mais contraste e margem branca do que na tela. Deixe pelo menos 4 módulos de margem branca, imprima a partir de 3 cm e nunca inverta as cores — os leitores esperam módulos escuros sobre fundo claro. Teste a impressão com dois celulares diferentes antes de distribuir.",
+    faqItems: [
+      { question: "QR Codes de localização expiram?", answer: "Não. O código armazena apenas um link ou Geo URI — sem referência a conta ou servidor — e continua funcionando enquanto os celulares entenderem o formato. Coordenadas estáticas nunca mudam." },
+      { question: "Posso gerar um QR para coordenadas digitadas?", answer: "Sim — mude para “Coordenadas Manuais”, digite qualquer latitude e longitude, e o código atualiza na hora. Útil para pontos de encontro, início de trilhas ou portões de acesso." },
+      { question: "Minha localização fica salva ao gerar o QR?", answer: "Não. O QR é gerado inteiramente no seu navegador e nunca é enviado para um servidor. Nada sai do aparelho a menos que você compartilhe o código impresso ou baixado." },
+      { question: "Qual tipo de link QR devo escolher?", answer: "URLs do Google Maps são a escolha mais segura entre plataformas. Apple Maps para público apenas iPhone, Geo URI para máxima aderência ao padrão e OpenStreetMap quando a privacidade pesa." }
+    ]
   }
 };
 
@@ -289,6 +355,24 @@ const t = translations[lang] || translations.en;
       <li set:html={t.liCase2}></li>
       <li set:html={t.liCase3}></li>
     </ul>
+
+    <h2>{t.h2Scan}</h2>
+    <p>{t.pScan}</p>
+    <ul>
+      <li>{t.liScan1}</li>
+      <li>{t.liScan2}</li>
+      <li>{t.liScan3}</li>
+    </ul>
+
+    <h2>{t.h2Print}</h2>
+    <p>{t.pPrint}</p>
+
+    {t.faqItems && t.faqItems.length > 0 && (
+      <div style="margin-top: var(--space-8);">
+        <h2>FAQ</h2>
+        <FAQAccordion items={t.faqItems} />
+      </div>
+    )}
 
     <h2>{t.h2Related}</h2>
     <ul>

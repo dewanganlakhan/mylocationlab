@@ -16,7 +16,6 @@ const IpLocation = {
     const providers = [
       this._fetchIpWhois,
       this._fetchIpApiCo,
-      this._fetchIpApi,
     ];
 
     for (const provider of providers) {
@@ -53,32 +52,6 @@ const IpLocation = {
       isp: data.connection?.isp || '',
       org: data.connection?.org || '',
       source: 'ipwho.is',
-    };
-  },
-
-  async _fetchIpApi() {
-    // Note: ip-api free tier is HTTP only; only call if protocol is http
-    if (typeof location !== 'undefined' && location.protocol === 'https:') {
-      throw new Error('ip-api free tier skipped on HTTPS to avoid Mixed Content');
-    }
-    const res = await fetch('http://ip-api.com/json/?fields=status,message,country,countryCode,region,regionName,city,zip,lat,lon,timezone,isp,org,query');
-    if (!res.ok) throw new Error('ip-api failed');
-    const data = await res.json();
-    if (data.status !== 'success') throw new Error(data.message);
-    return {
-      ip: data.query,
-      lat: data.lat,
-      lng: data.lon,
-      city: data.city,
-      region: data.regionName,
-      regionCode: data.region,
-      country: data.country,
-      countryCode: data.countryCode,
-      zip: data.zip,
-      timezone: data.timezone,
-      isp: data.isp,
-      org: data.org,
-      source: 'ip-api.com',
     };
   },
 

@@ -108,7 +108,7 @@ const homeFaqSchema = {
           <div class="telemetry-title-block">
             <div class="telemetry-title-badge-row">
               <h2 class="telemetry-heading-title">{content.telemetryTitle}</h2>
-              <span class="telemetry-status-pill" id="telemetry-status-pill">READY TO ACQUIRE</span>
+              <span class="telemetry-status-pill" id="telemetry-status-pill">{content.s.ready}</span>
             </div>
             <p class="telemetry-subtext" id="telemetry-subtext">{content.telemetrySubtext}</p>
           </div>
@@ -429,6 +429,7 @@ const homeFaqSchema = {
   </section>
 
   <!-- Homepage Location Logic Script -->
+  <script type="application/json" id="home-status" set:html={JSON.stringify(content.s)} />
   <script>
     import GeoLocation from '../scripts/geolocation.js';
     import Geocoding from '../scripts/geocoding.js';
@@ -452,6 +453,13 @@ const homeFaqSchema = {
     const bannerText = document.getElementById('banner-text');
     const mapCoordChip = document.getElementById('map-coord-chip');
     const mapStatusChip = document.getElementById('map-status-chip');
+
+    let S: Record<string, string> = {};
+    try {
+      S = JSON.parse(document.getElementById('home-status')?.textContent || '{}');
+    } catch {
+      S = {};
+    }
 
     let currentLat: number | null = null;
     let currentLng: number | null = null;
@@ -531,11 +539,11 @@ const homeFaqSchema = {
 
     async function findLocation() {
       if (statusPill) {
-        statusPill.textContent = 'ACQUIRING GNSS...';
+        statusPill.textContent = S.acquiring || 'Finding your location…';
         statusPill.className = 'telemetry-status-pill';
       }
       if (subtext) {
-        subtext.textContent = 'Querying browser positioning hardware and GNSS satellites...';
+        subtext.textContent = S.acquiringSub || '';
       }
       if (getBtn) {
         getBtn.style.opacity = '0.75';
@@ -556,31 +564,31 @@ const homeFaqSchema = {
         const altEl = document.getElementById('data-altitude');
 
         if (latEl) latEl.textContent = data.formattedLat;
-        if (latDecEl) latDecEl.textContent = `Decimal: ${currentLat.toFixed(6)}`;
+        if (latDecEl) latDecEl.textContent = `${S.decimal || 'Decimal'}: ${currentLat.toFixed(6)}`;
         if (lngEl) lngEl.textContent = data.formattedLng;
-        if (lngDecEl) lngDecEl.textContent = `Decimal: ${currentLng.toFixed(6)}`;
-        if (accEl) accEl.textContent = `± ${Math.round(data.accuracy)} meters`;
+        if (lngDecEl) lngDecEl.textContent = `${S.decimal || 'Decimal'}: ${currentLng.toFixed(6)}`;
+        if (accEl) accEl.textContent = (S.meters || '± {m} m').replace('{m}', String(Math.round(data.accuracy)));
         const accSubEl = document.getElementById('data-accuracy-sub');
-        if (accSubEl) accSubEl.textContent = 'Reported by your device';
+        if (accSubEl) accSubEl.textContent = S.accuracyDevice || '';
         if (altEl) {
           altEl.textContent = data.altitude != null
             ? `${Math.round(data.altitude)} m (${Math.round(data.altitude * 3.28084)} ft)`
-            : 'Not reported by device';
+            : (S.altitudeNone || '');
         }
 
         if (mapCoordChip) {
           mapCoordChip.textContent = `${data.formattedLat}, ${data.formattedLng}`;
         }
 
-        setMapStatus('GNSS FIXED');
+        setMapStatus(S.gpsStatus || 'Located');
 
         if (statusPill) {
-          statusPill.textContent = 'GNSS LOCKED';
+          statusPill.textContent = S.locked || 'Location found';
           statusPill.className = 'telemetry-status-pill status-fixed';
         }
 
         if (subtext) {
-          subtext.textContent = `High precision fix acquired with ${Math.round(data.accuracy)}m confidence.`;
+          subtext.textContent = (S.lockedDetail || '').replace('{m}', String(Math.round(data.accuracy)));
         }
 
         const mapsBtn = document.getElementById('open-maps-btn');
@@ -599,24 +607,24 @@ const homeFaqSchema = {
           const stateEl = document.getElementById('data-state-country');
           const stateSubEl = document.getElementById('data-state-sub');
 
-          if (addrEl) addrEl.textContent = address.displayName || address.road || 'Resolved GPS Location';
-          if (cityEl) cityEl.textContent = address.city || address.town || address.village || address.county || 'Detected City';
-          if (citySubEl) citySubEl.textContent = address.county ? `County: ${address.county}` : 'Resolved via GPS';
+          if (addrEl) addrEl.textContent = address.displayName || address.road || S.addrFallback || 'Resolved location';
+          if (cityEl) cityEl.textContent = address.city || address.town || address.village || address.county || S.cityFallback || 'Detected city';
+          if (citySubEl) citySubEl.textContent = address.county ? (S.county || 'County: {c}').replace('{c}', address.county) : (S.viaGps || '');
           if (stateEl) {
             const state = address.state || '';
             const country = address.country || '';
-            stateEl.textContent = [state, country].filter(Boolean).join(', ') || 'Global';
+            stateEl.textContent = [state, country].filter(Boolean).join(', ') || S.global || '';
           }
           if (stateSubEl) {
             const cc = (address.country_code || '').toUpperCase();
             const region = address.state_district || address.state || '';
-            stateSubEl.textContent = cc ? `ISO 3166-1: ${[cc, region].filter(Boolean).join('-')}` : 'Resolved via GPS';
+            stateSubEl.textContent = cc ? `ISO 3166-1: ${[cc, region].filter(Boolean).join('-')}` : (S.viaGps || '');
           }
         } catch {
           const citySubEl = document.getElementById('data-city-sub');
           const stateSubEl = document.getElementById('data-state-sub');
-          if (citySubEl) citySubEl.textContent = 'Address lookup unavailable';
-          if (stateSubEl) stateSubEl.textContent = 'Address lookup unavailable';
+          if (citySubEl) citySubEl.textContent = S.addrFail || '';
+          if (stateSubEl) stateSubEl.textContent = S.addrFail || '';
         }
 
         if (privacyBanner) {
@@ -625,16 +633,16 @@ const homeFaqSchema = {
           privacyBanner.style.color = '#065f46';
         }
         if (bannerText) {
-          bannerText.textContent = 'Location acquired successfully. Zero-Data Retention • 100% In-Browser.';
+          bannerText.textContent = S.okBanner || '';
         }
 
       } catch (err) {
         if (statusPill) {
-          statusPill.textContent = 'IP FALLBACK';
+          statusPill.textContent = S.ipPill || 'Approximate location';
           statusPill.className = 'telemetry-status-pill';
         }
         if (subtext) {
-          subtext.textContent = 'GPS permission denied or unavailable. Resolving approximate IP location.';
+          subtext.textContent = S.ipSub || '';
         }
 
         try {
@@ -656,24 +664,24 @@ const homeFaqSchema = {
           const altEl = document.getElementById('data-altitude');
 
           if (latEl) latEl.textContent = `${Math.abs(currentLat).toFixed(4)}° ${currentLat >= 0 ? 'N' : 'S'}`;
-          if (latDecEl) latDecEl.textContent = `Decimal: ${currentLat.toFixed(6)}`;
+          if (latDecEl) latDecEl.textContent = `${S.decimal || 'Decimal'}: ${currentLat.toFixed(6)}`;
           if (lngEl) lngEl.textContent = `${Math.abs(currentLng).toFixed(4)}° ${currentLng >= 0 ? 'E' : 'W'}`;
-          if (lngDecEl) lngDecEl.textContent = `Decimal: ${currentLng.toFixed(6)}`;
-          if (addrEl) addrEl.textContent = `${ipData.city || 'Metro Area'}, ${ipData.region || ''}, ${ipData.country || ''}`;
-          if (cityEl) cityEl.textContent = ipData.city || 'Detected City';
-          if (citySubEl) citySubEl.textContent = 'Approximate (IP-level precision)';
+          if (lngDecEl) lngDecEl.textContent = `${S.decimal || 'Decimal'}: ${currentLng.toFixed(6)}`;
+          if (addrEl) addrEl.textContent = `${ipData.city || S.metro || 'Metro area'}, ${ipData.region || ''}, ${ipData.country || ''}`;
+          if (cityEl) cityEl.textContent = ipData.city || S.cityFallback || 'Detected city';
+          if (citySubEl) citySubEl.textContent = S.ipPrecision || '';
           if (stateEl) stateEl.textContent = `${ipData.region || ''}, ${ipData.country || ''}`;
-          if (stateSubEl) stateSubEl.textContent = ipData.countryCode ? `ISO 3166-1: ${ipData.countryCode}${ipData.regionCode ? '-' + ipData.regionCode : ''}` : 'Approximate (IP-level precision)';
+          if (stateSubEl) stateSubEl.textContent = ipData.countryCode ? `ISO 3166-1: ${ipData.countryCode}${ipData.regionCode ? '-' + ipData.regionCode : ''}` : (S.ipPrecision || '');
           if (accEl) accEl.textContent = '± 10 km (IP)';
           const accSubEl = document.getElementById('data-accuracy-sub');
-          if (accSubEl) accSubEl.textContent = 'Estimate from your IP address';
-          if (altEl) altEl.textContent = 'Not available from IP';
+          if (accSubEl) accSubEl.textContent = S.accuracyIp || '';
+          if (altEl) altEl.textContent = S.altitudeIpNone || '';
 
           if (mapCoordChip) {
             mapCoordChip.textContent = `${currentLat.toFixed(4)}°, ${currentLng.toFixed(4)}°`;
           }
 
-          setMapStatus('IP LOCATION');
+          setMapStatus(S.ipStatus || 'Approximate (IP)');
 
           const mapsBtn = document.getElementById('open-maps-btn');
           if (mapsBtn) {
@@ -684,11 +692,11 @@ const homeFaqSchema = {
           initMap(currentLat, currentLng, 10000);
 
           if (bannerText) {
-            bannerText.textContent = 'Approximate location resolved from your IP address. Zero-Data Retention • 100% In-Browser.';
+            bannerText.textContent = S.ipBanner || '';
           }
         } catch {
-          setMapStatus('NO FIX');
-          if (bannerText) bannerText.textContent = 'Location query failed. Please ensure location permissions are enabled.';
+          setMapStatus(S.noFix || 'No location');
+          if (bannerText) bannerText.textContent = S.failed || '';
         }
       } finally {
         if (getBtn) {
@@ -708,7 +716,7 @@ const homeFaqSchema = {
         const span = this.querySelector('span');
         if (span) {
           const original = span.textContent;
-          span.textContent = 'No fix yet';
+          span.textContent = S.copyNone || 'No location yet';
           setTimeout(() => { span.textContent = original; }, 2000);
         }
         return;
@@ -718,7 +726,7 @@ const homeFaqSchema = {
         const span = this.querySelector('span');
         if (span) {
           const original = span.textContent;
-          span.textContent = 'Copied!';
+          span.textContent = S.copied || 'Copied!';
           setTimeout(() => { span.textContent = original; }, 2000);
         }
       });
@@ -727,8 +735,10 @@ const homeFaqSchema = {
     document.getElementById('share-btn')?.addEventListener('click', () => {
       if (currentLat === null || currentLng === null) return;
       Sharing.shareNative({
-        title: 'My Location',
-        text: `My location coordinates: ${currentLat.toFixed(6)}, ${currentLng.toFixed(6)}`,
+        title: S.shareTitle || 'My Location',
+        text: (S.shareText || 'My location coordinates: {lat}, {lng}')
+          .replace('{lat}', currentLat.toFixed(6))
+          .replace('{lng}', currentLng.toFixed(6)),
         url: Sharing.getGoogleMapsUrl(currentLat, currentLng),
       });
     });

@@ -25,6 +25,39 @@ export interface HomeTranslation {
   btnOpenMaps: string;
   mapWaiting: string;
   mapStandby: string;
+  s: {
+    ready: string;
+    acquiring: string;
+    acquiringSub: string;
+    locked: string;
+    lockedDetail: string;
+    gpsStatus: string;
+    ipPill: string;
+    ipSub: string;
+    ipStatus: string;
+    ipPrecision: string;
+    noFix: string;
+    failed: string;
+    okBanner: string;
+    ipBanner: string;
+    copyNone: string;
+    copied: string;
+    decimal: string;
+    meters: string;
+    accuracyDevice: string;
+    accuracyIp: string;
+    altitudeNone: string;
+    altitudeIpNone: string;
+    addrFail: string;
+    addrFallback: string;
+    cityFallback: string;
+    viaGps: string;
+    county: string;
+    global: string;
+    metro: string;
+    shareTitle: string;
+    shareText: string;
+  };
   labels: {
     latitude: string;
     longitude: string;
@@ -81,13 +114,46 @@ export const homeTranslations: Record<string, HomeTranslation> = {
     btnGetLocation: 'Get My Location',
     btnBrowseTools: 'Browse Tools',
     privacyBanner: 'Please allow location access when your browser asks for permission. Zero-Data Retention • 100% In-Browser',
-    telemetryTitle: 'Active GPS Telemetry',
-    telemetrySubtext: 'Acquiring high-precision browser positioning automatically — no click needed.',
+    telemetryTitle: 'Your Location',
+    telemetrySubtext: 'Detected automatically in your browser — no click needed.',
     btnCopy: 'Copy Coordinates',
     btnShare: 'Share Location',
     btnOpenMaps: 'Open in Maps',
     mapWaiting: 'Awaiting location fix',
     mapStandby: 'STANDBY',
+    s: {
+      ready: 'Ready when you are',
+      acquiring: 'Finding your location…',
+      acquiringSub: 'Asking your browser for a GPS fix…',
+      locked: 'Location found',
+      lockedDetail: 'Fix acquired with about {m} m accuracy.',
+      gpsStatus: 'Located',
+      ipPill: 'Approximate location',
+      ipSub: 'GPS unavailable — showing an approximate location from your IP address.',
+      ipStatus: 'Approximate (IP)',
+      ipPrecision: 'Approximate (IP-level precision)',
+      noFix: 'No location',
+      failed: "Couldn't get your location. Please make sure location access is allowed.",
+      okBanner: 'Location found. Nothing about you is stored on our servers.',
+      ipBanner: 'Approximate location from your IP address. Nothing about you is stored on our servers.',
+      copyNone: 'No location yet',
+      copied: 'Copied!',
+      decimal: 'Decimal',
+      meters: '± {m} m',
+      accuracyDevice: 'Reported by your device',
+      accuracyIp: 'Estimated from your IP address',
+      altitudeNone: 'Not reported by your device',
+      altitudeIpNone: 'Not available from an IP lookup',
+      addrFail: 'Address lookup unavailable',
+      addrFallback: 'Resolved location',
+      cityFallback: 'Detected city',
+      viaGps: 'Resolved via GPS',
+      county: 'County: {c}',
+      global: 'Worldwide',
+      metro: 'Metro area',
+      shareTitle: 'My Location',
+      shareText: 'My location coordinates: {lat}, {lng}'
+    },
     labels: {
       latitude: 'LATITUDE',
       longitude: 'LONGITUDE',
@@ -189,13 +255,46 @@ export const homeTranslations: Record<string, HomeTranslation> = {
     btnGetLocation: 'Obtener Mi Ubicación',
     btnBrowseTools: 'Explorar Herramientas',
     privacyBanner: 'Por favor, permite el acceso a la ubicación cuando tu navegador lo solicite. Cero Retención de Datos • 100% en el Navegador',
-    telemetryTitle: 'Telemetría GPS Activa',
-    telemetrySubtext: 'Obteniendo posicionamiento de alta precisión en el navegador automáticamente.',
+    telemetryTitle: 'Tu Ubicación',
+    telemetrySubtext: 'Detectada automáticamente en tu navegador, sin pulsar nada.',
     btnCopy: 'Copiar Coordenadas',
     btnShare: 'Compartir Ubicación',
     btnOpenMaps: 'Abrir en Google Maps',
     mapWaiting: 'Esperando señal de ubicación',
     mapStandby: 'EN ESPERA',
+    s: {
+      ready: 'Listo cuando usted quiera',
+      acquiring: 'Buscando su ubicación…',
+      acquiringSub: 'Solicitando una posición GPS a su navegador…',
+      locked: 'Ubicación encontrada',
+      lockedDetail: 'Posición obtenida con una precisión de unos {m} m.',
+      gpsStatus: 'Ubicado',
+      ipPill: 'Ubicación aproximada',
+      ipSub: 'GPS no disponible: se muestra una ubicación aproximada según su dirección IP.',
+      ipStatus: 'Aproximada (IP)',
+      ipPrecision: 'Aproximada (precisión de IP)',
+      noFix: 'Sin ubicación',
+      failed: 'No se pudo obtener su ubicación. Compruebe que el acceso a la ubicación esté permitido.',
+      okBanner: 'Ubicación encontrada. No guardamos nada sobre usted en nuestros servidores.',
+      ipBanner: 'Ubicación aproximada a partir de su IP. No guardamos nada sobre usted en nuestros servidores.',
+      copyNone: 'Aún sin ubicación',
+      copied: '¡Copiado!',
+      decimal: 'Decimal',
+      meters: '± {m} m',
+      accuracyDevice: 'Comunicado por su dispositivo',
+      accuracyIp: 'Estimada a partir de su dirección IP',
+      altitudeNone: 'No facilitada por su dispositivo',
+      altitudeIpNone: 'No disponible mediante IP',
+      addrFail: 'Búsqueda de dirección no disponible',
+      addrFallback: 'Ubicación resuelta',
+      cityFallback: 'Ciudad detectada',
+      viaGps: 'Resuelta vía GPS',
+      county: 'Condado: {c}',
+      global: 'Mundial',
+      metro: 'Área metropolitana',
+      shareTitle: 'Mi Ubicación',
+      shareText: 'Mis coordenadas de ubicación: {lat}, {lng}'
+    },
     labels: {
       latitude: 'LATITUD',
       longitude: 'LONGITUD',
@@ -297,13 +396,46 @@ export const homeTranslations: Record<string, HomeTranslation> = {
     btnGetLocation: 'Obtenir Ma Position',
     btnBrowseTools: 'Parcourir les Outils',
     privacyBanner: 'Veuillez autoriser l’accès à la position lorsque votre navigateur le demande. Zéro Donnée Enregistrée • 100% dans le Navigateur',
-    telemetryTitle: 'Télémétrie GPS Active',
-    telemetrySubtext: 'Acquisition automatique de votre géolocalisation de haute précision dans le navigateur.',
+    telemetryTitle: 'Votre Position',
+    telemetrySubtext: 'Détectée automatiquement dans votre navigateur, sans clic.',
     btnCopy: 'Copier les Coordonnées',
     btnShare: 'Partager Ma Position',
     btnOpenMaps: 'Ouvrir dans Google Maps',
     mapWaiting: 'En attente du signal GPS',
     mapStandby: 'EN ATTENTE',
+    s: {
+      ready: 'Prêt quand vous voulez',
+      acquiring: 'Recherche de votre position…',
+      acquiringSub: 'Demande d’un point GPS à votre navigateur…',
+      locked: 'Position trouvée',
+      lockedDetail: 'Point acquis avec une précision d’environ {m} m.',
+      gpsStatus: 'Localisé',
+      ipPill: 'Position approximative',
+      ipSub: 'GPS indisponible — position approximative déduite de votre adresse IP.',
+      ipStatus: 'Approximative (IP)',
+      ipPrecision: 'Approximative (précision IP)',
+      noFix: 'Aucune position',
+      failed: 'Impossible d’obtenir votre position. Vérifiez que l’accès à la localisation est autorisé.',
+      okBanner: 'Position trouvée. Rien à votre sujet n’est stocké sur nos serveurs.',
+      ipBanner: 'Position approximative issue de votre IP. Rien à votre sujet n’est stocké sur nos serveurs.',
+      copyNone: 'Pas encore de position',
+      copied: 'Copié !',
+      decimal: 'Décimal',
+      meters: '± {m} m',
+      accuracyDevice: 'Fourni par votre appareil',
+      accuracyIp: 'Estimée à partir de votre adresse IP',
+      altitudeNone: 'Non fournie par votre appareil',
+      altitudeIpNone: 'Indisponible via IP',
+      addrFail: 'Recherche d’adresse indisponible',
+      addrFallback: 'Position résolue',
+      cityFallback: 'Ville détectée',
+      viaGps: 'Résolue via GPS',
+      county: 'Comté : {c}',
+      global: 'Mondial',
+      metro: 'Aire métropolitaine',
+      shareTitle: 'Ma Position',
+      shareText: 'Mes coordonnées : {lat}, {lng}'
+    },
     labels: {
       latitude: 'LATITUDE',
       longitude: 'LONGITUDE',
@@ -405,13 +537,46 @@ export const homeTranslations: Record<string, HomeTranslation> = {
     btnGetLocation: 'Meinen Standort Abrufen',
     btnBrowseTools: 'Tools Entdecken',
     privacyBanner: 'Bitte erlauben Sie den Standortzugriff bei der Browser-Aufforderung. Keine Datenspeicherung • 100% im Browser',
-    telemetryTitle: 'Aktive GPS-Telemetrie',
-    telemetrySubtext: 'Hochpräzise Browser-Positionsbestimmung wird automatisch gestartet.',
+    telemetryTitle: 'Ihr Standort',
+    telemetrySubtext: 'Automatisch in Ihrem Browser ermittelt — kein Klick nötig.',
     btnCopy: 'Koordinaten Kopieren',
     btnShare: 'Standort Teilen',
     btnOpenMaps: 'In Google Maps Öffnen',
     mapWaiting: 'Warte auf Standortschnittstelle',
     mapStandby: 'BEREIT',
+    s: {
+      ready: 'Bereit, wenn Sie es sind',
+      acquiring: 'Standort wird gesucht…',
+      acquiringSub: 'GPS-Fix wird beim Browser angefragt…',
+      locked: 'Standort gefunden',
+      lockedDetail: 'Fix mit etwa {m} m Genauigkeit erfasst.',
+      gpsStatus: 'Lokalisiert',
+      ipPill: 'Ungefährer Standort',
+      ipSub: 'GPS nicht verfügbar — ungefährer Standort laut Ihrer IP-Adresse.',
+      ipStatus: 'Ungefähr (IP)',
+      ipPrecision: 'Ungefähr (IP-Genauigkeit)',
+      noFix: 'Kein Standort',
+      failed: 'Standort konnte nicht ermittelt werden. Bitte erlauben Sie den Standortzugriff.',
+      okBanner: 'Standort gefunden. Über Sie wird nichts auf unseren Servern gespeichert.',
+      ipBanner: 'Ungefährer Standort laut Ihrer IP. Über Sie wird nichts auf unseren Servern gespeichert.',
+      copyNone: 'Noch kein Standort',
+      copied: 'Kopiert!',
+      decimal: 'Dezimal',
+      meters: '± {m} m',
+      accuracyDevice: 'Von Ihrem Gerät gemeldet',
+      accuracyIp: 'Geschätzt aus Ihrer IP-Adresse',
+      altitudeNone: 'Von Ihrem Gerät nicht gemeldet',
+      altitudeIpNone: 'Per IP nicht verfügbar',
+      addrFail: 'Adresssuche nicht verfügbar',
+      addrFallback: 'Standort ermittelt',
+      cityFallback: 'Stadt erkannt',
+      viaGps: 'Über GPS ermittelt',
+      county: 'Landkreis: {c}',
+      global: 'Weltweit',
+      metro: 'Ballungsraum',
+      shareTitle: 'Mein Standort',
+      shareText: 'Meine Standortkoordinaten: {lat}, {lng}'
+    },
     labels: {
       latitude: 'BREITENGRAD',
       longitude: 'LÄNGENGRAD',
@@ -513,13 +678,46 @@ export const homeTranslations: Record<string, HomeTranslation> = {
     btnGetLocation: 'Obter Minha Localização',
     btnBrowseTools: 'Ver Ferramentas',
     privacyBanner: 'Por favor, permita o acesso à localização quando solicitado pelo navegador. Sem Retenção de Dados • 100% no Navegador',
-    telemetryTitle: 'Telemetria GPS Ativa',
-    telemetrySubtext: 'Aquisição de posicionamento de alta precisão iniciada automaticamente no navegador.',
+    telemetryTitle: 'Sua Localização',
+    telemetrySubtext: 'Detectada automaticamente no seu navegador, sem clicar em nada.',
     btnCopy: 'Copiar Coordenadas',
     btnShare: 'Compartilhar Localização',
     btnOpenMaps: 'Abrir no Google Maps',
     mapWaiting: 'Aguardando sinal de localização',
     mapStandby: 'EM ESPERA',
+    s: {
+      ready: 'Pronto quando você quiser',
+      acquiring: 'Buscando sua localização…',
+      acquiringSub: 'Pedindo uma posição GPS ao seu navegador…',
+      locked: 'Localização encontrada',
+      lockedDetail: 'Posição obtida com precisão de cerca de {m} m.',
+      gpsStatus: 'Localizado',
+      ipPill: 'Localização aproximada',
+      ipSub: 'GPS indisponível — mostrando uma localização aproximada pelo seu endereço IP.',
+      ipStatus: 'Aproximada (IP)',
+      ipPrecision: 'Aproximada (precisão de IP)',
+      noFix: 'Sem localização',
+      failed: 'Não foi possível obter sua localização. Verifique se o acesso à localização está permitido.',
+      okBanner: 'Localização encontrada. Nada sobre você fica salvo nos nossos servidores.',
+      ipBanner: 'Localização aproximada pelo seu IP. Nada sobre você fica salvo nos nossos servidores.',
+      copyNone: 'Ainda sem localização',
+      copied: 'Copiado!',
+      decimal: 'Decimal',
+      meters: '± {m} m',
+      accuracyDevice: 'Informado pelo seu aparelho',
+      accuracyIp: 'Estimada a partir do seu endereço IP',
+      altitudeNone: 'Não informada pelo seu aparelho',
+      altitudeIpNone: 'Não disponível por IP',
+      addrFail: 'Busca de endereço indisponível',
+      addrFallback: 'Localização resolvida',
+      cityFallback: 'Cidade detectada',
+      viaGps: 'Resolvida via GPS',
+      county: 'Município: {c}',
+      global: 'Global',
+      metro: 'Região metropolitana',
+      shareTitle: 'Minha Localização',
+      shareText: 'Minhas coordenadas de localização: {lat}, {lng}'
+    },
     labels: {
       latitude: 'LATITUDE',
       longitude: 'LONGITUDE',
