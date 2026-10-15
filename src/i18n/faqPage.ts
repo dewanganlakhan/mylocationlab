@@ -273,5 +273,107 @@ export const faqPageTranslations: Record<string, FAQPageContent> = {
         answerHtml: 'Clique no ícone de cadeado junto à barra de endereços do seu navegador, encontre o item <strong>Localização</strong>, selecione <strong>Permitir</strong> e recarregue a página.'
       }
     ]
+  },
+  hi: {
+    metaTitle: "लोकेशन और GPS FAQ — सभी उत्तर | MyLocationLab",
+    metaDescription: "अपना स्थान खोजने, GPS सटीकता, ब्राउज़र गोपनीयता, गलत शहर दिखने और निर्देशांक रूपांतरण के सामान्य प्रश्नों के उत्तर यहां पाएं — विशेषज्ञों द्वारा लिखित।",
+    breadcrumb: "अक्सर पूछे जाने वाले प्रश्न",
+    titlePrefix: "अक्सर पूछे",
+    titleHighlight: "जाने वाले प्रश्न (FAQ)",
+    subtitle: "ब्राउज़र जियोलोकेशन, सैटेलाइट GPS सटीकता, निर्देशांक प्रणालियों और डेटा गोपनीयता के बारे में वह सब जो आपको जानना चाहिए।",
+    stillQuestionsTitle: "अभी भी कोई प्रश्न है?",
+    stillQuestionsDesc: "हमारे तकनीकी गाइड देखें या हमारी भू-स्थानिक इंजीनियरिंग टीम से सीधे संपर्क करें।",
+    browseGuidesBtn: "📚 सभी गाइड देखें",
+    glossaryBtn: "📖 जियोडेसी शब्दावली",
+    contactBtn: "✉️ सहायता से संपर्क करें",
+    faqs: [
+      {
+        question: "मेरी वर्तमान लोकेशन क्या है और मैं उसे कैसे पता करूं?",
+        answerHtml: '<a href="/my-location/">मैं कहां हूं</a> होमपेज पर जाकर <strong>"मेरी लोकेशन प्राप्त करें"</strong> पर क्लिक करके आप तुरंत अपनी वर्तमान लोकेशन पा सकते हैं। आपका ब्राउज़र आपके डिवाइस के GPS या वाई-फाई पोज़िशनिंग हार्डवेयर तक पहुंचकर आपका सटीक अक्षांश, देशांतर, सड़क का पता, शहर, राज्य और देश दिखाएगा।'
+      },
+      {
+        question: "मेरी स्थिति बताने में यह वेबसाइट कितनी सटीक है?",
+        answerHtml: 'सटीकता आपके हार्डवेयर और वातावरण पर निर्भर करती है: GPS सक्षम स्मार्टफोन पर बाहर सटीकता आमतौर पर <strong>3 से 5 मीटर</strong> के भीतर होती है। वाई-फाई से जुड़े लैपटॉप या डेस्कटॉप पर आमतौर पर <strong>15 से 40 मीटर</strong> के भीतर। वायर्ड ईथरनेट कनेक्शन पर सटीकता क्षेत्रीय IP जियोलोकेशन (10 से 50 किलोमीटर) तक आ जाती है।'
+      },
+      {
+        question: "क्या मेरा लोकेशन डेटा ट्रैक, रिकॉर्ड या आपके सर्वर पर स्टोर किया जाता है?",
+        answerHtml: '<strong>नहीं। कभी नहीं।</strong> सभी जियोलोकेशन गणनाएं, निर्देशांक रूपांतरण और नक्शा रेंडरिंग मानक W3C Geolocation API का उपयोग करके 100% आपके ब्राउज़र क्लाइंट के भीतर स्थानीय रूप से निष्पादित होती हैं। हम आपके निर्देशांक स्टोर, लॉग, ट्रैक या बेच नहीं करते। हमारी पूरी <a href="/privacy/">गोपनीयता नीति</a> पढ़ें।'
+      },
+      {
+        question: "मेरी लोकेशन गलत शहर या राज्य क्यों दिखाती है?",
+        answerHtml: 'यदि आपकी लोकेशन 30–80 किलोमीटर तक गलत है, तो संभवतः आप डेस्कटॉप कंप्यूटर पर हैं जो GPS के बजाय आपके इंटरनेट सेवा प्रदाता का IP पता उपयोग कर रहा है। इसके अलावा, सक्रिय VPN या हाल में दूसरे पते से हटाया गया वाई-फाई राउटर भी आपके नेटवर्क राउटिंग टेबल को VPN या पुराने पते की ओर इशारा कर सकते हैं। हमारी विस्तृत <a href="/guides/wrong-location/">गलत लोकेशन ठीक करने की गाइड</a> पढ़ें।'
+      },
+      {
+        question: "GPS निर्देशांक और IP लोकेशन में क्या अंतर है?",
+        answerHtml: 'GPS पृथ्वी से 20,200 किलोमीटर ऊपर कक्षा में स्थित सैटेलाइट के रीयल-टाइम रेडियो सिग्नल से आपकी सटीक भौतिक स्थिति 3 मीटर तक गणना करता है। IP जियोलोकेशन वाणिज्यिक राउटिंग डेटाबेस में आपके सार्वजनिक इंटरनेट पते को देखकर अनुमान लगाती है कि आपका ISP किस शहर या क्षेत्र में है। हमारी <a href="/comparisons/gps-vs-ip-location/">GPS बनाम IP लोकेशन तुलना</a> में और जानें।'
+      },
+      {
+        question: "मैं GPS निर्देशांकों को सड़क के पते में कैसे बदलूं?",
+        answerHtml: 'आप हमारा मुफ़्त <a href="/tools/reverse-geocoding/">रिवर्स जियोकोडर</a> या <a href="/tools/address-finder/">पता खोजें</a> टूल उपयोग कर सकते हैं। अपना अक्षांश और देशांतर दर्ज करें, और हमारा सिस्टम OpenStreetMap के वैश्विक पता इंडेक्स से पूछकर निकटतम सड़क का नाम, मकान नंबर, पिन कोड और नगर पालिका बताता है।'
+      },
+      {
+        question: "क्या मैं समुद्र तल से अपनी ऊंचाई और एलिवेशन जान सकता हूं?",
+        answerHtml: 'हां! हमारा <a href="/tools/elevation-finder/">ऊंचाई फाइंडर</a> सैटेलाइट टोपोग्राफिक मॉडल और डिवाइस के बैरोमीट्रिक सेंसर का उपयोग करके आपकी औसत समुद्र तल से ऊंचाई मीटर और फीट में मापता है।'
+      },
+      {
+        question: "मैं अपनी लोकेशन किसी और के साथ सुरक्षित रूप से कैसे साझा करूं?",
+        answerHtml: 'हमारा <a href="/share-location/">लोकेशन साझा टूल</a> देखें। आप एक प्राइवेट, एक-क्लिक लिंक या स्कैन करने योग्य <a href="/tools/location-qr-code/">लोकेशन QR कोड</a> बना सकते हैं जो Google Maps, Apple Maps या OpenStreetMap में आपकी सटीक स्थिति खोलता है।'
+      },
+      {
+        question: 'अगर मैंने लोकेशन प्रॉम्प्ट पर गलती से "ब्लॉक" दबा दिया तो क्या करूं?',
+        answerHtml: 'अपने ब्राउज़र के URL एड्रेस बार में लॉक या सेटिंग्स आइकन पर क्लिक करें, <strong>लोकेशन</strong> खोजें, अनुमति को <strong>अनुमति दें</strong> में बदलें और वेबपेज रीलोड करें।'
+      }
+    ]
+  },
+  id: {
+    metaTitle: "FAQ Lokasi & GPS — Semua Jawaban | MyLocationLab",
+    metaDescription: "Jawaban atas pertanyaan umum tentang menemukan lokasi Anda, akurasi GPS, privasi peramban, perbaikan kota yang salah, dan konversi koordinat.",
+    breadcrumb: "Pertanyaan yang Sering Diajukan",
+    titlePrefix: "Pertanyaan",
+    titleHighlight: "Sering Diajukan (FAQ)",
+    subtitle: "Semua yang perlu Anda ketahui tentang geolokasi peramban, akurasi GPS satelit, sistem koordinat, dan privasi data.",
+    stillQuestionsTitle: "Masih Ada Pertanyaan?",
+    stillQuestionsDesc: "Jelajahi panduan teknis kami atau hubungi tim rekayasa geospasial kami secara langsung.",
+    browseGuidesBtn: "📚 Lihat Semua Panduan",
+    glossaryBtn: "📖 Glosarium Geodesi",
+    contactBtn: "✉️ Hubungi Dukungan",
+    faqs: [
+      {
+        question: "Apa lokasi saya saat ini dan bagaimana cara menemukannya?",
+        answerHtml: 'Anda dapat menemukan lokasi Anda saat ini segera dengan mengunjungi beranda <a href="/my-location/">Di Mana Saya</a> dan mengeklik <strong>"Dapatkan Lokasi Saya"</strong>. Peramban Anda akan mengakses GPS atau perangkat keras posisi Wi-Fi perangkat Anda untuk menampilkan lintang, bujur, alamat jalan, kota, provinsi, dan negara Anda yang persis.'
+      },
+      {
+        question: "Seberapa akurat situs web ini dalam menentukan posisi saya?",
+        answerHtml: 'Akurasi bergantung pada perangkat keras dan lingkungan Anda: pada ponsel pintar dengan GPS aktif di luar ruangan, akurasinya biasanya dalam <strong>3 hingga 5 meter</strong>. Pada laptop atau desktop yang terhubung ke Wi-Fi, biasanya dalam <strong>15 hingga 40 meter</strong>. Pada koneksi ethernet berkabel, akurasi beralih ke geolokasi IP regional (rentang 10 hingga 50 kilometer).'
+      },
+      {
+        question: "Apakah data lokasi saya dilacak, dicatat, atau disimpan di server Anda?",
+        answerHtml: '<strong>Tidak. Tidak pernah.</strong> Semua perhitungan geolokasi, konversi koordinat, dan rendering peta dijalankan 100% secara lokal di dalam peramban Anda menggunakan W3C Geolocation API standar. Kami tidak menyimpan, mencatat, melacak, atau menjual koordinat Anda. Baca <a href="/privacy/">Kebijakan Privasi</a> kami selengkapnya.'
+      },
+      {
+        question: "Mengapa lokasi saya menampilkan kota atau provinsi yang salah?",
+        answerHtml: 'Jika lokasi Anda meleset 30–80 kilometer, kemungkinan Anda menggunakan komputer desktop yang memakai alamat IP penyedia layanan internet Anda, bukan GPS. Selain itu, VPN aktif atau router Wi-Fi yang baru dipindah dari alamat lain juga dapat membuat tabel routing jaringan Anda menampilkan lokasi VPN atau alamat lama. Baca <a href="/guides/wrong-location/">Panduan Memperbaiki Lokasi yang Salah</a> kami.'
+      },
+      {
+        question: "Apa perbedaan antara koordinat GPS dan lokasi IP?",
+        answerHtml: 'GPS menggunakan sinyal radio real-time dari satelit yang mengorbit 20.200 km di atas Bumi untuk menghitung posisi fisik Anda yang persis hingga 3 meter. Geolokasi IP mencari alamat internet publik Anda dalam basis data routing komersial untuk memperkirakan kota atau wilayah operasi ISP Anda. Pelajari lebih lanjut di <a href="/comparisons/gps-vs-ip-location/">Perbandingan GPS vs. Lokasi IP</a> kami.'
+      },
+      {
+        question: "Bagaimana cara mengubah koordinat GPS menjadi alamat jalan?",
+        answerHtml: 'Gunakan <a href="/tools/reverse-geocoding/">Reverse Geocoder</a> atau alat <a href="/tools/address-finder/">Pencari Alamat</a> gratis kami. Masukkan lintang dan bujur Anda, dan sistem kami akan menanyakan indeks alamat global OpenStreetMap untuk mengembalikan nama jalan, nomor rumah, kode pos, dan wilayah administratif terdekat.'
+      },
+      {
+        question: "Bisakah saya mengetahui elevasi dan ketinggian saya di atas permukaan laut?",
+        answerHtml: 'Ya! <a href="/tools/elevation-finder/">Pencari Elevasi</a> kami mengukur ketinggian Anda di atas permukaan laut rata-rata dalam meter dan kaki menggunakan model topografi satelit dan sensor barometrik perangkat.'
+      },
+      {
+        question: "Bagaimana cara berbagi lokasi saya dengan orang lain secara aman?",
+        answerHtml: 'Kunjungi <a href="/share-location/">Alat Bagikan Lokasi</a> kami. Anda dapat membuat tautan privat sekali klik atau <a href="/tools/location-qr-code/">Kode QR Lokasi</a> yang dapat dipindai, yang membuka posisi persis Anda di Google Maps, Apple Maps, atau OpenStreetMap.'
+      },
+      {
+        question: 'Apa yang harus saya lakukan jika tidak sengaja mengeklik "Blokir" pada permintaan izin lokasi?',
+        answerHtml: 'Klik ikon gembok atau pengaturan di bilah alamat peramban Anda, cari <strong>Lokasi</strong>, ubah izinnya menjadi <strong>Diizinkan</strong>, lalu muat ulang halaman web.'
+      }
+    ]
   }
 };

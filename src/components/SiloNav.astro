@@ -5,7 +5,7 @@
  * (every hub + spoke link) without pushing the page's main tool/content
  * below the fold. Replaces the old boxed "Geospatial Utilities & Tools" card.
  */
-import { myLocationSubNav, toolsNav, guidesNav, comparisonsNav } from '../data/navigation.js';
+import { myLocationSubNav, toolsNav, guidesNav, comparisonsNav, localizedNavLabels } from '../data/navigation.js';
 import { getLangFromUrl, getLocalizedPath, type SupportedLang } from '../i18n/config';
 
 interface Props {
@@ -20,31 +20,78 @@ const { silo: propSilo, currentSection, currentPath = Astro.url.pathname, title,
 const silo = propSilo || (currentSection as any);
 const lang = (customLang || getLangFromUrl(Astro.url)) as SupportedLang;
 
+// Localized labels for the chips; falls back to the English array label.
+const navLabels = localizedNavLabels as Record<string, Partial<Record<string, string>>>;
+const chipLabel = (href: string, fallback: string) => navLabels[href]?.[lang] || fallback;
+
+// Per-silo section title + hub label per language (en holds the current strings).
+const siloCopy: Record<string, Record<string, { siloTitle: string; hubLabel: string }>> = {
+  'my-location': {
+    en: { siloTitle: 'Related Location Tools', hubLabel: 'Where Am I' },
+    es: { siloTitle: 'Herramientas de Ubicación Relacionadas', hubLabel: '¿Dónde Estoy?' },
+    fr: { siloTitle: 'Outils de Localisation Associés', hubLabel: 'Où Suis-Je ?' },
+    de: { siloTitle: 'Verwandte Standort-Tools', hubLabel: 'Wo Bin Ich?' },
+    pt: { siloTitle: 'Ferramentas de Localização Relacionadas', hubLabel: 'Onde Estou?' },
+    hi: { siloTitle: 'संबंधित लोकेशन टूल्स', hubLabel: 'मैं कहाँ हूँ' },
+    id: { siloTitle: 'Alat Lokasi Terkait', hubLabel: 'Saya di Mana' },
+  },
+  tools: {
+    en: { siloTitle: 'Geospatial Utilities & Tools', hubLabel: 'All Tools' },
+    es: { siloTitle: 'Utilidades y Herramientas Geoespaciales', hubLabel: 'Todas las Herramientas' },
+    fr: { siloTitle: 'Utilitaires et Outils Géospatiaux', hubLabel: 'Tous les Outils' },
+    de: { siloTitle: 'Geodaten-Utilities & Tools', hubLabel: 'Alle Tools' },
+    pt: { siloTitle: 'Utilitários e Ferramentas Geoespaciais', hubLabel: 'Todas as Ferramentas' },
+    hi: { siloTitle: 'भू-स्थानिक यूटिलिटीज़ और टूल्स', hubLabel: 'सभी टूल्स' },
+    id: { siloTitle: 'Utilitas & Alat Geospasial', hubLabel: 'Semua Alat' },
+  },
+  guides: {
+    en: { siloTitle: 'Location Guides & Tutorials', hubLabel: 'All Guides' },
+    es: { siloTitle: 'Guías y Tutoriales de Ubicación', hubLabel: 'Todas las Guías' },
+    fr: { siloTitle: 'Guides et Tutoriels de Localisation', hubLabel: 'Tous les Guides' },
+    de: { siloTitle: 'Standort-Guides & Tutorials', hubLabel: 'Alle Guides' },
+    pt: { siloTitle: 'Guias e Tutoriais de Localização', hubLabel: 'Todos os Guias' },
+    hi: { siloTitle: 'लोकेशन गाइड और ट्यूटोरियल', hubLabel: 'सभी गाइड' },
+    id: { siloTitle: 'Panduan & Tutorial Lokasi', hubLabel: 'Semua Panduan' },
+  },
+  comparisons: {
+    en: { siloTitle: 'Accuracy & Tech Comparisons', hubLabel: 'All Comparisons' },
+    es: { siloTitle: 'Comparativas de Precisión y Tecnología', hubLabel: 'Todas las Comparativas' },
+    fr: { siloTitle: 'Comparatifs de Précision et Technologie', hubLabel: 'Tous les Comparatifs' },
+    de: { siloTitle: 'Genauigkeits- & Tech-Vergleiche', hubLabel: 'Alle Vergleiche' },
+    pt: { siloTitle: 'Comparações de Precisão e Tecnologia', hubLabel: 'Todas as Comparações' },
+    hi: { siloTitle: 'सटीकता और टेक तुलना', hubLabel: 'सभी तुलनाएं' },
+    id: { siloTitle: 'Perbandingan Akurasi & Teknologi', hubLabel: 'Semua Perbandingan' },
+  },
+};
+
 let items: { label: string; href: string; icon?: string }[] = [];
+let siloKey: string | null = null;
 let siloTitle = '';
 let siloHubHref = '';
 let hubLabel = 'All';
 
 if (silo === 'my-location') {
-  siloTitle = 'Related Location Tools';
+  siloKey = 'my-location';
   siloHubHref = '/my-location/';
-  hubLabel = 'Where Am I';
   items = myLocationSubNav;
 } else if (silo === 'tools') {
-  siloTitle = 'Geospatial Utilities & Tools';
+  siloKey = 'tools';
   siloHubHref = '/tools/';
-  hubLabel = 'All Tools';
   items = toolsNav;
 } else if (silo === 'guides') {
-  siloTitle = 'Location Guides & Tutorials';
+  siloKey = 'guides';
   siloHubHref = '/guides/';
-  hubLabel = 'All Guides';
   items = guidesNav;
 } else if (silo === 'comparisons') {
-  siloTitle = 'Accuracy & Tech Comparisons';
+  siloKey = 'comparisons';
   siloHubHref = '/comparisons/';
-  hubLabel = 'All Comparisons';
   items = comparisonsNav;
+}
+
+const copy = (siloKey && siloCopy[siloKey]?.[lang]) || (siloKey && siloCopy[siloKey]?.en) || null;
+if (copy) {
+  siloTitle = copy.siloTitle;
+  hubLabel = copy.hubLabel;
 }
 ---
 
@@ -66,7 +113,7 @@ if (silo === 'my-location') {
         const isActive = currentPath === itemLocalizedHref || currentPath === item.href;
         return (
           <a href={itemLocalizedHref} class={`quicknav-chip ${isActive ? 'active' : ''}`} aria-current={isActive ? 'page' : undefined}>
-            {item.label}
+            {chipLabel(item.href, item.label)}
           </a>
         );
       })}

@@ -177,5 +177,69 @@ export const comparisonsHubTranslations: Record<string, ComparisonsHubContent> =
         tags: ["Coordenadas", "SIG", "Datums"]
       }
     ]
+  },
+  hi: {
+    metaTitle: "GPS और जियोलोकेशन तुलना | MyLocationLab",
+    metaDescription: "GPS बनाम IP लोकेशन की सटीकता, फॉरवर्ड बनाम रिवर्स जियोकोडिंग और दशमलव डिग्री बनाम DMS फॉर्मेट की गहन इंजीनियरिंग विश्लेषण के साथ तुलना करें।",
+    breadcrumb: "तकनीकी तुलनाएं",
+    titlePrefix: "भू-स्थानिक",
+    titleHighlight: "तुलनाएं और बेंचमार्क",
+    subtitle: "पोज़िशनिंग तकनीकों, निर्देशांक एनकोडिंग और भू-स्थानिक इंडेक्सिंग एल्गोरिद्म की गहन तकनीकी तुलना।",
+    viewComparison: "तुलना देखें →",
+    items: [
+      {
+        title: "GPS लोकेशन बनाम IP जियोलोकेशन: सटीकता, गोपनीयता और कार्यप्रणाली",
+        description: "सैटेलाइट-आधारित पोज़िशनिंग की तुलना इंटरनेट राउटिंग टेबल लुकअप से करें। सटीकता (3 मीटर बनाम 50 किलोमीटर), लेटेंसी और गोपनीयता के अंतर समझें।",
+        url: "/comparisons/gps-vs-ip-location/",
+        icon: "⚖️",
+        tags: ["सटीकता", "नेटवर्क", "GNSS"]
+      },
+      {
+        title: "फॉरवर्ड जियोकोडिंग बनाम रिवर्स जियोकोडिंग: आपको कौन चाहिए?",
+        description: "पतों को निर्देशांकों में बदलने और निर्देशांक युग्मों को सड़क के पतों में बदलने के बीच के गणितीय और डेटाबेस अंतर को समझें।",
+        url: "/comparisons/geocoding-vs-reverse-geocoding/",
+        icon: "🔄",
+        tags: ["APIs", "जियोकोडिंग", "पते"]
+      },
+      {
+        title: "दशमलव डिग्री (DD) बनाम डिग्री मिनट सेकंड (DMS)",
+        description: "निर्देशांक नोटेशन सिस्टम, रूपांतरण फॉर्मूला, GIS डेटाबेस में स्टोरेज दक्षता और पठनीयता की तकनीकी तुलना।",
+        url: "/comparisons/decimal-degrees-vs-dms/",
+        icon: "📐",
+        tags: ["निर्देशांक", "GIS", "डेटम"]
+      }
+    ]
+  },
+  id: {
+    metaTitle: "Perbandingan GPS & Geolokasi | MyLocationLab",
+    metaDescription: "Bandingkan akurasi GPS vs lokasi IP, Geocoding Langsung vs Terbalik, serta Derajat Desimal vs DMS melalui uraian teknis mendalam seputar rekayasa.",
+    breadcrumb: "Perbandingan Teknis",
+    titlePrefix: "Geospasial",
+    titleHighlight: "Perbandingan & Benchmark",
+    subtitle: "Uraian teknis yang membandingkan teknologi penentuan posisi, pengodean koordinat, dan algoritme pengindeksan geospasial.",
+    viewComparison: "Lihat Perbandingan →",
+    items: [
+      {
+        title: "Lokasi GPS vs. Geolokasi IP: Akurasi, Privasi & Cara Kerjanya",
+        description: "Bandingkan penentuan posisi berbasis satelit dengan pencarian tabel routing internet. Pahami perbedaan akurasi (3 meter vs 50 kilometer), latensi, dan privasi.",
+        url: "/comparisons/gps-vs-ip-location/",
+        icon: "⚖️",
+        tags: ["Akurasi", "Jaringan", "GNSS"]
+      },
+      {
+        title: "Geocoding Langsung vs. Terbalik: Mana yang Anda Butuhkan?",
+        description: "Pahami perbedaan matematis dan basis data antara mengubah alamat menjadi koordinat dan mengubah pasangan koordinat menjadi alamat jalan.",
+        url: "/comparisons/geocoding-vs-reverse-geocoding/",
+        icon: "🔄",
+        tags: ["API", "Geocoding", "Alamat"]
+      },
+      {
+        title: "Derajat Desimal (DD) vs. Derajat Menit Detik (DMS)",
+        description: "Perbandingan teknis sistem notasi koordinat, rumus konversi, efisiensi penyimpanan di basis data GIS, dan keterbacaan oleh manusia.",
+        url: "/comparisons/decimal-degrees-vs-dms/",
+        icon: "📐",
+        tags: ["Koordinat", "GIS", "Datum"]
+      }
+    ]
   }
 };

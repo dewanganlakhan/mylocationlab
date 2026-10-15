@@ -199,6 +199,80 @@ const translations: Record<string, any> = {
       { question: 'Qual é o formato das coordenadas?', answer: 'Por padrão são expressas em <strong>graus decimais</strong> (DD), formato universal da cartografia digital.' },
       { question: 'Qual a precisão obtida?', answer: 'Em céu aberto, smartphones modernos oferecem precisão de 3 a 5 metros.' }
     ]
+  },
+  hi: {
+    title: "GPS निर्देशांक खोजक — सटीक लोकेशन | MyLocationLab",
+    description: "अपने सटीक GPS निर्देशांक तुरंत जानें। GPS सैटेलाइट से रीयल-टाइम सटीकता डेटा के साथ अपना वर्तमान अक्षांश, देशांतर, सटीकता और ऊँचाई मुफ़्त पाएं।",
+    h1: "GPS निर्देशांक खोजक",
+    subtitle: "अपने सटीक GPS निर्देशांक रीयल-टाइम में पाएं। सैटेलाइट सिग्नल से अक्षांश, देशांतर, सटीकता और ऊँचाई दिखाता है।",
+    promptText: "आपके GPS निर्देशांक अपने आप पहचाने जा रहे हैं — क्लिक की ज़रूरत नहीं।",
+    btnFind: "📍 मेरे GPS निर्देशांक खोजें",
+    loadingText: "GPS सैटेलाइट से कनेक्ट हो रहे हैं...",
+    lblLat: "अक्षांश",
+    lblLng: "देशांतर",
+    lblLatDms: "अक्षांश (DMS)",
+    lblLngDms: "देशांतर (DMS)",
+    lblAccuracy: "सटीकता",
+    lblAltitude: "ऊँचाई",
+    lblTimestamp: "टाइमस्टैम्प",
+    btnCopy: "📋 निर्देशांक कॉपी करें",
+    btnShare: "🔗 साझा करें",
+    btnMaps: "🗺️ नक्शों में खोलें",
+    btnRefresh: "🔄 रिफ़्रेश",
+    h2How: "GPS निर्देशांक खोजक कैसे काम करता है",
+    pHow1: "यह टूल आपके डिवाइस के इनबिल्ट GPS रिसीवर का उपयोग करके सैटेलाइट सिग्नल से आपकी सटीक स्थिति पता लगाता है। जब आप 'मेरे GPS निर्देशांक खोजें' पर क्लिक करते हैं, आपका ब्राउज़र Geolocation API के ज़रिए डिवाइस के लोकेशन हार्डवेयर से पोज़िशन फ़िक्स मांगता है।",
+    pHow2: "GPS सिस्टम लगभग 20,200 km की ऊँचाई पर पृथ्वी की परिक्रमा करते कई सैटेलाइटों के सिग्नल को ट्रायंगुलेट करके काम करता है। सटीक 3D स्थिति (अक्षांश, देशांतर और ऊँचाई) की गणना के लिए आपके डिवाइस को कम से कम 4 सैटेलाइटों के सिग्नल चाहिए।",
+    h2Results: "परिणामों को समझें",
+    resLi1: "अक्षांश और देशांतर — दशमलव डिग्री और DMS फ़ॉर्मैट में आपकी सटीक स्थिति",
+    resLi2: "सटीकता — अनुमानित त्रुटि त्रिज्या। कम संख्या का मतलब है अधिक परिशुद्धता",
+    resLi3: "ऊँचाई — उपलब्ध होने पर समुद्र तल से आपकी ऊँचाई (WGS84 दीर्घवृत्त)",
+    h2Tips: "बेहतर GPS सटीकता के लिए सुझाव",
+    tipLi1: "खुले आकाश के साथ बाहर जाएं",
+    tipLi2: "GPS के अधिक सैटेलाइटों पर लॉक होने के लिए 10-30 सेकंड प्रतीक्षा करें",
+    tipLi3: "अपने डिवाइस की लोकेशन सेटिंग्स में 'उच्च सटीकता' मोड चालू करें",
+    tipLi4: "ऊँची इमारतों या घने पेड़ों के पास के इलाकों से बचें",
+    faqItems: [
+      { question: 'मैं अपने GPS निर्देशांक कैसे खोजूं?', answer: 'पेज लोड होने पर यह टूल आपके GPS निर्देशांक <strong>अपने आप</strong> पहचान लेता है — पहली बार आपका ब्राउज़र लोकेशन अनुमति मांगेगा। अगर पहचान विफल हो जाए या आप अनुमति अस्वीकार करें, तो मैन्युअल रूप से पुनः प्रयास करने के लिए एक बटन दिखाई देता है।' },
+      { question: 'GPS निर्देशांक किस फ़ॉर्मैट में होते हैं?', answer: 'डिफ़ॉल्ट रूप से निर्देशांक <strong>दशमलव डिग्री</strong> (DD) फ़ॉर्मैट में दिखाए जाते हैं, जो डिजिटल ऐप्स में सबसे व्यापक रूप से उपयोग होने वाला फ़ॉर्मैट है। आप इन्हें DMS, UTM या अन्य फ़ॉर्मैट में बदल सकते हैं।' },
+      { question: 'GPS निर्देशांक कितने सटीक होते हैं?', answer: 'सटीकता आपके डिवाइस और माहौल पर निर्भर करती है। आधुनिक स्मार्टफ़ोन बाहर 3-5 मीटर की सटीकता देते हैं। भीतर, सटीकता 10-50 मीटर तक गिर सकती है। सटीकता त्रिज्या आपके निर्देशांकों के साथ दिखाई जाती है।' }
+    ]
+  },
+  id: {
+    title: "Pencari Koordinat GPS — Lokasi Tepat | MyLocationLab",
+    description: "Temukan koordinat GPS Anda secara instan dan gratis. Dapatkan lintang, bujur, akurasi, dan ketinggian saat ini langsung dari satelit GPS di perangkat Anda.",
+    h1: "Pencari Koordinat GPS",
+    subtitle: "Dapatkan koordinat GPS presisi secara real-time. Menampilkan lintang, bujur, akurasi, dan ketinggian dari sinyal satelit.",
+    promptText: "Mendeteksi koordinat GPS Anda secara otomatis — tanpa perlu klik.",
+    btnFind: "📍 Cari Koordinat GPS Saya",
+    loadingText: "Menghubungkan ke satelit GPS...",
+    lblLat: "Lintang",
+    lblLng: "Bujur",
+    lblLatDms: "Lintang (DMS)",
+    lblLngDms: "Bujur (DMS)",
+    lblAccuracy: "Akurasi",
+    lblAltitude: "Ketinggian",
+    lblTimestamp: "Stempel Waktu",
+    btnCopy: "📋 Salin Koordinat",
+    btnShare: "🔗 Bagikan",
+    btnMaps: "🗺️ Buka di Peta",
+    btnRefresh: "🔄 Segarkan",
+    h2How: "Cara Kerja Pencari Koordinat GPS",
+    pHow1: "Alat ini menggunakan penerima GPS bawaan perangkat Anda untuk menentukan posisi tepat Anda melalui sinyal satelit. Saat Anda mengklik 'Cari Koordinat GPS Saya', peramban meminta posisi melalui Geolocation API dari perangkat keras lokasi perangkat Anda.",
+    pHow2: "Sistem GPS bekerja dengan trilaterasi sinyal dari banyak satelit yang mengorbit bumi pada ketinggian sekitar 20.200 km. Perangkat Anda memerlukan sinyal dari minimal 4 satelit untuk menghitung posisi 3D presisi (lintang, bujur, dan ketinggian).",
+    h2Results: "Memahami Hasil",
+    resLi1: "Lintang & Bujur — Posisi tepat Anda dalam derajat desimal dan format DMS",
+    resLi2: "Akurasi — Perkiraan radius galat. Semakin kecil angkanya, semakin presisi",
+    resLi3: "Ketinggian — Ketinggian Anda di atas permukaan laut (elipsoid WGS84), jika tersedia",
+    h2Tips: "Tips untuk Akurasi GPS Lebih Baik",
+    tipLi1: "Ke luar ruangan dengan pandangan langit yang jelas",
+    tipLi2: "Tunggu 10-30 detik agar GPS mengunci lebih banyak satelit",
+    tipLi3: "Aktifkan mode 'Akurasi Tinggi' di pengaturan lokasi perangkat Anda",
+    tipLi4: "Hindari area dekat gedung tinggi atau pohon yang lebat",
+    faqItems: [
+      { question: 'Bagaimana cara menemukan koordinat GPS saya?', answer: 'Alat ini mendeteksi koordinat GPS Anda <strong>secara otomatis</strong> saat halaman dimuat — peramban akan meminta izin lokasi pada saat pertama. Jika deteksi gagal atau Anda menolak izin, tombol akan muncul agar Anda dapat mencoba lagi secara manual.' },
+      { question: 'Dalam format apa koordinat GPS ditampilkan?', answer: 'Secara bawaan, koordinat ditampilkan dalam format <strong>derajat desimal</strong> (DD), format yang paling banyak digunakan untuk aplikasi digital. Anda dapat mengonversinya ke DMS, UTM, atau format lain.' },
+      { question: 'Seberapa akurat koordinat GPS ini?', answer: 'Akurasi bergantung pada perangkat dan lingkungan Anda. Ponsel modern memberikan akurasi 3-5 meter di luar ruangan. Di dalam ruangan, akurasi bisa turun ke 10-50 meter. Radius akurasi ditampilkan bersama koordinat Anda.' }
+    ]
   }
 };
 
@@ -209,7 +283,9 @@ const locateTitle = ({
   es: "Centrar y ampliar en mi ubicación",
   fr: "Zoomer sur ma position actuelle",
   de: "Auf meinen aktuellen Standort zoomen",
-  pt: "Aproximar da minha localização atual"
+  pt: "Aproximar da minha localização atual",
+  hi: "मेरी वर्तमान लोकेशन पर ज़ूम करें",
+  id: "Perbesar ke lokasi saya saat ini"
 })[lang] || "Zoom to my current location";
 ---
 
@@ -314,7 +390,9 @@ const locateTitle = ({
       es: "Centrar y ampliar en mi ubicación",
       fr: "Zoomer sur ma position actuelle",
       de: "Auf meinen aktuellen Standort zoomen",
-      pt: "Aproximar da minha localização atual"
+      pt: "Aproximar da minha localização atual",
+      hi: "मेरी वर्तमान लोकेशन पर ज़ूम करें",
+      id: "Perbesar ke lokasi saya saat ini"
     };
     const currentDocLang = document.documentElement.lang || 'en';
     const locateTitle = document.getElementById('gps-map')?.getAttribute('data-locate-title') || locateTitles[currentDocLang] || locateTitles.en;

@@ -38,7 +38,10 @@ const {
 
 const currentLang = (customLang || getLangFromUrl(Astro.url)) as SupportedLang;
 const activeLangConfig = languages[currentLang] || languages.en;
-const docLang = activeLangConfig.code;
+// docLang is the locale key used by components for dictionary lookups;
+// docHtmlLang is the BCP 47 tag for the <html lang> attribute (may differ, e.g. /pt/ -> pt-BR).
+const docLang = currentLang;
+const docHtmlLang = activeLangConfig.hreflang ?? activeLangConfig.code;
 const docDir = activeLangConfig.dir;
 
 // WebSite schema for all pages
@@ -61,7 +64,7 @@ const allJsonLd = jsonLd
 ---
 
 <!doctype html>
-<html lang={docLang} dir={docDir}>
+<html lang={docHtmlLang} dir={docDir}>
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />

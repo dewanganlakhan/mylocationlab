@@ -347,5 +347,137 @@ export const glossaryPageTranslations: Record<string, GlossaryPageContent> = {
         definition: "Sistema geodésico de referência mundial (EPSG:4326) que especifica o elipsoide matemático adotado por toda a constelação de satélites GPS."
       }
     ]
+  },
+  hi: {
+    metaTitle: "GPS और भू-स्थानिक शब्दावली — परिभाषाएं | MyLocationLab",
+    metaDescription: "GPS, जियोडेसी और वेब मैपिंग की शब्दावली में महारत हासिल करें: ट्राईलैटरेशन, WGS 84, HDOP, A-GPS, रिवर्स जियोकोडिंग, हैवरसाइन फॉर्मूला और डेटम।",
+    breadcrumb: "शब्दावली",
+    titlePrefix: "भू-स्थानिक और GPS",
+    titleHighlight: "शब्दावली",
+    subtitle: "सैटेलाइट नेविगेशन, जियोडेसिक डेटम और स्पेशल कंप्यूटिंग की मुख्य अवधारणाओं की निश्चित परिभाषाएं।",
+    crossLinkTitle: "इन अवधारणाओं को लाइव टूल्स के साथ लागू करें",
+    tool1Btn: "🔀 निर्देशांक कनवर्टर",
+    tool2Btn: "🎯 लाइव HDOP परखें",
+    guideBtn: "📡 GPS कैसे काम करता है गाइड",
+    terms: [
+      {
+        term: "सहायक GPS (A-GPS)",
+        definition: "एक ऐसी प्रणाली जो सेल्युलर नेटवर्क बेस स्टेशन और इंटरनेट डेटा कनेक्शन का उपयोग करके सैटेलाइट की कक्षीय जानकारी (एफेमेरिस) तेज़ी से डाउनलोड करती है, जिससे पहली फिक्स का समय (TTFF) मिनटों से घटकर सेकंडों में आ जाता है।"
+      },
+      {
+        term: "BSSID (Basic Service Set Identifier)",
+        definition: "वाई-फाई राउटर का अद्वितीय MAC पता। मोबाइल ऑपरेटिंग सिस्टम पता लगाए गए BSSID को वैश्विक भू-स्थानिक डेटाबेस से मिलाकर उन इनडोर स्थानों का अनुमानित पता लगाते हैं जहां GPS सिग्नल नहीं पहुंच पाते।"
+      },
+      {
+        term: "डेटम (जियोडेसिक डेटम)",
+        definition: "पृथ्वी की सतह पर स्थितियों को सटीक रूप से मापने के लिए उपयोग किया जाने वाला रेफरेंस निर्देशांक प्रणाली और ज्यामितीय मॉडल। GPS द्वारा उपयोग किया जाने वाला मानक वैश्विक डेटम WGS 84 है।"
+      },
+      {
+        term: "दशमलव डिग्री (DD)",
+        definition: "भौगोलिक निर्देशांकों को डिग्री के दशमलव भिन्न के रूप में दर्शाने वाला मानक नोटेशन फॉर्मेट (जैसे 37.7749, -122.4194), जिसे वेब मैपिंग API और GIS सॉफ्टवेयर में सर्वत्र वरीयता दी जाती है।"
+      },
+      {
+        term: "सटीकता में कमी (DOP / HDOP)",
+        definition: "आकाश में सैटेलाइटों की ज्यामितीय स्थिति का वर्णन करने वाला एक गणितीय गुणक। कम मान (जैसे HDOP < 2.0) व्यापक रूप से बिखरी हुई सैटेलाइटों और अधिक स्थितिगत सटीकता दर्शाते हैं।"
+      },
+      {
+        term: "एफेमेरिस (Ephemeris)",
+        definition: "GPS सैटेलाइट द्वारा लगातार प्रसारित सटीक गणितीय पैरामीटर जो उनकी वर्तमान सटीक कक्षीय पथ, वेग और घड़ी सुधारों का वर्णन करते हैं।"
+      },
+      {
+        term: "जियोकोडिंग",
+        definition: "मानव-वर्णित पता टेक्स्ट (जैसे '10 जनपथ, लंदन') को स्थानिक भौगोलिक निर्देशांकों (अक्षांश और देशांतर) में बदलने की गणनात्मक प्रक्रिया।"
+      },
+      {
+        term: "जियोफेंसिंग",
+        definition: "एक निर्धारित त्रिज्या के साथ किसी विशिष्ट निर्देशांक बिंदु के चारों ओर स्थापित आभासी भौगोलिक सीमा। मोबाइल डिवाइस परिधि में प्रवेश या निकास पर क्रियाएं ट्रिगर करते हैं।"
+      },
+      {
+        term: "हैवरसाइन फॉर्मूला",
+        definition: "एक खगोलीय और नेविगेशन समीकरण जो अक्षांश और देशांतर से गोलाकार पृथ्वी पर दो बिंदुओं के बीच महावृत्त दूरी की गणना करता है।"
+      },
+      {
+        term: "IP जियोलोकेशन",
+        definition: "सार्वजनिक IP पता श्रेणियों को क्षेत्रीय ISP राउटरों से जोड़ने वाले वाणिज्यिक डेटाबेस की पूछताछ करके इंटरनेट डिवाइस के भौतिक भौगोलिक स्थान का अनुमान लगाने की तकनीक।"
+      },
+      {
+        term: "रिवर्स जियोकोडिंग",
+        definition: "निकटतम पठनीय सड़क का पता, शहर और देश खोजने के लिए अक्षांश और देशांतर निर्देशांकों के साथ मैपिंग डेटाबेस की पूछताछ करने की स्थानिक प्रक्रिया।"
+      },
+      {
+        term: "ट्राईलैटरेशन",
+        definition: "कम से कम तीन ज्ञात रेफरेंस बिंदुओं (सैटेलाइट या रेडियो टावर) से दूरियां मापकर एक अज्ञात स्थिति की गणना करने वाली ज्यामितीय पोज़िशनिंग विधि।"
+      },
+      {
+        term: "WGS 84 (World Geodetic System 1984)",
+        definition: "अमेरिकी नेशनल जियोस्पेशल-इंटेलिजेंस एजेंसी द्वारा स्थापित वैश्विक मानक जियोडेसिक रेफरेंस फ्रेम (EPSG:4326), जो GPS के लिए गणितीय रेफरेंस दीर्घवृत्त (एलिप्सॉइड) परिभाषित करता है।"
+      }
+    ]
+  },
+  id: {
+    metaTitle: "Glosarium GPS & Geospasial — Definisi | MyLocationLab",
+    metaDescription: "Kuasai istilah GPS, geodesi, dan pemetaan web — Trilaterasi, WGS 84, HDOP, A-GPS, Reverse Geocoding, rumus Haversine, dan Datum — dengan definisi lengkap.",
+    breadcrumb: "Glosarium",
+    titlePrefix: "Glosarium GPS &",
+    titleHighlight: "Geospasial",
+    subtitle: "Definisi muktamad konsep inti dalam navigasi satelit, datum geodesik, dan komputasi spasial.",
+    crossLinkTitle: "Terapkan Konsep Ini dengan Alat Langsung",
+    tool1Btn: "🔀 Konverter Koordinat",
+    tool2Btn: "🎯 Uji HDOP Langsung",
+    guideBtn: "📡 Panduan Cara Kerja GPS",
+    terms: [
+      {
+        term: "GPS Terbantu (A-GPS)",
+        definition: "Sistem yang memanfaatkan stasiun basis jaringan seluler dan koneksi data internet untuk mengunduh informasi orbit satelit (efemeris) dengan cepat, mempersingkat Time-to-First-Fix (TTFF) dari hitungan menit menjadi hitungan detik."
+      },
+      {
+        term: "BSSID (Basic Service Set Identifier)",
+        definition: "Alamat MAC unik sebuah router Wi-Fi. Sistem operasi seluler mencocokkan BSSID yang terdeteksi dengan basis data geospasial global untuk memperkirakan lokasi dalam ruangan yang tidak terjangkau sinyal GPS."
+      },
+      {
+        term: "Datum (Datum Geodesik)",
+        definition: "Sistem koordinat acuan dan model geometris Bumi yang digunakan untuk mengukur posisi di permukaannya secara akurat. Datum global standar yang digunakan GPS adalah WGS 84."
+      },
+      {
+        term: "Derajat Desimal (DD)",
+        definition: "Format notasi standar yang menyatakan koordinat geografis sebagai pecahan desimal dari satu derajat (mis. 37.7749, -122.4194), yang secara universal dipilih dalam API pemetaan web dan perangkat lunak GIS."
+      },
+      {
+        term: "Dilusi Presisi (DOP / HDOP)",
+        definition: "Pengali matematis yang menggambarkan konfigurasi geometris satelit di langit. Nilai yang lebih rendah (mis. HDOP < 2.0) menunjukkan satelit yang tersebar luas dan akurasi posisi yang lebih tinggi."
+      },
+      {
+        term: "Efemeris",
+        definition: "Parameter matematis presisi yang disiarkan terus-menerus oleh satelit GPS untuk menjelaskan lintasan orbit, kecepatan, dan koreksi jam mereka saat ini."
+      },
+      {
+        term: "Geocoding",
+        definition: "Proses komputasi mengubah teks alamat deskriptif buatan manusia (seperti 'Jalan Medan Merdeka 1, Jakarta') menjadi koordinat geografis spasial (lintang dan bujur)."
+      },
+      {
+        term: "Geofencing",
+        definition: "Batas geografis virtual yang dibuat di sekitar titik koordinat tertentu dengan radius yang ditentukan. Perangkat seluler memicu tindakan saat memasuki atau keluar dari perimeter."
+      },
+      {
+        term: "Rumus Haversine",
+        definition: "Persamaan astronomi dan navigasi yang menghitung jarak lingkaran besar antara dua titik di Bumi yang berbentuk bola dari lintang dan bujurnya."
+      },
+      {
+        term: "Geolokasi IP",
+        definition: "Teknik memperkirakan lokasi geografis fisik perangkat internet dengan menanyakan basis data komersial yang memetakan rentang alamat IP publik ke router ISP regional."
+      },
+      {
+        term: "Reverse Geocoding",
+        definition: "Proses spasial menanyakan basis data pemetaan dengan koordinat lintang dan bujur untuk menemukan alamat jalan, kota, dan negara terdekat yang mudah dibaca."
+      },
+      {
+        term: "Trilaterasi",
+        definition: "Metode penentuan posisi geometris yang menghitung posisi tak diketahui dengan mengukur jarak dari setidaknya tiga titik acuan yang diketahui (satelit atau menara radio)."
+      },
+      {
+        term: "WGS 84 (World Geodetic System 1984)",
+        definition: "Kerangka acuan geodesik standar global (EPSG:4326) yang ditetapkan oleh National Geospatial-Intelligence Agency Amerika Serikat, yang mendefinisikan elipsoid acuan matematis untuk GPS."
+      }
+    ]
   }
 };

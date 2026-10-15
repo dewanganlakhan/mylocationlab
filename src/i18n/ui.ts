@@ -376,6 +376,156 @@ export const ui = {
     'common.readMore': 'Ler Mais',
     'common.viewAll': 'Ver Tudo',
   },
+  hi: {
+    // Navigation
+    'nav.myLocation': 'मेरा स्थान',
+    'nav.tools': 'टूल्स',
+    'nav.maps': 'नक्शे',
+    'nav.guides': 'गाइड',
+    'nav.comparisons': 'तुलनाएं',
+    'nav.faq': 'सामान्य प्रश्न',
+    'nav.findLocation': 'मेरा स्थान खोजें',
+    'nav.tagline': 'भू-स्थानिक सूट',
+    'nav.colorTheme': 'रंग थीम',
+
+    // Language Selector
+    'lang.select': 'भाषा चुनें',
+    'lang.current': 'भाषा',
+
+    // Hero
+    'hero.badge': 'मुफ़्त GPS लोकेशन फाइंडर',
+    'hero.title': 'मैं अभी कहां हूं?',
+    'hero.titleHighlight': 'अभी कहां हूं?',
+    'hero.subtitle': 'अपनी वर्तमान GPS लोकेशन, निर्देशांक और पता तुरंत जानें और इंटरैक्टिव नक्शे पर देखें। किसी ऐप की ज़रूरत नहीं।',
+    'hero.btnGetLocation': 'मेरी लोकेशन प्राप्त करें',
+    'hero.btnBrowseTools': 'टूल्स देखें',
+    'hero.privacyBanner': 'ब्राउज़र द्वारा अनुमति मांगे जाने पर कृपया लोकेशन एक्सेस की अनुमति दें। ज़ीरो-डेटा रिटेंशन • 100% ब्राउज़र में',
+
+    // Telemetry Dashboard
+    'telemetry.status': 'लाइव GNSS टेलीमेट्री',
+    'telemetry.liveIndicator': 'लाइव फ़ीड',
+    'telemetry.latLong': 'अक्षांश और देशांतर',
+    'telemetry.accuracy': 'सटीकता त्रिज्या',
+    'telemetry.altitude': 'ऊंचाई / एलिवेशन',
+    'telemetry.heading': 'दिशा और गति',
+    'telemetry.streetAddress': 'वर्तमान सड़क का पता',
+    'telemetry.district': 'शहर / ज़िला',
+    'telemetry.state': 'राज्य / प्रांत',
+    'telemetry.country': 'देश और कोड',
+    'telemetry.postalCode': 'पिन कोड / डाक कोड',
+    'telemetry.ipLocation': 'ISP / IP लोकेशन',
+    'telemetry.copy': 'कॉपी करें',
+    'telemetry.copied': 'कॉपी हो गया!',
+    'telemetry.share': 'लोकेशन साझा करें',
+
+    // Footer
+    'footer.brandDesc': 'विश्वसनीय टेलीमेट्री, डेटम रूपांतरण और क्लाइंट-साइड ब्राउज़र पोज़िशनिंग निदान।',
+    'footer.statusLabel': 'GNSS संरचना सक्रिय',
+    'footer.colMyLocation': 'मेरा स्थान',
+    'footer.colTools': 'भू-स्थानिक टूल्स',
+    'footer.colGuides': 'ज्ञान और गाइड',
+    'footer.colComparisons': 'तुलनाएं और संदर्भ',
+    'footer.trust': 'ज़ीरो सर्वर लॉग • W3C मानक Geolocation API • HTTPS TLS 1.3',
+    'footer.copyright': 'सर्वाधिकार सुरक्षित। ओपन जियोडेसिक आर्किटेक्चर।',
+
+    // Footer Links
+    'footer.link.gpsCoords': 'इंस्टेंट GPS निर्देशांक',
+    'footer.link.address': 'वर्तमान सड़क का पता',
+    'footer.link.elevation': 'ऊंचाई और एलिवेशन स्कैन',
+    'footer.link.ipLocation': 'IP जियोलोकेशन लुकअप',
+    'footer.link.converter': 'निर्देशांक कनवर्टर (DD/DMS/UTM)',
+    'footer.link.distance': 'हैवरसाइन दूरी कैलकुलेटर',
+    'footer.link.qrCode': 'लोकेशन QR कोड जेनरेटर',
+    'footer.link.accuracy': 'GPS सटीकता मॉनिटर',
+    'footer.link.howGpsWorks': 'GPS लोकेशन कैसे काम करता है',
+    'footer.link.improveGps': 'GPS सटीकता सुधारने की गाइड',
+    'footer.link.wrongLocation': 'गलत लोकेशन ठीक करें',
+    'footer.link.latLongGuide': 'अक्षांश और देशांतर की व्याख्या',
+    'footer.link.gpsVsIp': 'GPS बनाम IP लोकेशन तुलना',
+    'footer.link.geocodingComp': 'फॉरवर्ड बनाम रिवर्स जियोकोडिंग',
+    'footer.link.decimalVsDms': 'दशमलव डिग्री बनाम DMS',
+    'footer.link.faq': 'अक्सर पूछे जाने वाले प्रश्न',
+
+    // Common
+    'common.home': 'होम',
+    'common.readMore': 'और पढ़ें',
+    'common.viewAll': 'सभी देखें',
+  },
+  id: {
+    // Navigation
+    'nav.myLocation': 'Lokasi Saya',
+    'nav.tools': 'Alat',
+    'nav.maps': 'Peta',
+    'nav.guides': 'Panduan',
+    'nav.comparisons': 'Perbandingan',
+    'nav.faq': 'FAQ',
+    'nav.findLocation': 'Temukan Lokasi Saya',
+    'nav.tagline': 'SUITE GEOSPASIAL',
+    'nav.colorTheme': 'Tema Warna',
+
+    // Language Selector
+    'lang.select': 'Pilih Bahasa',
+    'lang.current': 'Bahasa',
+
+    // Hero
+    'hero.badge': 'Pelacak Lokasi GPS Gratis',
+    'hero.title': 'Di Mana Saya Saat Ini?',
+    'hero.titleHighlight': 'Saat Ini?',
+    'hero.subtitle': 'Temukan lokasi GPS, koordinat, dan alamat Anda saat ini secara instan, dan lihat semuanya di peta interaktif. Tanpa perlu aplikasi.',
+    'hero.btnGetLocation': 'Dapatkan Lokasi Saya',
+    'hero.btnBrowseTools': 'Jelajahi Alat',
+    'hero.privacyBanner': 'Mohon izinkan akses lokasi saat peramban Anda meminta izin. Retensi Nol Data • 100% di Peramban',
+
+    // Telemetry Dashboard
+    'telemetry.status': 'Telemetri GNSS Langsung',
+    'telemetry.liveIndicator': 'Siaran Langsung',
+    'telemetry.latLong': 'Lintang dan Bujur',
+    'telemetry.accuracy': 'Radius Akurasi',
+    'telemetry.altitude': 'Ketinggian / Elevasi',
+    'telemetry.heading': 'Arah dan Kecepatan',
+    'telemetry.streetAddress': 'Alamat Jalan Saat Ini',
+    'telemetry.district': 'Kota / Kecamatan',
+    'telemetry.state': 'Provinsi / Negara Bagian',
+    'telemetry.country': 'Negara & Kode',
+    'telemetry.postalCode': 'Kode Pos',
+    'telemetry.ipLocation': 'Lokasi ISP / IP',
+    'telemetry.copy': 'Salin',
+    'telemetry.copied': 'Tersalin!',
+    'telemetry.share': 'Bagikan Lokasi',
+
+    // Footer
+    'footer.brandDesc': 'Telemetri tepercaya, transformasi datum, dan diagnostik penentuan posisi peramban di sisi klien.',
+    'footer.statusLabel': 'KONSTELASI GNSS AKTIF',
+    'footer.colMyLocation': 'LOKASI SAYA',
+    'footer.colTools': 'ALAT GEOSPASIAL',
+    'footer.colGuides': 'PENGETAHUAN & PANDUAN',
+    'footer.colComparisons': 'PERBANDINGAN & REF',
+    'footer.trust': 'Tanpa Log Server • API Geolokasi Standar W3C • HTTPS TLS 1.3',
+    'footer.copyright': 'Hak cipta dilindungi. Arsitektur Geodesik Terbuka.',
+
+    // Footer Links
+    'footer.link.gpsCoords': 'Koordinat GPS Instan',
+    'footer.link.address': 'Alamat Jalan Saat Ini',
+    'footer.link.elevation': 'Pemindaian Elevasi & Ketinggian',
+    'footer.link.ipLocation': 'Pencarian Geolokasi IP',
+    'footer.link.converter': 'Konverter Koordinat (DD/DMS/UTM)',
+    'footer.link.distance': 'Kalkulator Jarak Haversine',
+    'footer.link.qrCode': 'Generator Kode QR Lokasi',
+    'footer.link.accuracy': 'Monitor Akurasi GPS',
+    'footer.link.howGpsWorks': 'Cara Kerja Lokasi GPS',
+    'footer.link.improveGps': 'Panduan Meningkatkan Akurasi GPS',
+    'footer.link.wrongLocation': 'Perbaiki Lokasi yang Salah',
+    'footer.link.latLongGuide': 'Penjelasan Lintang dan Bujur',
+    'footer.link.gpsVsIp': 'Perbandingan GPS vs Lokasi IP',
+    'footer.link.geocodingComp': 'Geocoding Langsung vs Terbalik',
+    'footer.link.decimalVsDms': 'Derajat Desimal vs DMS',
+    'footer.link.faq': 'Pertanyaan yang Sering Diajukan',
+
+    // Common
+    'common.home': 'Beranda',
+    'common.readMore': 'Baca Selengkapnya',
+    'common.viewAll': 'Lihat Semua',
+  },
 } as const;
 
 export type TranslationKey = keyof typeof ui[typeof defaultLang];

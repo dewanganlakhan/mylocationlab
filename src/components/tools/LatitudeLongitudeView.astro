@@ -147,6 +147,52 @@ const toolData: Record<string, {
     guideLinkText: 'Guia de Latitude e Longitude',
     glossaryLinkText: 'Glossário de Geodésia',
   },
+  hi: {
+    title: 'अक्षांश-देशांतर खोजक — Lat Long पाएं | MyLocationLab',
+    desc: 'किसी भी स्थान का अक्षांश और देशांतर जानें। नक्शे पर क्लिक करें या GPS से सटीक lat/lng निर्देशांक पाएं।',
+    h1: 'अक्षांश-देशांतर खोजक',
+    subtitle: 'नक्शे पर क्लिक करके, पता दर्ज करके या अपने GPS के ज़रिए किसी भी स्थान का अक्षांश और देशांतर जानें।',
+    promptText: 'आपकी स्थिति अपने आप पहचानी जा रही है — या नीचे नक्शे पर कहीं भी क्लिक करें।',
+    btnUseLocation: '📍 मेरा स्थान उपयोग करें',
+    labelLat: 'अक्षांश',
+    labelLng: 'देशांतर',
+    labelAddr: 'पता',
+    btnCopy: '📋 कॉपी करें',
+    btnShare: '🔗 साझा करें',
+    howTitle: 'इस टूल का उपयोग कैसे करें',
+    steps: [
+      'GPS के ज़रिए अपना वर्तमान अक्षांश और देशांतर जानने के लिए "मेरा स्थान उपयोग करें" पर क्लिक करें।',
+      'उस बिंदु का lat/lng जानने के लिए नक्शे पर कहीं भी क्लिक करें।',
+      'दिए गए बटनों से निर्देशांक कॉपी करें या साझा करें।',
+    ],
+    underTitle: 'अक्षांश और देशांतर को समझें',
+    underText: 'अक्षांश उत्तर-दक्षिण स्थिति (-90° से +90°) मापता है। देशांतर पूर्व-पश्चिम स्थिति (-180° से +180°) मापता है। दोनों मिलकर पृथ्वी पर किसी भी बिंदु की पहचान करते हैं।',
+    guideLinkText: 'अक्षांश और देशांतर विवेचना गाइड',
+    glossaryLinkText: 'जियोडेसी शब्दावली',
+  },
+  id: {
+    title: 'Pencari Lintang Bujur — Cek Koordinat GPS | MyLocationLab',
+    desc: 'Temukan lintang dan bujur lokasi mana pun. Klik peta atau gunakan GPS untuk mendapatkan koordinat lat/lng yang presisi.',
+    h1: 'Pencari Lintang dan Bujur',
+    subtitle: 'Temukan lintang dan bujur lokasi mana pun dengan mengklik peta, memasukkan alamat, atau menggunakan GPS Anda.',
+    promptText: 'Mendeteksi posisi Anda secara otomatis — atau klik di mana saja pada peta di bawah.',
+    btnUseLocation: '📍 Gunakan Lokasi Saya',
+    labelLat: 'Lintang',
+    labelLng: 'Bujur',
+    labelAddr: 'Alamat',
+    btnCopy: '📋 Salin',
+    btnShare: '🔗 Bagikan',
+    howTitle: 'Cara Menggunakan Alat Ini',
+    steps: [
+      'Klik "Gunakan Lokasi Saya" untuk menemukan lintang dan bujur Anda saat ini melalui GPS.',
+      'Klik di mana saja pada peta untuk menemukan lat/lng titik tersebut.',
+      'Salin atau bagikan koordinat menggunakan tombol yang tersedia.',
+    ],
+    underTitle: 'Memahami Lintang dan Bujur',
+    underText: 'Lintang mengukur posisi utara-selatan (-90° hingga +90°). Bujur mengukur posisi timur-barat (-180° hingga +180°). Keduanya bersama-sama mengidentifikasi setiap titik di bumi secara unik.',
+    guideLinkText: 'Panduan Penjelasan Lintang dan Bujur',
+    glossaryLinkText: 'Glosarium Geodesi',
+  },
 };
 
 const c = toolData[lang] || toolData.en;
@@ -156,7 +202,9 @@ const locateTitle = ({
   es: "Centrar y ampliar en mi ubicación",
   fr: "Zoomer sur ma position actuelle",
   de: "Auf meinen aktuellen Standort zoomen",
-  pt: "Aproximar da minha localização atual"
+  pt: "Aproximar da minha localização atual",
+  hi: "मेरी वर्तमान लोकेशन पर ज़ूम करें",
+  id: "Perbesar ke lokasi saya saat ini"
 })[lang] || "Zoom to my current location";
 ---
 
@@ -222,7 +270,9 @@ const locateTitle = ({
       es: "Centrar y ampliar en mi ubicación",
       fr: "Zoomer sur ma position actuelle",
       de: "Auf meinen aktuellen Standort zoomen",
-      pt: "Aproximar da minha localização atual"
+      pt: "Aproximar da minha localização atual",
+      hi: "मेरी वर्तमान लोकेशन पर ज़ूम करें",
+      id: "Perbesar ke lokasi saya saat ini"
     };
     const currentDocLang = document.documentElement.lang || 'en';
     const locateTitle = document.getElementById('ll-map')?.getAttribute('data-locate-title') || locateTitles[currentDocLang] || locateTitles.en;

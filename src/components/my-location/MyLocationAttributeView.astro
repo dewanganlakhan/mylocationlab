@@ -140,6 +140,46 @@ const dict: Record<AttributeType, Record<string, AttributeConfig>> = {
         "País e Código ISO — Nação e identificador territorial"
       ],
       h3Related: "Ferramentas Relacionadas"
+    },
+    hi: {
+      title: "मेरा पता — मेरा वर्तमान पता क्या है? | MyLocationLab",
+      description: "GPS की मदद से अपना वर्तमान सड़क पता तुरंत ऑनलाइन जानें। रिवर्स जियोकोडिंग से मकान नंबर, गली, शहर, राज्य और पिन कोड सहित पूरा डाक पता मुफ़्त पाएं।",
+      h1Prefix: "मेरा वर्तमान",
+      h1Accent: "पता क्या है?",
+      subtitle: "GPS और रिवर्स जियोकोडिंग से अपना पूरा सड़क पता तुरंत जानें। अपना मकान नंबर, गली, शहर, राज्य, पिन कोड और देश देखें।",
+      emphasisField: "address",
+      h2How: "आपका पता कैसे पता चलता है",
+      pHow1: "आपका पता रिवर्स जियोकोडिंग नामक दो-चरणीय प्रक्रिया से तय होता है: आपका डिवाइस GPS सैटेलाइट से अपने सटीक अक्षांश-देशांतर निर्देशांक निकालता है, और उन निर्देशांकों को सबसे नज़दीकी सड़क के पते के लिए OpenStreetMap Nominatim से मिलाया जाता है।",
+      pHow2: "अच्छी तरह मैप हुए शहरी इलाकों में आपको सटीक भवन नंबर और गली का नाम मिलेगा। ग्रामीण इलाकों में सेवा सबसे नज़दीकी मार्ग या प्रशासनिक स्थानीयता बताती है।",
+      h2What: "प्राप्त होने वाली पता जानकारी",
+      bullets: [
+        "सड़क का पता — मकान या भवन नंबर, गली का नाम और मोहल्ला",
+        "शहर / नगरपालिका — स्थानीय प्रशासनिक कस्बा या शहर",
+        "राज्य / क्षेत्र — प्रशासनिक ज़िला या प्रांत",
+        "डाक / पिन कोड — डाक वितरण कोड",
+        "देश और ISO कोड — संप्रभु क्षेत्र और देश कोड"
+      ],
+      h3Related: "संबंधित लोकेशन टूल"
+    },
+    id: {
+      title: "Alamat Saya — Apa Alamat Saya Saat Ini? | MyLocationLab",
+      description: "Temukan alamat jalan Anda saat ini secara instan dengan GPS. Reverse geocode lokasi menjadi alamat pos lengkap dengan nomor bangunan, jalan, kota, dan kode pos.",
+      h1Prefix: "Apa Alamat",
+      h1Accent: "Saya Saat Ini?",
+      subtitle: "Temukan alamat jalan lengkap Anda secara instan menggunakan GPS dan reverse geocoding. Lihat nomor bangunan, jalan, kota, provinsi, kode pos, dan negara Anda.",
+      emphasisField: "address",
+      h2How: "Cara Alamat Anda Ditemukan",
+      pHow1: "Alamat Anda ditentukan melalui proses dua langkah bernama reverse geocoding: perangkat Anda memakai satelit GPS untuk menentukan koordinat lintang dan bujur yang tepat, lalu koordinat tersebut dicocokkan dengan OpenStreetMap Nominatim untuk menemukan alamat jalan terdekat.",
+      pHow2: "Di kawasan perkotaan yang terpetakan baik, Anda akan menerima nomor bangunan dan nama jalan yang persis. Di wilayah pedesaan, layanan mengembalikan jalan terdekat atau lokalitas administratif terdekat.",
+      h2What: "Informasi Alamat yang Diberikan",
+      bullets: [
+        "Alamat Jalan — Nomor bangunan, nama jalan, dan lingkungan",
+        "Kota / Munisipalitas — Kota atau wilayah administratif setempat",
+        "Provinsi / Wilayah — Distrik atau provinsi administratif",
+        "Kode Pos — Kode pos pengiriman",
+        "Negara & Kode ISO — Wilayah berdaulat dan kode negara"
+      ],
+      h3Related: "Alat Lokasi Terkait"
     }
   },
   city: {
@@ -237,6 +277,44 @@ const dict: Record<AttributeType, Record<string, AttributeConfig>> = {
         "Resgate e Emergências — Repasse o município com precisão para os serviços de socorro"
       ],
       h3Related: "Ferramentas Relacionadas"
+    },
+    hi: {
+      title: "मैं किस शहर में हूं? — मेरा वर्तमान शहर जानें | MyLocationLab",
+      description: "जानें कि आप इस समय किस शहर में हैं। GPS लोकेशन से अपने शहर का पूरा नाम, राज्य, देश और सटीक निर्देशांक बिना किसी इंस्टॉल के तुरंत मुफ़्त पहचानें।",
+      h1Prefix: "मैं किस शहर",
+      h1Accent: "में हूं?",
+      subtitle: "तुरंत जानें कि आप इस समय किस शहर में स्थित हैं। अपने शहर का नाम राज्य, देश और सटीक निर्देशांकों के साथ देखें।",
+      emphasisField: "city",
+      h2How: "हम आपका शहर कैसे पहचानते हैं",
+      pHow1: "आपका शहर पहले आपके GPS निर्देशांक लेकर और फिर रिवर्स जियोकोडिंग से उन निर्देशांकों को प्रशासनिक सीमाओं से मिलाकर तय होता है। जियोकोडिंग सेवा पहचानती है कि आपके निर्देशांक किस नगरपालिका सीमा के भीतर आते हैं।",
+      pHow2: "स्थानीय प्रशासनिक सीमाओं के आधार पर आपको महानगर, बरो, कस्बा या नगरपालिका का नाम दिख सकता है।",
+      h2What: "अपना शहर जानना क्यों ज़रूरी है",
+      bullets: [
+        "यात्रा और परिवहन — अनजान इलाकों में अपना महानगर ज़िला पुष्टि करें",
+        "स्थानीय सेवाएं — नगरपालिका कार्यालय, आपातकालीन सेवाएं और परिवहन केंद्र खोजें",
+        "टाइमज़ोन मिलान — स्थानीय सौर और प्रशासनिक समय क्षेत्र जांचें",
+        "आपातकालीन समन्वय — प्रथम प्रतिक्रियाकर्ताओं को अपनी अधिकार-क्षेत्र की नगरपालिका बताएं"
+      ],
+      h3Related: "संबंधित लोकेशन पेज"
+    },
+    id: {
+      title: "Saya di Kota Mana? — Kota Saya Saat Ini | MyLocationLab",
+      description: "Ketahui Anda saat ini berada di kota mana. Deteksi instan nama kota, provinsi, negara, dan koordinat Anda menggunakan lokasi GPS di ponsel tanpa instal aplikasi.",
+      h1Prefix: "Saya di Kota",
+      h1Accent: "Mana Saat Ini?",
+      subtitle: "Ketahui secara instan Anda saat ini berada di kota mana. Lihat nama kota Anda beserta provinsi, negara, dan koordinat tepatnya.",
+      emphasisField: "city",
+      h2How: "Cara Kami Menentukan Kota Anda",
+      pHow1: "Kota Anda ditentukan dengan terlebih dahulu memperoleh koordinat GPS Anda, lalu memakai reverse geocoding untuk mencocokkan koordinat tersebut dengan batas administratif. Layanan geocoding mengidentifikasi munisipalitas mana yang memuat koordinat Anda.",
+      pHow2: "Tergantung batas pemerintahan setempat, Anda mungkin melihat nama kota metropolitan, borough, townships, atau munisipalitas.",
+      h2What: "Mengapa Mengenali Kota Anda Penting",
+      bullets: [
+        "Perjalanan & Transportasi — Pastikan distrik metropolitan Anda saat menjelajahi wilayah asing",
+        "Layanan Bisnis Lokal — Temukan kantor pemerintah kota, layanan darurat, dan hub transportasi",
+        "Penyesuaian Zona Waktu — Verifikasi zona waktu matahari dan administratif setempat",
+        "Koordinasi Darurat — Beri tahu petugas pertolongan pertama munisipalitas tempat Anda berada"
+      ],
+      h3Related: "Halaman Lokasi Terkait"
     }
   },
   coordinates: {
@@ -339,6 +417,46 @@ const dict: Record<AttributeType, Record<string, AttributeConfig>> = {
         "Plus Code — Código de localização aberto da Google"
       ],
       h3Related: "Ferramentas Relacionadas"
+    },
+    hi: {
+      title: "मेरे निर्देशांक — वर्तमान निर्देशांक जानें | MyLocationLab",
+      description: "अपने वर्तमान GPS निर्देशांक एक क्लिक में मुफ़्त पाएं। दशमलव डिग्री (DD), DMS, UTM, Geohash और अन्य सभी फ़ॉर्मैट में अपनी सटीक स्थिति अभी तुरंत जानें।",
+      h1Prefix: "मेरे",
+      h1Accent: "निर्देशांक",
+      subtitle: "अपने वर्तमान स्थिति के निर्देशांक कई फ़ॉर्मैट में पाएं — दशमलव डिग्री, DMS, UTM, Geohash और Plus Code।",
+      emphasisField: "lat",
+      h2How: "भौगोलिक निर्देशांक क्या हैं?",
+      pHow1: "भौगोलिक निर्देशांक पृथ्वी पर एक विशिष्ट स्थिति बताते हैं। अक्षांश भूमध्य रेखा से उत्तर/दक्षिण दूरी मापता है, जबकि देशांतर ग्रीनविच प्रधान मध्याह्न रेखा से पूर्व/पश्चिम दूरी मापता है।",
+      pHow2: "ये दोनों मान मिलकर पृथ्वी पर एक अद्वितीय स्थान बताते हैं। उदाहरण के लिए, (28.6139, 77.2090) नई दिल्ली में इंडिया गेट की पहचान करता है।",
+      h2What: "मानक निर्देशांक प्रणालियाँ",
+      bullets: [
+        "दशमलव डिग्री (DD) — मानक डिजिटल फ़ॉर्मैट: 28.613900, 77.209000",
+        "डिग्री मिनट सेकंड (DMS) — पारंपरिक लेखन: 28°36'50.0\"N 77°12'32.4\"E",
+        "UTM — यूनिवर्सल ट्रांसवर्स मर्केटर मीट्रिक ग्रिड: ज़ोन 43R, ईस्टिंग, नॉर्थिंग",
+        "Geohash — डेटाबेस क्वेरी के लिए अल्फ़ान्यूमेरिक पदानुक्रमित स्थानिक सूचकांक",
+        "Plus Code — Google Open Location Code अल्फ़ान्यूमेरिक पता प्रणाली"
+      ],
+      h3Related: "संबंधित निर्देशांक उपयोगिताएँ"
+    },
+    id: {
+      title: "Koordinat Saya — Temukan Koordinat Saat Ini | MyLocationLab",
+      description: "Dapatkan koordinat GPS Anda saat ini secara instan dan gratis. Temukan posisi tepat Anda dalam derajat desimal, DMS, UTM, Geohash, dan format lainnya.",
+      h1Prefix: "Koordinat",
+      h1Accent: "Saya",
+      subtitle: "Dapatkan koordinat posisi Anda saat ini dalam berbagai format — derajat desimal, DMS, UTM, Geohash, dan Plus Code.",
+      emphasisField: "lat",
+      h2How: "Apa Itu Koordinat Geografis?",
+      pHow1: "Koordinat geografis menentukan posisi tertentu di bumi. Lintang mengukur jarak utara/selatan dari Khatulistiwa, sedangkan Bujur mengukur jarak timur/barat dari Meridian Utama Greenwich.",
+      pHow2: "Kedua nilai tersebut bersama-sama menggambarkan satu lokasi unik di bumi. Misalnya, (28.6139, 77.2090) menunjuk Monumen India Gate di New Delhi.",
+      h2What: "Sistem Koordinat Standar",
+      bullets: [
+        "Derajat Desimal (DD) — Format digital standar: 28.613900, 77.209000",
+        "Derajat Menit Detik (DMS) — Notasi tradisional: 28°36'50.0\"N 77°12'32.4\"E",
+        "UTM — Grid metrik Universal Transverse Mercator: Zona 43R, Easting, Northing",
+        "Geohash — Indeks spasial hierarkis alfanumerik untuk kueri basis data",
+        "Plus Code — Pengalamatan alfanumerik Open Location Code dari Google"
+      ],
+      h3Related: "Utilitas Koordinat Terkait"
     }
   },
   country: {
@@ -436,6 +554,44 @@ const dict: Record<AttributeType, Record<string, AttributeConfig>> = {
         "Tributação Internacional — Saiba quais regras alfandegárias vigoram no local"
       ],
       h3Related: "Ferramentas Relacionadas"
+    },
+    hi: {
+      title: "मैं किस देश में हूं? — मेरा वर्तमान देश जानें | MyLocationLab",
+      description: "सैटेलाइट GPS से तुरंत जानें कि आप इस समय किस देश में हैं। आधिकारिक ISO देश कोड, क्षेत्रीय सीमाएं और देश की पूरी जानकारी सभी एक ही जगह शामिल है।",
+      h1Prefix: "मैं किस देश",
+      h1Accent: "में हूं?",
+      subtitle: "GPS के ज़रिए अपना वर्तमान संप्रभु देश, आधिकारिक ISO अल्फ़ा-2/अल्फ़ा-3 देश कोड और क्षेत्रीय सीमाएं जानें।",
+      emphasisField: "country",
+      h2How: "संप्रभु सीमाओं की गणना कैसे होती है",
+      pHow1: "आपका डिवाइस सैटेलाइट नेविगेशन से अक्षांश और देशांतर प्राप्त करता है, और हमारा रिवर्स जियोकोडिंग इंजन संप्रभु अंतरराष्ट्रीय क्षेत्रीय सीमाओं के विरुद्ध बिंदु-बहुभुज लुकअप करता है।",
+      pHow2: "इससे तात्कालिक देश पहचान सुनिश्चित होती है, चाहे आप अंतरराष्ट्रीय सीमा पर हों, किसी द्वीप पर हों या क्षेत्रीय जल में।",
+      h2What: "देश जियोलोकेशन क्यों महत्वपूर्ण है",
+      bullets: [
+        "सीमा शुल्क और आप्रवासन — नए राष्ट्रीय अधिकार-क्षेत्र में प्रवेश की पुष्टि करें",
+        "रोमिंग और दूरसंचार — अंतरराष्ट्रीय मोबाइल ऑपरेटर क्षेत्र और डायलिंग कोड पहचानें",
+        "मुद्रा और कानूनी मानक — स्थानीय नियामक ढांचे और डिफ़ॉल्ट मुद्रा जानें",
+        "कर और व्यापार अनुपालन — लागू सीमा-पार कर नियमों का निर्धारण करें"
+      ],
+      h3Related: "संबंधित लोकेशन टूल"
+    },
+    id: {
+      title: "Saya Ada di Negara Mana? — Deteksi Negara Saya | MyLocationLab",
+      description: "Deteksi secara instan Anda saat ini berada di negara mana menggunakan GPS satelit. Dilengkapi kode ISO negara resmi dan data batas wilayah negara.",
+      h1Prefix: "Saya Ada di Negara",
+      h1Accent: "Mana?",
+      subtitle: "Tentukan negara berdaulat Anda saat ini, kode negara ISO alfa-2/alfa-3 resmi, dan batas wilayah melalui GPS.",
+      emphasisField: "country",
+      h2How: "Cara Batas Negara Berdaulat Dihitung",
+      pHow1: "Perangkat Anda memperoleh lintang dan bujur melalui navigasi satelit, lalu mesin reverse geocoding kami melakukan pencarian titik-dalam-poligon terhadap batas wilayah internasional berdaulat.",
+      pHow2: "Ini memastikan deteksi negara seketika, baik Anda berada di perbatasan internasional, di pulau, maupun di perairan teritorial.",
+      h2What: "Mengapa Geolokasi Negara Sangat Penting",
+      bullets: [
+        "Bea Cukai & Imigrasi — Pastikan masuk ke yurisdiksi nasional baru",
+        "Roaming & Telefoni — Identifikasi zona operator seluler internasional dan kode panggilan",
+        "Mata Uang & Standar Hukum — Ketahui kerangka regulasi setempat dan alat tukar baku",
+        "Kepatuhan Pajak & Perdagangan — Tentukan aturan pajak lintas batas yang berlaku"
+      ],
+      h3Related: "Alat Lokasi Terkait"
     }
   },
   gps: {
@@ -558,6 +714,54 @@ const dict: Record<AttributeType, Record<string, AttributeConfig>> = {
         { question: "Qual a precisão do GPS no celular?", answer: "Smartphones modernos atingem precisão de 3 a 5 metros em céu aberto. Em ambientes fechados o sinal é atenuado." },
         { question: "Qual o formato utilizado?", answer: "Exibição padrão em Graus Decimais (DD), conversível para GMS ou coordenadas UTM." }
       ]
+    },
+    hi: {
+      title: "मेरे GPS निर्देशांक — अपनी GPS लोकेशन जानें | MyLocationLab",
+      description: "अपने सटीक GPS निर्देशांक बिना इंस्टॉल तुरंत मुफ़्त जानें। GPS सैटेलाइट से रीयल-टाइम सटीकता डेटा के साथ अपना वर्तमान अक्षांश, देशांतर और ऊँचाई पाएं।",
+      h1Prefix: "मेरे GPS",
+      h1Accent: "निर्देशांक",
+      subtitle: "सैटेलाइट सिग्नल से अपने सटीक GPS निर्देशांक जानें। अपना सटीक अक्षांश, देशांतर, सटीकता और ऊँचाई रीयल-टाइम में देखें।",
+      emphasisField: "lat",
+      h2How: "अपने GPS निर्देशांकों को समझें",
+      pHow1: "GPS (ग्लोबल पोज़िशनिंग सिस्टम) पृथ्वी से 20,200 km ऊँचाई पर परिक्रमा करते सैटेलाइटों के सिग्नलों को ट्रायंगुलेट करके आपकी स्थिति बताता है। आपका डिवाइस 3D पोज़िशन फ़िक्स की गणना के लिए कम से कम 4 सैटेलाइटों से जुड़ता है।",
+      pHow2: "प्राप्त अक्षांश और देशांतर संख्याएँ मीटर-स्तर की सटीकता के साथ आपका पृथ्वी पर बिंदु पहचानती हैं।",
+      h2What: "GPS डेटा पैरामीटर समझाए गए",
+      bullets: [
+        "अक्षांश और देशांतर — भूमध्य रेखा और प्रधान मध्याह्न रेखा के सापेक्ष भौगोलिक स्थिति",
+        "सटीकता त्रिज्या — मीटर में व्यक्त अनुमानित अनिश्चितता सीमा",
+        "ऊँचाई — WGS 84 संदर्भ दीर्घवृत्त से ऊपर गणना की गई लंबवत ऊँचाई",
+        "टेलीमेट्री टाइमस्टैम्प — सैटेलाइट परमाणु समय सिंक्रनाइज़ेशन का सटीक क्षण"
+      ],
+      h3Related: "संबंधित GPS और टेलीमेट्री टूल",
+      faq: [
+        { question: "GPS निर्देशांक क्या हैं?", answer: "GPS निर्देशांक संख्याओं का एक जोड़ा (अक्षांश और देशांतर) है जो सैटेलाइट ट्राइलेटरेशन से गणना की गई पृथ्वी पर सटीक स्थिति बताता है।" },
+        { question: "स्मार्टफ़ोन के GPS निर्देशांक कितने सटीक होते हैं?", answer: "आधुनिक स्मार्टफ़ोन खुले आकाश में बाहर 3 से 5 मीटर की सटीकता देते हैं। भीतर या घने शहरी इलाकों में सटीकता घट जाती है।" },
+        { question: "कौन सा निर्देशांक फ़ॉर्मैट उपयोग होता है?", answer: "निर्देशांक दशमलव डिग्री (DD) में दिखाए जाते हैं और इन्हें डिग्री मिनट सेकंड (DMS) या UTM ग्रिड निर्देशांकों में बदला जा सकता है।" }
+      ]
+    },
+    id: {
+      title: "Koordinat GPS Saya — Temukan Lokasi GPS Anda | MyLocationLab",
+      description: "Temukan koordinat GPS tepat Anda secara instan dan gratis. Dapatkan lintang dan bujur saat ini dari satelit GPS dengan data akurasi real-time di ponsel Anda.",
+      h1Prefix: "Koordinat GPS",
+      h1Accent: "Saya",
+      subtitle: "Temukan koordinat GPS tepat Anda dari sinyal satelit. Lihat lintang, bujur, akurasi, dan ketinggian presisi Anda secara real-time.",
+      emphasisField: "lat",
+      h2How: "Memahami Koordinat GPS Anda",
+      pHow1: "GPS (Global Positioning System) menentukan posisi Anda dengan trilaterasi sinyal dari satelit yang mengorbit 20.200 km di atas bumi. Perangkat Anda terhubung ke minimal 4 satelit untuk menghitung posisi 3D.",
+      pHow2: "Angka lintang dan bujur yang dihasilkan mengidentifikasi titik Anda di planet ini dengan akurasi hingga meter.",
+      h2What: "Parameter Data GPS Dijelaskan",
+      bullets: [
+        "Lintang & Bujur — Posisi geografis relatif terhadap Khatulistiwa dan Meridian Utama",
+        "Radius Akurasi — Batas ketidakpastian perkiraan yang dinyatakan dalam meter",
+        "Ketinggian — Tinggi vertikal yang dihitung di atas elipsoid referensi WGS 84",
+        "Stempel Waktu Telemetri — Saat tepat sinkronisasi waktu atom satelit"
+      ],
+      h3Related: "Alat GPS & Telemetri Terkait",
+      faq: [
+        { question: "Apa itu koordinat GPS?", answer: "Koordinat GPS adalah sepasang angka (lintang dan bujur) yang menentukan posisi tepat di bumi, dihitung melalui trilaterasi satelit." },
+        { question: "Seberapa akurat koordinat GPS ponsel?", answer: "Ponsel modern memberikan akurasi 3 hingga 5 meter di luar ruangan dengan langit terbuka. Akurasi menurun di dalam ruangan atau di kawasan perkotaan yang padat." },
+        { question: "Format koordinat apa yang digunakan?", answer: "Koordinat ditampilkan dalam Derajat Desimal (DD) dan dapat dikonversi menjadi Derajat Menit Detik (DMS) atau koordinat grid UTM." }
+      ]
     }
   },
   'latitude-longitude': {
@@ -650,6 +854,42 @@ const dict: Record<AttributeType, Record<string, AttributeConfig>> = {
         "Precisão Submétrica — Receptores modernos oferecem até 6 casas decimais (~0,1 m)"
       ],
       h3Related: "Ferramentas Relacionadas"
+    },
+    hi: {
+      title: "मेरा अक्षांश और देशांतर — सटीक निर्देशांक | MyLocationLab",
+      description: "GPS से अपना वर्तमान अक्षांश और देशांतर एक क्लिक में मुफ़्त जानें। दशमलव डिग्री और DMS फ़ॉर्मैट में उच्च परिशुद्धता वाले निर्देशांक नक्शे के साथ।",
+      h1Prefix: "मेरा अक्षांश",
+      h1Accent: "और देशांतर",
+      subtitle: "अपने सटीक अक्षांश और देशांतर निर्देशांक जानें। तुरंत नक्शा विज़ुअलाइज़ेशन के साथ उच्च परिशुद्धता GPS पोज़िशनिंग।",
+      emphasisField: "lat",
+      h2How: "अक्षांश और देशांतर को समझें",
+      pHow1: "अक्षांश रेखाएँ (समानांतर रेखाएँ) भूमध्य रेखा पर 0° से ध्रुवों पर 90° तक क्षैतिज रूप से पृथ्वी का चक्कर लगाती हैं। देशांतर रेखाएँ (मध्याह्न रेखाएँ) ग्रीनविच पर 0° से प्रति-मध्याह्न पर 180° तक लंबवत चलती हैं।",
+      pHow2: "अक्षांश और देशांतर मिलकर पृथ्वी पर किसी भी स्थान के लिए एक असंदिग्ध कोणीय निर्देशांक संदर्भ देते हैं।",
+      h2What: "मुख्य परिशुद्धता मापदंड",
+      bullets: [
+        "दशमलव डिग्री (DD) — Google Maps और वेब ऐप्स द्वारा उपयोग किया जाने वाला सरल गणना फ़ॉर्मैट",
+        "डिग्री मिनट सेकंड (DMS) — समुद्री और विमानन मानक लेखन पद्धति",
+        "सब-मीटर सटीकता — आधुनिक GNSS चिप 6 दशमलव स्थानों (~0.1 मीटर परिशुद्धता) तक हल करते हैं"
+      ],
+      h3Related: "संबंधित निर्देशांक पेज"
+    },
+    id: {
+      title: "Lintang dan Bujur Saya — Koordinat Tepat | MyLocationLab",
+      description: "Temukan lintang dan bujur Anda saat ini secara instan menggunakan GPS. Koordinat presisi tinggi dalam Derajat Desimal dan DMS, lengkap dengan peta.",
+      h1Prefix: "Lintang dan Bujur",
+      h1Accent: "Saya",
+      subtitle: "Temukan koordinat lintang dan bujur tepat Anda. Positioning GPS presisi tinggi dengan visualisasi peta instan.",
+      emphasisField: "lat",
+      h2How: "Memahami Lintang dan Bujur",
+      pHow1: "Garis lintang (paralel) mengelilingi bumi secara horizontal dari 0° di Khatulistiwa hingga 90° di kutub. Garis bujur (meridian) berjalan vertikal dari 0° di Greenwich hingga 180° di antimeridian.",
+      pHow2: "Lintang dan bujur bersama-sama memberikan acuan koordinat sudut yang tidak ambigu untuk lokasi mana pun di bumi.",
+      h2What: "Metrik Presisi Utama",
+      bullets: [
+        "Derajat Desimal (DD) — Format perhitungan mudah yang dipakai Google Maps dan aplikasi web",
+        "Derajat Menit Detik (DMS) — Notasi standar kelautan dan penerbangan",
+        "Akurasi Sub-meter — Chip GNSS modern menghitung hingga 6 tempat desimal (~0,1 m presisi)"
+      ],
+      h3Related: "Halaman Koordinat Terkait"
     }
   },
   state: {
@@ -747,6 +987,44 @@ const dict: Record<AttributeType, Record<string, AttributeConfig>> = {
         "Administração Pública — Acesse serviços e portais do governo estadual correspondente"
       ],
       h3Related: "Ferramentas Relacionadas"
+    },
+    hi: {
+      title: "मैं किस राज्य में हूं? — मेरा वर्तमान राज्य जानें | MyLocationLab",
+      description: "GPS सैटेलाइट से जानें कि आप इस समय किस राज्य, प्रांत या क्षेत्र में हैं। वास्तविक समय में प्रशासनिक क्षेत्र की सीमाओं की तुरंत मुफ़्त पहचान पाएं।",
+      h1Prefix: "मैं किस राज्य",
+      h1Accent: "में हूं?",
+      subtitle: "GPS पोज़िशनिंग से अपना वर्तमान राज्य, प्रांत या प्रशासनिक क्षेत्र तुरंत पहचानें।",
+      emphasisField: "state",
+      h2How: "प्रशासनिक सीमाएं कैसे पहचानी जाती हैं",
+      pHow1: "आपका राज्य या प्रांत आपके GPS निर्देशांकों को GIS रजिस्ट्रियों में दर्ज प्रथम-स्तरीय प्रशासनिक क्षेत्र की आधिकारिक सीमाओं से मिलाकर पहचाना जाता है।",
+      pHow2: "चाहे आप अमेरिकी राज्यों की सीमाएं, कनाडाई प्रांत, यूरोपीय क्षेत्र या ऑस्ट्रेलियाई राज्य पार कर रहे हों, सीमा परिवर्तन तुरंत पहचान लिया जाता है।",
+      h2What: "राज्य-स्तरीय जियोलोकेशन क्यों मायने रखती है",
+      bullets: [
+        "कर और वाणिज्य — बिक्री कर अधिकार-क्षेत्र और वाणिज्य नियमों की पहचान करें",
+        "कानून और नियम — क्षेत्रीय ड्राइविंग कानून, लाइसेंसिंग और नागरिक नीतियां समझें",
+        "आपातकालीन सेवाएं — संचार को राज्य-स्तरीय डिस्पैच और राज्य राजमार्ग पुलिस तक पहुंचाएं",
+        "क्षेत्रीय शासन — राज्य-विशिष्ट सार्वजनिक सेवा पोर्टल तक पहुंचें"
+      ],
+      h3Related: "संबंधित लोकेशन टूल"
+    },
+    id: {
+      title: "Saya di Provinsi Mana? — Deteksi Wilayah Saya | MyLocationLab",
+      description: "Ketahui Anda saat ini berada di provinsi, negara bagian, atau wilayah mana menggunakan GPS satelit. Deteksi batas wilayah administratif secara real-time.",
+      h1Prefix: "Saya di Provinsi",
+      h1Accent: "Mana?",
+      subtitle: "Deteksi provinsi, negara bagian, atau wilayah administratif Anda saat ini secara instan menggunakan positioning GPS.",
+      emphasisField: "state",
+      h2How: "Cara Batas Administratif Diidentifikasi",
+      pHow1: "Negara bagian atau provinsi Anda diidentifikasi dengan mencocokkan koordinat GPS Anda dengan batas wilayah administratif tingkat pertama yang resmi dalam registri GIS.",
+      pHow2: "Baik Anda melewati batas negara bagian AS, provinsi Kanada, wilayah Eropa, atau negara bagian Australia, perubahan batas langsung terdeteksi.",
+      h2What: "Mengapa Geolokasi Tingkat Provinsi Penting",
+      bullets: [
+        "Pajak & Perdagangan — Identifikasi yurisdiksi pajak penjualan dan regulasi perdagangan",
+        "Hukum & Regulasi — Pahami hukum berkendara, perizinan, dan kebijakan sipil regional",
+        "Layanan Darurat — Arahkan komunikasi ke dispatch tingkat negara bagian dan patroli jalan raya",
+        "Tata Kelola Regional — Akses portal layanan publik khusus provinsi"
+      ],
+      h3Related: "Alat Lokasi Terkait"
     }
   }
 };
@@ -786,6 +1064,18 @@ const faqBank: Record<AttributeType, Record<string, { question: string; answer: 
       { question: "Por que aparece uma cidade diferente da esperada?", answer: "Os limites administrativos nem sempre coincidem com zonas postais ou regiões metropolitanas. Você pode estar em um município e ser atendido pelos serviços da cidade vizinha. O resultado segue os limites municipais oficiais." },
       { question: "Posso estar em duas cidades ao mesmo tempo?", answer: "Não — um ponto pertence a apenas um município. Na periferia, porém, o endereço postal da cidade limítrofe pode se aplicar, e por isso o resultado pode diferir do seu CEP." },
       { question: "Funciona dentro de casa?", answer: "Sim, mas com menos precisão. Sem visão clara do céu, o celular usa Wi-Fi e antenas, o que pode deslocar a posição em algumas centenas de metros — o que importa perto de um limite municipal." }
+    ],
+    hi: [
+      { question: "मेरा फ़ोन कैसे जानता है कि मैं किस शहर में हूं?", answer: "आपका फ़ोन अपने निर्देशांक निकालने के लिए GPS सैटेलाइट सिग्नल, आसपास के Wi-Fi नेटवर्क और सेल टावरों को जोड़ता है। फिर यह पेज उन निर्देशांकों को शहर की सीमा डेटा से मिलाकर वह नगरपालिका बताता है जिसमें आप खड़े हैं।" },
+      { question: "यह मुझसे अपेक्षा से अलग शहर क्यों दिखाता है?", answer: "प्रशासनिक सीमाएं हमेशा डाक क्षेत्रों या महानगरीय इलाकों से मेल नहीं खातीं। आप एक नगरपालिका में रह सकते हैं पर आसपास के शहर की डाक या मीडिया सेवाओं का उपयोग करते हों। परिणाम आधिकारिक नगरपालिका सीमाओं को दर्शाता है।" },
+      { question: "क्या मैं एक साथ दो शहरों में हो सकता हूं?", answer: "नहीं — एक बिंदु एक समय में केवल एक नगरपालिका सीमा के भीतर हो सकता है। हालांकि, बाहरी इलाकों में पड़ोसी शहर के पते और डाक क्षेत्र लागू हो सकते हैं, इसीलिए परिणाम आपके डाक पते से अलग हो सकता है।" },
+      { question: "क्या यह घर के अंदर काम करता है?", answer: "हां, लेकिन सटीकता घट जाती है। खुले आकाश के बिना आपका फ़ोन Wi-Fi और सेल पोज़िशनिंग पर निर्भर रहता है, जो कई सौ मीटर तक भटक सकती है — शहर की सीमा के पास यह मायने रखता है।" }
+    ],
+    id: [
+      { question: "Bagaimana ponsel saya tahu saya ada di kota mana?", answer: "Ponsel Anda menggabungkan sinyal satelit GPS, jaringan Wi-Fi terdekat, dan menara seluler untuk menghitung koordinat Anda. Halaman ini kemudian mencocokkan koordinat tersebut dengan data batas kota untuk mengembalikan munisipalitas tempat Anda berada." },
+      { question: "Mengapa kota yang ditampilkan berbeda dari perkiraan saya?", answer: "Batas administratif tidak selalu cocok dengan zona pos atau kawasan metropolitan. Anda bisa tinggal di satu munisipalitas tetapi dilayani kantor pos atau media kota tetangga. Hasilnya mengikuti batas munisipalitas resmi." },
+      { question: "Bisakah saya berada di dua kota sekaligus?", answer: "Tidak — satu titik hanya bisa berada di dalam satu batas munisipalitas pada satu waktu. Namun di pinggiran kota, alamat dan zona pos kota tetangga mungkin berlaku, sehingga hasilnya bisa berbeda dari alamat pos Anda." },
+      { question: "Apakah ini berfungsi di dalam ruangan?", answer: "Ya, tetapi akurasinya menurun. Tanpa pandangan langit yang jelas, ponsel mengandalkan positioning Wi-Fi dan seluler, yang bisa meleset beberapa ratus meter — cukup berpengaruh di dekat batas kota." }
     ]
   },
   state: {
@@ -818,6 +1108,18 @@ const faqBank: Record<AttributeType, Record<string, { question: string; answer: 
       { question: "Por que o estado errado perto de uma divisa?", answer: "As divisas são digitalizadas com precisão finita. A poucas centenas de metros de uma divisa, o raio de precisão do aparelho pode cruzar a linha e retornar o estado vizinho." },
       { question: "Posso verificar quando cruzo uma divisa estadual?", answer: "Sim. Mantenha a página aberta durante a viagem e toque em atualizar: cada nova leitura recalcula sua posição e atualiza o estado assim que você cruzar a divisa." },
       { question: "A detecção funciona no mundo todo?", answer: "Quase. Todos os países com divisas administrativas de primeiro nível digitalizadas funcionam — a grande maioria. Países muito pequenos podem não ter esse nível." }
+    ],
+    hi: [
+      { question: "यहाँ 'राज्य' से क्या तात्पर्य है?", answer: "आपके देश की प्रथम-स्तरीय प्रशासनिक इकाई — अमेरिका, ऑस्ट्रेलिया या जर्मनी (लैंडर) में राज्य, कनाडा, स्पेन या अर्जेंटीना में प्रांत, स्विट्ज़रलैंड में कैंटन, और फ्रांस में क्षेत्र।" },
+      { question: "सीमा के पास मेरा राज्य गलत क्यों दिखता है?", answer: "राज्य की सीमाएं GIS डेटाबेस में सीमित परिशुद्धता के साथ डिजिटल की जाती हैं। सीमा से कुछ सौ मीटर के भीतर आपके डिवाइस की सटीकता त्रिज्या रेखा को पार कर सकती है और पड़ोसी राज्य दिखा सकती है।" },
+      { question: "क्या मैं जांच सकता हूं कि मैं राज्य की सीमा कब पार करता हूं?", answer: "हां। यात्रा के दौरान यह पेज खुला रखें और रिफ़्रेश बटन दबाएं — हर नई रीडिंग आपकी स्थिति फिर से तय करती है और सीमा पार होते ही राज्य अपडेट कर देती है।" },
+      { question: "क्या राज्य पहचान पूरी दुनिया में उपलब्ध है?", answer: "लगभग। कोई भी देश जिसकी प्रथम-स्तरीय प्रशासनिक सीमाएं डिजिटल रूप में दर्ज हैं, काम करता है — यानी विशाल बहुमत। बहुत छोटे देशों में राज्य स्तर हो ही नहीं सकता।" }
+    ],
+    id: [
+      { question: "Apa yang dimaksud dengan 'provinsi' di sini?", answer: "Divisi administratif tingkat pertama negara Anda — negara bagian di AS, Australia, atau Jerman (Länder), provinsi di Kanada, Spanyol, atau Argentina, kanton di Swiss, dan wilayah di Prancis." },
+      { question: "Mengapa provinsi saya salah di dekat perbatasan?", answer: "Garis batas didigitalkan dalam basis data GIS dengan presisi terbatas. Dalam beberapa ratus meter dari perbatasan, radius akurasi perangkat Anda bisa melintasi garis dan mengembalikan provinsi tetangga." },
+      { question: "Bisakah saya memeriksa kapan saya melewati batas provinsi?", answer: "Bisa. Biarkan halaman ini terbuka selama perjalanan dan tekan tombol segarkan — setiap pembacaan baru menghitung ulang posisi Anda dan memperbarui provinsi begitu Anda melewatinya." },
+      { question: "Apakah deteksi provinsi tersedia di seluruh dunia?", answer: "Hampir. Negara mana pun dengan batas administratif tingkat pertama yang terdigitalkan berfungsi — mencakup mayoritas besar. Negara yang sangat kecil mungkin tidak memiliki tingkat ini sama sekali." }
     ]
   },
   country: {
@@ -850,6 +1152,18 @@ const faqBank: Record<AttributeType, Record<string, { question: string; answer: 
       { question: "Funciona se eu negar a permissão de localização?", answer: "Se você negar o acesso, a página recorre à geolocalização por IP, que normalmente ainda identifica seu país corretamente — mas não o seu endereço." },
       { question: "Para que serve o código ISO do país?", answer: "Os códigos ISO 3166 (US, DE, BR…) são usados em formulários, envios, bancos e aplicativos. Esta página mostra seu código em tempo real junto com o nome do país." },
       { question: "Detecta o país em que estou em roaming?", answer: "Sim — o país vem da posição do aparelho, não do chip ou do número, então reflete onde você está fisicamente." }
+    ],
+    hi: [
+      { question: "देश पहचान कितनी सटीक होती है?", answer: "GPS उपलब्ध होने पर लगभग 100%। देश की सीमाएं बहुत बड़ी होती हैं, इसलिए मोटी स्थिति (±1 km) भी लगभग हमेशा सही देश में गिरती है। मुख्य अपवाद विवादित क्षेत्र और सीमावर्ती एन्क्लेव हैं।" },
+      { question: "क्या यह GPS अनुमति के बिना काम करता है?", answer: "अगर आप लोकेशन एक्सेस अस्वीकार करते हैं, तो पेज IP-आधारित जियोलोकेशन पर चला जाता है, जो आमतौर पर आपका देश फिर भी सही पहचान लेती है — बस आपका सड़क पता नहीं।" },
+      { question: "मुझे अपने ISO देश कोड की ज़रूरत क्यों पड़ेगी?", answer: "ISO 3166 कोड (जैसे IN, US, DE) फ़ॉर्म, शिपिंग, बैंकिंग और ऐप्स में उपयोग होते हैं। यह पेज देश के नाम के साथ आपका लाइव कोड दिखाता है।" },
+      { question: "क्या यह उस देश को पहचानेगा जहाँ मैं रोमिंग में हूं?", answer: "हां — देश आपकी सिम कार्ड या फ़ोन नंबर से नहीं, बल्कि आपके डिवाइस की स्थिति से आता है, इसलिए यह दर्शाता है कि आप भौतिक रूप से कहां हैं।" }
+    ],
+    id: [
+      { question: "Seberapa akurat deteksi negara?", answer: "Pada dasarnya 100% saat GPS tersedia. Batas negara sangat luas, sehingga posisi kasar (±1 km) pun hampir selalu jatuh di negara yang benar. Pengecualian utamanya adalah wilayah yang dipersengketakan dan enklave perbatasan." },
+      { question: "Apakah ini berfungsi tanpa izin GPS?", answer: "Jika Anda menolak akses lokasi, halaman beralih ke geolokasi berbasis IP, yang biasanya tetap mengidentifikasi negara Anda dengan benar — hanya saja bukan alamat jalan Anda." },
+      { question: "Mengapa saya membutuhkan kode negara ISO?", answer: "Kode ISO 3166 (seperti ID, US, DE) dipakai dalam formulir, pengiriman, perbankan, dan aplikasi. Halaman ini menampilkan kode langsung Anda beserta nama negaranya." },
+      { question: "Apakah ini mendeteksi negara tempat saya roaming?", answer: "Ya — negara diambil dari posisi perangkat Anda, bukan dari kartu SIM atau nomor telepon, sehingga mencerminkan lokasi fisik Anda." }
     ]
   },
   coordinates: {
@@ -877,6 +1191,16 @@ const faqBank: Record<AttributeType, Record<string, { question: string; answer: 
       { question: "Qual formato usar para compartilhar minhas coordenadas?", answer: "Graus decimais (ex. 40.7128, -74.0060) são os mais universais: funcionam no Google Maps, Apple Maps e na maioria dos apps. Reserve o GMS para documentos ou instrumentos que o exijam." },
       { question: "Quantas casas decimais eu preciso?", answer: "Quatro casas (~11 m) bastam para descrever um prédio; seis (~0,1 m) superam o que um GPS comum mede de fato. Dígitos extras dão precisão no papel, não na realidade." },
       { question: "Por que minhas coordenadas mudam mesmo parado?", answer: "Sinais de satélite, atmosfera e reflexões multipath causam flutuações de poucos metros. É normal: o círculo de precisão mostra a faixa provável da sua posição real." }
+    ],
+    hi: [
+      { question: "अपने निर्देशांक साझा करने के लिए कौन सा फ़ॉर्मैट उपयोग करूं?", answer: "दशमलव डिग्री (जैसे 40.7128, -74.0060) सबसे सार्वभौमिक है — यह Google Maps, Apple Maps और ज़्यादातर ऐप्स में काम करता है। DMS केवल तब उपयोग करें जब कोई दस्तावेज़ या उपकरण विशेष रूप से मांगे।" },
+      { question: "मुझे कितने दशमलव स्थानों की ज़रूरत है?", answer: "चार दशमलव (~11 मीटर) एक भवन बताने के लिए पर्याप्त हैं; छह दशमलव (~0.1 मीटर) उपभोक्ता GPS की वास्तविक मापन क्षमता से अधिक हैं। अतिरिक्त अंक काग़ज़ पर सटीकता जोड़ते हैं, वास्तविकता में नहीं।" },
+      { question: "खड़े-खड़े मेरे निर्देशांक थोड़े बदल क्यों जाते हैं?", answer: "सैटेलाइट सिग्नल, वायुमंडलीय परिस्थितियां और मल्टीपाथ परावर्तन कुछ मीटर के छोटे उतार-चढ़ाव पैदा करते हैं। यह सामान्य है — सटीकता वृत्त वह दायरा दिखाता है जिसमें आपकी वास्तविक स्थिति होने की संभावना है।" }
+    ],
+    id: [
+      { question: "Format apa yang sebaiknya saya pakai untuk membagikan koordinat?", answer: "Derajat desimal (mis. 40.7128, -74.0060) paling universal — berfungsi di Google Maps, Apple Maps, dan sebagian besar aplikasi. Gunakan DMS hanya jika dokumen atau instrumen secara khusus memintanya." },
+      { question: "Berapa tempat desimal yang saya butuhkan?", answer: "Empat desimal (~11 m) cukup untuk menggambarkan sebuah bangunan; enam desimal (~0,1 m) melampaui apa yang benar-benar bisa diukur GPS konsumen. Digit tambahan menambah presisi di atas kertas, bukan di kenyataan." },
+      { question: "Mengapa koordinat saya sedikit berubah saat saya diam?", answer: "Sinyal satelit, kondisi atmosfer, dan pantulan multipath menyebabkan fluktuasi kecil beberapa meter. Itu normal — lingkaran akurasi menunjukkan rentang kemungkinan posisi sebenarnya Anda." }
     ]
   },
   'latitude-longitude': {
@@ -904,6 +1228,16 @@ const faqBank: Record<AttributeType, Record<string, { question: string; answer: 
       { question: "Qual número é latitude e qual é longitude?", answer: "A latitude vem primeiro no par (ex. 51.5007, -0.1246 para o Big Ben). A latitude vai de -90° a +90° (sul a norte); a longitude de -180° a +180° (oeste a leste de Greenwich)." },
       { question: "O que significam as letras N, S, L e O?", answer: "Elas substituem o sinal: N/S indica se você está ao norte ou ao sul do Equador; L/O se está a leste ou a oeste do meridiano de Greenwich. 40.7128° N equivale a +40.7128." },
       { question: "Qual a precisão de seis casas decimais?", answer: "Cerca de 11 centímetros, muito além do que qualquer GPS de celular alcança. Cinco casas (~1,1 m) já marcam uma vaga de estacionamento; além disso, são ruído." }
+    ],
+    hi: [
+      { question: "कौन सी संख्या अक्षांश है और कौन सी देशांतर?", answer: "जोड़ी में अक्षांश पहले आता है (जैसे बिग बेन के लिए 51.5007, -0.1246)। अक्षांश -90° से +90° (दक्षिण से उत्तर) तक चलता है; देशांतर -180° से +180° (ग्रीनविच के पश्चिम से पूर्व) तक।" },
+      { question: "N, S, E, W अक्षरों का क्या अर्थ है?", answer: "ये चिह्न (+/-) की जगह लेते हैं: N/S बताता है कि आप भूमध्य रेखा के उत्तर या दक्षिण में हैं, E/W बताता है कि आप प्रधान मध्याह्न रेखा के पूर्व या पश्चिम में हैं। 40.7128° N वही है जो +40.7128 है।" },
+      { question: "छह दशमलव स्थान कितने सटीक होते हैं?", answer: "लगभग 11 सेंटीमीटर — किसी भी फ़ोन GPS से कहीं बारीक। पाँच दशमलव (~1.1 मीटर) पहले से ही एक पार्किंग स्थल चिह्नित कर देते हैं; उससे आगे के अंक केवल शोर हैं।" }
+    ],
+    id: [
+      { question: "Angka mana lintang dan mana bujur?", answer: "Lintang mendahului dalam pasangan (mis. 51.5007, -0.1246 untuk Big Ben). Lintang berjalan dari -90° hingga +90° (selatan ke utara); bujur dari -180° hingga +180° (barat ke timur dari Greenwich)." },
+      { question: "Apa arti huruf arah seperti N, S, E, W?", answer: "Huruf-huruf itu menggantikan tanda positif/negatif: N/S menunjukkan apakah Anda di utara atau selatan Khatulistiwa, E/W menunjukkan timur atau barat Meridian Utama. 40.7128° N sama dengan +40.7128. Di Indonesia arah ini ditulis U (Utara), S (Selatan), T (Timur), dan B (Barat)." },
+      { question: "Seberapa presisi enam tempat desimal?", answer: "Sekitar 11 sentimeter — jauh lebih halus daripada GPS ponsel mana pun. Lima desimal (~1,1 m) sudah cukup menandai satu tempat parkir; lebih dari itu, digitnya hanyalah derau." }
     ]
   },
   address: {
@@ -936,6 +1270,18 @@ const faqBank: Record<AttributeType, Record<string, { question: string; answer: 
       { question: "Por que aparece uma rua vizinha?", answer: "A geocodificação reversa ajusta suas coordenadas ao ponto de endereço mapeado mais próximo. Com precisão de ±10–30 m, o algoritmo às vezes escolhe a calçada oposta ou o portão ao lado." },
       { question: "A consulta do meu endereço é privada?", answer: "Suas coordenadas vão diretamente do seu navegador para o serviço público de geocodificação do OpenStreetMap. O MyLocationLab não armazena nada: nem endereço, nem coordenadas, nem registros." },
       { question: "Posso descobrir o endereço de outro lugar?", answer: "Sim — use o Localizador de Endereço para inserir quaisquer coordenadas e obter o endereço, ou o Geocodificador para converter um endereço em coordenadas." }
+    ],
+    hi: [
+      { question: "मेरे पते में मकान नंबर क्यों नहीं दिखता?", answer: "कुछ इलाकों में OpenStreetMap में भवन-स्तरीय डेटा नहीं हो सकता, इसलिए सबसे नज़दीकी सड़क खंड दिखाया जाता है। यह ग्रामीण इलाकों और नई कॉलोनियों में आम है।" },
+      { question: "यह पड़ोस की गली क्यों दिखाता है?", answer: "रिवर्स जियोकोडिंग आपके निर्देशांकों को सबसे नज़दीकी मैप किए गए पता बिंदु से जोड़ती है। ±10–30 मीटर GPS सटीकता के साथ एल्गोरिद्म कभी-कभी सड़क की दूसरी ओर या अगला दरवाज़ा चुन लेता है।" },
+      { question: "क्या मेरी पता खोज निजी है?", answer: "आपके निर्देशांक सीधे आपके ब्राउज़र से OpenStreetMap की सार्वजनिक जियोकोडिंग सेवा को पता निकालने के लिए भेजे जाते हैं। MyLocationLab कुछ भी सहेजता नहीं — न पता, न निर्देशांक, न लॉग।" },
+      { question: "क्या मैं किसी दूसरी जगह का पता जान सकता हूं?", answer: "हां — कोई भी निर्देशांक दर्ज करके उनका सड़क पता पाने के लिए पता खोजक (Address Finder) टूल उपयोग करें, या पते से निर्देशांक पाने के लिए जियोकोडर में पता पेस्ट करें।" }
+    ],
+    id: [
+      { question: "Mengapa alamat saya tidak memiliki nomor bangunan?", answer: "OpenStreetMap mungkin tidak memiliki data tingkat bangunan di beberapa area, sehingga segmen jalan terdekat yang dikembalikan. Ini umum terjadi di daerah pedesaan dan perumahan baru." },
+      { question: "Mengapa jalan tetangga yang ditampilkan?", answer: "Reverse geocoding menempelkan koordinat Anda ke titik alamat terpetakan terdekat. Dengan akurasi GPS ±10–30 m, algoritme terkadang memilih sisi jalan seberang atau pintu berikutnya." },
+      { question: "Apakah pencarian alamat saya privat?", answer: "Koordinat Anda dikirim langsung dari peramban Anda ke layanan geocoding publik OpenStreetMap untuk menyelesaikan alamat. MyLocationLab tidak menyimpan apa pun — tidak ada alamat, koordinat, atau log." },
+      { question: "Bisakah saya mencari alamat tempat lain?", answer: "Bisa — gunakan alat Pencari Alamat untuk memasukkan koordinat apa pun dan mendapatkan alamat jalannya, atau tempelkan alamat ke Geocoder untuk mendapatkan koordinatnya." }
     ]
   }
 };
@@ -946,7 +1292,9 @@ const relatedLinkLabels: Record<string, Record<string, string>> = {
   es: { gps: 'Mis Coordenadas GPS', address: 'Mi Dirección Actual', coordinates: 'Mis Coordenadas', latLong: 'Mi Latitud y Longitud', city: '¿En Qué Ciudad Estoy?', state: '¿En Qué Estado Estoy?', country: '¿En Qué País Estoy?', converter: 'Conversor de Coordenadas (DD/GMS/UTM)', addressFinder: 'Buscador de Dirección (cualquier coordenada)' },
   fr: { gps: 'Mes Coordonnées GPS', address: 'Mon Adresse Actuelle', coordinates: 'Mes Coordonnées', latLong: 'Ma Latitude et Longitude', city: 'Dans Quelle Ville Suis-Je ?', state: 'Dans Quel Département Suis-Je ?', country: 'Dans Quel Pays Suis-Je ?', converter: 'Convertisseur de Coordonnées (DD/DMS/UTM)', addressFinder: "Localisateur d'Adresse (toute coordonnée)" },
   de: { gps: 'Meine GPS-Koordinaten', address: 'Meine Aktuelle Adresse', coordinates: 'Meine Koordinaten', latLong: 'Mein Breiten- & Längengrad', city: 'In Welcher Stadt Bin Ich?', state: 'In Welchem Bundesland Bin Ich?', country: 'In Welchem Land Bin Ich?', converter: 'Koordinaten-Umrechner (DD/GMS/UTM)', addressFinder: 'Adressen-Finder (beliebige Koordinaten)' },
-  pt: { gps: 'Minhas Coordenadas GPS', address: 'Meu Endereço Atual', coordinates: 'Minhas Coordenadas', latLong: 'Minha Latitude e Longitude', city: 'Em Que Cidade Estou?', state: 'Em Que Estado Estou?', country: 'Em Que País Estou?', converter: 'Conversor de Coordenadas (DD/GMS/UTM)', addressFinder: 'Localizador de Endereço (quaisquer coordenadas)' }
+  pt: { gps: 'Minhas Coordenadas GPS', address: 'Meu Endereço Atual', coordinates: 'Minhas Coordenadas', latLong: 'Minha Latitude e Longitude', city: 'Em Que Cidade Estou?', state: 'Em Que Estado Estou?', country: 'Em Que País Estou?', converter: 'Conversor de Coordenadas (DD/GMS/UTM)', addressFinder: 'Localizador de Endereço (quaisquer coordenadas)' },
+  hi: { gps: 'मेरे GPS निर्देशांक', address: 'मेरा वर्तमान पता', coordinates: 'मेरे निर्देशांक', latLong: 'मेरा अक्षांश और देशांतर', city: 'मैं किस शहर में हूं?', state: 'मैं किस राज्य में हूं?', country: 'मैं किस देश में हूं?', converter: 'कोऑर्डिनेट कनवर्टर (DD/DMS/UTM)', addressFinder: 'पता खोजक (कोई भी निर्देशांक)' },
+  id: { gps: 'Koordinat GPS Saya', address: 'Alamat Saya Saat Ini', coordinates: 'Koordinat Saya', latLong: 'Lintang & Bujur Saya', city: 'Saya di Kota Mana?', state: 'Saya di Provinsi Mana?', country: 'Saya di Negara Mana?', converter: 'Konverter Koordinat (DD/DMS/UTM)', addressFinder: 'Pencari Alamat (koordinat apa pun)' }
 };
 
 const c = dict[attribute]?.[lang] || dict[attribute]?.en;

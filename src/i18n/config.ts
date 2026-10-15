@@ -1,6 +1,11 @@
 /**
  * Internationalization Configuration
- * Supports Tier 1 Core Languages: English, Spanish, French, German, and Portuguese.
+ * Tier 1 Core Languages: English, Spanish, French, German, and Portuguese (Brazilian).
+ * Tier 2 (Batch One): Hindi and Indonesian.
+ *
+ * `hreflang` is the value emitted in hreflang alternate links and the <html lang>
+ * attribute. It defaults to the locale key; override it when the URL prefix and the
+ * BCP 47 tag differ (e.g. /pt/ pages target pt-BR).
  */
 
 export const defaultLang = 'en' as const;
@@ -12,6 +17,7 @@ export const languages = {
     nativeName: 'English',
     flag: '🇺🇸',
     locale: 'en_US',
+    hreflang: 'en',
     dir: 'ltr',
   },
   es: {
@@ -20,6 +26,7 @@ export const languages = {
     nativeName: 'Español',
     flag: '🇪🇸',
     locale: 'es_ES',
+    hreflang: 'es',
     dir: 'ltr',
   },
   fr: {
@@ -28,6 +35,7 @@ export const languages = {
     nativeName: 'Français',
     flag: '🇫🇷',
     locale: 'fr_FR',
+    hreflang: 'fr',
     dir: 'ltr',
   },
   de: {
@@ -36,14 +44,34 @@ export const languages = {
     nativeName: 'Deutsch',
     flag: '🇩🇪',
     locale: 'de_DE',
+    hreflang: 'de',
     dir: 'ltr',
   },
   pt: {
     code: 'pt',
-    name: 'Portuguese',
-    nativeName: 'Português',
-    flag: '🇵🇹',
-    locale: 'pt_PT',
+    name: 'Portuguese (Brazil)',
+    nativeName: 'Português (Brasil)',
+    flag: '🇧🇷',
+    locale: 'pt_BR',
+    hreflang: 'pt-BR',
+    dir: 'ltr',
+  },
+  hi: {
+    code: 'hi',
+    name: 'Hindi',
+    nativeName: 'हिन्दी',
+    flag: '🇮🇳',
+    locale: 'hi_IN',
+    hreflang: 'hi',
+    dir: 'ltr',
+  },
+  id: {
+    code: 'id',
+    name: 'Indonesian',
+    nativeName: 'Bahasa Indonesia',
+    flag: '🇮🇩',
+    locale: 'id_ID',
+    hreflang: 'id',
     dir: 'ltr',
   },
 } as const;
@@ -124,7 +152,7 @@ export function getAlternateLinks(siteUrl: string, pathname: string) {
   for (const code of supportedLocales) {
     const localizedPath = getLocalizedPath(cleanPath, code);
     alternates.push({
-      lang: code,
+      lang: languages[code].hreflang,
       href: `${baseUrl}${localizedPath}`,
     });
   }

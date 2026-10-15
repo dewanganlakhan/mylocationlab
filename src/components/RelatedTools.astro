@@ -3,6 +3,7 @@
  * RelatedTools — Sidebar/footer grid of related tool links
  */
 import { getRelatedTools } from '../data/tools.js';
+import { localizedNavLabels } from '../data/navigation.js';
 import { getLangFromUrl, getLocalizedPath } from '../i18n/config';
 
 interface Props {
@@ -12,17 +13,33 @@ interface Props {
   lang?: string;
 }
 
-const { currentToolId, limit = 5, title = 'Related Tools', lang: customLang } = Astro.props;
+// Localized default heading per locale (explicit `title` prop still wins).
+const defaultHeadings: Record<string, string> = {
+  en: 'Related Tools',
+  es: 'Herramientas Relacionadas',
+  fr: 'Outils Associés',
+  de: 'Verwandte Tools',
+  pt: 'Ferramentas Relacionadas',
+  hi: 'संबंधित टूल',
+  id: 'Alat Terkait',
+};
+
+// Localized tool names keyed by tool url; falls back to the English title.
+const toolLabels = localizedNavLabels as Record<string, Partial<Record<string, string>>>;
+const toolLabel = (url: string, fallback: string, locale: string) => toolLabels[url]?.[locale] || fallback;
+
+const { currentToolId, limit = 5, title, lang: customLang } = Astro.props;
 const lang = customLang || getLangFromUrl(Astro.url);
+const heading = title || defaultHeadings[lang] || 'Related Tools';
 const related = getRelatedTools(currentToolId, limit);
 ---
 
 <div class="related-tools">
-  <h4 class="related-tools-title">{title}</h4>
+  <h4 class="related-tools-title">{heading}</h4>
   {related.map((tool) => (
     <a href={getLocalizedPath(tool.url, lang)} class="related-tool-item">
       <span class="related-tool-icon">{tool.icon}</span>
-      <span class="related-tool-name">{tool.title}</span>
+      <span class="related-tool-name">{toolLabel(tool.url, tool.title, lang)}</span>
     </a>
   ))}
 </div>

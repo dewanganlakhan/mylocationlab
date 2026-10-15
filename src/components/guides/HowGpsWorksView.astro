@@ -191,6 +191,78 @@ const translations: Record<string, any> = {
     tool3Desc: "Modelos topográficos de elevação",
     tool4Title: "Comparação GPS vs IP",
     tool4Desc: "Satélites vs geolocalização IP"
+  },
+  hi: {
+    title: "GPS कैसे काम करता है — ट्राइलैटरेशन और WGS 84 | MyLocationLab",
+    description: "जानें कि GPS सैटेलाइट ट्राइलैटरेशन, एटॉमिक क्लॉक सुधार और WGS 84 डेटम की मदद से आपका डिवाइस रीयल-टाइम में सटीक GPS निर्देशांक कैसे निकालता है।",
+    h1: "GPS लोकेशन कैसे काम करता है: सैटेलाइट, ट्राइलैटरेशन और WGS 84",
+    subtitle: "सैटेलाइट कॉन्स्टेलेशन, रेडियो टाइम-ऑफ़-फ़्लाइट फ़िज़िक्स, सापेक्षतावादी टाइम डाइलेशन और आधुनिक मल्टी-GNSS रिसीवर की गहराई से जाँच।",
+    pIntro1: "चाहे आप फ़ोन पर Where Am I देख रहे हों, इलाके की ऊँचाई माप रहे हों या निर्देशांक बदल रहे हों, आपका डिवाइस धरती से 20,200 किलोमीटर ऊपर से आने वाले एटॉमिक टाइम पल्स की धुन सुन रहा है।",
+    pIntro2: "ग्लोबल पोज़िशनिंग सिस्टम (GPS)—आधिकारिक नाम NAVSTAR GPS—दुनिया की सबसे व्यापक पोज़िशनिंग यूटिलिटी है। इस गाइड में हम उन गणितीय सिद्धांतों और भौतिक घटनाओं को समझते हैं जो ऑर्बिटल रेडियो सिग्नल को आपकी स्क्रीन पर सटीक निर्देशांक में बदल देते हैं।",
+    calloutBadge: "🛰️ लाइव हार्डवेयर जाँच",
+    calloutTitle: "अपने डिवाइस का लाइव GPS फ़िक्स देखें",
+    calloutDesc: "अपने ब्राउज़र के GNSS रिसीवर से सीधे गणना किया गया रीयल-टाइम अक्षांश, देशांतर, ऊँचाई और हॉरिज़ॉन्टल सटीकता रेडियस देखें।",
+    calloutBtn: "GPS निर्देशांक जाँचें →",
+    h2Segments: "1. आर्किटेक्चर: GPS के तीन सेगमेंट",
+    seg1Title: "स्पेस सेगमेंट (सैटेलाइट कॉन्स्टेलेशन)",
+    seg1Desc: "मध्य पृथ्वी कक्षा (MEO) में ~20,200 किमी की ऊँचाई पर 31 कार्यशील सैटेलाइट का मूल कॉन्स्टेलेशन। 55° के झुकाव वाले 6 ऑर्बिटल प्लेन में वितरित, जिससे खुले आसमान वाली जगह से धरती के किसी भी हिस्से में कम से कम 6 से 10 सैटेलाइट दिखती हैं।",
+    seg2Title: "कंट्रोल सेगमेंट (ग्राउंड ट्रैकिंग और सुधार)",
+    seg2Desc: "ग्लोबल मॉनिटरिंग स्टेशन और ग्राउंड एंटेना ऑर्बिट ट्रैक करते हैं, क्लॉक ड्रिफ्ट मापते हैं और अपडेट किए गए ऑर्बिटल पैरामीटर (इफ़ेमेरिस) और सिस्टम हेल्थ डेटा (अलमैनैक) अपलोड करते हैं।",
+    seg3Title: "यूज़र सेगमेंट (आपका फ़ोन और रिसीवर)",
+    seg3Desc: "GPS रिसीवर पूरी तरह निष्क्रिय होते हैं: वे केवल रेडियो सिग्नल प्राप्त करते हैं और सैटेलाइट को कोई डेटा वापस नहीं भेजते। आपकी प्राइवेसी ऑर्बिटल स्तर पर ही सुरक्षित रहती है।",
+    h2Trilateration: "2. गणितीय इंजन: 3D ट्राइलैटरेशन",
+    pTrilateration1: "ट्राइलैटरेशन ज्ञात रेफ़रेंस पॉइंट से दूरी मापकर अज्ञात स्थिति निकालता है। चूँकि रेडियो तरंगें प्रकाश की गति (c ≈ 299,792,458 m/s) से चलती हैं, दूरी = संचरण समय × c।",
+    pTrilateration2: "चार सैटेलाइट ज़रूरी हैं: तीन से (X, Y, Z) कार्टेशियन निर्देशांक निकलते हैं, और चौथी सैटेलाइट रिसीवर के क्लॉक बायस को हाई-प्रिसिशन एटॉमिक क्लॉक से मिलाती है।",
+    h2Relativity: "3. सापेक्षिक टाइम डाइलेशन: आपकी जेब में आइंस्टीन",
+    pRelativity1: "अगर आइंस्टीन के सापेक्षता सिद्धांत का हिसाब न लिया जाए, तो GPS नेविगेशन हर दिन लगभग 10 किलोमीटर की त्रुटि जमा कर लेता।",
+    pRelativity2: "स्पेशल रिलेटिविटी से ऑर्बिटल स्पीड (~7 µs/दिन) की वजह से सैटेलाइट क्लॉक धीमे चलते हैं, जबकि जनरल रिलेटिविटी से कम गुरुत्व (~45 µs/दिन) की वजह से तेज़। +38 µs/दिन का शुद्ध अंतर गणितीय रूप से संतुलित किया जाता है।",
+    h2Wgs84: "4. निर्देशांक संदर्भ: WGS 84",
+    pWgs84: "पृथ्वी परफ़ेक्ट गोला नहीं है—यह भूमध्य रेखा पर उभरा हुआ ओब्लेट स्फ़ेरॉयड है। सभी GPS गणनाएँ WGS 84 (EPSG:4326) रेफ़रेंस एलिप्सॉइड पर आधारित हैं, जो ग्लोबल अक्षांश-देशांतर का गणितीय ढाँचा तय करता है।",
+    connectedGuides: "🔗 संबंधित गाइड और व्यावहारिक टूल",
+    tool1Title: "GPS निर्देशांक फ़ाइंडर",
+    tool1Desc: "लाइव सैटेलाइट टेलीमेट्री",
+    tool2Title: "GPS सटीकता मॉनिटर",
+    tool2Desc: "एरर रेडियस जाँचें",
+    tool3Title: "ऊँचाई फ़ाइंडर",
+    tool3Desc: "सैटेलाइट एल्टीट्यूड मॉडल",
+    tool4Title: "GPS बनाम IP तुलना",
+    tool4Desc: "सैटेलाइट बनाम नेटवर्क पोज़िशनिंग"
+  },
+  id: {
+    title: "Cara Kerja GPS — Trilaterasi & Satelit | MyLocationLab",
+    description: "Pahami cara GPS menghitung koordinat waktu nyata melalui trilaterasi satelit, koreksi jam atom, dan datum referensi WGS 84 secara ringkas dan akurat.",
+    h1: "Cara Kerja GPS: Satelit, Trilaterasi & WGS 84",
+    subtitle: "Eksplorasi mendalam tentang konstelasi satelit, fisika waktu tempuh sinyal radio, dilatasi waktu relativistik, dan penerima multi-GNSS modern.",
+    pIntro1: "Baik Anda membuka Where Am I di ponsel, mengukur elevasi medan, atau mengonversi koordinat, perangkat Anda menangkap denyut waktu atom yang berasal dari 20.200 kilometer di atas Bumi.",
+    pIntro2: "Global Positioning System (GPS)—secara resmi NAVSTAR GPS—adalah utilitas penentuan posisi paling lazim di dunia. Dalam panduan ini, kami mengulas prinsip matematika dan fenomena fisika yang mengubah sinyal radio orbital menjadi koordinat presisi tinggi di layar Anda.",
+    calloutBadge: "🛰️ Diagnostik Perangkat Langsung",
+    calloutTitle: "Periksa Fix GPS Langsung di Perangkat Anda",
+    calloutDesc: "Lihat lintang, bujur, ketinggian, dan radius akurasi horizontal waktu nyata yang dihitung langsung oleh penerima GNSS di peramban Anda.",
+    calloutBtn: "Cek Koordinat GPS →",
+    h2Segments: "1. Arsitektur: Tiga Segmen GPS",
+    seg1Title: "Segmen Antariksa (Konstelasi Satelit)",
+    seg1Desc: "Konstelasi dasar 31 satelit operasional di Orbit Bumi Menengah (MEO) pada ketinggian ~20.200 km. Tersebar di 6 bidang orbit dengan kemiringan 55°, memastikan setidaknya 6 sampai 10 satelit terlihat dari hampir semua titik di Bumi dengan langit terbuka.",
+    seg2Title: "Segmen Kendali (Pelacakan & Koreksi Darat)",
+    seg2Desc: "Stasiun pemantau global dan antena darat melacak orbit, mengukur hanyut jam, serta mengunggah parameter orbit (ephemeris) dan data kesehatan sistem (almanak) terbaru.",
+    seg3Title: "Segmen Pengguna (Ponsel & Penerima Anda)",
+    seg3Desc: "Penerima GPS sepenuhnya pasif: hanya menerima sinyal radio dan tidak pernah mengirim data kembali ke satelit. Privasi Anda terjaga di tingkat orbital.",
+    h2Trilateration: "2. Mesin Matematis: Trilaterasi 3D",
+    pTrilateration1: "Trilaterasi menentukan posisi tak dikenal dengan mengukur jarak dari titik referensi yang diketahui. Karena gelombang radio merambat dengan kecepatan cahaya (c ≈ 299.792.458 m/s), jarak sama dengan waktu rambat dikali c.",
+    pTrilateration2: "Empat satelit diperlukan: tiga untuk menyelesaikan koordinat Kartesius (X, Y, Z), dan satelit keempat untuk mengoreksi bias jam penerima terhadap jam atom presisi tinggi.",
+    h2Relativity: "3. Dilatasi Waktu Relativistik: Einstein dalam Saku Anda",
+    pRelativity1: "Tanpa memperhitungkan teori relativitas Einstein, navigasi GPS akan mengakumulasi galat sekitar 10 kilometer setiap harinya.",
+    pRelativity2: "Relativitas Khusus membuat jam satelit berdetak lebih lambat karena kecepatan orbit (~7 µs/hari), sedangkan Relativitas Umum membuatnya lebih cepat karena gravitasi lebih lemah (~45 µs/hari). Selisih bersih +38 µs/hari dikompensasi secara matematis.",
+    h2Wgs84: "4. Referensi Koordinat: WGS 84",
+    pWgs84: "Bumi bukan bola sempurna—melainkan elipsoid pepat yang menggembung di ekuator. Semua perhitungan GPS merujuk pada elipsoid referensi WGS 84 (EPSG:4326), kerangka matematis lintang dan bujur global.",
+    connectedGuides: "🔗 Panduan & Alat Praktis Terkait",
+    tool1Title: "Pencari Koordinat GPS",
+    tool1Desc: "Telemetri satelit langsung",
+    tool2Title: "Monitor Akurasi GPS",
+    tool2Desc: "Periksa radius galat",
+    tool3Title: "Pencari Elevasi",
+    tool3Desc: "Model ketinggian satelit",
+    tool4Title: "Perbandingan GPS vs IP",
+    tool4Desc: "Posisi satelit vs jaringan"
   }
 };
 
@@ -204,7 +276,7 @@ const c = translations[lang] || translations.en;
   h1={c.h1}
   subtitle={c.subtitle}
   section="guides"
-  sectionLabel={lang === 'es' ? 'Guías Educativas' : lang === 'fr' ? 'Guides Pédagogiques' : lang === 'de' ? 'Fachratgeber' : lang === 'pt' ? 'Guias Educativos' : 'Educational Guides'}
+  sectionLabel={lang === 'es' ? 'Guías Educativas' : lang === 'fr' ? 'Guides Pédagogiques' : lang === 'de' ? 'Fachratgeber' : lang === 'pt' ? 'Guias Educativos' : lang === 'hi' ? 'शैक्षिक गाइड' : lang === 'id' ? 'Panduan Edukasi' : 'Educational Guides'}
   readTime="9 min"
   publishDate="2026-09-15"
   modifiedDate="2026-09-22"

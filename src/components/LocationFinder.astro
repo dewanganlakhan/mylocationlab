@@ -52,6 +52,20 @@ const labels: Record<string, any> = {
     state: 'Estado', country: 'País', accuracy: 'Precisão', altitude: 'Altitude',
     copy: 'Copiar Coordenadas', share: 'Compartilhar', openInMaps: 'Abrir no Maps', refresh: 'Atualizar',
     locateTitle: 'Aproximar da minha localização atual'
+  },
+  hi: {
+    header: 'आपकी लोकेशन', ready: 'तैयार', loading: 'लोकेशन पहचानी जा रही है...',
+    lat: 'अक्षांश', lng: 'देशांतर', address: 'पता', city: 'शहर',
+    state: 'राज्य / क्षेत्र', country: 'देश', accuracy: 'सटीकता', altitude: 'ऊँचाई',
+    copy: 'निर्देशांक कॉपी करें', share: 'साझा करें', openInMaps: 'नक्शों में खोलें', refresh: 'रिफ़्रेश',
+    locateTitle: 'मेरी वर्तमान लोकेशन पर ज़ूम करें'
+  },
+  id: {
+    header: 'Lokasi Anda', ready: 'Siap', loading: 'Mendeteksi lokasi...',
+    lat: 'Lintang', lng: 'Bujur', address: 'Alamat', city: 'Kota',
+    state: 'Provinsi / Wilayah', country: 'Negara', accuracy: 'Akurasi', altitude: 'Ketinggian',
+    copy: 'Salin Koordinat', share: 'Bagikan', openInMaps: 'Buka di Peta', refresh: 'Segarkan',
+    locateTitle: 'Perbesar ke lokasi saya saat ini'
   }
 };
 
@@ -165,7 +179,9 @@ const l = labels[lang] || labels.en;
     es: "Centrar y ampliar en mi ubicación",
     fr: "Zoomer sur ma position actuelle",
     de: "Auf meinen aktuellen Standort zoomen",
-    pt: "Aproximar da minha localização atual"
+    pt: "Aproximar da minha localização atual",
+    hi: "मेरी वर्तमान लोकेशन पर ज़ूम करें",
+    id: "Perbesar ke lokasi saya saat ini"
   };
   const currentDocLang = document.documentElement.lang || 'en';
   const locateTitle = document.getElementById('loc-map')?.getAttribute('data-locate-title') || locateTitles[currentDocLang] || locateTitles.en;
