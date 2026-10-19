@@ -73,24 +73,74 @@ const GeoLocation = {
   },
 
   /**
-   * Get a user-friendly error message from a GeolocationPositionError.
+   * Get a user-friendly localized error message from a GeolocationPositionError.
    * @param {GeolocationPositionError|Error} error
+   * @param {string} [lang] Optional language code (defaults to document lang or 'en')
    * @returns {string}
    */
-  getErrorMessage(error) {
+  getErrorMessage(error, lang) {
+    const activeLang = (lang || (typeof document !== 'undefined' && document.documentElement.lang) || 'en').slice(0, 2).toLowerCase();
+    
+    const messages = {
+      en: {
+        denied: 'Location access was denied. Please enable location permissions in your browser settings.',
+        unavailable: 'Location information is currently unavailable. Please try again.',
+        timeout: 'The request to get your location timed out. Please try again.',
+        unknown: 'An unknown error occurred while getting your location.',
+      },
+      es: {
+        denied: 'Acceso a la ubicación denegado. Active los permisos de ubicación en los ajustes del navegador.',
+        unavailable: 'La información de ubicación no está disponible en este momento. Inténtelo de nuevo.',
+        timeout: 'Se agotó el tiempo de espera para obtener su ubicación. Inténtelo de nuevo.',
+        unknown: 'Ocurrió un error desconocido al obtener su ubicación.',
+      },
+      fr: {
+        denied: 'Accès à la position refusé. Veuillez activer les autorisations de localisation dans votre navigateur.',
+        unavailable: 'Les informations de localisation sont actuellement indisponibles. Veuillez réessayer.',
+        timeout: 'La demande de localisation a expiré. Veuillez réessayer.',
+        unknown: 'Une erreur inconnue s\'est produite lors de la détection de la position.',
+      },
+      de: {
+        denied: 'Standortzugriff verweigert. Bitte aktivieren Sie die Standortberechtigung in Ihren Browsereinstellungen.',
+        unavailable: 'Standortinformationen sind derzeit nicht verfügbar. Bitte versuchen Sie es erneut.',
+        timeout: 'Zeitüberschreitung beim Abrufen des Standorts. Bitte versuchen Sie es erneut.',
+        unknown: 'Ein unbekannter Fehler ist beim Ermitteln des Standorts aufgetreten.',
+      },
+      pt: {
+        denied: 'Acesso à localização negado. Ative as permissões de localização nas configurações do seu navegador.',
+        unavailable: 'Informações de localização indisponíveis no momento. Tente novamente.',
+        timeout: 'O pedido de localização expirou. Tente novamente.',
+        unknown: 'Ocorreu um erro desconhecido ao obter sua localização.',
+      },
+      hi: {
+        denied: 'लोकेशन अनुमति अस्वीकृत कर दी गई। कृपया अपने ब्राउज़र की सेटिंग में लोकेशन अनुमति चालू करें।',
+        unavailable: 'लोकेशन जानकारी वर्तमान में अनुपलब्ध है। कृपया पुन: प्रयास करें।',
+        timeout: 'लोकेशन अनुरोध का समय समाप्त हो गया। कृपया पुन: प्रयास करें।',
+        unknown: 'आपकी लोकेशन प्राप्त करते समय एक अज्ञात त्रुटि हुई।',
+      },
+      id: {
+        denied: 'Akses lokasi ditolak. Harap aktifkan izin lokasi di pengaturan browser Anda.',
+        unavailable: 'Informasi lokasi saat ini tidak tersedia. Silakan coba lagi.',
+        timeout: 'Waktu permintaan lokasi habis. Silakan coba lagi.',
+        unknown: 'Terjadi kesalahan yang tidak diketahui saat mendeteksi lokasi Anda.',
+      },
+    };
+
+    const dict = messages[activeLang] || messages.en;
+
     if (error instanceof GeolocationPositionError) {
       switch (error.code) {
         case error.PERMISSION_DENIED:
-          return 'Location access was denied. Please enable location permissions in your browser settings.';
+          return dict.denied;
         case error.POSITION_UNAVAILABLE:
-          return 'Location information is currently unavailable. Please try again.';
+          return dict.unavailable;
         case error.TIMEOUT:
-          return 'The request to get your location timed out. Please try again.';
+          return dict.timeout;
         default:
-          return 'An unknown error occurred while getting your location.';
+          return dict.unknown;
       }
     }
-    return error.message || 'Unable to determine your location.';
+    return error.message || dict.unknown;
   },
 
   /**

@@ -17,12 +17,24 @@ const Geocoding = {
     const key = `reverse:${lat.toFixed(6)},${lng.toFixed(6)}`;
     if (cache.has(key)) return cache.get(key);
 
-    const url = `${NOMINATIM_BASE}/reverse?format=jsonv2&lat=${lat}&lon=${lng}&addressdetails=1&zoom=18`;
-    const res = await fetch(url, {
-      headers: { 'Accept-Language': 'en', 'User-Agent': 'MyLocationLab/1.0 (https://mylocationlab.com)' },
-    });
-    if (!res.ok) throw new Error('Geocoding request failed');
-    const data = await res.json();
+    let data;
+    try {
+      const edgeRes = await fetch(`/api/geocode?lat=${lat}&lng=${lng}`);
+      if (edgeRes.ok) {
+        data = await edgeRes.json();
+      }
+    } catch {
+      // Fallback to direct Nominatim fetch
+    }
+
+    if (!data) {
+      const url = `${NOMINATIM_BASE}/reverse?format=jsonv2&lat=${lat}&lon=${lng}&addressdetails=1&zoom=18`;
+      const res = await fetch(url, {
+        headers: { 'Accept-Language': 'en', 'User-Agent': 'MyLocationLab/1.0 (https://mylocationlab.com)' },
+      });
+      if (!res.ok) throw new Error('Geocoding request failed');
+      data = await res.json();
+    }
 
     const result = {
       displayName: data.display_name || '',
@@ -56,12 +68,24 @@ const Geocoding = {
     const key = `forward:${query.toLowerCase().trim()}`;
     if (cache.has(key)) return cache.get(key);
 
-    const url = `${NOMINATIM_BASE}/search?format=jsonv2&q=${encodeURIComponent(query)}&addressdetails=1&limit=5`;
-    const res = await fetch(url, {
-      headers: { 'Accept-Language': 'en', 'User-Agent': 'MyLocationLab/1.0 (https://mylocationlab.com)' },
-    });
-    if (!res.ok) throw new Error('Geocoding request failed');
-    const data = await res.json();
+    let data;
+    try {
+      const edgeRes = await fetch(`/api/geocode?q=${encodeURIComponent(query)}`);
+      if (edgeRes.ok) {
+        data = await edgeRes.json();
+      }
+    } catch {
+      // Fallback
+    }
+
+    if (!data) {
+      const url = `${NOMINATIM_BASE}/search?format=jsonv2&q=${encodeURIComponent(query)}&addressdetails=1&limit=5`;
+      const res = await fetch(url, {
+        headers: { 'Accept-Language': 'en', 'User-Agent': 'MyLocationLab/1.0 (https://mylocationlab.com)' },
+      });
+      if (!res.ok) throw new Error('Geocoding request failed');
+      data = await res.json();
+    }
 
     const results = data.map(item => ({
       displayName: item.display_name,

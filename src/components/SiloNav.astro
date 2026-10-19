@@ -107,17 +107,19 @@ if (copy) {
       <span>{hubLabel}</span>
     </a>
     <span class="quicknav-divider" aria-hidden="true"></span>
-    <div class="quicknav-track">
+    <ul class="quicknav-track quicknav-list" role="list">
       {items.map((item) => {
         const itemLocalizedHref = getLocalizedPath(item.href, lang);
         const isActive = currentPath === itemLocalizedHref || currentPath === item.href;
         return (
-          <a href={itemLocalizedHref} class={`quicknav-chip ${isActive ? 'active' : ''}`} aria-current={isActive ? 'page' : undefined}>
-            {chipLabel(item.href, item.label)}
-          </a>
+          <li role="listitem">
+            <a href={itemLocalizedHref} class={`quicknav-chip ${isActive ? 'active' : ''}`} aria-current={isActive ? 'page' : undefined}>
+              {chipLabel(item.href, item.label)}
+            </a>
+          </li>
         );
       })}
-    </div>
+    </ul>
   </nav>
 )}
 
@@ -166,6 +168,9 @@ if (copy) {
     min-width: 0;
     scrollbar-width: none;
     -webkit-overflow-scrolling: touch;
+    list-style: none;
+    margin: 0;
+    padding: 0;
   }
 
   .quicknav-track::-webkit-scrollbar {

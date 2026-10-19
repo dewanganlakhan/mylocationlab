@@ -95,6 +95,52 @@ const CoordUtils = {
     };
   },
 
+  // ─── MGRS (Military Grid Reference System) ───────────────
+  decimalToMGRS(lat, lon, digits = 5) {
+    if (lat < -80 || lat > 84) return null; // Outside standard MGRS coverage
+    const utm = this.decimalToUTM(lat, lon);
+    const zone = utm.zone;
+
+    // Latitude Band Letter (8° bands from 80°S to 84°N)
+    const BANDS = 'CDEFGHJKLMNPQRSTUVWX';
+    const bandIdx = Math.min(19, Math.max(0, Math.floor((lat + 80) / 8)));
+    const bandLetter = BANDS[bandIdx];
+
+    // 100k Column Letter sets (cycle across 3 zone sets)
+    const colSets = [
+      'ABCDEFGH', // Set 1: Zones 1, 4, 7...
+      'JKLMNPQR', // Set 2: Zones 2, 5, 8...
+      'STUVWXYZ', // Set 3: Zones 3, 6, 9...
+    ];
+    const colSetIdx = (zone - 1) % 3;
+    const colIdx = Math.max(0, Math.min(7, Math.floor(utm.easting / 100000) - 1));
+    const colLetter = colSets[colSetIdx][colIdx] || 'A';
+
+    // 100k Row Letter sets (A-V skipping I and O = 20 letters)
+    const ROW_LETTERS = 'ABCDEFGHJKLMNPQRSTUV';
+    const rowOffset = (zone % 2 === 0) ? 5 : 0;
+    const rowIdx = (Math.floor(utm.northing / 100000) + rowOffset) % 20;
+    const rowLetter = ROW_LETTERS[rowIdx];
+
+    // Truncate Easting & Northing to specified digit precision (default 5 digits = 1m)
+    const div = Math.pow(10, 5 - digits);
+    const eRem = Math.floor((utm.easting % 100000) / div);
+    const nRem = Math.floor((utm.northing % 100000) / div);
+
+    const eStr = String(eRem).padStart(digits, '0');
+    const nStr = String(nRem).padStart(digits, '0');
+
+    return {
+      zone,
+      band: bandLetter,
+      square: `${colLetter}${rowLetter}`,
+      easting: eStr,
+      northing: nStr,
+      formatted: `${zone}${bandLetter} ${colLetter}${rowLetter} ${eStr} ${nStr}`,
+      compact: `${zone}${bandLetter}${colLetter}${rowLetter}${eStr}${nStr}`,
+    };
+  },
+
   // ─── Geohash ────────────────────────────────────────────
   encodeGeohash(lat, lon, precision = 9) {
     const BASE32 = '0123456789bcdefghjkmnpqrstuvwxyz';

@@ -33,7 +33,7 @@ const translations: Record<string, any> = {
     row6: ["VPN / Proxy Impact", "Unaltered (Hardware GPS reads true sky signals)", "Completely masked / routed to VPN server location"],
     row7: ["Battery Consumption", "Moderate (continuous radio reception)", "Zero additional battery drain"],
     h2Gps: "How GPS Location Works",
-    pGps1: "GPS determines location via physical physics. Your phone contains a miniaturized antenna that captures radio waves transmitted from 20,200 km above in medium Earth orbit.",
+    pGps1: "GPS determines location through direct radio wave physics. Your phone contains a miniaturized antenna that captures radio waves transmitted from 20,200 km above in medium Earth orbit.",
     pGps2: "Because the signals travel at the speed of light, calculating arrival time differences allows your phone's processor to compute its precise latitude, longitude, and altitude relative to the WGS 84 ellipsoid.",
     h2Ip: "How IP Geolocation Works",
     pIp1: "IP geolocation is not a physical measurement—it is a database correlation. Every packet sent across the internet contains your public IP address. Companies like MaxMind, IPinfo, and DB-IP maintain proprietary databases that map IP blocks to:",
@@ -354,14 +354,81 @@ const c = translations[lang] || translations.en;
   <p>{c.pGps1}</p>
   <p>{c.pGps2}</p>
 
-  <div class="tool-callout">
-    <div class="tool-callout-content">
-      <span class="tool-callout-badge">{c.calloutBadge}</span>
-      <h3 class="tool-callout-title">{c.calloutTitle}</h3>
-      <p class="tool-callout-desc">{c.calloutDesc}</p>
+  <!-- Live Split-Screen GPS vs IP Diagnostic Engine -->
+  <div class="live-test-card" id="gps-ip-test-card">
+    <div class="live-test-header">
+      <span class="badge badge-success">{c.calloutBadge}</span>
+      <h3 style="margin: var(--space-2) 0 var(--space-1); font-size: var(--text-lg); font-weight: 700;">{c.calloutTitle}</h3>
+      <p style="color: var(--color-text-secondary); margin: 0; font-size: var(--text-sm);">{c.calloutDesc}</p>
     </div>
-    <div class="tool-callout-action">
-      <a href={getLocalizedPath('/my-location/ip/', lang)} class="btn btn-primary">{c.calloutBtn}</a>
+
+    <div class="live-test-grid">
+      <!-- IP Col -->
+      <div class="test-col">
+        <div class="test-col-header">
+          <span style="font-weight: 700; font-size: var(--text-sm); display: flex; align-items: center; gap: 6px;">
+            🌐 Network IP Geolocation
+          </span>
+          <span class="badge" id="ip-status-badge">Detecting IP...</span>
+        </div>
+        <div class="test-data-row">
+          <span class="test-label">Public IP</span>
+          <span class="test-value highlight" id="test-ip-val">—</span>
+        </div>
+        <div class="test-data-row">
+          <span class="test-label">City / Region</span>
+          <span class="test-value" id="test-ip-loc">—</span>
+        </div>
+        <div class="test-data-row">
+          <span class="test-label">Coordinates</span>
+          <span class="test-value" id="test-ip-coords">—</span>
+        </div>
+        <div class="test-data-row">
+          <span class="test-label">Precision Radius</span>
+          <span class="test-value" style="color: var(--color-text-tertiary);">~15 to 80 km (ISP Hub)</span>
+        </div>
+      </div>
+
+      <!-- GPS Col -->
+      <div class="test-col">
+        <div class="test-col-header">
+          <span style="font-weight: 700; font-size: var(--text-sm); display: flex; align-items: center; gap: 6px;">
+            🛰️ Device Hardware GPS
+          </span>
+          <span class="badge" id="gps-status-badge" data-nosnippet>Standby</span>
+        </div>
+        <div class="test-data-row">
+          <span class="test-label">Signal Source</span>
+          <span class="test-value highlight" id="test-gps-method">—</span>
+        </div>
+        <div class="test-data-row">
+          <span class="test-label">Accuracy Radius</span>
+          <span class="test-value" id="test-gps-acc">—</span>
+        </div>
+        <div class="test-data-row">
+          <span class="test-label">Coordinates</span>
+          <span class="test-value" id="test-gps-coords">—</span>
+        </div>
+        <div style="margin-top: var(--space-4); text-align: center;">
+          <button type="button" class="btn btn-primary btn-sm" id="acquire-gps-btn" style="width: 100%;">
+            📍 Acquire Hardware GPS Fix
+          </button>
+          <p id="gps-comp-error" data-nosnippet style="display: none; color: var(--color-accent-error); font-size: var(--text-xs); margin-top: var(--space-2);"></p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Live Discrepancy Calculation -->
+    <div id="discrepancy-banner" class="discrepancy-banner" style="display: none;" data-nosnippet>
+      <div style="font-size: var(--text-sm); font-weight: 700; color: var(--color-accent-primary); margin-bottom: var(--space-1);">
+        🎯 Spatial Error Discrepancy Calculated
+      </div>
+      <div style="font-size: var(--text-2xl); font-weight: 800; color: var(--color-text-primary);" id="discrepancy-dist">
+        —
+      </div>
+      <p style="font-size: var(--text-xs); color: var(--color-text-secondary); margin: var(--space-2) 0 0;">
+        This real-time discrepancy proves how IP databases locate regional ISP gateways, while your GNSS antenna measures true orbital satellite geometry.
+      </p>
     </div>
   </div>
 
@@ -472,3 +539,152 @@ const c = translations[lang] || translations.en;
     </div>
   </div>
 </ContentLayout>
+
+<style>
+  .live-test-card {
+    background: var(--color-bg-card);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-2xl);
+    padding: var(--space-6);
+    margin: var(--space-8) 0;
+    box-shadow: var(--shadow-md);
+  }
+  .live-test-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-4);
+    margin-top: var(--space-5);
+  }
+  @media (max-width: 640px) {
+    .live-test-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+  .test-col {
+    background: var(--color-bg-tertiary);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-xl);
+    padding: var(--space-4) var(--space-5);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .test-col-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: var(--space-3);
+    padding-bottom: var(--space-2);
+    border-bottom: 1px solid var(--color-border);
+  }
+  .test-data-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: var(--text-xs);
+    padding: var(--space-2) 0;
+    border-bottom: 1px dashed rgba(255, 255, 255, 0.08);
+  }
+  .test-label {
+    color: var(--color-text-secondary);
+  }
+  .test-value {
+    font-family: var(--font-mono);
+    font-weight: 600;
+  }
+  .test-value.highlight {
+    color: var(--color-accent-primary);
+  }
+  .discrepancy-banner {
+    margin-top: var(--space-5);
+    padding: var(--space-5) var(--space-6);
+    border-radius: var(--radius-xl);
+    background: linear-gradient(135deg, rgba(37, 99, 235, 0.08) 0%, rgba(16, 185, 129, 0.08) 100%);
+    border: 1px solid rgba(37, 99, 235, 0.25);
+    text-align: center;
+  }
+</style>
+
+<script>
+  import IpLocation from '../../scripts/ip-location.js';
+  import GeoLocation from '../../scripts/geolocation.js';
+  import CoordUtils from '../../scripts/coordinates.js';
+
+  let ipLat: number | null = null;
+  let ipLng: number | null = null;
+  let gpsLat: number | null = null;
+  let gpsLng: number | null = null;
+
+  // Auto-load IP Location
+  (async () => {
+    try {
+      const ipData = await IpLocation.getLocation();
+      if (ipData && ipData.lat && ipData.lng) {
+        ipLat = ipData.lat;
+        ipLng = ipData.lng;
+        const ipVal = document.getElementById('test-ip-val');
+        const ipLoc = document.getElementById('test-ip-loc');
+        const ipCoords = document.getElementById('test-ip-coords');
+        const ipBadge = document.getElementById('ip-status-badge');
+
+        if (ipVal) ipVal.textContent = ipData.ip || 'Detected';
+        if (ipLoc) ipLoc.textContent = [ipData.city, ipData.region, ipData.countryCode].filter(Boolean).join(', ') || 'Global';
+        if (ipCoords) ipCoords.textContent = `${ipData.lat.toFixed(3)}°, ${ipData.lng.toFixed(3)}°`;
+        if (ipBadge) {
+          ipBadge.textContent = 'Detected';
+          ipBadge.className = 'badge badge-success';
+        }
+      }
+    } catch {
+      const ipBadge = document.getElementById('ip-status-badge');
+      if (ipBadge) ipBadge.textContent = 'Unavailable';
+    }
+  })();
+
+  // Acquire Hardware GPS Fix
+  const btn = document.getElementById('acquire-gps-btn');
+  btn?.addEventListener('click', async () => {
+    const errEl = document.getElementById('gps-comp-error');
+    const badge = document.getElementById('gps-status-badge');
+    if (errEl) errEl.style.display = 'none';
+    if (badge) badge.textContent = 'Acquiring...';
+
+    try {
+      const pos = await GeoLocation.getCurrentPosition({ enableHighAccuracy: true });
+      gpsLat = pos.coords.latitude;
+      gpsLng = pos.coords.longitude;
+      const acc = Math.round(pos.coords.accuracy);
+
+      const methodEl = document.getElementById('test-gps-method');
+      const accEl = document.getElementById('test-gps-acc');
+      const coordsEl = document.getElementById('test-gps-coords');
+
+      if (methodEl) methodEl.textContent = 'GNSS Satellite Lock';
+      if (accEl) accEl.textContent = `± ${acc} meters`;
+      if (coordsEl) coordsEl.textContent = `${gpsLat.toFixed(5)}°, ${gpsLng.toFixed(5)}°`;
+      if (badge) {
+        badge.textContent = 'Locked';
+        badge.className = 'badge badge-success';
+      }
+      if (btn) btn.style.display = 'none';
+
+      // Compute Spatial Discrepancy
+      if (ipLat !== null && ipLng !== null && gpsLat !== null && gpsLng !== null) {
+        const distKm = CoordUtils.calculateDistance(ipLat, ipLng, gpsLat, gpsLng, 'km');
+        const distMi = distKm * 0.621371;
+        const banner = document.getElementById('discrepancy-banner');
+        const distText = document.getElementById('discrepancy-dist');
+        if (distText) {
+          distText.textContent = `${distKm.toFixed(1)} km (${distMi.toFixed(1)} miles) Difference`;
+        }
+        if (banner) banner.style.display = 'block';
+      }
+    } catch (err: any) {
+      if (badge) badge.textContent = 'Error';
+      if (errEl) {
+        errEl.textContent = GeoLocation.getErrorMessage(err, document.documentElement.lang);
+        errEl.style.display = 'block';
+      }
+    }
+  });
+</script>

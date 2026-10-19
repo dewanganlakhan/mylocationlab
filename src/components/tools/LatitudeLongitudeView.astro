@@ -19,6 +19,8 @@ const toolData: Record<string, {
   h1: string;
   subtitle: string;
   promptText: string;
+  searchPlaceholder: string;
+  searchBtn: string;
   btnUseLocation: string;
   labelLat: string;
   labelLng: string;
@@ -38,6 +40,8 @@ const toolData: Record<string, {
     h1: 'Latitude Longitude Finder',
     subtitle: 'Find latitude and longitude for any location by clicking on the map, entering an address, or using your GPS.',
     promptText: 'Detecting your position automatically — or click anywhere on the map below.',
+    searchPlaceholder: 'Search address, city, or coordinates...',
+    searchBtn: 'Search',
     btnUseLocation: '📍 Use My Location',
     labelLat: 'Latitude',
     labelLng: 'Longitude',
@@ -61,6 +65,8 @@ const toolData: Record<string, {
     h1: 'Buscador de Latitud y Longitud',
     subtitle: 'Encuentra la latitud y longitud de cualquier punto haciendo clic en el mapa, buscando una dirección o mediante GPS.',
     promptText: 'Detectando tu posición automáticamente — o haz clic en cualquier lugar del mapa inferior.',
+    searchPlaceholder: 'Buscar dirección, ciudad o coordenadas...',
+    searchBtn: 'Buscar',
     btnUseLocation: '📍 Usar Mi Ubicación',
     labelLat: 'Latitud',
     labelLng: 'Longitud',
@@ -84,6 +90,8 @@ const toolData: Record<string, {
     h1: 'Trouver Latitude et Longitude',
     subtitle: 'Identifiez la latitude et la longitude de n\'importe quelle position sur la carte ou via votre capteur GPS.',
     promptText: 'Détection automatique de votre position — ou cliquez sur la carte ci-dessous.',
+    searchPlaceholder: 'Rechercher une adresse, ville ou coordonnées...',
+    searchBtn: 'Rechercher',
     btnUseLocation: '📍 Utiliser Ma Position',
     labelLat: 'Latitude',
     labelLng: 'Longitude',
@@ -107,6 +115,8 @@ const toolData: Record<string, {
     h1: 'Breitengrad & Längengrad Finder',
     subtitle: 'Finden Sie Breiten- und Längengrad jedes beliebigen Ortes durch Klick auf die Karte oder per GPS-Ortung.',
     promptText: 'Standort wird automatisch ermittelt — oder klicken Sie auf die Karte unten.',
+    searchPlaceholder: 'Adresse, Stadt oder Koordinaten suchen...',
+    searchBtn: 'Suchen',
     btnUseLocation: '📍 Meinen Standort Nutzen',
     labelLat: 'Breitengrad',
     labelLng: 'Längengrad',
@@ -130,6 +140,8 @@ const toolData: Record<string, {
     h1: 'Localizador de Latitude e Longitude',
     subtitle: 'Encontre latitude e longitude clicando no mapa ou através do sinal de GPS do seu dispositivo.',
     promptText: 'Detectando sua posição automaticamente — ou clique em qualquer ponto do mapa abaixo.',
+    searchPlaceholder: 'Buscar endereço, cidade ou coordenadas...',
+    searchBtn: 'Buscar',
     btnUseLocation: '📍 Usar Minha Localização',
     labelLat: 'Latitude',
     labelLng: 'Longitude',
@@ -153,6 +165,8 @@ const toolData: Record<string, {
     h1: 'अक्षांश-देशांतर खोजक',
     subtitle: 'नक्शे पर क्लिक करके, पता दर्ज करके या अपने GPS के ज़रिए किसी भी स्थान का अक्षांश और देशांतर जानें।',
     promptText: 'आपकी स्थिति अपने आप पहचानी जा रही है — या नीचे नक्शे पर कहीं भी क्लिक करें।',
+    searchPlaceholder: 'पता, शहर या निर्देशांक खोजें...',
+    searchBtn: 'खोजें',
     btnUseLocation: '📍 मेरा स्थान उपयोग करें',
     labelLat: 'अक्षांश',
     labelLng: 'देशांतर',
@@ -176,6 +190,8 @@ const toolData: Record<string, {
     h1: 'Pencari Lintang dan Bujur',
     subtitle: 'Temukan lintang dan bujur lokasi mana pun dengan mengklik peta, memasukkan alamat, atau menggunakan GPS Anda.',
     promptText: 'Mendeteksi posisi Anda secara otomatis — atau klik di mana saja pada peta di bawah.',
+    searchPlaceholder: 'Cari alamat, kota, atau koordinat...',
+    searchBtn: 'Cari',
     btnUseLocation: '📍 Gunakan Lokasi Saya',
     labelLat: 'Lintang',
     labelLng: 'Bujur',
@@ -217,34 +233,48 @@ const locateTitle = ({
   h1={c.h1}
   subtitle={c.subtitle}
 >
-  <div class="tool-interface">
-    <div style="text-align: center; padding: var(--space-4) 0;" id="ll-prompt">
-      <p style="color: var(--color-text-secondary); margin-bottom: var(--space-4);">{c.promptText}</p>
-      <button class="btn btn-primary btn-lg" id="ll-btn" type="button">{c.btnUseLocation}</button>
-      <p id="ll-error" style="display: none; margin: var(--space-3) 0 0; color: var(--color-accent-error, #ef4444); font-size: var(--text-sm);"></p>
-    </div>
-
-    <div class="tool-result" id="ll-result" style="display: none;">
-      <div class="tool-result-row">
-        <span class="tool-result-label">{c.labelLat}</span>
-        <span class="tool-result-value" id="ll-lat" style="color: var(--color-accent-primary);">—</span>
+  <!-- Search & Action Toolbar Above the Fold -->
+  <div class="tool-interface" style="margin-bottom: var(--space-4);">
+    <div style="display: flex; gap: var(--space-3); flex-wrap: wrap; align-items: center; justify-content: space-between;">
+      <div style="display: flex; gap: var(--space-2); flex: 1; min-width: 280px; align-items: center;">
+        <input
+          type="text"
+          id="ll-search-input"
+          class="input"
+          placeholder={c.searchPlaceholder}
+          style="flex: 1; min-width: 180px; padding: 8px 12px; font-size: var(--text-sm);"
+        />
+        <button class="btn btn-secondary btn-sm" id="ll-search-btn" type="button">{c.searchBtn}</button>
       </div>
-      <div class="tool-result-row">
-        <span class="tool-result-label">{c.labelLng}</span>
-        <span class="tool-result-value" id="ll-lng" style="color: var(--color-accent-primary);">—</span>
-      </div>
-      <div class="tool-result-row">
-        <span class="tool-result-label">{c.labelAddr}</span>
-        <span class="tool-result-value" id="ll-addr" style="font-family: var(--font-sans); font-size: var(--text-sm);">—</span>
-      </div>
-      <div class="action-buttons" style="margin-top: var(--space-4);">
-        <button class="btn btn-secondary btn-sm" id="ll-copy" type="button">{c.btnCopy}</button>
-        <button class="btn btn-secondary btn-sm" id="ll-share" type="button">{c.btnShare}</button>
+      <div style="display: flex; gap: var(--space-2); align-items: center;">
+        <button class="btn btn-primary btn-sm" id="ll-btn" type="button">{c.btnUseLocation}</button>
       </div>
     </div>
+    <p id="ll-error" data-nosnippet style="display: none; margin: var(--space-3) 0 0; color: var(--color-accent-error, #ef4444); font-size: var(--text-sm);" role="alert" aria-live="polite"></p>
   </div>
 
-  <div class="map-container" id="ll-map" data-locate-title={locateTitle} style="margin-top: var(--space-6); cursor: crosshair;"></div>
+  <!-- Interactive Map Canvas Front and Center Above-the-fold with Zero CLS -->
+  <div class="map-container" id="ll-map" data-locate-title={locateTitle} style="min-height: 440px; cursor: crosshair; border-radius: var(--radius-xl); border: 1px solid var(--color-border); box-shadow: var(--shadow-glow);"></div>
+
+  <!-- Coordinates Inspector Card -->
+  <div class="tool-result" id="ll-result" style="margin-top: var(--space-4);">
+    <div class="tool-result-row">
+      <span class="tool-result-label">{c.labelLat}</span>
+      <span class="tool-result-value" id="ll-lat" style="color: var(--color-accent-primary);">—</span>
+    </div>
+    <div class="tool-result-row">
+      <span class="tool-result-label">{c.labelLng}</span>
+      <span class="tool-result-value" id="ll-lng" style="color: var(--color-accent-primary);">—</span>
+    </div>
+    <div class="tool-result-row">
+      <span class="tool-result-label">{c.labelAddr}</span>
+      <span class="tool-result-value" id="ll-addr" style="font-family: var(--font-sans); font-size: var(--text-sm);">—</span>
+    </div>
+    <div class="action-buttons" style="margin-top: var(--space-4);">
+      <button class="btn btn-secondary btn-sm" id="ll-copy" type="button">{c.btnCopy}</button>
+      <button class="btn btn-secondary btn-sm" id="ll-share" type="button">{c.btnShare}</button>
+    </div>
+  </div>
 
   <div class="prose" style="margin-top: var(--space-12); line-height: 1.8;">
     <h2>{c.howTitle}</h2>
@@ -354,13 +384,51 @@ const locateTitle = ({
         })
         .catch((e: any) => {
           if (err) {
-            err.textContent = e.message || 'Location error';
+            err.textContent = GeoLocation.getErrorMessage(e, document.documentElement.lang);
             err.style.display = 'block';
           }
         })
         .finally(() => {
           if (btn) btn.disabled = false;
         });
+    });
+
+    async function searchLocation() {
+      const input = document.getElementById('ll-search-input') as HTMLInputElement;
+      const q = input?.value?.trim();
+      if (!q) return;
+
+      const err = document.getElementById('ll-error');
+      if (err) err.style.display = 'none';
+
+      // Check if coordinate format e.g. "48.8584, 2.2945"
+      const coordMatch = q.match(/^(-?\d+(\.\d+)?)\s*,\s*(-?\d+(\.\d+)?)$/);
+      if (coordMatch) {
+        showResult(parseFloat(coordMatch[1]), parseFloat(coordMatch[3]));
+        return;
+      }
+
+      try {
+        const results = await Geocoding.searchAddress(q);
+        if (results && results.length > 0) {
+          showResult(parseFloat(results[0].lat), parseFloat(results[0].lon));
+        } else {
+          if (err) {
+            err.textContent = 'Location not found. Try a different city, address, or coordinates.';
+            err.style.display = 'block';
+          }
+        }
+      } catch (e) {
+        if (err) {
+          err.textContent = 'Search failed. Please try again.';
+          err.style.display = 'block';
+        }
+      }
+    }
+
+    document.getElementById('ll-search-btn')?.addEventListener('click', searchLocation);
+    document.getElementById('ll-search-input')?.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') searchLocation();
     });
 
     document.getElementById('ll-copy')?.addEventListener('click', function(this: HTMLButtonElement) {

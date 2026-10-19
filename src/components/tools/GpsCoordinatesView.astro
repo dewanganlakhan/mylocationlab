@@ -20,6 +20,8 @@ const translations: Record<string, any> = {
     description: "Find your exact GPS coordinates instantly. Get your current latitude, longitude, accuracy, and altitude from GPS satellites.",
     h1: "GPS Coordinates Finder",
     subtitle: "Get your precise GPS coordinates in real-time. Shows latitude, longitude, accuracy, and altitude from satellite signals.",
+    searchPlaceholder: "Search any address, city, or landmark...",
+    searchBtn: "Lookup GPS",
     promptText: "Detecting your GPS coordinates automatically — no click needed.",
     btnFind: "📍 Find My GPS Coordinates",
     loadingText: "Connecting to GPS satellites...",
@@ -57,6 +59,8 @@ const translations: Record<string, any> = {
     description: "Obtenga sus coordenadas GPS exactas al instante. Consulte su latitud, longitud, altitud y precisión con señales satelitales.",
     h1: "Buscador de Coordenadas GPS",
     subtitle: "Obtenga sus coordenadas GPS precisas en tiempo real. Muestra latitud, longitud, radio de error y altitud de satélites.",
+    searchPlaceholder: "Buscar cualquier dirección o lugar...",
+    searchBtn: "Buscar GPS",
     promptText: "Detectando sus coordenadas GPS automáticamente — sin necesidad de hacer clic.",
     btnFind: "📍 Obtener Coordenadas GPS",
     loadingText: "Conectando con satélites GPS...",
@@ -94,6 +98,8 @@ const translations: Record<string, any> = {
     description: "Trouvez vos coordonnées GPS exactes en direct. Affichez votre latitude, longitude, précision et altitude mesurées par satellite.",
     h1: "Recherche de Coordonnées GPS",
     subtitle: "Relevez vos coordonnées GPS précises en temps réel. Latitude, longitude, altitude et rayon d'erreur satellite.",
+    searchPlaceholder: "Rechercher une adresse ou lieu...",
+    searchBtn: "Consulter GPS",
     promptText: "Détection automatique de vos coordonnées GPS — aucun clic nécessaire.",
     btnFind: "📍 Trouver Mes Coordonnées GPS",
     loadingText: "Connexion aux satellites GPS en cours...",
@@ -131,6 +137,8 @@ const translations: Record<string, any> = {
     description: "Ermitteln Sie Ihre exakten GPS-Koordinaten sofort. Breitengrad, Längengrad, Genauigkeitsradius und Höhe über Satellitensignale.",
     h1: "GPS-Koordinaten Finder",
     subtitle: "Ermitteln Sie Ihre genauen GPS-Koordinaten in Echtzeit. Zeigt Breitengrad, Längengrad, Genauigkeit und Höhe von Satelliten.",
+    searchPlaceholder: "Adresse oder Ort suchen...",
+    searchBtn: "GPS abrufen",
     promptText: "Automatische Erkennung Ihrer GPS-Koordinaten — kein Klick erforderlich.",
     btnFind: "📍 GPS-Koordinaten abrufen",
     loadingText: "Verbindung zu GPS-Satelliten wird aufgebaut...",
@@ -168,6 +176,8 @@ const translations: Record<string, any> = {
     description: "Encontre suas coordenadas GPS exatas instantaneamente. Veja latitude, longitude, altitude e precisão de satélites em tempo real.",
     h1: "Buscador de Coordenadas GPS",
     subtitle: "Obtenha suas coordenadas GPS precisas em tempo real. Exibe latitude, longitude, raio de precisão e altitude via satélite.",
+    searchPlaceholder: "Buscar qualquer endereço ou marco...",
+    searchBtn: "Buscar GPS",
     promptText: "Detectando suas coordenadas GPS automaticamente — sem necessidade de clique.",
     btnFind: "📍 Obter Minhas Coordenadas GPS",
     loadingText: "Conectando aos satélites GPS...",
@@ -205,6 +215,8 @@ const translations: Record<string, any> = {
     description: "अपने सटीक GPS निर्देशांक तुरंत जानें। GPS सैटेलाइट से रीयल-टाइम सटीकता डेटा के साथ अपना वर्तमान अक्षांश, देशांतर, सटीकता और ऊँचाई मुफ़्त पाएं।",
     h1: "GPS निर्देशांक खोजक",
     subtitle: "अपने सटीक GPS निर्देशांक रीयल-टाइम में पाएं। सैटेलाइट सिग्नल से अक्षांश, देशांतर, सटीकता और ऊँचाई दिखाता है।",
+    searchPlaceholder: "कोई भी पता या स्थान खोजें...",
+    searchBtn: "GPS खोजें",
     promptText: "आपके GPS निर्देशांक अपने आप पहचाने जा रहे हैं — क्लिक की ज़रूरत नहीं।",
     btnFind: "📍 मेरे GPS निर्देशांक खोजें",
     loadingText: "GPS सैटेलाइट से कनेक्ट हो रहे हैं...",
@@ -242,6 +254,8 @@ const translations: Record<string, any> = {
     description: "Temukan koordinat GPS Anda secara instan dan gratis. Dapatkan lintang, bujur, akurasi, dan ketinggian saat ini langsung dari satelit GPS di perangkat Anda.",
     h1: "Pencari Koordinat GPS",
     subtitle: "Dapatkan koordinat GPS presisi secara real-time. Menampilkan lintang, bujur, akurasi, dan ketinggian dari sinyal satelit.",
+    searchPlaceholder: "Cari alamat atau tempat mana pun...",
+    searchBtn: "Cari GPS",
     promptText: "Mendeteksi koordinat GPS Anda secara otomatis — tanpa perlu klik.",
     btnFind: "📍 Cari Koordinat GPS Saya",
     loadingText: "Menghubungkan ke satelit GPS...",
@@ -299,6 +313,18 @@ const locateTitle = ({
   subtitle={c.subtitle}
 >
   <div class="tool-interface">
+    <!-- Place / Address Search Bar to Look up GPS for Any Location -->
+    <div style="display: flex; gap: var(--space-2); margin-bottom: var(--space-4); flex-wrap: wrap;">
+      <input
+        type="text"
+        id="gps-search-input"
+        class="input"
+        placeholder={c.searchPlaceholder || "Search any address, city, or landmark..."}
+        style="flex: 1; min-width: 200px; padding: 8px 12px; font-size: var(--text-sm);"
+      />
+      <button class="btn btn-secondary btn-sm" id="gps-search-btn" type="button">{c.searchBtn || "Lookup GPS"}</button>
+    </div>
+
     <div style="text-align: center; padding: var(--space-4) 0;" id="gps-prompt">
       <p style="color: var(--color-text-secondary); margin-bottom: var(--space-4);">{c.promptText}</p>
       <button class="btn btn-primary btn-lg" id="gps-btn" type="button">{c.btnFind}</button>
@@ -309,7 +335,7 @@ const locateTitle = ({
       <p style="color: var(--color-text-secondary); margin: 0;">{c.loadingText}</p>
     </div>
 
-    <p id="gps-error" style="display: none; margin: var(--space-3) 0 0; text-align: center; color: var(--color-accent-error, #ef4444); font-size: var(--text-sm);"></p>
+    <p id="gps-error" data-nosnippet style="display: none; margin: var(--space-3) 0 0; text-align: center; color: var(--color-accent-error, #ef4444); font-size: var(--text-sm);" role="alert" aria-live="polite"></p>
 
     <div class="tool-result" id="gps-result" style="display: none;">
       <div class="tool-result-row">
@@ -384,6 +410,7 @@ const locateTitle = ({
     import CoordUtils from '../../scripts/coordinates.js';
     import Sharing from '../../scripts/sharing.js';
     import MapUtils from '../../scripts/map.js';
+    import Geocoding from '../../scripts/geocoding.js';
 
     const locateTitles: Record<string, string> = {
       en: "Zoom to my current location",
@@ -463,12 +490,107 @@ const locateTitle = ({
       } catch (error) {
         if (loading) loading.style.display = 'none';
         if (prompt) prompt.style.display = 'block';
+        if (!isAuto) {
+          if (errorEl) {
+            errorEl.textContent = GeoLocation.getErrorMessage(error, document.documentElement.lang);
+            errorEl.style.display = 'block';
+          }
+        } else {
+          if (errorEl) errorEl.style.display = 'none';
+        }
+      }
+    }
+
+    function renderGpsMap(targetLat: number, targetLng: number, accuracy: number) {
+      const waitL = () => {
+        if (typeof (window as any).L !== 'undefined') {
+          const L = (window as any).L;
+          if ((window as any)._gpsMap) (window as any)._gpsMap.remove();
+          const m = L.map('gps-map').setView([targetLat, targetLng], 16);
+          (window as any)._gpsMap = m;
+          L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '&copy; OpenStreetMap', maxZoom: 19 }).addTo(m);
+          const icon = L.divIcon({ html: '<div class="user-pulse-dot"></div>', className: 'user-pulse-marker', iconSize: [18,18], iconAnchor: [9,9] });
+          L.marker([targetLat, targetLng], { icon }).addTo(m);
+          if (accuracy > 0) L.circle([targetLat, targetLng], { radius: accuracy, color: '#00d4ff', fillColor: '#00d4ff', fillOpacity: 0.08, weight: 1 }).addTo(m);
+
+          MapUtils.addLocateControl(m, {
+            title: locateTitle,
+            zoom: 16,
+            onLocate: () => findGPS(false),
+          });
+        } else setTimeout(waitL, 100);
+      };
+      waitL();
+    }
+
+    async function searchGPS() {
+      const input = document.getElementById('gps-search-input') as HTMLInputElement;
+      const q = input?.value?.trim();
+      if (!q) return;
+
+      const prompt = document.getElementById('gps-prompt');
+      const loading = document.getElementById('gps-loading');
+      const errorEl = document.getElementById('gps-error');
+      const result = document.getElementById('gps-result');
+      const actions = document.getElementById('gps-actions');
+      const mapEl = document.getElementById('gps-map');
+
+      if (prompt) prompt.style.display = 'none';
+      if (errorEl) errorEl.style.display = 'none';
+      if (loading) loading.style.display = 'block';
+
+      try {
+        const results = await Geocoding.searchAddress(q);
+        if (results && results.length > 0) {
+          lat = parseFloat(results[0].lat);
+          lng = parseFloat(results[0].lon);
+
+          const latEl = document.getElementById('gps-lat');
+          const lngEl = document.getElementById('gps-lng');
+          const latDmsEl = document.getElementById('gps-lat-dms');
+          const lngDmsEl = document.getElementById('gps-lng-dms');
+          const accEl = document.getElementById('gps-acc');
+          const altEl = document.getElementById('gps-alt');
+          const timeEl = document.getElementById('gps-time');
+          const mapsLink = document.getElementById('gps-maps') as HTMLAnchorElement;
+
+          if (latEl) latEl.textContent = lat.toFixed(6) + '°';
+          if (lngEl) lngEl.textContent = lng.toFixed(6) + '°';
+          if (latDmsEl) latDmsEl.textContent = CoordUtils.formatDMS(lat, true);
+          if (lngDmsEl) lngDmsEl.textContent = CoordUtils.formatDMS(lng, false);
+          if (accEl) accEl.textContent = 'Global Geodetic Reference';
+          if (altEl) altEl.textContent = 'Ellipsoidal Datum WGS84';
+          if (timeEl) timeEl.textContent = new Date().toLocaleString();
+          if (mapsLink) mapsLink.href = `https://www.google.com/maps?q=${lat},${lng}`;
+
+          if (loading) loading.style.display = 'none';
+          if (result) result.style.display = 'block';
+          if (actions) actions.style.display = 'flex';
+          if (mapEl) mapEl.style.display = 'block';
+
+          renderGpsMap(lat, lng, 0);
+        } else {
+          if (loading) loading.style.display = 'none';
+          if (prompt) prompt.style.display = 'block';
+          if (errorEl) {
+            errorEl.textContent = 'Location not found. Please try a different query.';
+            errorEl.style.display = 'block';
+          }
+        }
+      } catch (err) {
+        if (loading) loading.style.display = 'none';
+        if (prompt) prompt.style.display = 'block';
         if (errorEl) {
-          errorEl.textContent = GeoLocation.getErrorMessage(error);
+          errorEl.textContent = 'Search failed. Please try again.';
           errorEl.style.display = 'block';
         }
       }
     }
+
+    document.getElementById('gps-search-btn')?.addEventListener('click', searchGPS);
+    document.getElementById('gps-search-input')?.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') searchGPS();
+    });
 
     document.getElementById('gps-btn')?.addEventListener('click', () => findGPS(false));
     document.getElementById('gps-refresh')?.addEventListener('click', () => findGPS(false));

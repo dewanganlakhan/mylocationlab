@@ -23,60 +23,105 @@ const labels: Record<string, any> = {
     lat: 'Latitude', lng: 'Longitude', address: 'Address', city: 'City',
     state: 'State / Region', country: 'Country', accuracy: 'Accuracy', altitude: 'Altitude',
     copy: 'Copy Coordinates', share: 'Share', openInMaps: 'Open in Maps', refresh: 'Refresh',
-    locateTitle: 'Zoom to my current location'
+    locateTitle: 'Zoom to my current location',
+    errBadge: 'Error', tryAgain: 'Try Again', getLoc: 'Get My Location',
+    copied: 'Copied!', copyField: 'Copy',
+    detectedCity: 'Your Current City',
+    detectedState: 'Your Current State / Region',
+    detectedCountry: 'Your Current Country'
   },
   es: {
     header: 'Su Ubicación', ready: 'Listo', loading: 'Detectando ubicación...',
     lat: 'Latitud', lng: 'Longitud', address: 'Dirección', city: 'Ciudad',
     state: 'Estado / Provincia', country: 'País', accuracy: 'Precisión', altitude: 'Altitud',
     copy: 'Copiar Coordenadas', share: 'Compartir', openInMaps: 'Abrir en Mapas', refresh: 'Actualizar',
-    locateTitle: 'Centrar y ampliar en mi ubicación'
+    locateTitle: 'Centrar y ampliar en mi ubicación',
+    errBadge: 'Error', tryAgain: 'Reintentar', getLoc: 'Obtener Mi Ubicación',
+    copied: '¡Copiado!', copyField: 'Copiar',
+    detectedCity: 'Su Ciudad Actual',
+    detectedState: 'Su Estado o Provincia Actual',
+    detectedCountry: 'Su País Actual'
   },
   fr: {
     header: 'Votre Position', ready: 'Prêt', loading: 'Détection de la position...',
     lat: 'Latitude', lng: 'Longitude', address: 'Adresse', city: 'Ville',
     state: 'Région / Département', country: 'Pays', accuracy: 'Précision', altitude: 'Altitude',
     copy: 'Copier Coordonnées', share: 'Partager', openInMaps: 'Ouvrir dans Maps', refresh: 'Actualiser',
-    locateTitle: 'Zoomer sur ma position actuelle'
+    locateTitle: 'Zoomer sur ma position actuelle',
+    errBadge: 'Erreur', tryAgain: 'Réessayer', getLoc: 'Obtenir Ma Position',
+    copied: 'Copié !', copyField: 'Copier',
+    detectedCity: 'Votre Ville Actuelle',
+    detectedState: 'Votre Région / Département Actuel',
+    detectedCountry: 'Votre Pays Actuel'
   },
   de: {
     header: 'Ihr Standort', ready: 'Bereit', loading: 'Standort wird ermittelt...',
     lat: 'Breitengrad', lng: 'Längengrad', address: 'Adresse', city: 'Stadt',
     state: 'Bundesland / Region', country: 'Land', accuracy: 'Genauigkeit', altitude: 'Höhe',
     copy: 'Koordinaten kopieren', share: 'Teilen', openInMaps: 'In Karten öffnen', refresh: 'Aktualisieren',
-    locateTitle: 'Auf meinen aktuellen Standort zoomen'
+    locateTitle: 'Auf meinen aktuellen Standort zoomen',
+    errBadge: 'Fehler', tryAgain: 'Erneut versuchen', getLoc: 'Meinen Standort abrufen',
+    copied: 'Kopiert!', copyField: 'Kopieren',
+    detectedCity: 'Ihre aktuelle Stadt',
+    detectedState: 'Ihr aktuelles Bundesland / Region',
+    detectedCountry: 'Ihr aktuelles Land'
   },
   pt: {
     header: 'Sua Localização', ready: 'Pronto', loading: 'Detectando localização...',
     lat: 'Latitude', lng: 'Longitude', address: 'Endereço', city: 'Cidade',
     state: 'Estado', country: 'País', accuracy: 'Precisão', altitude: 'Altitude',
     copy: 'Copiar Coordenadas', share: 'Compartilhar', openInMaps: 'Abrir no Maps', refresh: 'Atualizar',
-    locateTitle: 'Aproximar da minha localização atual'
+    locateTitle: 'Aproximar da minha localização atual',
+    errBadge: 'Erro', tryAgain: 'Tentar novamente', getLoc: 'Obter Minha Localização',
+    copied: 'Copiado!', copyField: 'Copiar',
+    detectedCity: 'Sua Cidade Atual',
+    detectedState: 'Seu Estado Atual',
+    detectedCountry: 'Seu País Atual'
   },
   hi: {
     header: 'आपकी लोकेशन', ready: 'तैयार', loading: 'लोकेशन पहचानी जा रही है...',
     lat: 'अक्षांश', lng: 'देशांतर', address: 'पता', city: 'शहर',
     state: 'राज्य / क्षेत्र', country: 'देश', accuracy: 'सटीकता', altitude: 'ऊँचाई',
     copy: 'निर्देशांक कॉपी करें', share: 'साझा करें', openInMaps: 'नक्शों में खोलें', refresh: 'रिफ़्रेश',
-    locateTitle: 'मेरी वर्तमान लोकेशन पर ज़ूम करें'
+    locateTitle: 'मेरी वर्तमान लोकेशन पर ज़ूम करें',
+    errBadge: 'त्रुटि', tryAgain: 'पुन: प्रयास करें', getLoc: 'मेरी लोकेशन प्राप्त करें',
+    copied: 'कॉपी किया गया!', copyField: 'कॉपी करें',
+    detectedCity: 'आपका वर्तमान शहर',
+    detectedState: 'आपका वर्तमान राज्य / क्षेत्र',
+    detectedCountry: 'आपका वर्तमान देश'
   },
   id: {
     header: 'Lokasi Anda', ready: 'Siap', loading: 'Mendeteksi lokasi...',
     lat: 'Lintang', lng: 'Bujur', address: 'Alamat', city: 'Kota',
     state: 'Provinsi / Wilayah', country: 'Negara', accuracy: 'Akurasi', altitude: 'Ketinggian',
     copy: 'Salin Koordinat', share: 'Bagikan', openInMaps: 'Buka di Peta', refresh: 'Segarkan',
-    locateTitle: 'Perbesar ke lokasi saya saat ini'
+    locateTitle: 'Perbesar ke lokasi saya saat ini',
+    errBadge: 'Kesalahan', tryAgain: 'Coba Lagi', getLoc: 'Dapatkan Lokasi Saya',
+    copied: 'Tersalin!', copyField: 'Salin',
+    detectedCity: 'Kota Anda Saat Ini',
+    detectedState: 'Provinsi / Wilayah Anda Saat Ini',
+    detectedCountry: 'Negara Anda Saat Ini'
   }
 };
 
 const l = labels[lang] || labels.en;
 ---
 
-<div class="location-display" id="loc-finder">
+<div
+  class="location-display"
+  id="loc-finder"
+  data-err-badge={l.errBadge}
+  data-try-again={l.tryAgain}
+  data-get-loc={l.getLoc}
+  data-ready={l.ready}
+  data-copied={l.copied}
+  data-lang={lang}
+  data-emphasis={emphasisField}
+>
   <div class="location-display-header">
     <div class="location-display-dot" id="loc-dot" style="background: var(--color-text-tertiary);"></div>
     <span class="location-display-title">{l.header}</span>
-    <span class="badge" id="loc-badge">{l.ready}</span>
+    <span class="badge" id="loc-badge" data-nosnippet>{l.ready}</span>
   </div>
 
   <div id="loc-prompt" style="display: none; text-align: center; padding: var(--space-4) 0;">
@@ -93,43 +138,111 @@ const l = labels[lang] || labels.en;
     <p style="color: var(--color-text-secondary); margin: 0; font-size: var(--text-sm);">{l.loading}</p>
   </div>
 
-  <p id="loc-error" style="display: none; margin: var(--space-3) 0 0; text-align: center; color: var(--color-accent-error, #ef4444); font-size: var(--text-sm);"></p>
+  <p
+    id="loc-error"
+    data-nosnippet
+    style="display: none; margin: var(--space-3) 0 0; text-align: center; color: var(--color-accent-error, #ef4444); font-size: var(--text-sm);"
+    role="alert"
+    aria-live="polite"
+  ></p>
+
+  {emphasisField === 'city' && (
+    <div class="emphasis-hero-card" id="emphasis-hero-city" style="display: none;">
+      <span class="emphasis-hero-badge">📍 {l.detectedCity}</span>
+      <div class="emphasis-hero-val" id="hero-city-val">—</div>
+      <p class="emphasis-hero-sub" id="hero-city-sub"></p>
+    </div>
+  )}
+  {emphasisField === 'state' && (
+    <div class="emphasis-hero-card" id="emphasis-hero-state" style="display: none;">
+      <span class="emphasis-hero-badge">🏛️ {l.detectedState}</span>
+      <div class="emphasis-hero-val" id="hero-state-val">—</div>
+      <p class="emphasis-hero-sub" id="hero-state-sub"></p>
+    </div>
+  )}
+  {emphasisField === 'country' && (
+    <div class="emphasis-hero-card" id="emphasis-hero-country" style="display: none;">
+      <span class="emphasis-hero-badge">🌍 {l.detectedCountry}</span>
+      <div class="emphasis-hero-val" id="hero-country-val">—</div>
+      <p class="emphasis-hero-sub" id="hero-country-sub"></p>
+    </div>
+  )}
 
   <div class="location-data-grid" id="loc-data" style="display: none;">
     <div class="location-data-item">
-      <span class="location-data-label">{l.lat}</span>
+      <div class="location-data-label-row">
+        <span class="location-data-label">{l.lat}</span>
+        <button type="button" class="field-copy-btn" data-copy-target="loc-lat" title={l.copyField} aria-label={`Copy ${l.lat}`}>
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+        </button>
+      </div>
       <span class={`location-data-value ${emphasisField === 'lat' ? 'highlight' : ''}`} id="loc-lat">—</span>
     </div>
     <div class="location-data-item">
-      <span class="location-data-label">{l.lng}</span>
+      <div class="location-data-label-row">
+        <span class="location-data-label">{l.lng}</span>
+        <button type="button" class="field-copy-btn" data-copy-target="loc-lng" title={l.copyField} aria-label={`Copy ${l.lng}`}>
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+        </button>
+      </div>
       <span class={`location-data-value ${emphasisField === 'lng' ? 'highlight' : ''}`} id="loc-lng">—</span>
     </div>
     {showAllFields && (
       <>
         <div class="location-data-item span-2">
-          <span class="location-data-label">{l.address}</span>
+          <div class="location-data-label-row">
+            <span class="location-data-label">{l.address}</span>
+            <button type="button" class="field-copy-btn" data-copy-target="loc-address" title={l.copyField} aria-label={`Copy ${l.address}`}>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+            </button>
+          </div>
           <span class={`location-data-value ${emphasisField === 'address' ? 'highlight' : ''}`} id="loc-address" style="font-family: var(--font-sans); font-size: var(--text-sm);">—</span>
         </div>
         <div class="location-data-item">
-          <span class="location-data-label">{l.city}</span>
+          <div class="location-data-label-row">
+            <span class="location-data-label">{l.city}</span>
+            <button type="button" class="field-copy-btn" data-copy-target="loc-city" title={l.copyField} aria-label={`Copy ${l.city}`}>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+            </button>
+          </div>
           <span class={`location-data-value ${emphasisField === 'city' ? 'highlight' : ''}`} id="loc-city" style="font-family: var(--font-sans);">—</span>
         </div>
         <div class="location-data-item">
-          <span class="location-data-label">{l.state}</span>
+          <div class="location-data-label-row">
+            <span class="location-data-label">{l.state}</span>
+            <button type="button" class="field-copy-btn" data-copy-target="loc-state" title={l.copyField} aria-label={`Copy ${l.state}`}>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+            </button>
+          </div>
           <span class={`location-data-value ${emphasisField === 'state' ? 'highlight' : ''}`} id="loc-state" style="font-family: var(--font-sans);">—</span>
         </div>
         <div class="location-data-item">
-          <span class="location-data-label">{l.country}</span>
+          <div class="location-data-label-row">
+            <span class="location-data-label">{l.country}</span>
+            <button type="button" class="field-copy-btn" data-copy-target="loc-country" title={l.copyField} aria-label={`Copy ${l.country}`}>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+            </button>
+          </div>
           <span class={`location-data-value ${emphasisField === 'country' ? 'highlight' : ''}`} id="loc-country" style="font-family: var(--font-sans);">—</span>
         </div>
       </>
     )}
     <div class="location-data-item">
-      <span class="location-data-label">{l.accuracy}</span>
+      <div class="location-data-label-row">
+        <span class="location-data-label">{l.accuracy}</span>
+        <button type="button" class="field-copy-btn" data-copy-target="loc-accuracy" title={l.copyField} aria-label={`Copy ${l.accuracy}`}>
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+        </button>
+      </div>
       <span class="location-data-value" id="loc-accuracy">—</span>
     </div>
     <div class="location-data-item">
-      <span class="location-data-label">{l.altitude}</span>
+      <div class="location-data-label-row">
+        <span class="location-data-label">{l.altitude}</span>
+        <button type="button" class="field-copy-btn" data-copy-target="loc-altitude" title={l.copyField} aria-label={`Copy ${l.altitude}`}>
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+        </button>
+      </div>
       <span class="location-data-value" id="loc-altitude">—</span>
     </div>
   </div>
@@ -168,6 +281,63 @@ const l = labels[lang] || labels.en;
 
 {showMap && <div class="map-container" id="loc-map" data-locate-title={l.locateTitle} style="margin-top: var(--space-6);"></div>}
 
+<style>
+  .location-data-label-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 4px;
+    margin-bottom: 2px;
+  }
+  .field-copy-btn {
+    background: transparent;
+    border: none;
+    color: var(--color-text-tertiary);
+    cursor: pointer;
+    padding: 2px 4px;
+    border-radius: var(--radius-sm);
+    transition: all 0.15s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+  }
+  .field-copy-btn:hover {
+    color: var(--color-accent-primary);
+    background: var(--color-bg-tertiary);
+  }
+  .emphasis-hero-card {
+    background: linear-gradient(135deg, rgba(37, 99, 235, 0.08) 0%, rgba(14, 165, 233, 0.04) 100%);
+    border: 1px solid rgba(37, 99, 235, 0.25);
+    border-radius: var(--radius-xl);
+    padding: var(--space-6) var(--space-5);
+    text-align: center;
+    margin: var(--space-4) 0 var(--space-6);
+  }
+  .emphasis-hero-badge {
+    display: inline-block;
+    font-size: var(--text-xs);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-accent-primary);
+    margin-bottom: var(--space-2);
+  }
+  .emphasis-hero-val {
+    font-size: clamp(1.75rem, 4vw, 2.75rem);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: var(--color-text-primary);
+    line-height: 1.2;
+    margin: var(--space-1) 0 var(--space-2);
+  }
+  .emphasis-hero-sub {
+    font-size: var(--text-sm);
+    color: var(--color-text-secondary);
+    margin: 0;
+  }
+</style>
+
 <script>
   import GeoLocation from '../scripts/geolocation.js';
   import Geocoding from '../scripts/geocoding.js';
@@ -192,12 +362,17 @@ const l = labels[lang] || labels.en;
     const mapEl = document.getElementById('loc-map');
     if (!mapEl) return;
     const waitL = () => {
+      // @ts-ignore
       if (typeof L !== 'undefined') {
+        // @ts-ignore
         if (!window._locMap) {
           const center = (lat !== null && lng !== null) ? [lat, lng] : [20, 0];
           const initialZoom = (lat !== null && lng !== null) ? zoom : 2;
+          // @ts-ignore
           const m = L.map('loc-map', { scrollWheelZoom: false }).setView(center, initialZoom);
+          // @ts-ignore
           window._locMap = m;
+          // @ts-ignore
           L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '&copy; OpenStreetMap',
             maxZoom: 19
@@ -211,14 +386,20 @@ const l = labels[lang] || labels.en;
         }
 
         if (lat !== null && lng !== null) {
+          // @ts-ignore
           window._locMap.flyTo([lat, lng], zoom, { animate: true, duration: 1.5 });
+          // @ts-ignore
           if (window._locMap._userLocMarker) window._locMap.removeLayer(window._locMap._userLocMarker);
+          // @ts-ignore
           if (window._locMap._userLocCircle) window._locMap.removeLayer(window._locMap._userLocCircle);
 
+          // @ts-ignore
           const icon = L.divIcon({ html: '<div class="user-pulse-dot"></div>', className: 'user-pulse-marker', iconSize: [18, 18], iconAnchor: [9, 9] });
+          // @ts-ignore
           window._locMap._userLocMarker = L.marker([lat, lng], { icon }).addTo(window._locMap);
 
           if (accuracy > 0) {
+            // @ts-ignore
             window._locMap._userLocCircle = L.circle([lat, lng], {
               radius: accuracy,
               color: '#00d4ff',
@@ -236,6 +417,7 @@ const l = labels[lang] || labels.en;
   }
 
   async function locate(isAuto = false) {
+    const finderEl = document.getElementById('loc-finder');
     const loading = document.getElementById('loc-loading');
     const prompt = document.getElementById('loc-prompt');
     const errorEl = document.getElementById('loc-error');
@@ -244,9 +426,9 @@ const l = labels[lang] || labels.en;
     const dot = document.getElementById('loc-dot');
     const badge = document.getElementById('loc-badge');
 
-    prompt.style.display = 'none';
-    errorEl.style.display = 'none';
-    loading.style.display = 'block';
+    if (prompt) prompt.style.display = 'none';
+    if (errorEl) errorEl.style.display = 'none';
+    if (loading) loading.style.display = 'block';
 
     try {
       const position = await GeoLocation.getCurrentPosition();
@@ -254,37 +436,100 @@ const l = labels[lang] || labels.en;
       cLat = pos.latitude;
       cLng = pos.longitude;
 
-      document.getElementById('loc-lat').textContent = pos.formattedLat;
-      document.getElementById('loc-lng').textContent = pos.formattedLng;
-      document.getElementById('loc-accuracy').textContent = pos.formattedAccuracy;
-      document.getElementById('loc-altitude').textContent = pos.altitude ? `${Math.round(pos.altitude)} m` : 'N/A';
-      document.getElementById('loc-maps').href = `https://www.google.com/maps?q=${cLat},${cLng}`;
+      const latEl = document.getElementById('loc-lat');
+      const lngEl = document.getElementById('loc-lng');
+      const accEl = document.getElementById('loc-accuracy');
+      const altEl = document.getElementById('loc-altitude');
+      const mapsEl = document.getElementById('loc-maps');
+
+      if (latEl) latEl.textContent = pos.formattedLat;
+      if (lngEl) lngEl.textContent = pos.formattedLng;
+      if (accEl) accEl.textContent = pos.formattedAccuracy;
+      if (altEl) altEl.textContent = pos.altitude ? `${Math.round(pos.altitude)} m` : 'N/A';
+      if (mapsEl) mapsEl.setAttribute('href', `https://www.google.com/maps?q=${cLat},${cLng}`);
 
       try {
         const addr = await Geocoding.reverseGeocode(cLat, cLng);
-        if (document.getElementById('loc-address')) document.getElementById('loc-address').textContent = addr.displayName || '—';
-        if (document.getElementById('loc-city')) document.getElementById('loc-city').textContent = addr.city || '—';
-        if (document.getElementById('loc-state')) document.getElementById('loc-state').textContent = addr.state || '—';
-        if (document.getElementById('loc-country')) document.getElementById('loc-country').textContent = addr.country || '—';
+        const addrEl = document.getElementById('loc-address');
+        const cityEl = document.getElementById('loc-city');
+        const stateEl = document.getElementById('loc-state');
+        const countryEl = document.getElementById('loc-country');
+
+        if (addrEl) addrEl.textContent = addr.displayName || '—';
+        if (cityEl) cityEl.textContent = addr.city || addr.town || addr.village || '—';
+        if (stateEl) stateEl.textContent = addr.state || '—';
+        if (countryEl) countryEl.textContent = addr.country || '—';
+
+        // Populate intent hero cards if present
+        const heroCity = document.getElementById('emphasis-hero-city');
+        if (heroCity) {
+          const val = document.getElementById('hero-city-val');
+          const sub = document.getElementById('hero-city-sub');
+          if (val) val.textContent = addr.city || addr.town || addr.village || addr.displayName || '—';
+          if (sub) sub.textContent = [addr.county, addr.state, addr.country].filter(Boolean).join(', ');
+          heroCity.style.display = 'block';
+        }
+
+        const heroState = document.getElementById('emphasis-hero-state');
+        if (heroState) {
+          const val = document.getElementById('hero-state-val');
+          const sub = document.getElementById('hero-state-sub');
+          if (val) val.textContent = addr.state || '—';
+          if (sub) sub.textContent = [addr.country, addr.countryCode ? `(${addr.countryCode})` : ''].filter(Boolean).join(' ');
+          heroState.style.display = 'block';
+        }
+
+        const heroCountry = document.getElementById('emphasis-hero-country');
+        if (heroCountry) {
+          const val = document.getElementById('hero-country-val');
+          const sub = document.getElementById('hero-country-sub');
+          if (val) val.textContent = addr.country || '—';
+          if (sub) sub.textContent = addr.countryCode ? `ISO: ${addr.countryCode}` : '';
+          heroCountry.style.display = 'block';
+        }
+
       } catch {}
 
-      dot.style.background = 'var(--color-accent-success)';
-      badge.textContent = `± ${pos.formattedAccuracy}`;
-      badge.className = 'badge badge-success';
-      loading.style.display = 'none';
-      data.style.display = 'grid';
-      actions.style.display = 'flex';
+      if (dot) dot.style.background = 'var(--color-accent-success)';
+      if (badge) {
+        badge.textContent = `± ${pos.formattedAccuracy}`;
+        badge.className = 'badge badge-success';
+      }
+      if (loading) loading.style.display = 'none';
+      if (data) data.style.display = 'grid';
+      if (actions) actions.style.display = 'flex';
 
       ensureMap(cLat, cLng, pos.accuracy, 16);
     } catch (error) {
-      loading.style.display = 'none';
-      prompt.style.display = 'block';
-      dot.style.background = 'var(--color-accent-error)';
-      badge.textContent = 'Error';
-      const btnLabel = document.querySelector('#loc-btn span');
-      if (btnLabel) btnLabel.textContent = isAuto ? 'Try Again' : 'Get My Location';
-      errorEl.textContent = GeoLocation.getErrorMessage(error);
-      errorEl.style.display = 'block';
+      if (loading) loading.style.display = 'none';
+      if (prompt) prompt.style.display = 'block';
+
+      if (!isAuto) {
+        // User explicitly clicked "Get My Location" or "Try Again"
+        if (dot) dot.style.background = 'var(--color-accent-error)';
+        if (badge) {
+          badge.textContent = finderEl?.getAttribute('data-err-badge') || 'Error';
+          badge.className = 'badge';
+        }
+        const btnLabel = document.querySelector('#loc-btn span');
+        if (btnLabel) btnLabel.textContent = finderEl?.getAttribute('data-try-again') || 'Try Again';
+        if (errorEl) {
+          errorEl.textContent = GeoLocation.getErrorMessage(error, currentDocLang);
+          errorEl.style.display = 'block';
+        }
+      } else {
+        // Silent neutral state on automated initial visit/crawlers
+        if (dot) dot.style.background = 'var(--color-text-tertiary)';
+        if (badge) {
+          badge.textContent = finderEl?.getAttribute('data-ready') || 'Ready';
+          badge.className = 'badge';
+        }
+        if (errorEl) {
+          errorEl.style.display = 'none';
+        }
+        const btnLabel = document.querySelector('#loc-btn span');
+        if (btnLabel) btnLabel.textContent = finderEl?.getAttribute('data-get-loc') || 'Get My Location';
+      }
       ensureMap();
     }
   }
@@ -296,17 +541,38 @@ const l = labels[lang] || labels.en;
 
   (async () => {
     if (await GeoLocation.checkPermission() === 'denied') {
-      document.getElementById('loc-prompt').style.display = 'block';
+      const p = document.getElementById('loc-prompt');
+      if (p) p.style.display = 'block';
       return;
     }
     locate(true);
   })();
 
-  document.getElementById('loc-copy')?.addEventListener('click', function() {
-    if (cLat) Sharing.copyToClipboard(`${cLat}, ${cLng}`, this);
+  // Granular copy buttons per field
+  document.querySelectorAll('.field-copy-btn').forEach(btn => {
+    btn.addEventListener('click', function(this: HTMLButtonElement) {
+      const targetId = this.getAttribute('data-copy-target');
+      if (!targetId) return;
+      const targetEl = document.getElementById(targetId);
+      const val = targetEl?.textContent?.trim();
+      if (!val || val === '—') return;
+      navigator.clipboard.writeText(val).then(() => {
+        const origHtml = this.innerHTML;
+        this.innerHTML = '<span style="font-size: 10px; color: var(--color-accent-success); font-weight: 700;">✓</span>';
+        setTimeout(() => { this.innerHTML = origHtml; }, 1800);
+      });
+    });
+  });
+
+  document.getElementById('loc-copy')?.addEventListener('click', function(this: HTMLButtonElement) {
+    if (cLat !== null && cLng !== null) {
+      Sharing.copyToClipboard(`${cLat}, ${cLng}`, this);
+    }
   });
 
   document.getElementById('loc-share')?.addEventListener('click', () => {
-    if (cLat) Sharing.shareNative({ title: 'My Location', text: `${cLat}, ${cLng}`, url: `https://www.google.com/maps?q=${cLat},${cLng}` });
+    if (cLat !== null && cLng !== null) {
+      Sharing.shareNative({ title: 'My Location', text: `${cLat}, ${cLng}`, url: `https://www.google.com/maps?q=${cLat},${cLng}` });
+    }
   });
 </script>

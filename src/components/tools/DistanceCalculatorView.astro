@@ -224,13 +224,21 @@ const t = translations[lang] || translations.en;
 
 <ToolLayout leaflet toolId="distance-calculator" title={t.title} description={t.description} h1={t.h1} subtitle={t.subtitle} lang={lang}>
   <div class="tool-interface">
-    <h3 style="font-size: var(--text-base); margin-bottom: var(--space-4);">{t.pointA}</h3>
+    <h3 style="font-size: var(--text-base); margin-bottom: var(--space-2);">{t.pointA}</h3>
+    <div style="margin-bottom: var(--space-3); display: flex; gap: 8px;">
+      <input type="text" class="input" id="dc-addr1" placeholder="🔍 Search address or city for Point A..." style="flex: 1; font-size: var(--text-sm);" />
+      <button class="btn btn-secondary btn-sm" id="dc-addr1-btn" type="button">Find</button>
+    </div>
     <div class="grid grid-2" style="margin-bottom: var(--space-4);">
       <div><label class="label">{t.latitude}</label><input type="number" step="any" class="input" id="dc-lat1" placeholder="e.g. 28.6139" /></div>
       <div><label class="label">{t.longitude}</label><input type="number" step="any" class="input" id="dc-lng1" placeholder="e.g. 77.2090" /></div>
     </div>
     <button class="btn btn-ghost btn-sm" id="dc-gps1" type="button" style="margin-bottom: var(--space-6);">{t.useMyLocationA}</button>
-    <h3 style="font-size: var(--text-base); margin-bottom: var(--space-4);">{t.pointB}</h3>
+    <h3 style="font-size: var(--text-base); margin-bottom: var(--space-2);">{t.pointB}</h3>
+    <div style="margin-bottom: var(--space-3); display: flex; gap: 8px;">
+      <input type="text" class="input" id="dc-addr2" placeholder="🔍 Search address or city for Point B..." style="flex: 1; font-size: var(--text-sm);" />
+      <button class="btn btn-secondary btn-sm" id="dc-addr2-btn" type="button">Find</button>
+    </div>
     <div class="grid grid-2" style="margin-bottom: var(--space-4);">
       <div><label class="label">{t.latitude}</label><input type="number" step="any" class="input" id="dc-lat2" placeholder="e.g. 40.7128" /></div>
       <div><label class="label">{t.longitude}</label><input type="number" step="any" class="input" id="dc-lng2" placeholder="e.g. -74.0060" /></div>
@@ -512,8 +520,48 @@ const t = translations[lang] || translations.en;
     document.getElementById('dc-reset')?.addEventListener('click', () => {
       clearMeasurement();
       [lat1El, lng1El, lat2El, lng2El].forEach((el) => { if (el) el.value = ''; });
+      const a1 = document.getElementById('dc-addr1');
+      const a2 = document.getElementById('dc-addr2');
+      if (a1) a1.value = '';
+      if (a2) a2.value = '';
       clicks = 0;
       setHint(tData.hintInit);
+    });
+
+    async function forwardGeocode(query) {
+      try {
+        const url = `https://nominatim.openstreetmap.org/search?format=jsonv2&q=${encodeURIComponent(query)}&limit=1`;
+        const res = await fetch(url, { headers: { 'Accept-Language': 'en' } });
+        if (!res.ok) return null;
+        const data = await res.json();
+        if (!data || data.length === 0) return null;
+        return { lat: parseFloat(data[0].lat), lng: parseFloat(data[0].lon) };
+      } catch {
+        return null;
+      }
+    }
+
+    async function searchPointAddress(which) {
+      const input = document.getElementById(which === 'A' ? 'dc-addr1' : 'dc-addr2');
+      const query = input?.value?.trim();
+      if (!query) return;
+
+      const result = await forwardGeocode(query);
+      if (result && !isNaN(result.lat) && !isNaN(result.lng)) {
+        updateInput(which, result.lat, result.lng);
+        syncMarkersFromInputs(true);
+      } else {
+        alert('Address or city not found. Please try another query.');
+      }
+    }
+
+    document.getElementById('dc-addr1-btn')?.addEventListener('click', () => searchPointAddress('A'));
+    document.getElementById('dc-addr1')?.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') { e.preventDefault(); searchPointAddress('A'); }
+    });
+    document.getElementById('dc-addr2-btn')?.addEventListener('click', () => searchPointAddress('B'));
+    document.getElementById('dc-addr2')?.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') { e.preventDefault(); searchPointAddress('B'); }
     });
 
     document.getElementById('dc-copy')?.addEventListener('click', function () {

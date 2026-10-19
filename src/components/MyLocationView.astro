@@ -90,7 +90,7 @@ const myLocFaqSchema = {
         <p style="color: var(--color-text-secondary); margin: 0;">{content.detectingText}</p>
       </div>
 
-      <p id="location-error" style="display: none; margin: var(--space-3) 0 0; text-align: center; color: var(--color-accent-error, #ef4444); font-size: var(--text-sm);"></p>
+      <p id="location-error" data-nosnippet style="display: none; margin: var(--space-3) 0 0; text-align: center; color: var(--color-accent-error, #ef4444); font-size: var(--text-sm);" role="alert" aria-live="polite"></p>
 
       <div class="location-data-grid" id="location-data" style="display: none;">
         <div class="location-data-item">
@@ -338,16 +338,21 @@ const myLocFaqSchema = {
       } catch (err: any) {
         if (loadingEl) loadingEl.style.display = 'none';
         if (promptEl) promptEl.style.display = 'block';
-        if (errorEl) {
-          errorEl.textContent = err.message || 'Location error';
-          errorEl.style.display = 'block';
+        if (!isAuto) {
+          if (errorEl) {
+            errorEl.textContent = GeoLocation.getErrorMessage(err, document.documentElement.lang);
+            errorEl.style.display = 'block';
+          }
+          setStatus('error', 'Error');
+        } else {
+          if (errorEl) errorEl.style.display = 'none';
+          setStatus('ready', 'Ready');
         }
-        setStatus('error', 'Error');
       }
     }
 
-    getBtn?.addEventListener('click', detectLocation);
-    detectLocation();
+    getBtn?.addEventListener('click', () => detectLocation(false));
+    detectLocation(true);
 
     document.getElementById('copy-coords-btn')?.addEventListener('click', function(this: HTMLButtonElement) {
       if (currentLat === null || currentLng === null) return;

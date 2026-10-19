@@ -200,6 +200,7 @@ const c = translations[lang] || translations.en;
       <div class="tool-result-row"><span class="tool-result-label">{c.lblDmsLat}</span><span class="tool-result-value" id="cc-dms-lat">—</span></div>
       <div class="tool-result-row"><span class="tool-result-label">{c.lblDmsLng}</span><span class="tool-result-value" id="cc-dms-lng">—</span></div>
       <div class="tool-result-row"><span class="tool-result-label">{c.lblUtm}</span><span class="tool-result-value" id="cc-utm">—</span></div>
+      <div class="tool-result-row"><span class="tool-result-label">MGRS (Military Grid)</span><span class="tool-result-value" id="cc-mgrs" style="font-family: var(--font-mono); font-weight: 600;">—</span></div>
       <div class="tool-result-row"><span class="tool-result-label">{c.lblGeohash}</span><span class="tool-result-value" id="cc-geohash">—</span></div>
       <div class="tool-result-row"><span class="tool-result-label">{c.lblPlusCode}</span><span class="tool-result-value" id="cc-pluscode">—</span></div>
     </div>
@@ -211,6 +212,7 @@ const c = translations[lang] || translations.en;
       <li>{c.fmt1}</li>
       <li>{c.fmt2}</li>
       <li>{c.fmt3}</li>
+      <li><strong>MGRS (Military Grid Reference System)</strong> — NATO military standard grid based on UTM projection</li>
       <li>{c.fmt4}</li>
       <li>{c.fmt5}</li>
     </ul>
@@ -240,6 +242,15 @@ const c = translations[lang] || translations.en;
       } catch {
         if (utm) utm.textContent = 'N/A';
       }
+
+      const mgrs = document.getElementById('cc-mgrs');
+      try {
+        const mgrsData = CoordUtils.decimalToMGRS(lat, lng);
+        if (mgrs) mgrs.textContent = mgrsData ? mgrsData.formatted : 'N/A (Polar Region)';
+      } catch {
+        if (mgrs) mgrs.textContent = 'N/A';
+      }
+
       if (geohash) geohash.textContent = CoordUtils.encodeGeohash(lat, lng);
       if (pluscode) pluscode.textContent = CoordUtils.encodePlusCode(lat, lng);
       if (res) res.style.display = 'block';
@@ -265,7 +276,7 @@ const c = translations[lang] || translations.en;
         }
         convert(pos.coords.latitude, pos.coords.longitude);
       } catch (e: any) {
-        alert(GeoLocation.getErrorMessage(e));
+        alert(GeoLocation.getErrorMessage(e, document.documentElement.lang));
       }
     });
   </script>

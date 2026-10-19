@@ -66,9 +66,17 @@ const mapSchema = {
     <!-- Interactive Map Controller Card -->
     <div class="tool-interface" style="margin-bottom: var(--space-6);">
       <div class="flex gap-3 flex-wrap items-center justify-between" style="margin-bottom: var(--space-4);">
-        <div class="flex gap-2 flex-wrap">
+        <div class="flex gap-2 flex-wrap items-center" style="flex: 1; min-width: 280px;">
+          <input
+            type="text"
+            id="map-search-input"
+            class="input"
+            placeholder="🔍 Search address, city, or coordinates to jump..."
+            style="flex: 1; min-width: 200px; padding: 6px 12px; font-size: var(--text-sm);"
+          />
+          <button class="btn btn-secondary btn-sm" id="map-search-btn" type="button">Jump</button>
           <button class="btn btn-primary btn-sm" id="map-locate-btn" type="button">{c.centerBtn}</button>
-          <button class="btn btn-secondary btn-sm" id="map-clear-pins" type="button">{c.clearBtn}</button>
+          <button class="btn btn-ghost btn-sm" id="map-clear-pins" type="button">{c.clearBtn}</button>
         </div>
 
         <div class="flex gap-2 flex-wrap items-center">
@@ -122,6 +130,8 @@ const mapSchema = {
   <script>
     import GeoLocation from '../scripts/geolocation.js';
     import MapUtils from '../scripts/map.js';
+    import Geocoding from '../scripts/geocoding.js';
+    import CoordUtils from '../scripts/coordinates.js';
 
     let map: any = null;
     let userMarker: any = null;
@@ -255,6 +265,60 @@ const mapSchema = {
         if (copyBtn) copyBtn.style.display = 'none';
       });
     }
+
+    async function jumpToSearch() {
+      const input = document.getElementById('map-search-input') as HTMLInputElement;
+      const query = input?.value?.trim();
+      if (!query || !map) return;
+
+      // Check if user entered numeric coordinates
+      const parsed = CoordUtils.parseCoordinates(query);
+      if (parsed && CoordUtils.isValidCoordinate(parsed.lat, parsed.lng)) {
+        const latLng = [parsed.lat, parsed.lng];
+        map.flyTo(latLng, 14);
+        if (selectedMarker) {
+          selectedMarker.setLatLng(latLng);
+        } else {
+          // @ts-ignore
+          selectedMarker = L.marker(latLng).addTo(map);
+        }
+        currentCoords = `${parsed.lat.toFixed(6)}, ${parsed.lng.toFixed(6)}`;
+        if (coordsDisplay) coordsDisplay.textContent = currentCoords;
+        selectedMarker.bindPopup(`<strong>Point:</strong><br>${currentCoords}`).openPopup();
+        return;
+      }
+
+      // Forward geocode address or city
+      try {
+        const results = await Geocoding.forwardGeocode(query);
+        if (results && results.length > 0) {
+          const first = results[0];
+          const latLng = [first.lat, first.lng];
+          map.flyTo(latLng, 13);
+          if (selectedMarker) {
+            selectedMarker.setLatLng(latLng);
+          } else {
+            // @ts-ignore
+            selectedMarker = L.marker(latLng).addTo(map);
+          }
+          currentCoords = `${first.lat.toFixed(6)}, ${first.lng.toFixed(6)}`;
+          if (coordsDisplay) coordsDisplay.textContent = `${first.displayName} (${currentCoords})`;
+          selectedMarker.bindPopup(`<strong>${first.displayName}</strong><br>${currentCoords}`).openPopup();
+        } else {
+          alert('Location not found. Please try entering a different city, address, or coordinates.');
+        }
+      } catch {
+        alert('Unable to search address at this time.');
+      }
+    }
+
+    document.getElementById('map-search-btn')?.addEventListener('click', jumpToSearch);
+    document.getElementById('map-search-input')?.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        jumpToSearch();
+      }
+    });
 
     if (radiusSelect) {
       radiusSelect.addEventListener('change', () => {
