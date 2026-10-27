@@ -1242,8 +1242,8 @@ html[data-theme="light"] .theme-toggle-btn .icon-moon {
 
 .footer-grid {
   display: grid;
-  grid-template-columns: 1.4fr repeat(4, 1fr);
-  gap: var(--space-8);
+  grid-template-columns: 1.6fr 1fr 1.2fr;
+  gap: var(--space-12);
   margin-bottom: var(--space-12);
 }
 
@@ -1438,14 +1438,18 @@ html[data-theme="light"] .theme-toggle-btn .icon-moon {
   transform: scale(1.2);
 }
 
-@media (max-width: 1200px) {
+@media (max-width: 992px) {
   .footer-grid {
     grid-template-columns: 1fr 1fr;
     gap: var(--space-8);
   }
+
+  .footer-brand {
+    grid-column: 1 / -1;
+  }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 640px) {
   .footer-grid {
     grid-template-columns: 1fr;
     gap: var(--space-8);
@@ -1459,12 +1463,6 @@ html[data-theme="light"] .theme-toggle-btn .icon-moon {
 
   .footer-bottom-nav {
     justify-content: center;
-  }
-}
-
-@media (max-width: 480px) {
-  .footer-grid {
-    grid-template-columns: 1fr;
   }
 }
 

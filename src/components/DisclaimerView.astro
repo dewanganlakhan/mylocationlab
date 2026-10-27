@@ -1,0 +1,268 @@
+---
+/**
+ * DisclaimerView — Multilingual Legal, Medical & Emergency Dispatch Disclaimer
+ * Transparent disclosure of geolocation sensor tolerances, atmospheric interference,
+ * and life-safety warning regarding emergency dispatch (911 / 112 / 999).
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from './Breadcrumbs.astro';
+import { getLocalizedPath, type SupportedLang, defaultLang } from '../i18n/config';
+import { useTranslations } from '../i18n/ui';
+
+interface Props {
+  lang?: SupportedLang | string;
+}
+
+const { lang: customLang = defaultLang } = Astro.props;
+const lang = (customLang in { en: 1, es: 1, fr: 1, de: 1, pt: 1, hi: 1, id: 1 } ? customLang : defaultLang) as SupportedLang;
+const t = useTranslations(lang);
+
+interface DisclaimerData {
+  metaTitle: string;
+  metaDesc: string;
+  breadcrumb: string;
+  badge: string;
+  h1: string;
+  subtitle: string;
+  h2Emergency: string;
+  pEmergencyAlert: string;
+  h2Accuracy: string;
+  pAccuracy: string;
+  accuracyFactors: { title: string; desc: string }[];
+  h2Informational: string;
+  pInformational: string;
+  h2ThirdParty: string;
+  pThirdParty: string;
+  h2Contact: string;
+  pContact: string;
+}
+
+const disclaimerContent: Record<SupportedLang, DisclaimerData> = {
+  en: {
+    metaTitle: "Legal & Emergency Geolocation Disclaimer | MyLocationLab",
+    metaDesc: "Read MyLocationLab's disclaimer regarding GPS accuracy limitations, emergency dispatch (911/112) life-safety warnings, and informational use.",
+    breadcrumb: "Disclaimer",
+    badge: "Important Legal Notice",
+    h1: "Legal & Emergency Disclaimer",
+    subtitle: "Essential technical constraints, emergency dispatch advisories, and informational use terms governing MyLocationLab.",
+    h2Emergency: "1. Critical Life-Safety & Emergency Dispatch Notice",
+    pEmergencyAlert: "DO NOT RELY ON THIS WEBSITE IN ACTIVE LIFE-SAFETY EMERGENCIES. If you or someone around you requires police, firefighting, ambulance, or rescue services, immediately dial your local emergency telephone number (911 in North America, 112 in the European Union, 999 in the United Kingdom, 100/108/112 in India). Native telephone carrier emergency systems (such as E911, AML - Advanced Mobile Location, and ELS - Emergency Location Service) transmit cryptographically verified cellular tower and Wi-Fi data directly to public safety answering points (PSAPs) far more reliably than an unauthenticated browser script.",
+    h2Accuracy: "2. Geolocation Tolerances & Physical Limitations",
+    pAccuracy: "Geolocation estimates provided by MyLocationLab are mathematically computed via standard consumer device hardware and browser APIs. While outdoors GPS can yield accuracy within 3 to 5 meters, results may deviate substantially due to natural physical factors:",
+    accuracyFactors: [
+      { title: "Atmospheric & Ionospheric Delay:", desc: "Solar flares and space weather distort satellite radio waves as they travel through the Earth's ionosphere." },
+      { title: "Urban Multipath Interference:", desc: "High-rise glass and concrete buildings reflect satellite signals, creating artificial propagation delay and positional drift (multipath error)." },
+      { title: "Indoor Attenuation:", desc: "Roofs, subterranean levels, and reinforced concrete obstruct direct line-of-sight to orbiting GNSS satellites." },
+      { title: "Wi-Fi & IP Database Drift:", desc: "Desktop positioning relies on third-party Wi-Fi BSSID and ISP routing tables, which may be outdated or localized to provider routing hubs dozens of kilometers away." }
+    ],
+    h2Informational: "3. Informational & Educational Purpose",
+    pInformational: "All tools, calculators, maps, and conversion algorithms on MyLocationLab are provided strictly on an 'as-is' and 'as-available' basis for informational, educational, and general utility purposes. They do not constitute official land surveys, cadastral boundary certifications, maritime navigation certificates, or legal residency proofs.",
+    h2ThirdParty: "4. Third-Party Mapping & Cartography Attribution",
+    pThirdParty: "Map visualization and reverse geocoding datasets are provided through OpenStreetMap and Nominatim under the Open Database License (ODbL). MyLocationLab does not alter official territorial boundaries or sovereign border demarcations established by the United Nations or sovereign cartographic agencies.",
+    h2Contact: "5. Legal & Compliance Questions",
+    pContact: "For questions regarding our legal notices, terms, or technical policies, reach out to support@mylocationlab.com."
+  },
+  es: {
+    metaTitle: "Aviso Legal y Descargo de Responsabilidad | MyLocationLab",
+    metaDesc: "Descargo de responsabilidad de MyLocationLab sobre limitaciones del GPS, avisos para emergencias (112/911) y uso informativo.",
+    breadcrumb: "Descargo de Responsabilidad",
+    badge: "Aviso Legal Importante",
+    h1: "Aviso Legal y de Emergencias",
+    subtitle: "Limitaciones técnicas de precisión, avisos de servicios de auxilio y condiciones de uso informativo.",
+    h2Emergency: "1. Advertencia Crítica para Emergencias Médicas y Policiales",
+    pEmergencyAlert: "NO UTILICE ESTE SITIO WEB EN CASO DE EMERGENCIA GRAVE. Si requiere asistencia de policía, bomberos o ambulancia, llame de inmediato al número de emergencia oficial (112 en Europa y España, 911 en América). Las llamadas telefónicas nativas activan protocolos automáticos de localización (AML) que transmiten su posición directamente a los centros de coordinación de emergencias con mayor fiabilidad que cualquier navegador web.",
+    h2Accuracy: "2. Limitaciones de Precisión de la Señal GPS",
+    pAccuracy: "Las coordenadas mostradas son estimaciones calculadas por los sensores de su dispositivo. Aunque en exteriores el GPS ofrece una precisión de 3 a 5 metros, pueden existir desviaciones por factores físicos:",
+    accuracyFactors: [
+      { title: "Interferencia Atmosférica:", desc: "La ionosfera puede retrasar levemente las ondas electromagnéticas procedentes de los satélites." },
+      { title: "Rebote Urbano (Multipath):", desc: "Los edificios altos reflejan las señales de radio, provocando desvíos en el posicionamiento en calles estrechas." },
+      { title: "Pérdida de Señal en Interiores:", desc: "Muros de hormigón y garajes subterráneos bloquean la recepción directa de satélites GNSS." },
+      { title: "Geolocalización por IP Aproximada:", desc: "En ordenadores sin GPS, la localización por IP únicamente identifica la ciudad o central del operador de internet." }
+    ],
+    h2Informational: "3. Carácter Exclusivamente Informativo",
+    pInformational: "Los mapas, calculadoras y herramientas se ofrecen 'tal cual' para consultas de orientación cotidiana. No son válidos como certificados topográficos, peritajes judiciales o justificantes de residencia formal.",
+    h2ThirdParty: "4. Cartografía y Atribución",
+    pThirdParty: "La cartografía y geocodificación inversa utilizan datos abiertos de OpenStreetMap bajo licencia ODbL.",
+    h2Contact: "5. Contacto Legal",
+    pContact: "Para cualquier consulta sobre estos términos, escriba a support@mylocationlab.com."
+  },
+  fr: {
+    metaTitle: "Avertissement Légal et Urgences | MyLocationLab",
+    metaDesc: "Consultez l'avertissement de MyLocationLab concernant les limites de précision GPS, les appels d'urgence (112/15/18) et l'usage informatif.",
+    breadcrumb: "Avertissement",
+    badge: "Mention Légale Importante",
+    h1: "Avertissement Légal et Urgences",
+    subtitle: "Consignes de sécurité, tolérances physiques de géolocalisation et cadre d'utilisation du service.",
+    h2Emergency: "1. Avertissement Impératif en Cas d'Urgence Vitale",
+    pEmergencyAlert: "NE PAS UTILISER CE SITE LORS D'URGENCES VITALES. En cas de besoin d'assistance médicale, de secours ou de police, composez immédiatement le 112 (numéro d'urgence européen) ou les numéros nationaux (15, 17, 18 en France, 911 en Amérique du Nord). Les services de téléphonie mobile transmettent automatiquement votre position certifiée (système AML) aux centres de secours.",
+    h2Accuracy: "2. Tolérances et Marges d'Erreur GPS",
+    pAccuracy: "La précision spatiale dépend des récepteurs du terminal et des conditions environnementales :",
+    accuracyFactors: [
+      { title: "Retard Ionosphérique :", desc: "Les perturbations spatiales peuvent altérer le temps de trajet des ondes radio." },
+      { title: "Réflexion Urbaine :", desc: "Les façades d'immeubles créent des échos perturbateurs (trajets multiples)." },
+      { title: "Atténuation en Bâtiment :", desc: "Les toitures et sous-sols empêchent la réception directe des signaux GNSS." },
+      { title: "Imprécision des Adresses IP :", desc: "Sur ordinateur fixe, l'IP ne fournit qu'une localisation au niveau du répartiteur réseau." }
+    ],
+    h2Informational: "3. Vocation Purement Informative",
+    pInformational: "Ce service est un utilitaire d'aide à la navigation personnelle. Il ne constitue pas un relevé topographique officiel ni une preuve juridique de domicile.",
+    h2ThirdParty: "4. Données Cartographiques",
+    pThirdParty: "Cartes et géocodage fournis par OpenStreetMap sous licence ODbL.",
+    h2Contact: "5. Contact Juridique",
+    pContact: "Pour toute question, adressez-vous à support@mylocationlab.com."
+  },
+  de: {
+    metaTitle: "Haftungsausschluss & Notfallhinweis | MyLocationLab",
+    metaDesc: "Wichtige Hinweise zur GPS-Genauigkeit, Notfallabgrenzung (112/911) und rein informativer Nutzung von MyLocationLab.",
+    breadcrumb: "Haftungsausschluss",
+    badge: "Wichtiger Rechtlicher Hinweis",
+    h1: "Haftungsausschluss & Notfallhinweis",
+    subtitle: "Technische Beschränkungen der Standortermittlung, Notrufvorschriften und Nutzungsrahmen.",
+    h2Emergency: "1. Wichtiger Hinweis für Notfälle",
+    pEmergencyAlert: "NUTZEN SIE DIESE WEBSEITE NICHT IM NOTFALL. Wenn Sie Polizei, Feuerwehr oder Rettungsdienst benötigen, wählen Sie sofort den Notruf 112 (Europa) bzw. 911. Mobilfunkanbieter übermitteln im Notruf automatisch behördlich verifizierte AML-Standortdaten.",
+    h2Accuracy: "2. Technische Genauigkeitsgrenzen",
+    pAccuracy: "Die Standortanzeige unterliegt physikalischen und messtechnischen Einflüssen:",
+    accuracyFactors: [
+      { title: "Atmosphärische Einflüsse:", desc: "Schwankungen in der Ionosphäre beeinflussen die Signallaufzeit der Satelliten." },
+      { title: "Mehrwegeffekte in Städten:", desc: "Gebäudefassaden reflektieren Funksignale und erzeugen Ungenauigkeiten." },
+      { title: "Signaldämpfung in Gebäuden:", desc: "Betondecken verhindern den direkten Empfang von GNSS-Signalen." },
+      { title: "IP-Standort-Toleranzen:", desc: "Desktop-Geräte ermitteln oft nur den Netzknotenpunkt des Providers." }
+    ],
+    h2Informational: "3. Ausschließlich informative Nutzung",
+    pInformational: "Die Dienste dienen der Orientierung im Alltag. Sie ersetzen keine amtlichen Vermessungen oder behördlichen Nachweise.",
+    h2ThirdParty: "4. Kartendaten und OpenStreetMap",
+    pThirdParty: "Geodaten basieren auf OpenStreetMap (ODbL).",
+    h2Contact: "5. Kontakt",
+    pContact: "Fragen richten Sie bitte an support@mylocationlab.com."
+  },
+  pt: {
+    metaTitle: "Aviso Legal e Notificação de Emergência | MyLocationLab",
+    metaDesc: "Orientações sobre limitações da precisão GPS, chamadas de emergência (192/190/112/911) e finalidade informativa.",
+    breadcrumb: "Aviso Legal",
+    badge: "Aviso Legal Importante",
+    h1: "Aviso Legal e Notificação de Emergência",
+    subtitle: "Ressalvas técnicas de precisão, procedimentos para emergências e termos de uso do serviço.",
+    h2Emergency: "1. Aviso Fundamental Para Situações de Emergência",
+    pEmergencyAlert: "NÃO UTILIZE ESTE SITE EM SITUAÇÕES DE EMERGÊNCIA MÉDICA OU RISCO DE VIDA. Se precisar de socorro, ligue imediatamente para os serviços de emergência (190, 192 ou 193 no Brasil, 112 em Portugal, 911 na América do Norte). As centrais de emergência recebem localização criptografada da operadora.",
+    h2Accuracy: "2. Tolerâncias e Fatores de Precisão GPS",
+    pAccuracy: "As coordenadas são estimativas sujeitas a variações físicas do ambiente:",
+    accuracyFactors: [
+      { title: "Atraso Ionosférico:", desc: "Fenômenos solares na alta atmosfera afetam a propagação do sinal." },
+      { title: "Interferência de Edifícios:", desc: "Reflexos de sinal em construções altas causam desvios pontuais." },
+      { title: "Atenuação em Interiores:", desc: "Estruturas de concreto bloqueiam a visada direta com satélites." },
+      { title: "Aproximação de IP:", desc: "Computadores conectados por cabo mostram a região do provedor de internet." }
+    ],
+    h2Informational: "3. Caráter Estritamente Informativo",
+    pInformational: "Nossas ferramentas auxiliam na navegação diária e não constituem laudo topográfico oficial ou comprovante de residência.",
+    h2ThirdParty: "4. Atribuição de Mapas",
+    pThirdParty: "Dados cartográficos fornecidos por OpenStreetMap sob licença ODbL.",
+    h2Contact: "5. Contato",
+    pContact: "Dúvidas podem ser encaminhadas para support@mylocationlab.com."
+  },
+  hi: {
+    metaTitle: "कानूनी व आपातकालीन अस्वीकरण | MyLocationLab",
+    metaDesc: "GPS सटीकता की सीमाओं, आपातकालीन सेवाओं (112/100/108) के लिए दिशानिर्देश और सामान्य सूचनात्मक उपयोग की जानकारी।",
+    breadcrumb: "अस्वीकरण",
+    badge: "महत्वपूर्ण कानूनी सूचना",
+    h1: "कानूनी व आपातकालीन अस्वीकरण",
+    subtitle: "तकनीकी सटीकता की सीमाएं, आपातकालीन कॉलिंग दिशानिर्देश और उपयोग की शर्तें।",
+    h2Emergency: "1. आपातकालीन स्थितियों के लिए महत्वपूर्ण चेतावनी",
+    pEmergencyAlert: "आपातकालीन या जानलेवा स्थिति में इस वेबसाइट पर निर्भर न रहें। पुलिस या एम्बुलेंस सहायता के लिए तुरंत आधिकारिक आपातकालीन नंबर 112 (या 100/108) पर कॉल करें। फोन डायलर कॉल के माध्यम से दूरसंचार नेटवर्क सीधे आपातकालीन ऑपरेटरों को सटीक स्थान भेजते हैं।",
+    h2Accuracy: "2. GPS सटीकता और तकनीकी सीमाएं",
+    pAccuracy: "दिखाए गए निर्देशांक डिवाइस सेंसर और नेटवर्क पर आधारित अनुमान हैं, जिनमें इन कारणों से विचलन हो सकता है:",
+    accuracyFactors: [
+      { title: "वायुमंडलीय देरी:", desc: "आयनोस्फीयर में बदलाव सैटेलाइट तरंगों की गति को प्रभावित कर सकते हैं।" },
+      { title: "शहरी बाधाएं (Multipath):", desc: "ऊंची इमारतों से सिग्नल टकराने पर स्थान में कुछ मीटर का अंतर आ सकता है।" },
+      { title: "कमरे के अंदर रुकावट:", desc: "कंक्रीट की छतें और बेसमेंट सीधे सैटेलाइट सिग्नल को रोकते हैं।" },
+      { title: "IP एड्रेस अनुमान:", desc: "कंप्यूटर पर IP लोकेशन केवल इंटरनेट सेवा प्रदाता का शहर दिखाती है।" }
+    ],
+    h2Informational: "3. केवल सूचनात्मक उद्देश्य",
+    pInformational: "यह सेवा सामान्य सुविधा के लिए है। यह आधिकारिक भूमि सर्वेक्षण या पते का कानूनी प्रमाण नहीं है।",
+    h2ThirdParty: "4. मानचित्र डेटा",
+    pThirdParty: "मानचित्र और जियोकोडिंग OpenStreetMap समुदाय के खुले डेटा (ODbL) पर आधारित हैं।",
+    h2Contact: "5. संपर्क",
+    pContact: "किसी भी कानूनी प्रश्न के लिए support@mylocationlab.com पर संपर्क करें।"
+  },
+  id: {
+    metaTitle: "Penafian Hukum & Darurat | MyLocationLab",
+    metaDesc: "Ketahui batasan akurasi GPS, peringatan panggilan darurat (112/110), dan penggunaan murni untuk tujuan informasi.",
+    breadcrumb: "Penafian",
+    badge: "Pemberitahuan Hukum Penting",
+    h1: "Penafian Hukum & Layanan Darurat",
+    subtitle: "Batasan teknis akurasi sensor, panduan situasi darurat, dan kerangka penggunaan layanan.",
+    h2Emergency: "1. Peringatan Penting Untuk Keadaan Darurat",
+    pEmergencyAlert: "JANGAN GUNAKAN SITUS INI UNTUK KEADAAN DARURAT KESELAMATAN JIWA. Jika membutuhkan bantuan polisi, medis, atau pemadam kebakaran, segera hubungi nomor panggilan darurat resmi (112, 110, atau 118 di Indonesia, 911 di Amerika). Panggilan seluler langsung mengirimkan data lokasi AML yang terverifikasi ke petugas.",
+    h2Accuracy: "2. Batasan dan Toleransi Akurasi GPS",
+    pAccuracy: "Hasil lokasi merupakan estimasi yang dipengaruhi oleh kondisi lingkungan fisik sekitar:",
+    accuracyFactors: [
+      { title: "Hambatan Atmosfer:", desc: "Gelombang radio satelit dapat mengalami sedikit perlambatan di lapisan ionosfer." },
+      { title: "Pantulan Sinyal Gedung (Multipath):", desc: "Gedung-gedung tinggi memantulkan sinyal dan dapat menggeser titik koordinat." },
+      { title: "Redaman Dalam Ruangan:", desc: "Dinding beton dan ruang bawah tanah menghalangi sinyal satelit langsung." },
+      { title: "Perkiraan Alamat IP:", desc: "Pada komputer kabel, geolokasi IP hanya mendeteksi pusat jaringan operator penyedia internet." }
+    ],
+    h2Informational: "3. Tujuan Bersifat Informasi Semata",
+    pInformational: "Seluruh alat dan peta disediakan untuk kemudahan pribadi sehari-hari, bukan sebagai sertifikat tanah resmi atau bukti domisili yuridis.",
+    h2ThirdParty: "4. Atribusi Peta OpenStreetMap",
+    pThirdParty: "Data peta dan geocoding bersumber dari OpenStreetMap di bawah lisensi terbuka ODbL.",
+    h2Contact: "5. Kontak Hukum",
+    pContact: "Pertanyaan regulasi dan kepatuhan dapat dikirim ke support@mylocationlab.com."
+  }
+};
+
+const c = disclaimerContent[lang] || disclaimerContent.en;
+const homePath = lang === 'en' ? '/' : `/${lang}/`;
+
+const breadcrumbs = [
+  { label: t('common.home'), href: homePath },
+  { label: c.breadcrumb }
+];
+
+const pageUrl = getLocalizedPath('/disclaimer/', lang);
+---
+
+<BaseLayout
+  lang={lang}
+  title={c.metaTitle}
+  description={c.metaDesc}
+  activeSection="disclaimer"
+>
+  <div class="container">
+    <Breadcrumbs items={breadcrumbs} lang={lang} />
+
+    <section class="page-header" style="text-align: center; margin-bottom: var(--space-8);">
+      <span class="badge badge-amber" style="margin-bottom: var(--space-3);">{c.badge}</span>
+      <h1>{c.h1}</h1>
+      <p class="page-header-desc" style="max-width: 680px; margin: 0 auto; line-height: 1.75;">
+        {c.subtitle}
+      </p>
+    </section>
+
+    <article class="prose" style="max-width: var(--max-width-narrow); margin: 0 auto var(--space-16); font-size: var(--text-base); line-height: 1.8;">
+      <h2>{c.h2Emergency}</h2>
+      <div style="background: rgba(239, 68, 68, 0.08); border-left: 4px solid var(--color-accent-error, #ef4444); padding: var(--space-5) var(--space-6); border-radius: 0 var(--radius-xl) var(--radius-xl) 0; margin: var(--space-6) 0;">
+        <p style="margin: 0; color: var(--color-text-primary); font-size: var(--text-sm); line-height: 1.8;">
+          {c.pEmergencyAlert}
+        </p>
+      </div>
+
+      <h2>{c.h2Accuracy}</h2>
+      <p>{c.pAccuracy}</p>
+      <div style="display: grid; gap: var(--space-4); margin: var(--space-6) 0;">
+        {c.accuracyFactors.map((item) => (
+          <div style="background: var(--color-bg-card); border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: var(--space-4) var(--space-5);">
+            <strong style="color: var(--color-text-primary);">{item.title}</strong>
+            <p style="margin: var(--space-1) 0 0; color: var(--color-text-secondary); font-size: var(--text-sm);">{item.desc}</p>
+          </div>
+        ))}
+      </div>
+
+      <h2>{c.h2Informational}</h2>
+      <p>{c.pInformational}</p>
+
+      <h2>{c.h2ThirdParty}</h2>
+      <p>{c.pThirdParty}</p>
+
+      <h2>{c.h2Contact}</h2>
+      <p>{c.pContact}</p>
+    </article>
+  </div>
+</BaseLayout>

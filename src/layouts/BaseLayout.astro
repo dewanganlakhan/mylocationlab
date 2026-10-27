@@ -44,6 +44,17 @@ const docLang = currentLang;
 const docHtmlLang = activeLangConfig.hreflang ?? activeLangConfig.code;
 const docDir = activeLangConfig.dir;
 
+const skipToContentLabels: Record<string, string> = {
+  en: 'Skip to main content',
+  es: 'Saltar al contenido principal',
+  fr: 'Aller au contenu principal',
+  de: 'Zum Hauptinhalt springen',
+  pt: 'Pular para o conteúdo principal',
+  hi: 'मुख्य सामग्री पर जाएं',
+  id: 'Lewati ke konten utama',
+};
+const skipLabel = skipToContentLabels[docLang] || skipToContentLabels.en;
+
 // WebSite schema for all pages
 const websiteSchema = {
   '@context': 'https://schema.org',
@@ -108,7 +119,7 @@ const allJsonLd = jsonLd
   <meta name="theme-color" content="#060a13" />
 </head>
 <body>
-  <a href="#main-content" class="sr-only skip-link">Skip to main content</a>
+  <a href="#main-content" class="sr-only skip-link">{skipLabel}</a>
   <Header activeSection={activeSection} lang={docLang} />
 
   <main id="main-content">

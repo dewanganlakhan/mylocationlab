@@ -1,10 +1,12 @@
 ---
 /**
- * MyLocationView — Multilingual /my-location/ Engine
- * Supports en, es, fr, de, pt with dynamic Leaflet map and instant browser telemetry.
+ * MyLocationView — Unified Multilingual /my-location/ Engine
+ * Supports en, es, fr, de, pt, hi, id with interactive Leaflet map,
+ * instant hardware telemetry (DD & DMS), contextual linking, and zero-CLS layout stability.
  */
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Breadcrumbs from './Breadcrumbs.astro';
+import SiloNav from './SiloNav.astro';
 import FAQAccordion from './FAQAccordion.astro';
 import AuthorEAT from './AuthorEAT.astro';
 import { myLocationTranslations } from '../i18n/myLocation';
@@ -20,18 +22,53 @@ const lang = (customLang in myLocationTranslations ? customLang : defaultLang) a
 const content = myLocationTranslations[lang] || myLocationTranslations.en;
 const t = useTranslations(lang);
 
-const locateTitle = ({
+const stepBadgePrefix: Record<SupportedLang, string> = {
+  en: 'Step',
+  es: 'Paso',
+  fr: 'Étape',
+  de: 'Schritt',
+  pt: 'Passo',
+  hi: 'चरण',
+  id: 'Langkah',
+};
+const badgePrefix = stepBadgePrefix[lang] || 'Step';
+
+const locateTitles: Record<string, string> = {
   en: "Zoom to my current location",
   es: "Centrar y ampliar en mi ubicación",
   fr: "Zoomer sur ma position actuelle",
   de: "Auf meinen aktuellen Standort zoomen",
-  pt: "Aproximar da minha localização atual"
-})[lang] || "Zoom to my current location";
+  pt: "Aproximar da minha localização atual",
+  hi: "मेरी वर्तमान लोकेशन पर ज़ूम करें",
+  id: "Perbesar ke lokasi saya saat ini"
+};
+const locateTitle = locateTitles[lang] || locateTitles.en;
+
+const currentPath = getLocalizedPath('/my-location/', lang);
 
 const breadcrumbs = [
-  { label: t('common.home'), href: '/' },
+  { label: t('common.home'), href: getLocalizedPath('/', lang) },
   { label: `${content.pageTitle} ${content.pageTitleAccent}` },
 ];
+
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    {
+      '@type': 'ListItem',
+      position: 1,
+      name: t('common.home'),
+      item: `https://mylocationlab.com${getLocalizedPath('/', lang)}`,
+    },
+    {
+      '@type': 'ListItem',
+      position: 2,
+      name: `${content.pageTitle} ${content.pageTitleAccent}`,
+      item: `https://mylocationlab.com${currentPath}`,
+    },
+  ],
+};
 
 const myLocFaqSchema = {
   '@context': 'https://schema.org',
@@ -45,6 +82,21 @@ const myLocFaqSchema = {
     },
   })),
 };
+
+const webAppSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebApplication',
+  name: `${content.pageTitle} ${content.pageTitleAccent}`,
+  url: `https://mylocationlab.com${currentPath}`,
+  applicationCategory: 'UtilitiesApplication',
+  operatingSystem: 'All',
+  browserRequirements: 'Requires JavaScript and HTML5 Geolocation API',
+  offers: {
+    '@type': 'Offer',
+    price: '0',
+    priceCurrency: 'USD',
+  },
+};
 ---
 
 <BaseLayout
@@ -53,44 +105,39 @@ const myLocFaqSchema = {
   title={content.metaTitle}
   description={content.metaDesc}
   activeSection="my-location"
-  jsonLd={[myLocFaqSchema]}
+  jsonLd={[myLocFaqSchema, webAppSchema]}
 >
   <div class="container">
     <Breadcrumbs items={breadcrumbs} lang={lang} />
+    <SiloNav silo="my-location" lang={lang} />
 
-    <section class="page-header">
+    <section class="page-header" style="margin-bottom: var(--space-4);">
       <h1>{content.pageTitle} <span class="text-gradient">{content.pageTitleAccent}</span></h1>
-      <p class="page-header-desc">
+      <p class="page-header-desc" style="max-width: 780px; margin: 0 auto; line-height: 1.75;">
         {content.pageDesc}
       </p>
     </section>
 
-    <AuthorEAT 
-      reviewedBy={content.reviewedBy} 
-      reviewerTitle={content.reviewerTitle} 
-      lastUpdated="September 2026" 
-    />
-
-    <!-- Location Finder Card -->
-    <div class="location-display" id="location-card">
+    <!-- Primary Location Finder Card -->
+    <div class="location-display" id="location-card" style="box-shadow: var(--shadow-xl); border: 1px solid var(--color-border); border-radius: var(--radius-2xl);">
       <div class="location-display-header">
         <div class="location-display-dot" id="status-dot" style="background: var(--color-text-tertiary);"></div>
-        <span class="location-display-title">{content.cardTitle}</span>
+        <span class="location-display-title" style="font-weight: 700;">{content.cardTitle}</span>
         <span class="badge" id="status-badge">Ready</span>
       </div>
 
       <div id="location-prompt" style="display: none; text-align: center; padding: var(--space-6) 0;">
-        <button class="btn btn-primary btn-lg" id="get-location-btn" type="button">
+        <button class="btn btn-primary btn-lg" id="get-location-btn" type="button" style="padding: 0.85rem 2rem; font-size: var(--text-base); font-weight: 600;">
           {content.btnGetLocation}
         </button>
       </div>
 
       <div id="location-loading" style="display: none; text-align: center; padding: var(--space-6);">
         <div class="spinner" style="margin: 0 auto var(--space-4);"></div>
-        <p style="color: var(--color-text-secondary); margin: 0;">{content.detectingText}</p>
+        <p style="color: var(--color-text-secondary); margin: 0; font-weight: 500;">{content.detectingText}</p>
       </div>
 
-      <p id="location-error" data-nosnippet style="display: none; margin: var(--space-3) 0 0; text-align: center; color: var(--color-accent-error, #ef4444); font-size: var(--text-sm);" role="alert" aria-live="polite"></p>
+      <p id="location-error" data-nosnippet style="display: none; margin: var(--space-3) 0 0; text-align: center; color: var(--color-accent-error, #ef4444); font-size: var(--text-sm); font-weight: 500;" role="alert" aria-live="polite"></p>
 
       <div class="location-data-grid" id="location-data" style="display: none;">
         <div class="location-data-item">
@@ -101,9 +148,13 @@ const myLocFaqSchema = {
           <span class="location-data-label">{content.labels.lng}</span>
           <span class="location-data-value highlight" id="data-lng">—</span>
         </div>
+        <div class="location-data-item span-2" style="background: var(--color-bg-secondary); border-radius: var(--radius-lg); padding: var(--space-3);">
+          <span class="location-data-label" style="color: var(--color-accent-primary); font-weight: 600;">{content.labels.dms}</span>
+          <span class="location-data-value" id="data-dms" style="font-family: var(--font-mono); font-size: var(--text-sm); font-weight: 600;">—</span>
+        </div>
         <div class="location-data-item span-2">
           <span class="location-data-label">{content.labels.address}</span>
-          <span class="location-data-value" id="data-address" style="font-family: var(--font-sans); font-size: var(--text-sm);">—</span>
+          <span class="location-data-value" id="data-address" style="font-family: var(--font-sans); font-size: var(--text-sm); line-height: 1.5;">—</span>
         </div>
         <div class="location-data-item">
           <span class="location-data-label">{content.labels.city}</span>
@@ -127,65 +178,209 @@ const myLocFaqSchema = {
         </div>
       </div>
 
-      <div class="action-buttons" id="action-buttons" style="margin-top: var(--space-6); display: none;">
-        <button class="btn btn-secondary btn-sm" id="copy-coords-btn" type="button">{content.actions.copy}</button>
-        <button class="btn btn-secondary btn-sm" id="share-btn" type="button">{content.actions.share}</button>
-        <a class="btn btn-secondary btn-sm" id="open-maps-btn" href="#" target="_blank" rel="noopener noreferrer">{content.actions.openMaps}</a>
+      <div class="action-buttons" id="action-buttons" style="margin-top: var(--space-6); display: none; flex-wrap: wrap; gap: var(--space-3); justify-content: center;">
+        <button class="btn btn-secondary btn-sm" id="copy-coords-btn" type="button" title="Copy Decimal Degrees coordinates">{content.actions.copy}</button>
+        <button class="btn btn-secondary btn-sm" id="copy-dms-btn" type="button" title="Copy DMS coordinates">{content.actions.copyDms}</button>
+        <button class="btn btn-secondary btn-sm" id="copy-address-btn" type="button" title="Copy street address">{content.actions.copyAddress}</button>
+        <button class="btn btn-secondary btn-sm" id="share-btn" type="button" title="Native Device Share">{content.actions.share}</button>
+        <a class="btn btn-secondary btn-sm" id="share-whatsapp-btn" href="#" target="_blank" rel="noopener noreferrer" style="color: #25D366; font-weight: 600;">{content.actions.shareWhatsApp}</a>
+        <a class="btn btn-secondary btn-sm" id="share-sms-btn" href="#" style="color: #3b82f6; font-weight: 600;">{content.actions.shareSms}</a>
+        <a class="btn btn-primary btn-sm" id="open-maps-btn" href="#" target="_blank" rel="noopener noreferrer">{content.actions.openMaps}</a>
       </div>
     </div>
 
-    <div class="map-container" id="map" data-locate-title={locateTitle} style="margin-top: var(--space-6); display: none;"></div>
+    <!-- Live Interactive Map with zero-CLS min-height placeholder -->
+    <div 
+      class="map-container" 
+      id="map" 
+      data-locate-title={locateTitle} 
+      style="margin-top: var(--space-6); display: none; min-height: 400px; width: 100%; border-radius: var(--radius-2xl); border: 1px solid var(--color-border); box-shadow: var(--shadow-lg);"
+    ></div>
 
-    <!-- Sub-pages Navigation -->
-    <section class="section">
-      <h2 class="mb-8">{content.exploreTitle} <span class="text-gradient">{content.exploreTitleAccent}</span></h2>
-      <div class="grid grid-auto-sm">
-        {content.subNav.map((item) => (
-          <a href={item.href.startsWith('/') ? getLocalizedPath(item.href, lang) : item.href} class="tool-card">
-            <h3 class="tool-card-title" style="font-size: var(--text-base);">{item.label}</h3>
-          </a>
-        ))}
-      </div>
-    </section>
+    <section class="section" style="padding-top: var(--space-8);">
+      <article class="prose location-article-content" style="max-width: var(--max-width-narrow); margin: 0 auto;">
+        
+        <h2>{content.stepsTitle}</h2>
+        <p>{content.stepsLead}</p>
 
-    <!-- Content / Article Section with Typographic Excellence -->
-    <section class="section">
-      <div class="prose" style="max-width: var(--max-width-narrow); line-height: 1.8;">
-        <h2>{content.article.whatShowsTitle}</h2>
+        <div class="step-guide-grid">
+          {content.steps.map((step, idx) => (
+            <div class="step-guide-card">
+              <span class="step-badge">{badgePrefix} {parseInt(step.num, 10) || (idx + 1)}</span>
+              <h4>{step.title}</h4>
+              <p>{step.desc}</p>
+            </div>
+          ))}
+        </div>
+
+        <div class="callout-box">
+          <strong>💡 {content.stepsTip.split(':')[0]}:</strong>{content.stepsTip.substring(content.stepsTip.indexOf(':') + 1)}
+        </div>
+        <h2>{content.telemetryTitle}</h2>
         <p style="line-height: 1.8; margin-bottom: 1.5rem;">
-          {content.article.whatShowsLead}
+          {content.telemetryLead}
         </p>
-        <ul style="line-height: 1.8; margin-bottom: 2rem;">
-          {content.article.whatShowsList.map((li) => (
-            <li style="margin-bottom: 0.75rem;"><strong>{li.bold}</strong> — {li.text}</li>
+
+        <div class="table-responsive">
+          <table>
+            <thead>
+              <tr style="background: var(--color-bg-tertiary); text-align: left;">
+                <th style="padding: var(--space-3) var(--space-4); border: 1px solid var(--color-border);">{lang === 'fr' ? 'Donnée Géographique' : lang === 'es' ? 'Parámetro' : lang === 'de' ? 'Geodaten-Parameter' : lang === 'pt' ? 'Dado Geográfico' : lang === 'hi' ? 'भौगोलिक पैरामीटर' : lang === 'id' ? 'Parameter Data' : 'Geospatial Parameter'}</th>
+                <th style="padding: var(--space-3) var(--space-4); border: 1px solid var(--color-border);">{lang === 'fr' ? 'Exemple Typique' : lang === 'es' ? 'Ejemplo' : lang === 'de' ? 'Beispiel' : lang === 'pt' ? 'Exemplo' : lang === 'hi' ? 'उदाहरण' : lang === 'id' ? 'Contoh' : 'Example'}</th>
+                <th style="padding: var(--space-3) var(--space-4); border: 1px solid var(--color-border);">{lang === 'fr' ? 'Usage Pratique' : lang === 'es' ? 'Uso Práctico' : lang === 'de' ? 'Praktischer Nutzen' : lang === 'pt' ? 'Uso Prático' : lang === 'hi' ? 'व्यावहारिक उपयोग' : lang === 'id' ? 'Kegunaan' : 'Practical Purpose'}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {content.telemetryTable.map((row) => (
+                <tr>
+                  <td style="padding: var(--space-3) var(--space-4); border: 1px solid var(--color-border); font-weight: 600;">{row.info}</td>
+                  <td style="padding: var(--space-3) var(--space-4); border: 1px solid var(--color-border); font-family: var(--font-mono); font-size: var(--text-xs); color: var(--color-text-primary);">{row.example}</td>
+                  <td style="padding: var(--space-3) var(--space-4); border: 1px solid var(--color-border); color: var(--color-text-secondary); line-height: 1.6;">{row.purpose}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        <p style="font-size: var(--text-sm); color: var(--color-text-secondary); margin-bottom: 2rem;">
+          {lang === 'fr' ? (
+            <>Besoin d'un autre carroyage ? Utilisez notre <a href={getLocalizedPath('/tools/coordinate-converter/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">convertisseur de coordonnées (DD, DMS, UTM)</a> et consultez notre <a href={getLocalizedPath('/comparisons/decimal-degrees-vs-dms/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">comparatif degrés décimaux et DMS</a>.</>
+          ) : lang === 'es' ? (
+            <>¿Necesita convertir formatos? Use nuestro <a href={getLocalizedPath('/tools/coordinate-converter/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">conversor de coordenadas (DD, DMS, UTM)</a> y consulte la <a href={getLocalizedPath('/comparisons/decimal-degrees-vs-dms/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">comparativa grados decimales vs DMS</a>.</>
+          ) : lang === 'de' ? (
+            <>Benötigen Sie andere Formate? Nutzen Sie unseren <a href={getLocalizedPath('/tools/coordinate-converter/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Koordinaten-Konverter (DD, GMS, UTM)</a> und unseren Leitfaden <a href={getLocalizedPath('/comparisons/decimal-degrees-vs-dms/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Dezimalgrad vs. GMS</a>.</>
+          ) : lang === 'pt' ? (
+            <>Precisa de outro formato? Utilize o nosso <a href={getLocalizedPath('/tools/coordinate-converter/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">conversor de coordenadas (DD, DMS, UTM)</a> e veja a <a href={getLocalizedPath('/comparisons/decimal-degrees-vs-dms/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">comparação graus decimais vs DMS</a>.</>
+          ) : (
+            <>Need another format? Use our <a href={getLocalizedPath('/tools/coordinate-converter/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Coordinate Converter (DD, DMS, UTM)</a> and explore <a href={getLocalizedPath('/comparisons/decimal-degrees-vs-dms/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Decimal Degrees vs DMS</a>.</>
+          )}
+        </p>
+
+        <!-- 3. Positioning Technologies Table -->
+        <h2>{content.techTitle}</h2>
+        <p style="line-height: 1.8; margin-bottom: 1.5rem;">
+          {content.techLead}
+        </p>
+
+        <div class="table-responsive">
+          <table>
+            <thead>
+              <tr style="background: var(--color-bg-tertiary); text-align: left;">
+                <th style="padding: var(--space-3) var(--space-4); border: 1px solid var(--color-border);">{lang === 'fr' ? 'Méthode Technologique' : lang === 'es' ? 'Método' : lang === 'de' ? 'Technologie' : lang === 'pt' ? 'Método' : lang === 'hi' ? 'तकनीक' : lang === 'id' ? 'Metode' : 'Method'}</th>
+                <th style="padding: var(--space-3) var(--space-4); border: 1px solid var(--color-border);">{lang === 'fr' ? 'Précision Typique' : lang === 'es' ? 'Precisión Típica' : lang === 'de' ? 'Typische Genauigkeit' : lang === 'pt' ? 'Precisão Típica' : lang === 'hi' ? 'सटीकता' : lang === 'id' ? 'Akurasi' : 'Typical Accuracy'}</th>
+                <th style="padding: var(--space-3) var(--space-4); border: 1px solid var(--color-border);">{lang === 'fr' ? 'Conditions d\'Intervention' : lang === 'es' ? 'Cuándo Interviene' : lang === 'de' ? 'Einsatzbereich' : lang === 'pt' ? 'Quando Intervém' : lang === 'hi' ? 'उपयोग' : lang === 'id' ? 'Pemicu' : 'Operational Context'}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {content.techTable.map((row) => (
+                <tr>
+                  <td style="padding: var(--space-3) var(--space-4); border: 1px solid var(--color-border); font-weight: 600;">{row.method}</td>
+                  <td style="padding: var(--space-3) var(--space-4); border: 1px solid var(--color-border); color: var(--color-accent-primary); font-weight: 600;">{row.accuracy}</td>
+                  <td style="padding: var(--space-3) var(--space-4); border: 1px solid var(--color-border); color: var(--color-text-secondary); line-height: 1.6;">{row.when}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        <p style="font-size: var(--text-sm); color: var(--color-text-secondary); margin-bottom: 2rem;">
+          {lang === 'fr' ? (
+            <>Approfondissez le sujet : découvrez <a href={getLocalizedPath('/guides/how-gps-location-works/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">comment fonctionne la localisation GPS</a> et notre analyse <a href={getLocalizedPath('/comparisons/gps-vs-ip-location/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">GPS ou localisation IP : quelles différences ?</a>.</>
+          ) : lang === 'es' ? (
+            <>Para profundizar: consulte <a href={getLocalizedPath('/guides/how-gps-location-works/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">cómo funciona el posicionamiento GPS</a> y nuestra guía <a href={getLocalizedPath('/comparisons/gps-vs-ip-location/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">GPS vs localización por IP</a>.</>
+          ) : (
+            <>Learn more: read <a href={getLocalizedPath('/guides/how-gps-location-works/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">how GPS location works</a> and our analysis of <a href={getLocalizedPath('/comparisons/gps-vs-ip-location/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">GPS vs IP location</a>.</>
+          )}
+        </p>
+
+        <!-- 4. Emergency Protocol Callout Box -->
+        <div style="margin: var(--space-8) 0; padding: var(--space-6); background: rgba(239, 68, 68, 0.06); border: 1px solid rgba(239, 68, 68, 0.25); border-radius: var(--radius-xl); box-shadow: var(--shadow-sm);">
+          <div style="display: flex; align-items: center; gap: var(--space-2); margin-bottom: var(--space-3);">
+            <span style="font-size: var(--text-xl);">🚨</span>
+            <h3 style="margin: 0; font-size: var(--text-lg); font-weight: 700; color: #ef4444;">{content.emergencyTitle}</h3>
+            <span class="badge" style="background: rgba(239, 68, 68, 0.15); color: #ef4444; font-size: 0.7rem; font-weight: 600; padding: 2px 8px; border-radius: var(--radius-full); margin-left: auto;">
+              {content.emergencyBadge}
+            </span>
+          </div>
+          <p style="margin: 0; font-size: var(--text-sm); line-height: 1.8; color: var(--color-text-primary);">
+            {content.emergencyText}
+          </p>
+        </div>
+
+        <!-- 5. Practical Use Cases Section -->
+        <h2>{content.useCasesTitle}</h2>
+        <ul class="feature-bullets">
+          {content.useCases.map((uc) => (
+            <li>
+              <strong>{uc.bold}:</strong> {uc.text}
+            </li>
           ))}
         </ul>
 
-        <h2>{content.article.howDeterminedTitle}</h2>
-        <p style="line-height: 1.8; margin-bottom: 1.5rem;">
-          {content.article.howDeterminedLead}
-        </p>
-        <ul style="line-height: 1.8; margin-bottom: 2rem;">
-          {content.article.howDeterminedList.map((li) => (
-            <li style="margin-bottom: 0.75rem;"><strong>{li.bold}</strong> — {li.text}</li>
+        <!-- 6. Troubleshooting & Permissions Section -->
+        <h2>{content.troubleshootTitle}</h2>
+        <div style="display: grid; gap: var(--space-4); margin-bottom: 2rem;">
+          {content.troubleshootItems.map((item) => (
+            <div style="background: var(--color-bg-card); border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: var(--space-4) var(--space-5);">
+              <h4 style="margin: 0 0 var(--space-1) 0; font-size: var(--text-base); font-weight: 700; color: var(--color-text-primary);">{item.title}</h4>
+              <p style="margin: 0; font-size: var(--text-sm); line-height: 1.7; color: var(--color-text-secondary);">{item.desc}</p>
+            </div>
           ))}
-        </ul>
+        </div>
 
+        <p style="font-size: var(--text-sm); color: var(--color-text-secondary); margin-bottom: 2rem;">
+          {lang === 'fr' ? (
+            <>Consultez également nos tutoriels dédiés : <a href={getLocalizedPath('/guides/wrong-location/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">corriger une position erronée</a> et <a href={getLocalizedPath('/guides/improve-gps-accuracy/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">comment améliorer la précision du GPS</a>.</>
+          ) : lang === 'es' ? (
+            <>Consulte más consejos en <a href={getLocalizedPath('/guides/wrong-location/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">cómo corregir una ubicación errónea</a> y <a href={getLocalizedPath('/guides/improve-gps-accuracy/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">mejorar la precisión GPS</a>.</>
+          ) : (
+            <>Further reading: troubleshooting guides on <a href={getLocalizedPath('/guides/wrong-location/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">fixing an incorrect location</a> and <a href={getLocalizedPath('/guides/improve-gps-accuracy/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">how to improve GPS accuracy</a>.</>
+          )}
+        </p>
+
+        <!-- 7. Privacy & RGPD / CNIL Transparency -->
         <h2>{content.article.privacyTitle}</h2>
-        <p style="line-height: 1.8; margin-bottom: 1.5rem;">
+        <p style="line-height: 1.8; margin-bottom: 1.5rem; color: var(--color-text-secondary);">
           {content.article.privacyText}
         </p>
-      </div>
-    </section>
 
-    <!-- FAQ Accordion -->
-    <section class="section" style="margin-top: var(--space-8);">
-      <div class="section-header">
-        <h2>{content.faqTitle} <span class="text-gradient">{content.faqTitleAccent}</span></h2>
-      </div>
-      <div style="max-width: var(--max-width-narrow); margin: 0 auto;">
-        <FAQAccordion items={content.faqItems} />
-      </div>
+        <!-- Authority E-E-A-T Credibility Component -->
+        <div style="margin-top: var(--space-8);">
+          <AuthorEAT 
+            lang={lang}
+            reviewedBy={content.reviewedBy} 
+            reviewerTitle={content.reviewerTitle} 
+            lastUpdated="September 2026" 
+            readTime="4 min" 
+          />
+        </div>
+
+        <!-- 10 High-Intent FAQ Accordion -->
+        <div style="margin-top: var(--space-10);">
+          <h2>{content.faqTitle} <span class="text-gradient">{content.faqTitleAccent}</span></h2>
+          <FAQAccordion items={content.faqItems} includeSchema={false} />
+        </div>
+
+        <!-- Sub-pages Navigation Hub-and-Spoke Grid with Rich Descriptions -->
+        <div class="contextual-next-box" style="margin-top: var(--space-12);">
+          <h3 class="contextual-next-title">{content.exploreTitle} <span class="text-gradient">{content.exploreTitleAccent}</span></h3>
+          <div class="contextual-next-grid">
+            {content.subNav.map((item) => (
+              <a 
+                href={item.href.startsWith('/') ? getLocalizedPath(item.href, lang) : item.href} 
+                class="contextual-link-card"
+              >
+                <span class="contextual-link-icon">{item.icon || '📍'}</span>
+                <div class="contextual-link-info">
+                  <div class="contextual-link-title">{item.label}</div>
+                  {item.desc && <div class="contextual-link-sub">{item.desc}</div>}
+                </div>
+              </a>
+            ))}
+          </div>
+        </div>
+
+      </article>
     </section>
   </div>
 
@@ -194,13 +389,16 @@ const myLocFaqSchema = {
     import Geocoding from '../scripts/geocoding.js';
     import Sharing from '../scripts/sharing.js';
     import MapUtils from '../scripts/map.js';
+    import CoordUtils from '../scripts/coordinates.js';
 
     const locateTitles: Record<string, string> = {
       en: "Zoom to my current location",
       es: "Centrar y ampliar en mi ubicación",
       fr: "Zoomer sur ma position actuelle",
       de: "Auf meinen aktuellen Standort zoomen",
-      pt: "Aproximar da minha localização atual"
+      pt: "Aproximar da minha localização atual",
+      hi: "मेरी वर्तमान लोकेशन पर ज़ूम करें",
+      id: "Perbesar ke lokasi saya saat ini"
     };
     const currentDocLang = document.documentElement.lang || 'en';
     const locateTitle = document.getElementById('map')?.getAttribute('data-locate-title') || locateTitles[currentDocLang] || locateTitles.en;
@@ -208,6 +406,8 @@ const myLocFaqSchema = {
     let currentLat: number | null = null;
     let currentLng: number | null = null;
     let currentAccuracy: number = 0;
+    let currentDmsText: string = '';
+    let currentAddressText: string = '';
     let mapInstance: any = null;
     let markerInstance: any = null;
     let circleInstance: any = null;
@@ -285,11 +485,11 @@ const myLocFaqSchema = {
       }
     }
 
-    async function detectLocation() {
+    async function detectLocation(isAuto = false) {
       if (promptEl) promptEl.style.display = 'none';
       if (errorEl) errorEl.style.display = 'none';
       if (loadingEl) loadingEl.style.display = 'block';
-      setStatus('loading', 'Locating...');
+      setStatus('loading', isAuto ? 'Auto-Detecting...' : 'Locating...');
 
       try {
         const position = await GeoLocation.getCurrentPosition();
@@ -300,13 +500,24 @@ const myLocFaqSchema = {
 
         const latEl = document.getElementById('data-lat');
         const lngEl = document.getElementById('data-lng');
+        const dmsEl = document.getElementById('data-dms');
         const accEl = document.getElementById('data-accuracy');
         const altEl = document.getElementById('data-altitude');
 
         if (latEl) latEl.textContent = data.formattedLat;
         if (lngEl) lngEl.textContent = data.formattedLng;
-        if (accEl) accEl.textContent = `± ${Math.round(data.accuracy)}m`;
-        if (altEl) altEl.textContent = data.altitude !== null ? `${Math.round(data.altitude)}m` : 'N/A';
+
+        try {
+          const dmsLat = CoordUtils.formatDMS(currentLat, true);
+          const dmsLng = CoordUtils.formatDMS(currentLng, false);
+          currentDmsText = `${dmsLat} ${dmsLng}`;
+          if (dmsEl) dmsEl.textContent = currentDmsText;
+        } catch {
+          if (dmsEl) dmsEl.textContent = 'N/A';
+        }
+
+        if (accEl) accEl.textContent = `± ${Math.round(data.accuracy)} m`;
+        if (altEl) altEl.textContent = data.altitude !== null ? `${Math.round(data.altitude)} m` : 'N/A';
 
         if (loadingEl) loadingEl.style.display = 'none';
         if (dataGrid) dataGrid.style.display = 'grid';
@@ -322,18 +533,26 @@ const myLocFaqSchema = {
           const stateEl = document.getElementById('data-state');
           const countryEl = document.getElementById('data-country');
 
-          if (addrEl) addrEl.textContent = address.displayName || '—';
+          currentAddressText = address.displayName || '';
+          if (addrEl) addrEl.textContent = currentAddressText || '—';
           if (cityEl) cityEl.textContent = address.city || address.town || address.village || '—';
           if (stateEl) stateEl.textContent = address.state || '—';
           if (countryEl) countryEl.textContent = address.country || '—';
         } catch {
-          // address reverse geocode fallback
+          // reverse geocode fallback
         }
 
+        // Configure links
+        const mapsUrl = Sharing.getGoogleMapsUrl(currentLat, currentLng);
         const mapsBtn = document.getElementById('open-maps-btn');
-        if (mapsBtn && currentLat && currentLng) {
-          mapsBtn.setAttribute('href', Sharing.getGoogleMapsUrl(currentLat, currentLng));
-        }
+        if (mapsBtn) mapsBtn.setAttribute('href', mapsUrl);
+
+        const shareMessage = `My current location: ${currentLat.toFixed(6)}, ${currentLng.toFixed(6)}${currentAddressText ? ' (' + currentAddressText + ')' : ''} — ${mapsUrl}`;
+        const waBtn = document.getElementById('share-whatsapp-btn');
+        if (waBtn) waBtn.setAttribute('href', `https://api.whatsapp.com/send?text=${encodeURIComponent(shareMessage)}`);
+
+        const smsBtn = document.getElementById('share-sms-btn');
+        if (smsBtn) smsBtn.setAttribute('href', `sms:?body=${encodeURIComponent(shareMessage)}`);
 
       } catch (err: any) {
         if (loadingEl) loadingEl.style.display = 'none';
@@ -352,24 +571,193 @@ const myLocFaqSchema = {
     }
 
     getBtn?.addEventListener('click', () => detectLocation(false));
-    detectLocation(true);
 
+    // Auto-detect with graceful fallback if permission prompt is needed
+    GeoLocation.checkPermission().then((perm) => {
+      if (perm === 'granted') {
+        detectLocation(true);
+      } else {
+        if (promptEl) promptEl.style.display = 'block';
+        setStatus('ready', 'Ready');
+      }
+    }).catch(() => {
+      if (promptEl) promptEl.style.display = 'block';
+      setStatus('ready', 'Ready');
+    });
+
+    // Copy DD coordinates
     document.getElementById('copy-coords-btn')?.addEventListener('click', function(this: HTMLButtonElement) {
       if (currentLat === null || currentLng === null) return;
-      navigator.clipboard.writeText(`${currentLat.toFixed(6)}, ${currentLng.toFixed(6)}`).then(() => {
+      const text = `${currentLat.toFixed(6)}, ${currentLng.toFixed(6)}`;
+      navigator.clipboard.writeText(text).then(() => {
         const orig = this.textContent;
         this.textContent = '✓ Copied!';
         setTimeout(() => { this.textContent = orig; }, 2000);
       });
     });
 
+    // Copy DMS coordinates
+    document.getElementById('copy-dms-btn')?.addEventListener('click', function(this: HTMLButtonElement) {
+      if (!currentDmsText) return;
+      navigator.clipboard.writeText(currentDmsText).then(() => {
+        const orig = this.textContent;
+        this.textContent = '✓ Copied!';
+        setTimeout(() => { this.textContent = orig; }, 2000);
+      });
+    });
+
+    // Copy address
+    document.getElementById('copy-address-btn')?.addEventListener('click', function(this: HTMLButtonElement) {
+      if (!currentAddressText) return;
+      navigator.clipboard.writeText(currentAddressText).then(() => {
+        const orig = this.textContent;
+        this.textContent = '✓ Copied!';
+        setTimeout(() => { this.textContent = orig; }, 2000);
+      });
+    });
+
+    // Native Web Share API
     document.getElementById('share-btn')?.addEventListener('click', () => {
       if (currentLat === null || currentLng === null) return;
       Sharing.shareNative({
         title: 'My Location',
-        text: `My location: ${currentLat.toFixed(6)}, ${currentLng.toFixed(6)}`,
+        text: `My location: ${currentLat.toFixed(6)}, ${currentLng.toFixed(6)}${currentAddressText ? ' (' + currentAddressText + ')' : ''}`,
         url: Sharing.getGoogleMapsUrl(currentLat, currentLng),
       });
     });
   </script>
 </BaseLayout>
+
+<style>
+  .location-article-content {
+    line-height: 1.8;
+  }
+
+  .location-article-content p {
+    margin-bottom: 1.5rem;
+    font-size: var(--text-base);
+    color: var(--color-text-secondary);
+  }
+
+  .step-guide-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: var(--space-4);
+    margin: var(--space-6) 0 var(--space-8);
+  }
+
+  .step-guide-card {
+    background: var(--color-bg-card);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-xl);
+    padding: var(--space-5);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+
+  .step-badge {
+    align-self: flex-start;
+    display: inline-block;
+    padding: 2px 8px;
+    font-size: var(--text-xs);
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--color-accent-primary);
+    background: rgba(37, 99, 235, 0.12);
+    border-radius: var(--radius-sm);
+  }
+
+  .step-guide-card h4 {
+    margin: 0;
+    font-size: var(--text-base);
+    color: var(--color-text-heading);
+    font-weight: 700;
+  }
+
+  .step-guide-card p {
+    margin: 0;
+    font-size: var(--text-sm);
+    line-height: 1.6;
+    color: var(--color-text-secondary);
+  }
+
+  .callout-box {
+    background: linear-gradient(135deg, rgba(37, 99, 235, 0.08) 0%, rgba(14, 165, 233, 0.04) 100%);
+    border-left: 4px solid var(--color-accent-primary);
+    border-radius: 0 var(--radius-lg) var(--radius-lg) 0;
+    padding: var(--space-4) var(--space-5);
+    margin: var(--space-6) 0;
+    font-size: var(--text-sm);
+    color: var(--color-text-primary);
+  }
+
+  .table-responsive {
+    width: 100%;
+    overflow-x: auto;
+    margin: var(--space-6) 0;
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--color-border);
+    background: var(--color-bg-card);
+    min-height: 180px;
+  }
+
+  .table-responsive table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0;
+    font-size: var(--text-sm);
+  }
+
+  .table-responsive th,
+  .table-responsive td {
+    padding: var(--space-3) var(--space-4);
+    border-bottom: 1px solid var(--color-border);
+    text-align: left;
+  }
+
+  .table-responsive th {
+    background: var(--color-bg-tertiary);
+    color: var(--color-text-heading);
+    font-weight: 600;
+  }
+
+  .table-responsive tr:last-child td {
+    border-bottom: none;
+  }
+
+  .feature-bullets {
+    list-style: none;
+    padding-left: 0;
+    margin: var(--space-6) 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+
+  .feature-bullets li {
+    position: relative;
+    padding-left: var(--space-6);
+    line-height: 1.75;
+    color: var(--color-text-secondary);
+  }
+
+  .feature-bullets li::before {
+    content: "✓";
+    position: absolute;
+    left: 0;
+    color: var(--color-accent-success);
+    font-weight: bold;
+  }
+
+  .text-link {
+    color: var(--color-accent-primary);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    font-weight: 500;
+  }
+
+  .text-link:hover {
+    color: var(--color-accent-hover, #1d4ed8);
+  }
+</style>

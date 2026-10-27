@@ -8,7 +8,7 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
-    "deploy": "npx wrangler pages deploy dist --project-name=mylocationlab --branch=main --commit-dirty=true",
+    "deploy": "npx -y wrangler pages deploy dist --project-name=mylocationlab --branch=main --commit-dirty=true",
     "zip": "node scripts/zip-dist.mjs",
     "social": "node scripts/generate-social-images.mjs",
     "preview": "astro preview",

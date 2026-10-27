@@ -1301,17 +1301,18 @@ const c = dict[attribute]?.[lang] || dict[attribute]?.en;
 const linkLabels = relatedLinkLabels[lang] || relatedLinkLabels.en;
 const faq = c.faq ?? faqBank[attribute]?.[lang] ?? faqBank[attribute]?.en;
 
-const relatedLinks = [
-  { label: linkLabels.gps, href: getLocalizedPath('/my-location/gps/', lang) },
-  { label: linkLabels.address, href: getLocalizedPath('/my-location/address/', lang) },
-  { label: linkLabels.coordinates, href: getLocalizedPath('/my-location/coordinates/', lang) },
-  { label: linkLabels.latLong, href: getLocalizedPath('/my-location/latitude-longitude/', lang) },
-  { label: linkLabels.city, href: getLocalizedPath('/my-location/city/', lang) },
-  { label: linkLabels.state, href: getLocalizedPath('/my-location/state/', lang) },
-  { label: linkLabels.country, href: getLocalizedPath('/my-location/country/', lang) },
-  { label: linkLabels.converter, href: getLocalizedPath('/tools/coordinate-converter/', lang) },
-  ...(attribute === 'address' ? [{ label: linkLabels.addressFinder, href: getLocalizedPath('/tools/address-finder/', lang) }] : [])
+const allRelatedLinks = [
+  { key: 'gps', label: linkLabels.gps, href: getLocalizedPath('/my-location/gps/', lang) },
+  { key: 'address', label: linkLabels.address, href: getLocalizedPath('/my-location/address/', lang) },
+  { key: 'coordinates', label: linkLabels.coordinates, href: getLocalizedPath('/my-location/coordinates/', lang) },
+  { key: 'latLong', label: linkLabels.latLong, href: getLocalizedPath('/my-location/latitude-longitude/', lang) },
+  { key: 'city', label: linkLabels.city, href: getLocalizedPath('/my-location/city/', lang) },
+  { key: 'state', label: linkLabels.state, href: getLocalizedPath('/my-location/state/', lang) },
+  { key: 'country', label: linkLabels.country, href: getLocalizedPath('/my-location/country/', lang) },
+  { key: 'converter', label: linkLabels.converter, href: getLocalizedPath('/tools/coordinate-converter/', lang) },
+  ...(attribute === 'address' ? [{ key: 'addressFinder', label: linkLabels.addressFinder, href: getLocalizedPath('/tools/address-finder/', lang) }] : [])
 ];
+const relatedLinks = allRelatedLinks.filter(l => l.key !== attribute);
 
 const breadcrumbs = [
   { label: t('common.home'), href: '/' },

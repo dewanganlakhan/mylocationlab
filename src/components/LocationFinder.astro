@@ -28,7 +28,10 @@ const labels: Record<string, any> = {
     copied: 'Copied!', copyField: 'Copy',
     detectedCity: 'Your Current City',
     detectedState: 'Your Current State / Region',
-    detectedCountry: 'Your Current Country'
+    detectedCountry: 'Your Current Country',
+    detectedAddress: 'Your Current Address',
+    copyAddress: 'Copy Full Address',
+    shareWhatsApp: 'WhatsApp'
   },
   es: {
     header: 'Su Ubicación', ready: 'Listo', loading: 'Detectando ubicación...',
@@ -40,19 +43,25 @@ const labels: Record<string, any> = {
     copied: '¡Copiado!', copyField: 'Copiar',
     detectedCity: 'Su Ciudad Actual',
     detectedState: 'Su Estado o Provincia Actual',
-    detectedCountry: 'Su País Actual'
+    detectedCountry: 'Su País Actual',
+    detectedAddress: 'Su Dirección Actual',
+    copyAddress: 'Copiar Dirección Completa',
+    shareWhatsApp: 'WhatsApp'
   },
   fr: {
     header: 'Votre Position', ready: 'Prêt', loading: 'Détection de la position...',
     lat: 'Latitude', lng: 'Longitude', address: 'Adresse', city: 'Ville',
     state: 'Région / Département', country: 'Pays', accuracy: 'Précision', altitude: 'Altitude',
-    copy: 'Copier Coordonnées', share: 'Partager', openInMaps: 'Ouvrir dans Maps', refresh: 'Actualiser',
+    copy: 'Copier Coordennées', share: 'Partager', openInMaps: 'Ouvrir dans Maps', refresh: 'Actualiser',
     locateTitle: 'Zoomer sur ma position actuelle',
     errBadge: 'Erreur', tryAgain: 'Réessayer', getLoc: 'Obtenir Ma Position',
     copied: 'Copié !', copyField: 'Copier',
     detectedCity: 'Votre Ville Actuelle',
     detectedState: 'Votre Région / Département Actuel',
-    detectedCountry: 'Votre Pays Actuel'
+    detectedCountry: 'Votre Pays Actuel',
+    detectedAddress: 'Votre Adresse Actuelle',
+    copyAddress: 'Copier l\'Adresse Complète',
+    shareWhatsApp: 'WhatsApp'
   },
   de: {
     header: 'Ihr Standort', ready: 'Bereit', loading: 'Standort wird ermittelt...',
@@ -64,7 +73,10 @@ const labels: Record<string, any> = {
     copied: 'Kopiert!', copyField: 'Kopieren',
     detectedCity: 'Ihre aktuelle Stadt',
     detectedState: 'Ihr aktuelles Bundesland / Region',
-    detectedCountry: 'Ihr aktuelles Land'
+    detectedCountry: 'Ihr aktuelles Land',
+    detectedAddress: 'Ihre aktuelle Adresse',
+    copyAddress: 'Vollständige Adresse kopieren',
+    shareWhatsApp: 'WhatsApp'
   },
   pt: {
     header: 'Sua Localização', ready: 'Pronto', loading: 'Detectando localização...',
@@ -76,7 +88,10 @@ const labels: Record<string, any> = {
     copied: 'Copiado!', copyField: 'Copiar',
     detectedCity: 'Sua Cidade Atual',
     detectedState: 'Seu Estado Atual',
-    detectedCountry: 'Seu País Atual'
+    detectedCountry: 'Seu País Atual',
+    detectedAddress: 'Seu Endereço Atual',
+    copyAddress: 'Copiar Endereço Completo',
+    shareWhatsApp: 'WhatsApp'
   },
   hi: {
     header: 'आपकी लोकेशन', ready: 'तैयार', loading: 'लोकेशन पहचानी जा रही है...',
@@ -88,7 +103,10 @@ const labels: Record<string, any> = {
     copied: 'कॉपी किया गया!', copyField: 'कॉपी करें',
     detectedCity: 'आपका वर्तमान शहर',
     detectedState: 'आपका वर्तमान राज्य / क्षेत्र',
-    detectedCountry: 'आपका वर्तमान देश'
+    detectedCountry: 'आपका वर्तमान देश',
+    detectedAddress: 'आपका वर्तमान पता',
+    copyAddress: 'पूरा पता कॉपी करें',
+    shareWhatsApp: 'WhatsApp'
   },
   id: {
     header: 'Lokasi Anda', ready: 'Siap', loading: 'Mendeteksi lokasi...',
@@ -100,7 +118,10 @@ const labels: Record<string, any> = {
     copied: 'Tersalin!', copyField: 'Salin',
     detectedCity: 'Kota Anda Saat Ini',
     detectedState: 'Provinsi / Wilayah Anda Saat Ini',
-    detectedCountry: 'Negara Anda Saat Ini'
+    detectedCountry: 'Negara Anda Saat Ini',
+    detectedAddress: 'Alamat Anda Saat Ini',
+    copyAddress: 'Salin Alamat Lengkap',
+    shareWhatsApp: 'WhatsApp'
   }
 };
 
@@ -117,6 +138,7 @@ const l = labels[lang] || labels.en;
   data-copied={l.copied}
   data-lang={lang}
   data-emphasis={emphasisField}
+  data-share-header={l.detectedAddress || l.address}
 >
   <div class="location-display-header">
     <div class="location-display-dot" id="loc-dot" style="background: var(--color-text-tertiary);"></div>
@@ -165,6 +187,26 @@ const l = labels[lang] || labels.en;
       <span class="emphasis-hero-badge">🌍 {l.detectedCountry}</span>
       <div class="emphasis-hero-val" id="hero-country-val">—</div>
       <p class="emphasis-hero-sub" id="hero-country-sub"></p>
+    </div>
+  )}
+  {emphasisField === 'address' && (
+    <div class="emphasis-hero-card" id="emphasis-hero-address" style="display: none;">
+      <span class="emphasis-hero-badge">🏠 {l.detectedAddress || l.address}</span>
+      <div class="emphasis-hero-val" id="hero-address-val" style="font-size: clamp(1.2rem, 3.2vw, 1.85rem); line-height: 1.35; word-break: break-word;">—</div>
+      <p class="emphasis-hero-sub" id="hero-address-sub"></p>
+      <div style="margin-top: var(--space-4); display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;">
+        <button type="button" class="btn btn-primary btn-sm" id="hero-copy-address-btn" style="display: inline-flex; align-items: center; gap: 6px;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect width="14" height="14" x="8" y="8" rx="2" ry="2"/>
+            <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/>
+          </svg>
+          <span id="hero-copy-text">{l.copyAddress || 'Copiar Endereço Completo'}</span>
+        </button>
+        <button type="button" class="btn btn-secondary btn-sm" id="hero-whatsapp-btn" style="display: inline-flex; align-items: center; gap: 6px;">
+          <span>📲</span>
+          <span>{l.shareWhatsApp || 'WhatsApp'}</span>
+        </button>
+      </div>
     </div>
   )}
 
@@ -486,6 +528,65 @@ const l = labels[lang] || labels.en;
           if (val) val.textContent = addr.country || '—';
           if (sub) sub.textContent = addr.countryCode ? `ISO: ${addr.countryCode}` : '';
           heroCountry.style.display = 'block';
+        }
+
+        const heroAddress = document.getElementById('emphasis-hero-address');
+        if (heroAddress) {
+          const val = document.getElementById('hero-address-val');
+          const sub = document.getElementById('hero-address-sub');
+
+          const road = addr.road || '';
+          const num = addr.houseNumber || '';
+          const streetPart = road ? (num ? `${road}, ${num}` : road) : (addr.displayName?.split(',')[0] || '');
+          const district = addr.neighbourhood || '';
+          const city = addr.city || addr.town || addr.village || '';
+          const state = addr.stateCode || addr.state || '';
+          const cityState = [city, state].filter(Boolean).join(' - ');
+          let rawPostcode = addr.postcode || '';
+          if (rawPostcode && addr.countryCode === 'BR' && !rawPostcode.includes('-') && rawPostcode.length === 8) {
+            rawPostcode = `${rawPostcode.slice(0, 5)}-${rawPostcode.slice(5)}`;
+          }
+          const postalLabel = addr.countryCode === 'BR' ? `CEP: ${rawPostcode}` : (addr.countryCode === 'US' ? `ZIP: ${rawPostcode}` : rawPostcode);
+
+          if (val) val.textContent = streetPart || addr.displayName || '—';
+          if (sub) {
+            const subParts = [district, cityState, rawPostcode ? postalLabel : '', addr.country].filter(Boolean);
+            sub.textContent = subParts.join(' • ');
+          }
+          heroAddress.style.display = 'block';
+
+          // Format full standard address for copy and share
+          const fullAddressParts = [];
+          if (streetPart) fullAddressParts.push(streetPart);
+          if (district) fullAddressParts.push(district);
+          if (cityState) fullAddressParts.push(cityState);
+          if (rawPostcode) fullAddressParts.push(postalLabel);
+          if (addr.country) fullAddressParts.push(addr.country);
+          const formattedFullAddress = fullAddressParts.join(', ') || addr.displayName || '';
+
+          const copyBtn = document.getElementById('hero-copy-address-btn');
+          if (copyBtn) {
+            copyBtn.onclick = function() {
+              navigator.clipboard.writeText(formattedFullAddress).then(() => {
+                const textSpan = document.getElementById('hero-copy-text');
+                if (textSpan) {
+                  const orig = textSpan.textContent;
+                  textSpan.textContent = '✓ ' + (finderEl?.getAttribute('data-copied') || 'Copied!');
+                  setTimeout(() => { textSpan.textContent = orig; }, 2000);
+                }
+              });
+            };
+          }
+
+          const waBtn = document.getElementById('hero-whatsapp-btn');
+          if (waBtn) {
+            waBtn.onclick = function() {
+              const shareHeader = finderEl?.getAttribute('data-share-header') || 'My Current Address';
+              const textToShare = `📍 ${shareHeader}:\n${formattedFullAddress}\n\nGoogle Maps: https://www.google.com/maps?q=${cLat},${cLng}`;
+              const waUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(textToShare)}`;
+              window.open(waUrl, '_blank', 'noopener,noreferrer');
+            };
+          }
         }
 
       } catch {}

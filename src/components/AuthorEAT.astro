@@ -3,19 +3,95 @@
  * AuthorEAT — High-authority E-E-A-T credibility block
  * Displays editorial review credentials, GIS accuracy standards, and privacy verification.
  */
+import { getLocalizedPath, defaultLang, type SupportedLang } from '../i18n/config';
+
 interface Props {
   lastUpdated?: string;
   reviewedBy?: string;
   reviewerTitle?: string;
   readTime?: string;
+  lang?: SupportedLang | string;
 }
 
 const {
-  lastUpdated = 'September 15, 2026',
+  lastUpdated = 'September 2026',
   reviewedBy = 'MyLocationLab Editorial Team',
   reviewerTitle = 'Geospatial Content Reviewer',
   readTime,
+  lang: customLang = defaultLang,
 } = Astro.props;
+
+const lang = (customLang in { en: 1, es: 1, fr: 1, de: 1, pt: 1, hi: 1, id: 1 } ? customLang : defaultLang) as SupportedLang;
+
+const eatTranslations: Record<string, { badge: string; updated: string; read: string; privacy: string; linkTitle: string }> = {
+  en: {
+    badge: 'EDITORIALLY REVIEWED',
+    updated: 'Updated:',
+    read: 'read',
+    privacy: 'Client-Side Privacy Verified',
+    linkTitle: 'Learn more about our editorial review board and GIS standards',
+  },
+  es: {
+    badge: 'REVISIÓN EDITORIAL',
+    updated: 'Actualizado:',
+    read: 'de lectura',
+    privacy: 'Privacidad del Cliente Verificada',
+    linkTitle: 'Conozca más sobre nuestro consejo editorial y estándares SIG',
+  },
+  fr: {
+    badge: 'REVU PAR LA RÉDACTION',
+    updated: 'Mis à jour :',
+    read: 'de lecture',
+    privacy: 'Confidentialité Client Garantie',
+    linkTitle: 'En savoir plus sur notre comité éditorial et nos standards SIG',
+  },
+  de: {
+    badge: 'REDAKTIONELL GEPRÜFT',
+    updated: 'Aktualisiert:',
+    read: 'Lesezeit',
+    privacy: 'Client-Datenschutz Garantiert',
+    linkTitle: 'Erfahren Sie mehr über unsere Redaktionsstandards und GIS-Methodik',
+  },
+  pt: {
+    badge: 'REVISÃO EDITORIAL',
+    updated: 'Atualizado:',
+    read: 'de leitura',
+    privacy: 'Privacidade do Cliente Garantida',
+    linkTitle: 'Saiba mais sobre nosso conselho editorial e metodologia SIG',
+  },
+  hi: {
+    badge: 'संपादकीय समीक्षा',
+    updated: 'अंतिम अपडेट:',
+    read: 'पठन समय',
+    privacy: 'क्लाइंट गोपनीयता सत्यापित',
+    linkTitle: 'हमारे संपादकीय बोर्ड और जीआईएस मानकों के बारे में और जानें',
+  },
+  id: {
+    badge: 'DITINJAU OLEH REDAKSI',
+    updated: 'Diperbarui:',
+    read: 'waktu baca',
+    privacy: 'Privasi Klien Terverifikasi',
+    linkTitle: 'Pelajari lebih lanjut tentang dewan editorial dan standar SIG kami',
+  },
+};
+
+const tEat = eatTranslations[lang] || eatTranslations.en;
+const aboutPath = getLocalizedPath('/about/#editorial-team', lang);
+
+// Format month if standard date provided
+let displayUpdated = lastUpdated;
+if (lastUpdated.includes('September') || lastUpdated.includes('Septembre')) {
+  const monthMap: Record<string, string> = {
+    en: 'September 2026',
+    es: 'Septiembre de 2026',
+    fr: 'Septembre 2026',
+    de: 'September 2026',
+    pt: 'Setembro de 2026',
+    hi: 'सितंबर 2026',
+    id: 'September 2026',
+  };
+  displayUpdated = monthMap[lang] || 'September 2026';
+}
 ---
 
 <aside class="eat-badge-container" aria-label="Editorial and Trust Verification" style="margin: var(--space-6) 0 var(--space-8); padding: var(--space-4) var(--space-5); background: var(--color-bg-card); border: 1px solid var(--color-border); border-radius: var(--radius-xl); display: flex; flex-wrap: wrap; gap: var(--space-4); align-items: center; justify-content: space-between; font-size: var(--text-xs); color: var(--color-text-secondary);">
@@ -27,8 +103,8 @@ const {
     </div>
     <div>
       <div style="font-weight: 600; color: var(--color-text-primary); display: flex; align-items: center; gap: var(--space-2);">
-        <a href="/about/#editorial-team" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--color-accent-primary);" title="Learn more about our editorial review board and GIS standards">{reviewedBy}</a>
-        <span class="badge badge-success" style="font-size: 0.65rem; padding: 2px 6px;">EDITORIALLY REVIEWED</span>
+        <a href={aboutPath} style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--color-accent-primary);" title={tEat.linkTitle}>{reviewedBy}</a>
+        <span class="badge badge-success" style="font-size: 0.65rem; padding: 2px 6px;">{tEat.badge}</span>
       </div>
       <div style="color: var(--color-text-tertiary);">{reviewerTitle}</div>
     </div>
@@ -42,7 +118,7 @@ const {
         <line x1="8" y1="2" x2="8" y2="6"/>
         <line x1="3" y1="10" x2="21" y2="10"/>
       </svg>
-      <span>Updated: <strong style="color: var(--color-text-primary);">{lastUpdated}</strong></span>
+      <span>{tEat.updated} <strong style="color: var(--color-text-primary);">{displayUpdated}</strong></span>
     </div>
     {readTime && (
       <div style="display: flex; align-items: center; gap: 5px;">
@@ -50,7 +126,7 @@ const {
           <circle cx="12" cy="12" r="10"/>
           <polyline points="12 6 12 12 16 14"/>
         </svg>
-        <span>{readTime} read</span>
+        <span>{readTime} {tEat.read}</span>
       </div>
     )}
     <div style="display: flex; align-items: center; gap: 5px; color: var(--color-accent-primary);">
@@ -58,7 +134,7 @@ const {
         <rect width="18" height="11" x="3" y="11" rx="2" ry="2"/>
         <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
       </svg>
-      <span>Zero-Data Retention Certified</span>
+      <span>{tEat.privacy}</span>
     </div>
   </div>
 </aside>
