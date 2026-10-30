@@ -11,13 +11,17 @@
  * - hi: "मेरा वर्तमान पता क्या है" / "मेरा पता"
  * - id: "apa alamat saya sekarang" / "alamat saya saat ini"
  */
-import BaseLayout from '../../layouts/BaseLayout.astro';
-import Breadcrumbs from '../Breadcrumbs.astro';
-import LocationFinder from '../LocationFinder.astro';
-import SiloNav from '../SiloNav.astro';
-import FAQAccordion from '../FAQAccordion.astro';
-import AuthorEAT from '../AuthorEAT.astro';
-import { getLocalizedPath, defaultLang, type SupportedLang } from '../../i18n/config';
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Breadcrumbs from "../Breadcrumbs.astro";
+import LocationFinder from "../LocationFinder.astro";
+import SiloNav from "../SiloNav.astro";
+import FAQAccordion from "../FAQAccordion.astro";
+import AuthorEAT from "../AuthorEAT.astro";
+import {
+  getLocalizedPath,
+  defaultLang,
+  type SupportedLang,
+} from "../../i18n/config";
 
 interface Props {
   lang?: SupportedLang | string;
@@ -68,420 +72,1166 @@ interface AddressPageData {
 const contentData: Record<SupportedLang, AddressPageData> = {
   en: {
     title: "My Current Address — What Is My Address Right Now? | MyLocationLab",
-    description: "Find your exact current street address right now using GPS. See your house number, street name, city, state, postal code, and country with 1-click copy.",
+    description:
+      "Find your exact current street address right now using GPS. See your house number, street name, city, state, postal code, and country with 1-click copy.",
     h1Prefix: "What Is My",
     h1Accent: "Current Address?",
-    subtitle: "Find your full street address instantly using GPS satellites and reverse geocoding: house number, street name, neighborhood, city, state, postal code, and country.",
+    subtitle:
+      "Find your full street address instantly using GPS satellites and reverse geocoding: house number, street name, neighborhood, city, state, postal code, and country.",
     siloTitle: "Location Tools",
     breadcrumbLabel: "My Current Address",
     h2Steps: "How to Find Your Current Address on Mobile or Desktop",
-    pStepsIntro: "You do not need to install an app or create an account. Your exact street address is resolved directly inside your web browser in 4 simple steps:",
+    pStepsIntro:
+      "You do not need to install an app or create an account. Your exact street address is resolved directly inside your web browser in 4 simple steps:",
     steps: [
-      { badge: "Step 1", title: 'Click "Get My Location"', desc: "Trigger your device's built-in GNSS positioning sensors and network antennas." },
-      { badge: "Step 2", title: "Allow Location Permission", desc: 'Select "Allow" (or "Allow while using app") when prompted by your browser.' },
-      { badge: "Step 3", title: "Satellite Fix & Geocoding", desc: "Coordinates are locked via GPS satellites and translated into the closest street address." },
-      { badge: "Step 4", title: "Copy or Share Address", desc: "Use the 1-click copy button for forms or share your formatted address directly via WhatsApp." }
+      {
+        badge: "Step 1",
+        title: 'Click "Get My Location"',
+        desc: "Trigger your device's built-in GNSS positioning sensors and network antennas.",
+      },
+      {
+        badge: "Step 2",
+        title: "Allow Location Permission",
+        desc: 'Select "Allow" (or "Allow while using app") when prompted by your browser.',
+      },
+      {
+        badge: "Step 3",
+        title: "Satellite Fix & Geocoding",
+        desc: "Coordinates are locked via GPS satellites and translated into the closest street address.",
+      },
+      {
+        badge: "Step 4",
+        title: "Copy or Share Address",
+        desc: "Use the 1-click copy button for forms or share your formatted address directly via WhatsApp.",
+      },
     ],
-    tipAccuracy: "Tip for maximum precision: When outdoors under clear sky, GPS accuracy reaches 3 to 5 meters. Inside buildings or underground garages, move near a window to receive direct satellite radio signals.",
+    tipAccuracy:
+      "Tip for maximum precision: When outdoors under clear sky, GPS accuracy reaches 3 to 5 meters. Inside buildings or underground garages, move near a window to receive direct satellite radio signals.",
     h2Anatomy: "Address Anatomy: What Is Included in the Result",
-    pAnatomyIntro: "Postal standards differ across countries. Our reverse geocoding engine parses raw geographic coordinates into official administrative components:",
+    pAnatomyIntro:
+      "Postal standards differ across countries. Our reverse geocoding engine parses raw geographic coordinates into official administrative components:",
     anatomyHeaders: ["Field Name", "Example", "Purpose in Postal Addressing"],
     anatomyRows: [
-      ["Street & Number", "742 Evergreen Terrace", "Identifies the thoroughfare and specific residential or commercial building."],
-      ["Neighborhood / District", "Springfield Heights", "Crucial for couriers, delivery drivers, and emergency route sorting."],
-      ["City / Municipality", "Springfield", "The incorporated city or local governing municipality."],
-      ["State / Province", "Oregon (OR)", "The primary administrative subdivision or federal state."],
-      ["Postal / ZIP Code", "97477", "Standardized alphanumeric routing code for postal dispatch."],
-      ["Country", "United States (US)", "Sovereign territory and official ISO 3166-1 alpha-2 code."],
-      ["Coordinates", "44.0521, -123.0868", "Exact latitude and longitude for mapping and navigational pinpointing."]
+      [
+        "Street & Number",
+        "742 Evergreen Terrace",
+        "Identifies the thoroughfare and specific residential or commercial building.",
+      ],
+      [
+        "Neighborhood / District",
+        "Springfield Heights",
+        "Crucial for couriers, delivery drivers, and emergency route sorting.",
+      ],
+      [
+        "City / Municipality",
+        "Springfield",
+        "The incorporated city or local governing municipality.",
+      ],
+      [
+        "State / Province",
+        "Oregon (OR)",
+        "The primary administrative subdivision or federal state.",
+      ],
+      [
+        "Postal / ZIP Code",
+        "97477",
+        "Standardized alphanumeric routing code for postal dispatch.",
+      ],
+      [
+        "Country",
+        "United States (US)",
+        "Sovereign territory and official ISO 3166-1 alpha-2 code.",
+      ],
+      [
+        "Coordinates",
+        "44.0521, -123.0868",
+        "Exact latitude and longitude for mapping and navigational pinpointing.",
+      ],
     ],
-    pPostcodeNote: "About Postal/ZIP Codes: In small rural townships, a single postal code may span the entire municipality. In large metropolitan regions, postal codes vary block by block or by building clusters.",
+    pPostcodeNote:
+      "About Postal/ZIP Codes: In small rural townships, a single postal code may span the entire municipality. In large metropolitan regions, postal codes vary block by block or by building clusters.",
     h2How: "How Your Address Is Detected (Reverse Geocoding)",
-    pHowIntro: "Your smartphone does not read physical street signs. Positioning occurs in two steps: first, your device locks GPS coordinates; second, reverse geocoding queries the OpenStreetMap database to resolve the closest mapped building and roadway:",
-    techHeaders: ["Technology", "Typical Accuracy", "When It Is Used", "Address Detail"],
-    techRows: [
-      ["Satellite GPS (GNSS)", "3 to 10 meters", "Smartphones outdoors with GPS enabled", "Exact street name & building number"],
-      ["Wi-Fi & Cell Towers", "15 to 50 meters", "Indoor offices, shopping malls, laptops", "Street segment or approximate block"],
-      ["IP Address Geolocation", "5 to 30 kilometers", "Desktop PCs on wired broadband or VPNs", "City or ISP routing gateway only"]
+    pHowIntro:
+      "Your smartphone does not read physical street signs. Positioning occurs in two steps: first, your device locks GPS coordinates; second, <a href='/tools/reverse-geocoding/' class='text-link'>reverse geocoding</a> queries the OpenStreetMap database to resolve the closest mapped building and roadway. To perform the reverse operation and find coordinates from any street address, try our <a href='/tools/geocoding/' class='text-link'>Geocoder</a>:",
+    techHeaders: [
+      "Technology",
+      "Typical Accuracy",
+      "When It Is Used",
+      "Address Detail",
     ],
-    pTechSummary: "Want to compare how satellite radio waves differ from internet socket routing? Check out our comparison of <a href='/comparisons/gps-vs-ip-location/' class='text-link'>GPS vs. IP Location</a> and learn <a href='/guides/how-gps-location-works/' class='text-link'>how GPS location works</a> in detail.",
+    techRows: [
+      [
+        "Satellite GPS (GNSS)",
+        "3 to 10 meters",
+        "Smartphones outdoors with GPS enabled",
+        "Exact street name & building number",
+      ],
+      [
+        "Wi-Fi & Cell Towers",
+        "15 to 50 meters",
+        "Indoor offices, shopping malls, laptops",
+        "Street segment or approximate block",
+      ],
+      [
+        "IP Address Geolocation",
+        "5 to 30 kilometers",
+        "Desktop PCs on wired broadband or VPNs",
+        "City or ISP routing gateway only",
+      ],
+    ],
+    pTechSummary:
+      "Want to compare how satellite radio waves differ from internet socket routing? Check out our comparison of <a href='/comparisons/gps-vs-ip-location/' class='text-link'>GPS vs. IP Location</a> and learn <a href='/guides/how-gps-location-works/' class='text-link'>how GPS location works</a> in detail.",
     h2UseCases: "Practical Scenarios for Checking Your Current Address",
     useCases: [
-      { title: "Food Delivery & Courier Orders", desc: "Verify your exact street and number when ordering on DoorDash, Uber Eats, Deliveroo, or Amazon at a new location." },
-      { title: "Rideshare Pick-Up Points", desc: "Confirm your precise address and nearby intersections for Uber or Lyft drivers when building numbers are obscured." },
-      { title: "Digital Forms & Checkout", desc: "Accurately autofill your billing address, neighborhood, and postal ZIP code during online registration." },
-      { title: "Sharing with Friends & Family", desc: "Send your complete formatted address or WhatsApp live link so guests can navigate directly to your door." },
-      { title: "Emergency Dispatch (911 / 112 / 999)", desc: "Relay your exact street name, district, and coordinates to emergency responders when seconds count." }
+      {
+        title: "Food Delivery & Courier Orders",
+        desc: "Verify your exact street and number when ordering on DoorDash, Uber Eats, Deliveroo, or Amazon at a new location.",
+      },
+      {
+        title: "Rideshare Pick-Up Points",
+        desc: "Confirm your precise address and nearby intersections for Uber or Lyft drivers when building numbers are obscured.",
+      },
+      {
+        title: "Digital Forms & Checkout",
+        desc: "Accurately autofill your billing address, neighborhood, and postal ZIP code during online registration.",
+      },
+      {
+        title: "Sharing with Friends & Family",
+        desc: "Send your complete formatted address, generate an instant <a href='/tools/location-qr-code/' class='text-link'>Location QR Code</a>, or create a live link via <a href='/share-location/' class='text-link'>Share My Location</a> so guests can navigate directly to your door.",
+      },
+      {
+        title: "Emergency Dispatch (911 / 112 / 999)",
+        desc: "Relay your exact street name, district, and coordinates to emergency responders when seconds count.",
+      },
     ],
-    h2Troubleshoot: "My Address Looks Inaccurate: Troubleshooting Common Issues",
-    pTroubleshootIntro: "If the output shows an adjacent street, missing house number, or wrong locality, here is why it happens and how to resolve it:",
+    h2Troubleshoot:
+      "My Address Looks Inaccurate: Troubleshooting Common Issues",
+    pTroubleshootIntro:
+      "If the output shows an adjacent street, missing house number, or wrong locality, here is why it happens and how to resolve it:",
     troubleshootList: [
-      "Neighboring Street Snapping: Consumer GPS has an error margin of ±5–15 meters. In urban canyons with tall glass buildings, signals reflect (multipath). Walk a few paces and hit Refresh.",
-      "Missing House Number: OpenStreetMap relies on open contributor data. Rural areas or brand-new developments might only have the street mapped without house-level polygons. Use our <a href='/tools/address-finder/' class='text-link'>Address Finder</a> tool to explore surrounding coordinates.",
+      "Neighboring Street Snapping: Consumer GPS has an error margin of ±5–15 meters. Test your live receiver precision with our <a href='/tools/gps-accuracy/' class='text-link'>GPS Accuracy Checker</a>. In urban canyons with tall glass buildings, signals reflect (multipath). Walk a few paces and hit Refresh.",
+      "Missing House Number: OpenStreetMap relies on open contributor data. Rural areas or brand-new developments might only have the street mapped without house-level polygons. Use our <a href='/tools/address-finder/' class='text-link'>Address Finder</a> tool to explore surrounding coordinates, or measure range with the <a href='/tools/distance-calculator/' class='text-link'>Distance Calculator</a>.",
       "Showing Another City or State: If you are connected to a corporate VPN or proxy, internet traffic routes through an external hub. Disable your VPN and ensure device GPS is turned on.",
-      "Weak Accuracy Radius: Follow our step-by-step instructions on <a href='/guides/improve-gps-accuracy/' class='text-link'>how to improve GPS accuracy</a> and <a href='/guides/wrong-location/' class='text-link'>fix wrong location</a> issues."
+      "Weak Accuracy Radius: Follow our step-by-step instructions on <a href='/guides/improve-gps-accuracy/' class='text-link'>how to improve GPS accuracy</a> and <a href='/guides/wrong-location/' class='text-link'>fix wrong location</a> issues.",
     ],
     h2Permissions: "How to Enable Location Permissions in Your Browser",
-    pPermissionsIntro: "If the detection button fails or prompts a permission denied error, adjust your browser privacy settings:",
+    pPermissionsIntro:
+      "If the detection button fails or prompts a permission denied error, adjust your browser privacy settings:",
     permissions: [
-      { browser: "Google Chrome (Android & Desktop)", steps: "Tap the tune/lock icon next to the URL > Permissions > Location > Select 'Allow' and refresh." },
-      { browser: "Apple Safari (iPhone, iPad & Mac)", steps: "Go to Settings > Privacy & Security > Location Services > Safari > Choose 'While Using the App' and enable 'Precise Location'." },
-      { browser: "Mozilla Firefox & Microsoft Edge", steps: "Click the lock icon in the address bar > Clear blocked permissions > Reload the page and click 'Allow' when prompted." }
+      {
+        browser: "Google Chrome (Android & Desktop)",
+        steps:
+          "Tap the tune/lock icon next to the URL > Permissions > Location > Select 'Allow' and refresh.",
+      },
+      {
+        browser: "Apple Safari (iPhone, iPad & Mac)",
+        steps:
+          "Go to Settings > Privacy & Security > Location Services > Safari > Choose 'While Using the App' and enable 'Precise Location'.",
+      },
+      {
+        browser: "Mozilla Firefox & Microsoft Edge",
+        steps:
+          "Click the lock icon in the address bar > Clear blocked permissions > Reload the page and click 'Allow' when prompted.",
+      },
     ],
     h2Privacy: "Privacy & Data Protection (No Logs)",
-    pPrivacyIntro: "At MyLocationLab, your personal privacy is an absolute architectural guarantee:",
+    pPrivacyIntro:
+      "At MyLocationLab, your personal privacy is an absolute architectural guarantee:",
     privacyBullets: [
-      "Zero Data Retention: Your coordinates and resolved address are never stored on any server or database.",
+      "No Location Storage: We never store, save, or sell your coordinates or address on our servers. Your lookup is sent to OpenStreetMap solely to resolve the street name, with zero tracking.",
       "No Personal Identifiers: We never request your name, email, phone number, or payment details.",
       "Encrypted Transmission: All geocoding API requests travel over TLS 1.3 encrypted HTTPS channels.",
-      "User Revocable: You retain full control to revoke location permissions at any moment in your browser settings."
+      "User Revocable: You retain full control to revoke location permissions at any moment in your browser settings.",
     ],
     h2Faq: "Frequently Asked Questions About Current Address",
     faqs: [
-      { question: "How do I find my current street address on my phone?", answer: "Open this page on your mobile browser, tap 'Get My Location', and grant permission. The device's GPS will compute your coordinates and our reverse geocoding engine will display your street, number, neighborhood, city, state, and postal code." },
-      { question: "Can this tool find my exact ZIP / postal code?", answer: "Yes. The result displays the postal routing code mapped to your coordinates. In urban areas, it resolves street-specific postal codes; in rural townships with single postal codes, it returns the municipal code." },
-      { question: "Why is the house number missing in my result?", answer: "OpenStreetMap relies on global open-access cartography. Some residential avenues lack building-level polygon data. In such cases, the street name, neighborhood, and coordinates are provided." },
-      { question: "Can I find the street address of another place?", answer: "Yes. Use our <a href='/tools/address-finder/' class='text-link'>Address Finder</a> tool to enter any latitude and longitude coordinates or click anywhere on the interactive map to resolve its street address." },
-      { question: "Does this service work on desktop computers without GPS?", answer: "Yes. Desktop computers use Wi-Fi network positioning and IP geolocation. While less pinpoint than a smartphone satellite chip, it typically identifies your neighborhood, city, and postal zone." },
-      { question: "Can I use this result as official proof of address?", answer: "No. This tool provides digital geolocation estimates for navigation and delivery convenience. Banks and government agencies require official utility bills or municipal correspondence as proof of residency." }
+      {
+        question: "How do I find my current street address on my phone?",
+        answer:
+          "Open this page on your mobile browser, tap 'Get My Location', and grant permission. The device's GPS will compute your coordinates and our reverse geocoding engine will display your street, number, neighborhood, city, state, and postal code.",
+      },
+      {
+        question: "Can this tool find my exact ZIP / postal code?",
+        answer:
+          "Yes. The result displays the postal routing code mapped to your coordinates. In urban areas, it resolves street-specific postal codes; in rural townships with single postal codes, it returns the municipal code.",
+      },
+      {
+        question: "Why is the house number missing in my result?",
+        answer:
+          "OpenStreetMap relies on global open-access cartography. Some residential avenues lack building-level polygon data. In such cases, the street name, neighborhood, and coordinates are provided.",
+      },
+      {
+        question: "Can I find the street address of another place?",
+        answer:
+          "Yes. Use our <a href='/tools/address-finder/' class='text-link'>Address Finder</a> or <a href='/tools/reverse-geocoding/' class='text-link'>Reverse Geocoder</a> tool to enter any latitude and longitude coordinates or click anywhere on the interactive map to resolve its street address. You can also reformat coordinates using the <a href='/tools/coordinate-converter/' class='text-link'>Coordinate Converter</a>.",
+      },
+      {
+        question: "Does this service work on desktop computers without GPS?",
+        answer:
+          "Yes. Desktop computers use Wi-Fi network positioning and IP geolocation. While less pinpoint than a smartphone satellite chip, it typically identifies your neighborhood, city, and postal zone.",
+      },
+      {
+        question: "Can I use this result as official proof of address?",
+        answer:
+          "No. This tool provides digital geolocation estimates for navigation and delivery convenience. Banks and government agencies require official utility bills or municipal correspondence as proof of residency.",
+      },
     ],
     h3Related: "Related Geolocation Tools & Connected Guides",
     relatedTools: [
-      { icon: "🛰️", title: "My GPS Coordinates", sub: "View exact latitude, longitude, and elevation", path: "/my-location/gps/" },
-      { icon: "📍", title: "Address Finder", sub: "Resolve full street address for any coordinates", path: "/tools/address-finder/" },
-      { icon: "🏙️", title: "What City Am I In?", sub: "Determine your municipality and city limits", path: "/my-location/city/" },
-      { icon: "🎯", title: "GPS Accuracy Checker", sub: "Test your live error radius in meters", path: "/tools/gps-accuracy/" },
-      { icon: "⚖️", title: "GPS vs IP Location", sub: "Why IP geolocation cannot find house numbers", path: "/comparisons/gps-vs-ip-location/" },
-      { icon: "⚡", title: "Improve GPS Accuracy", sub: "Techniques for iOS and Android positioning", path: "/guides/improve-gps-accuracy/" }
-    ]
+      {
+        icon: "🏠",
+        title: "Address Finder",
+        sub: "Resolve full street address for any coordinates or map pin",
+        path: "/tools/address-finder/",
+      },
+      {
+        icon: "🔄",
+        title: "Reverse Geocoder",
+        sub: "Convert GPS coordinates into a human-readable street address",
+        path: "/tools/reverse-geocoding/",
+      },
+      {
+        icon: "🎯",
+        title: "Geocoder",
+        sub: "Turn place names and street addresses into precise coordinates",
+        path: "/tools/geocoding/",
+      },
+      {
+        icon: "📱",
+        title: "Location QR Code",
+        sub: "Generate instant scannable address & map QR codes",
+        path: "/tools/location-qr-code/",
+      },
+      {
+        icon: "📏",
+        title: "Distance Calculator",
+        sub: "Measure exact distance between two addresses or coordinates",
+        path: "/tools/distance-calculator/",
+      },
+      {
+        icon: "🛰️",
+        title: "My GPS Coordinates",
+        sub: "View exact latitude, longitude, and altitude telemetry",
+        path: "/my-location/gps/",
+      },
+      {
+        icon: "🎯",
+        title: "GPS Accuracy Checker",
+        sub: "Test live device error radius and satellite precision",
+        path: "/tools/gps-accuracy/",
+      },
+      {
+        icon: "⚖️",
+        title: "GPS vs IP Location",
+        sub: "Why IP geolocation cannot resolve building numbers",
+        path: "/comparisons/gps-vs-ip-location/",
+      },
+    ],
   },
   es: {
-    title: "Mi Dirección Actual: Calle, Número, Código Postal y Ciudad | MyLocationLab",
-    description: "Descubra su dirección postal exacta ahora mediante GPS: calle, número, barrio, ciudad, provincia y código postal. Gratis, sin registro y con copia rápida.",
+    title:
+      "Mi Dirección Actual: Calle, Número, Código Postal y Ciudad | MyLocationLab",
+    description:
+      "Descubra su dirección postal exacta ahora mediante GPS: calle, número, barrio, ciudad, provincia y código postal. Gratis, sin registro y con copia rápida.",
     h1Prefix: "¿Cuál Es Mi",
     h1Accent: "Dirección Actual?",
-    subtitle: "Consulte su dirección física completa al instante mediante GPS satelital y geocodificación inversa: calle, número, barrio, ciudad, provincia y código postal.",
+    subtitle:
+      "Consulte su dirección física completa al instante mediante GPS satelital y geocodificación inversa: calle, número, barrio, ciudad, provincia y código postal.",
     siloTitle: "Herramientas de Ubicación",
     breadcrumbLabel: "Mi Dirección Actual",
     h2Steps: "Cómo Descubrir su Dirección Actual en el Móvil o PC",
-    pStepsIntro: "No necesita instalar ninguna aplicación ni crear una cuenta. Su dirección de calle se calcula directamente en su navegador en 4 sencillos pasos:",
+    pStepsIntro:
+      "No necesita instalar ninguna aplicación ni crear una cuenta. Su dirección de calle se calcula directamente en su navegador en 4 sencillos pasos:",
     steps: [
-      { badge: "Paso 1", title: 'Pulse "Obtener Mi Ubicación"', desc: "Inicia la recepción de coordenadas de los sensores GNSS y antenas de su dispositivo." },
-      { badge: "Paso 2", title: "Autorice el Acceso al GPS", desc: 'Seleccione "Permitir" (o "Al usar la app") cuando el navegador muestre el aviso de privacidad.' },
-      { badge: "Paso 3", title: "Sincronización Satelital", desc: "El chip GPS fija sus coordenadas y el motor identifica la vía pública más próxima." },
-      { badge: "Paso 4", title: "Copie o Comparta", desc: "Copie la dirección formateada con un clic o envíela por WhatsApp a sus contactos." }
+      {
+        badge: "Paso 1",
+        title: 'Pulse "Obtener Mi Ubicación"',
+        desc: "Inicia la recepción de coordenadas de los sensores GNSS y antenas de su dispositivo.",
+      },
+      {
+        badge: "Paso 2",
+        title: "Autorice el Acceso al GPS",
+        desc: 'Seleccione "Permitir" (o "Al usar la app") cuando el navegador muestre el aviso de privacidad.',
+      },
+      {
+        badge: "Paso 3",
+        title: "Sincronización Satelital",
+        desc: "El chip GPS fija sus coordenadas y el motor identifica la vía pública más próxima.",
+      },
+      {
+        badge: "Paso 4",
+        title: "Copie o Comparta",
+        desc: "Copie la dirección formateada con un clic o envíela por WhatsApp a sus contactos.",
+      },
     ],
-    tipAccuracy: "Consejo para máxima precisión: Al aire libre y con cielo despejado, el GPS ofrece una precisión de 3 a 5 metros. En interiores de edificios o garajes, acérquese a una ventana para captar la señal satelital directa.",
+    tipAccuracy:
+      "Consejo para máxima precisión: Al aire libre y con cielo despejado, el GPS ofrece una precisión de 3 a 5 metros. En interiores de edificios o garajes, acérquese a una ventana para captar la señal satelital directa.",
     h2Anatomy: "Estructura de la Dirección: Qué Datos se Muestran",
-    pAnatomyIntro: "El sistema de direccionamiento postal organiza la posición en componentes administrativos oficiales indispensables para envíos y formularios:",
+    pAnatomyIntro:
+      "El sistema de direccionamiento postal organiza la posición en componentes administrativos oficiales indispensables para envíos y formularios:",
     anatomyHeaders: ["Campo", "Ejemplo", "Función en la Dirección"],
     anatomyRows: [
-      ["Vía y Número", "Gran Vía, 42", "Nombre de la calle, avenida o plaza y número del inmueble."],
-      ["Barrio / Distrito", "Centro / Malasaña", "Elemento clave para el reparto de paquetería y servicios a domicilio."],
-      ["Municipio / Ciudad", "Madrid", "Población o término municipal correspondiente."],
-      ["Provincia / Región", "Madrid", "División territorial administrativa oficial."],
-      ["Código Postal (CP)", "28013", "Código numérico que define el distrito postal de reparto."],
-      ["País", "España (ES)", "Territorio nacional y código ISO de dos letras."],
-      ["Coordenadas GPS", "40.4200, -3.7058", "Latitud y longitud exactas para visualización cartográfica."]
+      [
+        "Vía y Número",
+        "Gran Vía, 42",
+        "Nombre de la calle, avenida o plaza y número del inmueble.",
+      ],
+      [
+        "Barrio / Distrito",
+        "Centro / Malasaña",
+        "Elemento clave para el reparto de paquetería y servicios a domicilio.",
+      ],
+      [
+        "Municipio / Ciudad",
+        "Madrid",
+        "Población o término municipal correspondiente.",
+      ],
+      [
+        "Provincia / Región",
+        "Madrid",
+        "División territorial administrativa oficial.",
+      ],
+      [
+        "Código Postal (CP)",
+        "28013",
+        "Código numérico que define el distrito postal de reparto.",
+      ],
+      [
+        "País",
+        "España (ES)",
+        "Territorio nacional y código ISO de dos letras.",
+      ],
+      [
+        "Coordenadas GPS",
+        "40.4200, -3.7058",
+        "Latitud y longitud exactas para visualización cartográfica.",
+      ],
     ],
-    pPostcodeNote: "Sobre los Códigos Postales: En municipios pequeños rurales suele existir un único código postal general, mientras que en grandes capitales cada calle o distrito dispone de un código postal específico.",
+    pPostcodeNote:
+      "Sobre los Códigos Postales: En municipios pequeños rurales suele existir un único código postal general, mientras que en grandes capitales cada calle o distrito dispone de un código postal específico.",
     h2How: "Cómo se Identifica su Dirección (Geocodificación Inversa)",
-    pHowIntro: "Su teléfono no lee placas de calle; calcula coordenadas numéricas mediante trilateración satelital. La geocodificación inversa coteja esas coordenadas con OpenStreetMap para asociar el punto con la dirección más cercana:",
-    techHeaders: ["Método", "Precisión Típica", "Cuándo se Utiliza", "Nivel de Detalle"],
-    techRows: [
-      ["GPS por Satélite (GNSS)", "3 a 10 metros", "Móviles al aire libre con GPS activado", "Calle, barrio y número de portal"],
-      ["Wi-Fi y Antenas Móviles", "15 a 50 metros", "Interiores, oficinas, portátiles", "Tramo de vía o manzana aproximada"],
-      ["Geolocalización por IP", "5 a 30 kilómetros", "Ordenadores de sobremesa o VPN", "Ciudad o central del proveedor"]
+    pHowIntro:
+      "Su teléfono no lee placas de calle; calcula coordenadas numéricas mediante trilateración satelital. La geocodificación inversa coteja esas coordenadas con OpenStreetMap para asociar el punto con la dirección más cercana:",
+    techHeaders: [
+      "Método",
+      "Precisión Típica",
+      "Cuándo se Utiliza",
+      "Nivel de Detalle",
     ],
-    pTechSummary: "Para conocer las diferencias entre satélites físicos y enrutamiento web, consulte nuestra comparativa de <a href='/es/comparisons/gps-vs-ip-location/' class='text-link'>GPS vs. Ubicación por IP</a> y descubra <a href='/es/guides/how-gps-location-works/' class='text-link'>cómo funciona el GPS</a>.",
+    techRows: [
+      [
+        "GPS por Satélite (GNSS)",
+        "3 a 10 metros",
+        "Móviles al aire libre con GPS activado",
+        "Calle, barrio y número de portal",
+      ],
+      [
+        "Wi-Fi y Antenas Móviles",
+        "15 a 50 metros",
+        "Interiores, oficinas, portátiles",
+        "Tramo de vía o manzana aproximada",
+      ],
+      [
+        "Geolocalización por IP",
+        "5 a 30 kilómetros",
+        "Ordenadores de sobremesa o VPN",
+        "Ciudad o central del proveedor",
+      ],
+    ],
+    pTechSummary:
+      "Para conocer las diferencias entre satélites físicos y enrutamiento web, consulte nuestra comparativa de <a href='/es/comparisons/gps-vs-ip-location/' class='text-link'>GPS vs. Ubicación por IP</a> y descubra <a href='/es/guides/how-gps-location-works/' class='text-link'>cómo funciona el GPS</a>.",
     h2UseCases: "Casos Prácticos para Usar su Dirección Actual",
     useCases: [
-      { title: "Pedidos a Domicilio y Envíos", desc: "Compruebe su calle y número exacto al pedir en Glovo, Uber Eats o Just Eat en lugares que no conoce." },
-      { title: "Punto de Recogida en Transporte", desc: "Confirme la dirección exacta y referencias para conductores de Uber, Cabify o taxis." },
-      { title: "Relleno Rápido de Trámites", desc: "Encuentre su código postal y municipio al instante para compras en línea o registros oficiales." },
-      { title: "Compartir con Familiares y Amigos", desc: "Envíe su dirección por WhatsApp o Telegram para facilitar la llegada de sus invitados." },
-      { title: "Llamadas de Emergencia (112)", desc: "Comunique la vía exacta, punto de referencia y coordenadas a los servicios sanitarios y de policía." }
+      {
+        title: "Pedidos a Domicilio y Envíos",
+        desc: "Compruebe su calle y número exacto al pedir en Glovo, Uber Eats o Just Eat en lugares que no conoce.",
+      },
+      {
+        title: "Punto de Recogida en Transporte",
+        desc: "Confirme la dirección exacta y referencias para conductores de Uber, Cabify o taxis.",
+      },
+      {
+        title: "Relleno Rápido de Trámites",
+        desc: "Encuentre su código postal y municipio al instante para compras en línea o registros oficiales.",
+      },
+      {
+        title: "Compartir con Familiares y Amigos",
+        desc: "Envíe su dirección por WhatsApp o Telegram para facilitar la llegada de sus invitados.",
+      },
+      {
+        title: "Llamadas de Emergencia (112)",
+        desc: "Comunique la vía exacta, punto de referencia y coordenadas a los servicios sanitarios y de policía.",
+      },
     ],
     h2Troubleshoot: "Mi Dirección Aparece Incorrecta: Solución de Problemas",
-    pTroubleshootIntro: "Si el resultado muestra la acera contraria, otra calle o una ciudad distinta, revise estas causas frecuentes:",
+    pTroubleshootIntro:
+      "Si el resultado muestra la acera contraria, otra calle o una ciudad distinta, revise estas causas frecuentes:",
     troubleshootList: [
       "Aparece la calle vecina: La señal satelital en cañones urbanos puede rebotar en fachadas de cristal (rebote multipath). De unos pasos y pulse en 'Actualizar'.",
       "Falta el número del portal: En zonas no mapeadas al detalle, OpenStreetMap devuelve el tramo de vía. Utilice nuestro <a href='/es/tools/address-finder/' class='text-link'>Buscador de Dirección</a> para explorar puntos cercanos.",
       "Muestra otra ciudad o provincia: Si navega a través de una VPN de empresa, desactívela para permitir que el chip GPS del móvil gestione la ubicación real.",
-      "Radio de precisión amplio: Revise nuestra guía para <a href='/es/guides/improve-gps-accuracy/' class='text-link'>mejorar la precisión del GPS</a> y <a href='/es/guides/wrong-location/' class='text-link'>corregir ubicaciones erróneas</a>."
+      "Radio de precisión amplio: Revise nuestra guía para <a href='/es/guides/improve-gps-accuracy/' class='text-link'>mejorar la precisión del GPS</a> y <a href='/es/guides/wrong-location/' class='text-link'>corregir ubicaciones erróneas</a>.",
     ],
     h2Permissions: "Cómo Activar los Permisos de Ubicación en el Navegador",
-    pPermissionsIntro: "Si el botón no responde o muestra error de acceso denegado, active el permiso en su navegador:",
+    pPermissionsIntro:
+      "Si el botón no responde o muestra error de acceso denegado, active el permiso en su navegador:",
     permissions: [
-      { browser: "Google Chrome (Android y PC)", steps: "Toque el icono de ajustes/candado junto a la URL > Permisos > Ubicación > Seleccione 'Permitir' y recargue." },
-      { browser: "Apple Safari (iPhone y Mac)", steps: "Abra Ajustes de iOS > Privacidad y Seguridad > Localización > Safari > Elija 'Al usar la app' y active 'Ubicación precisa'." },
-      { browser: "Firefox y Microsoft Edge", steps: "Haga clic en el icono de candado en la barra superior > Borre permisos bloqueados > Recargue y pulse 'Permitir'." }
+      {
+        browser: "Google Chrome (Android y PC)",
+        steps:
+          "Toque el icono de ajustes/candado junto a la URL > Permisos > Ubicación > Seleccione 'Permitir' y recargue.",
+      },
+      {
+        browser: "Apple Safari (iPhone y Mac)",
+        steps:
+          "Abra Ajustes de iOS > Privacidad y Seguridad > Localización > Safari > Elija 'Al usar la app' y active 'Ubicación precisa'.",
+      },
+      {
+        browser: "Firefox y Microsoft Edge",
+        steps:
+          "Haga clic en el icono de candado en la barra superior > Borre permisos bloqueados > Recargue y pulse 'Permitir'.",
+      },
     ],
     h2Privacy: "Privacidad y Protección de Datos (RGPD)",
-    pPrivacyIntro: "En MyLocationLab garantizamos una navegación 100% privada y segura:",
+    pPrivacyIntro:
+      "En MyLocationLab garantizamos una navegación 100% privada y segura:",
     privacyBullets: [
       "Sin Almacenamiento: Sus coordenadas y dirección nunca se guardan en bases de datos externas.",
       "Sin Datos Personales: No solicitamos nombre, correo electrónico, teléfono ni datos de pago.",
       "Comunicaciones Cifradas: Todas las consultas de mapas se transmiten por HTTPS seguro con TLS 1.3.",
-      "Control Total: Puede retirar el permiso de ubicación en cualquier momento desde los ajustes de su navegador."
+      "Control Total: Puede retirar el permiso de ubicación en cualquier momento desde los ajustes de su navegador.",
     ],
     h2Faq: "Preguntas Frecuentes sobre Dirección Actual",
     faqs: [
-      { question: "¿Cómo saber mi dirección actual con el teléfono móvil?", answer: "Abra esta página en el navegador de su teléfono, pulse en 'Obter Mi Ubicación' y acepte el aviso de permiso. El chip GPS procesará sus satélites y mostraremos calle, número, código postal y municipio en segundos." },
-      { question: "¿La herramienta muestra mi código postal exacto?", answer: "Sí. El sistema localiza el código postal de reparto asignado a sus coordenadas. En grandes ciudades muestra el CP de la calle; en zonas rurales, el código del municipio." },
-      { question: "¿Por qué falta el número de mi casa en el resultado?", answer: "OpenStreetMap se basa en cartografía abierta. En avenidas nuevas o caminos rurales donde no se hayan catalogado los portales individuales, se muestra el nombre de la vía y el punto en el mapa." },
-      { question: "¿Puedo averiguar la dirección de otro sitio?", answer: "Sí. Utilice nuestra herramienta <a href='/es/tools/address-finder/' class='text-link'>Buscador de Dirección</a> para introducir cualquier par de coordenadas o hacer clic en el mapa interactivo." },
-      { question: "¿Funciona en ordenadores sin receptor GPS?", answer: "Sí, mediante triangulación Wi-Fi y geolocalización por IP. Aunque tiene menor precisión que un móvil, le indicará su municipio y código postal general." },
-      { question: "¿Sirve este resultado como justificante de domicilio oficial?", answer: "No. Se trata de un servicio digital de georreferenciación. Las administraciones públicas y entidades bancarias exigen facturas oficiales de suministros como justificante formal." }
+      {
+        question: "¿Cómo saber mi dirección actual con el teléfono móvil?",
+        answer:
+          "Abra esta página en el navegador de su teléfono, pulse en 'Obter Mi Ubicación' y acepte el aviso de permiso. El chip GPS procesará sus satélites y mostraremos calle, número, código postal y municipio en segundos.",
+      },
+      {
+        question: "¿La herramienta muestra mi código postal exacto?",
+        answer:
+          "Sí. El sistema localiza el código postal de reparto asignado a sus coordenadas. En grandes ciudades muestra el CP de la calle; en zonas rurales, el código del municipio.",
+      },
+      {
+        question: "¿Por qué falta el número de mi casa en el resultado?",
+        answer:
+          "OpenStreetMap se basa en cartografía abierta. En avenidas nuevas o caminos rurales donde no se hayan catalogado los portales individuales, se muestra el nombre de la vía y el punto en el mapa.",
+      },
+      {
+        question: "¿Puedo averiguar la dirección de otro sitio?",
+        answer:
+          "Sí. Utilice nuestra herramienta <a href='/es/tools/address-finder/' class='text-link'>Buscador de Dirección</a> para introducir cualquier par de coordenadas o hacer clic en el mapa interactivo.",
+      },
+      {
+        question: "¿Funciona en ordenadores sin receptor GPS?",
+        answer:
+          "Sí, mediante triangulación Wi-Fi y geolocalización por IP. Aunque tiene menor precisión que un móvil, le indicará su municipio y código postal general.",
+      },
+      {
+        question:
+          "¿Sirve este resultado como justificante de domicilio oficial?",
+        answer:
+          "No. Se trata de un servicio digital de georreferenciación. Las administraciones públicas y entidades bancarias exigen facturas oficiales de suministros como justificante formal.",
+      },
     ],
     h3Related: "Herramientas de Localización y Guías Relacionadas",
     relatedTools: [
-      { icon: "🛰️", title: "Mis Coordenadas GPS", sub: "Vea latitud, longitud y altitud por satélite", path: "/es/my-location/gps/" },
-      { icon: "📍", title: "Buscador de Dirección", sub: "Obtenga la dirección de cualquier coordenada", path: "/es/tools/address-finder/" },
-      { icon: "🏙️", title: "¿En Qué Ciudad Estoy?", sub: "Verifique su municipio y límites urbanos", path: "/es/my-location/city/" },
-      { icon: "🎯", title: "Precisión del GPS", sub: "Mida el margen de error en metros en vivo", path: "/es/tools/gps-accuracy/" },
-      { icon: "⚖️", title: "GPS vs Ubicación IP", sub: "Por qué el IP no detecta su número de calle", path: "/es/comparisons/gps-vs-ip-location/" },
-      { icon: "⚡", title: "Mejorar Precisión GPS", sub: "Consejos para terminales Android e iPhone", path: "/es/guides/improve-gps-accuracy/" }
-    ]
+      {
+        icon: "🛰️",
+        title: "Mis Coordenadas GPS",
+        sub: "Vea latitud, longitud y altitud por satélite",
+        path: "/es/my-location/gps/",
+      },
+      {
+        icon: "📍",
+        title: "Buscador de Dirección",
+        sub: "Obtenga la dirección de cualquier coordenada",
+        path: "/es/tools/address-finder/",
+      },
+      {
+        icon: "🏙️",
+        title: "¿En Qué Ciudad Estoy?",
+        sub: "Verifique su municipio y límites urbanos",
+        path: "/es/my-location/city/",
+      },
+      {
+        icon: "🎯",
+        title: "Precisión del GPS",
+        sub: "Mida el margen de error en metros en vivo",
+        path: "/es/tools/gps-accuracy/",
+      },
+      {
+        icon: "⚖️",
+        title: "GPS vs Ubicación IP",
+        sub: "Por qué el IP no detecta su número de calle",
+        path: "/es/comparisons/gps-vs-ip-location/",
+      },
+      {
+        icon: "⚡",
+        title: "Mejorar Precisión GPS",
+        sub: "Consejos para terminales Android e iPhone",
+        path: "/es/guides/improve-gps-accuracy/",
+      },
+    ],
   },
   fr: {
-    title: "Mon Adresse Actuelle : Rue, Numéro, Ville et Code Postal | MyLocationLab",
-    description: "Trouvez votre adresse postale exacte en direct grâce au GPS : numéro, rue, quartier, commune, département et code postal. Gratuit, sans inscription et sans trace.",
+    title:
+      "Mon Adresse Actuelle : Rue, Numéro, Ville et Code Postal | MyLocationLab",
+    description:
+      "Trouvez votre adresse postale exacte en direct grâce au GPS : numéro, rue, quartier, commune, département et code postal. Gratuit, sans inscription et sans trace.",
     h1Prefix: "Quelle Est Mon",
     h1Accent: "Adresse Actuelle ?",
-    subtitle: "Identifiez votre adresse postale complète en quelques secondes par géocodage inverse GPS : numéro de voirie, rue, quartier, commune, code postal et région.",
+    subtitle:
+      "Identifiez votre adresse postale complète en quelques secondes par géocodage inverse GPS : numéro de voirie, rue, quartier, commune, code postal et région.",
     siloTitle: "Outils de Localisation",
     breadcrumbLabel: "Mon Adresse Actuelle",
     h2Steps: "Comment Trouver Votre Adresse Actuelle sur Smartphone ou PC",
-    pStepsIntro: "Aucune application à télécharger ni inscription requise. Votre adresse de rue est déterminée directement dans votre navigateur web en 4 étapes :",
+    pStepsIntro:
+      "Aucune application à télécharger ni inscription requise. Votre adresse de rue est déterminée directement dans votre navigateur web en 4 étapes :",
     steps: [
-      { badge: "Étape 1", title: 'Cliquez sur "Obtenir Ma Position"', desc: "Active la réception satellitaire et les capteurs géographiques de votre terminal." },
-      { badge: "Étape 2", title: "Autorisez l'Accès Géographique", desc: 'Sélectionnez "Autoriser" lorsque la boîte de dialogue de votre navigateur apparaît.' },
-      { badge: "Étape 3", title: "Calcul Satellitaire & Géocodage", desc: "Vos coordonnées GPS sont converties en adresse postale via la base OpenStreetMap." },
-      { badge: "Étape 4", title: "Copiez ou Partagez", desc: "Copiez l'adresse complète en 1 clic ou partagez-la directement via WhatsApp." }
+      {
+        badge: "Étape 1",
+        title: 'Cliquez sur "Obtenir Ma Position"',
+        desc: "Active la réception satellitaire et les capteurs géographiques de votre terminal.",
+      },
+      {
+        badge: "Étape 2",
+        title: "Autorisez l'Accès Géographique",
+        desc: 'Sélectionnez "Autoriser" lorsque la boîte de dialogue de votre navigateur apparaît.',
+      },
+      {
+        badge: "Étape 3",
+        title: "Calcul Satellitaire & Géocodage",
+        desc: "Vos coordonnées GPS sont converties en adresse postale via la base OpenStreetMap.",
+      },
+      {
+        badge: "Étape 4",
+        title: "Copiez ou Partagez",
+        desc: "Copiez l'adresse complète en 1 clic ou partagez-la directement via WhatsApp.",
+      },
     ],
-    tipAccuracy: "Astuce de précision : En extérieur et à ciel ouvert, la marge d'erreur du GPS descend entre 3 et 5 mètres. À l'intérieur d'un bâtiment, approchez-vous d'une fenêtre pour recevoir les signaux satellites directs.",
+    tipAccuracy:
+      "Astuce de précision : En extérieur et à ciel ouvert, la marge d'erreur du GPS descend entre 3 et 5 mètres. À l'intérieur d'un bâtiment, approchez-vous d'une fenêtre pour recevoir les signaux satellites directs.",
     h2Anatomy: "Structure de l'Adresse Postale : Données Fournies",
-    pAnatomyIntro: "La norme de distribution postale décompose votre localisation en éléments administratifs officiels indispensables pour vos formalités et livraisons :",
+    pAnatomyIntro:
+      "La norme de distribution postale décompose votre localisation en éléments administratifs officiels indispensables pour vos formalités et livraisons :",
     anatomyHeaders: ["Élément", "Exemple", "Rôle dans l'Acheminement Postal"],
     anatomyRows: [
-      ["Numéro et Voie", "10 Rue de la Paix", "Désigne la voie publique (rue, avenue, boulevard) et le numéro de l'immeuble."],
-      ["Quartier / Lieu-dit", "Opéra / Vendôme", "Indispensable pour le guidage des livreurs et facteurs."],
-      ["Commune / Ville", "Paris", "Collectivité territoriale ou municipalité de rattachement."],
-      ["Département / Région", "Île-de-France (75)", "Circonscription administrative territoriale."],
-      ["Code Postal", "75002", "Code à 5 chiffres organisant le bureau distributeur postal."],
-      ["Pays", "France (FR)", "Territoire national et code officiel ISO alpha-2."],
-      ["Coordonnées GPS", "48.8698, 2.3312", "Position spatiale exacte en latitude et longitude."]
+      [
+        "Numéro et Voie",
+        "10 Rue de la Paix",
+        "Désigne la voie publique (rue, avenue, boulevard) et le numéro de l'immeuble.",
+      ],
+      [
+        "Quartier / Lieu-dit",
+        "Opéra / Vendôme",
+        "Indispensable pour le guidage des livreurs et facteurs.",
+      ],
+      [
+        "Commune / Ville",
+        "Paris",
+        "Collectivité territoriale ou municipalité de rattachement.",
+      ],
+      [
+        "Département / Région",
+        "Île-de-France (75)",
+        "Circonscription administrative territoriale.",
+      ],
+      [
+        "Code Postal",
+        "75002",
+        "Code à 5 chiffres organisant le bureau distributeur postal.",
+      ],
+      [
+        "Pays",
+        "France (FR)",
+        "Territoire national et code officiel ISO alpha-2.",
+      ],
+      [
+        "Coordonnées GPS",
+        "48.8698, 2.3312",
+        "Position spatiale exacte en latitude et longitude.",
+      ],
     ],
-    pPostcodeNote: "À propos des Codes Postaux : Dans les communes rurales, un code postal unique dessert l'ensemble du territoire communal. Dans les grandes métropoles, le code postal varie par arrondissement ou secteur de distribution.",
+    pPostcodeNote:
+      "À propos des Codes Postaux : Dans les communes rurales, un code postal unique dessert l'ensemble du territoire communal. Dans les grandes métropoles, le code postal varie par arrondissement ou secteur de distribution.",
     h2How: "Comment Votre Adresse Est Identifiée (Géocodage Inverse)",
-    pHowIntro: "Votre smartphone ne lit pas les plaques murales ; il calcule des coordonnées spatiales. Le moteur de géocodage inverse interroge la cartographie OpenStreetMap pour identifier le bâtiment et la chaussée les plus proches :",
-    techHeaders: ["Technologie", "Précision Habituelle", "Conditions d'Usage", "Niveau de Détail"],
-    techRows: [
-      ["GPS Satellitaire (GNSS)", "3 à 10 mètres", "Smartphones en extérieur avec puce GPS", "Numéro de rue et voie exacte"],
-      ["Wi-Fi et Antennes Relais", "15 à 50 mètres", "Intérieurs, bureaux, ordinateurs portables", "Tronçon de voie ou îlot urbain"],
-      ["Adresse IP de Connexion", "5 à 30 kilomètres", "Ordinateurs fixes ou réseaux sous VPN", "Ville ou central opérateur uniquement"]
+    pHowIntro:
+      "Votre smartphone ne lit pas les plaques murales ; il calcule des coordonnées spatiales. Le moteur de géocodage inverse interroge la cartographie OpenStreetMap pour identifier le bâtiment et la chaussée les plus proches :",
+    techHeaders: [
+      "Technologie",
+      "Précision Habituelle",
+      "Conditions d'Usage",
+      "Niveau de Détail",
     ],
-    pTechSummary: "Pour approfondir la différence entre ondes radio satellitaires et routage réseau, lisez notre comparatif <a href='/fr/comparisons/gps-vs-ip-location/' class='text-link'>GPS vs. Géolocalisation IP</a> et découvrez <a href='/fr/guides/how-gps-location-works/' class='text-link'>comment fonctionne le GPS</a>.",
+    techRows: [
+      [
+        "GPS Satellitaire (GNSS)",
+        "3 à 10 mètres",
+        "Smartphones en extérieur avec puce GPS",
+        "Numéro de rue et voie exacte",
+      ],
+      [
+        "Wi-Fi et Antennes Relais",
+        "15 à 50 mètres",
+        "Intérieurs, bureaux, ordinateurs portables",
+        "Tronçon de voie ou îlot urbain",
+      ],
+      [
+        "Adresse IP de Connexion",
+        "5 à 30 kilomètres",
+        "Ordinateurs fixes ou réseaux sous VPN",
+        "Ville ou central opérateur uniquement",
+      ],
+    ],
+    pTechSummary:
+      "Pour approfondir la différence entre ondes radio satellitaires et routage réseau, lisez notre comparatif <a href='/fr/comparisons/gps-vs-ip-location/' class='text-link'>GPS vs. Géolocalisation IP</a> et découvrez <a href='/fr/guides/how-gps-location-works/' class='text-link'>comment fonctionne le GPS</a>.",
     h2UseCases: "Dans Quelles Situations Utiliser Votre Adresse Actuelle ?",
     useCases: [
-      { title: "Livraison de Repas et Colis", desc: "Vérifiez votre numéro de rue exact avant de commander sur Deliveroo, Uber Eats ou Amazon dans un endroit inconnu." },
-      { title: "Point de Rendez-Vous VTC / Taxis", desc: "Confirmez votre adresse précise pour guider votre chauffeur Uber ou Bolt sans erreur de trottoir." },
-      { title: "Remplissage Rapide de Formulaires", desc: "Retrouvez instantanément votre code postal et commune lors de vos démarches administratives en ligne." },
-      { title: "Partage avec Vos Proches", desc: "Envoyez votre adresse formatée par message ou WhatsApp pour orienter vos invités à votre porte." },
-      { title: "Appels de Secours (15 / 17 / 18 / 112)", desc: "Transmettez l'adresse exacte, les repères visuels et les coordonnées aux services d'urgence." }
+      {
+        title: "Livraison de Repas et Colis",
+        desc: "Vérifiez votre numéro de rue exact avant de commander sur Deliveroo, Uber Eats ou Amazon dans un endroit inconnu.",
+      },
+      {
+        title: "Point de Rendez-Vous VTC / Taxis",
+        desc: "Confirmez votre adresse précise pour guider votre chauffeur Uber ou Bolt sans erreur de trottoir.",
+      },
+      {
+        title: "Remplissage Rapide de Formulaires",
+        desc: "Retrouvez instantanément votre code postal et commune lors de vos démarches administratives en ligne.",
+      },
+      {
+        title: "Partage avec Vos Proches",
+        desc: "Envoyez votre adresse formatée par message ou WhatsApp pour orienter vos invités à votre porte.",
+      },
+      {
+        title: "Appels de Secours (15 / 17 / 18 / 112)",
+        desc: "Transmettez l'adresse exacte, les repères visuels et les coordonnées aux services d'urgence.",
+      },
     ],
     h2Troubleshoot: "Mon Adresse Semble Inexacte : Que Faire ?",
-    pTroubleshootIntro: "Si le résultat indique la rue derrière chez vous, un numéro absent ou une autre commune, voici les causes courantes et leurs solutions :",
+    pTroubleshootIntro:
+      "Si le résultat indique la rue derrière chez vous, un numéro absent ou une autre commune, voici les causes courantes et leurs solutions :",
     troubleshootList: [
       "Rue voisine affichée : Le signal GPS peut subir des réflexions sur les façades métalliques ou vitrées. Faites quelques pas à l'extérieur et cliquez sur 'Actualiser'.",
       "Numéro de maison manquant : Dans certains lotissements récents, OpenStreetMap recense la rue mais pas les numéros de parcelle. Utilisez notre <a href='/fr/tools/address-finder/' class='text-link'>Localisateur d'Adresse</a> pour sonder les coordonnées voisines.",
       "Autre ville affichée : Si vous êtes relié à un VPN d'entreprise, désactivez-le pour permettre au navigateur d'interroger la puce GPS de l'appareil.",
-      "Précision insuffisante : Consultez nos conseils pour <a href='/fr/guides/improve-gps-accuracy/' class='text-link'>améliorer la précision GPS</a> et <a href='/fr/guides/wrong-location/' class='text-link'>résoudre les erreurs de localisation</a>."
+      "Précision insuffisante : Consultez nos conseils pour <a href='/fr/guides/improve-gps-accuracy/' class='text-link'>améliorer la précision GPS</a> et <a href='/fr/guides/wrong-location/' class='text-link'>résoudre les erreurs de localisation</a>.",
     ],
     h2Permissions: "Comment Autoriser la Géolocalisation dans Votre Navigateur",
-    pPermissionsIntro: "Si le bouton signale un blocage d'autorisation, modifiez les paramètres de sécurité de votre navigateur :",
+    pPermissionsIntro:
+      "Si le bouton signale un blocage d'autorisation, modifiez les paramètres de sécurité de votre navigateur :",
     permissions: [
-      { browser: "Google Chrome (Android & PC)", steps: "Cliquez sur l'icône de réglages/cadenas à gauche de l'URL > Autorisations > Position > Choisissez 'Autoriser' et rechargez." },
-      { browser: "Safari (iPhone, iPad & Mac)", steps: "Allez dans Réglages > Confidentialité et sécurité > Service de localisation > Safari > Sélectionnez 'Lorsque l'app est active'." },
-      { browser: "Firefox & Microsoft Edge", steps: "Cliquez sur le cadenas dans la barre d'adresse > Réinitialisez les permissions bloquées > Rechargez et autorisez l'accès." }
+      {
+        browser: "Google Chrome (Android & PC)",
+        steps:
+          "Cliquez sur l'icône de réglages/cadenas à gauche de l'URL > Autorisations > Position > Choisissez 'Autoriser' et rechargez.",
+      },
+      {
+        browser: "Safari (iPhone, iPad & Mac)",
+        steps:
+          "Allez dans Réglages > Confidentialité et sécurité > Service de localisation > Safari > Sélectionnez 'Lorsque l'app est active'.",
+      },
+      {
+        browser: "Firefox & Microsoft Edge",
+        steps:
+          "Cliquez sur le cadenas dans la barre d'adresse > Réinitialisez les permissions bloquées > Rechargez et autorisez l'accès.",
+      },
     ],
     h2Privacy: "Confidentialité et Protection des Données (RGPD)",
-    pPrivacyIntro: "Sur MyLocationLab, votre vie privée fait l'objet d'une stricte protection :",
+    pPrivacyIntro:
+      "Sur MyLocationLab, votre vie privée fait l'objet d'une stricte protection :",
     privacyBullets: [
       "Aucune Conservation : Vos coordonnées et adresses ne sont jamais enregistrées sur nos serveurs.",
       "Aucune Donnée Personnelle : Aucun nom, email, numéro de téléphone ou identifiant n'est collecté.",
       "Chiffrement Intégral : Toutes les communications de géocodage sont sécurisées par le protocole HTTPS TLS 1.3.",
-      "Contrôle Utilisateur : Vous pouvez révoquer l'autorisation d'accès géographique à tout instant dans votre navigateur."
+      "Contrôle Utilisateur : Vous pouvez révoquer l'autorisation d'accès géographique à tout instant dans votre navigateur.",
     ],
     h2Faq: "Foire Aux Questions sur l'Adresse Actuelle",
     faqs: [
-      { question: "Comment connaître mon adresse actuelle avec mon smartphone ?", answer: "Ouvrez cette page sur votre navigateur mobile, cliquez sur 'Obtenir Ma Position' et autorisez l'accès. La puce GPS relèvera vos coordonnées et notre géocodage inverse affichera voie, numéro, code postal et commune en direct." },
-      { question: "L'outil donne-t-il mon code postal exact ?", answer: "Oui. L'outil extrait le code postal associé aux coordonnées géographiques. Dans les grandes agglomérations, le code postal de quartier ou d'arrondissement est spécifié." },
-      { question: "Pourquoi mon numéro de voirie n'apparaît-il pas ?", answer: "OpenStreetMap s'appuie sur une base collaborative mondiale. Certaines voies rurales ou récentes n'ont pas encore leurs numéros d'immeubles numérisés ; l'outil renvoie alors la voie publique la plus proche." },
-      { question: "Puis-je trouver l'adresse d'un autre endroit ?", answer: "Oui. Utilisez notre outil <a href='/fr/tools/address-finder/' class='text-link'>Localisateur d'Adresse</a> pour saisir n'importe quel couple de latitude et longitude ou cliquer sur la carte interactive." },
-      { question: "Cela fonctionne-t-il sur un ordinateur sans GPS ?", answer: "Oui, grâce à la triangulation Wi-Fi et à la géolocalisation par IP. Bien que moins précis qu'un smartphone, le résultat indique généralement votre commune et code postal." },
-      { question: "Puis-je utiliser ce résultat comme justificatif de domicile ?", answer: "Non. Ce service est un utilitaire d'aide au repérage et à la livraison. Les organismes officiels et banques exigent des factures de fournisseurs d'énergie ou d'eau comme justificatifs probants." }
+      {
+        question:
+          "Comment connaître mon adresse actuelle avec mon smartphone ?",
+        answer:
+          "Ouvrez cette page sur votre navigateur mobile, cliquez sur 'Obtenir Ma Position' et autorisez l'accès. La puce GPS relèvera vos coordonnées et notre géocodage inverse affichera voie, numéro, code postal et commune en direct.",
+      },
+      {
+        question: "L'outil donne-t-il mon code postal exact ?",
+        answer:
+          "Oui. L'outil extrait le code postal associé aux coordonnées géographiques. Dans les grandes agglomérations, le code postal de quartier ou d'arrondissement est spécifié.",
+      },
+      {
+        question: "Pourquoi mon numéro de voirie n'apparaît-il pas ?",
+        answer:
+          "OpenStreetMap s'appuie sur une base collaborative mondiale. Certaines voies rurales ou récentes n'ont pas encore leurs numéros d'immeubles numérisés ; l'outil renvoie alors la voie publique la plus proche.",
+      },
+      {
+        question: "Puis-je trouver l'adresse d'un autre endroit ?",
+        answer:
+          "Oui. Utilisez notre outil <a href='/fr/tools/address-finder/' class='text-link'>Localisateur d'Adresse</a> pour saisir n'importe quel couple de latitude et longitude ou cliquer sur la carte interactive.",
+      },
+      {
+        question: "Cela fonctionne-t-il sur un ordinateur sans GPS ?",
+        answer:
+          "Oui, grâce à la triangulation Wi-Fi et à la géolocalisation par IP. Bien que moins précis qu'un smartphone, le résultat indique généralement votre commune et code postal.",
+      },
+      {
+        question:
+          "Puis-je utiliser ce résultat comme justificatif de domicile ?",
+        answer:
+          "Non. Ce service est un utilitaire d'aide au repérage et à la livraison. Les organismes officiels et banques exigent des factures de fournisseurs d'énergie ou d'eau comme justificatifs probants.",
+      },
     ],
     h3Related: "Outils de Géolocalisation et Guides Connexes",
     relatedTools: [
-      { icon: "🛰️", title: "Mes Coordonnées GPS", sub: "Latitude, longitude et altitude par satellite", path: "/fr/my-location/gps/" },
-      { icon: "📍", title: "Localisateur d'Adresse", sub: "Trouver l'adresse de n'importe quelle coordonnée", path: "/fr/tools/address-finder/" },
-      { icon: "🏙️", title: "Dans Quelle Ville Suis-Je ?", sub: "Vérifier votre commune et vos limites urbaines", path: "/fr/my-location/city/" },
-      { icon: "🎯", title: "Précision du GPS", sub: "Mesurer la marge d'erreur en mètres en temps réel", path: "/fr/tools/gps-accuracy/" },
-      { icon: "⚖️", title: "GPS vs Position IP", sub: "Pourquoi l'adresse IP ne localise pas votre rue", path: "/fr/comparisons/gps-vs-ip-location/" },
-      { icon: "⚡", title: "Améliorer la Précision GPS", sub: "Guide pratique pour iPhone et Android", path: "/fr/guides/improve-gps-accuracy/" }
-    ]
+      {
+        icon: "🛰️",
+        title: "Mes Coordonnées GPS",
+        sub: "Latitude, longitude et altitude par satellite",
+        path: "/fr/my-location/gps/",
+      },
+      {
+        icon: "📍",
+        title: "Localisateur d'Adresse",
+        sub: "Trouver l'adresse de n'importe quelle coordonnée",
+        path: "/fr/tools/address-finder/",
+      },
+      {
+        icon: "🏙️",
+        title: "Dans Quelle Ville Suis-Je ?",
+        sub: "Vérifier votre commune et vos limites urbaines",
+        path: "/fr/my-location/city/",
+      },
+      {
+        icon: "🎯",
+        title: "Précision du GPS",
+        sub: "Mesurer la marge d'erreur en mètres en temps réel",
+        path: "/fr/tools/gps-accuracy/",
+      },
+      {
+        icon: "⚖️",
+        title: "GPS vs Position IP",
+        sub: "Pourquoi l'adresse IP ne localise pas votre rue",
+        path: "/fr/comparisons/gps-vs-ip-location/",
+      },
+      {
+        icon: "⚡",
+        title: "Améliorer la Précision GPS",
+        sub: "Guide pratique pour iPhone et Android",
+        path: "/fr/guides/improve-gps-accuracy/",
+      },
+    ],
   },
   de: {
-    title: "Meine Aktuelle Adresse: Straße, Hausnummer, PLZ & Stadt | MyLocationLab",
-    description: "Ermitteln Sie Ihre genaue aktuelle Adresse sofort per GPS: Straße, Hausnummer, Stadtteil, Stadt, Bundesland und PLZ. Kostenlos, ohne Anmeldung und datenschutzkonform.",
+    title:
+      "Meine Aktuelle Adresse: Straße, Hausnummer, PLZ & Stadt | MyLocationLab",
+    description:
+      "Ermitteln Sie Ihre genaue aktuelle Adresse sofort per GPS: Straße, Hausnummer, Stadtteil, Stadt, Bundesland und PLZ. Kostenlos, ohne Anmeldung und datenschutzkonform.",
     h1Prefix: "Wie Lautet Meine",
     h1Accent: "Aktuelle Adresse?",
-    subtitle: "Finden Sie Ihre vollständige Postanschrift in Sekundenschnelle per GNSS-Satellitenortung und Rückwärts-Geokodierung: Straße, Hausnummer, PLZ, Ort und Bundesland.",
+    subtitle:
+      "Finden Sie Ihre vollständige Postanschrift in Sekundenschnelle per GNSS-Satellitenortung und Rückwärts-Geokodierung: Straße, Hausnummer, PLZ, Ort und Bundesland.",
     siloTitle: "Standort-Werkzeuge",
     breadcrumbLabel: "Meine Aktuelle Adresse",
     h2Steps: "So Ermitteln Sie Ihre Aktuelle Adresse auf Smartphone oder PC",
-    pStepsIntro: "Sie müssen keine App installieren und kein Benutzerkonto anlegen. Ihre exakte Straßenadresse wird in 4 unkomplizierten Schritten direkt im Browser ermittelt:",
+    pStepsIntro:
+      "Sie müssen keine App installieren und kein Benutzerkonto anlegen. Ihre exakte Straßenadresse wird in 4 unkomplizierten Schritten direkt im Browser ermittelt:",
     steps: [
-      { badge: "Schritt 1", title: 'Auf "Meinen Standort abrufen" tippen', desc: "Startet die GNSS-Satellitensensoren und Funkempfänger Ihres Geräts." },
-      { badge: "Schritt 2", title: "Standortfreigabe erlauben", desc: 'Wählen Sie "Zulassen" (bzw. "Beim Verwenden der App"), wenn die Browser-Abfrage erscheint.' },
-      { badge: "Schritt 3", title: "Satelliten-Fix & Geokodierung", desc: "Ihre Koordinaten werden erfasst und mit dem Straßennetz von OpenStreetMap abgeglichen." },
-      { badge: "Schritt 4", title: "Adresse kopieren oder teilen", desc: "Kopieren Sie die formatierte Anschrift mit einem Klick oder teilen Sie sie direkt per WhatsApp." }
+      {
+        badge: "Schritt 1",
+        title: 'Auf "Meinen Standort abrufen" tippen',
+        desc: "Startet die GNSS-Satellitensensoren und Funkempfänger Ihres Geräts.",
+      },
+      {
+        badge: "Schritt 2",
+        title: "Standortfreigabe erlauben",
+        desc: 'Wählen Sie "Zulassen" (bzw. "Beim Verwenden der App"), wenn die Browser-Abfrage erscheint.',
+      },
+      {
+        badge: "Schritt 3",
+        title: "Satelliten-Fix & Geokodierung",
+        desc: "Ihre Koordinaten werden erfasst und mit dem Straßennetz von OpenStreetMap abgeglichen.",
+      },
+      {
+        badge: "Schritt 4",
+        title: "Adresse kopieren oder teilen",
+        desc: "Kopieren Sie die formatierte Anschrift mit einem Klick oder teilen Sie sie direkt per WhatsApp.",
+      },
     ],
-    tipAccuracy: "Tipp für maximale Genauigkeit: Unter freiem Himmel erreicht GPS eine Präzision von 3 bis 5 Metern. In Gebäuden oder Tiefgaragen gehen Sie in Fensternähe, um direkten Funkkontakt zu den Satelliten herzustellen.",
+    tipAccuracy:
+      "Tipp für maximale Genauigkeit: Unter freiem Himmel erreicht GPS eine Präzision von 3 bis 5 Metern. In Gebäuden oder Tiefgaragen gehen Sie in Fensternähe, um direkten Funkkontakt zu den Satelliten herzustellen.",
     h2Anatomy: "Adressstruktur: Welche Angaben Angezeigt Werden",
-    pAnatomyIntro: "Postnormen gliedern Adressdaten in amtlich anerkannte Komponenten, die für Zustellungen und behördliche Formulare erforderlich sind:",
-    anatomyHeaders: ["Adressbestandteil", "Beispiel", "Funktion im Postverkehr"],
+    pAnatomyIntro:
+      "Postnormen gliedern Adressdaten in amtlich anerkannte Komponenten, die für Zustellungen und behördliche Formulare erforderlich sind:",
+    anatomyHeaders: [
+      "Adressbestandteil",
+      "Beispiel",
+      "Funktion im Postverkehr",
+    ],
     anatomyRows: [
-      ["Straße und Hausnummer", "Unter den Linden 77", "Bezeichnet die öffentliche Verkehrsfläche und das konkrete Gebäude."],
-      ["Stadtteil / Ortsteil", "Mitte", "Unverzichtbar für Kurierdienste und logistische Zustellbezirke."],
-      ["Stadt / Gemeinde", "Berlin", "Kommunale Gebietskörperschaft bzw. Stadtverwaltung."],
-      ["Bundesland", "Berlin (BE)", "Zuständiges deutsches Bundesland bzw. kantonale Verwaltung."],
-      ["Postleitzahl (PLZ)", "10117", "Fünfstellige Leitzahl für die maschinelle Brief- und Paketverteilung."],
-      ["Land", "Deutschland (DE)", "Staatliches Hoheitsgebiet und offizieller ISO-Alpha-2-Ländercode."],
-      ["GPS-Koordinaten", "52.5163, 13.3777", "Exakte Dezimalgrade für Navigationsgeräte und Karten."]
+      [
+        "Straße und Hausnummer",
+        "Unter den Linden 77",
+        "Bezeichnet die öffentliche Verkehrsfläche und das konkrete Gebäude.",
+      ],
+      [
+        "Stadtteil / Ortsteil",
+        "Mitte",
+        "Unverzichtbar für Kurierdienste und logistische Zustellbezirke.",
+      ],
+      [
+        "Stadt / Gemeinde",
+        "Berlin",
+        "Kommunale Gebietskörperschaft bzw. Stadtverwaltung.",
+      ],
+      [
+        "Bundesland",
+        "Berlin (BE)",
+        "Zuständiges deutsches Bundesland bzw. kantonale Verwaltung.",
+      ],
+      [
+        "Postleitzahl (PLZ)",
+        "10117",
+        "Fünfstellige Leitzahl für die maschinelle Brief- und Paketverteilung.",
+      ],
+      [
+        "Land",
+        "Deutschland (DE)",
+        "Staatliches Hoheitsgebiet und offizieller ISO-Alpha-2-Ländercode.",
+      ],
+      [
+        "GPS-Koordinaten",
+        "52.5163, 13.3777",
+        "Exakte Dezimalgrade für Navigationsgeräte und Karten.",
+      ],
     ],
-    pPostcodeNote: "Hinweis zu Postleitzahlen: In ländlichen Regionen gilt häufig eine einheitliche Postleitzahl für das gesamte Gemeindegebiet. In Großstädten variiert die PLZ nach Straßenzug oder Zustellbezirk.",
+    pPostcodeNote:
+      "Hinweis zu Postleitzahlen: In ländlichen Regionen gilt häufig eine einheitliche Postleitzahl für das gesamte Gemeindegebiet. In Großstädten variiert die PLZ nach Straßenzug oder Zustellbezirk.",
     h2How: "Wie Ihre Adresse Ermittelt Wird (Reverse Geocoding)",
-    pHowIntro: "Ihr Smartphone liest keine Straßenschilder ab; es empfängt Satellitensignale und errechnet Geokoordinaten. Beim Reverse Geocoding wird dieser Punkt mit der OpenStreetMap-Datenbank abgeglichen, um die nächstgelegene Hausnummer zu bestimmen:",
-    techHeaders: ["Ortungsverfahren", "Typische Genauigkeit", "Einsatzbereich", "Adressauflösung"],
-    techRows: [
-      ["Satelliten-GPS (GNSS)", "3 bis 10 Meter", "Smartphones im Freien bei aktiver Ortung", "Straße, Hausnummer und Stadtteil"],
-      ["WLAN- und Funkzellentriangulation", "15 bis 50 Meter", "Innenräume, Einkaufszentren, Laptops", "Straßenabschnitt oder Häuserblock"],
-      ["IP-Adress-Geolokalisierung", "5 bis 30 Kilometer", "Desktop-PCs über Kabelnetz oder VPN", "Nur Stadt oder Knotenpunkt des Providers"]
+    pHowIntro:
+      "Ihr Smartphone liest keine Straßenschilder ab; es empfängt Satellitensignale und errechnet Geokoordinaten. Beim Reverse Geocoding wird dieser Punkt mit der OpenStreetMap-Datenbank abgeglichen, um die nächstgelegene Hausnummer zu bestimmen:",
+    techHeaders: [
+      "Ortungsverfahren",
+      "Typische Genauigkeit",
+      "Einsatzbereich",
+      "Adressauflösung",
     ],
-    pTechSummary: "Möchten Sie den Unterschied zwischen Satellitenfunk und Internet-Routing verstehen? Lesen Sie unseren Vergleich <a href='/de/comparisons/gps-vs-ip-location/' class='text-link'>GPS vs. IP-Standort</a> und erfahren Sie, <a href='/de/guides/how-gps-location-works/' class='text-link'>wie GPS funktioniert</a>.",
+    techRows: [
+      [
+        "Satelliten-GPS (GNSS)",
+        "3 bis 10 Meter",
+        "Smartphones im Freien bei aktiver Ortung",
+        "Straße, Hausnummer und Stadtteil",
+      ],
+      [
+        "WLAN- und Funkzellentriangulation",
+        "15 bis 50 Meter",
+        "Innenräume, Einkaufszentren, Laptops",
+        "Straßenabschnitt oder Häuserblock",
+      ],
+      [
+        "IP-Adress-Geolokalisierung",
+        "5 bis 30 Kilometer",
+        "Desktop-PCs über Kabelnetz oder VPN",
+        "Nur Stadt oder Knotenpunkt des Providers",
+      ],
+    ],
+    pTechSummary:
+      "Möchten Sie den Unterschied zwischen Satellitenfunk und Internet-Routing verstehen? Lesen Sie unseren Vergleich <a href='/de/comparisons/gps-vs-ip-location/' class='text-link'>GPS vs. IP-Standort</a> und erfahren Sie, <a href='/de/guides/how-gps-location-works/' class='text-link'>wie GPS funktioniert</a>.",
     h2UseCases: "Praktische Anwendungsbereiche für Ihre Aktuelle Adresse",
     useCases: [
-      { title: "Lieferdienste und Paketbestellungen", desc: "Prüfen Sie Straße und Hausnummer bei Bestellungen auf Lieferando, Uber Eats oder Amazon an unbekannten Orten." },
-      { title: "Fahrdienst-Abholorte (Uber / Taxi)", desc: "Bestätigen Sie Ihren genauen Treffpunkt für Fahrer, wenn Hausnummern im Dunkeln nicht erkennbar sind." },
-      { title: "Schnelles Ausfüllen von Formularen", desc: "Finden Sie PLZ, Straße und Stadtteil auf Anhieb für behördliche Online-Vorgänge oder Bankanträge." },
-      { title: "Standort an Freunde übermitteln", desc: "Senden Sie Ihre vollständige Anschrift unkompliziert per WhatsApp oder Messenger an Besucher." },
-      { title: "Notrufe (112 Feuerwehr/Rettung / 110 Polizei)", desc: "Geben Sie Einsatzkräften die exakte Straßenanschrift und Orientierungspunkte durch, wenn jede Sekunde zählt." }
+      {
+        title: "Lieferdienste und Paketbestellungen",
+        desc: "Prüfen Sie Straße und Hausnummer bei Bestellungen auf Lieferando, Uber Eats oder Amazon an unbekannten Orten.",
+      },
+      {
+        title: "Fahrdienst-Abholorte (Uber / Taxi)",
+        desc: "Bestätigen Sie Ihren genauen Treffpunkt für Fahrer, wenn Hausnummern im Dunkeln nicht erkennbar sind.",
+      },
+      {
+        title: "Schnelles Ausfüllen von Formularen",
+        desc: "Finden Sie PLZ, Straße und Stadtteil auf Anhieb für behördliche Online-Vorgänge oder Bankanträge.",
+      },
+      {
+        title: "Standort an Freunde übermitteln",
+        desc: "Senden Sie Ihre vollständige Anschrift unkompliziert per WhatsApp oder Messenger an Besucher.",
+      },
+      {
+        title: "Notrufe (112 Feuerwehr/Rettung / 110 Polizei)",
+        desc: "Geben Sie Einsatzkräften die exakte Straßenanschrift und Orientierungspunkte durch, wenn jede Sekunde zählt.",
+      },
     ],
     h2Troubleshoot: "Adresse Erscheint Ungenau: Ursachen und Lösungen",
-    pTroubleshootIntro: "Sollte das Ergebnis eine Querstraße, eine fehlende Hausnummer oder einen anderen Ort ausgeben, prüfen Sie folgende Ursachen:",
+    pTroubleshootIntro:
+      "Sollte das Ergebnis eine Querstraße, eine fehlende Hausnummer oder einen anderen Ort ausgeben, prüfen Sie folgende Ursachen:",
     troubleshootList: [
       "Nachbarstraße wird angezeigt: In Straßenschluchten mit hohen Glasfassaden reflektieren Satellitensignale (Multipath-Effekt). Gehen Sie ein paar Meter weiter und tippen Sie auf 'Aktualisieren'.",
       "Hausnummer fehlt: OpenStreetMap basiert auf freiwilligen Kartendaten. In manchen Neubaugebieten sind zwar Straßen, aber noch keine Gebäudenummern eingetragen. Nutzen Sie unseren <a href='/de/tools/address-finder/' class='text-link'>Adressen-Finder</a>.",
       "Falsche Stadt oder Region: Bei aktiver Firmen-VPN läuft der Datenverkehr über ein anderes Rechenzentrum. Deaktivieren Sie das VPN für eine genaue GPS-Abfrage.",
-      "Großer Genauigkeitsradius: Beachten Sie unsere Anleitung zur <a href='/de/guides/improve-gps-accuracy/' class='text-link'>Verbesserung der GPS-Genauigkeit</a> und <a href='/de/guides/wrong-location/' class='text-link'>Behebung falscher Standorte</a>."
+      "Großer Genauigkeitsradius: Beachten Sie unsere Anleitung zur <a href='/de/guides/improve-gps-accuracy/' class='text-link'>Verbesserung der GPS-Genauigkeit</a> und <a href='/de/guides/wrong-location/' class='text-link'>Behebung falscher Standorte</a>.",
     ],
     h2Permissions: "Standortfreigabe im Browser Aktivieren",
-    pPermissionsIntro: "Falls der Ortungs-Button blockiert ist, passen Sie die Berechtigungen in Ihrem Webbrowser an:",
+    pPermissionsIntro:
+      "Falls der Ortungs-Button blockiert ist, passen Sie die Berechtigungen in Ihrem Webbrowser an:",
     permissions: [
-      { browser: "Google Chrome (Android & Desktop)", steps: "Tippen Sie auf das Schloss-Symbol neben der URL > Berechtigungen > Standort > 'Zulassen' wählen und Seite neu laden." },
-      { browser: "Apple Safari (iPhone, iPad & Mac)", steps: "Öffnen Sie Einstellungen > Datenschutz & Sicherheit > Ortungsdienste > Safari > 'Beim Verwenden der App' und 'Genaue Position' aktivieren." },
-      { browser: "Mozilla Firefox & Microsoft Edge", steps: "Klicken Sie auf das Schloss in der Adressleiste > Blockierte Berechtigungen aufheben > Seite aktualisieren und 'Zulassen' wählen." }
+      {
+        browser: "Google Chrome (Android & Desktop)",
+        steps:
+          "Tippen Sie auf das Schloss-Symbol neben der URL > Berechtigungen > Standort > 'Zulassen' wählen und Seite neu laden.",
+      },
+      {
+        browser: "Apple Safari (iPhone, iPad & Mac)",
+        steps:
+          "Öffnen Sie Einstellungen > Datenschutz & Sicherheit > Ortungsdienste > Safari > 'Beim Verwenden der App' und 'Genaue Position' aktivieren.",
+      },
+      {
+        browser: "Mozilla Firefox & Microsoft Edge",
+        steps:
+          "Klicken Sie auf das Schloss in der Adressleiste > Blockierte Berechtigungen aufheben > Seite aktualisieren und 'Zulassen' wählen.",
+      },
     ],
     h2Privacy: "Datenschutz nach DSGVO (Keine Speicherung)",
-    pPrivacyIntro: "Bei MyLocationLab hat der Schutz Ihrer Privatsphäre oberste Priorität:",
+    pPrivacyIntro:
+      "Bei MyLocationLab hat der Schutz Ihrer Privatsphäre oberste Priorität:",
     privacyBullets: [
       "Keine Protokollierung: Ihre Koordinaten und ermittelten Adressen werden auf keinem Server gespeichert.",
       "Keine Erhebung persönlicher Daten: Wir fordern weder Namen, Telefonnummer noch Zahlungsdaten an.",
       "Ende-zu-Ende verschlüsselt: Sämtliche Geokodierungsabfragen werden über gesicherte HTTPS-Verbindungen (TLS 1.3) abgewickelt.",
-      "Volle Kontrolle: Sie können die Standortberechtigung in den Browsereinstellungen jederzeit mit einem Klick widerrufen."
+      "Volle Kontrolle: Sie können die Standortberechtigung in den Browsereinstellungen jederzeit mit einem Klick widerrufen.",
     ],
     h2Faq: "Häufig Gestellte Fragen zur Aktuellen Adresse",
     faqs: [
-      { question: "Wie finde ich meine aktuelle Adresse auf dem Smartphone heraus?", answer: "Öffnen Sie diese Seite im mobilen Browser, tippen Sie auf 'Meinen Standort abrufen' und bestätigen Sie die Berechtigungsanfrage. Ihr GNSS-Modul erfasst die Koordinaten und zeigt Hausnummer, Straße, PLZ und Stadt an." },
-      { question: "Wird die exakte Postleitzahl angezeigt?", answer: "Ja, das System ermittelt die zu den Koordinaten gehörige Postleitzahl. In Ballungsräumen ist dies die straßenscharfe PLZ, in ländlichen Regionen die kommunale Postleitzahl." },
-      { question: "Warum fehlt in manchen Fällen die Hausnummer?", answer: "OpenStreetMap setzt auf weltweite Open-Data-Erfassung. In ländlichen Außenbereichen oder ganz neuen Wohnanlagen sind einzelne Hausnummern manchmal noch nicht digitalisiert." },
-      { question: "Kann ich die Adresse eines anderen Ortes nachschlagen?", answer: "Ja. Nutzen Sie unseren <a href='/de/tools/address-finder/' class='text-link'>Adressen-Finder</a>, um beliebige Breiten- und Längengrade einzugeben oder direkt auf die interaktive Karte zu klicken." },
-      { question: "Funktioniert die Ortung auch auf einem PC ohne GPS-Chip?", answer: "Ja, über WLAN-Ortung und IP-Geolokalisierung. Zwar ist die Genauigkeit geringer als bei einem Handy, für Stadt und Postleitzahlenbereich genügt sie jedoch meistens." },
-      { question: "Dient das Ergebnis als rechtsgültiger Meldenachweis?", answer: "Nein. Diese Seite ist ein praktisches Ortungswerkzeug. Behörden und Kreditinstitute verlangen offizielle Meldebescheinigungen oder Versorgerrechnungen als Wohnsitznachweis." }
+      {
+        question:
+          "Wie finde ich meine aktuelle Adresse auf dem Smartphone heraus?",
+        answer:
+          "Öffnen Sie diese Seite im mobilen Browser, tippen Sie auf 'Meinen Standort abrufen' und bestätigen Sie die Berechtigungsanfrage. Ihr GNSS-Modul erfasst die Koordinaten und zeigt Hausnummer, Straße, PLZ und Stadt an.",
+      },
+      {
+        question: "Wird die exakte Postleitzahl angezeigt?",
+        answer:
+          "Ja, das System ermittelt die zu den Koordinaten gehörige Postleitzahl. In Ballungsräumen ist dies die straßenscharfe PLZ, in ländlichen Regionen die kommunale Postleitzahl.",
+      },
+      {
+        question: "Warum fehlt in manchen Fällen die Hausnummer?",
+        answer:
+          "OpenStreetMap setzt auf weltweite Open-Data-Erfassung. In ländlichen Außenbereichen oder ganz neuen Wohnanlagen sind einzelne Hausnummern manchmal noch nicht digitalisiert.",
+      },
+      {
+        question: "Kann ich die Adresse eines anderen Ortes nachschlagen?",
+        answer:
+          "Ja. Nutzen Sie unseren <a href='/de/tools/address-finder/' class='text-link'>Adressen-Finder</a>, um beliebige Breiten- und Längengrade einzugeben oder direkt auf die interaktive Karte zu klicken.",
+      },
+      {
+        question: "Funktioniert die Ortung auch auf einem PC ohne GPS-Chip?",
+        answer:
+          "Ja, über WLAN-Ortung und IP-Geolokalisierung. Zwar ist die Genauigkeit geringer als bei einem Handy, für Stadt und Postleitzahlenbereich genügt sie jedoch meistens.",
+      },
+      {
+        question: "Dient das Ergebnis als rechtsgültiger Meldenachweis?",
+        answer:
+          "Nein. Diese Seite ist ein praktisches Ortungswerkzeug. Behörden und Kreditinstitute verlangen offizielle Meldebescheinigungen oder Versorgerrechnungen als Wohnsitznachweis.",
+      },
     ],
     h3Related: "Verwandte Standort-Werkzeuge & Wissensartikel",
     relatedTools: [
-      { icon: "🛰️", title: "Meine GPS-Koordinaten", sub: "Genaue Breiten- und Längengrade abrufen", path: "/de/my-location/gps/" },
-      { icon: "📍", title: "Adressen-Finder", sub: "Adresse für beliebige Koordinaten ermitteln", path: "/de/tools/address-finder/" },
-      { icon: "🏙️", title: "In Welcher Stadt Bin Ich?", sub: "Gemeinde und Stadtgrenzen feststellen", path: "/de/my-location/city/" },
-      { icon: "🎯", title: "GPS-Genauigkeitsprüfer", sub: "Fehlerradius in Metern in Echtzeit messen", path: "/de/tools/gps-accuracy/" },
-      { icon: "⚖️", title: "GPS vs IP-Standort", sub: "Warum die IP-Adresse keine Hausnummern findet", path: "/de/comparisons/gps-vs-ip-location/" },
-      { icon: "⚡", title: "GPS-Genauigkeit verbessern", sub: "Anleitung für Android- und iOS-Geräte", path: "/de/guides/improve-gps-accuracy/" }
-    ]
+      {
+        icon: "🛰️",
+        title: "Meine GPS-Koordinaten",
+        sub: "Genaue Breiten- und Längengrade abrufen",
+        path: "/de/my-location/gps/",
+      },
+      {
+        icon: "📍",
+        title: "Adressen-Finder",
+        sub: "Adresse für beliebige Koordinaten ermitteln",
+        path: "/de/tools/address-finder/",
+      },
+      {
+        icon: "🏙️",
+        title: "In Welcher Stadt Bin Ich?",
+        sub: "Gemeinde und Stadtgrenzen feststellen",
+        path: "/de/my-location/city/",
+      },
+      {
+        icon: "🎯",
+        title: "GPS-Genauigkeitsprüfer",
+        sub: "Fehlerradius in Metern in Echtzeit messen",
+        path: "/de/tools/gps-accuracy/",
+      },
+      {
+        icon: "⚖️",
+        title: "GPS vs IP-Standort",
+        sub: "Warum die IP-Adresse keine Hausnummern findet",
+        path: "/de/comparisons/gps-vs-ip-location/",
+      },
+      {
+        icon: "⚡",
+        title: "GPS-Genauigkeit verbessern",
+        sub: "Anleitung für Android- und iOS-Geräte",
+        path: "/de/guides/improve-gps-accuracy/",
+      },
+    ],
   },
   pt: {
-    title: "Meu Endereço Atual: Rua, Número, Bairro e CEP Agora | MyLocationLab",
-    description: "Descubra seu endereço atual completo via GPS: rua, número, bairro, cidade, UF e CEP. Grátis, sem cadastro, com cópia rápida para WhatsApp e cadastros.",
+    title:
+      "Meu Endereço Atual: Rua, Número, Bairro e CEP Agora | MyLocationLab",
+    description:
+      "Descubra seu endereço atual completo via GPS: rua, número, bairro, cidade, UF e CEP. Grátis, sem cadastro, com cópia rápida para WhatsApp e cadastros.",
     h1Prefix: "Qual É o Meu",
     h1Accent: "Endereço Atual?",
-    subtitle: "Descubra seu endereço postal completo usando GPS e geocodificação reversa: rua, número, bairro, cidade, UF e CEP em tempo real.",
+    subtitle:
+      "Descubra seu endereço postal completo usando GPS e geocodificação reversa: rua, número, bairro, cidade, UF e CEP em tempo real.",
     siloTitle: "Ferramentas de Localização",
     breadcrumbLabel: "Meu Endereço Atual",
     h2Steps: "Como Descobrir Meu Endereço Atual pelo Celular ou Computador",
-    pStepsIntro: "Não é necessário baixar nenhum aplicativo nem preencher cadastros. O processo ocorre diretamente através do navegador do seu celular ou computador em 4 passos simples:",
+    pStepsIntro:
+      "Não é necessário baixar nenhum aplicativo nem preencher cadastros. O processo ocorre diretamente através do navegador do seu celular ou computador em 4 passos simples:",
     steps: [
-      { badge: "Passo 1", title: 'Toque em "Obter Minha Localização"', desc: "Inicia o teste acionando os sensores GNSS e antenas de posicionamento do seu dispositivo." },
-      { badge: "Passo 2", title: "Autorize o Acesso ao GPS", desc: 'Quando a caixa de diálogo surgir, selecione "Permitir" (ou "Permitir durante o uso do app").' },
-      { badge: "Passo 3", title: "Ajuste dos Satélites & Geocodificação", desc: "Suas coordenadas são calculadas e convertidas no logradouro oficial mais próximo." },
-      { badge: "Passo 4", title: "Copie ou Compartilhe", desc: "Copie o endereço completo no padrão brasileiro ou envie-o diretamente pelo WhatsApp." }
+      {
+        badge: "Passo 1",
+        title: 'Toque em "Obter Minha Localização"',
+        desc: "Inicia o teste acionando os sensores GNSS e antenas de posicionamento do seu dispositivo.",
+      },
+      {
+        badge: "Passo 2",
+        title: "Autorize o Acesso ao GPS",
+        desc: 'Quando a caixa de diálogo surgir, selecione "Permitir" (ou "Permitir durante o uso do app").',
+      },
+      {
+        badge: "Passo 3",
+        title: "Ajuste dos Satélites & Geocodificação",
+        desc: "Suas coordenadas são calculadas e convertidas no logradouro oficial mais próximo.",
+      },
+      {
+        badge: "Passo 4",
+        title: "Copie ou Compartilhe",
+        desc: "Copie o endereço completo no padrão brasileiro ou envie-o diretamente pelo WhatsApp.",
+      },
     ],
-    tipAccuracy: "Dica para máxima precisão: Ao ar livre e sob céu aberto, a margem de erro do GPS cai para menos de 5 metros. Em ambientes fechados ou garagens, aproxime-se de uma janela para receber o sinal direto dos satélites.",
+    tipAccuracy:
+      "Dica para máxima precisão: Ao ar livre e sob céu aberto, a margem de erro do GPS cai para menos de 5 metros. Em ambientes fechados ou garagens, aproxime-se de uma janela para receber o sinal direto dos satélites.",
     h2Anatomy: "Anatomia do Endereço no Brasil: O Que É Exibido no Resultado",
-    pAnatomyIntro: "O sistema de endereçamento postal brasileiro obedece às normas da ABNT e dos Correios. Cada componente retornado tem uma função essencial:",
+    pAnatomyIntro:
+      "O sistema de endereçamento postal brasileiro obedece às normas da ABNT e dos Correios. Cada componente retornado tem uma função essencial:",
     anatomyHeaders: ["Campo", "Exemplo", "Importância no Brasil"],
     anatomyRows: [
-      ["Logradouro e Número", "Av. Paulista, 1578", "Indica o nome oficial da via (avenida, rua, alameda) e a numeração predial do imóvel."],
-      ["Bairro", "Bela Vista", "Elemento crucial para a roteirização de entregas em apps como iFood, Mercado Livre e Shopee."],
-      ["Cidade e UF", "São Paulo – SP", "Município sede e sigla oficial da Unidade Federativa estadual (com duas letras)."],
-      ["CEP", "01310-200", "Código de Endereçamento Postal de 8 dígitos que orienta a triagem dos Correios."],
-      ["País", "Brasil (BR)", "Território nacional e identificador ISO alfa-2 oficial."],
-      ["Coordenadas GPS", "-23.5614, -46.6559", "Ponto exato de latitude e longitude para navegação cartográfica."]
+      [
+        "Logradouro e Número",
+        "Av. Paulista, 1578",
+        "Indica o nome oficial da via (avenida, rua, alameda) e a numeração predial do imóvel.",
+      ],
+      [
+        "Bairro",
+        "Bela Vista",
+        "Elemento crucial para a roteirização de entregas em apps como iFood, Mercado Livre e Shopee.",
+      ],
+      [
+        "Cidade e UF",
+        "São Paulo – SP",
+        "Município sede e sigla oficial da Unidade Federativa estadual (com duas letras).",
+      ],
+      [
+        "CEP",
+        "01310-200",
+        "Código de Endereçamento Postal de 8 dígitos que orienta a triagem dos Correios.",
+      ],
+      [
+        "País",
+        "Brasil (BR)",
+        "Território nacional e identificador ISO alfa-2 oficial.",
+      ],
+      [
+        "Coordenadas GPS",
+        "-23.5614, -46.6559",
+        "Ponto exato de latitude e longitude para navegação cartográfica.",
+      ],
     ],
-    pPostcodeNote: "Sobre o CEP em cidades brasileiras: Em cidades do interior (geralmente com menos de 50.000 habitantes), é comum haver um CEP genérico único para todo o município (com final -000). Já em capitais e regiões metropolitanas, cada rua ou trecho possui um CEP exclusivo.",
+    pPostcodeNote:
+      "Sobre o CEP em cidades brasileiras: Em cidades do interior (geralmente com menos de 50.000 habitantes), é comum haver um CEP genérico único para todo o município (com final -000). Já em capitais e regiões metropolitanas, cada rua ou trecho possui um CEP exclusivo.",
     h2How: "Como Seu Endereço É Identificado (Geocodificação Reversa)",
-    pHowIntro: "Seu celular não lê placas de rua; ele calcula coordenadas geográficas. A geocodificação reversa cruza esses dados com a malha cartográfica do OpenStreetMap para apontar o imóvel ou via mais próxima:",
-    techHeaders: ["Tecnologia", "Precisão Típica", "Quando É Utilizada", "Nível do Endereço"],
-    techRows: [
-      ["GPS por Satélite (GNSS)", "3 a 10 metros", "Celulares com GPS ativo em áreas abertas", "Rua, bairro e número predial"],
-      ["Wi-Fi e Antenas Celulares", "15 a 50 metros", "Interiores de prédios, shoppings e laptops", "Rua ou quarteirão aproximado"],
-      ["Endereço IP do Provedor", "5 a 30 quilômetros", "Computadores de mesa ou sem permissão", "Cidade ou central da operadora"]
+    pHowIntro:
+      "Seu celular não lê placas de rua; ele calcula coordenadas geográficas. A geocodificação reversa cruza esses dados com a malha cartográfica do OpenStreetMap para apontar o imóvel ou via mais próxima:",
+    techHeaders: [
+      "Tecnologia",
+      "Precisão Típica",
+      "Quando É Utilizada",
+      "Nível do Endereço",
     ],
-    pTechSummary: "Para entender a diferença entre sensores físicos e conexões de rede, veja nosso comparativo de <a href='/pt/comparisons/gps-vs-ip-location/' class='text-link'>GPS vs. Localização IP</a> e entenda <a href='/pt/guides/how-gps-location-works/' class='text-link'>como funciona o GPS</a>.",
+    techRows: [
+      [
+        "GPS por Satélite (GNSS)",
+        "3 a 10 metros",
+        "Celulares com GPS ativo em áreas abertas",
+        "Rua, bairro e número predial",
+      ],
+      [
+        "Wi-Fi e Antenas Celulares",
+        "15 a 50 metros",
+        "Interiores de prédios, shoppings e laptops",
+        "Rua ou quarteirão aproximado",
+      ],
+      [
+        "Endereço IP do Provedor",
+        "5 a 30 quilômetros",
+        "Computadores de mesa ou sem permissão",
+        "Cidade ou central da operadora",
+      ],
+    ],
+    pTechSummary:
+      "Para entender a diferença entre sensores físicos e conexões de rede, veja nosso comparativo de <a href='/pt/comparisons/gps-vs-ip-location/' class='text-link'>GPS vs. Localização IP</a> e entenda <a href='/pt/guides/how-gps-location-works/' class='text-link'>como funciona o GPS</a>.",
     h2UseCases: "Principais Situações Para Usar o Seu Endereço Atual",
     useCases: [
-      { title: "Pedidos de Delivery e Encomendas", desc: "Confirme a rua e o número para entregadores do iFood, Zé Delivery ou Mercado Livre quando estiver em locais sem numeração visível." },
-      { title: "Corridas por Aplicativo (Uber / 99)", desc: "Indique o ponto de embarque exato ao motorista quando os números dos imóveis estiverem escuros ou confusos." },
-      { title: "Preenchimento Rápido de Cadastros", desc: "Encontre rapidamente seu CEP e bairro para compras online e cadastros bancários." },
-      { title: "Compartilhamento no WhatsApp", desc: "Copie o endereço formatado e envie para amigos ou familiares facilitarem a chegada ao seu encontro." },
-      { title: "Chamados de Emergência (192 / 193 / 190)", desc: "Informe a rua, bairro de referência e coordenadas aos serviços de socorro: SAMU (192), Bombeiros (193) e PM (190)." }
+      {
+        title: "Pedidos de Delivery e Encomendas",
+        desc: "Confirme a rua e o número para entregadores do iFood, Zé Delivery ou Mercado Livre quando estiver em locais sem numeração visível.",
+      },
+      {
+        title: "Corridas por Aplicativo (Uber / 99)",
+        desc: "Indique o ponto de embarque exato ao motorista quando os números dos imóveis estiverem escuros ou confusos.",
+      },
+      {
+        title: "Preenchimento Rápido de Cadastros",
+        desc: "Encontre rapidamente seu CEP e bairro para compras online e cadastros bancários.",
+      },
+      {
+        title: "Compartilhamento no WhatsApp",
+        desc: "Copie o endereço formatado e envie para amigos ou familiares facilitarem a chegada ao seu encontro.",
+      },
+      {
+        title: "Chamados de Emergência (192 / 193 / 190)",
+        desc: "Informe a rua, bairro de referência e coordenadas aos serviços de socorro: SAMU (192), Bombeiros (193) e PM (190).",
+      },
     ],
     h2Troubleshoot: "Meu Endereço Apareceu Incorreto: O Que Fazer?",
-    pTroubleshootIntro: "Se o resultado apontar uma rua vizinha, outro bairro ou um número diferente, veja as causas mais frequentes e suas soluções:",
+    pTroubleshootIntro:
+      "Se o resultado apontar uma rua vizinha, outro bairro ou um número diferente, veja as causas mais frequentes e suas soluções:",
     troubleshootList: [
-      "Aparece a rua de trás ou a calçada oposta: O GPS civil possui margem natural de 5 a 15 metros. Em prédios altos, o sinal ricocheteia (multipath). Dê alguns passos e toque em 'Atualizar'.",
-      "O número da casa não aparece: O OpenStreetMap pode não possuir o loteamento específico mapeado. Use o nome da via e confira o ponto com o nosso <a href='/pt/tools/address-finder/' class='text-link'>Localizador de Endereço</a>.",
+      "Aparece a rua de trás ou a calçada oposta: O GPS civil possui margem de 5 a 15 metros. Teste seu raio de precisão com o <a href='/pt/tools/gps-accuracy/' class='text-link'>Verificador de Precisão GPS</a>. Dê alguns passos e toque em 'Atualizar'.",
+      "O número da casa não aparece: Em vias recentes, use o <a href='/pt/tools/address-finder/' class='text-link'>Localizador de Endereço</a> para checar pontos vizinhos ou meça distâncias com a <a href='/pt/tools/distance-calculator/' class='text-link'>Calculadora de Distância</a>.",
       "Mostra outra cidade ou estado: Se você estiver usando VPN corporativa ou conexão cabeada, seu tráfego sai pelo nó do provedor. Desative a VPN e ative o GPS do celular.",
-      "Precisão fraca: Veja as orientações de <a href='/pt/guides/improve-gps-accuracy/' class='text-link'>como melhorar a precisão do GPS</a> e o guia para <a href='/pt/guides/wrong-location/' class='text-link'>corrigir localização incorreta</a>."
+      "Precisão fraca: Veja as orientações de <a href='/pt/guides/improve-gps-accuracy/' class='text-link'>como melhorar a precisão do GPS</a> e o guia para <a href='/pt/guides/wrong-location/' class='text-link'>corrigir localização incorreta</a>.",
     ],
     h2Permissions: "Como Ativar a Permissão de Localização no Navegador",
-    pPermissionsIntro: "Caso o botão indique erro de permissão negada, siga os passos correspondentes ao seu navegador:",
+    pPermissionsIntro:
+      "Caso o botão indique erro de permissão negada, siga os passos correspondentes ao seu navegador:",
     permissions: [
-      { browser: "Google Chrome (Android)", steps: "Toque no ícone de opções/cadeado ao lado do link > Permissões > Localização > Escolha 'Permitir'." },
-      { browser: "Safari (iPhone / iPad)", steps: "Vá em Ajustes do iOS > Privacidade e Segurança > Serviços de Localização > Safari > Selecione 'Ao Usar o App' e ative 'Localização Precisa'." },
-      { browser: "Chrome / Edge / Firefox (PC)", steps: "Clique no ícone de cadeado no canto da barra de endereço > Ative a chave de Localização e atualize a página (F5)." }
+      {
+        browser: "Google Chrome (Android)",
+        steps:
+          "Toque no ícone de opções/cadeado ao lado do link > Permissões > Localização > Escolha 'Permitir'.",
+      },
+      {
+        browser: "Safari (iPhone / iPad)",
+        steps:
+          "Vá em Ajustes do iOS > Privacidade e Segurança > Serviços de Localização > Safari > Selecione 'Ao Usar o App' e ative 'Localização Precisa'.",
+      },
+      {
+        browser: "Chrome / Edge / Firefox (PC)",
+        steps:
+          "Clique no ícone de cadeado no canto da barra de endereço > Ative a chave de Localização e atualize a página (F5).",
+      },
     ],
     h2Privacy: "Privacidade e Proteção de Dados (LGPD)",
     pPrivacyIntro: "No MyLocationLab, levamos sua privacidade a sério:",
@@ -489,88 +1239,243 @@ const contentData: Record<SupportedLang, AddressPageData> = {
       "Sem Armazenamento: Seu endereço e coordenadas geográficas nunca são gravados em bancos de dados.",
       "Sem Dados Pessoais: Não solicitamos nome, e-mail, telefone ou CPF.",
       "Conexões Criptografadas: As requisições de conversão trafegam por canais seguros HTTPS com TLS 1.3.",
-      "Controle Total: Você pode revogar o acesso à localização a qualquer instante nas opções do seu navegador."
+      "Controle Total: Você pode revogar o acesso à localização a qualquer instante nas opções do seu navegador.",
     ],
     h2Faq: "Perguntas Frequentes sobre Endereço Atual",
     faqs: [
-      { question: "Como saber meu endereço atual pelo celular?", answer: "Abra esta página no navegador do celular, toque em 'Obter Minha Localização' e selecione 'Permitir'. O GPS do aparelho identificará suas coordenadas e nossa geocodificação exibirá rua, número, bairro, cidade, UF e CEP." },
-      { question: "O serviço descobre o CEP exato de onde estou agora?", answer: "Sim. O resultado apresenta o CEP associado às suas coordenadas geográficas. Em capitais e cidades codificadas por rua, o CEP do trecho é retornado; em cidades com CEP único, o código geral é exibido." },
-      { question: "Por que o número da minha casa não apareceu no resultado?", answer: "O OpenStreetMap utiliza uma malha de dados abertos que pode não ter todos os imóveis catalogados individualmente. Nesses casos, o sistema apresenta o nome da via e as coordenadas exatas." },
-      { question: "Posso descobrir o endereço de outro local sem estar nele?", answer: "Sim. Utilize a nossa ferramenta <a href='/pt/tools/address-finder/' class='text-link'>Localizador de Endereço</a> para digitar qualquer coordenada de latitude e longitude e converter no endereço físico correspondente." },
-      { question: "Funciona sem sinal de GPS em um computador?", answer: "Sim, através de triangulação Wi-Fi e endereço IP do provedor. A precisão é menor que a do celular, mas geralmente indica seu município e código postal." },
-      { question: "Posso utilizar o resultado como comprovante de residência?", answer: "Não. Esta página é uma ferramenta utilitária digital. Bancos, órgãos públicos e empresas exigem comprovantes formais emitidos por concessionárias de serviços públicos (contas de luz ou água)." }
+      {
+        question: "Como saber meu endereço atual pelo celular?",
+        answer:
+          "Abra esta página no navegador do celular, toque em 'Obter Minha Localização' e selecione 'Permitir'. O GPS do aparelho identificará suas coordenadas e nossa geocodificação exibirá rua, número, bairro, cidade, UF e CEP.",
+      },
+      {
+        question: "O serviço descobre o CEP exato de onde estou agora?",
+        answer:
+          "Sim. O resultado apresenta o CEP associado às suas coordenadas geográficas. Em capitais e cidades codificadas por rua, o CEP do trecho é retornado; em cidades com CEP único, o código geral é exibido.",
+      },
+      {
+        question: "Por que o número da minha casa não apareceu no resultado?",
+        answer:
+          "O OpenStreetMap utiliza uma malha de dados abertos que pode não ter todos os imóveis catalogados individualmente. Nesses casos, o sistema apresenta o nome da via e as coordenadas exatas.",
+      },
+      {
+        question: "Posso descobrir o endereço de outro local sem estar nele?",
+        answer:
+          "Sim. Utilize a nossa ferramenta <a href='/pt/tools/address-finder/' class='text-link'>Localizador de Endereço</a> ou o <a href='/pt/tools/reverse-geocoding/' class='text-link'>Geocodificador Reverso</a> para digitar coordenadas. Para mudar formatos (DMS/UTM), use o <a href='/pt/tools/coordinate-converter/' class='text-link'>Conversor de Coordenadas</a>.",
+      },
+      {
+        question: "Funciona sem sinal de GPS em um computador?",
+        answer:
+          "Sim, através de triangulação Wi-Fi e endereço IP do provedor. A precisão é menor que a do celular, mas geralmente indica seu município e código postal.",
+      },
+      {
+        question: "Posso utilizar o resultado como comprovante de residência?",
+        answer:
+          "Não. Esta página é uma ferramenta utilitária digital. Bancos, órgãos públicos e empresas exigem comprovantes formais emitidos por concessionárias de serviços públicos (contas de luz ou água).",
+      },
     ],
     h3Related: "Ferramentas Relacionadas e Guias de Localização",
     relatedTools: [
-      { icon: "🛰️", title: "Coordenadas GPS Atuais", sub: "Ver latitude, longitude e altitude via satélite", path: "/pt/my-location/gps/" },
-      { icon: "📍", title: "Localizador de Endereço", sub: "Descubra o endereço de qualquer ponto no mapa", path: "/pt/tools/address-finder/" },
-      { icon: "🏙️", title: "Minha Cidade Atual", sub: "Identifique seu município e limites distritais", path: "/pt/my-location/city/" },
-      { icon: "🎯", title: "Precisão do GPS", sub: "Meça a margem de error em metros em tempo real", path: "/pt/tools/gps-accuracy/" },
-      { icon: "⚖️", title: "GPS vs Localização IP", sub: "Entenda por que o IP não mostra o número da sua casa", path: "/pt/comparisons/gps-vs-ip-location/" },
-      { icon: "⚡", title: "Melhorar Precisão do GPS", sub: "Passo a passo no Android e iPhone", path: "/pt/guides/improve-gps-accuracy/" }
-    ]
+      {
+        icon: "🏠",
+        title: "Localizador de Endereço",
+        sub: "Descubra o endereço de qualquer coordenada ou ponto no mapa",
+        path: "/tools/address-finder/",
+      },
+      {
+        icon: "🔄",
+        title: "Geocodificador Reverso",
+        sub: "Converta coordenadas GPS em endereço físico legível",
+        path: "/tools/reverse-geocoding/",
+      },
+      {
+        icon: "🎯",
+        title: "Geocodificador",
+        sub: "Transforme nomes de locais e endereços em coordenadas",
+        path: "/tools/geocoding/",
+      },
+      {
+        icon: "📱",
+        title: "QR Code de Localização",
+        sub: "Gere códigos QR escaneáveis do seu endereço físico",
+        path: "/tools/location-qr-code/",
+      },
+      {
+        icon: "📏",
+        title: "Calculadora de Distância",
+        sub: "Meça a distância exata entre dois endereços ou pontos",
+        path: "/tools/distance-calculator/",
+      },
+      {
+        icon: "🛰️",
+        title: "Coordenadas GPS Atuais",
+        sub: "Ver latitude, longitude e altitude via satélite em tempo real",
+        path: "/my-location/gps/",
+      },
+      {
+        icon: "🎯",
+        title: "Precisão do GPS",
+        sub: "Meça a margem de erro em metros em tempo real",
+        path: "/tools/gps-accuracy/",
+      },
+      {
+        icon: "⚖️",
+        title: "GPS vs Localização IP",
+        sub: "Entenda por que o IP não mostra o número da sua casa",
+        path: "/comparisons/gps-vs-ip-location/",
+      },
+    ],
   },
   hi: {
-    title: "मेरा वर्तमान पता: सड़क, मकान नंबर, इलाका और पिन कोड | MyLocationLab",
-    description: "GPS की मदद से अपना वर्तमान डाक पता तुरंत ऑनलाइन जानें: मकान नंबर, गली, इलाका, शहर, राज्य और पिन कोड। पूरी तरह मुफ़्त, बिना लॉगिन और 1-क्लिक शेयरिंग के साथ।",
+    title:
+      "मेरा वर्तमान पता: सड़क, मकान नंबर, इलाका और पिन कोड | MyLocationLab",
+    description:
+      "GPS की मदद से अपना वर्तमान डाक पता तुरंत ऑनलाइन जानें: मकान नंबर, गली, इलाका, शहर, राज्य और पिन कोड। पूरी तरह मुफ़्त, बिना लॉगिन और 1-क्लिक शेयरिंग के साथ।",
     h1Prefix: "मेरा वर्तमान",
     h1Accent: "पता क्या है?",
-    subtitle: "सैटेलाइट GPS और रिवर्स जियोकोडिंग से अपना पूरा सड़क पता तुरंत जानें: मकान नंबर, सड़क, इलाका, शहर, राज्य और पिन कोड।",
+    subtitle:
+      "सैटेलाइट GPS और रिवर्स जियोकोडिंग से अपना पूरा सड़क पता तुरंत जानें: मकान नंबर, सड़क, इलाका, शहर, राज्य और पिन कोड।",
     siloTitle: "लोकेशन टूल्स",
     breadcrumbLabel: "मेरा वर्तमान पता",
     h2Steps: "मोबाइल या कंप्यूटर पर अपना वर्तमान पता कैसे जानें",
-    pStepsIntro: "इसके लिए किसी ऐप को इंस्टॉल करने या अकाउंट बनाने की आवश्यकता नहीं है। आपका सटीक पता सीधे आपके वेब ब्राउज़र में 4 आसान चरणों में मिल जाता है:",
+    pStepsIntro:
+      "इसके लिए किसी ऐप को इंस्टॉल करने या अकाउंट बनाने की आवश्यकता नहीं है। आपका सटीक पता सीधे आपके वेब ब्राउज़र में 4 आसान चरणों में मिल जाता है:",
     steps: [
-      { badge: "चरण 1", title: '"मेरी लोकेशन प्राप्त करें" पर टैप करें', desc: "अपने डिवाइस के GNSS सैटेलाइट सेंसर और नेटवर्क एंटीना को सक्रिय करें।" },
-      { badge: "चरण 2", title: "लोकेशन अनुमति स्वीकार करें", desc: 'ब्राउज़र पॉप-अप आने पर "अनुमति दें" (Allow) विकल्प चुनें।' },
-      { badge: "चरण 3", title: "सैटेलाइट गणना व जियोकोडिंग", desc: "GPS निर्देशांक प्राप्त करके निकटतम सड़क और भवन का पता निकाला जाता है।" },
-      { badge: "चरण 4", title: "कॉपी या शेयर करें", desc: "पूरा पता 1-क्लिक में कॉपी करें या व्हाट्सएप पर परिजनों के साथ साझा करें।" }
+      {
+        badge: "चरण 1",
+        title: '"मेरी लोकेशन प्राप्त करें" पर टैप करें',
+        desc: "अपने डिवाइस के GNSS सैटेलाइट सेंसर और नेटवर्क एंटीना को सक्रिय करें।",
+      },
+      {
+        badge: "चरण 2",
+        title: "लोकेशन अनुमति स्वीकार करें",
+        desc: 'ब्राउज़र पॉप-अप आने पर "अनुमति दें" (Allow) विकल्प चुनें।',
+      },
+      {
+        badge: "चरण 3",
+        title: "सैटेलाइट गणना व जियोकोडिंग",
+        desc: "GPS निर्देशांक प्राप्त करके निकटतम सड़क और भवन का पता निकाला जाता है।",
+      },
+      {
+        badge: "चरण 4",
+        title: "कॉपी या शेयर करें",
+        desc: "पूरा पता 1-क्लिक में कॉपी करें या व्हाट्सएप पर परिजनों के साथ साझा करें।",
+      },
     ],
-    tipAccuracy: "सटीकता के लिए सुझाव: खुले आसमान के नीचे मोबाइल GPS 3 से 5 मीटर तक सटीक होता है। इमारतों के अंदर या बेसमेंट में खिड़की के पास जाएं ताकि सैटेलाइट सिग्नल सीधे मिल सकें।",
+    tipAccuracy:
+      "सटीकता के लिए सुझाव: खुले आसमान के नीचे मोबाइल GPS 3 से 5 मीटर तक सटीक होता है। इमारतों के अंदर या बेसमेंट में खिड़की के पास जाएं ताकि सैटेलाइट सिग्नल सीधे मिल सकें।",
     h2Anatomy: "पते की संरचना: परिणाम में क्या-क्या शामिल होता है",
-    pAnatomyIntro: "डाक प्रणाली और डिलीवरी सेवाओं के लिए पते के हर हिस्से की अपनी महत्ता होती है:",
+    pAnatomyIntro:
+      "डाक प्रणाली और डिलीवरी सेवाओं के लिए पते के हर हिस्से की अपनी महत्ता होती है:",
     anatomyHeaders: ["क्षेत्र का नाम", "उदाहरण", "महत्व"],
     anatomyRows: [
-      ["मकान नंबर व सड़क", "12/A, महात्मा गांधी मार्ग", "सटीक आवासीय भवन और सड़क की पहचान।"],
-      ["इलाका / कॉलोनी", "कनॉट प्लेस", "स्थानीय डिलीवरी कूरियर और पोस्टमैन के लिए सबसे महत्वपूर्ण।"],
+      [
+        "मकान नंबर व सड़क",
+        "12/A, महात्मा गांधी मार्ग",
+        "सटीक आवासीय भवन और सड़क की पहचान।",
+      ],
+      [
+        "इलाका / कॉलोनी",
+        "कनॉट प्लेस",
+        "स्थानीय डिलीवरी कूरियर और पोस्टमैन के लिए सबसे महत्वपूर्ण।",
+      ],
       ["शहर / कस्बा", "नई दिल्ली", "नगर निगम या स्थानीय प्रशासनिक सीमा।"],
-      ["राज्य", "दिल्ली (DL)", "संबंधित प्रशासनिक राज्य या केंद्र शासित प्रदेश।"],
-      ["पिन कोड (PIN Code)", "110001", "भारतीय डाक विभाग द्वारा निर्धारित 6 अंकों का वितरण कोड।"],
+      [
+        "राज्य",
+        "दिल्ली (DL)",
+        "संबंधित प्रशासनिक राज्य या केंद्र शासित प्रदेश।",
+      ],
+      [
+        "पिन कोड (PIN Code)",
+        "110001",
+        "भारतीय डाक विभाग द्वारा निर्धारित 6 अंकों का वितरण कोड।",
+      ],
       ["देश", "भारत (IN)", "संप्रभु राष्ट्र और आधिकारिक ISO अल्फा-2 कोड।"],
-      ["निर्देशांक", "28.6139, 77.2090", "मानचित्र नेविगेशन के लिए सटीक अक्षांश और देशांतर।"]
+      [
+        "निर्देशांक",
+        "28.6139, 77.2090",
+        "मानचित्र नेविगेशन के लिए सटीक अक्षांश और देशांतर।",
+      ],
     ],
-    pPostcodeNote: "पिन कोड के बारे में: भारत में 6 अंकों का पिन कोड डाक वितरण की रीढ़ है। ग्रामीण क्षेत्रों में एक पिन कोड कई गांवों को कवर कर सकता है, जबकि बड़े शहरों में अलग-अलग इलाकों के अलग-अलग पिन कोड होते हैं।",
+    pPostcodeNote:
+      "पिन कोड के बारे में: भारत में 6 अंकों का पिन कोड डाक वितरण की रीढ़ है। ग्रामीण क्षेत्रों में एक पिन कोड कई गांवों को कवर कर सकता है, जबकि बड़े शहरों में अलग-अलग इलाकों के अलग-अलग पिन कोड होते हैं।",
     h2How: "आपका पता कैसे पहचाना जाता है (रिवर्स जियोकोडिंग)",
-    pHowIntro: "आपका डिवाइस पते का नाम नहीं पढ़ता, बल्कि सैटेलाइट से अक्षांश और देशांतर की गणना करता है। रिवर्स जियोकोडिंग प्रक्रिया उन निर्देशांकों को OpenStreetMap के डेटा से मिलाकर निकटतम सड़क पता बताती है:",
+    pHowIntro:
+      "आपका डिवाइस पते का नाम नहीं पढ़ता, बल्कि सैटेलाइट से अक्षांश और देशांतर की गणना करता है। रिवर्स जियोकोडिंग प्रक्रिया उन निर्देशांकों को OpenStreetMap के डेटा से मिलाकर निकटतम सड़क पता बताती है:",
     techHeaders: ["तकनीक", "सामान्य सटीकता", "कब उपयोग होती है", "पते का स्तर"],
     techRows: [
-      ["सैटेलाइट GPS (GNSS)", "3 से 10 मीटर", "खुले में GPS चालू होने पर", "सड़क, मकान नंबर और इलाका"],
-      ["वाई-फ़ाई और मोबाइल टावर", "15 से 50 मीटर", "इमारतों के अंदर, लैपटॉप पर", "सड़क या अनुमानित ब्लॉक"],
-      ["IP एड्रेस जियोलोकेशन", "5 से 30 किलोमीटर", "डेस्कटॉप पीसी या ब्रॉडबैंड पर", "केवल शहर या इंटरनेट ऑपरेटर क्षेत्र"]
+      [
+        "सैटेलाइट GPS (GNSS)",
+        "3 से 10 मीटर",
+        "खुले में GPS चालू होने पर",
+        "सड़क, मकान नंबर और इलाका",
+      ],
+      [
+        "वाई-फ़ाई और मोबाइल टावर",
+        "15 से 50 मीटर",
+        "इमारतों के अंदर, लैपटॉप पर",
+        "सड़क या अनुमानित ब्लॉक",
+      ],
+      [
+        "IP एड्रेस जियोलोकेशन",
+        "5 से 30 किलोमीटर",
+        "डेस्कटॉप पीसी या ब्रॉडबैंड पर",
+        "केवल शहर या इंटरनेट ऑपरेटर क्षेत्र",
+      ],
     ],
-    pTechSummary: "सैटेलाइट GPS और इंटरनेट नेटवर्क के बीच के अंतर को समझने के लिए <a href='/hi/comparisons/gps-vs-ip-location/' class='text-link'>GPS बनाम IP लोकेशन</a> तुलना पढ़ें और जानें <a href='/hi/guides/how-gps-location-works/' class='text-link'>GPS कैसे काम करता है</a>।",
+    pTechSummary:
+      "सैटेलाइट GPS और इंटरनेट नेटवर्क के बीच के अंतर को समझने के लिए <a href='/hi/comparisons/gps-vs-ip-location/' class='text-link'>GPS बनाम IP लोकेशन</a> तुलना पढ़ें और जानें <a href='/hi/guides/how-gps-location-works/' class='text-link'>GPS कैसे काम करता है</a>।",
     h2UseCases: "वर्तमान पता जानने के प्रमुख व्यावहारिक उपयोग",
     useCases: [
-      { title: "फ़ूड डिलीवरी व ऑनलाइन शॉपिंग", desc: "स्विगी, ज़ोमैटो, अमेज़न या फ्लिपकार्ट पर ऑर्डर करते समय सही मकान नंबर व सड़क सुनिश्चित करें।" },
-      { title: "कैब व टैक्सी पिकअप (Ola / Uber)", desc: "ड्राइवर को अपने सटीक स्थान का पता और लैंडमार्क बताएं ताकि गाड़ी सीधे आप तक पहुंचे।" },
-      { title: "सरकारी व बैंक फॉर्म भरना", desc: "ऑनलाइन फॉर्म भरते समय अपने वर्तमान स्थान का सही पिन कोड, शहर और राज्य तुरंत प्राप्त करें।" },
-      { title: "व्हाट्सएप पर लोकेशन शेयर करना", desc: "अपना पूरा पता कॉपी करके व्हाट्सएप पर दोस्तों को भेजें ताकि वे आसानी से पहुंच सकें।" },
-      { title: "आपातकालीन सेवाएं (112 / 100 / 108)", desc: "आपातकाल के समय पुलिस (100/112) या एम्बुलेंस (108) को तुरंत अपना सटीक पता बताएं।" }
+      {
+        title: "फ़ूड डिलीवरी व ऑनलाइन शॉपिंग",
+        desc: "स्विगी, ज़ोमैटो, अमेज़न या फ्लिपकार्ट पर ऑर्डर करते समय सही मकान नंबर व सड़क सुनिश्चित करें।",
+      },
+      {
+        title: "कैब व टैक्सी पिकअप (Ola / Uber)",
+        desc: "ड्राइवर को अपने सटीक स्थान का पता और लैंडमार्क बताएं ताकि गाड़ी सीधे आप तक पहुंचे।",
+      },
+      {
+        title: "सरकारी व बैंक फॉर्म भरना",
+        desc: "ऑनलाइन फॉर्म भरते समय अपने वर्तमान स्थान का सही पिन कोड, शहर और राज्य तुरंत प्राप्त करें।",
+      },
+      {
+        title: "व्हाट्सएप पर लोकेशन शेयर करना",
+        desc: "अपना पूरा पता कॉपी करके व्हाट्सएप पर दोस्तों को भेजें ताकि वे आसानी से पहुंच सकें।",
+      },
+      {
+        title: "आपातकालीन सेवाएं (112 / 100 / 108)",
+        desc: "आपातकाल के समय पुलिस (100/112) या एम्बुलेंस (108) को तुरंत अपना सटीक पता बताएं।",
+      },
     ],
     h2Troubleshoot: "पता गलत या अधूरा दिखे तो क्या करें?",
-    pTroubleshootIntro: "यदि पता पड़ोस की गली का दिखता है या मकान नंबर गायब है, तो इन सामान्य कारणों की जांच करें:",
+    pTroubleshootIntro:
+      "यदि पता पड़ोस की गली का दिखता है या मकान नंबर गायब है, तो इन सामान्य कारणों की जांच करें:",
     troubleshootList: [
-      "पड़ोस की सड़क दिखना: इमारतों के बीच GPS सिग्नल में 5-15 मीटर का विचलन हो सकता है। थोड़ा खुले में चलें और 'रिफ़्रेश' करें।",
-      "मकान नंबर न दिखना: कुछ नई कॉलोनियों में OpenStreetMap पर मकान नंबर मैप नहीं होते। सड़क का नाम और हमारे <a href='/hi/tools/address-finder/' class='text-link'>पता खोजक (Address Finder)</a> टूल का उपयोग करें।",
+      "पड़ोस की सड़क दिखना: इमारतों के बीच सिग्नल में विचलन हो सकता है। हमारे <a href='/hi/tools/gps-accuracy/' class='text-link'>GPS सटीकता चेकर</a> से सिग्नल मापें। थोड़ा खुले में चलें और 'रिफ़्रेश' करें।",
+      "मकान नंबर न दिखना: कुछ कॉलोनियों में मकान नंबर मैप नहीं होते। हमारे <a href='/hi/tools/address-finder/' class='text-link'>पता खोजक</a> और <a href='/hi/tools/distance-calculator/' class='text-link'>दूरी कैलकुलेटर</a> का उपयोग करें।",
       "दूसरा शहर दिखना: यदि आप VPN से जुड़े हैं, तो इंटरनेट दूसरे शहर का दिखेगा। VPN बंद करें और फ़ोन का GPS ऑन रखें।",
-      "सटीकता सुधारें: हमारे गाइड <a href='/hi/guides/improve-gps-accuracy/' class='text-link'>GPS सटीकता कैसे बढ़ाएं</a> और <a href='/hi/guides/wrong-location/' class='text-link'>गलत लोकेशन ठीक करें</a> को पढ़ें।"
+      "सटीकता सुधारें: हमारे गाइड <a href='/hi/guides/improve-gps-accuracy/' class='text-link'>GPS सटीकता कैसे बढ़ाएं</a> और <a href='/hi/guides/wrong-location/' class='text-link'>गलत लोकेशन ठीक करें</a> को पढ़ें।",
     ],
     h2Permissions: "ब्राउज़र में लोकेशन अनुमति कैसे चालू करें",
-    pPermissionsIntro: "यदि लोकेशन ब्लॉक हो गई है, तो अपने ब्राउज़र में इस प्रकार अनुमति दें:",
+    pPermissionsIntro:
+      "यदि लोकेशन ब्लॉक हो गई है, तो अपने ब्राउज़र में इस प्रकार अनुमति दें:",
     permissions: [
-      { browser: "गूगल क्रोम (एंड्रॉयड व पीसी)", steps: "URL के बगल में ताले/सेटिंग्स आइकन पर टैप करें > Permissions > Location > 'Allow' चुनें और पेज रीलोड करें।" },
-      { browser: "सफ़ारी (iPhone व Mac)", steps: "Settings > Privacy & Security > Location Services > Safari > 'While Using the App' चुनें और Precise Location चालू करें।" },
-      { browser: "फ़ायरफ़ॉक्स व एज", steps: "एड्रेस बार में ताले के निशान पर क्लिक करें > ब्लॉक अनुमति हटाएं > रीलोड करके 'अनुमति दें' पर क्लिक करें।" }
+      {
+        browser: "गूगल क्रोम (एंड्रॉयड व पीसी)",
+        steps:
+          "URL के बगल में ताले/सेटिंग्स आइकन पर टैप करें > Permissions > Location > 'Allow' चुनें और पेज रीलोड करें।",
+      },
+      {
+        browser: "सफ़ारी (iPhone व Mac)",
+        steps:
+          "Settings > Privacy & Security > Location Services > Safari > 'While Using the App' चुनें और Precise Location चालू करें।",
+      },
+      {
+        browser: "फ़ायरफ़ॉक्स व एज",
+        steps:
+          "एड्रेस बार में ताले के निशान पर क्लिक करें > ब्लॉक अनुमति हटाएं > रीलोड करके 'अनुमति दें' पर क्लिक करें।",
+      },
     ],
     h2Privacy: "डेटा गोपनीयता व सुरक्षा (कोई डेटा सहेजा नहीं जाता)",
     pPrivacyIntro: "MyLocationLab पर आपकी गोपनीयता पूरी तरह सुरक्षित है:",
@@ -578,88 +1483,257 @@ const contentData: Record<SupportedLang, AddressPageData> = {
       "कोई सर्वर स्टोरेज नहीं: आपका पता और निर्देशांक किसी भी डेटाबेस में रिकॉर्ड नहीं किए जाते।",
       "कोई व्यक्तिगत जानकारी नहीं: हम कभी भी नाम, ईमेल, फ़ोन नंबर या भुगतान विवरण नहीं मांगते।",
       "एन्क्रिप्टेड ट्रांसमिशन: सभी जियोकोडिंग अनुरोध सुरक्षित HTTPS TLS 1.3 चैनल से गुजरते हैं।",
-      "पूर्ण नियंत्रण: आप कभी भी अपने ब्राउज़र सेटिंग्स से लोकेशन अनुमति वापस ले सकते हैं।"
+      "पूर्ण नियंत्रण: आप कभी भी अपने ब्राउज़र सेटिंग्स से लोकेशन अनुमति वापस ले सकते हैं।",
     ],
     h2Faq: "वर्तमान पते से जुड़े अक्सर पूछे जाने वाले प्रश्न",
     faqs: [
-      { question: "मैं अपने फ़ोन से अपना वर्तमान पता कैसे जान सकता हूं?", answer: "इस पेज को अपने मोबाइल ब्राउज़र में खोलें, 'मेरी लोकेशन प्राप्त करें' पर टैप करें और अनुमति दें। आपका फ़ोन तुरंत सड़क, इलाका, शहर और पिन कोड दिखा देगा।" },
-      { question: "क्या यह टूल मेरा सटीक पिन कोड बताता है?", answer: "हां, यह आपके निर्देशांकों से जुड़ा आधिकारिक 6-अंकीय डाक पिन कोड प्रदर्शित करता है।" },
-      { question: "मेरे परिणाम में मकान नंबर क्यों नहीं दिखाई दे रहा?", answer: "OpenStreetMap एक खुला मानचित्र है। जहां व्यक्तिगत भवनों का मानचित्रण नहीं हुआ है, वहां सबसे नज़दीकी सड़क और इलाका दिखाया जाता है।" },
-      { question: "क्या मैं किसी दूसरी जगह का पता निकाल सकता हूं?", answer: "हां, किसी भी स्थान का पता जानने के लिए हमारे <a href='/hi/tools/address-finder/' class='text-link'>पता खोजक (Address Finder)</a> टूल का उपयोग करें।" },
-      { question: "क्या यह कंप्यूटर पर बिना GPS के काम करता है?", answer: "हां, कंप्यूटर पर वाई-फ़ाई और IP एड्रेस से अनुमान लगाया जाता है। यह फ़ोन के GPS जितना बारीक नहीं होता, पर शहर व इलाका बता देता है।" },
-      { question: "क्या इसका उपयोग निवास प्रमाण पत्र के रूप में किया जा सकता है?", answer: "नहीं, यह एक डिजिटल नेविगेशन टूल है। आधिकारिक कार्यों के लिए बिजली/पानी का बिल या सरकारी पहचान पत्र आवश्यक है।" }
+      {
+        question: "मैं अपने फ़ोन से अपना वर्तमान पता कैसे जान सकता हूं?",
+        answer:
+          "इस पेज को अपने मोबाइल ब्राउज़र में खोलें, 'मेरी लोकेशन प्राप्त करें' पर टैप करें और अनुमति दें। आपका फ़ोन तुरंत सड़क, इलाका, शहर और पिन कोड दिखा देगा।",
+      },
+      {
+        question: "क्या यह टूल मेरा सटीक पिन कोड बताता है?",
+        answer:
+          "हां, यह आपके निर्देशांकों से जुड़ा आधिकारिक 6-अंकीय डाक पिन कोड प्रदर्शित करता है।",
+      },
+      {
+        question: "मेरे परिणाम में मकान नंबर क्यों नहीं दिखाई दे रहा?",
+        answer:
+          "OpenStreetMap एक खुला मानचित्र है। जहां व्यक्तिगत भवनों का मानचित्रण नहीं हुआ है, वहां सबसे नज़दीकी सड़क और इलाका दिखाया जाता है।",
+      },
+      {
+        question: "क्या मैं किसी दूसरी जगह का पता निकाल सकता हूं?",
+        answer:
+          "हां, किसी भी स्थान का पता जानने के लिए हमारे <a href='/hi/tools/address-finder/' class='text-link'>पता खोजक</a> या <a href='/hi/tools/reverse-geocoding/' class='text-link'>रिवर्स जियोकोडर</a> टूल का उपयोग करें। निर्देशांक स्वरूप बदलने के लिए <a href='/hi/tools/coordinate-converter/' class='text-link'>निर्देशांक कनवर्टर</a> देखें।",
+      },
+      {
+        question: "क्या यह कंप्यूटर पर बिना GPS के काम करता है?",
+        answer:
+          "हां, कंप्यूटर पर वाई-फ़ाई और IP एड्रेस से अनुमान लगाया जाता है। यह फ़ोन के GPS जितना बारीक नहीं होता, पर शहर व इलाका बता देता है।",
+      },
+      {
+        question:
+          "क्या इसका उपयोग निवास प्रमाण पत्र के रूप में किया जा सकता है?",
+        answer:
+          "नहीं, यह एक डिजिटल नेविगेशन टूल है। आधिकारिक कार्यों के लिए बिजली/पानी का बिल या सरकारी पहचान पत्र आवश्यक है।",
+      },
     ],
     h3Related: "संबंधित लोकेशन टूल और मार्गदर्शिकाएँ",
     relatedTools: [
-      { icon: "🛰️", title: "मेरे GPS निर्देशांक", sub: "सटीक अक्षांश, देशांतर और ऊंचाई देखें", path: "/hi/my-location/gps/" },
-      { icon: "📍", title: "पता खोजक (Address Finder)", sub: "किसी भी निर्देशांक से सड़क का पता जानें", path: "/hi/tools/address-finder/" },
-      { icon: "🏙️", title: "मैं किस शहर में हूं?", sub: "अपना नगर और प्रशासनिक सीमाएं जानें", path: "/hi/my-location/city/" },
-      { icon: "🎯", title: "GPS सटीकता चेकर", sub: "मीटर में त्रुटि सीमा का परीक्षण करें", path: "/hi/tools/gps-accuracy/" },
-      { icon: "⚖️", title: "GPS बनाम IP लोकेशन", sub: "IP एड्रेस मकान नंबर क्यों नहीं बता सकता", path: "/hi/comparisons/gps-vs-ip-location/" },
-      { icon: "⚡", title: "GPS सटीकता बढ़ाएँ", sub: "एंड्रॉयड और आईफ़ोन के लिए उपयोगी टिप्स", path: "/hi/guides/improve-gps-accuracy/" }
-    ]
+      {
+        icon: "🏠",
+        title: "पता खोजक (Address Finder)",
+        sub: "किसी भी निर्देशांक या मानचित्र बिंदु से सड़क का पता जानें",
+        path: "/tools/address-finder/",
+      },
+      {
+        icon: "🔄",
+        title: "रिवर्स जियोकोडर",
+        sub: "GPS निर्देशांकों को तुरंत पढ़ने योग्य पते में बदलें",
+        path: "/tools/reverse-geocoding/",
+      },
+      {
+        icon: "🎯",
+        title: "जियोकोडर",
+        sub: "स्थान के नाम और पते को सटीक GPS निर्देशांकों में बदलें",
+        path: "/tools/geocoding/",
+      },
+      {
+        icon: "📱",
+        title: "लोकेशन QR कोड",
+        sub: "अपने पते और मैप पिन का स्कैन करने योग्य QR कोड बनाएं",
+        path: "/tools/location-qr-code/",
+      },
+      {
+        icon: "📏",
+        title: "दूरी कैलकुलेटर",
+        sub: "दो पतों या निर्देशांकों के बीच सटीक दूरी मापें",
+        path: "/tools/distance-calculator/",
+      },
+      {
+        icon: "🛰️",
+        title: "मेरे GPS निर्देशांक",
+        sub: "सटीक अक्षांश, देशांतर और ऊंचाई देखें",
+        path: "/my-location/gps/",
+      },
+      {
+        icon: "🎯",
+        title: "GPS सटीकता चेकर",
+        sub: "मीटर में त्रुटि सीमा का परीक्षण करें",
+        path: "/tools/gps-accuracy/",
+      },
+      {
+        icon: "⚖️",
+        title: "GPS बनाम IP लोकेशन",
+        sub: "IP एड्रेस मकान नंबर क्यों नहीं बता सकता",
+        path: "/comparisons/gps-vs-ip-location/",
+      },
+    ],
   },
   id: {
-    title: "Alamat Saya Saat Ini: Jalan, Nomor, Kelurahan & Kode Pos | MyLocationLab",
-    description: "Temukan alamat lengkap Anda saat ini secara akurat via GPS: nama jalan, nomor rumah, kelurahan, kota, provinsi, dan kode pos. Gratis, tanpa daftar, dan privasi terjamin.",
+    title:
+      "Alamat Saya Saat Ini: Jalan, Nomor, Kelurahan & Kode Pos | MyLocationLab",
+    description:
+      "Temukan alamat lengkap Anda saat ini secara akurat via GPS: nama jalan, nomor rumah, kelurahan, kota, provinsi, dan kode pos. Gratis, tanpa daftar, dan privasi terjamin.",
     h1Prefix: "Apa Alamat",
     h1Accent: "Saya Saat Ini?",
-    subtitle: "Temukan alamat pos lengkap Anda dalam hitungan detik menggunakan satelit GPS dan reverse geocoding: jalan, nomor, kelurahan, kota, provinsi, dan kode pos.",
+    subtitle:
+      "Temukan alamat pos lengkap Anda dalam hitungan detik menggunakan satelit GPS dan reverse geocoding: jalan, nomor, kelurahan, kota, provinsi, dan kode pos.",
     siloTitle: "Alat Lokasi",
     breadcrumbLabel: "Alamat Saya Saat Ini",
     h2Steps: "Cara Mengetahui Alamat Lengkap Saya di Ponsel atau PC",
-    pStepsIntro: "Anda tidak perlu mengunduh aplikasi atau membuat akun. Alamat jalan Anda ditentukan langsung di dalam peramban web melalui 4 langkah mudah:",
+    pStepsIntro:
+      "Anda tidak perlu mengunduh aplikasi atau membuat akun. Alamat jalan Anda ditentukan langsung di dalam peramban web melalui 4 langkah mudah:",
     steps: [
-      { badge: "Langkah 1", title: 'Klik "Dapatkan Lokasi Saya"', desc: "Mengaktifkan sensor penerima GNSS satelit dan antena jaringan pada perangkat Anda." },
-      { badge: "Langkah 2", title: "Izinkan Akses Lokasi", desc: 'Pilih "Izinkan" (atau "Saat menggunakan aplikasi") ketika kotak dialog peramban muncul.' },
-      { badge: "Langkah 3", title: "Sinkronisasi Satelit & Geocoding", desc: "Koordinat akurat dikunci dan dipadankan dengan peta jalan OpenStreetMap." },
-      { badge: "Langkah 4", title: "Salin atau Bagikan Alamat", desc: "Salin alamat format standar Indonesia dengan 1 klik atau kirimkan via WhatsApp." }
+      {
+        badge: "Langkah 1",
+        title: 'Klik "Dapatkan Lokasi Saya"',
+        desc: "Mengaktifkan sensor penerima GNSS satelit dan antena jaringan pada perangkat Anda.",
+      },
+      {
+        badge: "Langkah 2",
+        title: "Izinkan Akses Lokasi",
+        desc: 'Pilih "Izinkan" (atau "Saat menggunakan aplikasi") ketika kotak dialog peramban muncul.',
+      },
+      {
+        badge: "Langkah 3",
+        title: "Sinkronisasi Satelit & Geocoding",
+        desc: "Koordinat akurat dikunci dan dipadankan dengan peta jalan OpenStreetMap.",
+      },
+      {
+        badge: "Langkah 4",
+        title: "Salin atau Bagikan Alamat",
+        desc: "Salin alamat format standar Indonesia dengan 1 klik atau kirimkan via WhatsApp.",
+      },
     ],
-    tipAccuracy: "Tips akurasi maksimal: Di luar ruangan dengan langit terbuka, akurasi GPS mencapai 3 hingga 5 meter. Di dalam gedung atau basemen, mendekatlah ke jendela agar sinyal satelit dapat diterima langsung.",
+    tipAccuracy:
+      "Tips akurasi maksimal: Di luar ruangan dengan langit terbuka, akurasi GPS mencapai 3 hingga 5 meter. Di dalam gedung atau basemen, mendekatlah ke jendela agar sinyal satelit dapat diterima langsung.",
     h2Anatomy: "Struktur Alamat di Indonesia: Informasi yang Ditampilkan",
-    pAnatomyIntro: "Standar pos dan administrasi di Indonesia membagi alamat ke dalam hierarki resmi yang diperlukan untuk pengiriman barang dan administrasi kependudukan:",
+    pAnatomyIntro:
+      "Standar pos dan administrasi di Indonesia membagi alamat ke dalam hierarki resmi yang diperlukan untuk pengiriman barang dan administrasi kependudukan:",
     anatomyHeaders: ["Komponen Alamat", "Contoh", "Fungsi dan Keterangan"],
     anatomyRows: [
-      ["Nama Jalan & Nomor", "Jl. Sudirman No. 45", "Menunjukkan nama jalan utama dan nomor bangunan rumah atau gedung."],
-      ["Kelurahan / Desa", "Karet Semanggi", "Tingkat kelurahan atau desa setempat yang sangat penting bagi kurir."],
-      ["Kecamatan", "Setiabudi", "Wilayah administratif kecamatan yang menaungi kelurahan."],
-      ["Kota / Kabupaten", "Jakarta Selatan", "Daerah tingkat II atau kotamadya tempat lokasi berada."],
-      ["Provinsi", "DKI Jakarta", "Wilayah administratif tingkat I / provinsi."],
-      ["Kode Pos", "12930", "5 digit angka resmi Pos Indonesia untuk perutean surat dan paket."],
-      ["Koordinat GPS", "-6.2215, 106.8188", "Titik lintang dan bujur akurat untuk pemetaan digital."]
+      [
+        "Nama Jalan & Nomor",
+        "Jl. Sudirman No. 45",
+        "Menunjukkan nama jalan utama dan nomor bangunan rumah atau gedung.",
+      ],
+      [
+        "Kelurahan / Desa",
+        "Karet Semanggi",
+        "Tingkat kelurahan atau desa setempat yang sangat penting bagi kurir.",
+      ],
+      [
+        "Kecamatan",
+        "Setiabudi",
+        "Wilayah administratif kecamatan yang menaungi kelurahan.",
+      ],
+      [
+        "Kota / Kabupaten",
+        "Jakarta Selatan",
+        "Daerah tingkat II atau kotamadya tempat lokasi berada.",
+      ],
+      [
+        "Provinsi",
+        "DKI Jakarta",
+        "Wilayah administratif tingkat I / provinsi.",
+      ],
+      [
+        "Kode Pos",
+        "12930",
+        "5 digit angka resmi Pos Indonesia untuk perutean surat dan paket.",
+      ],
+      [
+        "Koordinat GPS",
+        "-6.2215, 106.8188",
+        "Titik lintang dan bujur akurat untuk pemetaan digital.",
+      ],
     ],
-    pPostcodeNote: "Tentang Kode Pos di Indonesia: Kode pos di Indonesia terdiri dari 5 digit angka. Angka pertama menunjukkan wilayah pos, angka berikutnya menunjukkan kabupaten/kota dan kecamatan/kelurahan pengantaran.",
+    pPostcodeNote:
+      "Tentang Kode Pos di Indonesia: Kode pos di Indonesia terdiri dari 5 digit angka. Angka pertama menunjukkan wilayah pos, angka berikutnya menunjukkan kabupaten/kota dan kecamatan/kelurahan pengantaran.",
     h2How: "Bagaimana Alamat Anda Ditemukan (Reverse Geocoding)",
-    pHowIntro: "Perangkat Anda tidak membaca papan nama jalan secara fisik; perangkat menghitung titik koordinat lintang dan bujur. Mesin reverse geocoding mencocokkan titik tersebut dengan basis data OpenStreetMap untuk menemukan jalan terdekat:",
-    techHeaders: ["Metode Posisi", "Akurasi Khas", "Kapan Digunakan", "Tingkat Alamat"],
-    techRows: [
-      ["GPS Satelit (GNSS)", "3 hingga 10 meter", "Ponsel di luar ruangan dengan GPS aktif", "Nama jalan, nomor, dan kelurahan"],
-      ["Wi-Fi & Menara Seluler", "15 hingga 50 meter", "Dalam ruangan, mal, gedung, laptop", "Ruas jalan atau blok perkiraan"],
-      ["Geolokasi Alamat IP", "5 hingga 30 kilometer", "Komputer kabel LAN atau jaringan VPN", "Hanya tingkat kota atau ISP"]
+    pHowIntro:
+      "Perangkat Anda tidak membaca papan nama jalan secara fisik; perangkat menghitung titik koordinat lintang dan bujur. Mesin reverse geocoding mencocokkan titik tersebut dengan basis data OpenStreetMap untuk menemukan jalan terdekat:",
+    techHeaders: [
+      "Metode Posisi",
+      "Akurasi Khas",
+      "Kapan Digunakan",
+      "Tingkat Alamat",
     ],
-    pTechSummary: "Ingin mempelajari perbedaan antara sensor satelit fisik dan perutean internet? Baca perbandingan <a href='/id/comparisons/gps-vs-ip-location/' class='text-link'>GPS vs Lokasi IP</a> dan pahami <a href='/id/guides/how-gps-location-works/' class='text-link'>cara kerja GPS</a>.",
+    techRows: [
+      [
+        "GPS Satelit (GNSS)",
+        "3 hingga 10 meter",
+        "Ponsel di luar ruangan dengan GPS aktif",
+        "Nama jalan, nomor, dan kelurahan",
+      ],
+      [
+        "Wi-Fi & Menara Seluler",
+        "15 hingga 50 meter",
+        "Dalam ruangan, mal, gedung, laptop",
+        "Ruas jalan atau blok perkiraan",
+      ],
+      [
+        "Geolokasi Alamat IP",
+        "5 hingga 30 kilometer",
+        "Komputer kabel LAN atau jaringan VPN",
+        "Hanya tingkat kota atau ISP",
+      ],
+    ],
+    pTechSummary:
+      "Ingin mempelajari perbedaan antara sensor satelit fisik dan perutean internet? Baca perbandingan <a href='/id/comparisons/gps-vs-ip-location/' class='text-link'>GPS vs Lokasi IP</a> dan pahami <a href='/id/guides/how-gps-location-works/' class='text-link'>cara kerja GPS</a>.",
     h2UseCases: "Situasi Praktis Menggunakan Alamat Anda Saat Ini",
     useCases: [
-      { title: "Pemesanan Makanan & Belanja Online", desc: "Pastikan nama jalan dan nomor rumah tepat saat memesan di GoFood, GrabFood, Shopee, atau Tokopedia di tempat baru." },
-      { title: "Titik Penjemputan Ojek Online (Gojek / Grab)", desc: "Konfirmasikan alamat jemput yang presisi agar pengemudi tidak salah masuk gang atau jalan." },
-      { title: "Pengisian Formulir Administrasi", desc: "Temukan kode pos, kelurahan, dan kecamatan yang benar secara instan saat mendaftar rekening atau formulir digital." },
-      { title: "Berbagi Lokasi dengan Teman / Keluarga", desc: "Salin alamat terformat rapi dan kirimkan melalui pesan WhatsApp agar tamu mudah sampai ke tempat Anda." },
-      { title: "Layanan Darurat (112 / 110 / 118)", desc: "Sampaikan alamat jalan, patokan terdekat, dan koordinat ke petugas darurat saat terjadi kondisi genting." }
+      {
+        title: "Pemesanan Makanan & Belanja Online",
+        desc: "Pastikan nama jalan dan nomor rumah tepat saat memesan di GoFood, GrabFood, Shopee, atau Tokopedia di tempat baru.",
+      },
+      {
+        title: "Titik Penjemputan Ojek Online (Gojek / Grab)",
+        desc: "Konfirmasikan alamat jemput yang presisi agar pengemudi tidak salah masuk gang atau jalan.",
+      },
+      {
+        title: "Pengisian Formulir Administrasi",
+        desc: "Temukan kode pos, kelurahan, dan kecamatan yang benar secara instan saat mendaftar rekening atau formulir digital.",
+      },
+      {
+        title: "Berbagi Lokasi dengan Teman / Keluarga",
+        desc: "Salin alamat terformat rapi dan kirimkan melalui pesan WhatsApp agar tamu mudah sampai ke tempat Anda.",
+      },
+      {
+        title: "Layanan Darurat (112 / 110 / 118)",
+        desc: "Sampaikan alamat jalan, patokan terdekat, dan koordinat ke petugas darurat saat terjadi kondisi genting.",
+      },
     ],
     h2Troubleshoot: "Alamat Terlihat Kurang Pas: Solusi Masalah Umum",
-    pTroubleshootIntro: "Jika hasil menunjukkan gang sebelah, nomor rumah tidak ada, atau kota lain, berikut penyebab umum dan solusinya:",
+    pTroubleshootIntro:
+      "Jika hasil menunjukkan gang sebelah, nomor rumah tidak ada, atau kota lain, berikut penyebab umum dan solusinya:",
     troubleshootList: [
-      "Jalan tetangga yang muncul: Sinyal GPS di antara gedung bertingkat bisa memantul (multipath). Melangkahlah ke tempat terbuka dan klik 'Segarkan'.",
-      "Nomor rumah tidak tercantum: OpenStreetMap berbasis kontribusi terbuka. Di beberapa perumahan baru, nomor rumah belum dipetakan secara detail. Gunakan alat <a href='/id/tools/address-finder/' class='text-link'>Pencari Alamat</a> kami.",
+      "Jalan tetangga yang muncul: Sinyal GPS bisa memantul. Uji penerima sinyal dengan <a href='/id/tools/gps-accuracy/' class='text-link'>Pemeriksa Akurasi GPS</a>. Melangkahlah ke tempat terbuka dan klik 'Segarkan'.",
+      "Nomor rumah tidak tercantum: Di perumahan baru, nomor belum dipetakan. Gunakan <a href='/id/tools/address-finder/' class='text-link'>Pencari Alamat</a> dan hitung jarak dengan <a href='/id/tools/distance-calculator/' class='text-link'>Kalkulator Jarak</a>.",
       "Muncul kota lain: Jika Anda terhubung ke VPN kantor atau proxy, internet akan membaca lokasi server VPN. Matikan VPN dan aktifkan GPS ponsel.",
-      "Radius akurasi melebar: Ikuti panduan kami tentang <a href='/id/guides/improve-gps-accuracy/' class='text-link'>cara meningkatkan akurasi GPS</a> dan <a href='/id/guides/wrong-location/' class='text-link'>memperbaiki lokasi salah</a>."
+      "Radius akurasi melebar: Ikuti panduan kami tentang <a href='/id/guides/improve-gps-accuracy/' class='text-link'>cara meningkatkan akurasi GPS</a> dan <a href='/id/guides/wrong-location/' class='text-link'>memperbaiki lokasi salah</a>.",
     ],
     h2Permissions: "Cara Mengaktifkan Izin Lokasi di Peramban",
-    pPermissionsIntro: "Jika tombol mendeteksi izin lokasi diblokir, sesuaikan pengaturan privasi peramban Anda:",
+    pPermissionsIntro:
+      "Jika tombol mendeteksi izin lokasi diblokir, sesuaikan pengaturan privasi peramban Anda:",
     permissions: [
-      { browser: "Google Chrome (Android & PC)", steps: "Ketuk ikon setelan/gembok di samping URL > Izin > Lokasi > Pilih 'Izinkan' lalu muat ulang halaman." },
-      { browser: "Safari (iPhone & Mac)", steps: "Buka Pengaturan iOS > Privasi & Keamanan > Layanan Lokasi > Safari > Pilih 'Saat Menggunakan App' dan aktifkan 'Lokasi Tepat'." },
-      { browser: "Firefox & Microsoft Edge", steps: "Klik ikon gembok di bilah alamat > Hapus izin yang diblokir > Muat ulang dan klik 'Izinkan'." }
+      {
+        browser: "Google Chrome (Android & PC)",
+        steps:
+          "Ketuk ikon setelan/gembok di samping URL > Izin > Lokasi > Pilih 'Izinkan' lalu muat ulang halaman.",
+      },
+      {
+        browser: "Safari (iPhone & Mac)",
+        steps:
+          "Buka Pengaturan iOS > Privasi & Keamanan > Layanan Lokasi > Safari > Pilih 'Saat Menggunakan App' dan aktifkan 'Lokasi Tepat'.",
+      },
+      {
+        browser: "Firefox & Microsoft Edge",
+        steps:
+          "Klik ikon gembok di bilah alamat > Hapus izin yang diblokir > Muat ulang dan klik 'Izinkan'.",
+      },
     ],
     h2Privacy: "Privasi & Perlindungan Data (Tanpa Penyimpanan Log)",
     pPrivacyIntro: "Di MyLocationLab, privasi Anda dijamin secara penuh:",
@@ -667,167 +1741,467 @@ const contentData: Record<SupportedLang, AddressPageData> = {
       "Tanpa Penyimpanan: Koordinat dan alamat Anda tidak pernah disimpan di basis data server kami.",
       "Tanpa Data Pribadi: Kami tidak pernah meminta nama, email, nomor telepon, atau data pembayaran.",
       "Enkripsi Penuh: Seluruh permintaan geocoding dikirim melalui protokol aman HTTPS TLS 1.3.",
-      "Kontrol Penuh: Anda bebas mencabut izin lokasi kapan saja melalui menu pengaturan peramban Anda."
+      "Kontrol Penuh: Anda bebas mencabut izin lokasi kapan saja melalui menu pengaturan peramban Anda.",
     ],
     h2Faq: "Pertanyaan yang Sering Diajukan Seputar Alamat Saat Ini",
     faqs: [
-      { question: "Bagaimana cara mengetahui alamat lengkap saya melalui ponsel?", answer: "Buka halaman ini di peramban ponsel, ketuk 'Dapatkan Lokasi Saya', dan berikan izin akses. Chip GPS akan mendeteksi koordinat dan menampilkan jalan, kelurahan, kota, provinsi, serta kode pos secara instan." },
-      { question: "Apakah alat ini menampilkan kode pos saya dengan benar?", answer: "Ya, sistem mendeteksi kode pos 5 digit resmi yang sesuai dengan koordinat Anda." },
-      { question: "Mengapa nomor rumah saya tidak tercantum dalam hasil?", answer: "OpenStreetMap mengandalkan data peta terbuka. Beberapa kawasan pemukiman belum memiliki data poligon tingkat bangunan, sehingga sistem mengembalikan nama jalan terdekat." },
-      { question: "Bisakah saya mencari alamat dari tempat lain?", answer: "Bisa. Gunakan alat <a href='/id/tools/address-finder/' class='text-link'>Pencari Alamat</a> untuk memasukkan koordinat lintang dan bujur mana pun atau mengklik langsung pada peta interaktif." },
-      { question: "Apakah ini berfungsi di komputer tanpa chip GPS?", answer: "Bisa, menggunakan pemosisian Wi-Fi dan geolokasi IP. Walaupun tidak seakurat GPS ponsel, hasilnya cukup untuk mengetahui kelurahan, kota, dan kode pos." },
-      { question: "Bisakah hasil ini dipakai sebagai bukti domisili resmi?", answer: "Tidak. Halaman ini adalah utilitas digital pembantu navigasi. Lembaga resmi dan perbankan memerlukan tagihan utilitas atau surat keterangan domisili resmi." }
+      {
+        question:
+          "Bagaimana cara mengetahui alamat lengkap saya melalui ponsel?",
+        answer:
+          "Buka halaman ini di peramban ponsel, ketuk 'Dapatkan Lokasi Saya', dan berikan izin akses. Chip GPS akan mendeteksi koordinat dan menampilkan jalan, kelurahan, kota, provinsi, serta kode pos secara instan.",
+      },
+      {
+        question: "Apakah alat ini menampilkan kode pos saya dengan benar?",
+        answer:
+          "Ya, sistem mendeteksi kode pos 5 digit resmi yang sesuai dengan koordinat Anda.",
+      },
+      {
+        question: "Mengapa nomor rumah saya tidak tercantum dalam hasil?",
+        answer:
+          "OpenStreetMap mengandalkan data peta terbuka. Beberapa kawasan pemukiman belum memiliki data poligon tingkat bangunan, sehingga sistem mengembalikan nama jalan terdekat.",
+      },
+      {
+        question: "Bisakah saya mencari alamat dari tempat lain?",
+        answer:
+          "Bisa. Gunakan alat <a href='/id/tools/address-finder/' class='text-link'>Pencari Alamat</a> atau <a href='/id/tools/reverse-geocoding/' class='text-link'>Reverse Geocoder</a> kami untuk memasukkan koordinat mana pun. Anda juga dapat mengubah notasi koordinat dengan <a href='/id/tools/coordinate-converter/' class='text-link'>Konverter Koordinat</a>.",
+      },
+      {
+        question: "Apakah ini berfungsi di komputer tanpa chip GPS?",
+        answer:
+          "Bisa, menggunakan pemosisian Wi-Fi dan geolokasi IP. Walaupun tidak seakurat GPS ponsel, hasilnya cukup untuk mengetahui kelurahan, kota, dan kode pos.",
+      },
+      {
+        question: "Bisakah hasil ini dipakai sebagai bukti domisili resmi?",
+        answer:
+          "Tidak. Halaman ini adalah utilitas digital pembantu navigasi. Lembaga resmi dan perbankan memerlukan tagihan utilitas atau surat keterangan domisili resmi.",
+      },
     ],
     h3Related: "Alat Lokasi Terkait & Panduan Lengkap",
     relatedTools: [
-      { icon: "🛰️", title: "Koordinat GPS Saya", sub: "Lihat lintang, bujur, dan ketinggian satelit", path: "/id/my-location/gps/" },
-      { icon: "📍", title: "Pencari Alamat", sub: "Cari alamat jalan untuk koordinat apa pun", path: "/id/tools/address-finder/" },
-      { icon: "🏙️", title: "Saya di Kota Mana?", sub: "Ketahui kota dan batas wilayah administratif", path: "/id/my-location/city/" },
-      { icon: "🎯", title: "Pemeriksa Akurasi GPS", sub: "Uji radius margin kesalahan dalam meter", path: "/id/tools/gps-accuracy/" },
-      { icon: "⚖️", title: "GPS vs Lokasi IP", sub: "Mengapa IP tidak dapat menemukan nomor rumah", path: "/id/comparisons/gps-vs-ip-location/" },
-      { icon: "⚡", title: "Tingkatkan Akurasi GPS", sub: "Panduan untuk perangkat Android dan iPhone", path: "/id/guides/improve-gps-accuracy/" }
-    ]
-  }
+      {
+        icon: "🏠",
+        title: "Pencari Alamat",
+        sub: "Cari alamat jalan untuk koordinat apa pun atau titik peta",
+        path: "/tools/address-finder/",
+      },
+      {
+        icon: "🔄",
+        title: "Reverse Geocoder",
+        sub: "Ubah koordinat GPS menjadi alamat jalan yang mudah dibaca",
+        path: "/tools/reverse-geocoding/",
+      },
+      {
+        icon: "🎯",
+        title: "Geocoder",
+        sub: "Ubah nama tempat dan alamat jalan menjadi koordinat presisi",
+        path: "/tools/geocoding/",
+      },
+      {
+        icon: "📱",
+        title: "QR Code Lokasi",
+        sub: "Buat kode QR yang dapat dipindai untuk alamat fisik Anda",
+        path: "/tools/location-qr-code/",
+      },
+      {
+        icon: "📏",
+        title: "Kalkulator Jarak",
+        sub: "Ukur jarak akurat antara dua alamat atau koordinat",
+        path: "/tools/distance-calculator/",
+      },
+      {
+        icon: "🛰️",
+        title: "Koordinat GPS Saya",
+        sub: "Lihat lintang, bujur, dan ketinggian satelit secara real-time",
+        path: "/my-location/gps/",
+      },
+      {
+        icon: "🎯",
+        title: "Pemeriksa Akurasi GPS",
+        sub: "Uji radius margin kesalahan sinyal secara langsung",
+        path: "/tools/gps-accuracy/",
+      },
+      {
+        icon: "⚖️",
+        title: "GPS vs Lokasi IP",
+        sub: "Mengapa IP tidak dapat menemukan nomor rumah",
+        path: "/comparisons/gps-vs-ip-location/",
+      },
+    ],
+  },
 };
 
 const c = contentData[lang] || contentData.en;
 
-const homePath = lang === 'en' ? '/' : `/${lang}/`;
-const myLocPath = getLocalizedPath('/my-location/', lang);
+const homePath = lang === "en" ? "/" : `/${lang}/`;
+const myLocPath = getLocalizedPath("/my-location/", lang);
 
 const breadcrumbs = [
-  { label: lang === 'en' ? 'Home' : (lang === 'es' ? 'Inicio' : (lang === 'fr' ? 'Accueil' : (lang === 'de' ? 'Startseite' : (lang === 'pt' ? 'Início' : (lang === 'hi' ? 'होम' : 'Beranda'))))), href: homePath },
-  { label: lang === 'en' ? 'My Location' : (lang === 'es' ? 'Mi Ubicación' : (lang === 'fr' ? 'Ma Position' : (lang === 'de' ? 'Mein Standort' : (lang === 'pt' ? 'Minha Localização' : (lang === 'hi' ? 'मेरी लोकेशन' : 'Lokasi Saya'))))), href: myLocPath },
-  { label: c.breadcrumbLabel }
+  {
+    label:
+      lang === "en"
+        ? "Home"
+        : lang === "es"
+          ? "Inicio"
+          : lang === "fr"
+            ? "Accueil"
+            : lang === "de"
+              ? "Startseite"
+              : lang === "pt"
+                ? "Início"
+                : lang === "hi"
+                  ? "होम"
+                  : "Beranda",
+    href: homePath,
+  },
+  {
+    label:
+      lang === "en"
+        ? "My Location"
+        : lang === "es"
+          ? "Mi Ubicación"
+          : lang === "fr"
+            ? "Ma Position"
+            : lang === "de"
+              ? "Mein Standort"
+              : lang === "pt"
+                ? "Minha Localização"
+                : lang === "hi"
+                  ? "मेरी लोकेशन"
+                  : "Lokasi Saya",
+    href: myLocPath,
+  },
+  { label: c.breadcrumbLabel },
 ];
 
-const currentUrl = `https://mylocationlab.com${getLocalizedPath('/my-location/address/', lang)}`;
+const currentUrl = `https://mylocationlab.com${getLocalizedPath("/my-location/address/", lang)}`;
 
 const webAppSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'WebApplication',
-  name: c.h1Prefix + ' ' + c.h1Accent,
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  name: c.h1Prefix + " " + c.h1Accent,
   url: currentUrl,
-  applicationCategory: 'UtilitiesApplication',
-  operatingSystem: 'All',
+  applicationCategory: "UtilitiesApplication",
+  operatingSystem: "All",
   offers: {
-    '@type': 'Offer',
-    price: '0',
-    priceCurrency: lang === 'pt' ? 'BRL' : (lang === 'es' || lang === 'fr' || lang === 'de' ? 'EUR' : (lang === 'hi' ? 'INR' : (lang === 'id' ? 'IDR' : 'USD')))
+    "@type": "Offer",
+    price: "0",
+    priceCurrency:
+      lang === "pt"
+        ? "BRL"
+        : lang === "es" || lang === "fr" || lang === "de"
+          ? "EUR"
+          : lang === "hi"
+            ? "INR"
+            : lang === "id"
+              ? "IDR"
+              : "USD",
   },
-  description: c.description
+  description: c.description,
 };
 
 const breadcrumbSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'BreadcrumbList',
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
   itemListElement: breadcrumbs.map((b, i) => ({
-    '@type': 'ListItem',
+    "@type": "ListItem",
     position: i + 1,
     name: b.label,
-    ...(b.href ? { item: `https://mylocationlab.com${b.href}` } : {})
-  }))
+    ...(b.href ? { item: `https://mylocationlab.com${b.href}` } : {}),
+  })),
 };
 
-const siloLinkLabels: Record<SupportedLang, { title: string; links: { label: string; href: string }[] }> = {
+const siloLinkLabels: Record<
+  SupportedLang,
+  { title: string; links: { label: string; href: string }[] }
+> = {
   en: {
     title: "Complete Location Attributes & Geodetic Telemetry",
     links: [
-      { label: "My GPS Coordinates", href: getLocalizedPath('/my-location/gps/', lang) },
-      { label: "My Coordinates Hub", href: getLocalizedPath('/my-location/coordinates/', lang) },
-      { label: "Latitude and Longitude", href: getLocalizedPath('/my-location/latitude-longitude/', lang) },
-      { label: "What City Am I In?", href: getLocalizedPath('/my-location/city/', lang) },
-      { label: "What State Am I In?", href: getLocalizedPath('/my-location/state/', lang) },
-      { label: "What Country Am I In?", href: getLocalizedPath('/my-location/country/', lang) },
-      { label: "IP Geolocation Check", href: getLocalizedPath('/my-location/ip/', lang) },
-      { label: "Address Finder (any coordinates)", href: getLocalizedPath('/tools/address-finder/', lang) },
-      { label: "Coordinate Converter (DD/DMS/UTM)", href: getLocalizedPath('/tools/coordinate-converter/', lang) }
-    ]
+      {
+        label: "My GPS Coordinates",
+        href: getLocalizedPath("/my-location/gps/", lang),
+      },
+      {
+        label: "My Coordinates Hub",
+        href: getLocalizedPath("/my-location/coordinates/", lang),
+      },
+      {
+        label: "Latitude and Longitude",
+        href: getLocalizedPath("/my-location/latitude-longitude/", lang),
+      },
+      {
+        label: "What City Am I In?",
+        href: getLocalizedPath("/my-location/city/", lang),
+      },
+      {
+        label: "What State Am I In?",
+        href: getLocalizedPath("/my-location/state/", lang),
+      },
+      {
+        label: "What Country Am I In?",
+        href: getLocalizedPath("/my-location/country/", lang),
+      },
+      {
+        label: "IP Geolocation Check",
+        href: getLocalizedPath("/my-location/ip/", lang),
+      },
+      {
+        label: "Address Finder (any coordinates)",
+        href: getLocalizedPath("/tools/address-finder/", lang),
+      },
+      {
+        label: "Coordinate Converter (DD/DMS/UTM)",
+        href: getLocalizedPath("/tools/coordinate-converter/", lang),
+      },
+    ],
   },
   es: {
     title: "Atributos de Ubicación y Telemetría Geodésica",
     links: [
-      { label: "Mis Coordenadas GPS", href: getLocalizedPath('/my-location/gps/', lang) },
-      { label: "Panel de Coordenadas", href: getLocalizedPath('/my-location/coordinates/', lang) },
-      { label: "Latitud y Longitud", href: getLocalizedPath('/my-location/latitude-longitude/', lang) },
-      { label: "¿En Qué Ciudad Estoy?", href: getLocalizedPath('/my-location/city/', lang) },
-      { label: "¿En Qué Estado Estoy?", href: getLocalizedPath('/my-location/state/', lang) },
-      { label: "¿En Qué País Estoy?", href: getLocalizedPath('/my-location/country/', lang) },
-      { label: "Comprobar Ubicación IP", href: getLocalizedPath('/my-location/ip/', lang) },
-      { label: "Buscador de Dirección", href: getLocalizedPath('/tools/address-finder/', lang) },
-      { label: "Conversor de Coordenadas (DD/GMS/UTM)", href: getLocalizedPath('/tools/coordinate-converter/', lang) }
-    ]
+      {
+        label: "Mis Coordenadas GPS",
+        href: getLocalizedPath("/my-location/gps/", lang),
+      },
+      {
+        label: "Panel de Coordenadas",
+        href: getLocalizedPath("/my-location/coordinates/", lang),
+      },
+      {
+        label: "Latitud y Longitud",
+        href: getLocalizedPath("/my-location/latitude-longitude/", lang),
+      },
+      {
+        label: "¿En Qué Ciudad Estoy?",
+        href: getLocalizedPath("/my-location/city/", lang),
+      },
+      {
+        label: "¿En Qué Estado Estoy?",
+        href: getLocalizedPath("/my-location/state/", lang),
+      },
+      {
+        label: "¿En Qué País Estoy?",
+        href: getLocalizedPath("/my-location/country/", lang),
+      },
+      {
+        label: "Comprobar Ubicación IP",
+        href: getLocalizedPath("/my-location/ip/", lang),
+      },
+      {
+        label: "Buscador de Dirección",
+        href: getLocalizedPath("/tools/address-finder/", lang),
+      },
+      {
+        label: "Conversor de Coordenadas (DD/GMS/UTM)",
+        href: getLocalizedPath("/tools/coordinate-converter/", lang),
+      },
+    ],
   },
   fr: {
     title: "Attributs Géographiques et Télémétrie Complète",
     links: [
-      { label: "Mes Coordonnées GPS", href: getLocalizedPath('/my-location/gps/', lang) },
-      { label: "Centre de Coordonnées", href: getLocalizedPath('/my-location/coordinates/', lang) },
-      { label: "Latitude et Longitude", href: getLocalizedPath('/my-location/latitude-longitude/', lang) },
-      { label: "Dans Quelle Ville Suis-Je ?", href: getLocalizedPath('/my-location/city/', lang) },
-      { label: "Dans Quel Département Suis-Je ?", href: getLocalizedPath('/my-location/state/', lang) },
-      { label: "Dans Quel Pays Suis-Je ?", href: getLocalizedPath('/my-location/country/', lang) },
-      { label: "Test Localisation IP", href: getLocalizedPath('/my-location/ip/', lang) },
-      { label: "Localisateur d'Adresse", href: getLocalizedPath('/tools/address-finder/', lang) },
-      { label: "Convertisseur de Coordonnées (DD/DMS/UTM)", href: getLocalizedPath('/tools/coordinate-converter/', lang) }
-    ]
+      {
+        label: "Mes Coordonnées GPS",
+        href: getLocalizedPath("/my-location/gps/", lang),
+      },
+      {
+        label: "Centre de Coordonnées",
+        href: getLocalizedPath("/my-location/coordinates/", lang),
+      },
+      {
+        label: "Latitude et Longitude",
+        href: getLocalizedPath("/my-location/latitude-longitude/", lang),
+      },
+      {
+        label: "Dans Quelle Ville Suis-Je ?",
+        href: getLocalizedPath("/my-location/city/", lang),
+      },
+      {
+        label: "Dans Quel Département Suis-Je ?",
+        href: getLocalizedPath("/my-location/state/", lang),
+      },
+      {
+        label: "Dans Quel Pays Suis-Je ?",
+        href: getLocalizedPath("/my-location/country/", lang),
+      },
+      {
+        label: "Test Localisation IP",
+        href: getLocalizedPath("/my-location/ip/", lang),
+      },
+      {
+        label: "Localisateur d'Adresse",
+        href: getLocalizedPath("/tools/address-finder/", lang),
+      },
+      {
+        label: "Convertisseur de Coordonnées (DD/DMS/UTM)",
+        href: getLocalizedPath("/tools/coordinate-converter/", lang),
+      },
+    ],
   },
   de: {
     title: "Standort-Attribute & Geodaten-Telemetrie",
     links: [
-      { label: "Meine GPS-Koordinaten", href: getLocalizedPath('/my-location/gps/', lang) },
-      { label: "Koordinaten-Zentrale", href: getLocalizedPath('/my-location/coordinates/', lang) },
-      { label: "Breitengrad & Längengrad", href: getLocalizedPath('/my-location/latitude-longitude/', lang) },
-      { label: "In Welcher Stadt Bin Ich?", href: getLocalizedPath('/my-location/city/', lang) },
-      { label: "In Welchem Bundesland Bin Ich?", href: getLocalizedPath('/my-location/state/', lang) },
-      { label: "In Welchem Land Bin Ich?", href: getLocalizedPath('/my-location/country/', lang) },
-      { label: "IP-Standort Überprüfen", href: getLocalizedPath('/my-location/ip/', lang) },
-      { label: "Adressen-Finder (beliebige Koordinaten)", href: getLocalizedPath('/tools/address-finder/', lang) },
-      { label: "Koordinaten-Umrechner (DD/GMS/UTM)", href: getLocalizedPath('/tools/coordinate-converter/', lang) }
-    ]
+      {
+        label: "Meine GPS-Koordinaten",
+        href: getLocalizedPath("/my-location/gps/", lang),
+      },
+      {
+        label: "Koordinaten-Zentrale",
+        href: getLocalizedPath("/my-location/coordinates/", lang),
+      },
+      {
+        label: "Breitengrad & Längengrad",
+        href: getLocalizedPath("/my-location/latitude-longitude/", lang),
+      },
+      {
+        label: "In Welcher Stadt Bin Ich?",
+        href: getLocalizedPath("/my-location/city/", lang),
+      },
+      {
+        label: "In Welchem Bundesland Bin Ich?",
+        href: getLocalizedPath("/my-location/state/", lang),
+      },
+      {
+        label: "In Welchem Land Bin Ich?",
+        href: getLocalizedPath("/my-location/country/", lang),
+      },
+      {
+        label: "IP-Standort Überprüfen",
+        href: getLocalizedPath("/my-location/ip/", lang),
+      },
+      {
+        label: "Adressen-Finder (beliebige Koordinaten)",
+        href: getLocalizedPath("/tools/address-finder/", lang),
+      },
+      {
+        label: "Koordinaten-Umrechner (DD/GMS/UTM)",
+        href: getLocalizedPath("/tools/coordinate-converter/", lang),
+      },
+    ],
   },
   pt: {
     title: "Atributos de Localização e Telemetria Geodésica",
     links: [
-      { label: "Minhas Coordenadas GPS", href: getLocalizedPath('/my-location/gps/', lang) },
-      { label: "Central de Coordenadas", href: getLocalizedPath('/my-location/coordinates/', lang) },
-      { label: "Latitude e Longitude", href: getLocalizedPath('/my-location/latitude-longitude/', lang) },
-      { label: "Em Que Cidade Estou?", href: getLocalizedPath('/my-location/city/', lang) },
-      { label: "Em Que Estado Estou?", href: getLocalizedPath('/my-location/state/', lang) },
-      { label: "Em Que País Estou?", href: getLocalizedPath('/my-location/country/', lang) },
-      { label: "Verificar Localização por IP", href: getLocalizedPath('/my-location/ip/', lang) },
-      { label: "Localizador de Endereço (quaisquer coordenadas)", href: getLocalizedPath('/tools/address-finder/', lang) },
-      { label: "Conversor de Coordenadas (DD/GMS/UTM)", href: getLocalizedPath('/tools/coordinate-converter/', lang) }
-    ]
+      {
+        label: "Minhas Coordenadas GPS",
+        href: getLocalizedPath("/my-location/gps/", lang),
+      },
+      {
+        label: "Central de Coordenadas",
+        href: getLocalizedPath("/my-location/coordinates/", lang),
+      },
+      {
+        label: "Latitude e Longitude",
+        href: getLocalizedPath("/my-location/latitude-longitude/", lang),
+      },
+      {
+        label: "Em Que Cidade Estou?",
+        href: getLocalizedPath("/my-location/city/", lang),
+      },
+      {
+        label: "Em Que Estado Estou?",
+        href: getLocalizedPath("/my-location/state/", lang),
+      },
+      {
+        label: "Em Que País Estou?",
+        href: getLocalizedPath("/my-location/country/", lang),
+      },
+      {
+        label: "Verificar Localização por IP",
+        href: getLocalizedPath("/my-location/ip/", lang),
+      },
+      {
+        label: "Localizador de Endereço (quaisquer coordenadas)",
+        href: getLocalizedPath("/tools/address-finder/", lang),
+      },
+      {
+        label: "Conversor de Coordenadas (DD/GMS/UTM)",
+        href: getLocalizedPath("/tools/coordinate-converter/", lang),
+      },
+    ],
   },
   hi: {
     title: "स्थान पैरामीटर और जियोडेटिक टेलीमेट्री",
     links: [
-      { label: "मेरे GPS निर्देशांक", href: getLocalizedPath('/my-location/gps/', lang) },
-      { label: "मेरे निर्देशांक हब", href: getLocalizedPath('/my-location/coordinates/', lang) },
-      { label: "अक्षांश और देशांतर", href: getLocalizedPath('/my-location/latitude-longitude/', lang) },
-      { label: "मैं किस शहर में हूं?", href: getLocalizedPath('/my-location/city/', lang) },
-      { label: "मैं किस राज्य में हूं?", href: getLocalizedPath('/my-location/state/', lang) },
-      { label: "मैं किस देश में हूं?", href: getLocalizedPath('/my-location/country/', lang) },
-      { label: "IP लोकेशन चेक", href: getLocalizedPath('/my-location/ip/', lang) },
-      { label: "पता खोजक (Address Finder)", href: getLocalizedPath('/tools/address-finder/', lang) },
-      { label: "कोऑर्डिनेट कनवर्टर (DD/DMS/UTM)", href: getLocalizedPath('/tools/coordinate-converter/', lang) }
-    ]
+      {
+        label: "मेरे GPS निर्देशांक",
+        href: getLocalizedPath("/my-location/gps/", lang),
+      },
+      {
+        label: "मेरे निर्देशांक हब",
+        href: getLocalizedPath("/my-location/coordinates/", lang),
+      },
+      {
+        label: "अक्षांश और देशांतर",
+        href: getLocalizedPath("/my-location/latitude-longitude/", lang),
+      },
+      {
+        label: "मैं किस शहर में हूं?",
+        href: getLocalizedPath("/my-location/city/", lang),
+      },
+      {
+        label: "मैं किस राज्य में हूं?",
+        href: getLocalizedPath("/my-location/state/", lang),
+      },
+      {
+        label: "मैं किस देश में हूं?",
+        href: getLocalizedPath("/my-location/country/", lang),
+      },
+      {
+        label: "IP लोकेशन चेक",
+        href: getLocalizedPath("/my-location/ip/", lang),
+      },
+      {
+        label: "पता खोजक (Address Finder)",
+        href: getLocalizedPath("/tools/address-finder/", lang),
+      },
+      {
+        label: "कोऑर्डिनेट कनवर्टर (DD/DMS/UTM)",
+        href: getLocalizedPath("/tools/coordinate-converter/", lang),
+      },
+    ],
   },
   id: {
     title: "Atribut Lokasi Lengkap & Telemetri Geospasial",
     links: [
-      { label: "Koordinat GPS Saya", href: getLocalizedPath('/my-location/gps/', lang) },
-      { label: "Pusat Koordinat Lengkap", href: getLocalizedPath('/my-location/coordinates/', lang) },
-      { label: "Garis Lintang & Bujur", href: getLocalizedPath('/my-location/latitude-longitude/', lang) },
-      { label: "Saya di Kota Mana?", href: getLocalizedPath('/my-location/city/', lang) },
-      { label: "Saya di Provinsi Mana?", href: getLocalizedPath('/my-location/state/', lang) },
-      { label: "Saya di Negara Mana?", href: getLocalizedPath('/my-location/country/', lang) },
-      { label: "Cek Lokasi IP", href: getLocalizedPath('/my-location/ip/', lang) },
-      { label: "Pencari Alamat (koordinat apa pun)", href: getLocalizedPath('/tools/address-finder/', lang) },
-      { label: "Konverter Koordinat (DD/DMS/UTM)", href: getLocalizedPath('/tools/coordinate-converter/', lang) }
-    ]
-  }
+      {
+        label: "Koordinat GPS Saya",
+        href: getLocalizedPath("/my-location/gps/", lang),
+      },
+      {
+        label: "Pusat Koordinat Lengkap",
+        href: getLocalizedPath("/my-location/coordinates/", lang),
+      },
+      {
+        label: "Garis Lintang & Bujur",
+        href: getLocalizedPath("/my-location/latitude-longitude/", lang),
+      },
+      {
+        label: "Saya di Kota Mana?",
+        href: getLocalizedPath("/my-location/city/", lang),
+      },
+      {
+        label: "Saya di Provinsi Mana?",
+        href: getLocalizedPath("/my-location/state/", lang),
+      },
+      {
+        label: "Saya di Negara Mana?",
+        href: getLocalizedPath("/my-location/country/", lang),
+      },
+      {
+        label: "Cek Lokasi IP",
+        href: getLocalizedPath("/my-location/ip/", lang),
+      },
+      {
+        label: "Pencari Alamat (koordinat apa pun)",
+        href: getLocalizedPath("/tools/address-finder/", lang),
+      },
+      {
+        label: "Konverter Koordinat (DD/DMS/UTM)",
+        href: getLocalizedPath("/tools/coordinate-converter/", lang),
+      },
+    ],
+  },
 };
 
 const siloData = siloLinkLabels[lang] || siloLinkLabels.en;
@@ -854,23 +2228,29 @@ const siloData = siloLinkLabels[lang] || siloLinkLabels.en;
     <LocationFinder emphasisField="address" lang={lang} />
 
     <section class="section" style="padding-top: var(--space-8);">
-      <article class="prose address-article-content" style="max-width: var(--max-width-narrow); margin: 0 auto;">
-        
+      <article
+        class="prose address-article-content"
+        style="max-width: var(--max-width-narrow); margin: 0 auto;"
+      >
         <h2>{c.h2Steps}</h2>
         <p>{c.pStepsIntro}</p>
 
         <div class="step-guide-grid">
-          {c.steps.map((step) => (
-            <div class="step-guide-card">
-              <span class="step-badge">{step.badge}</span>
-              <h4>{step.title}</h4>
-              <p>{step.desc}</p>
-            </div>
-          ))}
+          {
+            c.steps.map((step) => (
+              <div class="step-guide-card">
+                <span class="step-badge">{step.badge}</span>
+                <h4>{step.title}</h4>
+                <p>{step.desc}</p>
+              </div>
+            ))
+          }
         </div>
 
         <div class="callout-box">
-          <strong>💡 {c.tipAccuracy.split(':')[0]}:</strong>{c.tipAccuracy.substring(c.tipAccuracy.indexOf(':') + 1)}
+          <strong>💡 {c.tipAccuracy.split(":")[0]}:</strong>{
+            c.tipAccuracy.substring(c.tipAccuracy.indexOf(":") + 1)
+          }
         </div>
 
         <h2>{c.h2Anatomy}</h2>
@@ -886,23 +2266,29 @@ const siloData = siloLinkLabels[lang] || siloLinkLabels.en;
               </tr>
             </thead>
             <tbody>
-              {c.anatomyRows.map((row) => (
-                <tr>
-                  <td><strong>{row[0]}</strong></td>
-                  <td>{row[1]}</td>
-                  <td>{row[2]}</td>
-                </tr>
-              ))}
+              {
+                c.anatomyRows.map((row) => (
+                  <tr>
+                    <td>
+                      <strong>{row[0]}</strong>
+                    </td>
+                    <td>{row[1]}</td>
+                    <td>{row[2]}</td>
+                  </tr>
+                ))
+              }
             </tbody>
           </table>
         </div>
 
         <p class="text-muted-callout">
-          <strong>{c.pPostcodeNote.split(':')[0]}:</strong>{c.pPostcodeNote.substring(c.pPostcodeNote.indexOf(':') + 1)}
+          <strong>{c.pPostcodeNote.split(":")[0]}:</strong>{
+            c.pPostcodeNote.substring(c.pPostcodeNote.indexOf(":") + 1)
+          }
         </p>
 
         <h2>{c.h2How}</h2>
-        <p>{c.pHowIntro}</p>
+        <p set:html={c.pHowIntro} />
 
         <div class="table-responsive">
           <table>
@@ -915,14 +2301,18 @@ const siloData = siloLinkLabels[lang] || siloLinkLabels.en;
               </tr>
             </thead>
             <tbody>
-              {c.techRows.map((row) => (
-                <tr>
-                  <td><strong>{row[0]}</strong></td>
-                  <td>{row[1]}</td>
-                  <td>{row[2]}</td>
-                  <td>{row[3]}</td>
-                </tr>
-              ))}
+              {
+                c.techRows.map((row) => (
+                  <tr>
+                    <td>
+                      <strong>{row[0]}</strong>
+                    </td>
+                    <td>{row[1]}</td>
+                    <td>{row[2]}</td>
+                    <td>{row[3]}</td>
+                  </tr>
+                ))
+              }
             </tbody>
           </table>
         </div>
@@ -931,43 +2321,55 @@ const siloData = siloLinkLabels[lang] || siloLinkLabels.en;
 
         <h2>{c.h2UseCases}</h2>
         <ul class="feature-bullets">
-          {c.useCases.map((u) => (
-            <li>
-              <strong>{u.title}:</strong> {u.desc}
-            </li>
-          ))}
+          {
+            c.useCases.map((u) => (
+              <li>
+                <strong>{u.title}:</strong> <span set:html={u.desc} />
+              </li>
+            ))
+          }
         </ul>
 
         <h2>{c.h2Troubleshoot}</h2>
         <p>{c.pTroubleshootIntro}</p>
         <ol class="styled-numbered-list">
-          {c.troubleshootList.map((t) => (
-            <li>
-              <strong>{t.split(':')[0]}:</strong><span set:html={t.substring(t.indexOf(':') + 1)} />
-            </li>
-          ))}
+          {
+            c.troubleshootList.map((t) => (
+              <li>
+                <>
+                  <strong>{t.split(":")[0]}:</strong>
+                  <span set:html={t.substring(t.indexOf(":") + 1)} />
+                </>
+              </li>
+            ))
+          }
         </ol>
 
         <h2>{c.h2Permissions}</h2>
         <p>{c.pPermissionsIntro}</p>
 
         <div class="permission-grid">
-          {c.permissions.map((p) => (
-            <div class="permission-card">
-              <h4>{p.browser}</h4>
-              <p>{p.steps}</p>
-            </div>
-          ))}
+          {
+            c.permissions.map((p) => (
+              <div class="permission-card">
+                <h4>{p.browser}</h4>
+                <p>{p.steps}</p>
+              </div>
+            ))
+          }
         </div>
 
         <h2>{c.h2Privacy}</h2>
         <p>{c.pPrivacyIntro}</p>
         <ul>
-          {c.privacyBullets.map((b) => (
-            <li>
-              <strong>{b.split(':')[0]}:</strong>{b.substring(b.indexOf(':') + 1)}
-            </li>
-          ))}
+          {
+            c.privacyBullets.map((b) => (
+              <li>
+                <strong>{b.split(":")[0]}:</strong>
+                {b.substring(b.indexOf(":") + 1)}
+              </li>
+            ))
+          }
         </ul>
 
         <!-- Editorial E-E-A-T Credibility Component -->
@@ -983,34 +2385,47 @@ const siloData = siloLinkLabels[lang] || siloLinkLabels.en;
         <div class="contextual-next-box" style="margin-top: var(--space-12);">
           <h3 class="contextual-next-title">{c.h3Related}</h3>
           <div class="contextual-next-grid">
-            {c.relatedTools.map((tool) => (
-              <a href={tool.path} class='contextual-link-card'>
-                <span class="contextual-link-icon">{tool.icon}</span>
-                <div class="contextual-link-info">
-                  <div class="contextual-link-title">{tool.title}</div>
-                  <div class="contextual-link-sub">{tool.sub}</div>
-                </div>
-              </a>
-            ))}
+            {
+              c.relatedTools.map((tool) => (
+                <a href={tool.path.startsWith("/") ? getLocalizedPath(tool.path, lang) : tool.path} class="contextual-link-card">
+                  <span class="contextual-link-icon">{tool.icon}</span>
+                  <div class="contextual-link-info">
+                    <div class="contextual-link-title">{tool.title}</div>
+                    <div class="contextual-link-sub">{tool.sub}</div>
+                  </div>
+                </a>
+              ))
+            }
           </div>
         </div>
 
         <!-- Full Silo Administrative Attribute Links -->
-        <div style="margin-top: var(--space-8); padding: var(--space-6); background: var(--color-bg-card); border: 1px solid var(--color-border); border-radius: var(--radius-xl);">
-          <h4 style="font-size: var(--text-base); font-weight: 700; color: var(--color-text-primary); margin: 0 0 var(--space-4);">{siloData.title}</h4>
-          <ul style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: var(--space-3); padding-left: 0; list-style: none; margin: 0;">
-            {siloData.links.map((link) => (
-              <li>
-                <a href={link.href} style="color: var(--color-accent-primary); font-size: var(--text-sm); text-decoration: none; display: inline-flex; align-items: center; gap: 6px;">
-                  <span>→</span>
-                  <span>{link.label}</span>
-                </a>
-              </li>
-            ))}
+        <div
+          style="margin-top: var(--space-8); padding: var(--space-6); background: var(--color-bg-card); border: 1px solid var(--color-border); border-radius: var(--radius-xl);"
+        >
+          <h4
+            style="font-size: var(--text-base); font-weight: 700; color: var(--color-text-primary); margin: 0 0 var(--space-4);"
+          >
+            {siloData.title}
+          </h4>
+          <ul
+            style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: var(--space-3); padding-left: 0; list-style: none; margin: 0;"
+          >
+            {
+              siloData.links.map((link) => (
+                <li>
+                  <a
+                    href={link.href}
+                    style="color: var(--color-accent-primary); font-size: var(--text-sm); text-decoration: none; display: inline-flex; align-items: center; gap: 6px;"
+                  >
+                    <span>→</span>
+                    <span>{link.label}</span>
+                  </a>
+                </li>
+              ))
+            }
           </ul>
         </div>
-
-
       </article>
     </section>
   </div>
@@ -1071,7 +2486,11 @@ const siloData = siloLinkLabels[lang] || siloLinkLabels.en;
   }
 
   .callout-box {
-    background: linear-gradient(135deg, rgba(37, 99, 235, 0.08) 0%, rgba(14, 165, 233, 0.04) 100%);
+    background: linear-gradient(
+      135deg,
+      rgba(37, 99, 235, 0.08) 0%,
+      rgba(14, 165, 233, 0.04) 100%
+    );
     border-left: 4px solid var(--color-accent-primary);
     border-radius: 0 var(--radius-lg) var(--radius-lg) 0;
     padding: var(--space-4) var(--space-5);

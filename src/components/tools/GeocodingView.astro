@@ -204,13 +204,91 @@ const t = translations[lang] || translations.en;
   <div class="prose" style="margin-top: var(--space-12); line-height: 1.8;">
     <h2>{t.h2What}</h2>
     <p set:html={t.pWhat}></p>
-    <h3>{t.h3Related}</h3>
-    <ul>
-      <li><a href={getLocalizedPath('/tools/reverse-geocoding/', lang)}>{t.linkRev}</a></li>
-      <li><a href={getLocalizedPath('/tools/address-finder/', lang)}>{t.linkAddr}</a></li>
-      <li><a href={getLocalizedPath('/comparisons/geocoding-vs-reverse-geocoding/', lang)}>{t.linkComp}</a></li>
-      <li><a href={getLocalizedPath('/glossary/', lang)}>{t.linkGlossary}</a></li>
-    </ul>
+    <div class="callout-box" style="margin-top: var(--space-6); line-height: 1.8;">
+      <p style="margin: 0; font-size: var(--text-sm);">
+        {lang === 'fr' ? (
+          <>
+            <strong>Outils et ressources connectés :</strong> Pour l'opération réciproque (transformer des coordonnées en adresse postale), utilisez notre <a href={getLocalizedPath('/tools/reverse-geocoding/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Géocodage Inverse</a> et le <a href={getLocalizedPath('/tools/address-finder/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Localisateur d'Adresse</a>. Pour explorer les parallèles et méridiens du résultat, rendez-vous sur le <a href={getLocalizedPath('/tools/latitude-longitude/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Traceur de Latitude et Longitude</a>. Calculez les distances entre adresses géocodées avec le <a href={getLocalizedPath('/tools/distance-calculator/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Calculateur de Distance</a> ou convertissez vos coordonnées en notation DMS ou UTM avec le <a href={getLocalizedPath('/tools/coordinate-converter/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Convertisseur de Coordonnées</a>. Consultez également notre comparatif <a href={getLocalizedPath('/comparisons/geocoding-vs-reverse-geocoding/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Géocodage Direct vs Inverse</a>.
+          </>
+        ) : lang === 'es' ? (
+          <>
+            <strong>Herramientas y recursos conectados :</strong> Para realizar el proceso inverso (convertir coordenadas a dirección de calle), use nuestro <a href={getLocalizedPath('/tools/reverse-geocoding/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Geocodificador Inverso</a> y el <a href={getLocalizedPath('/tools/address-finder/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Buscador de Dirección</a>. Explore los meridianos y paralelos obtenidos en el <a href={getLocalizedPath('/tools/latitude-longitude/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Buscador de Latitud y Longitud</a>. Mida distancias entre puntos geocodificados con la <a href={getLocalizedPath('/tools/distance-calculator/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Calculadora de Distancia</a> o transforme coordenadas a formato DMS y UTM con el <a href={getLocalizedPath('/tools/coordinate-converter/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Conversor de Coordenadas</a>. Revise también nuestra <a href={getLocalizedPath('/comparisons/geocoding-vs-reverse-geocoding/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">comparativa Geocodificación Directa vs Inversa</a>.
+          </>
+        ) : lang === 'de' ? (
+          <>
+            <strong>Verbundene Werkzeuge & Leitfäden :</strong> Zur umgekehrten Umwandlung (Koordinaten in Postadresse) nutzen Sie den <a href={getLocalizedPath('/tools/reverse-geocoding/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Rückwärts-Geocoder</a> und den <a href={getLocalizedPath('/tools/address-finder/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Adressen-Finder</a>. Untersuchen Sie Breitengrade und Meridiane im <a href={getLocalizedPath('/tools/latitude-longitude/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Breiten- und Längengrad-Finder</a>. Berechnen Sie Entfernungen zwischen Orten mit dem <a href={getLocalizedPath('/tools/distance-calculator/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Entfernungsrechner</a> oder nutzen Sie den <a href={getLocalizedPath('/tools/coordinate-converter/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Koordinaten-Konverter</a> für GMS und UTM. Lesen Sie unseren Vergleich <a href={getLocalizedPath('/comparisons/geocoding-vs-reverse-geocoding/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Vorwärts- vs. Rückwärts-Geokodierung</a>.
+          </>
+        ) : lang === 'pt' ? (
+          <>
+            <strong>Ferramentas e guias conectados :</strong> Para o caminho inverso (converter coordenadas em endereço de rua), utilize nosso <a href={getLocalizedPath('/tools/reverse-geocoding/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Geocodificador Reverso</a> e o <a href={getLocalizedPath('/tools/address-finder/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Localizador de Endereço</a>. Inspecione meridianos e paralelos no <a href={getLocalizedPath('/tools/latitude-longitude/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Localizador de Latitude e Longitude</a>. Meça distâncias entre locais com a <a href={getLocalizedPath('/tools/distance-calculator/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Calculadora de Distância</a> ou converta em DMS/UTM com o <a href={getLocalizedPath('/tools/coordinate-converter/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Conversor de Coordenadas</a>. Veja o comparativo <a href={getLocalizedPath('/comparisons/geocoding-vs-reverse-geocoding/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Geocodificação Direta vs Reversa</a>.
+          </>
+        ) : lang === 'hi' ? (
+          <>
+            <strong>जुड़े हुए टूल और तुलनात्मक गाइड :</strong> उल्टी प्रक्रिया (निर्देशांकों से सड़क का पता निकालना) के लिए <a href={getLocalizedPath('/tools/reverse-geocoding/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">रिवर्स जियोकोडर</a> और <a href={getLocalizedPath('/tools/address-finder/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">सड़क पता खोजक</a> का उपयोग करें। अक्षांश-देशांतर रेखाएं देखने के लिए <a href={getLocalizedPath('/tools/latitude-longitude/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">अक्षांश और देशांतर खोजक</a> देखें। दूरी मापने के लिए <a href={getLocalizedPath('/tools/distance-calculator/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">दूरी कैलकुलेटर</a>, प्रारूप बदलने के लिए <a href={getLocalizedPath('/tools/coordinate-converter/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">निर्देशांक कनवर्टर</a> और विस्तृत तुलना हेतु <a href={getLocalizedPath('/comparisons/geocoding-vs-reverse-geocoding/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">फ़ॉरवर्ड बनाम रिवर्स जियोकोडिंग</a> पढ़ें।
+          </>
+        ) : lang === 'id' ? (
+          <>
+            <strong>Alat & Panduan Terkait :</strong> Untuk proses sebaliknya (mengubah koordinat GPS ke alamat jalan), gunakan <a href={getLocalizedPath('/tools/reverse-geocoding/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Reverse Geocoder</a> dan <a href={getLocalizedPath('/tools/address-finder/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Pencari Alamat</a> kami. Pelajari garis lintang dan bujur di <a href={getLocalizedPath('/tools/latitude-longitude/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Pencari Lintang dan Bujur</a>. Ukur jarak antarlokasi dengan <a href={getLocalizedPath('/tools/distance-calculator/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Kalkulator Jarak</a> atau ubah format koordinat di <a href={getLocalizedPath('/tools/coordinate-converter/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Konverter Koordinat</a>. Baca juga ulasan <a href={getLocalizedPath('/comparisons/geocoding-vs-reverse-geocoding/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Geocoding Langsung vs Terbalik</a>.
+          </>
+        ) : (
+          <>
+            <strong>Connected Tools & Guides:</strong> To run the opposite transformation (turning numeric coordinates into street addresses), use our <a href={getLocalizedPath('/tools/reverse-geocoding/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Reverse Geocoder</a> and <a href={getLocalizedPath('/tools/address-finder/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Street Address Finder</a>. Explore parallels and meridians on the <a href={getLocalizedPath('/tools/latitude-longitude/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Latitude Longitude Finder</a>. Calculate distances between geocoded destinations with the <a href={getLocalizedPath('/tools/distance-calculator/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Distance Calculator</a> or convert outputs into DMS or UTM grids with our <a href={getLocalizedPath('/tools/coordinate-converter/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Coordinate Converter</a>. Compare technologies in our guide to <a href={getLocalizedPath('/comparisons/geocoding-vs-reverse-geocoding/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Forward vs Reverse Geocoding</a>.
+          </>
+        )}
+      </p>
+    </div>
+
+    <!-- Related Tools Grid -->
+    <div class="contextual-next-box" style="margin-top: var(--space-8);">
+      <h3 class="contextual-next-title">
+        <span>🛠️</span>
+        <span>{t.h3Related}</span>
+      </h3>
+      <div class="contextual-next-grid">
+        <a href={getLocalizedPath('/tools/reverse-geocoding/', lang)} class="contextual-link-card">
+          <span class="contextual-link-icon">🔄</span>
+          <div class="contextual-link-info">
+            <div class="contextual-link-title">{t.linkRev}</div>
+            <div class="contextual-link-sub">{lang === 'es' ? 'Coordenadas a dirección' : lang === 'fr' ? 'Coordonnées en adresse' : lang === 'de' ? 'Koordinaten in Adresse' : 'Coordinates to street address'}</div>
+          </div>
+        </a>
+        <a href={getLocalizedPath('/tools/address-finder/', lang)} class="contextual-link-card">
+          <span class="contextual-link-icon">🏠</span>
+          <div class="contextual-link-info">
+            <div class="contextual-link-title">{t.linkAddr}</div>
+            <div class="contextual-link-sub">{lang === 'es' ? 'Buscador visual en mapa' : lang === 'fr' ? 'Recherche d\'adresse sur carte' : lang === 'de' ? 'Interaktive Adresssuche' : 'Interactive map address finder'}</div>
+          </div>
+        </a>
+        <a href={getLocalizedPath('/tools/latitude-longitude/', lang)} class="contextual-link-card">
+          <span class="contextual-link-icon">🌐</span>
+          <div class="contextual-link-info">
+            <div class="contextual-link-title">{lang === 'es' ? 'Buscador de Latitud y Longitud' : lang === 'fr' ? 'Latitude et Longitude' : lang === 'de' ? 'Breiten- & Längengrad' : lang === 'pt' ? 'Latitude e Longitude' : lang === 'hi' ? 'अक्षांश और देशांतर खोजक' : lang === 'id' ? 'Lintang dan Bujur' : 'Latitude Longitude Finder'}</div>
+            <div class="contextual-link-sub">{lang === 'es' ? 'Ver paralelos en mapa' : lang === 'fr' ? 'Visualiser sur la carte' : lang === 'de' ? 'Koordinaten auf Karte prüfen' : 'Inspect coordinates on map'}</div>
+          </div>
+        </a>
+        <a href={getLocalizedPath('/tools/distance-calculator/', lang)} class="contextual-link-card">
+          <span class="contextual-link-icon">📏</span>
+          <div class="contextual-link-info">
+            <div class="contextual-link-title">{lang === 'es' ? 'Calculadora de Distancia' : lang === 'fr' ? 'Calculateur de Distance' : lang === 'de' ? 'Entfernungsrechner' : lang === 'pt' ? 'Calculadora de Distância' : lang === 'hi' ? 'दूरी कैलकुलेटर' : lang === 'id' ? 'Kalkulator Jarak' : 'Distance Calculator'}</div>
+            <div class="contextual-link-sub">{lang === 'es' ? 'Distancia ortodrómica exacta' : lang === 'fr' ? 'Distance entre adresses' : lang === 'de' ? 'Distanz zwischen Adressen' : 'Distance between addresses'}</div>
+          </div>
+        </a>
+        <a href={getLocalizedPath('/tools/coordinate-converter/', lang)} class="contextual-link-card">
+          <span class="contextual-link-icon">🔀</span>
+          <div class="contextual-link-info">
+            <div class="contextual-link-title">{lang === 'es' ? 'Conversor de Coordenadas' : lang === 'fr' ? 'Convertisseur de Coordonnées' : lang === 'de' ? 'Koordinaten-Konverter' : lang === 'pt' ? 'Conversor de Coordenadas' : lang === 'hi' ? 'निर्देशांक कनवर्टर' : lang === 'id' ? 'Konverter Koordinat' : 'Coordinate Converter'}</div>
+            <div class="contextual-link-sub">{lang === 'es' ? 'DD, DMS, UTM y MGRS' : lang === 'fr' ? 'DD, DMS, UTM et MGRS' : lang === 'de' ? 'DD, GMS, UTM und MGRS' : 'Convert DD, DMS, UTM'}</div>
+          </div>
+        </a>
+        <a href={getLocalizedPath('/comparisons/geocoding-vs-reverse-geocoding/', lang)} class="contextual-link-card">
+          <span class="contextual-link-icon">⚖️</span>
+          <div class="contextual-link-info">
+            <div class="contextual-link-title">{t.linkComp}</div>
+            <div class="contextual-link-sub">{lang === 'es' ? 'Comparativa técnica' : lang === 'fr' ? 'Comparatif technique' : lang === 'de' ? 'Technischer Vergleich' : 'Technical direct comparison'}</div>
+          </div>
+        </a>
+      </div>
+    </div>
   </div>
 
   <script define:vars={{ tData: t }}>

@@ -1288,13 +1288,125 @@ const faqBank: Record<AttributeType, Record<string, { question: string; answer: 
 
 /** Localized labels for the cross-silo related-link list. */
 const relatedLinkLabels: Record<string, Record<string, string>> = {
-  en: { gps: 'My GPS Coordinates', address: 'My Current Address', coordinates: 'My Coordinates', latLong: 'My Latitude & Longitude', city: 'What City Am I In?', state: 'What State Am I In?', country: 'What Country Am I In?', converter: 'Coordinate Converter (DD/DMS/UTM)', addressFinder: 'Address Finder (any coordinates)' },
-  es: { gps: 'Mis Coordenadas GPS', address: 'Mi Dirección Actual', coordinates: 'Mis Coordenadas', latLong: 'Mi Latitud y Longitud', city: '¿En Qué Ciudad Estoy?', state: '¿En Qué Estado Estoy?', country: '¿En Qué País Estoy?', converter: 'Conversor de Coordenadas (DD/GMS/UTM)', addressFinder: 'Buscador de Dirección (cualquier coordenada)' },
-  fr: { gps: 'Mes Coordonnées GPS', address: 'Mon Adresse Actuelle', coordinates: 'Mes Coordonnées', latLong: 'Ma Latitude et Longitude', city: 'Dans Quelle Ville Suis-Je ?', state: 'Dans Quel Département Suis-Je ?', country: 'Dans Quel Pays Suis-Je ?', converter: 'Convertisseur de Coordonnées (DD/DMS/UTM)', addressFinder: "Localisateur d'Adresse (toute coordonnée)" },
-  de: { gps: 'Meine GPS-Koordinaten', address: 'Meine Aktuelle Adresse', coordinates: 'Meine Koordinaten', latLong: 'Mein Breiten- & Längengrad', city: 'In Welcher Stadt Bin Ich?', state: 'In Welchem Bundesland Bin Ich?', country: 'In Welchem Land Bin Ich?', converter: 'Koordinaten-Umrechner (DD/GMS/UTM)', addressFinder: 'Adressen-Finder (beliebige Koordinaten)' },
-  pt: { gps: 'Minhas Coordenadas GPS', address: 'Meu Endereço Atual', coordinates: 'Minhas Coordenadas', latLong: 'Minha Latitude e Longitude', city: 'Em Que Cidade Estou?', state: 'Em Que Estado Estou?', country: 'Em Que País Estou?', converter: 'Conversor de Coordenadas (DD/GMS/UTM)', addressFinder: 'Localizador de Endereço (quaisquer coordenadas)' },
-  hi: { gps: 'मेरे GPS निर्देशांक', address: 'मेरा वर्तमान पता', coordinates: 'मेरे निर्देशांक', latLong: 'मेरा अक्षांश और देशांतर', city: 'मैं किस शहर में हूं?', state: 'मैं किस राज्य में हूं?', country: 'मैं किस देश में हूं?', converter: 'कोऑर्डिनेट कनवर्टर (DD/DMS/UTM)', addressFinder: 'पता खोजक (कोई भी निर्देशांक)' },
-  id: { gps: 'Koordinat GPS Saya', address: 'Alamat Saya Saat Ini', coordinates: 'Koordinat Saya', latLong: 'Lintang & Bujur Saya', city: 'Saya di Kota Mana?', state: 'Saya di Provinsi Mana?', country: 'Saya di Negara Mana?', converter: 'Konverter Koordinat (DD/DMS/UTM)', addressFinder: 'Pencari Alamat (koordinat apa pun)' }
+  en: { 
+    gps: 'My GPS Coordinates', 
+    address: 'My Current Address', 
+    coordinates: 'My Coordinates Hub', 
+    latLong: 'My Latitude & Longitude', 
+    city: 'What City Am I In?', 
+    state: 'What State Am I In?', 
+    country: 'What Country Am I In?', 
+    gpsFinder: 'GPS Coordinates Finder',
+    converter: 'Coordinate Converter (DD/DMS/UTM)', 
+    addressFinder: 'Address Finder (any coordinates)',
+    reverseGeo: 'Reverse Geocoder (Lat/Lng to Address)',
+    accuracy: 'GPS Accuracy Checker',
+    distance: 'Distance Calculator',
+    elevation: 'Elevation & Altitude Finder',
+    qr: 'Location QR Code Generator'
+  },
+  es: { 
+    gps: 'Mis Coordenadas GPS', 
+    address: 'Mi Dirección Actual', 
+    coordinates: 'Mis Coordenadas', 
+    latLong: 'Mi Latitud y Longitud', 
+    city: '¿En Qué Ciudad Estoy?', 
+    state: '¿En Qué Estado Estoy?', 
+    country: '¿En Qué País Estoy?', 
+    gpsFinder: 'Buscador de Coordenadas GPS',
+    converter: 'Conversor de Coordenadas (DD/GMS/UTM)', 
+    addressFinder: 'Buscador de Dirección',
+    reverseGeo: 'Geocodificador Inverso',
+    accuracy: 'Comprobador de Precisión GPS',
+    distance: 'Calculadora de Distancia',
+    elevation: 'Buscador de Altitud',
+    qr: 'Código QR de Ubicación'
+  },
+  fr: { 
+    gps: 'Mes Coordonnées GPS', 
+    address: 'Mon Adresse Actuelle', 
+    coordinates: 'Mes Coordonnées', 
+    latLong: 'Ma Latitude et Longitude', 
+    city: 'Dans Quelle Ville Suis-Je ?', 
+    state: 'Dans Quel Département Suis-Je ?', 
+    country: 'Dans Quel Pays Suis-Je ?', 
+    gpsFinder: 'Détecteur de Coordonnées GPS',
+    converter: 'Convertisseur de Coordonnées (DD/DMS/UTM)', 
+    addressFinder: "Localisateur d'Adresse",
+    reverseGeo: 'Géocodage Inverse',
+    accuracy: 'Testeur de Précision GPS',
+    distance: 'Calculateur de Distance',
+    elevation: "Localisateur d'Altitude",
+    qr: 'QR Code de Localisation'
+  },
+  de: { 
+    gps: 'Meine GPS-Koordinaten', 
+    address: 'Meine Aktuelle Adresse', 
+    coordinates: 'Meine Koordinaten', 
+    latLong: 'Mein Breiten- & Längengrad', 
+    city: 'In Welcher Stadt Bin Ich?', 
+    state: 'In Welchem Bundesland Bin Ich?', 
+    country: 'In Welchem Land Bin Ich?', 
+    gpsFinder: 'GPS-Koordinaten-Finder',
+    converter: 'Koordinaten-Umrechner (DD/GMS/UTM)', 
+    addressFinder: 'Adressen-Finder',
+    reverseGeo: 'Rückwärts-Geocoder',
+    accuracy: 'GPS-Genauigkeitsprüfer',
+    distance: 'Entfernungsrechner',
+    elevation: 'Höhenfinder',
+    qr: 'Standort-QR-Code'
+  },
+  pt: { 
+    gps: 'Minhas Coordenadas GPS', 
+    address: 'Meu Endereço Atual', 
+    coordinates: 'Minhas Coordenadas', 
+    latLong: 'Minha Latitude e Longitude', 
+    city: 'Em Que Cidade Estou?', 
+    state: 'Em Que Estado Estou?', 
+    country: 'Em Que País Estou?', 
+    gpsFinder: 'Buscador de Coordenadas GPS',
+    converter: 'Conversor de Coordenadas (DD/GMS/UTM)', 
+    addressFinder: 'Localizador de Endereço',
+    reverseGeo: 'Geocodificador Reverso',
+    accuracy: 'Verificador de Precisão GPS',
+    distance: 'Calculadora de Distância',
+    elevation: 'Localizador de Altitude',
+    qr: 'QR Code de Localização'
+  },
+  hi: { 
+    gps: 'मेरे GPS निर्देशांक', 
+    address: 'मेरा वर्तमान पता', 
+    coordinates: 'मेरे निर्देशांक', 
+    latLong: 'मेरा अक्षांश और देशांतर', 
+    city: 'मैं किस शहर में हूं?', 
+    state: 'मैं किस राज्य में हूं?', 
+    country: 'मैं किस देश में हूं?', 
+    gpsFinder: 'GPS निर्देशांक खोजक',
+    converter: 'कोऑर्डिनेट कनवर्टर (DD/DMS/UTM)', 
+    addressFinder: 'सड़क पता खोजक',
+    reverseGeo: 'रिवर्स जियोकोडर',
+    accuracy: 'GPS सटीकता चेकर',
+    distance: 'दूरी कैलकुलेटर',
+    elevation: 'ऊंचाई खोजक',
+    qr: 'लोकेशन QR कोड'
+  },
+  id: { 
+    gps: 'Koordinat GPS Saya', 
+    address: 'Alamat Saya Saat Ini', 
+    coordinates: 'Koordinat Saya', 
+    latLong: 'Lintang & Bujur Saya', 
+    city: 'Saya di Kota Mana?', 
+    state: 'Saya di Provinsi Mana?', 
+    country: 'Saya di Negara Mana?', 
+    gpsFinder: 'Pencari Koordinat GPS',
+    converter: 'Konverter Koordinat (DD/DMS/UTM)', 
+    addressFinder: 'Pencari Alamat',
+    reverseGeo: 'Reverse Geocoder',
+    accuracy: 'Pemeriksa Akurasi GPS',
+    distance: 'Kalkulator Jarak',
+    elevation: 'Pencari Elevasi',
+    qr: 'QR Code Lokasi'
+  }
 };
 
 const c = dict[attribute]?.[lang] || dict[attribute]?.en;
@@ -1302,15 +1414,21 @@ const linkLabels = relatedLinkLabels[lang] || relatedLinkLabels.en;
 const faq = c.faq ?? faqBank[attribute]?.[lang] ?? faqBank[attribute]?.en;
 
 const allRelatedLinks = [
-  { key: 'gps', label: linkLabels.gps, href: getLocalizedPath('/my-location/gps/', lang) },
-  { key: 'address', label: linkLabels.address, href: getLocalizedPath('/my-location/address/', lang) },
-  { key: 'coordinates', label: linkLabels.coordinates, href: getLocalizedPath('/my-location/coordinates/', lang) },
-  { key: 'latLong', label: linkLabels.latLong, href: getLocalizedPath('/my-location/latitude-longitude/', lang) },
-  { key: 'city', label: linkLabels.city, href: getLocalizedPath('/my-location/city/', lang) },
-  { key: 'state', label: linkLabels.state, href: getLocalizedPath('/my-location/state/', lang) },
-  { key: 'country', label: linkLabels.country, href: getLocalizedPath('/my-location/country/', lang) },
-  { key: 'converter', label: linkLabels.converter, href: getLocalizedPath('/tools/coordinate-converter/', lang) },
-  ...(attribute === 'address' ? [{ key: 'addressFinder', label: linkLabels.addressFinder, href: getLocalizedPath('/tools/address-finder/', lang) }] : [])
+  { key: 'gps', label: linkLabels.gps, href: getLocalizedPath('/my-location/gps/', lang), icon: '🛰️' },
+  { key: 'address', label: linkLabels.address, href: getLocalizedPath('/my-location/address/', lang), icon: '🏠' },
+  { key: 'coordinates', label: linkLabels.coordinates, href: getLocalizedPath('/my-location/coordinates/', lang), icon: '🧭' },
+  { key: 'latLong', label: linkLabels.latLong, href: getLocalizedPath('/my-location/latitude-longitude/', lang), icon: '🌐' },
+  { key: 'city', label: linkLabels.city, href: getLocalizedPath('/my-location/city/', lang), icon: '🏙️' },
+  { key: 'state', label: linkLabels.state, href: getLocalizedPath('/my-location/state/', lang), icon: '🏛️' },
+  { key: 'country', label: linkLabels.country, href: getLocalizedPath('/my-location/country/', lang), icon: '🗺️' },
+  { key: 'gpsFinder', label: linkLabels.gpsFinder, href: getLocalizedPath('/tools/gps-coordinates/', lang), icon: '📍' },
+  { key: 'converter', label: linkLabels.converter, href: getLocalizedPath('/tools/coordinate-converter/', lang), icon: '🔀' },
+  { key: 'addressFinder', label: linkLabels.addressFinder, href: getLocalizedPath('/tools/address-finder/', lang), icon: '🔍' },
+  { key: 'reverseGeo', label: linkLabels.reverseGeo, href: getLocalizedPath('/tools/reverse-geocoding/', lang), icon: '🔄' },
+  { key: 'accuracy', label: linkLabels.accuracy, href: getLocalizedPath('/tools/gps-accuracy/', lang), icon: '🎯' },
+  { key: 'elevation', label: linkLabels.elevation, href: getLocalizedPath('/tools/elevation-finder/', lang), icon: '⛰️' },
+  { key: 'distance', label: linkLabels.distance, href: getLocalizedPath('/tools/distance-calculator/', lang), icon: '📏' },
+  { key: 'qr', label: linkLabels.qr, href: getLocalizedPath('/tools/location-qr-code/', lang), icon: '📱' },
 ];
 const relatedLinks = allRelatedLinks.filter(l => l.key !== attribute);
 
@@ -1353,6 +1471,137 @@ const faqSchema = faq ? {
 
     <LocationFinder emphasisField={c.emphasisField} lang={lang} />
 
+    {attribute === 'gps' && (
+      <div class="custom-attr-panel" style="margin: var(--space-6) 0; background: var(--color-bg-secondary); border: 1px solid var(--color-border); border-radius: var(--radius-xl); padding: var(--space-6);">
+        <h3 style="margin-top:0; font-size: var(--text-lg); color: var(--color-text-primary);">🛰️ GPS Sensor & Accuracy Classification</h3>
+        <p style="font-size: var(--text-sm); color: var(--color-text-secondary); line-height: 1.75;">
+          GPS accuracy depends heavily on how your device acquires its position fix. Below is the standard geodetic accuracy scale for modern positioning:
+        </p>
+        <div style="overflow-x: auto; margin-top: var(--space-4);">
+          <table style="width: 100%; border-collapse: collapse; font-size: var(--text-xs);">
+            <thead>
+              <tr style="background: var(--color-bg-tertiary); text-align: left;">
+                <th style="padding: 8px 12px; border: 1px solid var(--color-border);">Accuracy Tier</th>
+                <th style="padding: 8px 12px; border: 1px solid var(--color-border);">Radius Range</th>
+                <th style="padding: 8px 12px; border: 1px solid var(--color-border);">Primary Signal Source</th>
+                <th style="padding: 8px 12px; border: 1px solid var(--color-border);">Typical Environment</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="padding: 8px 12px; border: 1px solid var(--color-border); font-weight: 700; color: #10b981;">Survey Grade / RTK</td>
+                <td style="padding: 8px 12px; border: 1px solid var(--color-border);">± 0.01 – 0.1 m</td>
+                <td style="padding: 8px 12px; border: 1px solid var(--color-border);">Dual-frequency GNSS + Base Station</td>
+                <td style="padding: 8px 12px; border: 1px solid var(--color-border);">Land surveying, autonomous farming</td>
+              </tr>
+              <tr>
+                <td style="padding: 8px 12px; border: 1px solid var(--color-border); font-weight: 700; color: #2563eb;">Smartphone Outdoor GPS</td>
+                <td style="padding: 8px 12px; border: 1px solid var(--color-border);">± 3 – 5 m</td>
+                <td style="padding: 8px 12px; border: 1px solid var(--color-border);">L1/L5 Multi-GNSS satellites</td>
+                <td style="padding: 8px 12px; border: 1px solid var(--color-border);">Clear sky, outdoors, highways</td>
+              </tr>
+              <tr>
+                <td style="padding: 8px 12px; border: 1px solid var(--color-border); font-weight: 700; color: #f59e0b;">Wi-Fi Triangulation</td>
+                <td style="padding: 8px 12px; border: 1px solid var(--color-border);">± 15 – 50 m</td>
+                <td style="padding: 8px 12px; border: 1px solid var(--color-border);">Nearby Wi-Fi router BSSIDs</td>
+                <td style="padding: 8px 12px; border: 1px solid var(--color-border);">Indoors, malls, urban offices</td>
+              </tr>
+              <tr>
+                <td style="padding: 8px 12px; border: 1px solid var(--color-border); font-weight: 700; color: #ef4444;">IP-Based Lookup</td>
+                <td style="padding: 8px 12px; border: 1px solid var(--color-border);">± 5 – 40 km</td>
+                <td style="padding: 8px 12px; border: 1px solid var(--color-border);">Internet service provider routing</td>
+                <td style="padding: 8px 12px; border: 1px solid var(--color-border);">Desktop PC with no GPS/Wi-Fi</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    )}
+
+    {attribute === 'coordinates' && (
+      <div class="custom-attr-panel" style="margin: var(--space-6) 0; background: var(--color-bg-secondary); border: 1px solid var(--color-border); border-radius: var(--radius-xl); padding: var(--space-6);">
+        <h3 style="margin-top:0; font-size: var(--text-lg); color: var(--color-text-primary);">🗺️ Coordinate Systems Comparison & Usage</h3>
+        <p style="font-size: var(--text-sm); color: var(--color-text-secondary); line-height: 1.75;">
+          Different fields and applications use different coordinate formats. Here is when and why to use each:
+        </p>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: var(--space-4); margin-top: var(--space-4);">
+          <div style="background: var(--color-bg-card); border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: var(--space-4);">
+            <div style="font-weight: 700; font-size: var(--text-sm); color: var(--color-text-primary); margin-bottom: 4px;">Decimal Degrees (DD)</div>
+            <p style="font-size: var(--text-xs); color: var(--color-text-secondary); margin: 0; line-height: 1.6;">Example: <code>28.6139, 77.2090</code>. Best for: Web APIs, Google Maps, GPS navigation apps, and programmatic geocoding.</p>
+          </div>
+          <div style="background: var(--color-bg-card); border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: var(--space-4);">
+            <div style="font-weight: 700; font-size: var(--text-sm); color: var(--color-text-primary); margin-bottom: 4px;">Degrees Minutes Seconds (DMS)</div>
+            <p style="font-size: var(--text-xs); color: var(--color-text-secondary); margin: 0; line-height: 1.6;">Example: <code>28°36'50"N 77°12'32"E</code>. Best for: Marine navigation, aviation charts, paper maps, and traditional surveying.</p>
+          </div>
+          <div style="background: var(--color-bg-card); border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: var(--space-4);">
+            <div style="font-weight: 700; font-size: var(--text-sm); color: var(--color-text-primary); margin-bottom: 4px;">Universal Transverse Mercator (UTM)</div>
+            <p style="font-size: var(--text-xs); color: var(--color-text-secondary); margin: 0; line-height: 1.6;">Example: <code>Zone 43R 716492 3166882</code>. Best for: Topographic hiking maps, military grid (MGRS), and engineering surveys measured in meters.</p>
+          </div>
+          <div style="background: var(--color-bg-card); border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: var(--space-4);">
+            <div style="font-weight: 700; font-size: var(--text-sm); color: var(--color-text-primary); margin-bottom: 4px;">Plus Codes (Open Location Code)</div>
+            <p style="font-size: var(--text-xs); color: var(--color-text-secondary); margin: 0; line-height: 1.6;">Example: <code>7JWVHCP+RP</code>. Best for: Street-less addresses, emergency deliveries, and offline global digital addressing.</p>
+          </div>
+        </div>
+      </div>
+    )}
+
+    {attribute === 'latitude-longitude' && (
+      <div class="custom-attr-panel" style="margin: var(--space-6) 0; background: var(--color-bg-secondary); border: 1px solid var(--color-border); border-radius: var(--radius-xl); padding: var(--space-6);">
+        <h3 style="margin-top:0; font-size: var(--text-lg); color: var(--color-text-primary);">🌐 Latitude & Longitude Precision Scale</h3>
+        <p style="font-size: var(--text-sm); color: var(--color-text-secondary); line-height: 1.75;">
+          How much real-world ground distance does each decimal place in latitude and longitude represent?
+        </p>
+        <div style="overflow-x: auto; margin-top: var(--space-4);">
+          <table style="width: 100%; border-collapse: collapse; font-size: var(--text-xs);">
+            <thead>
+              <tr style="background: var(--color-bg-tertiary); text-align: left;">
+                <th style="padding: 8px 12px; border: 1px solid var(--color-border);">Decimal Places</th>
+                <th style="padding: 8px 12px; border: 1px solid var(--color-border);">Approximate Ground Distance</th>
+                <th style="padding: 8px 12px; border: 1px solid var(--color-border);">What it Identifies</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="padding: 8px 12px; border: 1px solid var(--color-border); font-family: var(--font-mono);">0 decimals (1.0°)</td>
+                <td style="padding: 8px 12px; border: 1px solid var(--color-border);">~ 111 km</td>
+                <td style="padding: 8px 12px; border: 1px solid var(--color-border);">Large region, state, or country</td>
+              </tr>
+              <tr>
+                <td style="padding: 8px 12px; border: 1px solid var(--color-border); font-family: var(--font-mono);">1 decimal (0.1°)</td>
+                <td style="padding: 8px 12px; border: 1px solid var(--color-border);">~ 11.1 km</td>
+                <td style="padding: 8px 12px; border: 1px solid var(--color-border);">Large city or metropolitan district</td>
+              </tr>
+              <tr>
+                <td style="padding: 8px 12px; border: 1px solid var(--color-border); font-family: var(--font-mono);">2 decimals (0.01°)</td>
+                <td style="padding: 8px 12px; border: 1px solid var(--color-border);">~ 1.11 km</td>
+                <td style="padding: 8px 12px; border: 1px solid var(--color-border);">Town, village, or neighborhood</td>
+              </tr>
+              <tr>
+                <td style="padding: 8px 12px; border: 1px solid var(--color-border); font-family: var(--font-mono);">3 decimals (0.001°)</td>
+                <td style="padding: 8px 12px; border: 1px solid var(--color-border);">~ 111 m</td>
+                <td style="padding: 8px 12px; border: 1px solid var(--color-border);">Agricultural field or large estate</td>
+              </tr>
+              <tr>
+                <td style="padding: 8px 12px; border: 1px solid var(--color-border); font-family: var(--font-mono); font-weight:700; color: #10b981;">4 decimals (0.0001°)</td>
+                <td style="padding: 8px 12px; border: 1px solid var(--color-border); font-weight:700; color: #10b981;">~ 11.1 m</td>
+                <td style="padding: 8px 12px; border: 1px solid var(--color-border);">Individual land parcel or residential building</td>
+              </tr>
+              <tr>
+                <td style="padding: 8px 12px; border: 1px solid var(--color-border); font-family: var(--font-mono);">5 decimals (0.00001°)</td>
+                <td style="padding: 8px 12px; border: 1px solid var(--color-border);">~ 1.11 m</td>
+                <td style="padding: 8px 12px; border: 1px solid var(--color-border);">Single room, entrance door, or parking bay</td>
+              </tr>
+              <tr>
+                <td style="padding: 8px 12px; border: 1px solid var(--color-border); font-family: var(--font-mono);">6 decimals (0.000001°)</td>
+                <td style="padding: 8px 12px; border: 1px solid var(--color-border);">~ 0.11 m (11 cm)</td>
+                <td style="padding: 8px 12px; border: 1px solid var(--color-border);">Survey pin, human footsteps</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    )}
+
     <section class="section">
       <div class="prose" style="max-width: var(--max-width-narrow);">
         <h2>{c.h2How}</h2>
@@ -1372,13 +1621,34 @@ const faqSchema = faq ? {
             <FAQAccordion items={faq} includeSchema={false} />
           </div>
         )}
+      </div>
 
-        <h3>{c.h3Related}</h3>
-        <ul>
+      <div class="contextual-next-box" style="margin-top: var(--space-8);">
+        <h3 style="margin-top: 0; margin-bottom: var(--space-2);">{c.h3Related}</h3>
+        <p style="font-size: var(--text-sm); color: var(--color-text-secondary); margin-bottom: var(--space-4);">
+          {lang === 'es' ? 'Explora herramientas relacionadas de geolocalización y análisis de coordenadas:' :
+           lang === 'fr' ? 'Découvrez les outils géographiques et de conversion associés :' :
+           lang === 'de' ? 'Entdecken Sie verwandte Geotools und Koordinaten-Konverter:' :
+           lang === 'pt' ? 'Explore ferramentas relacionadas de geolocalização e coordenadas:' :
+           lang === 'hi' ? 'संबंधित भौगोलिक उपकरण और निर्देशांक विश्लेषक देखें:' :
+           lang === 'id' ? 'Jelajahi alat geolokasi dan analisis koordinat terkait:' :
+           'Explore related geolocation tools and coordinate utilities:'}
+        </p>
+        <div class="contextual-next-grid">
           {relatedLinks.map((l) => (
-            <li><a href={l.href}>{l.label}</a></li>
+            <a href={l.href} class="contextual-link-card">
+              <span class="contextual-link-icon">{l.icon}</span>
+              <div class="contextual-link-info">
+                <div class="contextual-link-title">{l.label}</div>
+                <div class="contextual-link-sub">
+                  {['gps', 'address', 'coordinates', 'latLong', 'city', 'state', 'country'].includes(l.key) 
+                    ? (lang === 'es' ? 'Lectura directa' : lang === 'fr' ? 'Mesure en direct' : lang === 'de' ? 'Live-Erkennung' : lang === 'pt' ? 'Leitura direta' : lang === 'hi' ? 'लाइव पहचान' : lang === 'id' ? 'Deteksi langsung' : 'Live Detection')
+                    : (lang === 'es' ? 'Herramienta de precisión' : lang === 'fr' ? 'Outil de précision' : lang === 'de' ? 'Präzisionswerkzeug' : lang === 'pt' ? 'Ferramenta de precisão' : lang === 'hi' ? 'सटीक उपकरण' : lang === 'id' ? 'Alat presisi' : 'Precision Utility')}
+                </div>
+              </div>
+            </a>
           ))}
-        </ul>
+        </div>
       </div>
     </section>
   </div>

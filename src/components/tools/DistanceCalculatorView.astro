@@ -4,7 +4,7 @@
  * Powers: /tools/distance-calculator/ across en, es, fr, de, pt
  */
 import ToolLayout from '../../layouts/ToolLayout.astro';
-import { defaultLang, type SupportedLang } from '../../i18n/config';
+import { getLocalizedPath, defaultLang, type SupportedLang } from '../../i18n/config';
 
 interface Props {
   lang?: SupportedLang | string;
@@ -271,6 +271,92 @@ const t = translations[lang] || translations.en;
     <p set:html={t.pCalc2}></p>
     <h2>{t.h2Map}</h2>
     <p set:html={t.pMap1}></p>
+
+    <div class="callout-box" style="margin-top: var(--space-6); line-height: 1.8;">
+      <p style="margin: 0; font-size: var(--text-sm);">
+        {lang === 'fr' ? (
+          <>
+            <strong>Outils complémentaires pour vos itinéraires :</strong> Pour obtenir les coordonnées de départ ou d'arrivée, utilisez notre <a href={getLocalizedPath('/tools/gps-coordinates/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Détecteur de Coordonnées GPS</a> ou cherchez une adresse avec le <a href={getLocalizedPath('/tools/geocoding/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Géocodeur</a>. Mesurez le dénivelé et le relief entre vos repères avec le <a href={getLocalizedPath('/tools/elevation-finder/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Localisateur d'Altitude</a>. Besoin de convertir les coordonnées en degrés-minutes-secondes ou en UTM ? Utilisez notre <a href={getLocalizedPath('/tools/coordinate-converter/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Convertisseur de Coordonnées</a>. Vous pouvez également générer un code de partage direct avec le <a href={getLocalizedPath('/tools/location-qr-code/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">QR Code de Localisation</a> ou explorer le fonctionnement des signaux dans notre guide <a href={getLocalizedPath('/guides/how-gps-location-works/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">comment fonctionne le GPS</a>.
+          </>
+        ) : lang === 'es' ? (
+          <>
+            <strong>Herramientas complementarias para sus trayectos :</strong> Para fijar las coordenadas de partida o destino, use nuestro <a href={getLocalizedPath('/tools/gps-coordinates/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Buscador de Coordenadas GPS</a> o busque lugares con el <a href={getLocalizedPath('/tools/geocoding/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Geocodificador</a>. Mida el desnivel topográfico entre ambos puntos mediante el <a href={getLocalizedPath('/tools/elevation-finder/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Buscador de Altitud</a>. Si necesita convertir a grados, minutos y segundos o UTM, pruebe el <a href={getLocalizedPath('/tools/coordinate-converter/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Conversor de Coordenadas</a>. También puede generar pines móviles con el <a href={getLocalizedPath('/tools/location-qr-code/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Código QR de Ubicación</a> y leer <a href={getLocalizedPath('/guides/how-gps-location-works/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">cómo funciona el GPS</a>.
+          </>
+        ) : lang === 'de' ? (
+          <>
+            <strong>Ergänzende Tools für Ihre Routen :</strong> Ermitteln Sie Start- und Zielkoordinaten mit dem <a href={getLocalizedPath('/tools/gps-coordinates/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">GPS-Koordinaten-Finder</a> oder wandeln Sie Adressen mit dem <a href={getLocalizedPath('/tools/geocoding/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Geocoder</a> um. Prüfen Sie das Geländeprofil mit dem <a href={getLocalizedPath('/tools/elevation-finder/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Höhenfinder</a>. Für andere Koordinatenschreibweisen steht der <a href={getLocalizedPath('/tools/coordinate-converter/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Koordinaten-Konverter</a> bereit. Erzeugen Sie scannbare Wegpunkte mit dem <a href={getLocalizedPath('/tools/location-qr-code/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Standort-QR-Code</a> und erfahren Sie mehr im Leitfaden <a href={getLocalizedPath('/guides/how-gps-location-works/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">wie GPS funktioniert</a>.
+          </>
+        ) : lang === 'pt' ? (
+          <>
+            <strong>Ferramentas complementares para suas rotas :</strong> Obtenha as coordenadas dos pontos com o <a href={getLocalizedPath('/tools/gps-coordinates/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Buscador de Coordenadas GPS</a> ou pesquise endereços com o <a href={getLocalizedPath('/tools/geocoding/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Geocodificador</a>. Avalie desníveis topográficos com o <a href={getLocalizedPath('/tools/elevation-finder/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Localizador de Altitude</a>. Para converter para graus-minutos-segundos ou UTM, use o <a href={getLocalizedPath('/tools/coordinate-converter/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Conversor de Coordenadas</a>. Compartilhe pontos de chegada com o <a href={getLocalizedPath('/tools/location-qr-code/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">QR Code de Localização</a> e veja <a href={getLocalizedPath('/guides/how-gps-location-works/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">como funciona o GPS</a>.
+          </>
+        ) : lang === 'hi' ? (
+          <>
+            <strong>मार्ग और दूरी से जुड़े अन्य टूल :</strong> शुरुआती या गंतव्य निर्देशांक प्राप्त करने के लिए <a href={getLocalizedPath('/tools/gps-coordinates/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">GPS निर्देशांक खोजक</a> और <a href={getLocalizedPath('/tools/geocoding/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">जियोकोडर</a> का उपयोग करें। ऊंचाई का अंतर जानने के लिए <a href={getLocalizedPath('/tools/elevation-finder/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">ऊंचाई खोजक</a> देखें। प्रारूप बदलने के लिए <a href={getLocalizedPath('/tools/coordinate-converter/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">निर्देशांक कनवर्टर</a> और मैप पिन साझा करने हेतु <a href={getLocalizedPath('/tools/location-qr-code/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">लोकेशन QR कोड</a> का उपयोग करें।
+          </>
+        ) : lang === 'id' ? (
+          <>
+            <strong>Alat Pelengkap untuk Navigasi :</strong> Tentukan koordinat titik awal atau tujuan dengan <a href={getLocalizedPath('/tools/gps-coordinates/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Pencari Koordinat GPS</a> atau cari alamat lewat <a href={getLocalizedPath('/tools/geocoding/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Geocoder</a>. Ukur profil ketinggian antara kedua titik dengan <a href={getLocalizedPath('/tools/elevation-finder/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Pencari Elevasi</a>. Ubah format koordinat ke DMS atau UTM dengan <a href={getLocalizedPath('/tools/coordinate-converter/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Konverter Koordinat</a> dan bagikan titik dengan <a href={getLocalizedPath('/tools/location-qr-code/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">QR Code Lokasi</a>.
+          </>
+        ) : (
+          <>
+            <strong>Connected Tools for Navigation:</strong> Need starting or arrival coordinates? Identify your current location via <a href={getLocalizedPath('/my-location/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">My Location</a> or inspect raw coordinates using our <a href={getLocalizedPath('/tools/gps-coordinates/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">GPS Coordinates Finder</a>. Convert any place name into coordinates with our <a href={getLocalizedPath('/tools/geocoding/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Geocoder</a>. Compare vertical elevation profiles between points using the <a href={getLocalizedPath('/tools/elevation-finder/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Elevation Finder</a>, and reformat coordinates with the <a href={getLocalizedPath('/tools/coordinate-converter/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Coordinate Converter</a>. Generate a scannable map pin for Point B using our <a href={getLocalizedPath('/tools/location-qr-code/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Location QR Code Generator</a>, and learn how satellite positioning works in <a href={getLocalizedPath('/guides/how-gps-location-works/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">How GPS Location Works</a>.
+          </>
+        )}
+      </p>
+    </div>
+
+    <!-- Related Tools Grid -->
+    <div class="contextual-next-box" style="margin-top: var(--space-8);">
+      <h3 class="contextual-next-title">
+        <span>🛠️</span>
+        <span>{lang === 'fr' ? 'Outils de Navigation Associés' : lang === 'es' ? 'Herramientas de Navegación Conectadas' : lang === 'de' ? 'Verwandte Navigations-Tools' : lang === 'pt' ? 'Ferramentas de Navegação Relacionadas' : lang === 'hi' ? 'संबंधित नेविगेशन टूल' : lang === 'id' ? 'Alat Navigasi Terkait' : 'Related Navigation Tools'}</span>
+      </h3>
+      <div class="contextual-next-grid">
+        <a href={getLocalizedPath('/tools/gps-coordinates/', lang)} class="contextual-link-card">
+          <span class="contextual-link-icon">📍</span>
+          <div class="contextual-link-info">
+            <div class="contextual-link-title">{lang === 'es' ? 'Buscador de Coordenadas GPS' : lang === 'fr' ? 'Coordonnées GPS' : lang === 'de' ? 'GPS-Koordinaten-Finder' : lang === 'pt' ? 'Coordenadas GPS' : lang === 'hi' ? 'GPS निर्देशांक खोजक' : lang === 'id' ? 'Koordinat GPS' : 'GPS Coordinates Finder'}</div>
+            <div class="contextual-link-sub">{lang === 'es' ? 'Puntos A y B precisos' : lang === 'fr' ? 'Repères A et B précis' : lang === 'de' ? 'Präzise Punkte A & B' : 'Exact A & B coordinates'}</div>
+          </div>
+        </a>
+        <a href={getLocalizedPath('/tools/geocoding/', lang)} class="contextual-link-card">
+          <span class="contextual-link-icon">🎯</span>
+          <div class="contextual-link-info">
+            <div class="contextual-link-title">{lang === 'es' ? 'Geocodificador' : lang === 'fr' ? 'Géocodeur d\'Adresse' : lang === 'de' ? 'Geocoder' : lang === 'pt' ? 'Geocodificador' : lang === 'hi' ? 'जियोकोडर' : lang === 'id' ? 'Geocoder' : 'Forward Geocoder'}</div>
+            <div class="contextual-link-sub">{lang === 'es' ? 'Dirección a coordenadas' : lang === 'fr' ? 'Adresse en coordonnées' : lang === 'de' ? 'Adresse in Koordinaten' : 'Address to coordinates'}</div>
+          </div>
+        </a>
+        <a href={getLocalizedPath('/tools/elevation-finder/', lang)} class="contextual-link-card">
+          <span class="contextual-link-icon">⛰️</span>
+          <div class="contextual-link-info">
+            <div class="contextual-link-title">{lang === 'es' ? 'Buscador de Altitud' : lang === 'fr' ? 'Localisateur d\'Altitude' : lang === 'de' ? 'Höhenfinder' : lang === 'pt' ? 'Localizador de Altitude' : lang === 'hi' ? 'ऊंचाई खोजक' : lang === 'id' ? 'Pencari Elevasi' : 'Elevation Finder'}</div>
+            <div class="contextual-link-sub">{lang === 'es' ? 'Desnivel y relieve vertical' : lang === 'fr' ? 'Dénivelé et relief' : lang === 'de' ? 'Höhe über Normalnull' : 'Elevation and altitude'}</div>
+          </div>
+        </a>
+        <a href={getLocalizedPath('/tools/coordinate-converter/', lang)} class="contextual-link-card">
+          <span class="contextual-link-icon">🔀</span>
+          <div class="contextual-link-info">
+            <div class="contextual-link-title">{lang === 'es' ? 'Conversor de Coordenadas' : lang === 'fr' ? 'Convertisseur de Coordonnées' : lang === 'de' ? 'Koordinaten-Konverter' : lang === 'pt' ? 'Conversor de Coordenadas' : lang === 'hi' ? 'निर्देशांक कनवर्टर' : lang === 'id' ? 'Konverter Koordinat' : 'Coordinate Converter'}</div>
+            <div class="contextual-link-sub">{lang === 'es' ? 'DD, DMS, UTM y MGRS' : lang === 'fr' ? 'DD, DMS, UTM et MGRS' : lang === 'de' ? 'DD, GMS, UTM und MGRS' : 'DD, DMS, UTM, MGRS'}</div>
+          </div>
+        </a>
+        <a href={getLocalizedPath('/tools/location-qr-code/', lang)} class="contextual-link-card">
+          <span class="contextual-link-icon">📱</span>
+          <div class="contextual-link-info">
+            <div class="contextual-link-title">{lang === 'es' ? 'Código QR de Ubicación' : lang === 'fr' ? 'QR Code de Localisation' : lang === 'de' ? 'Standort-QR-Code' : lang === 'pt' ? 'QR Code de Localização' : lang === 'hi' ? 'लोकेशन QR कोड' : lang === 'id' ? 'QR Code Lokasi' : 'Location QR Code'}</div>
+            <div class="contextual-link-sub">{lang === 'es' ? 'Compartir punto B al móvil' : lang === 'fr' ? 'Partage du point B mobile' : lang === 'de' ? 'Punkt B mobil teilen' : 'Share destination pin'}</div>
+          </div>
+        </a>
+        <a href={getLocalizedPath('/my-location/', lang)} class="contextual-link-card">
+          <span class="contextual-link-icon">🎯</span>
+          <div class="contextual-link-info">
+            <div class="contextual-link-title">{lang === 'es' ? '¿Dónde Estoy Ahora?' : lang === 'fr' ? 'Où Suis-Je ?' : lang === 'de' ? 'Wo bin ich gerade?' : lang === 'pt' ? 'Onde Estou Agora?' : lang === 'hi' ? 'मेरी वर्तमान स्थिति' : lang === 'id' ? 'Di Mana Saya Sekarang?' : 'Where Am I Right Now?'}</div>
+            <div class="contextual-link-sub">{lang === 'es' ? 'Fijar punto A con mi GPS' : lang === 'fr' ? 'Point A depuis mon GPS' : lang === 'de' ? 'Punkt A via Live-GPS' : 'Set Point A with live GPS'}</div>
+          </div>
+        </a>
+      </div>
+    </div>
   </div>
 
   <script define:vars={{ tData: t }}>

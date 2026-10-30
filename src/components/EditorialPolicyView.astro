@@ -4,17 +4,25 @@
  * Comprehensive documentation of peer-review processes, GIS accuracy benchmarks,
  * editorial independence, and error-correction protocols.
  */
-import BaseLayout from '../layouts/BaseLayout.astro';
-import Breadcrumbs from './Breadcrumbs.astro';
-import { getLocalizedPath, type SupportedLang, defaultLang } from '../i18n/config';
-import { useTranslations } from '../i18n/ui';
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Breadcrumbs from "./Breadcrumbs.astro";
+import {
+  getLocalizedPath,
+  type SupportedLang,
+  defaultLang,
+} from "../i18n/config";
+import { useTranslations } from "../i18n/ui";
 
 interface Props {
   lang?: SupportedLang | string;
 }
 
 const { lang: customLang = defaultLang } = Astro.props;
-const lang = (customLang in { en: 1, es: 1, fr: 1, de: 1, pt: 1, hi: 1, id: 1 } ? customLang : defaultLang) as SupportedLang;
+const lang = (
+  customLang in { en: 1, es: 1, fr: 1, de: 1, pt: 1, hi: 1, id: 1 }
+    ? customLang
+    : defaultLang
+) as SupportedLang;
 const t = useTranslations(lang);
 
 interface PolicyData {
@@ -42,258 +50,426 @@ interface PolicyData {
 const policyContent: Record<SupportedLang, PolicyData> = {
   en: {
     metaTitle: "Editorial Policy & Accuracy Standards | MyLocationLab",
-    metaDesc: "Learn about MyLocationLab's editorial review board, GIS mathematical standards, zero-commercial bias policy, and technical error correction protocols.",
+    metaDesc:
+      "Learn about MyLocationLab's editorial review board, GIS mathematical standards, zero-commercial bias policy, and technical error correction protocols.",
     breadcrumb: "Editorial Policy",
     badge: "E-E-A-T Verification Standards",
     h1: "Editorial Policy & Verification Standards",
-    subtitle: "How MyLocationLab guarantees rigorous geodetic precision, client-side privacy, and peer-reviewed technical authority across every tool and article.",
+    subtitle:
+      "How MyLocationLab guarantees rigorous geodetic precision, client-side privacy, and peer-reviewed technical authority across every tool and article.",
     h2Board: "1. Editorial Review Board & Expert Authorship",
-    pBoard: "Every technical guide, coordinate formula, and telemetry converter published on MyLocationLab is authored or peer-reviewed by professionals with documented expertise in Geographic Information Systems (GIS), geodesy, and web engineering. Our content does not rely on unverified automated content generation.",
+    pBoard:
+      "Every technical guide, coordinate formula, and telemetry converter published on MyLocationLab is authored or peer-reviewed by professionals with documented expertise in Geographic Information Systems (GIS), geodesy, and web engineering. Our content does not rely on unverified automated content generation.",
     boardPoints: [
-      { title: "Geodetic Verification:", desc: "Mathematical formulas (Haversine, Vincenty, DMS conversions) are audited against standardized national geodetic survey reference benchmarks." },
-      { title: "W3C API Compliance:", desc: "All browser positioning procedures adhere strictly to the W3C Geolocation API Specification (Recommendation level)." },
-      { title: "Ongoing Content Audits:", desc: "Articles and tool tutorials are re-audited biannually to account for browser privacy evolutions, satellite constellation upgrades (Galileo, GPS III), and mobile operating system permission changes." }
+      {
+        title: "Geodetic Verification:",
+        desc: "Mathematical formulas (Haversine, Vincenty, DMS conversions) are audited against standardized national geodetic survey reference benchmarks.",
+      },
+      {
+        title: "W3C API Compliance:",
+        desc: "All browser positioning procedures adhere strictly to the W3C Geolocation API Specification (Recommendation level).",
+      },
+      {
+        title: "Ongoing Content Audits:",
+        desc: "Articles and tool tutorials are re-audited biannually to account for browser privacy evolutions, satellite constellation upgrades (Galileo, GPS III), and mobile operating system permission changes.",
+      },
     ],
     h2Standards: "2. Mathematical & Cartographic Standards",
-    pStandards: "Geospatial calculations require uncompromising precision. We enforce the following baseline technical standards across all utilities:",
+    pStandards:
+      "Geospatial calculations require uncompromising precision. We enforce the following baseline technical standards across all utilities:",
     standards: [
-      { title: "WGS 84 Reference Ellipsoid:", desc: "All coordinate displays and computations reference the World Geodetic System 1984 (EPSG:4326), standard across global GNSS networks." },
-      { title: "6-Decimal Coordinate Resolution:", desc: "Where available, latitude and longitude coordinates are presented up to six decimal places, providing physical ground resolution down to approximately 0.11 meters." },
-      { title: "OpenStreetMap Compliance:", desc: "Reverse geocoding is powered by OpenStreetMap contributors under the Open Database License (ODbL), ensuring open, community-verified cartography." }
+      {
+        title: "WGS 84 Reference Ellipsoid:",
+        desc: "All coordinate displays and computations reference the World Geodetic System 1984 (EPSG:4326), standard across global GNSS networks.",
+      },
+      {
+        title: "6-Decimal Coordinate Resolution:",
+        desc: "Where available, latitude and longitude coordinates are presented up to six decimal places, providing physical ground resolution down to approximately 0.11 meters.",
+      },
+      {
+        title: "OpenStreetMap Compliance:",
+        desc: "Reverse geocoding is powered by OpenStreetMap contributors under the Open Database License (ODbL), ensuring open, community-verified cartography.",
+      },
     ],
     h2Independence: "3. Editorial Independence & Conflict of Interest",
-    pIndependence: "MyLocationLab maintains complete editorial autonomy. We do not accept payment to promote specific hardware brands, mobile applications, VPN providers, or commercial routing APIs. Rankings, tool comparisons, and guides are formulated strictly on empirical technical merit and privacy compliance.",
-    h2Privacy: "4. Architectural Privacy as an Editorial Standard",
-    pPrivacy: "Accuracy must never come at the expense of user safety. Our editorial policy forbids the inclusion of tracking scripts or data brokers on tool interfaces. All geographic coordinates resolved in the user's browser remain strictly in volatile client memory and are never transmitted to or archived on any remote database.",
+    pIndependence:
+      "MyLocationLab maintains complete editorial autonomy. We do not accept payment to promote specific hardware brands, mobile applications, VPN providers, or commercial routing APIs. Rankings, tool comparisons, and guides are formulated strictly on empirical technical merit and privacy compliance.",
+    h2Privacy: "4. Privacy as an Editorial Standard",
+    pPrivacy:
+      "Accuracy must never come at the expense of user safety. Our editorial policy forbids the inclusion of tracking scripts or data brokers on tool interfaces. All geographic coordinates resolved in the user's browser remain in client memory and are never saved or stored on our servers. When address lookup is active, coordinates are sent solely to OpenStreetMap Nominatim to resolve the street name, and users can disable this lookup at any time in settings.",
     h2Corrections: "5. Corrections & Error Reporting Protocol",
-    pCorrections: "If you detect a mathematical inaccuracy in any formula, an outdated mobile permission guideline, or an address parsing anomaly, our editorial team investigates all reports promptly:",
+    pCorrections:
+      "If you detect a mathematical inaccuracy in any formula, an outdated mobile permission guideline, or an address parsing anomaly, our editorial team investigates all reports promptly:",
     correctionSteps: [
       "Submit your inquiry or correction to editorial@mylocationlab.com with the subject line 'Correction Request'.",
       "Include the specific URL, the passage or formula in question, and authoritative source documentation (e.g. NOAA, EPSG, W3C).",
-      "Our technical review board reviews tickets within 48 business hours. If an error is substantiated, the page is updated immediately with an editorial revision note."
-    ]
+      "Our technical review board reviews tickets within 48 business hours. If an error is substantiated, the page is updated immediately with an editorial revision note.",
+    ],
   },
   es: {
     metaTitle: "Política Editorial y Estándares de Precisión | MyLocationLab",
-    metaDesc: "Conozca el comité de revisión editorial de MyLocationLab, nuestros estándares matemáticos SIG, independencia comercial y protocolo de correcciones.",
+    metaDesc:
+      "Conozca el comité de revisión editorial de MyLocationLab, nuestros estándares matemáticos SIG, independencia comercial y protocolo de correcciones.",
     breadcrumb: "Política Editorial",
     badge: "Estándares de Calidad E-E-A-T",
     h1: "Política Editorial y Estándares de Verificación",
-    subtitle: "Cómo garantiza MyLocationLab la máxima precisión geodésica, privacidad del usuario e integridad técnica en cada herramienta y artículo.",
+    subtitle:
+      "Cómo garantiza MyLocationLab la máxima precisión geodésica, privacidad del usuario e integridad técnica en cada herramienta y artículo.",
     h2Board: "1. Consejo Editorial y Autoría Experta",
-    pBoard: "Todas las guías técnicas, fórmulas de coordenadas y convertidores de telemetría de MyLocationLab son redactados o revisados por profesionales especializados en Sistemas de Información Geográfica (SIG), geodesia y desarrollo web.",
+    pBoard:
+      "Todas las guías técnicas, fórmulas de coordenadas y convertidores de telemetría de MyLocationLab son redactados o revisados por profesionales especializados en Sistemas de Información Geográfica (SIG), geodesia y desarrollo web.",
     boardPoints: [
-      { title: "Verificación Geodésica:", desc: "Las fórmulas matemáticas (Haversine, Vincenty, conversiones GMS) se auditan contra modelos de referencia geodésicos oficiales." },
-      { title: "Conformidad con la API W3C:", desc: "Los métodos de posicionamiento en navegador siguen estrictamente la especificación oficial W3C Geolocation API." },
-      { title: "Auditorías Periódicas:", desc: "Revisamos los artículos y herramientas para adaptarnos a las actualizaciones de permisos en navegadores y mejoras en constelaciones satelitales (Galileo, GPS III)." }
+      {
+        title: "Verificación Geodésica:",
+        desc: "Las fórmulas matemáticas (Haversine, Vincenty, conversiones GMS) se auditan contra modelos de referencia geodésicos oficiales.",
+      },
+      {
+        title: "Conformidad con la API W3C:",
+        desc: "Los métodos de posicionamiento en navegador siguen estrictamente la especificación oficial W3C Geolocation API.",
+      },
+      {
+        title: "Auditorías Periódicas:",
+        desc: "Revisamos los artículos y herramientas para adaptarnos a las actualizaciones de permisos en navegadores y mejoras en constelaciones satelitales (Galileo, GPS III).",
+      },
     ],
     h2Standards: "2. Estándares Matemáticos y Cartográficos",
-    pStandards: "El cálculo geoespacial exige un rigor absoluto. Aplicamos los siguientes estándares en todas nuestras herramientas:",
+    pStandards:
+      "El cálculo geoespacial exige un rigor absoluto. Aplicamos los siguientes estándares en todas nuestras herramientas:",
     standards: [
-      { title: "Elipsoide de Referencia WGS 84:", desc: "Todas las coordenadas utilizan el World Geodetic System 1984 (EPSG:4326), estándar universal de navegación satelital." },
-      { title: "Resolución de 6 Decimales:", desc: "Las coordenadas se muestran con hasta seis decimales, alcanzando una precisión submétrica en el terreno de aprox. 0,11 metros." },
-      { title: "Cartografía Abierta OpenStreetMap:", desc: "La geocodificación inversa se basa en datos abiertos de la comunidad OpenStreetMap bajo licencia ODbL." }
+      {
+        title: "Elipsoide de Referencia WGS 84:",
+        desc: "Todas las coordenadas utilizan el World Geodetic System 1984 (EPSG:4326), estándar universal de navegación satelital.",
+      },
+      {
+        title: "Resolución de 6 Decimales:",
+        desc: "Las coordenadas se muestran con hasta seis decimales, alcanzando una precisión submétrica en el terreno de aprox. 0,11 metros.",
+      },
+      {
+        title: "Cartografía Abierta OpenStreetMap:",
+        desc: "La geocodificación inversa se basa en datos abiertos de la comunidad OpenStreetMap bajo licencia ODbL.",
+      },
     ],
     h2Independence: "3. Independencia Editorial",
-    pIndependence: "MyLocationLab opera con total autonomía editorial. No aceptamos acuerdos comerciales patrocinados para favorecer aplicaciones móviles o proveedores de VPN. Todas las comparativas se basan únicamente en criterios técnicos objetivos.",
+    pIndependence:
+      "MyLocationLab opera con total autonomía editorial. No aceptamos acuerdos comerciales patrocinados para favorecer aplicaciones móviles o proveedores de VPN. Todas las comparativas se basan únicamente en criterios técnicos objetivos.",
     h2Privacy: "4. Privacidad como Principio Innegociable",
-    pPrivacy: "Nuestra política editorial prohíbe el uso de rastreadores o intermediarios de datos en las herramientas de ubicación. Las coordenadas procesadas en el navegador permanecen en la memoria local del dispositivo y jamás se graban en servidores.",
+    pPrivacy:
+      "Nuestra política editorial prohíbe el uso de rastreadores o intermediarios de datos en las herramientas de ubicación. Las coordenadas procesadas en el navegador permanecen en la memoria local del dispositivo y jamás se graban en servidores.",
     h2Corrections: "5. Protocolo de Correcciones y Notificación",
-    pCorrections: "Si detecta cualquier errata o discrepancia técnica, nuestro equipo editorial revisa las peticiones con rapidez:",
+    pCorrections:
+      "Si detecta cualquier errata o discrepancia técnica, nuestro equipo editorial revisa las peticiones con rapidez:",
     correctionSteps: [
       "Envíe su sugerencia a editorial@mylocationlab.com indicando la URL afectada.",
       "Detalle la discrepancia y, si es posible, aporte referencias normativas (W3C, EPSG, IGN).",
-      "El equipo técnico tramita las solicitudes en un plazo máximo de 48 horas laborables."
-    ]
+      "El equipo técnico tramita las solicitudes en un plazo máximo de 48 horas laborables.",
+    ],
   },
   fr: {
     metaTitle: "Charte Éditoriale et Normes de Précision | MyLocationLab",
-    metaDesc: "Découvrez notre comité de rédaction, nos normes de calcul géodésique, notre indépendance éditoriale et notre protocole de correction.",
+    metaDesc:
+      "Découvrez notre comité de rédaction, nos normes de calcul géodésique, notre indépendance éditoriale et notre protocole de correction.",
     breadcrumb: "Charte Éditoriale",
     badge: "Normes de Vérification E-E-A-T",
     h1: "Charte Éditoriale et Normes de Vérification",
-    subtitle: "Comment MyLocationLab garantit l'exactitude géodésique, la stricte confidentialité client et l'excellence technique.",
+    subtitle:
+      "Comment MyLocationLab garantit l'exactitude géodésique, la stricte confidentialité client et l'excellence technique.",
     h2Board: "1. Comité Éditorial et Expertise Technique",
-    pBoard: "Tous les guides et outils de MyLocationLab sont rédigés et validés par des spécialistes des Systèmes d'Information Géographique (SIG), de la géodésie et du web.",
+    pBoard:
+      "Tous les guides et outils de MyLocationLab sont rédigés et validés par des spécialistes des Systèmes d'Information Géographique (SIG), de la géodésie et du web.",
     boardPoints: [
-      { title: "Contrôle Géodésique :", desc: "Les algorithmes (Haversine, Vincenty, DMS) sont validés selon les critères des instituts cartographiques officiels." },
-      { title: "Respect des Normes W3C :", desc: "Nos outils exploitent l'API W3C Geolocation selon les meilleures recommandations de sécurité." },
-      { title: "Mises à Jour Régulières :", desc: "Nos contenus sont révisés semestriellement pour intégrer les évolutions des navigateurs et constellations GNSS." }
+      {
+        title: "Contrôle Géodésique :",
+        desc: "Les algorithmes (Haversine, Vincenty, DMS) sont validés selon les critères des instituts cartographiques officiels.",
+      },
+      {
+        title: "Respect des Normes W3C :",
+        desc: "Nos outils exploitent l'API W3C Geolocation selon les meilleures recommandations de sécurité.",
+      },
+      {
+        title: "Mises à Jour Régulières :",
+        desc: "Nos contenus sont révisés semestriellement pour intégrer les évolutions des navigateurs et constellations GNSS.",
+      },
     ],
     h2Standards: "2. Standards Cartographiques et Calculs",
-    pStandards: "Nous appliquons les critères de précision les plus rigoureux du secteur géomatique :",
+    pStandards:
+      "Nous appliquons les critères de précision les plus rigoureux du secteur géomatique :",
     standards: [
-      { title: "Référentiel WGS 84 :", desc: "Toutes les coordonnées sont projetées dans le système géodésique mondial WGS 84 (EPSG:4326)." },
-      { title: "Précision à 6 Décimales :", desc: "Nous restituons la latitude et la longitude jusqu'à 6 décimales pour une résolution métrique de terrain." },
-      { title: "Données OpenStreetMap :", desc: "Le géocodage inverse s'appuie sur la base collaborative OpenStreetMap sous licence ODbL." }
+      {
+        title: "Référentiel WGS 84 :",
+        desc: "Toutes les coordonnées sont projetées dans le système géodésique mondial WGS 84 (EPSG:4326).",
+      },
+      {
+        title: "Précision à 6 Décimales :",
+        desc: "Nous restituons la latitude et la longitude jusqu'à 6 décimales pour une résolution métrique de terrain.",
+      },
+      {
+        title: "Données OpenStreetMap :",
+        desc: "Le géocodage inverse s'appuie sur la base collaborative OpenStreetMap sous licence ODbL.",
+      },
     ],
     h2Independence: "3. Indépendance Éditoriale",
-    pIndependence: "Aucune marque de matériel GPS, application mobile ou service VPN ne rémunère MyLocationLab pour figurer dans nos guides ou comparatifs.",
+    pIndependence:
+      "Aucune marque de matériel GPS, application mobile ou service VPN ne rémunère MyLocationLab pour figurer dans nos guides ou comparatifs.",
     h2Privacy: "4. Confidentialité Intégrale",
-    pPrivacy: "Vos coordonnées géographiques sont traitées exclusivement côté client dans la mémoire de votre navigateur et ne sont jamais enregistrées sur nos serveurs.",
+    pPrivacy:
+      "Vos coordonnées géographiques sont traitées exclusivement côté client dans la mémoire de votre navigateur et ne sont jamais enregistrées sur nos serveurs.",
     h2Corrections: "5. Signalement et Corrections",
     pCorrections: "Pour toute correction ou remarque technique :",
     correctionSteps: [
       "Écrivez à editorial@mylocationlab.com en mentionnant l'URL concernée.",
       "Précisez l'erreur relevée et vos sources scientifiques de référence.",
-      "Notre comité examine et met à jour les pages dans un délai de 48 heures ouvrées."
-    ]
+      "Notre comité examine et met à jour les pages dans un délai de 48 heures ouvrées.",
+    ],
   },
   de: {
     metaTitle: "Redaktionsrichtlinien & Genauigkeitsstandards | MyLocationLab",
-    metaDesc: "Erfahren Sie mehr über das Expertenteam, die geodätischen Standards, die redaktionelle Unabhängigkeit und Fehlerkorrekturen bei MyLocationLab.",
+    metaDesc:
+      "Erfahren Sie mehr über das Expertenteam, die geodätischen Standards, die redaktionelle Unabhängigkeit und Fehlerkorrekturen bei MyLocationLab.",
     breadcrumb: "Redaktionsrichtlinien",
     badge: "E-E-A-T Qualitätsstandards",
     h1: "Redaktionsrichtlinien & Verifizierungsstandards",
-    subtitle: "Wie MyLocationLab mathematische Präzision, Client-Datenschutz und fachliche Qualität in allen Tools und Artikeln gewährleistet.",
+    subtitle:
+      "Wie MyLocationLab mathematische Präzision, Client-Datenschutz und fachliche Qualität in allen Tools und Artikeln gewährleistet.",
     h2Board: "1. Redaktionsteam & Fachliche Autorenschaft",
-    pBoard: "Alle technischen Leitfäden und Geodaten-Tools auf MyLocationLab werden von Fachleuten mit ausgewiesener Expertise in Geoinformationssystemen (GIS) und Web-Engineering geprüft.",
+    pBoard:
+      "Alle technischen Leitfäden und Geodaten-Tools auf MyLocationLab werden von Fachleuten mit ausgewiesener Expertise in Geoinformationssystemen (GIS) und Web-Engineering geprüft.",
     boardPoints: [
-      { title: "Geodätische Prüfung:", desc: "Mathematische Formeln werden nach offiziellen geodätischen Referenzmodellen validiert." },
-      { title: "W3C-Konformität:", desc: "Die Standortermittlung erfolgt strikt nach der offiziellen W3C Geolocation API Spezifikation." },
-      { title: "Kontinuierliche Aktualisierung:", desc: "Halbjährliche Überprüfung auf Browser-Sicherheitsänderungen und GNSS-Satellitenmodernisierungen." }
+      {
+        title: "Geodätische Prüfung:",
+        desc: "Mathematische Formeln werden nach offiziellen geodätischen Referenzmodellen validiert.",
+      },
+      {
+        title: "W3C-Konformität:",
+        desc: "Die Standortermittlung erfolgt strikt nach der offiziellen W3C Geolocation API Spezifikation.",
+      },
+      {
+        title: "Kontinuierliche Aktualisierung:",
+        desc: "Halbjährliche Überprüfung auf Browser-Sicherheitsänderungen und GNSS-Satellitenmodernisierungen.",
+      },
     ],
     h2Standards: "2. Mathematische & Kartografische Standards",
     pStandards: "Präzision bildet das Fundament unserer Geodaten-Verarbeitung:",
     standards: [
-      { title: "WGS 84 Bezugssystem:", desc: "Alle Koordinaten basieren auf dem weltweiten Referenzsystem WGS 84 (EPSG:4326)." },
-      { title: "6-Dezimalstellen-Genauigkeit:", desc: "Breiten- und Längengrade bieten eine Bodenauflösung von bis zu ca. 0,11 Metern." },
-      { title: "OpenStreetMap-Integration:", desc: "Reverse Geocoding nutzt offene, geprüfte Daten der OpenStreetMap-Community (ODbL)." }
+      {
+        title: "WGS 84 Bezugssystem:",
+        desc: "Alle Koordinaten basieren auf dem weltweiten Referenzsystem WGS 84 (EPSG:4326).",
+      },
+      {
+        title: "6-Dezimalstellen-Genauigkeit:",
+        desc: "Breiten- und Längengrade bieten eine Bodenauflösung von bis zu ca. 0,11 Metern.",
+      },
+      {
+        title: "OpenStreetMap-Integration:",
+        desc: "Reverse Geocoding nutzt offene, geprüfte Daten der OpenStreetMap-Community (ODbL).",
+      },
     ],
     h2Independence: "3. Redaktionelle Unabhängigkeit",
-    pIndependence: "MyLocationLab arbeitet frei von kommerziellen Einflussnahmen. Wir akzeptieren keine bezahlten Platzierungen für Apps oder Hardware.",
+    pIndependence:
+      "MyLocationLab arbeitet frei von kommerziellen Einflussnahmen. Wir akzeptieren keine bezahlten Platzierungen für Apps oder Hardware.",
     h2Privacy: "4. Datenschutz als oberstes Prinzip",
-    pPrivacy: "Standortdaten verbleiben ausschließlich im flüchtigen Speicher Ihres Webbrowsers. Es erfolgt keinerlei serverseitige Speicherung.",
+    pPrivacy:
+      "Standortdaten verbleiben ausschließlich im flüchtigen Speicher Ihres Webbrowsers. Es erfolgt keinerlei serverseitige Speicherung.",
     h2Corrections: "5. Korrekturrichtlinien",
-    pCorrections: "Hinweise auf technische Unstimmigkeiten nehmen wir gerne entgegen:",
+    pCorrections:
+      "Hinweise auf technische Unstimmigkeiten nehmen wir gerne entgegen:",
     correctionSteps: [
       "Senden Sie eine E-Mail an editorial@mylocationlab.com mit dem Betreff 'Korrekturhinweis'.",
       "Nennen Sie die URL und Ihre fachliche Quellenreferenz.",
-      "Prüfung und Rückmeldung erfolgen innerhalb von 48 Arbeitsstunden."
-    ]
+      "Prüfung und Rückmeldung erfolgen innerhalb von 48 Arbeitsstunden.",
+    ],
   },
   pt: {
     metaTitle: "Política Editorial e Padrões de Precisão | MyLocationLab",
-    metaDesc: "Conheça o conselho editorial do MyLocationLab, padrões matemáticos SIG, independência comercial e protocolo de correções.",
+    metaDesc:
+      "Conheça o conselho editorial do MyLocationLab, padrões matemáticos SIG, independência comercial e protocolo de correções.",
     breadcrumb: "Política Editorial",
     badge: "Padrões de Verificação E-E-A-T",
     h1: "Política Editorial e Padrões de Verificação",
-    subtitle: "Como o MyLocationLab garante rigorosa precisão geodésica, privacidade do usuário e autoridade técnica comprovada.",
+    subtitle:
+      "Como o MyLocationLab garante rigorosa precisão geodésica, privacidade do usuário e autoridade técnica comprovada.",
     h2Board: "1. Conselho Editorial e Autoria Especializada",
-    pBoard: "Todos os tutoriais, fórmulas de coordenadas e ferramentas do MyLocationLab são desenvolvidos e auditados por especialistas em Sistemas de Informação Geográfica (SIG) e engenharia de software.",
+    pBoard:
+      "Todos os tutoriais, fórmulas de coordenadas e ferramentas do MyLocationLab são desenvolvidos e auditados por especialistas em Sistemas de Informação Geográfica (SIG) e engenharia de software.",
     boardPoints: [
-      { title: "Validação Geodésica:", desc: "Algoritmos matemáticos auditados segundo parâmetros de referência geodésica oficial." },
-      { title: "Conformidade W3C:", desc: "Métodos de geolocalização no navegador rigorosamente alinhados à especificação W3C." },
-      { title: "Revisão Contínua:", desc: "Auditorias periódicas para acompanhar novidades nos navegadores e constelações de satélites." }
+      {
+        title: "Validação Geodésica:",
+        desc: "Algoritmos matemáticos auditados segundo parâmetros de referência geodésica oficial.",
+      },
+      {
+        title: "Conformidade W3C:",
+        desc: "Métodos de geolocalização no navegador rigorosamente alinhados à especificação W3C.",
+      },
+      {
+        title: "Revisão Contínua:",
+        desc: "Auditorias periódicas para acompanhar novidades nos navegadores e constelações de satélites.",
+      },
     ],
     h2Standards: "2. Padrões Matemáticos e Cartográficos",
     pStandards: "A exatidão espacial é primordial em todos os nossos cálculos:",
     standards: [
-      { title: "Elipsoide WGS 84:", desc: "Coordenadas georreferenciadas no padrão universal WGS 84 (EPSG:4326)." },
-      { title: "6 Casas Decimais:", desc: "Resolução submétrica com margem de precisão territorial de cerca de 0,11 metros." },
-      { title: "Base OpenStreetMap:", desc: "Geocodificação reversa transparente com dados abertos da comunidade OpenStreetMap (ODbL)." }
+      {
+        title: "Elipsoide WGS 84:",
+        desc: "Coordenadas georreferenciadas no padrão universal WGS 84 (EPSG:4326).",
+      },
+      {
+        title: "6 Casas Decimais:",
+        desc: "Resolução submétrica com margem de precisão territorial de cerca de 0,11 metros.",
+      },
+      {
+        title: "Base OpenStreetMap:",
+        desc: "Geocodificação reversa transparente com dados abertos da comunidade OpenStreetMap (ODbL).",
+      },
     ],
     h2Independence: "3. Independência Editorial",
-    pIndependence: "O MyLocationLab mantém independência editorial absoluta. Não aceitamos pagamentos para favorecer aplicativos, provedores ou dispositivos.",
+    pIndependence:
+      "O MyLocationLab mantém independência editorial absoluta. Não aceitamos pagamentos para favorecer aplicativos, provedores ou dispositivos.",
     h2Privacy: "4. Privacidade Como Princípio Arquitetural",
-    pPrivacy: "Nenhum dado de localização é enviado para nossos servidores. Todas as coordenadas são processadas exclusivamente na memória temporária do seu navegador.",
+    pPrivacy:
+      "Nenhum dado de localização é enviado para nossos servidores. Todas as coordenadas são processadas exclusivamente na memória temporária do seu navegador.",
     h2Corrections: "5. Protocolo de Correções e Contato",
     pCorrections: "Para sugerir correções ou melhorias técnicas:",
     correctionSteps: [
       "Envie um e-mail para editorial@mylocationlab.com indicando a página em questão.",
       "Forneça a fundamentação técnica e a fonte de dados de referência.",
-      "A equipe editorial avalia e responde no prazo de até 48 horas úteis."
-    ]
+      "A equipe editorial avalia e responde no prazo de até 48 horas úteis.",
+    ],
   },
   hi: {
     metaTitle: "संपादकीय नीति और सटीकता मानक | MyLocationLab",
-    metaDesc: "MyLocationLab के संपादकीय समीक्षा बोर्ड, GIS गणितीय मानकों, पूर्ण गोपनीयता और सुधार प्रक्रिया के बारे में जानें।",
+    metaDesc:
+      "MyLocationLab के संपादकीय समीक्षा बोर्ड, GIS गणितीय मानकों, पूर्ण गोपनीयता और सुधार प्रक्रिया के बारे में जानें।",
     breadcrumb: "संपादकीय नीति",
     badge: "E-E-A-T सटीकता मानक",
     h1: "संपादकीय नीति और सत्यापन मानक",
-    subtitle: "MyLocationLab हर टूल और लेख में भू-स्थानिक सटीकता, पूर्ण गोपनीयता और तकनीकी विशेषज्ञता कैसे सुनिश्चित करता है।",
+    subtitle:
+      "MyLocationLab हर टूल और लेख में भू-स्थानिक सटीकता, पूर्ण गोपनीयता और तकनीकी विशेषज्ञता कैसे सुनिश्चित करता है।",
     h2Board: "1. संपादकीय समीक्षा बोर्ड और विशेषज्ञता",
-    pBoard: "MyLocationLab पर प्रकाशित प्रत्येक मार्गदर्शिका, सूत्र और टूल GIS (भौगोलिक सूचना प्रणाली) और जियोडेसी विशेषज्ञों द्वारा परीक्षित और सत्यापित है।",
+    pBoard:
+      "MyLocationLab पर प्रकाशित प्रत्येक मार्गदर्शिका, सूत्र और टूल GIS (भौगोलिक सूचना प्रणाली) और जियोडेसी विशेषज्ञों द्वारा परीक्षित और सत्यापित है।",
     boardPoints: [
-      { title: "जियोडेटिक सत्यापन:", desc: "गणितीय सूत्रों (Haversine, Vincenty) का आधिकारिक भू-स्थानिक मानकों के अनुसार परीक्षण किया जाता है।" },
-      { title: "W3C मानक अनुपालन:", desc: "ब्राउज़र लोकेशन प्रक्रियाएं आधिकारिक W3C Geolocation API के अनुरूप हैं।" },
-      { title: "नियमित ऑडिट:", desc: "ब्राउज़र गोपनीयता नीतियों और सैटेलाइट सिस्टम में बदलावों के अनुसार सामग्री को नियमित रूप से अपडेट किया जाता है।" }
+      {
+        title: "जियोडेटिक सत्यापन:",
+        desc: "गणितीय सूत्रों (Haversine, Vincenty) का आधिकारिक भू-स्थानिक मानकों के अनुसार परीक्षण किया जाता है।",
+      },
+      {
+        title: "W3C मानक अनुपालन:",
+        desc: "ब्राउज़र लोकेशन प्रक्रियाएं आधिकारिक W3C Geolocation API के अनुरूप हैं।",
+      },
+      {
+        title: "नियमित ऑडिट:",
+        desc: "ब्राउज़र गोपनीयता नीतियों और सैटेलाइट सिस्टम में बदलावों के अनुसार सामग्री को नियमित रूप से अपडेट किया जाता है।",
+      },
     ],
     h2Standards: "2. गणितीय और मानचित्रण मानक",
     pStandards: "स्थान गणना में पूर्ण सटीकता हमारा मुख्य लक्ष्य है:",
     standards: [
-      { title: "WGS 84 डेटम संदर्भ:", desc: "सभी निर्देशांक विश्व स्तर पर स्वीकृत WGS 84 (EPSG:4326) मानक पर आधारित हैं।" },
-      { title: "6-दशमलव सटीकता:", desc: "अक्षांश और देशांतर लगभग 0.11 मीटर तक की सूक्ष्म सटीकता प्रदान करते हैं।" },
-      { title: "OpenStreetMap खुला डेटा:", desc: "रिवर्स जियोकोडिंग OpenStreetMap समुदाय के खुले डेटा द्वारा संचालित है।" }
+      {
+        title: "WGS 84 डेटम संदर्भ:",
+        desc: "सभी निर्देशांक विश्व स्तर पर स्वीकृत WGS 84 (EPSG:4326) मानक पर आधारित हैं।",
+      },
+      {
+        title: "6-दशमलव सटीकता:",
+        desc: "अक्षांश और देशांतर लगभग 0.11 मीटर तक की सूक्ष्म सटीकता प्रदान करते हैं।",
+      },
+      {
+        title: "OpenStreetMap खुला डेटा:",
+        desc: "रिवर्स जियोकोडिंग OpenStreetMap समुदाय के खुले डेटा द्वारा संचालित है।",
+      },
     ],
     h2Independence: "3. संपादकीय स्वतंत्रता",
-    pIndependence: "हमारा प्लेटफ़ॉर्म पूरी तरह से निष्पक्ष है। हम किसी भी ऐप, हार्डवेयर या VPN के प्रचार के लिए भुगतान स्वीकार नहीं करते।",
+    pIndependence:
+      "हमारा प्लेटफ़ॉर्म पूरी तरह से निष्पक्ष है। हम किसी भी ऐप, हार्डवेयर या VPN के प्रचार के लिए भुगतान स्वीकार नहीं करते।",
     h2Privacy: "4. गोपनीयता का पूर्ण आश्वासन",
-    pPrivacy: "आपकी लोकेशन आपके ब्राउज़र में ही प्रोसेस होती है। हमारे सर्वर पर आपका कोई भी व्यक्तिगत डेटा कभी रिकॉर्ड नहीं किया जाता।",
+    pPrivacy:
+      "आपकी लोकेशन आपके ब्राउज़र में ही प्रोसेस होती है। हमारे सर्वर पर आपका कोई भी व्यक्तिगत डेटा कभी रिकॉर्ड नहीं किया जाता।",
     h2Corrections: "5. सुधार और त्रुटि निवारण प्रोटोकॉल",
     pCorrections: "तकनीकी त्रुटि की सूचना देने के लिए:",
     correctionSteps: [
       "editorial@mylocationlab.com पर संबंधित वेबपेज URL के साथ ईमेल भेजें।",
       "सटीक संदर्भ और आधिकारिक दस्तावेज़ साझा करें।",
-      "हमारा संपादकीय बोर्ड 48 कार्य घंटों के भीतर समीक्षा कर आवश्यक सुधार करता है।"
-    ]
+      "हमारा संपादकीय बोर्ड 48 कार्य घंटों के भीतर समीक्षा कर आवश्यक सुधार करता है।",
+    ],
   },
   id: {
     metaTitle: "Kebijakan Editorial & Standar Akurasi | MyLocationLab",
-    metaDesc: "Pelajari dewan peninjau editorial MyLocationLab, standar matematis SIG, independensi komersial, dan protokol koreksi teknis.",
+    metaDesc:
+      "Pelajari dewan peninjau editorial MyLocationLab, standar matematis SIG, independensi komersial, dan protokol koreksi teknis.",
     breadcrumb: "Kebijakan Editorial",
     badge: "Standar Verifikasi E-E-A-T",
     h1: "Kebijakan Editorial & Standar Verifikasi",
-    subtitle: "Bagaimana MyLocationLab menjamin presisi geospasial tinggi, privasi penuh di sisi peramban, dan kredibilitas teknis terpercaya.",
+    subtitle:
+      "Bagaimana MyLocationLab menjamin presisi geospasial tinggi, privasi penuh di sisi peramban, dan kredibilitas teknis terpercaya.",
     h2Board: "1. Dewan Peninjau Editorial & Penulis Ahli",
-    pBoard: "Seluruh panduan teknis, formula koordinat, dan utilitas telemetri di MyLocationLab ditinjau langsung oleh para profesional di bidang Sistem Informasi Geografis (SIG) dan rekayasa web.",
+    pBoard:
+      "Seluruh panduan teknis, formula koordinat, dan utilitas telemetri di MyLocationLab ditinjau langsung oleh para profesional di bidang Sistem Informasi Geografis (SIG) dan rekayasa web.",
     boardPoints: [
-      { title: "Verifikasi Geodetik:", desc: "Perhitungan matematis (Haversine, Vincenty, DMS) diuji dengan tolok ukur geodetik resmi." },
-      { title: "Kepatuhan W3C API:", desc: "Pemosisian peramban mengikuti standar baku W3C Geolocation API Specification." },
-      { title: "Audit Konten Berkala:", desc: "Pembaruan rutin untuk mengakomodasi pembaruan izin peramban dan peningkatan konstelasi satelit GNSS." }
+      {
+        title: "Verifikasi Geodetik:",
+        desc: "Perhitungan matematis (Haversine, Vincenty, DMS) diuji dengan tolok ukur geodetik resmi.",
+      },
+      {
+        title: "Kepatuhan W3C API:",
+        desc: "Pemosisian peramban mengikuti standar baku W3C Geolocation API Specification.",
+      },
+      {
+        title: "Audit Konten Berkala:",
+        desc: "Pembaruan rutin untuk mengakomodasi pembaruan izin peramban dan peningkatan konstelasi satelit GNSS.",
+      },
     ],
     h2Standards: "2. Standar Matematis dan Kartografis",
     pStandards: "Presisi geospasial menuntut standar teknis yang ketat:",
     standards: [
-      { title: "Ellipsoid Referensi WGS 84:", desc: "Seluruh koordinat menggunakan standar universal World Geodetic System 1984 (EPSG:4326)." },
-      { title: "Resolusi 6 Digit Desimal:", desc: "Memberikan ketelitian posisi di lapangan hingga sekitar 0,11 meter." },
-      { title: "Kepatuhan OpenStreetMap:", desc: "Reverse geocoding menggunakan data terbuka dari kontributor OpenStreetMap di bawah lisensi ODbL." }
+      {
+        title: "Ellipsoid Referensi WGS 84:",
+        desc: "Seluruh koordinat menggunakan standar universal World Geodetic System 1984 (EPSG:4326).",
+      },
+      {
+        title: "Resolusi 6 Digit Desimal:",
+        desc: "Memberikan ketelitian posisi di lapangan hingga sekitar 0,11 meter.",
+      },
+      {
+        title: "Kepatuhan OpenStreetMap:",
+        desc: "Reverse geocoding menggunakan data terbuka dari kontributor OpenStreetMap di bawah lisensi ODbL.",
+      },
     ],
     h2Independence: "3. Independensi Editorial",
-    pIndependence: "MyLocationLab tidak menerima kompensasi berbayar untuk mempromosikan perangkat keras, aplikasi, atau layanan VPN tertentu.",
+    pIndependence:
+      "MyLocationLab tidak menerima kompensasi berbayar untuk mempromosikan perangkat keras, aplikasi, atau layanan VPN tertentu.",
     h2Privacy: "4. Privasi Penuh di Sisi Klien",
-    pPrivacy: "Koordinat Anda diproses murni di memori sementara peramban web dan tidak pernah disimpan atau dikirim ke peladen kami.",
+    pPrivacy:
+      "Koordinat Anda diproses murni di memori sementara peramban web dan tidak pernah disimpan atau dikirim ke peladen kami.",
     h2Corrections: "5. Protokol Pelaporan Koreksi",
-    pCorrections: "Jika Anda menemukan kekeliruan perhitungan teknis atau informasi:",
+    pCorrections:
+      "Jika Anda menemukan kekeliruan perhitungan teknis atau informasi:",
     correctionSteps: [
       "Kirimkan laporan ke editorial@mylocationlab.com dengan menyertakan URL halaman terkait.",
       "Sertakan rincian kekeliruan dan sumber rujukan resmi (W3C, EPSG, atau institusi pemetaan).",
-      "Dewan teknis kami meninjau laporan dalam waktu maksimal 48 jam kerja."
-    ]
-  }
+      "Dewan teknis kami meninjau laporan dalam waktu maksimal 48 jam kerja.",
+    ],
+  },
 };
 
 const c = policyContent[lang] || policyContent.en;
-const homePath = lang === 'en' ? '/' : `/${lang}/`;
+const homePath = lang === "en" ? "/" : `/${lang}/`;
 
 const breadcrumbs = [
-  { label: t('common.home'), href: homePath },
-  { label: c.breadcrumb }
+  { label: t("common.home"), href: homePath },
+  { label: c.breadcrumb },
 ];
 
-const pageUrl = getLocalizedPath('/editorial-policy/', lang);
+const pageUrl = getLocalizedPath("/editorial-policy/", lang);
 const schemaData = {
-  '@context': 'https://schema.org',
-  '@type': 'AboutPage',
+  "@context": "https://schema.org",
+  "@type": "AboutPage",
   name: c.h1,
   description: c.metaDesc,
   url: `https://mylocationlab.com${pageUrl}`,
   publisher: {
-    '@type': 'Organization',
-    name: 'MyLocationLab',
-    url: 'https://mylocationlab.com',
-    logo: 'https://mylocationlab.com/favicon.svg'
-  }
+    "@type": "Organization",
+    name: "MyLocationLab",
+    url: "https://mylocationlab.com",
+    logo: "https://mylocationlab.com/favicon.svg",
+  },
 };
 ---
 
@@ -307,32 +483,58 @@ const schemaData = {
   <div class="container">
     <Breadcrumbs items={breadcrumbs} lang={lang} />
 
-    <section class="page-header" style="text-align: center; margin-bottom: var(--space-8);">
-      <span class="badge badge-primary" style="margin-bottom: var(--space-3);">{c.badge}</span>
-      <h1>{c.h1.split('&')[0]} <span class="text-gradient">& {c.h1.split('&')[1] || ''}</span></h1>
-      <p class="page-header-desc" style="max-width: 720px; margin: 0 auto; line-height: 1.75;">
+    <section
+      class="page-header"
+      style="text-align: center; margin-bottom: var(--space-8);"
+    >
+      <span class="badge badge-primary" style="margin-bottom: var(--space-3);"
+        >{c.badge}</span
+      >
+      <h1>
+        {c.h1.split("&")[0]}
+        <span class="text-gradient">& {c.h1.split("&")[1] || ""}</span>
+      </h1>
+      <p
+        class="page-header-desc"
+        style="max-width: 720px; margin: 0 auto; line-height: 1.75;"
+      >
         {c.subtitle}
       </p>
     </section>
 
-    <article class="prose" style="max-width: var(--max-width-narrow); margin: 0 auto var(--space-16); font-size: var(--text-base); line-height: 1.8;">
+    <article
+      class="prose"
+      style="max-width: var(--max-width-narrow); margin: 0 auto var(--space-16); font-size: var(--text-base); line-height: 1.8;"
+    >
       <h2>{c.h2Board}</h2>
       <p>{c.pBoard}</p>
-      <div style="display: grid; gap: var(--space-4); margin: var(--space-6) 0;">
-        {c.boardPoints.map((item) => (
-          <div style="background: var(--color-bg-card); border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: var(--space-4) var(--space-5);">
-            <strong style="color: var(--color-text-primary);">{item.title}</strong>
-            <p style="margin: var(--space-1) 0 0; color: var(--color-text-secondary); font-size: var(--text-sm);">{item.desc}</p>
-          </div>
-        ))}
+      <div
+        style="display: grid; gap: var(--space-4); margin: var(--space-6) 0;"
+      >
+        {
+          c.boardPoints.map((item) => (
+            <div style="background: var(--color-bg-card); border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: var(--space-4) var(--space-5);">
+              <strong style="color: var(--color-text-primary);">
+                {item.title}
+              </strong>
+              <p style="margin: var(--space-1) 0 0; color: var(--color-text-secondary); font-size: var(--text-sm);">
+                {item.desc}
+              </p>
+            </div>
+          ))
+        }
       </div>
 
       <h2>{c.h2Standards}</h2>
       <p>{c.pStandards}</p>
       <ul>
-        {c.standards.map((s) => (
-          <li><strong>{s.title}</strong> {s.desc}</li>
-        ))}
+        {
+          c.standards.map((s) => (
+            <li>
+              <strong>{s.title}</strong> {s.desc}
+            </li>
+          ))
+        }
       </ul>
 
       <h2>{c.h2Independence}</h2>
@@ -343,18 +545,35 @@ const schemaData = {
 
       <h2>{c.h2Corrections}</h2>
       <p>{c.pCorrections}</p>
-      <ol style="padding-left: var(--space-5); margin: var(--space-4) 0 var(--space-8);">
-        {c.correctionSteps.map((step) => (
-          <li style="margin-bottom: var(--space-2); color: var(--color-text-secondary);">{step}</li>
-        ))}
+      <ol
+        style="padding-left: var(--space-5); margin: var(--space-4) 0 var(--space-8);"
+      >
+        {
+          c.correctionSteps.map((step) => (
+            <li style="margin-bottom: var(--space-2); color: var(--color-text-secondary);">
+              {step}
+            </li>
+          ))
+        }
       </ol>
 
-      <div style="margin-top: var(--space-10); padding: var(--space-6); background: var(--color-bg-secondary); border-radius: var(--radius-xl); border: 1px solid var(--color-border); text-align: center;">
-        <h3 style="margin-top: 0; font-size: var(--text-lg); font-weight: 700;">Direct Editorial Inquiries</h3>
-        <p style="color: var(--color-text-secondary); font-size: var(--text-sm); margin-bottom: var(--space-4);">
-          Have a question for our review team or want to submit an academic correction?
+      <div
+        style="margin-top: var(--space-10); padding: var(--space-6); background: var(--color-bg-secondary); border-radius: var(--radius-xl); border: 1px solid var(--color-border); text-align: center;"
+      >
+        <h3 style="margin-top: 0; font-size: var(--text-lg); font-weight: 700;">
+          Direct Editorial Inquiries
+        </h3>
+        <p
+          style="color: var(--color-text-secondary); font-size: var(--text-sm); margin-bottom: var(--space-4);"
+        >
+          Have a question for our review team or want to submit an academic
+          correction?
         </p>
-        <a href="mailto:editorial@mylocationlab.com" class="btn btn-primary" style="text-decoration: none;">editorial@mylocationlab.com</a>
+        <a
+          href="mailto:editorial@mylocationlab.com"
+          class="btn btn-primary"
+          style="text-decoration: none;">editorial@mylocationlab.com</a
+        >
       </div>
     </article>
   </div>

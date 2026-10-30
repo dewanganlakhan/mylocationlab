@@ -216,9 +216,95 @@ const c = translations[lang] || translations.en;
       <li>{c.fmt4}</li>
       <li>{c.fmt5}</li>
     </ul>
-    <p>
-      <a href={getLocalizedPath('/comparisons/decimal-degrees-vs-dms/', lang)}>{c.compLinkText} →</a>
+    <p style="margin-top: var(--space-4); line-height: 1.8;">
+      <a href={getLocalizedPath('/comparisons/decimal-degrees-vs-dms/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">{c.compLinkText} →</a>
     </p>
+
+    <div class="callout-box" style="margin-top: var(--space-6); line-height: 1.8;">
+      <p style="margin: 0; font-size: var(--text-sm);">
+        {lang === 'fr' ? (
+          <>
+            <strong>Outils et guides connectés :</strong> Isolez votre position satellitaire en direct avec notre <a href={getLocalizedPath('/tools/gps-coordinates/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Détecteur de Coordonnées GPS</a> ou visualisez vos parallèles sur le <a href={getLocalizedPath('/tools/latitude-longitude/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Traceur de Latitude et Longitude</a>. Pour convertir vos coordonnées en adresse postale physique, utilisez notre <a href={getLocalizedPath('/tools/reverse-geocoding/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Géocodage Inverse</a> et le <a href={getLocalizedPath('/tools/address-finder/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Localisateur d'Adresse</a>. Mesurez la distance entre deux coordonnées avec le <a href={getLocalizedPath('/tools/distance-calculator/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Calculateur de Distance</a> ou générez un <a href={getLocalizedPath('/tools/location-qr-code/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">QR Code de Localisation</a>. Pour approfondir, lisez nos guides sur la <a href={getLocalizedPath('/guides/latitude-and-longitude-explained/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">latitude et longitude</a> et les <a href={getLocalizedPath('/guides/utm-coordinates-and-datums/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">systèmes UTM et datums géodésiques</a>.
+          </>
+        ) : lang === 'es' ? (
+          <>
+            <strong>Herramientas y guías conectadas :</strong> Conozca su posición satelital en directo con el <a href={getLocalizedPath('/tools/gps-coordinates/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Buscador de Coordenadas GPS</a> o examine paralelos en el <a href={getLocalizedPath('/tools/latitude-longitude/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Buscador de Latitud y Longitud</a>. Para convertir coordenadas a dirección postal, pruebe el <a href={getLocalizedPath('/tools/reverse-geocoding/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Geocodificador Inverso</a> y el <a href={getLocalizedPath('/tools/address-finder/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Buscador de Dirección</a>. Mida distancias con la <a href={getLocalizedPath('/tools/distance-calculator/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Calculadora de Distancia</a> o genere un <a href={getLocalizedPath('/tools/location-qr-code/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Código QR de Ubicación</a>. Aprenda más en nuestras guías de <a href={getLocalizedPath('/guides/latitude-and-longitude-explained/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">latitud y longitud explicadas</a> y <a href={getLocalizedPath('/guides/utm-coordinates-and-datums/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">coordenadas UTM y datums</a>.
+          </>
+        ) : lang === 'de' ? (
+          <>
+            <strong>Verbundene Tools & Leitfäden :</strong> Ermitteln Sie Ihre Live-Koordinaten mit dem <a href={getLocalizedPath('/tools/gps-coordinates/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">GPS-Koordinaten-Finder</a> oder dem <a href={getLocalizedPath('/tools/latitude-longitude/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Breiten- und Längengrad-Finder</a>. Wandeln Sie Koordinaten in Postadressen um mit dem <a href={getLocalizedPath('/tools/reverse-geocoding/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Rückwärts-Geocoder</a> und dem <a href={getLocalizedPath('/tools/address-finder/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Adressen-Finder</a>. Berechnen Sie Abstände mit dem <a href={getLocalizedPath('/tools/distance-calculator/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Entfernungsrechner</a> oder erstellen Sie einen <a href={getLocalizedPath('/tools/location-qr-code/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Standort-QR-Code</a>. Vertiefen Sie Ihr Wissen mit unseren Ratgebern zu <a href={getLocalizedPath('/guides/latitude-and-longitude-explained/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Breiten- und Längengraden</a> sowie <a href={getLocalizedPath('/guides/utm-coordinates-and-datums/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">UTM-Koordinaten & Geodaten</a>.
+          </>
+        ) : lang === 'pt' ? (
+          <>
+            <strong>Ferramentas e guias conectados :</strong> Obtenha sua posição ao vivo com o <a href={getLocalizedPath('/tools/gps-coordinates/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Buscador de Coordenadas GPS</a> e o <a href={getLocalizedPath('/tools/latitude-longitude/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Localizador de Latitude e Longitude</a>. Para transformar coordenadas em endereço residencial, use o <a href={getLocalizedPath('/tools/reverse-geocoding/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Geocodificador Reverso</a> e o <a href={getLocalizedPath('/tools/address-finder/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Localizador de Endereço</a>. Calcule distâncias com a <a href={getLocalizedPath('/tools/distance-calculator/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Calculadora de Distância</a> ou gere um <a href={getLocalizedPath('/tools/location-qr-code/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">QR Code de Localização</a>. Leia nossos guias de <a href={getLocalizedPath('/guides/latitude-and-longitude-explained/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">latitude e longitude</a> e <a href={getLocalizedPath('/guides/utm-coordinates-and-datums/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">coordenadas UTM e datum geodésico</a>.
+          </>
+        ) : lang === 'hi' ? (
+          <>
+            <strong>जुड़े हुए टूल और गाइड :</strong> अपने लाइव निर्देशांक जानने के लिए <a href={getLocalizedPath('/tools/gps-coordinates/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">GPS निर्देशांक खोजक</a> और <a href={getLocalizedPath('/tools/latitude-longitude/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">अक्षांश और देशांतर खोजक</a> देखें। निर्देशांकों को सड़क पते में बदलने के लिए <a href={getLocalizedPath('/tools/reverse-geocoding/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">रिवर्स जियोकोडर</a> और <a href={getLocalizedPath('/tools/address-finder/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">सड़क पता खोजक</a> का उपयोग करें। दो बिंदुओं के बीच दूरी मापने के लिए <a href={getLocalizedPath('/tools/distance-calculator/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">दूरी कैलकुलेटर</a> या <a href={getLocalizedPath('/tools/location-qr-code/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">लोकेशन QR कोड</a> का उपयोग करें। विस्तृत जानकारी के लिए हमारे <a href={getLocalizedPath('/guides/latitude-and-longitude-explained/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">अक्षांश और देशांतर गाइड</a> को पढ़ें।
+          </>
+        ) : lang === 'id' ? (
+          <>
+            <strong>Alat & Panduan Terkait :</strong> Dapatkan koordinat langsung dari perangkat Anda menggunakan <a href={getLocalizedPath('/tools/gps-coordinates/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Pencari Koordinat GPS</a> atau <a href={getLocalizedPath('/tools/latitude-longitude/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Pencari Lintang dan Bujur</a>. Untuk mengubah koordinat menjadi alamat fisik, gunakan <a href={getLocalizedPath('/tools/reverse-geocoding/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Reverse Geocoder</a> dan <a href={getLocalizedPath('/tools/address-finder/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Pencari Alamat</a>. Ukur rentang jarak dengan <a href={getLocalizedPath('/tools/distance-calculator/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Kalkulator Jarak</a> atau buat <a href={getLocalizedPath('/tools/location-qr-code/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">QR Code Lokasi</a>. Pelajari konsepnya dalam panduan <a href={getLocalizedPath('/guides/latitude-and-longitude-explained/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">penjelasan lintang dan bujur</a> serta <a href={getLocalizedPath('/guides/utm-coordinates-and-datums/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">koordinat UTM & datum</a>.
+          </>
+        ) : (
+          <>
+            <strong>Connected Tools & Guides:</strong> Retrieve live hardware coordinates with our <a href={getLocalizedPath('/tools/gps-coordinates/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">GPS Coordinates Finder</a> or inspect parallels on our <a href={getLocalizedPath('/tools/latitude-longitude/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Latitude Longitude Finder</a>. Convert coordinates directly into physical street addresses with our <a href={getLocalizedPath('/tools/reverse-geocoding/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Reverse Geocoder</a> and <a href={getLocalizedPath('/tools/address-finder/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Address Finder</a>. Measure distances with the <a href={getLocalizedPath('/tools/distance-calculator/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Distance Calculator</a> or create a mobile pin with the <a href={getLocalizedPath('/tools/location-qr-code/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Location QR Code Generator</a>. Learn more in our guides to <a href={getLocalizedPath('/guides/latitude-and-longitude-explained/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Latitude & Longitude Explained</a> and <a href={getLocalizedPath('/guides/utm-coordinates-and-datums/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">UTM Coordinates & Datums</a>.
+          </>
+        )}
+      </p>
+    </div>
+
+    <!-- Related Tools Grid -->
+    <div class="contextual-next-box" style="margin-top: var(--space-8);">
+      <h3 class="contextual-next-title">
+        <span>🛠️</span>
+        <span>{lang === 'fr' ? 'Outils de Coordonnées Associés' : lang === 'es' ? 'Herramientas de Coordenadas Relacionadas' : lang === 'de' ? 'Verwandte Koordinaten-Tools' : lang === 'pt' ? 'Ferramentas de Coordenadas Relacionadas' : lang === 'hi' ? 'संबंधित निर्देशांक टूल' : lang === 'id' ? 'Alat Koordinat Terkait' : 'Related Coordinate Tools'}</span>
+      </h3>
+      <div class="contextual-next-grid">
+        <a href={getLocalizedPath('/tools/gps-coordinates/', lang)} class="contextual-link-card">
+          <span class="contextual-link-icon">📍</span>
+          <div class="contextual-link-info">
+            <div class="contextual-link-title">{lang === 'es' ? 'Buscador de Coordenadas GPS' : lang === 'fr' ? 'Coordonnées GPS' : lang === 'de' ? 'GPS-Koordinaten-Finder' : lang === 'pt' ? 'Coordenadas GPS' : lang === 'hi' ? 'GPS निर्देशांक खोजक' : lang === 'id' ? 'Koordinat GPS' : 'GPS Coordinates Finder'}</div>
+            <div class="contextual-link-sub">{lang === 'es' ? 'Latitud, longitud y altitud' : lang === 'fr' ? 'Latitude, longitude et altitude' : lang === 'de' ? 'Breite, Länge und Höhe' : 'Latitude, longitude & altitude'}</div>
+          </div>
+        </a>
+        <a href={getLocalizedPath('/tools/latitude-longitude/', lang)} class="contextual-link-card">
+          <span class="contextual-link-icon">🌐</span>
+          <div class="contextual-link-info">
+            <div class="contextual-link-title">{lang === 'es' ? 'Buscador de Latitud y Longitud' : lang === 'fr' ? 'Latitude et Longitude' : lang === 'de' ? 'Breiten- & Längengrad' : lang === 'pt' ? 'Latitude e Longitude' : lang === 'hi' ? 'अक्षांश और देशांतर खोजक' : lang === 'id' ? 'Lintang dan Bujur' : 'Latitude Longitude Finder'}</div>
+            <div class="contextual-link-sub">{lang === 'es' ? 'Selección en mapa interactivo' : lang === 'fr' ? 'Sélection sur carte interactive' : lang === 'de' ? 'Interaktive Kartenauswahl' : 'Interactive map pinpoint'}</div>
+          </div>
+        </a>
+        <a href={getLocalizedPath('/tools/reverse-geocoding/', lang)} class="contextual-link-card">
+          <span class="contextual-link-icon">🔄</span>
+          <div class="contextual-link-info">
+            <div class="contextual-link-title">{lang === 'es' ? 'Geocodificador Inverso' : lang === 'fr' ? 'Géocodage Inverse' : lang === 'de' ? 'Rückwärts-Geocoder' : lang === 'pt' ? 'Geocodificador Reverso' : lang === 'hi' ? 'रिवर्स जियोकोडर' : lang === 'id' ? 'Reverse Geocoder' : 'Reverse Geocoder'}</div>
+            <div class="contextual-link-sub">{lang === 'es' ? 'Coordenadas a dirección postal' : lang === 'fr' ? 'Coordonnées en adresse' : lang === 'de' ? 'Koordinaten in Adresse' : 'Coordinates to street address'}</div>
+          </div>
+        </a>
+        <a href={getLocalizedPath('/tools/distance-calculator/', lang)} class="contextual-link-card">
+          <span class="contextual-link-icon">📏</span>
+          <div class="contextual-link-info">
+            <div class="contextual-link-title">{lang === 'es' ? 'Calculadora de Distancia' : lang === 'fr' ? 'Calculateur de Distance' : lang === 'de' ? 'Entfernungsrechner' : lang === 'pt' ? 'Calculadora de Distância' : lang === 'hi' ? 'दूरी कैलकुलेटर' : lang === 'id' ? 'Kalkulator Jarak' : 'Distance Calculator'}</div>
+            <div class="contextual-link-sub">{lang === 'es' ? 'Distancia ortodrómica exacta' : lang === 'fr' ? 'Distance entre coordonnées' : lang === 'de' ? 'Distanz zwischen Punkten' : 'Distance between coordinates'}</div>
+          </div>
+        </a>
+        <a href={getLocalizedPath('/tools/location-qr-code/', lang)} class="contextual-link-card">
+          <span class="contextual-link-icon">📱</span>
+          <div class="contextual-link-info">
+            <div class="contextual-link-title">{lang === 'es' ? 'Código QR de Ubicación' : lang === 'fr' ? 'QR Code de Localisation' : lang === 'de' ? 'Standort-QR-Code' : lang === 'pt' ? 'QR Code de Localização' : lang === 'hi' ? 'लोकेशन QR कोड' : lang === 'id' ? 'QR Code Lokasi' : 'Location QR Code'}</div>
+            <div class="contextual-link-sub">{lang === 'es' ? 'Código escaneable de coordenadas' : lang === 'fr' ? 'QR code scannable' : lang === 'de' ? 'Scannbarer QR-Code' : 'Scannable coordinate code'}</div>
+          </div>
+        </a>
+        <a href={getLocalizedPath('/my-location/coordinates/', lang)} class="contextual-link-card">
+          <span class="contextual-link-icon">🧭</span>
+          <div class="contextual-link-info">
+            <div class="contextual-link-title">{lang === 'es' ? 'Mis Coordenadas Actuales' : lang === 'fr' ? 'Mes Coordonnées Directes' : lang === 'de' ? 'Meine Koordinaten' : lang === 'pt' ? 'Minhas Coordenadas' : lang === 'hi' ? 'मेरे वर्तमान निर्देशांक' : lang === 'id' ? 'Koordinat Saya' : 'My Coordinates Hub'}</div>
+            <div class="contextual-link-sub">{lang === 'es' ? 'Lectura en todos los formatos' : lang === 'fr' ? 'Tous les formats géographiques' : lang === 'de' ? 'Alle globalen Formate' : 'Live formats in DD, DMS, UTM'}</div>
+          </div>
+        </a>
+      </div>
+    </div>
   </div>
 
   <script>

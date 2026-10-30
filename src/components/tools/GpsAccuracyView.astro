@@ -560,12 +560,91 @@ const t = translations[lang] || translations.en;
       <li set:html={t.li4}></li>
     </ul>
 
-    <h2>{t.h2Related}</h2>
-    <ul>
-      <li><a href={getLocalizedPath('/tools/gps-coordinates/', lang)}>{t.linkGps}</a></li>
-      <li><a href={getLocalizedPath('/guides/improve-gps-accuracy/', lang)}>{t.linkGuideAccuracy}</a></li>
-      <li><a href={getLocalizedPath('/comparisons/gps-vs-ip-location/', lang)}>{t.linkComp}</a></li>
-    </ul>
+    <div class="callout-box" style="margin-top: var(--space-6); line-height: 1.8;">
+      <p style="margin: 0; font-size: var(--text-sm);">
+        {lang === 'fr' ? (
+          <>
+            <strong>Diagnostic et calibrage de position :</strong> Si votre rayon d'erreur dépasse 20 mètres, suivez notre protocole étape par étape dans <a href={getLocalizedPath('/guides/improve-gps-accuracy/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Comment améliorer la précision du GPS</a> et consultez notre guide de dépannage sur la <a href={getLocalizedPath('/guides/wrong-location/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">correction d'une position erronée</a>. Comparez les limites des signaux satellite face aux réseaux internet dans notre analyse <a href={getLocalizedPath('/comparisons/gps-vs-ip-location/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">GPS vs Géolocalisation IP</a>. Pour afficher vos coordonnées exactes avec fix satellite en temps réel, rendez-vous sur le <a href={getLocalizedPath('/tools/gps-coordinates/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Détecteur de Coordonnées GPS</a> ou vérifiez votre altitude avec le <a href={getLocalizedPath('/tools/elevation-finder/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Localisateur d'Altitude</a>.
+          </>
+        ) : lang === 'es' ? (
+          <>
+            <strong>Diagnóstico y calibración de señal :</strong> Si su radio de error supera los 20 metros, aplique las técnicas de nuestro tutorial <a href={getLocalizedPath('/guides/improve-gps-accuracy/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Cómo mejorar la precisión GPS</a> y consulte nuestra guía para <a href={getLocalizedPath('/guides/wrong-location/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">corregir ubicaciones erróneas</a>. Compare las tecnologías satelitales frente a redes en <a href={getLocalizedPath('/comparisons/gps-vs-ip-location/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">GPS vs Geolocalización IP</a>. Para ver sus coordenadas satelitales en vivo, utilice el <a href={getLocalizedPath('/tools/gps-coordinates/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Buscador de Coordenadas GPS</a> o mida la altura sobre el nivel del mar en el <a href={getLocalizedPath('/tools/elevation-finder/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Buscador de Altitud</a>.
+          </>
+        ) : lang === 'de' ? (
+          <>
+            <strong>Fehlerdiagnose und Empfangsoptimierung :</strong> Liegt Ihr Fehlerradius über 20 Metern, nutzen Sie die Tipps in unserem Leitfaden <a href={getLocalizedPath('/guides/improve-gps-accuracy/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">GPS-Genauigkeit verbessern</a> sowie unsere Anleitung zur <a href={getLocalizedPath('/guides/wrong-location/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Behebung falscher Standorte</a>. Vergleichen Sie Satellitenempfang und Netzwerk-Routing in <a href={getLocalizedPath('/comparisons/gps-vs-ip-location/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">GPS vs. IP-Standort</a>. Ihre genauen Koordinaten ermitteln Sie mit dem <a href={getLocalizedPath('/tools/gps-coordinates/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">GPS-Koordinaten-Finder</a> und Höhenwerte mit dem <a href={getLocalizedPath('/tools/elevation-finder/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Höhenfinder</a>.
+          </>
+        ) : lang === 'pt' ? (
+          <>
+            <strong>Diagnóstico e calibração de sinal :</strong> Se o raio de incerteza ultrapassar 20 metros, aplique as instruções de <a href={getLocalizedPath('/guides/improve-gps-accuracy/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">como melhorar a precisão do GPS</a> e o guia para <a href={getLocalizedPath('/guides/wrong-location/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">corrigir localização errada</a>. Entenda a diferença entre dados de rede e satélites em <a href={getLocalizedPath('/comparisons/gps-vs-ip-location/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">GPS vs Localização IP</a>. Para ver coordenadas ao vivo, use o <a href={getLocalizedPath('/tools/gps-coordinates/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Buscador de Coordenadas GPS</a> ou confira a elevação no <a href={getLocalizedPath('/tools/elevation-finder/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Localizador de Altitude</a>.
+          </>
+        ) : lang === 'hi' ? (
+          <>
+            <strong>सिग्नल जांच और सुधार गाइड :</strong> यदि त्रुटि का दायरा 20 मीटर से अधिक है, तो हमारे गाइड <a href={getLocalizedPath('/guides/improve-gps-accuracy/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">GPS सटीकता कैसे बढ़ाएं</a> और <a href={getLocalizedPath('/guides/wrong-location/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">गलत लोकेशन कैसे ठीक करें</a> को पढ़ें। तुलनात्मक विश्लेषण के लिए <a href={getLocalizedPath('/comparisons/gps-vs-ip-location/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">GPS बनाम IP लोकेशन</a> देखें। सटीक निर्देशांकों के लिए <a href={getLocalizedPath('/tools/gps-coordinates/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">GPS निर्देशांक खोजक</a> और ऊंचाई हेतु <a href={getLocalizedPath('/tools/elevation-finder/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">ऊंचाई खोजक</a> का उपयोग करें।
+          </>
+        ) : lang === 'id' ? (
+          <>
+            <strong>Diagnostik dan Kalibrasi Sinyal :</strong> Jika radius kesalahan melebihi 20 meter, ikuti panduan kami tentang <a href={getLocalizedPath('/guides/improve-gps-accuracy/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">cara meningkatkan akurasi GPS</a> dan <a href={getLocalizedPath('/guides/wrong-location/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">memperbaiki lokasi salah</a>. Pahami batasan jaringan di <a href={getLocalizedPath('/comparisons/gps-vs-ip-location/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">GPS vs Lokasi IP</a>. Untuk membaca koordinat satelit langsung, gunakan <a href={getLocalizedPath('/tools/gps-coordinates/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Pencari Koordinat GPS</a> atau cek ketinggian di <a href={getLocalizedPath('/tools/elevation-finder/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Pencari Elevasi</a>.
+          </>
+        ) : (
+          <>
+            <strong>Signal Diagnostics & Calibration:</strong> If your confidence error radius exceeds 20 meters, apply our step-by-step techniques in <a href={getLocalizedPath('/guides/improve-gps-accuracy/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">How to Improve GPS Accuracy</a> and troubleshoot in <a href={getLocalizedPath('/guides/wrong-location/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Fixing Wrong Location Issues</a>. Compare sensor limits against wired internet sockets in our guide to <a href={getLocalizedPath('/comparisons/gps-vs-ip-location/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">GPS vs IP Location</a>. View your locked satellite coordinates in our <a href={getLocalizedPath('/tools/gps-coordinates/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">GPS Coordinates Finder</a> or inspect vertical height with the <a href={getLocalizedPath('/tools/elevation-finder/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Elevation Finder</a>.
+          </>
+        )}
+      </p>
+    </div>
+
+    <!-- Related Tools Grid -->
+    <div class="contextual-next-box" style="margin-top: var(--space-8);">
+      <h3 class="contextual-next-title">
+        <span>🛠️</span>
+        <span>{t.h2Related}</span>
+      </h3>
+      <div class="contextual-next-grid">
+        <a href={getLocalizedPath('/tools/gps-coordinates/', lang)} class="contextual-link-card">
+          <span class="contextual-link-icon">📍</span>
+          <div class="contextual-link-info">
+            <div class="contextual-link-title">{t.linkGps}</div>
+            <div class="contextual-link-sub">{lang === 'es' ? 'Coordenadas y altitud' : lang === 'fr' ? 'Coordonnées et altitude' : lang === 'de' ? 'Koordinaten & Höhe' : 'Live satellite fix'}</div>
+          </div>
+        </a>
+        <a href={getLocalizedPath('/guides/improve-gps-accuracy/', lang)} class="contextual-link-card">
+          <span class="contextual-link-icon">⚡</span>
+          <div class="contextual-link-info">
+            <div class="contextual-link-title">{t.linkGuideAccuracy}</div>
+            <div class="contextual-link-sub">{lang === 'es' ? 'Calibración en iOS y Android' : lang === 'fr' ? 'Calibrage iOS et Android' : lang === 'de' ? 'Kalibrierung für Android & iOS' : 'Calibration for iOS & Android'}</div>
+          </div>
+        </a>
+        <a href={getLocalizedPath('/guides/wrong-location/', lang)} class="contextual-link-card">
+          <span class="contextual-link-icon">🔧</span>
+          <div class="contextual-link-info">
+            <div class="contextual-link-title">{lang === 'es' ? 'Corregir Ubicación Errónea' : lang === 'fr' ? 'Corriger Position Erronée' : lang === 'de' ? 'Falschen Standort Beheben' : lang === 'pt' ? 'Corrigir Localização Errada' : lang === 'hi' ? 'गलत लोकेशन ठीक करें' : lang === 'id' ? 'Perbaiki Lokasi Salah' : 'Fix Wrong Location Issues'}</div>
+            <div class="contextual-link-sub">{lang === 'es' ? 'Solución a errores de GPS' : lang === 'fr' ? 'Résoudre les erreurs GPS' : lang === 'de' ? 'Fehlerursachen beheben' : 'Troubleshoot jumpy pins'}</div>
+          </div>
+        </a>
+        <a href={getLocalizedPath('/comparisons/gps-vs-ip-location/', lang)} class="contextual-link-card">
+          <span class="contextual-link-icon">⚖️</span>
+          <div class="contextual-link-info">
+            <div class="contextual-link-title">{t.linkComp}</div>
+            <div class="contextual-link-sub">{lang === 'es' ? 'Satélites GNSS vs red IP' : lang === 'fr' ? 'Satellites vs réseau IP' : lang === 'de' ? 'Satelliten vs. IP-Netz' : 'Satellites vs IP networks'}</div>
+          </div>
+        </a>
+        <a href={getLocalizedPath('/tools/elevation-finder/', lang)} class="contextual-link-card">
+          <span class="contextual-link-icon">⛰️</span>
+          <div class="contextual-link-info">
+            <div class="contextual-link-title">{lang === 'es' ? 'Buscador de Altitud' : lang === 'fr' ? "Localisateur d'Altitude" : lang === 'de' ? 'Höhenfinder' : lang === 'pt' ? 'Localizador de Altitude' : lang === 'hi' ? 'ऊंचाई खोजक' : lang === 'id' ? 'Pencari Elevasi' : 'Elevation Finder'}</div>
+            <div class="contextual-link-sub">{lang === 'es' ? 'Altitud sobre nivel del mar' : lang === 'fr' ? 'Altitude au-dessus de la mer' : lang === 'de' ? 'Höhe über dem Meeresspiegel' : 'Height above sea level'}</div>
+          </div>
+        </a>
+        <a href={getLocalizedPath('/my-location/', lang)} class="contextual-link-card">
+          <span class="contextual-link-icon">🧭</span>
+          <div class="contextual-link-info">
+            <div class="contextual-link-title">{lang === 'es' ? '¿Dónde Estoy Ahora?' : lang === 'fr' ? 'Où Suis-Je ?' : lang === 'de' ? 'Wo bin ich gerade?' : lang === 'pt' ? 'Onde Estou Agora?' : lang === 'hi' ? 'मेरी वर्तमान स्थिति' : lang === 'id' ? 'Di Mana Saya Sekarang?' : 'Where Am I Right Now?'}</div>
+            <div class="contextual-link-sub">{lang === 'es' ? 'Panel de telemetría completo' : lang === 'fr' ? 'Télémétrie complète en direct' : lang === 'de' ? 'Vollständige Telemetrie' : 'Full real-time telemetry'}</div>
+          </div>
+        </a>
+      </div>
+    </div>
   </div>
 
   <script define:vars={{ tData: t }}>

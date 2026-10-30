@@ -378,13 +378,91 @@ const t = translations[lang] || translations.en;
     <h3>{t.h3Pressure}</h3>
     <p>{t.pPressure}</p>
 
-    <h2>{t.h2Related}</h2>
-    <ul>
-      <li><a href={getLocalizedPath('/tools/gps-coordinates/', lang)}>{t.linkGps}</a></li>
-      <li><a href={getLocalizedPath('/tools/distance-calculator/', lang)}>{t.linkDistance}</a></li>
-      <li><a href={getLocalizedPath('/guides/how-gps-location-works/', lang)}>{t.linkHowGps}</a></li>
-      <li><a href={getLocalizedPath('/my-location/', lang)}>{t.linkMyLocation}</a></li>
-    </ul>
+    <div class="callout-box" style="margin-top: var(--space-6); line-height: 1.8;">
+      <p style="margin: 0; font-size: var(--text-sm);">
+        {lang === 'fr' ? (
+          <>
+            <strong>Outils d'altimétrie et de topographie :</strong> Pour isoler les coordonnées précises du point mesuré, utilisez notre <a href={getLocalizedPath('/tools/gps-coordinates/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Détecteur de Coordonnées GPS</a>. Mesurez les distances et dénivelés le long d'une randonnée ou d'un tracé avec le <a href={getLocalizedPath('/tools/distance-calculator/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Calculateur de Distance</a>. En altitude, la précision satellite peut varier : surveillez la marge d'incertitude dans notre <a href={getLocalizedPath('/tools/gps-accuracy/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Testeur de Précision GPS</a>. Convertissez vos coordonnées en notation DMS ou UTM avec le <a href={getLocalizedPath('/tools/coordinate-converter/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Convertisseur de Coordonnées</a>, ou apprenez les principes de trilateration orbitale dans notre guide <a href={getLocalizedPath('/guides/how-gps-location-works/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">comment fonctionne le GPS</a>.
+          </>
+        ) : lang === 'es' ? (
+          <>
+            <strong>Herramientas de altimetría y topografía :</strong> Para obtener las coordenadas exactas de su punto de medición, utilice el <a href={getLocalizedPath('/tools/gps-coordinates/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Buscador de Coordenadas GPS</a>. Mida distancias horizontales y desniveles de ruta con la <a href={getLocalizedPath('/tools/distance-calculator/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Calculadora de Distancia</a>. Al aire libre o en montaña, compruebe la calidad de la señal con el <a href={getLocalizedPath('/tools/gps-accuracy/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Comprobador de Precisión GPS</a>. Convierta formatos con el <a href={getLocalizedPath('/tools/coordinate-converter/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Conversor de Coordenadas</a> y descubra el funcionamiento satelital en <a href={getLocalizedPath('/guides/how-gps-location-works/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">cómo funciona el GPS</a>.
+          </>
+        ) : lang === 'de' ? (
+          <>
+            <strong>Höhenmessung und Gelände-Werkzeuge :</strong> Ermitteln Sie die genauen Koordinaten Ihres Messpunkts mit dem <a href={getLocalizedPath('/tools/gps-coordinates/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">GPS-Koordinaten-Finder</a>. Berechnen Sie Strecken und Höhenunterschiede mit dem <a href={getLocalizedPath('/tools/distance-calculator/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Entfernungsrechner</a>. Prüfen Sie Signalfehler in gebirgigem Terrain im <a href={getLocalizedPath('/tools/gps-accuracy/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">GPS-Genauigkeitsprüfer</a>. Zur Umrechnung in GMS oder UTM nutzen Sie den <a href={getLocalizedPath('/tools/coordinate-converter/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Koordinaten-Konverter</a> und lernen Sie mehr in unserem Leitfaden <a href={getLocalizedPath('/guides/how-gps-location-works/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">wie GPS funktioniert</a>.
+          </>
+        ) : lang === 'pt' ? (
+          <>
+            <strong>Ferramentas de altimetria e relevo :</strong> Para obter coordenadas precisas do ponto medido, use o <a href={getLocalizedPath('/tools/gps-coordinates/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Buscador de Coordenadas GPS</a>. Meça distâncias e desníveis com a <a href={getLocalizedPath('/tools/distance-calculator/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Calculadora de Distância</a>. Monitore a qualidade da antena em áreas abertas com o <a href={getLocalizedPath('/tools/gps-accuracy/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Verificador de Precisão GPS</a>. Converta dados com o <a href={getLocalizedPath('/tools/coordinate-converter/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Conversor de Coordenadas</a> e leia <a href={getLocalizedPath('/guides/how-gps-location-works/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">como funciona o GPS</a>.
+          </>
+        ) : lang === 'hi' ? (
+          <>
+            <strong>ऊंचाई और स्थलाकृति से जुड़े टूल :</strong> मापे गए बिंदु के सटीक निर्देशांक जानने के लिए <a href={getLocalizedPath('/tools/gps-coordinates/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">GPS निर्देशांक खोजक</a> का उपयोग करें। दो बिंदुओं के बीच हवाई दूरी मापने के लिए <a href={getLocalizedPath('/tools/distance-calculator/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">दूरी कैलकुलेटर</a> और सैटेलाइट त्रुटि जांचने हेतु <a href={getLocalizedPath('/tools/gps-accuracy/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">GPS सटीकता चेकर</a> देखें। प्रारूप बदलने के लिए <a href={getLocalizedPath('/tools/coordinate-converter/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">निर्देशांक कनवर्टर</a> और <a href={getLocalizedPath('/guides/how-gps-location-works/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">GPS कैसे काम करता है</a> पढ़ें।
+          </>
+        ) : lang === 'id' ? (
+          <>
+            <strong>Alat Elevasi & Topografi :</strong> Temukan koordinat presisi titik yang diukur dengan <a href={getLocalizedPath('/tools/gps-coordinates/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Pencari Koordinat GPS</a>. Hitung jarak jalur antartitik dengan <a href={getLocalizedPath('/tools/distance-calculator/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Kalkulator Jarak</a>. Pantau kualitas sinyal di alam terbuka dengan <a href={getLocalizedPath('/tools/gps-accuracy/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Pemeriksa Akurasi GPS</a>. Konversi format koordinat dengan <a href={getLocalizedPath('/tools/coordinate-converter/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Konverter Koordinat</a> dan pelajari <a href={getLocalizedPath('/guides/how-gps-location-works/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">cara kerja GPS</a>.
+          </>
+        ) : (
+          <>
+            <strong>Connected Altimetry & Geodesy Tools:</strong> Retrieve pinpoint coordinates for your altitude reading using our <a href={getLocalizedPath('/tools/gps-coordinates/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">GPS Coordinates Finder</a>. Measure distances and grade profiles along hiking routes with the <a href={getLocalizedPath('/tools/distance-calculator/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Distance Calculator</a>. Outdoor elevation readings rely on clear satellite geometry: monitor your error margin in real-time with our <a href={getLocalizedPath('/tools/gps-accuracy/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">GPS Accuracy Checker</a>. Reformat coordinate notations using the <a href={getLocalizedPath('/tools/coordinate-converter/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Coordinate Converter</a>, and learn orbital mechanics in our guide to <a href={getLocalizedPath('/guides/how-gps-location-works/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">How GPS Location Works</a>.
+          </>
+        )}
+      </p>
+    </div>
+
+    <!-- Related Tools Grid -->
+    <div class="contextual-next-box" style="margin-top: var(--space-8);">
+      <h3 class="contextual-next-title">
+        <span>🛠️</span>
+        <span>{t.h2Related}</span>
+      </h3>
+      <div class="contextual-next-grid">
+        <a href={getLocalizedPath('/tools/gps-coordinates/', lang)} class="contextual-link-card">
+          <span class="contextual-link-icon">📍</span>
+          <div class="contextual-link-info">
+            <div class="contextual-link-title">{t.linkGps}</div>
+            <div class="contextual-link-sub">{lang === 'es' ? 'Latitud, longitud y altitud' : lang === 'fr' ? 'Latitude, longitude et altitude' : lang === 'de' ? 'Breite, Länge und Höhe' : 'Coordinates & satellite fix'}</div>
+          </div>
+        </a>
+        <a href={getLocalizedPath('/tools/distance-calculator/', lang)} class="contextual-link-card">
+          <span class="contextual-link-icon">📏</span>
+          <div class="contextual-link-info">
+            <div class="contextual-link-title">{t.linkDistance}</div>
+            <div class="contextual-link-sub">{lang === 'es' ? 'Distancia ortodrómica exacta' : lang === 'fr' ? 'Distance entre deux points' : lang === 'de' ? 'Distanz zwischen Punkten' : 'Distance between points'}</div>
+          </div>
+        </a>
+        <a href={getLocalizedPath('/tools/gps-accuracy/', lang)} class="contextual-link-card">
+          <span class="contextual-link-icon">🎯</span>
+          <div class="contextual-link-info">
+            <div class="contextual-link-title">{lang === 'es' ? 'Comprobador de Precisión GPS' : lang === 'fr' ? 'Testeur de Précision GPS' : lang === 'de' ? 'GPS-Genauigkeitsprüfer' : lang === 'pt' ? 'Verificador de Precisão GPS' : lang === 'hi' ? 'GPS सटीकता चेकर' : lang === 'id' ? 'Pemeriksa Akurasi GPS' : 'GPS Accuracy Checker'}</div>
+            <div class="contextual-link-sub">{lang === 'es' ? 'Margen de error satelital' : lang === 'fr' ? 'Incertitude satellite' : lang === 'de' ? 'Toleranzradius in Metern' : 'Satellite error radius'}</div>
+          </div>
+        </a>
+        <a href={getLocalizedPath('/tools/coordinate-converter/', lang)} class="contextual-link-card">
+          <span class="contextual-link-icon">🔀</span>
+          <div class="contextual-link-info">
+            <div class="contextual-link-title">{lang === 'es' ? 'Conversor de Coordenadas' : lang === 'fr' ? 'Convertisseur de Coordonnées' : lang === 'de' ? 'Koordinaten-Konverter' : lang === 'pt' ? 'Conversor de Coordenadas' : lang === 'hi' ? 'निर्देशांक कनवर्टर' : lang === 'id' ? 'Konverter Koordinat' : 'Coordinate Converter'}</div>
+            <div class="contextual-link-sub">{lang === 'es' ? 'DD, DMS, UTM y MGRS' : lang === 'fr' ? 'DD, DMS, UTM et MGRS' : lang === 'de' ? 'DD, GMS, UTM und MGRS' : 'Convert DD, DMS, UTM'}</div>
+          </div>
+        </a>
+        <a href={getLocalizedPath('/guides/how-gps-location-works/', lang)} class="contextual-link-card">
+          <span class="contextual-link-icon">📚</span>
+          <div class="contextual-link-info">
+            <div class="contextual-link-title">{t.linkHowGps}</div>
+            <div class="contextual-link-sub">{lang === 'es' ? 'Trilateración orbital y GNSS' : lang === 'fr' ? 'Trilatération et constellations' : lang === 'de' ? 'Orbitalmechanik & GNSS' : 'Orbital trilateration'}</div>
+          </div>
+        </a>
+        <a href={getLocalizedPath('/my-location/', lang)} class="contextual-link-card">
+          <span class="contextual-link-icon">🧭</span>
+          <div class="contextual-link-info">
+            <div class="contextual-link-title">{t.linkMyLocation}</div>
+            <div class="contextual-link-sub">{lang === 'es' ? 'Posición y altitud actual' : lang === 'fr' ? 'Position et altitude actuelles' : lang === 'de' ? 'Aktuelle Position und Höhe' : 'Current altitude and coords'}</div>
+          </div>
+        </a>
+      </div>
+    </div>
   </div>
 
   <script define:vars={{ tData: t }}>

@@ -144,6 +144,86 @@ const GeoLocation = {
   },
 
   /**
+   * Get structured error information including troubleshooting instructions.
+   * @param {GeolocationPositionError|Error} error
+   * @param {string} [lang]
+   */
+  getErrorDetails(error, lang) {
+    const activeLang = (lang || (typeof document !== 'undefined' && document.documentElement.lang) || 'en').slice(0, 2).toLowerCase();
+    let type = 'unknown';
+
+    if (typeof GeolocationPositionError !== 'undefined' && error instanceof GeolocationPositionError) {
+      if (error.code === error.PERMISSION_DENIED) type = 'denied';
+      else if (error.code === error.POSITION_UNAVAILABLE) type = 'unavailable';
+      else if (error.code === error.TIMEOUT) type = 'timeout';
+    } else if (error?.name === 'NotAllowedError') {
+      type = 'denied';
+    }
+
+    const message = this.getErrorMessage(error, activeLang);
+
+    const guides = {
+      en: {
+        deniedTitle: 'How to re-enable location permissions:',
+        chromeStep: 'Chrome (Mobile & Desktop): Tap the lock/tune icon 🔒 in the URL bar → Permissions → Location → set to "Allow", then reload.',
+        safariIosStep: 'Safari on iPhone/iPad: Open iOS Settings → Safari → Location → select "Ask" or "Allow". Or tap "aA" in the URL bar → Website Settings → Location → Allow.',
+        safariMacStep: 'Safari on Mac: Safari Menu → Settings → Websites → Location → change mylocationlab.com to "Allow".',
+        systemStep: 'Device Settings: Ensure device GPS/Location Services is switched ON in your phone or PC Settings.',
+      },
+      es: {
+        deniedTitle: 'Cómo reactivar los permisos de ubicación:',
+        chromeStep: 'Chrome: Toque el icono de candado 🔒 en la barra de direcciones → Permisos → Ubicación → Permitir y recargue.',
+        safariIosStep: 'Safari en iPhone/iPad: Ajustes de iOS → Safari → Ubicación → Permitir.',
+        safariMacStep: 'Safari en Mac: Menú Safari → Ajustes → Sitios web → Ubicación → Permitir.',
+        systemStep: 'Ajustes del dispositivo: Asegúrese de que la ubicación del sistema esté activada.',
+      },
+      fr: {
+        deniedTitle: 'Comment réactiver l\'autorisation de localisation :',
+        chromeStep: 'Chrome : Cliquez sur l\'icône cadenas 🔒 dans la barre d\'adresse → Autorisations → Position → Autoriser.',
+        safariIosStep: 'Safari sur iPhone : Réglages iOS → Safari → Emplacement → Autoriser.',
+        safariMacStep: 'Safari sur Mac : Safari → Réglages → Sites web → Emplacement → Autoriser.',
+        systemStep: 'Paramètres système : Vérifiez que les services de localisation de votre appareil sont activés.',
+      },
+      de: {
+        deniedTitle: 'So reaktivieren Sie die Standortberechtigung:',
+        chromeStep: 'Chrome: Tippen Sie auf das Schloss-Symbol 🔒 in der Adressleiste → Berechtigungen → Standort → Zulassen.',
+        safariIosStep: 'Safari (iOS): Einstellungen → Safari → Standort → Zulassen.',
+        safariMacStep: 'Safari (Mac): Safari-Menü → Einstellungen → Websites → Standort → Zulassen.',
+        systemStep: 'Geräteeinstellungen: Stellen Sie sicher, dass die Standortdienste des Geräts aktiv sind.',
+      },
+      pt: {
+        deniedTitle: 'Como reativar as permissões de localização:',
+        chromeStep: 'Chrome: Toque no ícone de cadeado 🔒 na barra de endereço → Permissões → Localização → Permitir.',
+        safariIosStep: 'Safari (iOS): Ajustes → Safari → Localização → Permitir.',
+        safariMacStep: 'Safari (Mac): Menu Safari → Ajustes → Sites → Localização → Permitir.',
+        systemStep: 'Ajustes do aparelho: Certifique-se de que a localização do sistema está ativada.',
+      },
+      hi: {
+        deniedTitle: 'लोकेशन अनुमति फिर से चालू करने का तरीका:',
+        chromeStep: 'Chrome: URL बार में ताला 🔒 आइकन पर टैप करें → अनुमतियाँ → लोकेशन → "अनुमति दें" चुनें और पेज रीलोड करें।',
+        safariIosStep: 'Safari (iPhone): फोन सेटिंग्स → Safari → लोकेशन → अनुमति दें चुनें।',
+        safariMacStep: 'Safari (Mac): Safari मेनू → सेटिंग्स → वेबसाइट्स → लोकेशन → अनुमति दें।',
+        systemStep: 'डिवाइस सेटिंग्स: सुनिश्चित करें कि आपके फोन/कंप्यूटर में लोकेशन (GPS) चालू है।',
+      },
+      id: {
+        deniedTitle: 'Cara mengaktifkan kembali izin lokasi:',
+        chromeStep: 'Chrome: Ketuk ikon gembok 🔒 di bilah URL → Izin → Lokasi → Izinkan, lalu muat ulang.',
+        safariIosStep: 'Safari (iOS): Pengaturan → Safari → Lokasi → Izinkan.',
+        safariMacStep: 'Safari (Mac): Menu Safari → Pengaturan → Situs Web → Lokasi → Izinkan.',
+        systemStep: 'Pengaturan perangkat: Pastikan Layanan Lokasi diaktifkan pada ponsel atau PC Anda.',
+      }
+    };
+
+    const g = guides[activeLang] || guides.en;
+
+    return {
+      type,
+      message,
+      guide: g,
+    };
+  },
+
+  /**
    * Format position data into a clean object.
    * @param {GeolocationPosition} position
    * @returns {Object}

@@ -8,12 +8,52 @@ const cache = new Map();
 
 const Geocoding = {
   /**
+   * Check if third-party address lookup is enabled by user.
+   * @returns {boolean}
+   */
+  isLookupEnabled() {
+    if (typeof localStorage === 'undefined') return true;
+    return localStorage.getItem('privacy_disable_address_lookup') !== 'true';
+  },
+
+  /**
+   * Set third-party address lookup preference.
+   * @param {boolean} enabled
+   */
+  setLookupEnabled(enabled) {
+    if (typeof localStorage === 'undefined') return;
+    localStorage.setItem('privacy_disable_address_lookup', enabled ? 'false' : 'true');
+  },
+
+  /**
    * Reverse geocode: coordinates to address.
    * @param {number} lat
    * @param {number} lng
    * @returns {Promise<Object>}
    */
   async reverseGeocode(lat, lng) {
+    if (!this.isLookupEnabled()) {
+      return {
+        displayName: 'Address lookup disabled (Local Privacy Mode)',
+        address: {},
+        road: '',
+        houseNumber: '',
+        neighbourhood: '',
+        city: 'Local Mode',
+        county: '',
+        state: '',
+        stateCode: '',
+        postcode: '',
+        country: '',
+        countryCode: '',
+        lat,
+        lng,
+        type: '',
+        category: '',
+        disabled: true,
+      };
+    }
+
     const key = `reverse:${lat.toFixed(6)},${lng.toFixed(6)}`;
     if (cache.has(key)) return cache.get(key);
 

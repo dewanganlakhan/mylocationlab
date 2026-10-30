@@ -3,12 +3,12 @@
  * BaseLayout — Root layout for all pages
  * Handles HTML document structure, global styles, fonts, header, footer, and i18n attributes.
  */
-import SEOHead from '../components/SEOHead.astro';
-import Header from '../components/Header.astro';
-import Footer from '../components/Footer.astro';
-import '../styles/global.css';
-import '../styles/components.css';
-import { getLangFromUrl, languages, type SupportedLang } from '../i18n/config';
+import SEOHead from "../components/SEOHead.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import "../styles/global.css";
+import "../styles/components.css";
+import { getLangFromUrl, languages, type SupportedLang } from "../i18n/config";
 
 interface Props {
   title: string;
@@ -45,101 +45,120 @@ const docHtmlLang = activeLangConfig.hreflang ?? activeLangConfig.code;
 const docDir = activeLangConfig.dir;
 
 const skipToContentLabels: Record<string, string> = {
-  en: 'Skip to main content',
-  es: 'Saltar al contenido principal',
-  fr: 'Aller au contenu principal',
-  de: 'Zum Hauptinhalt springen',
-  pt: 'Pular para o conteúdo principal',
-  hi: 'मुख्य सामग्री पर जाएं',
-  id: 'Lewati ke konten utama',
+  en: "Skip to main content",
+  es: "Saltar al contenido principal",
+  fr: "Aller au contenu principal",
+  de: "Zum Hauptinhalt springen",
+  pt: "Pular para o conteúdo principal",
+  hi: "मुख्य सामग्री पर जाएं",
+  id: "Lewati ke konten utama",
 };
 const skipLabel = skipToContentLabels[docLang] || skipToContentLabels.en;
 
 // WebSite schema for all pages
 const websiteSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'WebSite',
-  name: 'MyLocationLab',
-  url: 'https://mylocationlab.com',
-  description: 'Find your current location instantly. Free GPS coordinates, address finder, and location tools.',
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  name: "MyLocationLab",
+  url: "https://mylocationlab.com",
+  description:
+    "Find your current location instantly. Free GPS coordinates, address finder, and location tools.",
   potentialAction: {
-    '@type': 'SearchAction',
-    target: 'https://mylocationlab.com/tools/geocoding/?q={search_term_string}',
-    'query-input': 'required name=search_term_string',
+    "@type": "SearchAction",
+    target: "https://mylocationlab.com/tools/geocoding/?q={search_term_string}",
+    "query-input": "required name=search_term_string",
   },
 };
 
 const allJsonLd = jsonLd
-  ? Array.isArray(jsonLd) ? [websiteSchema, ...jsonLd] : [websiteSchema, jsonLd]
+  ? Array.isArray(jsonLd)
+    ? [websiteSchema, ...jsonLd]
+    : [websiteSchema, jsonLd]
   : [websiteSchema];
 ---
 
 <!doctype html>
 <html lang={docHtmlLang} dir={docDir}>
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
-  <!-- Anti-FOUC Theme Initialization (runs synchronously before CSS/paint) -->
-  <script is:inline>
-    (function() {
-      try {
-        const stored = localStorage.getItem('theme');
-        const theme = stored ? stored : 'light';
-        document.documentElement.setAttribute('data-theme', theme);
-      } catch (e) {
-        document.documentElement.setAttribute('data-theme', 'light');
+    <!-- Anti-FOUC Theme Initialization (runs synchronously before CSS/paint) -->
+    <script is:inline>
+      (function () {
+        try {
+          const stored = localStorage.getItem("theme");
+          const theme = stored ? stored : "light";
+          document.documentElement.setAttribute("data-theme", theme);
+        } catch (e) {
+          document.documentElement.setAttribute("data-theme", "light");
+        }
+      })();
+    </script>
+
+    <SEOHead
+      title={title}
+      description={description}
+      canonical={canonical}
+      ogImage={ogImage}
+      ogType={ogType}
+      jsonLd={allJsonLd}
+      noindex={noindex}
+      lang={docLang}
+    />
+
+    <!-- Preconnect to external resources -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
+    />
+
+    {leaflet && <link rel="stylesheet" href="/vendor/leaflet/leaflet.css" />}
+
+    <!-- Favicon (SVG for modern browsers, multi-resolution ICO fallback) -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="alternate icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="apple-touch-icon" href="/favicon.svg" />
+    <link rel="manifest" href="/manifest.json" />
+    <meta name="theme-color" content="#2563eb" />
+  </head>
+  <body>
+    <a href="#main-content" class="sr-only skip-link">{skipLabel}</a>
+    <Header activeSection={activeSection} lang={docLang} />
+
+    <main id="main-content">
+      <slot />
+    </main>
+
+    <Footer lang={docLang} />
+
+    <!-- Leaflet JS (self-hosted, only on pages that render maps) -->
+    {leaflet && <script is:inline defer src="/vendor/leaflet/leaflet.js" />}
+
+    <!-- Copy chips: attach a small copy icon next to every id'd data value, site-wide -->
+    <script>
+      import Sharing from "../scripts/sharing.js";
+      const wireCopyChips = () => Sharing.attachCopyChips();
+      if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", wireCopyChips);
+      } else {
+        wireCopyChips();
       }
-    })();
-  </script>
+    </script>
 
-  <SEOHead
-    title={title}
-    description={description}
-    canonical={canonical}
-    ogImage={ogImage}
-    ogType={ogType}
-    jsonLd={allJsonLd}
-    noindex={noindex}
-    lang={docLang}
-  />
-
-  <!-- Preconnect to external resources -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" />
-
-  {leaflet && <link rel="stylesheet" href="/vendor/leaflet/leaflet.css" />}
-
-  <!-- Favicon (SVG for modern browsers, multi-resolution ICO fallback) -->
-  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-  <link rel="alternate icon" type="image/x-icon" href="/favicon.ico" />
-  <link rel="apple-touch-icon" href="/favicon.svg" />
-  <meta name="theme-color" content="#060a13" />
-</head>
-<body>
-  <a href="#main-content" class="sr-only skip-link">{skipLabel}</a>
-  <Header activeSection={activeSection} lang={docLang} />
-
-  <main id="main-content">
-    <slot />
-  </main>
-
-  <Footer lang={docLang} />
-
-  <!-- Leaflet JS (self-hosted, only on pages that render maps) -->
-  {leaflet && <script is:inline defer src="/vendor/leaflet/leaflet.js"></script>}
-
-  <!-- Copy chips: attach a small copy icon next to every id'd data value, site-wide -->
-  <script>
-    import Sharing from '../scripts/sharing.js';
-    const wireCopyChips = () => Sharing.attachCopyChips();
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', wireCopyChips);
-    } else {
-      wireCopyChips();
-    }
-  </script>
-</body>
+    <!-- PWA Service Worker Registration -->
+    <script is:inline>
+      if (
+        "serviceWorker" in navigator &&
+        window.location.protocol.startsWith("http")
+      ) {
+        window.addEventListener("load", function () {
+          navigator.serviceWorker.register("/sw.js").catch(function () {});
+        });
+      }
+    </script>
+  </body>
 </html>

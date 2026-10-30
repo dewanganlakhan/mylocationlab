@@ -124,6 +124,16 @@ const homeFaqSchema = {
             <span>{content.btnCopy}</span>
           </button>
 
+          <a class="telemetry-ctrl-btn" id="whatsapp-share-btn" href="#" target="_blank" rel="noopener noreferrer" title="Share via WhatsApp" aria-disabled="true">
+            <span style="font-size: 14px;">📲</span>
+            <span>WhatsApp</span>
+          </a>
+
+          <button class="telemetry-ctrl-btn emergency-toggle-btn" id="emergency-btn" type="button" title="Emergency Readout Mode">
+            <span style="font-size: 13px;">🚨</span>
+            <span>Emergency Mode</span>
+          </button>
+
           <button class="telemetry-ctrl-btn" id="share-btn" type="button" title={content.btnShare}>
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <circle cx="18" cy="5" r="3"/>
@@ -151,6 +161,76 @@ const homeFaqSchema = {
               <path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/>
               <path d="M16 16h5v5"/>
             </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Emergency Mode Card (Triggered by 🚨 button) -->
+      <div id="emergency-card" class="emergency-readout-card" style="display: none;">
+        <div class="emergency-card-top">
+          <div class="emergency-card-badge">🚨 EMERGENCY READOUT MODE</div>
+          <button type="button" class="emergency-close-button" id="close-emergency-btn" aria-label="Close emergency mode">✕ Close</button>
+        </div>
+        <p class="emergency-instruction">Read this aloud to the emergency dispatcher (112 / 911 / 999):</p>
+        <div class="emergency-text-box">
+          <div class="emergency-callout-heading">"I AM CURRENTLY AT:"</div>
+          <div class="emergency-location-address" id="emergency-address">Locating your current street address…</div>
+          <div class="emergency-location-coords" id="emergency-coords">Coordinates: Awaiting fix</div>
+        </div>
+        <div class="emergency-action-buttons">
+          <button type="button" class="btn btn-primary btn-sm" id="emergency-copy-btn">
+            📋 Copy Emergency Text
+          </button>
+          <a class="btn btn-whatsapp btn-sm" id="emergency-wa-btn" href="#" target="_blank" rel="noopener noreferrer">
+            📲 WhatsApp Location
+          </a>
+          <a class="btn btn-secondary btn-sm" id="emergency-sms-btn" href="#">
+            💬 Send via SMS
+          </a>
+        </div>
+      </div>
+
+      <!-- Low Accuracy Warning Banner -->
+      <div id="accuracy-warning" class="accuracy-warning-strip" style="display: none;">
+        <span class="warning-icon">⚠️</span>
+        <span id="accuracy-warning-text">Estimated location (accuracy ±800m). Your device is using Wi-Fi or cellular tower routing. Step outside for satellite GPS precision.</span>
+      </div>
+
+      <!-- Troubleshooting Accordion Panel -->
+      <div id="troubleshoot-panel" class="troubleshoot-card" style="display: none;">
+        <div class="troubleshoot-card-header">
+          <span class="troubleshoot-card-icon">🧭</span>
+          <div>
+            <h3 class="troubleshoot-heading" id="troubleshoot-title">Location Permission Required</h3>
+            <p class="troubleshoot-subtitle" id="troubleshoot-desc">We couldn't get a GPS fix from your browser. Here is how to enable it:</p>
+          </div>
+        </div>
+        <div class="troubleshoot-steps-accordion">
+          <details class="troubleshoot-step-detail" open>
+            <summary class="troubleshoot-step-summary">
+              <strong>Chrome</strong> (Mobile Android & Desktop)
+            </summary>
+            <p class="troubleshoot-step-body">Tap the lock or page settings icon 🔒 next to the website address in your URL bar &rarr; Tap <strong>Permissions / Site Settings</strong> &rarr; Change <strong>Location</strong> to <strong>Allow</strong> &rarr; Refresh this page.</p>
+          </details>
+          <details class="troubleshoot-step-detail">
+            <summary class="troubleshoot-step-summary">
+              <strong>Safari</strong> (iPhone & iPad)
+            </summary>
+            <p class="troubleshoot-step-body">Open iPhone <strong>Settings</strong> &rarr; Tap <strong>Safari</strong> &rarr; <strong>Location</strong> &rarr; Set to <strong>Allow</strong>. Or tap <strong>aA</strong> in Safari's address bar &rarr; Website Settings &rarr; Location &rarr; Allow.</p>
+          </details>
+          <details class="troubleshoot-step-detail">
+            <summary class="troubleshoot-step-summary">
+              <strong>Safari & Chrome on Mac / Windows</strong>
+            </summary>
+            <p class="troubleshoot-step-body">Ensure device system location is ON. On macOS: <strong>System Settings &rarr; Privacy & Security &rarr; Location Services</strong>. On Windows: <strong>Settings &rarr; Privacy & Security &rarr; Location</strong>.</p>
+          </details>
+        </div>
+        <div class="troubleshoot-footer-buttons">
+          <button type="button" class="btn-stitch-primary btn-sm" id="troubleshoot-retry-btn">
+            🔄 Retry GPS
+          </button>
+          <button type="button" class="btn-stitch-secondary btn-sm" id="troubleshoot-ip-btn">
+            🌐 Use Approximate IP Location
           </button>
         </div>
       </div>
@@ -309,6 +389,131 @@ const homeFaqSchema = {
           </div>
         </div>
       </div>
+
+      <!-- Coordinate Formats Strip -->
+      <div class="coordinate-formats-card" id="formats-card">
+        <div class="formats-header">
+          <div class="formats-title-row">
+            <span class="formats-title">📐 Coordinate Formats</span>
+            <span class="formats-sub">Copy your exact position in standard navigation and mapping notations</span>
+          </div>
+        </div>
+        <div class="formats-grid">
+          <div class="format-cell">
+            <div class="format-cell-head">
+              <span class="format-badge">Decimal Degrees</span>
+              <button type="button" class="format-copy-btn" id="copy-dd-btn" title="Copy Decimal Degrees">Copy</button>
+            </div>
+            <div class="format-value" id="val-dd">—</div>
+          </div>
+          <div class="format-cell">
+            <div class="format-cell-head">
+              <span class="format-badge">DMS (Degrees Minutes Seconds)</span>
+              <button type="button" class="format-copy-btn" id="copy-dms-btn" title="Copy DMS">Copy</button>
+            </div>
+            <div class="format-value" id="val-dms">—</div>
+          </div>
+          <div class="format-cell">
+            <div class="format-cell-head">
+              <span class="format-badge">Plus Code (Open Location)</span>
+              <button type="button" class="format-copy-btn" id="copy-plus-btn" title="Copy Plus Code">Copy</button>
+            </div>
+            <div class="format-value" id="val-plus">—</div>
+          </div>
+          <div class="format-cell">
+            <div class="format-cell-head">
+              <span class="format-badge">UTM Grid Coordinate</span>
+              <button type="button" class="format-copy-btn" id="copy-utm-btn" title="Copy UTM">Copy</button>
+            </div>
+            <div class="format-value" id="val-utm">—</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Nearby Services Quick Help -->
+      <div class="nearby-services-card" id="nearby-card">
+        <div class="nearby-header">
+          <span class="nearby-title">🧭 Nearby Help & Services</span>
+          <span class="nearby-sub">One-tap navigation to critical nearby places in Google Maps</span>
+        </div>
+        <div class="nearby-chips-grid">
+          <a class="nearby-chip" id="nearby-hospitals" href="#" target="_blank" rel="noopener noreferrer">
+            <span class="nearby-emoji">🏥</span>
+            <span class="nearby-text">Nearby Hospitals</span>
+          </a>
+          <a class="nearby-chip" id="nearby-police" href="#" target="_blank" rel="noopener noreferrer">
+            <span class="nearby-emoji">🚓</span>
+            <span class="nearby-text">Police Stations</span>
+          </a>
+          <a class="nearby-chip" id="nearby-pharmacies" href="#" target="_blank" rel="noopener noreferrer">
+            <span class="nearby-emoji">💊</span>
+            <span class="nearby-text">Pharmacies</span>
+          </a>
+          <a class="nearby-chip" id="nearby-petrol" href="#" target="_blank" rel="noopener noreferrer">
+            <span class="nearby-emoji">⛽</span>
+            <span class="nearby-text">Fuel / Petrol Pumps</span>
+          </a>
+          <a class="nearby-chip" id="nearby-atms" href="#" target="_blank" rel="noopener noreferrer">
+            <span class="nearby-emoji">🏧</span>
+            <span class="nearby-text">ATMs & Cash</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Advanced Technical Details & Privacy Options -->
+      <details class="tech-accordion-box" id="tech-accordion">
+        <summary class="tech-accordion-summary">
+          <span>⚙️ Advanced Details, Live Tracking & Privacy Mode</span>
+          <span class="tech-accordion-arrow">▾</span>
+        </summary>
+        <div class="tech-accordion-content">
+          <div class="tech-grid">
+            <div class="tech-item">
+              <span class="tech-label">Detected Time Zone:</span>
+              <span class="tech-val" id="tech-tz">—</span>
+            </div>
+            <div class="tech-item">
+              <span class="tech-label">Live Movement / Speed:</span>
+              <span class="tech-val" id="tech-motion">—</span>
+            </div>
+            <div class="tech-item">
+              <span class="tech-label">Coordinate Standard:</span>
+              <span class="tech-val">WGS 84 (EPSG:4326) • Earth-centered reference</span>
+            </div>
+            <div class="tech-item">
+              <span class="tech-label">Local Device History:</span>
+              <button type="button" class="btn btn-secondary btn-xs" id="btn-save-spot" style="display: inline-flex; align-items: center; gap: 4px; margin-top: 4px;">
+                <span>⭐</span> <span>Save this spot</span>
+              </button>
+              <span id="save-status-msg" style="font-size: 11px; color: var(--color-accent-success); margin-left: 6px;"></span>
+            </div>
+          </div>
+
+          <div class="tech-options-row">
+            <label class="tech-toggle-item">
+              <input type="checkbox" id="live-track-checkbox" />
+              <span>🔴 <strong>Live GPS Tracking:</strong> Continuously monitor and update my location as I move</span>
+            </label>
+            <label class="tech-toggle-item">
+              <input type="checkbox" id="nominatim-toggle" checked />
+              <span>🔒 <strong>Resolve Street Address:</strong> Query OpenStreetMap Nominatim for street address (uncheck for strict local coordinate mode without sending queries)</span>
+            </label>
+          </div>
+
+          <div id="saved-places-block" style="display: none; margin-top: 14px; padding-top: 12px; border-top: 1px dashed var(--color-border);">
+            <div style="font-size: 13px; font-weight: 700; color: var(--color-text-primary); margin-bottom: 6px;">Saved Places (Stored locally on your device only):</div>
+            <ul id="saved-places-list" style="margin: 0; padding-left: 20px; font-size: 13px; color: var(--color-text-secondary);"></ul>
+          </div>
+        </div>
+      </details>
+
+      <!-- Accuracy Feedback -->
+      <div class="accuracy-feedback-row" id="feedback-row">
+        <span class="feedback-label">Was this location accurate?</span>
+        <button type="button" class="feedback-pill-btn" id="feedback-yes">👍 Yes</button>
+        <button type="button" class="feedback-pill-btn" id="feedback-no">👎 No, it's incorrect</button>
+        <span class="feedback-msg" id="feedback-msg" style="display: none;"></span>
+      </div>
     </div>
   </section>
 
@@ -434,6 +639,7 @@ const homeFaqSchema = {
     import GeoLocation from '../scripts/geolocation.js';
     import Geocoding from '../scripts/geocoding.js';
     import Sharing from '../scripts/sharing.js';
+    import CoordUtils from '../scripts/coordinates.js';
     import MapUtils from '../scripts/map.js';
 
     const locateTitles: Record<string, string> = {
@@ -453,6 +659,9 @@ const homeFaqSchema = {
     const bannerText = document.getElementById('banner-text');
     const mapCoordChip = document.getElementById('map-coord-chip');
     const mapStatusChip = document.getElementById('map-status-chip');
+    const emergencyCard = document.getElementById('emergency-card');
+    const troubleshootPanel = document.getElementById('troubleshoot-panel');
+    const accuracyWarning = document.getElementById('accuracy-warning');
 
     let S: Record<string, string> = {};
     try {
@@ -463,9 +672,12 @@ const homeFaqSchema = {
 
     let currentLat: number | null = null;
     let currentLng: number | null = null;
+    let currentAccuracy: number = 0;
+    let currentAddress: string = '';
     let mapInstance: any = null;
     let markerInstance: any = null;
     let circleInstance: any = null;
+    let watchId: number | null = null;
 
     function setMapStatus(text: string) {
       const el = document.getElementById('map-status-chip-text');
@@ -499,7 +711,7 @@ const homeFaqSchema = {
       }
 
       if (lat === null || lng === null) {
-        mapInstance.setView([25, 5], 2);
+        mapInstance.setView([20, 0], 2);
         return;
       }
 
@@ -537,24 +749,95 @@ const homeFaqSchema = {
       }
     }
 
+    function updateFormatDisplays(lat: number, lng: number) {
+      const ddEl = document.getElementById('val-dd');
+      const dmsEl = document.getElementById('val-dms');
+      const plusEl = document.getElementById('val-plus');
+      const utmEl = document.getElementById('val-utm');
+
+      const ddStr = `${lat.toFixed(6)}, ${lng.toFixed(6)}`;
+      const dmsStr = `${CoordUtils.formatDMS(lat, true)}, ${CoordUtils.formatDMS(lng, false)}`;
+      const plusStr = CoordUtils.encodePlusCode(lat, lng);
+      const utmRes = CoordUtils.decimalToUTM(lat, lng);
+
+      if (ddEl) ddEl.textContent = ddStr;
+      if (dmsEl) dmsEl.textContent = dmsStr;
+      if (plusEl) plusEl.textContent = plusStr;
+      if (utmEl) utmEl.textContent = utmRes?.formatted || '—';
+
+      // Update Time Zone
+      const tzEl = document.getElementById('tech-tz');
+      if (tzEl) {
+        try {
+          const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+          const offsetMinutes = -new Date().getTimezoneOffset();
+          const sign = offsetMinutes >= 0 ? '+' : '-';
+          const hrs = String(Math.floor(Math.abs(offsetMinutes) / 60)).padStart(2, '0');
+          const mins = String(Math.abs(offsetMinutes) % 60).padStart(2, '0');
+          tzEl.textContent = `${tz} (UTC${sign}${hrs}:${mins})`;
+        } catch {
+          tzEl.textContent = 'UTC';
+        }
+      }
+
+      // Update Nearby Services Links
+      const nearby = Sharing.getNearbyLinks(lat, lng);
+      const setLink = (id: string, url: string) => {
+        const el = document.getElementById(id);
+        if (el) el.setAttribute('href', url);
+      };
+      setLink('nearby-hospitals', nearby.hospitals);
+      setLink('nearby-police', nearby.police);
+      setLink('nearby-pharmacies', nearby.pharmacies);
+      setLink('nearby-petrol', nearby.petrol);
+      setLink('nearby-atms', nearby.atms);
+
+      // Update Open in Maps button
+      const mapsBtn = document.getElementById('open-maps-btn');
+      if (mapsBtn) {
+        mapsBtn.setAttribute('href', Sharing.getGoogleMapsUrl(lat, lng));
+        mapsBtn.removeAttribute('aria-disabled');
+      }
+
+      // Update WhatsApp share button
+      const waBtn = document.getElementById('whatsapp-share-btn');
+      if (waBtn) {
+        waBtn.setAttribute('href', Sharing.getWhatsAppUrl(lat, lng, currentAddress));
+        waBtn.removeAttribute('aria-disabled');
+      }
+
+      // Update Emergency Readout Mode
+      const emCoords = document.getElementById('emergency-coords');
+      if (emCoords) {
+        emCoords.textContent = `Coordinates: ${lat.toFixed(6)}, ${lng.toFixed(6)} (±${Math.round(currentAccuracy)}m)`;
+      }
+      const emWa = document.getElementById('emergency-wa-btn');
+      if (emWa) emWa.setAttribute('href', Sharing.getWhatsAppUrl(lat, lng, currentAddress));
+      const emSms = document.getElementById('emergency-sms-btn');
+      if (emSms) emSms.setAttribute('href', Sharing.getSmsUrl(lat, lng, currentAddress));
+    }
+
     async function findLocation() {
       if (statusPill) {
         statusPill.textContent = S.acquiring || 'Finding your location…';
         statusPill.className = 'telemetry-status-pill';
       }
       if (subtext) {
-        subtext.textContent = S.acquiringSub || '';
+        subtext.textContent = S.acquiringSub || 'Connecting to device GPS sensor…';
       }
       if (getBtn) {
         getBtn.style.opacity = '0.75';
         getBtn.style.pointerEvents = 'none';
       }
+      if (troubleshootPanel) troubleshootPanel.style.display = 'none';
+      if (accuracyWarning) accuracyWarning.style.display = 'none';
 
       try {
         const position = await GeoLocation.getCurrentPosition();
         const data = GeoLocation.formatPosition(position);
         currentLat = data.latitude;
         currentLng = data.longitude;
+        currentAccuracy = data.accuracy;
 
         const latEl = document.getElementById('data-lat');
         const latDecEl = document.getElementById('data-lat-dec');
@@ -569,18 +852,26 @@ const homeFaqSchema = {
         if (lngDecEl) lngDecEl.textContent = `${S.decimal || 'Decimal'}: ${currentLng.toFixed(6)}`;
         if (accEl) accEl.textContent = (S.meters || '± {m} m').replace('{m}', String(Math.round(data.accuracy)));
         const accSubEl = document.getElementById('data-accuracy-sub');
-        if (accSubEl) accSubEl.textContent = S.accuracyDevice || '';
+        if (accSubEl) accSubEl.textContent = S.accuracyDevice || 'Reported by GPS sensor';
         if (altEl) {
           altEl.textContent = data.altitude != null
             ? `${Math.round(data.altitude)} m (${Math.round(data.altitude * 3.28084)} ft)`
-            : (S.altitudeNone || '');
+            : (S.altitudeNone || 'Not reported');
+        }
+
+        // Live speed & heading
+        const motionEl = document.getElementById('tech-motion');
+        if (motionEl) {
+          const spd = data.speed ? `${(data.speed * 3.6).toFixed(1)} km/h` : '0 km/h';
+          const hdg = data.heading != null ? `${CoordUtils.bearingToCompass(data.heading)} (${Math.round(data.heading)}°)` : 'Stationary';
+          motionEl.textContent = `Speed: ${spd} • Compass: ${hdg}`;
         }
 
         if (mapCoordChip) {
           mapCoordChip.textContent = `${data.formattedLat}, ${data.formattedLng}`;
         }
 
-        setMapStatus(S.gpsStatus || 'Located');
+        setMapStatus(S.gpsStatus || 'GPS Fixed');
 
         if (statusPill) {
           statusPill.textContent = S.locked || 'Location found';
@@ -591,16 +882,21 @@ const homeFaqSchema = {
           subtext.textContent = (S.lockedDetail || '').replace('{m}', String(Math.round(data.accuracy)));
         }
 
-        const mapsBtn = document.getElementById('open-maps-btn');
-        if (mapsBtn) {
-          mapsBtn.setAttribute('href', Sharing.getGoogleMapsUrl(currentLat, currentLng));
-          mapsBtn.removeAttribute('aria-disabled');
+        // Check accuracy threshold (>200m triggers low accuracy warning)
+        if (data.accuracy > 200 && accuracyWarning) {
+          const warnText = document.getElementById('accuracy-warning-text');
+          if (warnText) {
+            warnText.textContent = `⚠️ Low Accuracy (±${Math.round(data.accuracy)} m). Your device may be indoors or using Wi-Fi network routing. Step outdoors for direct satellite precision.`;
+          }
+          accuracyWarning.style.display = 'flex';
         }
 
         initMap(currentLat, currentLng, data.accuracy);
+        updateFormatDisplays(currentLat, currentLng);
 
         try {
           const address = await Geocoding.reverseGeocode(currentLat, currentLng);
+          currentAddress = address.displayName || address.road || '';
           const addrEl = document.getElementById('data-address');
           const cityEl = document.getElementById('data-city');
           const citySubEl = document.getElementById('data-city-sub');
@@ -620,6 +916,15 @@ const homeFaqSchema = {
             const region = address.state_district || address.state || '';
             stateSubEl.textContent = cc ? `ISO 3166-1: ${[cc, region].filter(Boolean).join('-')}` : (S.viaGps || '');
           }
+
+          // Emergency display address
+          const emAddr = document.getElementById('emergency-address');
+          if (emAddr) emAddr.textContent = currentAddress || `${currentLat.toFixed(6)}, ${currentLng.toFixed(6)}`;
+
+          // Update WhatsApp link with address
+          const waBtn = document.getElementById('whatsapp-share-btn');
+          if (waBtn) waBtn.setAttribute('href', Sharing.getWhatsAppUrl(currentLat, currentLng, currentAddress));
+
         } catch {
           const citySubEl = document.getElementById('data-city-sub');
           const stateSubEl = document.getElementById('data-state-sub');
@@ -633,71 +938,26 @@ const homeFaqSchema = {
           privacyBanner.style.color = '#065f46';
         }
         if (bannerText) {
-          bannerText.textContent = S.okBanner || '';
+          bannerText.textContent = S.okBanner || 'Location found. We never store your coordinates on our servers.';
         }
 
-      } catch (err) {
-        if (statusPill) {
-          statusPill.textContent = S.ipPill || 'Approximate location';
-          statusPill.className = 'telemetry-status-pill';
-        }
-        if (subtext) {
-          subtext.textContent = S.ipSub || '';
-        }
-
-        try {
-          const ipModule = await import('../scripts/ip-location.js');
-          const ipData = await ipModule.default.getLocation();
-          currentLat = ipData.lat;
-          currentLng = ipData.lng;
-
-          const latEl = document.getElementById('data-lat');
-          const latDecEl = document.getElementById('data-lat-dec');
-          const lngEl = document.getElementById('data-lng');
-          const lngDecEl = document.getElementById('data-lng-dec');
-          const addrEl = document.getElementById('data-address');
-          const cityEl = document.getElementById('data-city');
-          const citySubEl = document.getElementById('data-city-sub');
-          const stateEl = document.getElementById('data-state-country');
-          const stateSubEl = document.getElementById('data-state-sub');
-          const accEl = document.getElementById('data-accuracy');
-          const altEl = document.getElementById('data-altitude');
-
-          if (latEl) latEl.textContent = `${Math.abs(currentLat).toFixed(4)}° ${currentLat >= 0 ? 'N' : 'S'}`;
-          if (latDecEl) latDecEl.textContent = `${S.decimal || 'Decimal'}: ${currentLat.toFixed(6)}`;
-          if (lngEl) lngEl.textContent = `${Math.abs(currentLng).toFixed(4)}° ${currentLng >= 0 ? 'E' : 'W'}`;
-          if (lngDecEl) lngDecEl.textContent = `${S.decimal || 'Decimal'}: ${currentLng.toFixed(6)}`;
-          if (addrEl) addrEl.textContent = `${ipData.city || S.metro || 'Metro area'}, ${ipData.region || ''}, ${ipData.country || ''}`;
-          if (cityEl) cityEl.textContent = ipData.city || S.cityFallback || 'Detected city';
-          if (citySubEl) citySubEl.textContent = S.ipPrecision || '';
-          if (stateEl) stateEl.textContent = `${ipData.region || ''}, ${ipData.country || ''}`;
-          if (stateSubEl) stateSubEl.textContent = ipData.countryCode ? `ISO 3166-1: ${ipData.countryCode}${ipData.regionCode ? '-' + ipData.regionCode : ''}` : (S.ipPrecision || '');
-          if (accEl) accEl.textContent = '± 10 km (IP)';
-          const accSubEl = document.getElementById('data-accuracy-sub');
-          if (accSubEl) accSubEl.textContent = S.accuracyIp || '';
-          if (altEl) altEl.textContent = S.altitudeIpNone || '';
-
-          if (mapCoordChip) {
-            mapCoordChip.textContent = `${currentLat.toFixed(4)}°, ${currentLng.toFixed(4)}°`;
+      } catch (err: any) {
+        // Show Troubleshooting guide
+        if (troubleshootPanel) {
+          troubleshootPanel.style.display = 'block';
+          const errDetails = GeoLocation.getErrorDetails(err, currentDocLang);
+          const tTitle = document.getElementById('troubleshoot-title');
+          const tDesc = document.getElementById('troubleshoot-desc');
+          if (tTitle) {
+            tTitle.textContent = errDetails.type === 'denied'
+              ? 'Location Permission Blocked'
+              : (errDetails.type === 'timeout' ? 'GPS Signal Timed Out' : 'GPS Signal Unavailable');
           }
-
-          setMapStatus(S.ipStatus || 'Approximate (IP)');
-
-          const mapsBtn = document.getElementById('open-maps-btn');
-          if (mapsBtn) {
-            mapsBtn.setAttribute('href', Sharing.getGoogleMapsUrl(currentLat, currentLng));
-            mapsBtn.removeAttribute('aria-disabled');
-          }
-
-          initMap(currentLat, currentLng, 10000);
-
-          if (bannerText) {
-            bannerText.textContent = S.ipBanner || '';
-          }
-        } catch {
-          setMapStatus(S.noFix || 'No location');
-          if (bannerText) bannerText.textContent = S.failed || '';
+          if (tDesc) tDesc.textContent = errDetails.message;
         }
+
+        // Automatic fallback to approximate IP location
+        await fallbackToIp();
       } finally {
         if (getBtn) {
           getBtn.style.opacity = '1';
@@ -706,11 +966,130 @@ const homeFaqSchema = {
       }
     }
 
-    getBtn?.addEventListener('click', findLocation);
-    document.getElementById('refresh-btn')?.addEventListener('click', findLocation);
+    async function fallbackToIp() {
+      if (statusPill) {
+        statusPill.textContent = S.ipPill || 'Approximate (IP)';
+        statusPill.className = 'telemetry-status-pill';
+      }
+      if (subtext) {
+        subtext.textContent = S.ipSub || 'GPS unavailable — showing approximate city-level location from your IP address.';
+      }
 
-    findLocation();
+      try {
+        const ipModule = await import('../scripts/ip-location.js');
+        const ipData = await ipModule.default.getLocation();
+        currentLat = ipData.lat;
+        currentLng = ipData.lng;
+        currentAccuracy = 10000;
+        currentAddress = `${ipData.city || 'Metro area'}, ${ipData.region || ''}, ${ipData.country || ''}`;
 
+        const latEl = document.getElementById('data-lat');
+        const latDecEl = document.getElementById('data-lat-dec');
+        const lngEl = document.getElementById('data-lng');
+        const lngDecEl = document.getElementById('data-lng-dec');
+        const addrEl = document.getElementById('data-address');
+        const cityEl = document.getElementById('data-city');
+        const citySubEl = document.getElementById('data-city-sub');
+        const stateEl = document.getElementById('data-state-country');
+        const stateSubEl = document.getElementById('data-state-sub');
+        const accEl = document.getElementById('data-accuracy');
+        const altEl = document.getElementById('data-altitude');
+
+        if (latEl) latEl.textContent = `${Math.abs(currentLat).toFixed(4)}° ${currentLat >= 0 ? 'N' : 'S'}`;
+        if (latDecEl) latDecEl.textContent = `${S.decimal || 'Decimal'}: ${currentLat.toFixed(6)}`;
+        if (lngEl) lngEl.textContent = `${Math.abs(currentLng).toFixed(4)}° ${currentLng >= 0 ? 'E' : 'W'}`;
+        if (lngDecEl) lngDecEl.textContent = `${S.decimal || 'Decimal'}: ${currentLng.toFixed(6)}`;
+        if (addrEl) addrEl.textContent = currentAddress;
+        if (cityEl) cityEl.textContent = ipData.city || S.cityFallback || 'Detected city';
+        if (citySubEl) citySubEl.textContent = S.ipPrecision || 'Approximate (IP-level)';
+        if (stateEl) stateEl.textContent = `${ipData.region || ''}, ${ipData.country || ''}`;
+        if (stateSubEl) stateSubEl.textContent = ipData.countryCode ? `ISO 3166-1: ${ipData.countryCode}${ipData.regionCode ? '-' + ipData.regionCode : ''}` : '';
+        if (accEl) accEl.textContent = '± 10 km (IP)';
+        const accSubEl = document.getElementById('data-accuracy-sub');
+        if (accSubEl) accSubEl.textContent = S.accuracyIp || 'Estimated from your IP';
+        if (altEl) altEl.textContent = S.altitudeIpNone || 'Not available via IP';
+
+        if (mapCoordChip) {
+          mapCoordChip.textContent = `${currentLat.toFixed(4)}°, ${currentLng.toFixed(4)}°`;
+        }
+
+        setMapStatus(S.ipStatus || 'Approximate (IP)');
+        initMap(currentLat, currentLng, 10000);
+        updateFormatDisplays(currentLat, currentLng);
+
+        if (bannerText) {
+          bannerText.textContent = S.ipBanner || 'Approximate city-level location from your IP address. Nothing is stored on our servers.';
+        }
+      } catch {
+        setMapStatus(S.noFix || 'No location');
+        if (bannerText) bannerText.textContent = S.failed || 'Could not get location. Please enable location permissions.';
+      }
+    }
+
+    // Attach primary listeners
+    getBtn?.addEventListener('click', () => findLocation());
+    document.getElementById('refresh-btn')?.addEventListener('click', () => findLocation());
+    document.getElementById('troubleshoot-retry-btn')?.addEventListener('click', () => findLocation());
+    document.getElementById('troubleshoot-ip-btn')?.addEventListener('click', () => fallbackToIp());
+
+    // Emergency Mode Toggle
+    const emergencyBtn = document.getElementById('emergency-btn');
+    const closeEmergencyBtn = document.getElementById('close-emergency-btn');
+    emergencyBtn?.addEventListener('click', () => {
+      if (!emergencyCard) return;
+      const isHidden = emergencyCard.style.display === 'none';
+      emergencyCard.style.display = isHidden ? 'block' : 'none';
+      if (isHidden) {
+        emergencyCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+    });
+    closeEmergencyBtn?.addEventListener('click', () => {
+      if (emergencyCard) emergencyCard.style.display = 'none';
+    });
+
+    // Emergency Copy
+    document.getElementById('emergency-copy-btn')?.addEventListener('click', function(this: HTMLButtonElement) {
+      if (!currentLat || !currentLng) return;
+      const text = `🚨 EMERGENCY LOCATION:\nI am at: ${currentAddress || 'Exact location'}\nCoordinates: ${currentLat.toFixed(6)}, ${currentLng.toFixed(6)} (Accuracy ±${Math.round(currentAccuracy)}m)\nGoogle Maps: https://www.google.com/maps?q=${currentLat},${currentLng}`;
+      navigator.clipboard.writeText(text).then(() => {
+        const orig = this.textContent;
+        this.textContent = '✓ Copied to clipboard!';
+        setTimeout(() => { this.textContent = orig; }, 2000);
+      });
+    });
+
+    // Check permission state on page load:
+    // Only auto-locate if permission is ALREADY granted. NEVER trigger browser prompt on load!
+    GeoLocation.checkPermission().then((perm) => {
+      if (perm === 'granted') {
+        findLocation();
+      } else {
+        // Safe standby state: initialize world map without prompting
+        initMap(null, null);
+        setMapStatus(S.ready || 'Ready');
+      }
+    }).catch(() => {
+      initMap(null, null);
+    });
+
+    // Format copy buttons
+    const wireCopyBtn = (btnId: string, valId: string) => {
+      document.getElementById(btnId)?.addEventListener('click', function(this: HTMLButtonElement) {
+        const val = document.getElementById(valId)?.textContent?.trim();
+        if (!val || val === '—') return;
+        navigator.clipboard.writeText(val).then(() => {
+          const orig = this.textContent;
+          this.textContent = '✓ Copied!';
+          setTimeout(() => { this.textContent = orig; }, 1800);
+        });
+      });
+    };
+    wireCopyBtn('copy-dd-btn', 'val-dd');
+    wireCopyBtn('copy-dms-btn', 'val-dms');
+    wireCopyBtn('copy-plus-btn', 'val-plus');
+    wireCopyBtn('copy-utm-btn', 'val-utm');
+
+    // Main header copy button
     document.getElementById('copy-coords-btn')?.addEventListener('click', function(this: HTMLButtonElement) {
       if (currentLat === null || currentLng === null) {
         const span = this.querySelector('span');
@@ -732,6 +1111,7 @@ const homeFaqSchema = {
       });
     });
 
+    // Main share button
     document.getElementById('share-btn')?.addEventListener('click', () => {
       if (currentLat === null || currentLng === null) return;
       Sharing.shareNative({
@@ -742,5 +1122,473 @@ const homeFaqSchema = {
         url: Sharing.getGoogleMapsUrl(currentLat, currentLng),
       });
     });
+
+    // Live Tracking Checkbox
+    const liveTrackEl = document.getElementById('live-track-checkbox') as HTMLInputElement;
+    liveTrackEl?.addEventListener('change', () => {
+      if (liveTrackEl.checked) {
+        watchId = GeoLocation.watchPosition((pos) => {
+          const p = GeoLocation.formatPosition(pos);
+          currentLat = p.latitude;
+          currentLng = p.longitude;
+          currentAccuracy = p.accuracy;
+          initMap(p.latitude, p.longitude, p.accuracy);
+          updateFormatDisplays(p.latitude, p.longitude);
+        }, (err) => {
+          console.warn('Live tracking warning:', err);
+        });
+      } else if (watchId !== null) {
+        GeoLocation.clearWatch(watchId);
+        watchId = null;
+      }
+    });
+
+    // Nominatim / Address lookup toggle
+    const nomToggle = document.getElementById('nominatim-toggle') as HTMLInputElement;
+    if (nomToggle) {
+      nomToggle.checked = Geocoding.isLookupEnabled();
+      nomToggle.addEventListener('change', () => {
+        Geocoding.setLookupEnabled(nomToggle.checked);
+        if (currentLat && currentLng) {
+          findLocation();
+        }
+      });
+    }
+
+    // Save Location Local History
+    const renderSavedPlaces = () => {
+      const block = document.getElementById('saved-places-block');
+      const list = document.getElementById('saved-places-list');
+      if (!block || !list) return;
+      try {
+        const history = JSON.parse(localStorage.getItem('myloc_saved_spots') || '[]');
+        if (history.length === 0) {
+          block.style.display = 'none';
+          return;
+        }
+        block.style.display = 'block';
+        list.innerHTML = '';
+        history.slice(0, 5).forEach((item: any, idx: number) => {
+          const li = document.createElement('li');
+          li.style.marginBottom = '6px';
+          li.innerHTML = `<span>📍 <strong>${item.name || 'Saved Spot'}</strong> (${item.lat.toFixed(4)}, ${item.lng.toFixed(4)}) - <a href="https://www.google.com/maps?q=${item.lat},${item.lng}" target="_blank" rel="noopener noreferrer" style="color:var(--color-accent-primary); text-decoration:underline;">Maps</a></span> <button type="button" data-del="${idx}" style="background:none; border:none; color:#ef4444; cursor:pointer; margin-left:8px; font-size:11px;">Remove</button>`;
+          list.appendChild(li);
+        });
+        list.querySelectorAll('button[data-del]').forEach(btn => {
+          btn.addEventListener('click', (e) => {
+            const delIdx = parseInt((e.target as HTMLElement).getAttribute('data-del') || '0', 10);
+            history.splice(delIdx, 1);
+            localStorage.setItem('myloc_saved_spots', JSON.stringify(history));
+            renderSavedPlaces();
+          });
+        });
+      } catch {}
+    };
+    renderSavedPlaces();
+
+    document.getElementById('btn-save-spot')?.addEventListener('click', () => {
+      if (!currentLat || !currentLng) return;
+      try {
+        const history = JSON.parse(localStorage.getItem('myloc_saved_spots') || '[]');
+        history.unshift({
+          name: currentAddress || 'Saved Place',
+          lat: currentLat,
+          lng: currentLng,
+          date: Date.now()
+        });
+        localStorage.setItem('myloc_saved_spots', JSON.stringify(history.slice(0, 10)));
+        const msg = document.getElementById('save-status-msg');
+        if (msg) {
+          msg.textContent = '✓ Saved on this device!';
+          setTimeout(() => { msg.textContent = ''; }, 2500);
+        }
+        renderSavedPlaces();
+      } catch {}
+    });
+
+    // Accuracy Feedback widget
+    document.getElementById('feedback-yes')?.addEventListener('click', () => {
+      const msg = document.getElementById('feedback-msg');
+      if (msg) {
+        msg.textContent = '✓ Thank you for letting us know!';
+        msg.style.display = 'inline-block';
+        msg.style.color = 'var(--color-accent-success)';
+      }
+    });
+    document.getElementById('feedback-no')?.addEventListener('click', () => {
+      const msg = document.getElementById('feedback-msg');
+      if (msg) {
+        msg.innerHTML = '⚠️ Tip: Step outdoors or turn on Wi-Fi for better GPS accuracy. See our <a href="/guides/wrong-location/" style="text-decoration:underline; font-weight:600;">Fixing Wrong Location Guide</a>.';
+        msg.style.display = 'inline-block';
+        msg.style.color = '#d97706';
+      }
+    });
   </script>
+
+  <style>
+    /* Emergency Readout Card */
+    .emergency-readout-card {
+      background: #7f1d1d;
+      color: #ffffff;
+      border: 2px solid #ef4444;
+      border-radius: var(--radius-xl);
+      padding: var(--space-5) var(--space-6);
+      margin-bottom: var(--space-5);
+      box-shadow: 0 10px 25px -5px rgba(239, 68, 68, 0.4);
+    }
+    .emergency-card-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: var(--space-2);
+    }
+    .emergency-card-badge {
+      display: inline-block;
+      font-size: var(--text-xs);
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      background: #ef4444;
+      color: #ffffff;
+      padding: 3px 10px;
+      border-radius: var(--radius-sm);
+    }
+    .emergency-close-button {
+      background: transparent;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      color: #ffffff;
+      font-size: var(--text-xs);
+      font-weight: 600;
+      padding: 3px 8px;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+    }
+    .emergency-instruction {
+      font-size: var(--text-sm);
+      color: #fecaca;
+      margin: 0 0 var(--space-3);
+    }
+    .emergency-text-box {
+      background: rgba(0, 0, 0, 0.35);
+      border-radius: var(--radius-lg);
+      padding: var(--space-4);
+      margin-bottom: var(--space-4);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+    }
+    .emergency-callout-heading {
+      font-size: var(--text-xs);
+      font-weight: 700;
+      color: #fca5a5;
+      letter-spacing: 0.05em;
+      margin-bottom: 4px;
+    }
+    .emergency-location-address {
+      font-size: clamp(1.2rem, 3vw, 1.65rem);
+      font-weight: 800;
+      line-height: 1.35;
+      color: #ffffff;
+      margin-bottom: 6px;
+    }
+    .emergency-location-coords {
+      font-size: var(--text-sm);
+      font-family: var(--font-mono);
+      color: #fecaca;
+    }
+    .emergency-action-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .emergency-action-buttons .btn-whatsapp {
+      background: #25d366;
+      color: #ffffff;
+      font-weight: 600;
+    }
+
+    /* Accuracy Warning Strip */
+    .accuracy-warning-strip {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: #fffbeb;
+      border: 1px solid #fde68a;
+      color: #92400e;
+      padding: 10px 14px;
+      border-radius: var(--radius-lg);
+      font-size: var(--text-xs);
+      font-weight: 500;
+      margin-bottom: var(--space-4);
+    }
+    html[data-theme="dark"] .accuracy-warning-strip {
+      background: rgba(245, 158, 11, 0.12);
+      border-color: rgba(245, 158, 11, 0.3);
+      color: #fde68a;
+    }
+
+    /* Troubleshooting Card */
+    .troubleshoot-card {
+      background: var(--color-bg-card);
+      border: 1px solid #f59e0b;
+      border-radius: var(--radius-xl);
+      padding: var(--space-5);
+      margin-bottom: var(--space-5);
+    }
+    .troubleshoot-card-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: var(--space-4);
+    }
+    .troubleshoot-card-icon {
+      font-size: 24px;
+      line-height: 1;
+    }
+    .troubleshoot-heading {
+      margin: 0 0 2px;
+      font-size: var(--text-base);
+      font-weight: 700;
+      color: var(--color-text-primary);
+    }
+    .troubleshoot-subtitle {
+      margin: 0;
+      font-size: var(--text-xs);
+      color: var(--color-text-secondary);
+    }
+    .troubleshoot-steps-accordion {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: var(--space-4);
+    }
+    .troubleshoot-step-detail {
+      background: var(--color-bg-secondary);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      padding: 8px 12px;
+      font-size: var(--text-xs);
+    }
+    .troubleshoot-step-summary {
+      cursor: pointer;
+      font-weight: 600;
+      color: var(--color-text-primary);
+    }
+    .troubleshoot-step-body {
+      margin: 6px 0 0;
+      color: var(--color-text-secondary);
+      line-height: 1.6;
+    }
+    .troubleshoot-footer-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    /* Coordinate Formats Card */
+    .coordinate-formats-card {
+      margin-top: var(--space-6);
+      background: var(--color-bg-secondary);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-xl);
+      padding: var(--space-5);
+    }
+    .formats-title-row {
+      margin-bottom: var(--space-3);
+    }
+    .formats-title {
+      display: block;
+      font-size: var(--text-sm);
+      font-weight: 700;
+      color: var(--color-text-primary);
+    }
+    .formats-sub {
+      display: block;
+      font-size: var(--text-xs);
+      color: var(--color-text-secondary);
+    }
+    .formats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 12px;
+    }
+    .format-cell {
+      background: var(--color-bg-card);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      padding: 10px 12px;
+    }
+    .format-cell-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 4px;
+    }
+    .format-badge {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--color-text-tertiary);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .format-copy-btn {
+      background: transparent;
+      border: 1px solid var(--color-border);
+      color: var(--color-text-secondary);
+      font-size: 11px;
+      padding: 1px 6px;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .format-copy-btn:hover {
+      background: var(--color-accent-primary);
+      color: #ffffff;
+      border-color: var(--color-accent-primary);
+    }
+    .format-value {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      font-weight: 600;
+      color: var(--color-text-primary);
+      word-break: break-all;
+    }
+
+    /* Nearby Services Quick Help */
+    .nearby-services-card {
+      margin-top: var(--space-5);
+      background: var(--color-bg-secondary);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-xl);
+      padding: var(--space-5);
+    }
+    .nearby-header {
+      margin-bottom: var(--space-3);
+    }
+    .nearby-title {
+      display: block;
+      font-size: var(--text-sm);
+      font-weight: 700;
+      color: var(--color-text-primary);
+    }
+    .nearby-sub {
+      display: block;
+      font-size: var(--text-xs);
+      color: var(--color-text-secondary);
+    }
+    .nearby-chips-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .nearby-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--color-bg-card);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-full);
+      padding: 7px 14px;
+      font-size: var(--text-xs);
+      font-weight: 600;
+      color: var(--color-text-primary);
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+    .nearby-chip:hover {
+      border-color: var(--color-accent-primary);
+      color: var(--color-accent-primary);
+      transform: translateY(-1px);
+    }
+
+    /* Technical Details Accordion */
+    .tech-accordion-box {
+      margin-top: var(--space-5);
+      background: var(--color-bg-secondary);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-xl);
+      padding: var(--space-4) var(--space-5);
+    }
+    .tech-accordion-summary {
+      cursor: pointer;
+      font-size: var(--text-xs);
+      font-weight: 700;
+      color: var(--color-text-secondary);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .tech-accordion-content {
+      margin-top: var(--space-4);
+      padding-top: var(--space-3);
+      border-top: 1px solid var(--color-border);
+    }
+    .tech-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 12px;
+      margin-bottom: var(--space-4);
+    }
+    .tech-item {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      font-size: var(--text-xs);
+    }
+    .tech-label {
+      font-weight: 600;
+      color: var(--color-text-tertiary);
+    }
+    .tech-val {
+      font-weight: 600;
+      color: var(--color-text-primary);
+      font-family: var(--font-mono);
+    }
+    .tech-options-row {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .tech-toggle-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      font-size: var(--text-xs);
+      color: var(--color-text-secondary);
+      cursor: pointer;
+    }
+
+    /* Feedback Row */
+    .accuracy-feedback-row {
+      margin-top: var(--space-4);
+      padding: var(--space-3) 0 0;
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      font-size: var(--text-xs);
+    }
+    .feedback-label {
+      color: var(--color-text-secondary);
+      font-weight: 600;
+    }
+    .feedback-pill-btn {
+      background: var(--color-bg-secondary);
+      border: 1px solid var(--color-border);
+      color: var(--color-text-primary);
+      font-size: var(--text-xs);
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: var(--radius-full);
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .feedback-pill-btn:hover {
+      border-color: var(--color-accent-primary);
+      color: var(--color-accent-primary);
+    }
+    .feedback-msg {
+      font-size: var(--text-xs);
+      font-weight: 500;
+    }
+  </style>
 </BaseLayout>

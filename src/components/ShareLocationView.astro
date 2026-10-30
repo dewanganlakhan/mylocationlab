@@ -37,6 +37,45 @@ const shareSchema = {
     priceCurrency: 'USD',
   },
 };
+
+const relatedTools = [
+  {
+    title: lang === 'es' ? 'Código QR de Ubicación' : lang === 'fr' ? 'Code QR de Localisation' : lang === 'de' ? 'Standort QR-Code' : lang === 'pt' ? 'QR Code de Localização' : lang === 'hi' ? 'लोकेशन QR कोड' : lang === 'id' ? 'QR Code Lokasi' : 'Location QR Code',
+    sub: lang === 'es' ? 'Comparte tu posición mediante escaneo físico' : lang === 'fr' ? 'Partage instantané par scan mobile' : lang === 'de' ? 'Teilen per Smartphone-Scan' : lang === 'pt' ? 'Compartilhe por escaneamento móvel' : lang === 'hi' ? 'मोबाइल स्कैन के जरिए शेयर करें' : lang === 'id' ? 'Bagikan lewat pemindaian cepat' : 'Generate printable scan codes for physical sharing',
+    href: getLocalizedPath('/tools/location-qr-code/', lang),
+    icon: '📱'
+  },
+  {
+    title: lang === 'es' ? 'Buscador de Coordenadas GPS' : lang === 'fr' ? 'Coordonnées GPS' : lang === 'de' ? 'GPS-Koordinaten' : lang === 'pt' ? 'Coordenadas GPS' : lang === 'hi' ? 'GPS निर्देशांक खोजक' : lang === 'id' ? 'Pencari Koordinat GPS' : 'GPS Coordinates Finder',
+    sub: lang === 'es' ? 'Latitud y longitud precisas de hardware' : lang === 'fr' ? 'Latitude et longitude brutes précises' : lang === 'de' ? 'Präzise Hardware-Breite und Länge' : lang === 'pt' ? 'Latitude e longitude de precisão' : lang === 'hi' ? 'सटीक हार्डवेयर अक्षांश व देशांतर' : lang === 'id' ? 'Lintang dan bujur akurat' : 'Extract high-accuracy hardware latitude and longitude',
+    href: getLocalizedPath('/tools/gps-coordinates/', lang),
+    icon: '🛰️'
+  },
+  {
+    title: lang === 'es' ? '¿Cuál es Mi Dirección?' : lang === 'fr' ? 'Quelle est Mon Adresse ?' : lang === 'de' ? 'Was ist meine Adresse?' : lang === 'pt' ? 'Qual é o Meu Endereço?' : lang === 'hi' ? 'मेरा पता क्या है?' : lang === 'id' ? 'Apa Alamat Saya?' : 'What Is My Address?',
+    sub: lang === 'es' ? 'Geocodificación inversa a calle y portal' : lang === 'fr' ? 'Résolution postale exacte de votre position' : lang === 'de' ? 'Automatische Straßen- und Hausnummer-Erkennung' : lang === 'pt' ? 'Resolução de endereço postal exato' : lang === 'hi' ? 'सटीक डाक पता और सड़क पहचान' : lang === 'id' ? 'Resolusi alamat jalan lengkap' : 'Translate your coordinates to an exact postal street address',
+    href: getLocalizedPath('/my-location/address/', lang),
+    icon: '🏠'
+  },
+  {
+    title: lang === 'es' ? 'Calculadora de Distancia' : lang === 'fr' ? 'Calculateur de Distance' : lang === 'de' ? 'Entfernungsrechner' : lang === 'pt' ? 'Calculadora de Distância' : lang === 'hi' ? 'दूरी कैलकुलेटर' : lang === 'id' ? 'Kalkulator Jarak' : 'Distance Calculator',
+    sub: lang === 'es' ? 'Calcula distancia geodésica entre dos puntos' : lang === 'fr' ? 'Mesurez la distance orthodromique' : lang === 'de' ? 'Luftlinie und geodesischer Abstand' : lang === 'pt' ? 'Distância geodésica entre pontos' : lang === 'hi' ? 'दो बिंदुओं के बीच भूगणितीय दूरी' : lang === 'id' ? 'Ukur jarak geodesik dua titik' : 'Calculate great-circle geodesic distance to any destination',
+    href: getLocalizedPath('/tools/distance-calculator/', lang),
+    icon: '📏'
+  },
+  {
+    title: lang === 'es' ? 'Conversor de Coordenadas' : lang === 'fr' ? 'Convertisseur de Coordonnées' : lang === 'de' ? 'Koordinaten-Konverter' : lang === 'pt' ? 'Conversor de Coordenadas' : lang === 'hi' ? 'कोऑर्डिनेट कनवर्टर' : lang === 'id' ? 'Konverter Koordinat' : 'Coordinate Converter',
+    sub: lang === 'es' ? 'Conversión bidireccional DD, DMS y UTM' : lang === 'fr' ? 'Conversion instantanée DD, DMS et UTM' : lang === 'de' ? 'Schnelle Umrechnung von DD, DMS und UTM' : lang === 'pt' ? 'Conversão rápida DD, DMS e UTM' : lang === 'hi' ? 'DD, DMS और UTM में लाइव रूपांतरण' : lang === 'id' ? 'Konversi cepat DD, DMS, dan UTM' : 'Convert live positions between DD, DMS, and UTM standards',
+    href: getLocalizedPath('/tools/coordinate-converter/', lang),
+    icon: '🧭'
+  },
+  {
+    title: lang === 'es' ? 'Comprobador de Precisión GPS' : lang === 'fr' ? 'Vérificateur de Précision GPS' : lang === 'de' ? 'GPS-Genauigkeitsprüfer' : lang === 'pt' ? 'Verificador de Precisão GPS' : lang === 'hi' ? 'GPS सटीकता चेकर' : lang === 'id' ? 'Pemeriksa Akurasi GPS' : 'GPS Accuracy Checker',
+    sub: lang === 'es' ? 'Verifica el radio de error y constelaciones' : lang === 'fr' ? 'Inspectez le rayon de précision de vos capteurs' : lang === 'de' ? 'Überprüfen Sie den Genauigkeitsradius' : lang === 'pt' ? 'Inspecione o raio de incerteza do GPS' : lang === 'hi' ? 'सेंसर का अनिश्चितता दायरा जांचें' : lang === 'id' ? 'Periksa radius ketidakpastian perangkat' : 'Inspect device sensor confidence radius and signal strength',
+    href: getLocalizedPath('/tools/gps-accuracy/', lang),
+    icon: '🎯'
+  }
+];
 ---
 
 <BaseLayout
@@ -128,7 +167,7 @@ const shareSchema = {
     </div>
 
     <!-- Educational & Privacy Prose -->
-    <article class="prose" style="max-width: var(--max-width-narrow); margin: 0 auto var(--space-16);">
+    <article class="prose" style="max-width: var(--max-width-narrow); margin: 0 auto var(--space-12);">
       <h2>{c.h2How}</h2>
       <p>{c.pHow1}</p>
       <p>{c.pHow2}</p>
@@ -140,6 +179,39 @@ const shareSchema = {
         <li><strong>{c.when3Title}</strong> {c.when3Desc}</li>
       </ul>
     </article>
+
+    <!-- Contextual Internal Linking to Related Tools -->
+    <div class="contextual-next-box" style="margin-bottom: var(--space-16);">
+      <h3 style="margin-top: 0; margin-bottom: var(--space-2);">
+        {lang === 'es' ? '🔗 Herramientas Geográficas Conectadas' :
+         lang === 'fr' ? '🔗 Outils Géographiques Connectés' :
+         lang === 'de' ? '🔗 Verbundene Geotools & Rechner' :
+         lang === 'pt' ? '🔗 Ferramentas Geográficas Conectadas' :
+         lang === 'hi' ? '🔗 जुड़े हुए भौगोलिक उपकरण' :
+         lang === 'id' ? '🔗 Alat Geografis Terhubung' :
+         '🔗 Connected Geolocation Utilities'}
+      </h3>
+      <p style="font-size: var(--text-sm); color: var(--color-text-secondary); margin-bottom: var(--space-4);">
+        {lang === 'es' ? 'Explora más herramientas para convertir, medir y verificar tus datos de posicionamiento:' :
+         lang === 'fr' ? 'Découvrez d\'autres utilitaires pour convertir, mesurer et vérifier votre position :' :
+         lang === 'de' ? 'Entdecken Sie weitere Tools zur Koordinatenumrechnung, Distanzmessung und Fehlerprüfung:' :
+         lang === 'pt' ? 'Explore mais ferramentas para converter, medir e verificar seus dados de posicionamento:' :
+         lang === 'hi' ? 'अपने स्थान डेटा को परिवर्तित, मापने और जांचने के लिए अन्य टूल देखें:' :
+         lang === 'id' ? 'Jelajahi lebih banyak alat untuk mengonversi, mengukur, dan memverifikasi data posisi Anda:' :
+         'Explore complementary tools to inspect, format, measure, and verify your coordinates:'}
+      </p>
+      <div class="contextual-next-grid">
+        {relatedTools.map((tool) => (
+          <a href={tool.href} class="contextual-link-card">
+            <span class="contextual-link-icon">{tool.icon}</span>
+            <div class="contextual-link-info">
+              <div class="contextual-link-title">{tool.title}</div>
+              <div class="contextual-link-sub">{tool.sub}</div>
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
   </div>
 
   <script>

@@ -164,6 +164,61 @@ const Sharing = {
   },
 
   /**
+   * Generate an OpenStreetMap URL.
+   * @param {number} lat
+   * @param {number} lng
+   * @returns {string}
+   */
+  getOsmUrl(lat, lng) {
+    return `https://www.openstreetmap.org/?mlat=${lat}&mlon=${lng}#map=16/${lat}/${lng}`;
+  },
+
+  /**
+   * Generate a WhatsApp share URL.
+   * @param {number} lat
+   * @param {number} lng
+   * @param {string} [address]
+   * @returns {string}
+   */
+  getWhatsAppUrl(lat, lng, address = '') {
+    const maps = this.getGoogleMapsUrl(lat, lng);
+    const text = address
+      ? `📍 My Current Location:\n${address}\nCoordinates: ${lat.toFixed(6)}, ${lng.toFixed(6)}\nMaps: ${maps}`
+      : `📍 My Current Location:\nCoordinates: ${lat.toFixed(6)}, ${lng.toFixed(6)}\nMaps: ${maps}`;
+    return `https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`;
+  },
+
+  /**
+   * Generate an SMS share URL.
+   * @param {number} lat
+   * @param {number} lng
+   * @param {string} [address]
+   * @returns {string}
+   */
+  getSmsUrl(lat, lng, address = '') {
+    const maps = this.getGoogleMapsUrl(lat, lng);
+    const text = address
+      ? `My location: ${address} (${lat.toFixed(6)}, ${lng.toFixed(6)}) - ${maps}`
+      : `My location: ${lat.toFixed(6)}, ${lng.toFixed(6)} - ${maps}`;
+    return `sms:?body=${encodeURIComponent(text)}`;
+  },
+
+  /**
+   * Generate nearby services Google Maps search URLs.
+   * @param {number} lat
+   * @param {number} lng
+   */
+  getNearbyLinks(lat, lng) {
+    return {
+      hospitals: `https://www.google.com/maps/search/hospitals/@${lat},${lng},15z`,
+      police: `https://www.google.com/maps/search/police+station/@${lat},${lng},15z`,
+      pharmacies: `https://www.google.com/maps/search/pharmacy/@${lat},${lng},15z`,
+      petrol: `https://www.google.com/maps/search/gas+station/@${lat},${lng},15z`,
+      atms: `https://www.google.com/maps/search/atm/@${lat},${lng},15z`,
+    };
+  },
+
+  /**
    * Generate a location sharing URL for this site.
    * @param {number} lat
    * @param {number} lng

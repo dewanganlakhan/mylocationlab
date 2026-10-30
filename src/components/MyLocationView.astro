@@ -97,6 +97,240 @@ const webAppSchema = {
     priceCurrency: 'USD',
   },
 };
+
+const connectedToolsList = [
+  {
+    icon: '📍',
+    href: '/tools/gps-coordinates/',
+    title: {
+      en: 'GPS Coordinates Finder',
+      es: 'Buscador de Coordenadas GPS',
+      fr: 'Localisateur de Coordonnées GPS',
+      de: 'GPS-Koordinaten-Finder',
+      pt: 'Buscador de Coordenadas GPS',
+      hi: 'GPS निर्देशांक खोजक',
+      id: 'Pencari Koordinat GPS',
+    },
+    desc: {
+      en: 'Find exact latitude, longitude, and elevation with satellite lock.',
+      es: 'Obtenga latitud, longitud y altitud exactas vía satélite.',
+      fr: 'Trouvez latitude, longitude et altitude par satellite.',
+      de: 'Genaue Breiten-, Längengrade und Höhe via Satellit ermitteln.',
+      pt: 'Obtenha latitude, longitude e altitude exatas via satélite.',
+      hi: 'सैटेलाइट से सटीक अक्षांश, देशांतर और ऊंचाई प्राप्त करें।',
+      id: 'Dapatkan lintang, bujur, dan ketinggian akurat via satelit.',
+    },
+  },
+  {
+    icon: '🌐',
+    href: '/tools/latitude-longitude/',
+    title: {
+      en: 'Latitude Longitude Finder',
+      es: 'Buscador de Latitud y Longitud',
+      fr: 'Détecteur de Latitude et Longitude',
+      de: 'Breiten- und Längengrad-Finder',
+      pt: 'Localizador de Latitude e Longitude',
+      hi: 'अक्षांश और देशांतर खोजक',
+      id: 'Pencari Lintang dan Bujur',
+    },
+    desc: {
+      en: 'Inspect hemispheric parallels and meridians on an interactive map.',
+      es: 'Explore paralelos y meridianos en un mapa interactivo.',
+      fr: 'Explorez parallèles et méridiens sur une carte interactive.',
+      de: 'Parallelen und Meridiane auf einer interaktiven Karte erkunden.',
+      pt: 'Explore paralelos e meridianos em um mapa interativo.',
+      hi: 'इंटरैक्टिव मानचित्र पर अक्षांश और देशांतर रेखाएं देखें।',
+      id: 'Jelajahi garis lintang dan bujur di peta interaktif.',
+    },
+  },
+  {
+    icon: '🏠',
+    href: '/tools/address-finder/',
+    title: {
+      en: 'Street Address Finder',
+      es: 'Buscador de Dirección Postal',
+      fr: "Localisateur d'Adresse",
+      de: 'Adressen-Finder',
+      pt: 'Localizador de Endereço',
+      hi: 'सड़क पता खोजक',
+      id: 'Pencari Alamat Jalan',
+    },
+    desc: {
+      en: 'Resolve street name, house number, city, and postcode for any pin.',
+      es: 'Obtenga calle, número, ciudad y código postal de cualquier punto.',
+      fr: 'Identifiez rue, numéro, ville et code postal pour tout point.',
+      de: 'Straße, Hausnummer, Stadt und PLZ für jeden Punkt ermitteln.',
+      pt: 'Descubra rua, número, cidade e CEP de qualquer ponto.',
+      hi: 'किसी भी बिंदु के लिए सड़क, मकान नंबर और पिन कोड जानें।',
+      id: 'Ketahui nama jalan, nomor rumah, dan kode pos lokasi mana pun.',
+    },
+  },
+  {
+    icon: '🔄',
+    href: '/tools/reverse-geocoding/',
+    title: {
+      en: 'Reverse Geocoder',
+      es: 'Geocodificador Inverso',
+      fr: 'Géocodage Inverse',
+      de: 'Rückwärts-Geocoder',
+      pt: 'Geocodificador Reverso',
+      hi: 'रिवर्स जियोकोडर',
+      id: 'Reverse Geocoder',
+    },
+    desc: {
+      en: 'Convert geographic latitude and longitude into human postal addresses.',
+      es: 'Transforme coordenadas numéricas en direcciones postales legibles.',
+      fr: 'Convertissez des coordonnées GPS en adresses postales lisibles.',
+      de: 'GPS-Koordinaten in lesbare Postadressen umwandeln.',
+      pt: 'Converta coordenadas GPS em endereços postais legíveis.',
+      hi: 'भौगोलिक निर्देशांकों को पढ़ने योग्य पते में बदलें।',
+      id: 'Ubah koordinat GPS menjadi alamat pos yang mudah dibaca.',
+    },
+  },
+  {
+    icon: '🎯',
+    href: '/tools/geocoding/',
+    title: {
+      en: 'Forward Geocoder',
+      es: 'Geocodificador Directo',
+      fr: 'Géocodage Direct',
+      de: 'Vorwärts-Geocoder',
+      pt: 'Geocodificador Direto',
+      hi: 'फ़ॉरवर्ड जियोकोडर',
+      id: 'Forward Geocoder',
+    },
+    desc: {
+      en: 'Search any landmark, city, or address to retrieve GPS coordinates.',
+      es: 'Busque cualquier dirección o punto para obtener coordenadas GPS.',
+      fr: 'Recherchez une adresse ou un lieu pour obtenir ses coordonnées.',
+      de: 'Adresse oder Ort suchen und GPS-Koordinaten abrufen.',
+      pt: 'Pesquise qualquer endereço ou local para obter coordenadas GPS.',
+      hi: 'किसी भी पते या स्थान के नाम से GPS निर्देशांक प्राप्त करें।',
+      id: 'Cari alamat atau tempat untuk mendapatkan koordinat GPS.',
+    },
+  },
+  {
+    icon: '🔀',
+    href: '/tools/coordinate-converter/',
+    title: {
+      en: 'Coordinate Converter',
+      es: 'Conversor de Coordenadas',
+      fr: 'Convertisseur de Coordonnées',
+      de: 'Koordinaten-Konverter',
+      pt: 'Conversor de Coordenadas',
+      hi: 'निर्देशांक कनवर्टर',
+      id: 'Konverter Koordinat',
+    },
+    desc: {
+      en: 'Convert seamlessly between DD, DMS, UTM, MGRS, and Plus Codes.',
+      es: 'Convierta entre grados decimales, DMS, UTM, MGRS y Plus Codes.',
+      fr: 'Basculez entre degrés décimaux, DMS, UTM, MGRS et Plus Codes.',
+      de: 'Konvertieren zwischen Dezimalgrad, DMS, UTM, MGRS und Plus Codes.',
+      pt: 'Converta entre graus decimais, DMS, UTM, MGRS e Plus Codes.',
+      hi: 'दशमलव डिग्री, DMS, UTM, MGRS और Plus Code में बदलें।',
+      id: 'Konversi antara derajat desimal, DMS, UTM, MGRS, dan Plus Code.',
+    },
+  },
+  {
+    icon: '📏',
+    href: '/tools/distance-calculator/',
+    title: {
+      en: 'Distance Calculator',
+      es: 'Calculadora de Distancia',
+      fr: 'Calculateur de Distance',
+      de: 'Entfernungsrechner',
+      pt: 'Calculadora de Distância',
+      hi: 'दूरी कैलकुलेटर',
+      id: 'Kalkulator Jarak',
+    },
+    desc: {
+      en: 'Measure exact straight-line and great-circle range between two points.',
+      es: 'Mida la distancia ortodrómica exacta entre dos puntos del mapa.',
+      fr: 'Mesurez la distance orthodromique exacte entre deux points.',
+      de: 'Genaue Großkreis-Distanz zwischen zwei Punkten berechnen.',
+      pt: 'Meça a distância ortodrômica exata entre dois pontos do mapa.',
+      hi: 'मानचित्र पर दो बिंदुओं के बीच सटीक हवाई दूरी मापें।',
+      id: 'Ukur jarak garis lurus lingkaran besar antara dua titik.',
+    },
+  },
+  {
+    icon: '⛰️',
+    href: '/tools/elevation-finder/',
+    title: {
+      en: 'Elevation & Altitude Finder',
+      es: 'Buscador de Altitud y Elevación',
+      fr: "Localisateur d'Élévation et d'Altitude",
+      de: 'Höhenfinder & Höhenmesser',
+      pt: 'Localizador de Altitude e Elevação',
+      hi: 'ऊंचाई और एल्टीट्यूड खोजक',
+      id: 'Pencari Elevasi & Ketinggian',
+    },
+    desc: {
+      en: 'Query vertical ground elevation above sea level for any coordinate.',
+      es: 'Consulte la altitud sobre el nivel del mar para cualquier punto.',
+      fr: "Consultez l'altitude au-dessus du niveau de la mer en tout point.",
+      de: 'Geländehöhe über dem Meeresspiegel für beliebige Koordinaten.',
+      pt: 'Consulte a elevação do solo acima do nível do mar.',
+      hi: 'किसी भी निर्देशांक के लिए समुद्र तल से ऊंचाई जानें।',
+      id: 'Ketahui ketinggian tanah di atas permukaan laut untuk lokasi mana pun.',
+    },
+  },
+  {
+    icon: '🎯',
+    href: '/tools/gps-accuracy/',
+    title: {
+      en: 'GPS Accuracy Checker',
+      es: 'Comprobador de Precisión GPS',
+      fr: 'Testeur de Précision GPS',
+      de: 'GPS-Genauigkeitsprüfer',
+      pt: 'Verificador de Precisão GPS',
+      hi: 'GPS सटीकता परीक्षक',
+      id: 'Pemeriksa Akurasi GPS',
+    },
+    desc: {
+      en: 'Monitor live satellite error radius and diagnose reception quality.',
+      es: 'Monitoree el radio de error y diagnostique la calidad de señal.',
+      fr: "Surveillez le rayon d'incertitude et la qualité de réception GNSS.",
+      de: 'Fehlerradius überwachen und Signalqualität in Echtzeit prüfen.',
+      pt: 'Monitore o raio de erro e avalie a qualidade do sinal GNSS.',
+      hi: 'लाइव सैटेलाइट सिग्नल और त्रुटि के दायरे की जांच करें।',
+      id: 'Pantau radius margin kesalahan dan kualitas sinyal satelit langsung.',
+    },
+  },
+  {
+    icon: '📱',
+    href: '/tools/location-qr-code/',
+    title: {
+      en: 'Location QR Code Generator',
+      es: 'Generador de Código QR de Ubicación',
+      fr: 'Générateur de QR Code de Localisation',
+      de: 'Standort-QR-Code-Generator',
+      pt: 'Gerador de QR Code de Localização',
+      hi: 'लोकेशन QR कोड जनरेटर',
+      id: 'Generator QR Code Lokasi',
+    },
+    desc: {
+      en: 'Create instant scannable QR pins for Apple Maps, Google Maps, or geo URIs.',
+      es: 'Cree códigos QR para abrir coordenadas en Google Maps o Apple Maps.',
+      fr: 'Créez des QR codes pour ouvrir votre position sur Google ou Apple Maps.',
+      de: 'QR-Codes für Google Maps, Apple Maps oder Geo-URIs erzeugen.',
+      pt: 'Crie códigos QR para abrir pontos no Google Maps ou Apple Maps.',
+      hi: 'Google Maps और Apple Maps के लिए स्कैन करने योग्य QR कोड बनाएं।',
+      id: 'Buat kode QR instan untuk Google Maps, Apple Maps, atau geo URI.',
+    },
+  },
+];
+
+const connectedToolsHeading: Record<SupportedLang, { title: string; accent: string }> = {
+  en: { title: 'Connected Geolocation', accent: 'Tools & Utilities' },
+  es: { title: 'Herramientas de Geolocalización', accent: 'Conectadas' },
+  fr: { title: 'Outils Géographiques', accent: 'Associés' },
+  de: { title: 'Verwandte Geodaten-', accent: 'Tools & Rechner' },
+  pt: { title: 'Ferramentas de Geolocalização', accent: 'Conectadas' },
+  hi: { title: 'जुड़े हुए भौगोलिक', accent: 'टूल और उपयोगिताएँ' },
+  id: { title: 'Alat & Utilitas', accent: 'Geolokasi Terkait' },
+};
+
 ---
 
 <BaseLayout
@@ -138,6 +372,23 @@ const webAppSchema = {
       </div>
 
       <p id="location-error" data-nosnippet style="display: none; margin: var(--space-3) 0 0; text-align: center; color: var(--color-accent-error, #ef4444); font-size: var(--text-sm); font-weight: 500;" role="alert" aria-live="polite"></p>
+
+      <div id="acc-warning" style="display: none; background: #fffbeb; border: 1px solid #fde68a; color: #92400e; padding: 10px 14px; border-radius: var(--radius-lg); font-size: var(--text-xs); margin: var(--space-4) 0; text-align: center;">
+        ⚠️ Low Accuracy (±<span id="acc-warning-val"></span>). Device is estimating position via Wi-Fi or cellular network. Step outdoors for satellite precision.
+      </div>
+
+      <div id="loc-troubleshoot-guide" style="display: none; margin: var(--space-4) 0; background: var(--color-bg-secondary); border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: var(--space-4); text-align: left; font-size: var(--text-xs);">
+        <strong style="color: var(--color-text-primary); display: block; margin-bottom: 6px;">🧭 How to enable location permissions:</strong>
+        <ul style="margin: 0; padding-left: 18px; color: var(--color-text-secondary); line-height: 1.6;">
+          <li><strong>Chrome:</strong> Tap lock 🔒 in URL bar &rarr; Permissions &rarr; Location &rarr; Set to "Allow" &rarr; Reload.</li>
+          <li><strong>Safari (iPhone):</strong> iOS Settings &rarr; Safari &rarr; Location &rarr; Allow (or tap "aA" in URL bar).</li>
+          <li><strong>System Settings:</strong> Turn Location Services ON in your phone or PC settings.</li>
+        </ul>
+        <div style="margin-top: 10px; display: flex; gap: 8px;">
+          <button type="button" class="btn btn-primary btn-sm" id="view-retry-btn">🔄 Retry GPS</button>
+          <button type="button" class="btn btn-secondary btn-sm" id="view-ip-btn">🌐 Use Approximate IP</button>
+        </div>
+      </div>
 
       <div class="location-data-grid" id="location-data" style="display: none;">
         <div class="location-data-item">
@@ -242,19 +493,39 @@ const webAppSchema = {
           </table>
         </div>
 
-        <p style="font-size: var(--text-sm); color: var(--color-text-secondary); margin-bottom: 2rem;">
-          {lang === 'fr' ? (
-            <>Besoin d'un autre carroyage ? Utilisez notre <a href={getLocalizedPath('/tools/coordinate-converter/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">convertisseur de coordonnées (DD, DMS, UTM)</a> et consultez notre <a href={getLocalizedPath('/comparisons/decimal-degrees-vs-dms/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">comparatif degrés décimaux et DMS</a>.</>
-          ) : lang === 'es' ? (
-            <>¿Necesita convertir formatos? Use nuestro <a href={getLocalizedPath('/tools/coordinate-converter/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">conversor de coordenadas (DD, DMS, UTM)</a> y consulte la <a href={getLocalizedPath('/comparisons/decimal-degrees-vs-dms/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">comparativa grados decimales vs DMS</a>.</>
-          ) : lang === 'de' ? (
-            <>Benötigen Sie andere Formate? Nutzen Sie unseren <a href={getLocalizedPath('/tools/coordinate-converter/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Koordinaten-Konverter (DD, GMS, UTM)</a> und unseren Leitfaden <a href={getLocalizedPath('/comparisons/decimal-degrees-vs-dms/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Dezimalgrad vs. GMS</a>.</>
-          ) : lang === 'pt' ? (
-            <>Precisa de outro formato? Utilize o nosso <a href={getLocalizedPath('/tools/coordinate-converter/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">conversor de coordenadas (DD, DMS, UTM)</a> e veja a <a href={getLocalizedPath('/comparisons/decimal-degrees-vs-dms/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">comparação graus decimais vs DMS</a>.</>
-          ) : (
-            <>Need another format? Use our <a href={getLocalizedPath('/tools/coordinate-converter/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Coordinate Converter (DD, DMS, UTM)</a> and explore <a href={getLocalizedPath('/comparisons/decimal-degrees-vs-dms/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Decimal Degrees vs DMS</a>.</>
-          )}
-        </p>
+        <div class="callout-box" style="margin-top: var(--space-4); margin-bottom: 2rem;">
+          <p style="margin: 0; font-size: var(--text-sm); line-height: 1.8;">
+            {lang === 'fr' ? (
+              <>
+                <strong>Outils d'analyse de coordonnées :</strong> Isolez votre position précise avec notre <a href={getLocalizedPath('/tools/gps-coordinates/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Détecteur de Coordonnées GPS</a> et le <a href={getLocalizedPath('/tools/latitude-longitude/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Traceur de Latitude et Longitude</a>. Besoin d'un autre carroyage ? Utilisez notre <a href={getLocalizedPath('/tools/coordinate-converter/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Convertisseur de Coordonnées (DD, DMS, UTM, MGRS)</a> et consultez notre <a href={getLocalizedPath('/comparisons/decimal-degrees-vs-dms/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">comparatif Degrés Décimaux vs DMS</a>. Pour convertir une adresse ou rechercher un point, explorez le <a href={getLocalizedPath('/tools/reverse-geocoding/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Géocodage Inverse</a>, le <a href={getLocalizedPath('/tools/geocoding/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Géocodeur</a> et notre <a href={getLocalizedPath('/tools/elevation-finder/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Localisateur d'Altitude</a>.
+              </>
+            ) : lang === 'es' ? (
+              <>
+                <strong>Herramientas de análisis de coordenadas :</strong> Inspeccione sus datos con el <a href={getLocalizedPath('/tools/gps-coordinates/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Buscador de Coordenadas GPS</a> y el <a href={getLocalizedPath('/tools/latitude-longitude/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Buscador de Latitud y Longitud</a>. Para cambiar de formato, utilice nuestro <a href={getLocalizedPath('/tools/coordinate-converter/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Conversor de Coordenadas (DD, DMS, UTM, MGRS)</a> y examine la <a href={getLocalizedPath('/comparisons/decimal-degrees-vs-dms/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">comparativa grados decimales vs DMS</a>. Si desea transformar coordenadas a calle o buscar lugares, use el <a href={getLocalizedPath('/tools/reverse-geocoding/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Geocodificador Inverso</a>, el <a href={getLocalizedPath('/tools/geocoding/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Geocodificador</a> y nuestro <a href={getLocalizedPath('/tools/elevation-finder/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Buscador de Altitud</a>.
+              </>
+            ) : lang === 'de' ? (
+              <>
+                <strong>Geodaten-Werkzeuge :</strong> Prüfen Sie Ihre Position mit dem <a href={getLocalizedPath('/tools/gps-coordinates/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">GPS-Koordinaten-Finder</a> und dem <a href={getLocalizedPath('/tools/latitude-longitude/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Breiten- und Längengrad-Finder</a>. Für andere Formate nutzen Sie unseren <a href={getLocalizedPath('/tools/coordinate-converter/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Koordinaten-Konverter (DD, GMS, UTM, MGRS)</a> und den Leitfaden <a href={getLocalizedPath('/comparisons/decimal-degrees-vs-dms/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Dezimalgrad vs. GMS</a>. Zur Adressauflösung und Höhenmessung stehen der <a href={getLocalizedPath('/tools/reverse-geocoding/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Rückwärts-Geocoder</a>, der <a href={getLocalizedPath('/tools/geocoding/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Geocoder</a> und der <a href={getLocalizedPath('/tools/elevation-finder/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Höhenfinder</a> bereit.
+              </>
+            ) : lang === 'pt' ? (
+              <>
+                <strong>Ferramentas de análise geográfica :</strong> Inspecione seus dados com o <a href={getLocalizedPath('/tools/gps-coordinates/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Buscador de Coordenadas GPS</a> e o <a href={getLocalizedPath('/tools/latitude-longitude/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Localizador de Latitude e Longitude</a>. Para outros formatos, utilize nosso <a href={getLocalizedPath('/tools/coordinate-converter/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Conversor de Coordenadas (DD, DMS, UTM, MGRS)</a> e veja a <a href={getLocalizedPath('/comparisons/decimal-degrees-vs-dms/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">comparação graus decimais vs DMS</a>. Para converter endereços ou medir altitudes, use o <a href={getLocalizedPath('/tools/reverse-geocoding/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Geocodificador Reverso</a>, o <a href={getLocalizedPath('/tools/geocoding/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Geocodificador</a> e o <a href={getLocalizedPath('/tools/elevation-finder/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Localizador de Altitude</a>.
+              </>
+            ) : lang === 'hi' ? (
+              <>
+                <strong>संबंधित भूस्थानिक टूल :</strong> अपने निर्देशांकों की विस्तृत जांच के लिए <a href={getLocalizedPath('/tools/gps-coordinates/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">GPS निर्देशांक खोजक</a> और <a href={getLocalizedPath('/tools/latitude-longitude/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">अक्षांश और देशांतर खोजक</a> का उपयोग करें। अन्य प्रारूपों के लिए हमारे <a href={getLocalizedPath('/tools/coordinate-converter/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">निर्देशांक कनवर्टर (DD, DMS, UTM, MGRS)</a> और <a href={getLocalizedPath('/comparisons/decimal-degrees-vs-dms/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">दशमलव डिग्री बनाम DMS तुलना</a> को देखें। पते को निर्देशांकों में बदलने व ऊंचाई मापने के लिए <a href={getLocalizedPath('/tools/reverse-geocoding/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">रिवर्स जियोकोडर</a>, <a href={getLocalizedPath('/tools/geocoding/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">जियोकोडर</a> और <a href={getLocalizedPath('/tools/elevation-finder/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">ऊंचाई खोजक</a> उपलब्ध हैं।
+              </>
+            ) : lang === 'id' ? (
+              <>
+                <strong>Alat Analisis Geospasial :</strong> Periksa koordinat lengkap dengan <a href={getLocalizedPath('/tools/gps-coordinates/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Pencari Koordinat GPS</a> dan <a href={getLocalizedPath('/tools/latitude-longitude/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Pencari Lintang dan Bujur</a>. Butuh format lain? Gunakan <a href={getLocalizedPath('/tools/coordinate-converter/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Konverter Koordinat (DD, DMS, UTM, MGRS)</a> dan baca <a href={getLocalizedPath('/comparisons/decimal-degrees-vs-dms/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">perbandingan derajat desimal vs DMS</a>. Untuk konversi alamat dan elevasi, gunakan <a href={getLocalizedPath('/tools/reverse-geocoding/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Reverse Geocoder</a>, <a href={getLocalizedPath('/tools/geocoding/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Geocoder</a>, dan <a href={getLocalizedPath('/tools/elevation-finder/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Pencari Elevasi</a>.
+              </>
+            ) : (
+              <>
+                <strong>Coordinate Analysis Tools:</strong> Need raw latitude/longitude analysis? Try our <a href={getLocalizedPath('/tools/gps-coordinates/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">GPS Coordinates Finder</a> and <a href={getLocalizedPath('/tools/latitude-longitude/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Latitude Longitude Finder</a>. Need grid conversions? Use our <a href={getLocalizedPath('/tools/coordinate-converter/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Coordinate Converter (DD, DMS, UTM, MGRS)</a> and explore <a href={getLocalizedPath('/comparisons/decimal-degrees-vs-dms/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Decimal Degrees vs DMS</a>. For street address conversions and altitude queries, use our <a href={getLocalizedPath('/tools/reverse-geocoding/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Reverse Geocoder</a>, <a href={getLocalizedPath('/tools/geocoding/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Geocoder</a>, and <a href={getLocalizedPath('/tools/elevation-finder/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Elevation Finder</a>.
+              </>
+            )}
+          </p>
+        </div>
 
         <!-- 3. Positioning Technologies Table -->
         <h2>{content.techTitle}</h2>
@@ -285,11 +556,19 @@ const webAppSchema = {
 
         <p style="font-size: var(--text-sm); color: var(--color-text-secondary); margin-bottom: 2rem;">
           {lang === 'fr' ? (
-            <>Approfondissez le sujet : découvrez <a href={getLocalizedPath('/guides/how-gps-location-works/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">comment fonctionne la localisation GPS</a> et notre analyse <a href={getLocalizedPath('/comparisons/gps-vs-ip-location/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">GPS ou localisation IP : quelles différences ?</a>.</>
+            <>Approfondissez le sujet : découvrez <a href={getLocalizedPath('/guides/how-gps-location-works/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">comment fonctionne la localisation GPS</a>, comparez les méthodes avec notre analyse <a href={getLocalizedPath('/comparisons/gps-vs-ip-location/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">GPS ou localisation IP</a> et surveillez la précision en direct avec le <a href={getLocalizedPath('/tools/gps-accuracy/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Testeur de Précision GPS</a>.</>
           ) : lang === 'es' ? (
-            <>Para profundizar: consulte <a href={getLocalizedPath('/guides/how-gps-location-works/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">cómo funciona el posicionamiento GPS</a> y nuestra guía <a href={getLocalizedPath('/comparisons/gps-vs-ip-location/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">GPS vs localización por IP</a>.</>
+            <>Para profundizar: consulte <a href={getLocalizedPath('/guides/how-gps-location-works/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">cómo funciona el posicionamiento GPS</a>, nuestra guía <a href={getLocalizedPath('/comparisons/gps-vs-ip-location/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">GPS vs localización por IP</a> y compruebe su margen de error con el <a href={getLocalizedPath('/tools/gps-accuracy/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Comprobador de Precisión GPS</a>.</>
+          ) : lang === 'de' ? (
+            <>Erfahren Sie mehr: Lesen Sie <a href={getLocalizedPath('/guides/how-gps-location-works/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">wie die GPS-Ortung funktioniert</a>, vergleichen Sie mit <a href={getLocalizedPath('/comparisons/gps-vs-ip-location/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">GPS vs. IP-Standort</a> und testen Sie Ihren Empfang im <a href={getLocalizedPath('/tools/gps-accuracy/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">GPS-Genauigkeitsprüfer</a>.</>
+          ) : lang === 'pt' ? (
+            <>Saiba mais: descubra <a href={getLocalizedPath('/guides/how-gps-location-works/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">como funciona o posicionamento GPS</a>, veja nosso comparativo <a href={getLocalizedPath('/comparisons/gps-vs-ip-location/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">GPS vs localização IP</a> e teste o sinal com o <a href={getLocalizedPath('/tools/gps-accuracy/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Verificador de Precisão GPS</a>.</>
+          ) : lang === 'hi' ? (
+            <>विस्तार से समझें: जानें <a href={getLocalizedPath('/guides/how-gps-location-works/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">GPS लोकेशन कैसे काम करता है</a>, तुलना पढ़ें <a href={getLocalizedPath('/comparisons/gps-vs-ip-location/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">GPS बनाम IP लोकेशन</a> और सिग्नल जांचें <a href={getLocalizedPath('/tools/gps-accuracy/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">GPS सटीकता परीक्षक</a> के साथ।</>
+          ) : lang === 'id' ? (
+            <>Pelajari lebih lanjut: baca <a href={getLocalizedPath('/guides/how-gps-location-works/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">cara kerja lokasi GPS</a>, pelajari <a href={getLocalizedPath('/comparisons/gps-vs-ip-location/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">GPS vs lokasi IP</a>, dan pantau toleransi sinyal dengan <a href={getLocalizedPath('/tools/gps-accuracy/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Pemeriksa Akurasi GPS</a>.</>
           ) : (
-            <>Learn more: read <a href={getLocalizedPath('/guides/how-gps-location-works/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">how GPS location works</a> and our analysis of <a href={getLocalizedPath('/comparisons/gps-vs-ip-location/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">GPS vs IP location</a>.</>
+            <>Learn more: read <a href={getLocalizedPath('/guides/how-gps-location-works/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">how GPS location works</a>, check our analysis of <a href={getLocalizedPath('/comparisons/gps-vs-ip-location/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">GPS vs IP location</a>, and monitor live signal error with our <a href={getLocalizedPath('/tools/gps-accuracy/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">GPS Accuracy Checker</a>.</>
           )}
         </p>
 
@@ -374,6 +653,28 @@ const webAppSchema = {
                 <div class="contextual-link-info">
                   <div class="contextual-link-title">{item.label}</div>
                   {item.desc && <div class="contextual-link-sub">{item.desc}</div>}
+                </div>
+              </a>
+            ))}
+          </div>
+        </div>
+
+        <!-- Connected Geolocation Tools Hub -->
+        <div class="contextual-next-box" style="margin-top: var(--space-8);">
+          <h3 class="contextual-next-title">
+            <span>🛠️</span>
+            <span>{(connectedToolsHeading[lang] || connectedToolsHeading.en).title} <span class="text-gradient">{(connectedToolsHeading[lang] || connectedToolsHeading.en).accent}</span></span>
+          </h3>
+          <div class="contextual-next-grid">
+            {connectedToolsList.map((tool) => (
+              <a 
+                href={getLocalizedPath(tool.href, lang)} 
+                class="contextual-link-card"
+              >
+                <span class="contextual-link-icon">{tool.icon}</span>
+                <div class="contextual-link-info">
+                  <div class="contextual-link-title">{(tool.title as any)[lang] || tool.title.en}</div>
+                  <div class="contextual-link-sub">{(tool.desc as any)[lang] || tool.desc.en}</div>
                 </div>
               </a>
             ))}
@@ -554,23 +855,84 @@ const webAppSchema = {
         const smsBtn = document.getElementById('share-sms-btn');
         if (smsBtn) smsBtn.setAttribute('href', `sms:?body=${encodeURIComponent(shareMessage)}`);
 
+        const accWarn = document.getElementById('acc-warning');
+        const accWarnVal = document.getElementById('acc-warning-val');
+        if (data.accuracy > 200 && accWarn && accWarnVal) {
+          accWarnVal.textContent = data.formattedAccuracy;
+          accWarn.style.display = 'block';
+        } else if (accWarn) {
+          accWarn.style.display = 'none';
+        }
+        const guideEl = document.getElementById('loc-troubleshoot-guide');
+        if (guideEl) guideEl.style.display = 'none';
+
       } catch (err: any) {
         if (loadingEl) loadingEl.style.display = 'none';
         if (promptEl) promptEl.style.display = 'block';
+        const guideEl = document.getElementById('loc-troubleshoot-guide');
         if (!isAuto) {
           if (errorEl) {
             errorEl.textContent = GeoLocation.getErrorMessage(err, document.documentElement.lang);
             errorEl.style.display = 'block';
           }
+          if (guideEl) guideEl.style.display = 'block';
           setStatus('error', 'Error');
         } else {
           if (errorEl) errorEl.style.display = 'none';
+          if (guideEl) guideEl.style.display = 'none';
           setStatus('ready', 'Ready');
         }
       }
     }
 
+    async function viewIpFallback() {
+      try {
+        const ipModule = await import('../scripts/ip-location.js');
+        const ipData = await ipModule.default.getLocation();
+        currentLat = ipData.lat;
+        currentLng = ipData.lng;
+        currentAddressText = `${ipData.city || 'Metro area'}, ${ipData.region || ''}, ${ipData.country || ''}`;
+
+        const latEl = document.getElementById('data-lat');
+        const lngEl = document.getElementById('data-lng');
+        const addrEl = document.getElementById('data-address');
+        const cityEl = document.getElementById('data-city');
+        const stateEl = document.getElementById('data-state');
+        const countryEl = document.getElementById('data-country');
+        const accEl = document.getElementById('data-accuracy');
+
+        if (latEl) latEl.textContent = `${Math.abs(currentLat).toFixed(4)}° ${currentLat >= 0 ? 'N' : 'S'}`;
+        if (lngEl) lngEl.textContent = `${Math.abs(currentLng).toFixed(4)}° ${currentLng >= 0 ? 'E' : 'W'}`;
+        if (addrEl) addrEl.textContent = currentAddressText;
+        if (cityEl) cityEl.textContent = ipData.city || '—';
+        if (stateEl) stateEl.textContent = ipData.region || '—';
+        if (countryEl) countryEl.textContent = ipData.country || '—';
+        if (accEl) accEl.textContent = '± 10 km (IP estimate)';
+
+        setStatus('ready', 'Approximate (IP)');
+        if (promptEl) promptEl.style.display = 'none';
+        if (errorEl) errorEl.style.display = 'none';
+        const guideEl = document.getElementById('loc-troubleshoot-guide');
+        if (guideEl) guideEl.style.display = 'none';
+        if (dataEl) dataEl.style.display = 'grid';
+        if (actionsEl) actionsEl.style.display = 'flex';
+
+        const mapsUrl = Sharing.getGoogleMapsUrl(currentLat, currentLng);
+        const mapsBtn = document.getElementById('open-maps-btn');
+        if (mapsBtn) mapsBtn.setAttribute('href', mapsUrl);
+        const waBtn = document.getElementById('share-whatsapp-btn');
+        if (waBtn) waBtn.setAttribute('href', `https://api.whatsapp.com/send?text=${encodeURIComponent('Approximate location: ' + currentAddressText + ' — ' + mapsUrl)}`);
+
+        if (mapEl) mapEl.style.display = 'block';
+        updateMap(currentLat, currentLng, 10000);
+      } catch (e) {
+        console.warn('IP fallback failed:', e);
+      }
+    }
+
     getBtn?.addEventListener('click', () => detectLocation(false));
+    document.getElementById('view-retry-btn')?.addEventListener('click', () => detectLocation(false));
+    document.getElementById('view-ip-btn')?.addEventListener('click', viewIpFallback);
 
     // Auto-detect with graceful fallback if permission prompt is needed
     GeoLocation.checkPermission().then((perm) => {

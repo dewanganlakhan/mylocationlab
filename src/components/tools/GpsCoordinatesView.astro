@@ -398,6 +398,92 @@ const locateTitle = ({
       <li>{c.tipLi3}</li>
       <li>{c.tipLi4}</li>
     </ol>
+
+    <div class="callout-box" style="margin-top: var(--space-6); line-height: 1.8;">
+      <p style="margin: 0; font-size: var(--text-sm);">
+        {lang === 'fr' ? (
+          <>
+            <strong>Outils d'approfondissement géodésique :</strong> Besoin de convertir vos coordonnées en degrés-minutes-secondes ou en UTM militaire ? Utilisez notre <a href={getLocalizedPath('/tools/coordinate-converter/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Convertisseur de Coordonnées</a> et consultez la <a href={getLocalizedPath('/comparisons/decimal-degrees-vs-dms/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">comparaison Degrés Décimaux vs DMS</a>. Pour identifier l'adresse physique liée à vos coordonnées, consultez le <a href={getLocalizedPath('/tools/address-finder/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Localisateur d'Adresse</a> et le <a href={getLocalizedPath('/tools/reverse-geocoding/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Géocodage Inverse</a>. Surveillez la réception satellite avec le <a href={getLocalizedPath('/tools/gps-accuracy/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Testeur de Précision GPS</a>, mesurez l'altitude avec le <a href={getLocalizedPath('/tools/elevation-finder/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Localisateur d'Altitude</a> ou partagez un repère via <a href={getLocalizedPath('/tools/location-qr-code/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">QR Code de Localisation</a>.
+          </>
+        ) : lang === 'es' ? (
+          <>
+            <strong>Herramientas de análisis geodésico :</strong> ¿Desea convertir sus coordenadas a grados, minutos y segundos o UTM militar? Utilice nuestro <a href={getLocalizedPath('/tools/coordinate-converter/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Conversor de Coordenadas</a> y consulte la <a href={getLocalizedPath('/comparisons/decimal-degrees-vs-dms/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">comparativa grados decimales vs DMS</a>. Para resolver la dirección de calle exacta, use el <a href={getLocalizedPath('/tools/address-finder/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Buscador de Dirección</a> y el <a href={getLocalizedPath('/tools/reverse-geocoding/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Geocodificador Inverso</a>. Monitoree su señal satelital en el <a href={getLocalizedPath('/tools/gps-accuracy/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Comprobador de Precisión GPS</a>, mida alturas con el <a href={getLocalizedPath('/tools/elevation-finder/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Buscador de Altitud</a> o genere un pin en <a href={getLocalizedPath('/tools/location-qr-code/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Código QR de Ubicación</a>.
+          </>
+        ) : lang === 'de' ? (
+          <>
+            <strong>Weiterführende Geodaten-Werkzeuge :</strong> Möchten Sie Ihre Koordinaten in GMS oder das militärische UTM-Gitter umrechnen? Nutzen Sie unseren <a href={getLocalizedPath('/tools/coordinate-converter/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Koordinaten-Konverter</a> und den Leitfaden <a href={getLocalizedPath('/comparisons/decimal-degrees-vs-dms/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Dezimalgrad vs. GMS</a>. Zur Ermittlung der Postadresse für diese Koordinaten stehen der <a href={getLocalizedPath('/tools/address-finder/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Adressen-Finder</a> und der <a href={getLocalizedPath('/tools/reverse-geocoding/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Rückwärts-Geocoder</a> bereit. Prüfen Sie Empfangsfehler im <a href={getLocalizedPath('/tools/gps-accuracy/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">GPS-Genauigkeitsprüfer</a>, messen Sie Geländehöhen mit dem <a href={getLocalizedPath('/tools/elevation-finder/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Höhenfinder</a> oder teilen Sie Wegpunkte per <a href={getLocalizedPath('/tools/location-qr-code/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Standort-QR-Code</a>.
+          </>
+        ) : lang === 'pt' ? (
+          <>
+            <strong>Ferramentas de análise geodésica :</strong> Deseja converter coordenadas para graus-minutos-segundos ou projeção UTM? Use nosso <a href={getLocalizedPath('/tools/coordinate-converter/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Conversor de Coordenadas</a> e veja o comparativo de <a href={getLocalizedPath('/comparisons/decimal-degrees-vs-dms/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">graus decimais vs DMS</a>. Para resolver o endereço postal destas coordenadas, utilize o <a href={getLocalizedPath('/tools/address-finder/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Localizador de Endereço</a> e o <a href={getLocalizedPath('/tools/reverse-geocoding/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Geocodificador Reverso</a>. Acompanhe a margem de erro com o <a href={getLocalizedPath('/tools/gps-accuracy/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Verificador de Precisão GPS</a>, meça altitude com o <a href={getLocalizedPath('/tools/elevation-finder/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Localizador de Altitude</a> ou gere um ponto via <a href={getLocalizedPath('/tools/location-qr-code/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">QR Code de Localização</a>.
+          </>
+        ) : lang === 'hi' ? (
+          <>
+            <strong>संबंधित भूस्थानिक टूल :</strong> अपने निर्देशांकों को DMS या UTM में बदलने के लिए हमारे <a href={getLocalizedPath('/tools/coordinate-converter/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">निर्देशांक कनवर्टर</a> का उपयोग करें। इन निर्देशांकों से सड़क का पता जानने के लिए <a href={getLocalizedPath('/tools/address-finder/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">सड़क पता खोजक</a> और <a href={getLocalizedPath('/tools/reverse-geocoding/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">रिवर्स जियोकोडर</a> देखें। सिग्नल त्रुटि जांचने के लिए <a href={getLocalizedPath('/tools/gps-accuracy/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">GPS सटीकता चेकर</a>, ऊंचाई जानने के लिए <a href={getLocalizedPath('/tools/elevation-finder/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">ऊंचाई खोजक</a> या मोबाइल साझा करने के लिए <a href={getLocalizedPath('/tools/location-qr-code/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">लोकेशन QR कोड</a> देखें।
+          </>
+        ) : lang === 'id' ? (
+          <>
+            <strong>Alat Analisis Geodesi Terkait :</strong> Butuh mengubah format koordinat ke DMS atau kisi UTM militer? Gunakan <a href={getLocalizedPath('/tools/coordinate-converter/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Konverter Koordinat</a> dan baca <a href={getLocalizedPath('/comparisons/decimal-degrees-vs-dms/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">perbandingan derajat desimal vs DMS</a>. Untuk menemukan alamat jalan untuk koordinat ini, gunakan <a href={getLocalizedPath('/tools/address-finder/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Pencari Alamat</a> dan <a href={getLocalizedPath('/tools/reverse-geocoding/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Reverse Geocoder</a>. Pantau margin kesalahan di <a href={getLocalizedPath('/tools/gps-accuracy/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Pemeriksa Akurasi GPS</a>, cek ketinggian dengan <a href={getLocalizedPath('/tools/elevation-finder/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Pencari Elevasi</a>, atau buat pin via <a href={getLocalizedPath('/tools/location-qr-code/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">QR Code Lokasi</a>.
+          </>
+        ) : (
+          <>
+            <strong>Advanced Geodesy Tools:</strong> Need to reformat coordinates into nautical DMS or military UTM grids? Use our <a href={getLocalizedPath('/tools/coordinate-converter/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Coordinate Converter</a> and explore <a href={getLocalizedPath('/comparisons/decimal-degrees-vs-dms/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Decimal Degrees vs DMS</a>. To translate coordinates into a street address, explore our <a href={getLocalizedPath('/tools/address-finder/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Address Finder</a> and <a href={getLocalizedPath('/tools/reverse-geocoding/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Reverse Geocoder</a>. Monitor live receiver quality with our <a href={getLocalizedPath('/tools/gps-accuracy/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">GPS Accuracy Checker</a>, verify vertical ground height with the <a href={getLocalizedPath('/tools/elevation-finder/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Elevation Finder</a>, or create a mobile pin using the <a href={getLocalizedPath('/tools/location-qr-code/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Location QR Code Generator</a>.
+          </>
+        )}
+      </p>
+    </div>
+
+    <!-- Related Tools Grid -->
+    <div class="contextual-next-box" style="margin-top: var(--space-8);">
+      <h3 class="contextual-next-title">
+        <span>🛠️</span>
+        <span>{lang === 'fr' ? 'Outils Géographiques Liés' : lang === 'es' ? 'Herramientas de Coordenadas Relacionadas' : lang === 'de' ? 'Verwandte Geodaten-Tools' : lang === 'pt' ? 'Ferramentas Geográficas Relacionadas' : lang === 'hi' ? 'संबंधित निर्देशांक टूल' : lang === 'id' ? 'Alat Terkait' : 'Connected Coordinate Tools'}</span>
+      </h3>
+      <div class="contextual-next-grid">
+        <a href={getLocalizedPath('/tools/coordinate-converter/', lang)} class="contextual-link-card">
+          <span class="contextual-link-icon">🔀</span>
+          <div class="contextual-link-info">
+            <div class="contextual-link-title">{lang === 'es' ? 'Conversor de Coordenadas' : lang === 'fr' ? 'Convertisseur de Coordonnées' : lang === 'de' ? 'Koordinaten-Konverter' : lang === 'pt' ? 'Conversor de Coordenadas' : lang === 'hi' ? 'निर्देशांक कनवर्टर' : lang === 'id' ? 'Konverter Koordinat' : 'Coordinate Converter'}</div>
+            <div class="contextual-link-sub">{lang === 'es' ? 'DD, DMS, UTM y MGRS' : lang === 'fr' ? 'DD, DMS, UTM et MGRS' : lang === 'de' ? 'DD, GMS, UTM und MGRS' : 'DD, DMS, UTM, MGRS'}</div>
+          </div>
+        </a>
+        <a href={getLocalizedPath('/tools/address-finder/', lang)} class="contextual-link-card">
+          <span class="contextual-link-icon">🏠</span>
+          <div class="contextual-link-info">
+            <div class="contextual-link-title">{lang === 'es' ? 'Buscador de Dirección' : lang === 'fr' ? "Localisateur d'Adresse" : lang === 'de' ? 'Adressen-Finder' : lang === 'pt' ? 'Localizador de Endereço' : lang === 'hi' ? 'सड़क पता खोजक' : lang === 'id' ? 'Pencari Alamat' : 'Street Address Finder'}</div>
+            <div class="contextual-link-sub">{lang === 'es' ? 'Dirección para estas coordenadas' : lang === 'fr' ? 'Adresse pour ces coordonnées' : lang === 'de' ? 'Adresse für diese Koordinaten' : 'Street address for coordinates'}</div>
+          </div>
+        </a>
+        <a href={getLocalizedPath('/tools/latitude-longitude/', lang)} class="contextual-link-card">
+          <span class="contextual-link-icon">🌐</span>
+          <div class="contextual-link-info">
+            <div class="contextual-link-title">{lang === 'es' ? 'Buscador de Latitud y Longitud' : lang === 'fr' ? 'Latitude et Longitude' : lang === 'de' ? 'Breiten- & Längengrad' : lang === 'pt' ? 'Latitude e Longitude' : lang === 'hi' ? 'अक्षांश और देशांतर खोजक' : lang === 'id' ? 'Lintang dan Bujur' : 'Latitude Longitude Finder'}</div>
+            <div class="contextual-link-sub">{lang === 'es' ? 'Selección en mapa interactivo' : lang === 'fr' ? 'Sélection sur carte' : lang === 'de' ? 'Interaktive Karte' : 'Interactive map pinpoint'}</div>
+          </div>
+        </a>
+        <a href={getLocalizedPath('/tools/elevation-finder/', lang)} class="contextual-link-card">
+          <span class="contextual-link-icon">⛰️</span>
+          <div class="contextual-link-info">
+            <div class="contextual-link-title">{lang === 'es' ? 'Buscador de Altitud' : lang === 'fr' ? "Localisateur d'Altitude" : lang === 'de' ? 'Höhenfinder' : lang === 'pt' ? 'Localizador de Altitude' : lang === 'hi' ? 'ऊंचाई खोजक' : lang === 'id' ? 'Pencari Elevasi' : 'Elevation Finder'}</div>
+            <div class="contextual-link-sub">{lang === 'es' ? 'Altitud sobre el nivel del mar' : lang === 'fr' ? 'Altitude au-dessus de la mer' : lang === 'de' ? 'Höhe über dem Meeresspiegel' : 'Height above sea level'}</div>
+          </div>
+        </a>
+        <a href={getLocalizedPath('/tools/gps-accuracy/', lang)} class="contextual-link-card">
+          <span class="contextual-link-icon">🎯</span>
+          <div class="contextual-link-info">
+            <div class="contextual-link-title">{lang === 'es' ? 'Comprobador de Precisión GPS' : lang === 'fr' ? 'Testeur de Précision GPS' : lang === 'de' ? 'GPS-Genauigkeitsprüfer' : lang === 'pt' ? 'Verificador de Precisão GPS' : lang === 'hi' ? 'GPS सटीकता परीक्षक' : lang === 'id' ? 'Pemeriksa Akurasi GPS' : 'GPS Accuracy Checker'}</div>
+            <div class="contextual-link-sub">{lang === 'es' ? 'Margen de error satelital' : lang === 'fr' ? 'Rayon d\'incertitude en mètres' : lang === 'de' ? 'Fehlerradius in Metern' : 'Satellite error radius in meters'}</div>
+          </div>
+        </a>
+        <a href={getLocalizedPath('/tools/location-qr-code/', lang)} class="contextual-link-card">
+          <span class="contextual-link-icon">📱</span>
+          <div class="contextual-link-info">
+            <div class="contextual-link-title">{lang === 'es' ? 'Código QR de Ubicación' : lang === 'fr' ? 'QR Code de Localisation' : lang === 'de' ? 'Standort-QR-Code' : lang === 'pt' ? 'QR Code de Localização' : lang === 'hi' ? 'लोकेशन QR कोड' : lang === 'id' ? 'QR Code Lokasi' : 'Location QR Code'}</div>
+            <div class="contextual-link-sub">{lang === 'es' ? 'Pin escaneable para móviles' : lang === 'fr' ? 'Pin scannable mobile' : lang === 'de' ? 'Mobiler Wegpunkt-Code' : 'Scannable coordinate pin'}</div>
+          </div>
+        </a>
+      </div>
+    </div>
   </div>
 
   <div style="margin-top: var(--space-12);">
