@@ -10,7 +10,7 @@ import FAQAccordion from './FAQAccordion.astro';
 import { tools, toolCategories, getToolsByCategory } from '../data/tools.js';
 import { toolsPageTranslations } from '../i18n/toolsPage';
 import { useTranslations } from '../i18n/ui';
-import { defaultLang, type SupportedLang } from '../i18n/config';
+import { defaultLang, getLocalizedPath, type SupportedLang } from '../i18n/config';
 
 interface Props {
   lang?: SupportedLang | string;
@@ -59,6 +59,11 @@ const itemListSchema = {
       <p class="page-header-desc" style="max-width: 650px; margin: 0 auto;">
         {content.pageDesc}
       </p>
+      <div style="margin-top: var(--space-4);">
+        <a href={getLocalizedPath('/glossary/', lang)} class="badge badge-neutral" style="text-decoration: none; font-size: var(--text-sm); padding: var(--space-2) var(--space-4);">
+          📖 {t('footer.link.glossary') || 'Explore our Geospatial & GPS Glossary →'}
+        </a>
+      </div>
     </section>
 
     {toolCategories.map((cat) => {

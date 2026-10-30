@@ -1,9 +1,11 @@
 ---
 /**
  * GpsPrivacyView — Multilingual Guide: GPS Privacy & Security
+ * Fully localized across en, es, fr, de, pt, hi, id with contextual links
  */
 import ContentLayout from '../../layouts/ContentLayout.astro';
-import { getLocalizedPath, type SupportedLang, defaultLang } from '../../i18n/config';
+import FAQAccordion from '../FAQAccordion.astro';
+import { getLocalizedPath, localizeHtml, type SupportedLang, defaultLang } from '../../i18n/config';
 
 interface Props {
   lang?: SupportedLang;
@@ -13,41 +15,84 @@ const { lang = defaultLang } = Astro.props;
 
 const translations: Record<string, any> = {
   en: {
-    title: "GPS Privacy & Security: Who Tracks You | MyLocationLab",
-    description: "Protect your location privacy. How apps, cell towers, photo EXIF, and Wi-Fi track your GPS position — and how to secure your device.",
+    title: "GPS Privacy & Security: Who Tracks You & Protection Guide | MyLocationLab",
+    description: "In short: GPS satellites never track you, but phone apps, cell towers, and Wi-Fi networks do. Learn how to audit and secure location permissions.",
     h1: "GPS Privacy & Security: The Ultimate Location Protection Guide",
     subtitle: "An authoritative investigation into mobile tracking vectors, photo EXIF geotags, cellular tower triangulation, and actionable steps to audit your privacy.",
-    sectionLabel: "Educational Guides",
-    p1: "Your physical location history is among the most sensitive personal data you generate. It reveals where you sleep, where you work, medical appointments, social circles, and daily routines.",
-    p2: "While GPS satellites themselves are completely passive one-way transmitters that cannot track who receives their signals, the apps, operating systems, cellular carriers, and web services on your phone can log your location continuously. In this guide, we reveal how location tracking works and provide an actionable checklist to take back control of your privacy.",
-    calloutBadge: "🔒 100% Client-Side Privacy",
-    calloutTitle: "MyLocationLab's Privacy Promise",
-    calloutDesc: "Our tools calculate coordinates entirely inside your browser. We never log, store, or transmit your GPS coordinates to any database.",
+    
+    inShort: "In short: GPS satellites in orbit are strictly passive radio transmitters that broadcast timing signals; they possess zero capability to monitor, record, or track your receiver. However, mobile operating systems, advertising SDKs, cellular towers, and Wi-Fi beacons constantly log your device's computed location unless permissions are properly restricted.",
+
+    takeawaysTitle: "Key Takeaways",
+    takeaways: [
+      "GPS satellites are purely passive; they cannot see your device or record your physical movements.",
+      "Tracking occurs on the ground through background app SDKs, cell tower triangulation, and Wi-Fi scanning.",
+      "Photographs taken on smartphones frequently contain exact latitude and longitude embedded in EXIF headers.",
+      "Revoking 'Always' location permissions prevents third-party data brokers from building persistent daily movement profiles.",
+      "You can inspect your live location footprint and verify client-side privacy directly in your browser."
+    ],
+
+    p1: "Your physical location history is among the most sensitive personal data you generate. It reveals where you sleep, medical appointments, social networks, and daily routines. When you need to transmit coordinates safely to family or emergency services, follow our protocol on <a href='/guides/how-to-share-location/'>how to share location safely</a>.",
+    p2: "Because your device computes its position locally, web tools should respect client-side boundaries. At MyLocationLab, our <a href='/privacy/'>client-side privacy policy</a> guarantees that your coordinates are processed in-browser without server database storage. To understand how web applications request your hardware sensors securely, read our <a href='/guides/browser-geolocation-api-guide/'>HTML5 Geolocation API guide</a>. For testing geofenced services without exposing your home, developers can explore our guide on <a href='/guides/how-to-fake-or-mock-location/'>how to fake or mock location</a>, or inspect their active sensor telemetry with our <a href='/my-location/'>My Location dashboard</a>.",
+
+    calloutBadge: "🔒 Client-Side Privacy",
+    calloutTitle: "MyLocationLab's Zero-Storage Privacy Architecture",
+    calloutDesc: "Our diagnostic tools run strictly inside your web browser. We never log, profile, or store your coordinates on any database.",
     calloutBtn: "Read Privacy Policy →",
+
     h2Vectors: "1. The Four Primary Location Tracking Vectors",
-    step1Title: "Background App SDKs & Ad Data Brokers",
-    step1Desc: "Free mobile apps (weather utilities, games, flashlight apps) often bundle commercial location SDKs that harvest coordinates every few minutes and sell anonymized location trails to data brokers and hedge funds.",
+    step1Title: "Background App SDKs & Commercial Data Brokers",
+    step1Desc: "Free utility apps (weather trackers, games, coupon apps) frequently bundle monetization SDKs that quietly harvest GPS coordinates in the background, bundling your trajectory into datasets sold to advertising brokers.",
     step2Title: "Cellular Carrier Tower Triangulation",
-    step2Desc: "Your mobile carrier continuously logs the signal strength and timing advance of your phone across nearby cell towers to route incoming calls, recording your movements down to a few hundred meters.",
+    step2Desc: "Mobile telecom operators measure the signal strength and timing advance of your handset across neighboring cell towers to route voice calls, retaining cell site location records (CSLI) for regulatory and operational purposes.",
     step3Title: "Embedded EXIF Metadata in Photos",
-    step3Desc: "When you snap a photo on a smartphone, the camera app embeds exact GPS coordinates directly inside the image file's EXIF header. Posting original photos on forums or texting them can unintentionally expose your home address.",
-    step4Title: "Wi-Fi & Bluetooth Beacon Scanning",
-    step4Desc: "Retail stores and airports deploy Bluetooth Low Energy (BLE) beacons and Wi-Fi probe sniffers that track your phone's MAC address as you walk between aisles.",
+    step3Desc: "Smartphone cameras automatically stamp high-precision GPS coordinates into every picture's EXIF header. Sharing uncompressed original photos online inadvertently publishes your exact home or office location.",
+    step4Title: "Wi-Fi Probe Requests & Bluetooth Beacons",
+    step4Desc: "Commercial venues, shopping malls, and airports operate Bluetooth Low Energy (BLE) beacons and Wi-Fi sniffers that detect your phone's probe requests as you walk past storefronts.",
+
     h2Audit: "2. How to Audit & Lock Down Location Permissions",
     h3Ios: "On Apple iPhone & iPad (iOS 17 / 18)",
-    ios1: "Open Settings > Privacy & Security > Location Services.",
-    ios2: "Scroll down and audit every installed app: change any set to 'Always' to 'While Using the App' or 'Never'.",
-    ios3: "Disable 'Precise Location' for apps that do not require navigation precision (e.g., shopping or social apps).",
-    ios4: "Go to Location Services > System Services > Disable Significant Locations to prevent your iPhone from storing encrypted history logs of your frequent visits.",
-    h3Android: "On Android (Android 14 / 15)",
+    ios1: "Navigate to Settings > Privacy & Security > Location Services.",
+    ios2: "Audit installed apps: convert any app set to 'Always' down to 'While Using the App' or 'Never'.",
+    ios3: "Toggle 'Precise Location' OFF for apps that only need general regional context (e.g. weather or retail stores).",
+    ios4: "Open System Services > disable 'Significant Locations' to stop iOS from retaining encrypted local logs of frequently visited destinations.",
+    h3Android: "On Android Devices (Android 14 / 15)",
     and1: "Open Settings > Privacy > Permission manager > Location.",
-    and2: "Review apps listed under 'Allowed all the time' and demote them to 'Allow only while using the app'.",
-    and3: "Go to Settings > Location > Location services > Wi-Fi scanning and toggle it OFF if you want to prevent passive beacon tracking.",
+    and2: "Review apps categorized under 'Allowed all the time' and downgrade them to 'Allow only while using the app'.",
+    and3: "Go to Settings > Location > Location services > toggle 'Wi-Fi scanning' and 'Bluetooth scanning' to OFF to eliminate background beacon sniffing.",
+
     h2Exif: "3. Stripping GPS Geotags from Photos Before Sharing",
-    pExif: "Before uploading photographs to the web or social media:",
-    exifIos: "On iOS: Open the photo in the Photos app > Tap the Share icon > Tap Options at the top > Toggle Location OFF before sending.",
-    exifAndroid: "On Android: Open Camera > Settings > Turn OFF 'Save location'.",
-    callout2Badge: "🛰️ Satellite Fix",
+    pExif: "Before posting photos on forums, social platforms, or messaging apps that do not re-encode images:",
+    exifIos: "iOS: Open Photos > select photo > tap Share > tap 'Options' at the top of the sheet > toggle 'Location' OFF before sending.",
+    exifAndroid: "Android: Open Camera app > Settings gear > toggle OFF 'Save location' or 'Geotagging'.",
+
+    workedExampleTitle: "Real-World Worked Example: Auditing Browser Location Access",
+    workedExampleIntro: "To see and control which websites have permission to access your coordinates in Google Chrome or Apple Safari:",
+    workedExampleStep1: "1. Click the site settings icon (padlock / sliders) in your browser address bar.",
+    workedExampleStep2: "2. Locate 'Location' in the site permissions list.",
+    workedExampleStep3: "3. Change setting from 'Allow' to 'Ask' or 'Block'.",
+    workedExampleStep4: "4. Refresh the page: the website can no longer query your GPS chip or Wi-Fi positioning hardware.",
+
+    commonMistakesTitle: "Common Location Privacy Mistakes",
+    commonMistakes: [
+      { mistake: "Assuming Airplane Mode stops all location tracking", explanation: "Airplane mode disables cellular and Wi-Fi radios, but your device's internal GPS receiver remains capable of receiving satellite signals and apps can log coordinates offline." },
+      { mistake: "Believing satellites are watching or recording you", explanation: "GPS satellites are one-way broadcast radios. They have no cameras, no radar receivers, and cannot detect whether one person or one billion people are receiving their signal." },
+      { mistake: "Granting 'Always Allow' to convenience apps", explanation: "Apps granted background location permissions can query your coordinates 24 hours a day, even when the app is closed and your screen is locked." }
+    ],
+
+    faqs: [
+      { question: "Can someone track my real-time location through GPS satellites?", answer: "No. GPS satellites do not receive signals from phones or consumer devices. Real-time tracking occurs strictly through internet-connected software installed on your device or mobile carrier network infrastructure." },
+      { question: "Does turning off Wi-Fi prevent stores from tracking me?", answer: "Toggling Wi-Fi off in the quick control center often leaves Wi-Fi scanning active in the background. To completely stop beacon sniffing, you must disable 'Wi-Fi scanning' inside your operating system's advanced Location settings." },
+      { question: "How does MyLocationLab protect my location privacy?", answer: "Our website processes coordinates entirely on your device using JavaScript. Coordinates are never stored in databases, never transmitted to advertising brokers, and reverse geocoding requests to OpenStreetMap do not contain personal identifiers." }
+    ],
+
+    nextStepsTitle: "Next Steps & Security Resources",
+    nextSteps: [
+      { title: "Share Location Safely", href: "/guides/how-to-share-location/", desc: "Learn secure, time-limited ways to share your position with trusted contacts." },
+      { title: "HTML5 Geolocation API", href: "/guides/browser-geolocation-api-guide/", desc: "Discover how web browsers request and isolate device positioning hardware." },
+      { title: "Mock Location Testing", href: "/guides/how-to-fake-or-mock-location/", desc: "Safely test location-based applications using simulated coordinates." }
+    ],
+
+    callout2Badge: "🛰️ Network Exposure",
     callout2Title: "Check Your Public Location Exposure",
     callout2Desc: "See what your public IP address reveals to websites about your geographic location, ISP, and network routing without granting browser GPS permissions.",
     callout2Btn: "Check Public IP Location →",
@@ -59,301 +104,559 @@ const translations: Record<string, any> = {
     tool3Title: "Mock Locations Guide",
     tool3Desc: "Developer sensor simulation",
     tool4Title: "Privacy Policy",
-    tool4Desc: "Zero storage architecture"
+    tool4Desc: "Client-side guarantee"
   },
   es: {
-    title: "Privacidad y Seguridad GPS: Quién le Rastrea | MyLocationLab",
-    description: "Proteja la privacidad de su ubicación. Cómo apps, antenas de telefonía, metadatos EXIF y Wi-Fi rastrean su GPS y cómo proteger su móvil.",
-    h1: "Privacidad y Seguridad GPS: La Guía Definitiva de Protección",
-    subtitle: "Investigación rigurosa sobre vectores de rastreo móvil, geolocalización en fotos EXIF, antenas de telefonía y auditoría de permisos.",
-    sectionLabel: "Guías Educativas",
-    p1: "El historial de sus desplazamientos físicos se sitúa entre los datos personales más sensibles. Revela dónde duerme, su centro de trabajo, visitas médicas y rutinas familiares.",
-    p2: "Mientras que los satélites GPS son transmisores pasivos unidireccionales que no pueden rastrear quién recibe sus señales, las apps, sistemas operativos y redes telefónicas de su móvil sí pueden registrar sus coordenadas. En este manual explicamos cómo funciona el rastreo y qué pasos seguir para blindar su privacidad.",
-    calloutBadge: "🔒 100% Privacidad en Navegador",
-    calloutTitle: "El Compromiso de Privacidad de MyLocationLab",
-    calloutDesc: "Nuestras utilidades calculan coordenadas de forma estrictamente local en su navegador. Jamás registramos ni guardamos su posición en bases de datos.",
+    title: "Privacidad y Seguridad GPS: Quién te Rastrea y Cómo Protegerte | MyLocationLab",
+    description: "En resumen: Los satélites GPS no te rastrean, pero las apps, antenas móviles y redes Wi-Fi sí. Aprende a auditar y proteger tus permisos.",
+    h1: "Privacidad y Seguridad GPS: Guía Definitiva de Protección de Ubicación",
+    subtitle: "Investigación exhaustiva sobre vectores de rastreo móvil, metadatos EXIF en fotos, triangulación de antenas y auditoría de permisos.",
+    
+    inShort: "En resumen: Los satélites GPS en órbita son emisores de radio estrictamente pasivos; no poseen capacidad para rastrear, registrar ni supervisar quién recibe sus señales. Sin embargo, los sistemas operativos móviles, las librerías publicitarias, las antenas de telefonía y las redes Wi-Fi registran continuamente la ubicación calculada si no se restringen adecuadamente.",
+
+    takeawaysTitle: "Puntos Clave",
+    takeaways: [
+      "Los satélites GPS son receptores pasivos; no pueden ver su teléfono ni registrar sus movimientos.",
+      "El rastreo ocurre en tierra mediante SDKs de apps, antenas de telefonía y escaneo de redes Wi-Fi.",
+      "Las fotos tomadas con teléfonos inteligentes suelen incluir coordenadas exactas en sus metadatos EXIF.",
+      "Revocar los permisos de ubicación 'Siempre' evita que empresas publicitarias creen perfiles de sus rutinas.",
+      "Compruebe en tiempo real su huella de ubicación con herramientas de procesamiento 100% en el cliente."
+    ],
+
+    p1: "El historial de ubicación física constituye uno de los datos personales más sensibles. Revela domicilios particulares, centros de trabajo y rutinas diarias. Si necesita enviar sus coordenadas de forma segura a familiares o equipos de rescate, siga nuestro protocolo para <a href='/guides/how-to-share-location/'>compartir ubicación de forma segura</a>.",
+    p2: "Dado que el dispositivo procesa su posición localmente, los servicios web deben respetar el ámbito del cliente. En MyLocationLab, nuestra <a href='/privacy/'>política de privacidad en el cliente</a> garantiza que sus coordenadas no se almacenan en servidores. Para conocer los controles de seguridad del navegador, consulte la <a href='/guides/browser-geolocation-api-guide/'>guía de la API de geolocalización</a>. Para probar servicios basados en mapas sin revelar su hogar, explore cómo <a href='/guides/how-to-fake-or-mock-location/'>simular ubicaciones GPS</a> o examine su panel de <a href='/my-location/'>mi ubicación</a>.",
+
+    calloutBadge: "🔒 Privacidad en el Cliente",
+    calloutTitle: "Compromiso de Privacidad sin Almacenamiento",
+    calloutDesc: "Nuestras utilidades se ejecutan directamente en su navegador web. Jamás registramos ni transferimos sus coordenadas a bases de datos.",
     calloutBtn: "Leer Política de Privacidad →",
+
     h2Vectors: "1. Los Cuatro Vectores Principales de Rastreo de Ubicación",
-    step1Title: "SDKs en Segundo Plano y Brokers de Datos Publicitarios",
-    step1Desc: "Aplicaciones gratuitas (el tiempo, linternas, juegos) integran a menudo librerías comerciales que recopilan coordenadas con frecuencia y venden patrones de movilidad anonimizados a empresas de datos.",
+    step1Title: "Librerías SDK en Apps Gratuitas y Corredores de Datos",
+    step1Desc: "Aplicaciones aparentemente inocuas (el tiempo, linternas, juegos) integran módulos comerciales que recopilan coordenadas para comercializarlas con empresas de análisis.",
     step2Title: "Triangulación por Antenas de Telefonía Móvil",
-    step2Desc: "Su operador de telefonía registra constantemente la potencia de señal en antenas celulares cercanas para encaminar llamadas, reteniendo el registro de sus desplazamientos con un margen de pocos cientos de metros.",
-    step3Title: "Metadatos EXIF Integrados en Fotografías",
-    step3Desc: "Al capturar una fotografía con el móvil, la cámara graba las coordenadas GPS exactas dentro del archivo de imagen. Compartir la foto original en foros o mensajería puede exponer involuntariamente su domicilio.",
+    step2Desc: "Los operadores celulares registran la intensidad y tiempo de respuesta con torres próximas para cursar llamadas, guardando registros históricos de localización.",
+    step3Title: "Metadatos EXIF Ocultos en Fotografías",
+    step3Desc: "La cámara de su smartphone incrusta coordenadas GPS de precisión milimétrica en la cabecera EXIF de cada imagen, exponiendo su dirección si comparte fotos originales.",
     step4Title: "Escaneo de Balizas Wi-Fi y Bluetooth",
-    step4Desc: "Centros comerciales y aeropuertos despliegan balizas BLE y receptores Wi-Fi que monitorizan la dirección MAC del dispositivo conforme se desplaza por los pasillos.",
-    h2Audit: "2. Cómo Auditar y Restringir los Permisos de Ubicación",
-    h3Ios: "En Apple iPhone e iPad (iOS 17 / 18)",
-    ios1: "Vaya a Ajustes > Privacidad y seguridad > Localización.",
-    ios2: "Revise cada aplicación instalada: cambie cualquier acceso fijado en 'Siempre' a 'Al usar la app' o 'Nunca'.",
-    ios3: "Desactive 'Ubicación precisa' en aquellas apps que no requieran navegación paso a paso (ej. redes sociales o tiendas).",
-    ios4: "Acceda a Localización > Servicios del sistema > Desactive 'Lugares importantes' para evitar que el teléfono guarde un registro encriptado de sus visitas habituales.",
+    step4Desc: "Centros comerciales y aeropuertos despliegan balizas BLE y sensores Wi-Fi que monitorizan las señales que emite su terminal al transitar entre pasillos.",
+
+    h2Audit: "2. Cómo Auditar y Proteger los Permisos de Ubicación",
+    h3Ios: "En iPhone y iPad de Apple (iOS 17 / 18)",
+    ios1: "Abra Ajustes > Privacidad y seguridad > Localización.",
+    ios2: "Examine las aplicaciones instaladas: cambie las configuradas en 'Siempre' a 'Al usar la app' o 'Nunca'.",
+    ios3: "Desactive 'Ubicación precisa' en aplicaciones que no requieran navegación paso a paso.",
+    ios4: "En Servicios del sistema, desactive 'Lugares importantes' para evitar que iOS conserve un registro local cifrado de sus destinos cotidianos.",
     h3Android: "En Dispositivos Android (Android 14 / 15)",
     and1: "Vaya a Ajustes > Privacidad > Administrador de permisos > Ubicación.",
-    and2: "Examine las apps con permiso 'Permitido siempre' y cámbielas a 'Permitir solo mientras la app está en uso'.",
-    and3: "En Ajustes > Ubicación > Servicios de ubicación > Búsqueda de Wi-Fi, desactive la opción para evitar el seguimiento pasivo de balizas.",
-    h2Exif: "3. Eliminación de Coordenadas GPS en Fotos Antes de Compartirlas",
-    pExif: "Antes de subir fotos a Internet o redes sociales:",
-    exifIos: "En iOS: Abra la foto en Fotos > Toque el icono de Compartir > Opciones (arriba) > Desactive el interruptor 'Ubicación' antes de enviar.",
-    exifAndroid: "En Android: Abra la Cámara > Ajustes de Cámara > Desactive 'Guardar ubicación geográfica'.",
-    callout2Badge: "🛰️ Comprobación Satelital",
-    callout2Title: "Compruebe los Datos que Expone su Conexión",
-    callout2Desc: "Descubra qué información revela su dirección IP pública a los sitios web sobre su ubicación física y proveedor sin otorgar permisos de GPS al navegador.",
-    callout2Btn: "Verificar Ubicación Pública por IP →",
-    connectedTitle: "🔗 Guías y Recursos de Seguridad Relacionados",
-    tool1Title: "Compartir Ubicación Segura",
-    tool1Desc: "Pautas para compartir con tiempo",
-    tool2Title: "Precisión de Geolocalización IP",
-    tool2Desc: "Límites del rastreo por IP",
-    tool3Title: "Guía de Ubicación Simulada",
-    tool3Desc: "Simulación de sensores móviles",
+    and2: "Revise las aplicaciones con acceso 'Permitido siempre' y cámbielas a 'Permitir solo mientras se usa'.",
+    and3: "En Ajustes > Ubicación > Servicios de ubicación, desactive 'Búsqueda de redes Wi-Fi' y 'Búsqueda de Bluetooth'.",
+
+    h2Exif: "3. Eliminación de Coordenadas GPS en Fotografías",
+    pExif: "Antes de compartir fotos en redes sociales o foros de internet:",
+    exifIos: "En iOS: Abra la foto en Fotos > pulse Compartir > pulse 'Opciones' arriba > desactive 'Ubicación' antes de enviar.",
+    exifAndroid: "En Android: Abra la Cámara > pulse Ajustes (icono de engranaje) > desactive 'Guardar ubicación'.",
+
+    workedExampleTitle: "Ejemplo Práctico: Control de Permisos en el Navegador",
+    workedExampleIntro: "Cómo comprobar y revocar el acceso a su ubicación en Chrome o Safari:",
+    workedExampleStep1: "1. Pulse el icono de ajustes (candado o controles) junto a la dirección web en el navegador.",
+    workedExampleStep2: "2. Busque la entrada 'Ubicación' en la lista de permisos del sitio.",
+    workedExampleStep3: "3. Cambie la opción de 'Permitir' a 'Bloquear' o 'Preguntar'.",
+    workedExampleStep4: "4. Recargue la página: la web ya no podrá consultar sus coordenadas.",
+
+    commonMistakesTitle: "Errores Frecuentes Sobre Privacidad de Ubicación",
+    commonMistakes: [
+      { mistake: "Creer que el Modo Avión apaga el GPS", explanation: "El Modo Avión desactiva telefonía y Wi-Fi, pero el receptor GPS interno sigue captando señales de satélites y guardando datos localmente." },
+      { mistake: "Pensar que los satélites observan a los usuarios", explanation: "Los satélites GPS son solo emisores de radio sin cámaras ni sensores de retorno; no saben cuántos dispositivos reciben su señal." },
+      { mistake: "Conceder permiso 'Siempre' a apps secundarias", explanation: "Permite a las empresas consultar su ubicación las 24 horas del día aunque el teléfono esté bloqueado en el bolsillo." }
+    ],
+
+    faqs: [
+      { question: "¿Puede alguien rastrearme en vivo mediante satélites GPS?", answer: "No. Los satélites GPS no reciben señales de teléfonos. El seguimiento en vivo requiere aplicaciones conectadas a internet instaladas en su dispositivo o registros del operador de telefonía." },
+      { question: "¿Apagar el Wi-Fi evita que me rastreen en centros comerciales?", answer: "No necesariamente. El centro de control rápido a menudo deja activo el escaneo en segundo plano. Es imprescindible desactivar la 'Búsqueda de redes Wi-Fi' en los ajustes de ubicación del sistema." },
+      { question: "¿Cómo protege MyLocationLab mi privacidad?", answer: "Toda la operativa se procesa en el navegador del usuario mediante JavaScript. No almacenamos coordenadas en bases de datos ni las facilitamos a terceros." }
+    ],
+
+    nextStepsTitle: "Próximos Pasos y Recursos de Seguridad",
+    nextSteps: [
+      { title: "Compartir Ubicación Segura", href: "/guides/how-to-share-location/", desc: "Directrices para enviar su posición temporal con enlaces cifrados." },
+      { title: "API de Geolocalización HTML5", href: "/guides/browser-geolocation-api-guide/", desc: "Comprenda los límites y permisos de acceso del navegador." },
+      { title: "Simular Ubicaciones GPS", href: "/guides/how-to-fake-or-mock-location/", desc: "Pruebe aplicaciones con coordenadas simuladas sin exponer su hogar." }
+    ],
+
+    callout2Badge: "🛰️ Exposición de Red",
+    callout2Title: "Compruebe su Exposición Pública por IP",
+    callout2Desc: "Compruebe los datos geográficos y de proveedor que revela su dirección IP pública sin necesidad de conceder permisos de GPS en el navegador.",
+    callout2Btn: "Verificar Ubicación por IP →",
+    connectedTitle: "🔗 Guías Conectadas y Referencias de Seguridad",
+    tool1Title: "Compartir Ubicación",
+    tool1Desc: "Buenas prácticas",
+    tool2Title: "Precisión de IP",
+    tool2Desc: "Límites y VPNs",
+    tool3Title: "Simular Ubicación",
+    tool3Desc: "Pruebas en DevTools",
     tool4Title: "Política de Privacidad",
-    tool4Desc: "Arquitectura sin almacenamiento"
+    tool4Desc: "Garantía en el cliente"
   },
   fr: {
-    title: "Vie Privée & Sécurité GPS : Qui Vous Piste ? | MyLocationLab",
-    description: "Protégez votre géolocalisation. Comment les applications, antennes-relais, balises Wi-Fi et métadonnées EXIF vous pistent — et comment s'en prémunir.",
-    h1: "Vie Privée et Sécurité GPS : Le Guide Ultime de Protection",
-    subtitle: "Enquête sur les vecteurs de pistage mobile, les balises EXIF des photos, la triangulation des relais cellulaires et le verrouillage des permissions.",
-    sectionLabel: "Guides Pédagogiques",
-    p1: "L'historique de vos déplacements physiques constitue l'une des données personnelles les plus confidentielles. Il dévoile votre domicile, votre lieu de travail et vos habitudes de vie.",
-    p2: "Si les satellites GPS ne font qu'émettre des signaux radio sans jamais savoir qui les reçoit, les applications mobiles et les opérateurs de télécommunication enregistrent fréquemment votre position. Ce guide détaille les coulisses du pistage et vous livre une méthode pas à pas pour protéger vos données.",
-    calloutBadge: "🔒 Confidentialité Côté Navigateur",
-    calloutTitle: "L'Engagement Confidentialité de MyLocationLab",
-    calloutDesc: "Nos outils opèrent à 100 % au sein de votre navigateur. Vos coordonnées GPS ne sont jamais archivées ni transmises à un serveur.",
+    title: "Sécurité et Confidentialité GPS : Qui Vous Piste | MyLocationLab",
+    description: "En bref : Les satellites GPS ne vous pistent pas, mais les applications, antennes relais et réseaux Wi-Fi le font. Sécurisez vos autorisations.",
+    h1: "Sécurité et Confidentialité GPS : Guide de Protection de la Localisation",
+    subtitle: "Enquête approfondie sur les vecteurs de pistage mobile, métadonnées EXIF, triangulation cellulaire et audit des autorisations.",
+    
+    inShort: "En bref : Les satellites GPS sont de simples émetteurs radio passifs ; ils ne disposent d'aucun moyen de savoir qui capte leurs signaux. En revanche, les applications mobiles, les régies publicitaires, les antennes relais et les bornes Wi-Fi enregistrent en permanence vos coordonnées si vous ne restreignez pas vos paramètres.",
+
+    takeawaysTitle: "Points Clés",
+    takeaways: [
+      "Les satellites GPS ne vous localisent pas : ce sont des balises radio passives unidirectionnelles.",
+      "Le suivi physique s'effectue au sol par les applications, les antennes mobiles et les réseaux Wi-Fi.",
+      "Les photos prises au smartphone contiennent souvent vos coordonnées exactes dans leurs métadonnées EXIF.",
+      "Révoquer l'accès 'Toujours' empêche les courtiers en données de cartographier vos déplacements quotidiens.",
+      "Contrôlez votre empreinte de localisation avec nos outils d'exécution 100 % côté client."
+    ],
+
+    p1: "L'historique de vos déplacements révèle vos habitudes de vie, votre domicile et vos cercles privés. Pour transmettre votre position à des proches en toute sécurité, suivez notre méthode pour <a href='/guides/how-to-share-location/'>partager sa position en toute sécurité</a>.",
+    p2: "Comme votre smartphone calcule sa position localement, les services web doivent préserver l'espace du client. Sur MyLocationLab, notre <a href='/privacy/'>politique de confidentialité côté client</a> garantit que vos coordonnées restent dans le navigateur sans stockage sur serveur. Pour découvrir le fonctionnement des autorisations logicielles, consultez notre <a href='/guides/browser-geolocation-api-guide/'>guide de l'API Geolocation HTML5</a>. Pour tester des fonctionnalités sans dévoiler votre domicile, apprenez à <a href='/guides/how-to-fake-or-mock-location/'>simuler une position GPS</a> ou surveillez vos capteurs depuis notre tableau de bord <a href='/my-location/'>ma position</a>.",
+
+    calloutBadge: "🔒 Confidentialité Côté Client",
+    calloutTitle: "L'Engagement Zéro Donnée de MyLocationLab",
+    calloutDesc: "Nos outils s'exécutent entièrement dans votre navigateur. Nous n'enregistrons ni ne transmettons aucune coordonnée géographique.",
     calloutBtn: "Lire la Politique de Confidentialité →",
-    h2Vectors: "1. Les Quatre Principaux Vecteurs de Géopistage",
-    step1Title: "SDKs d'Applications & Courtiers en Données Publicitaires",
-    step1Desc: "Des applications gratuites intègrent des bibliothèques commerciales qui collectent vos coordonnées à intervalles réguliers et revendent ces flux de déplacements à des courtiers spécialisés.",
-    step2Title: "Triangulation par Antennes-Relais Mobiles",
-    step2Desc: "Votre opérateur télécom relève l'intensité du signal et l'avance temporelle sur les tours cellulaires environnantes afin d'acheminer les appels, archivant vos déplacements à quelques centaines de mètres près.",
-    step3Title: "Métadonnées EXIF dans les Fichiers Photos",
-    step3Desc: "Lorsque vous prenez un cliché avec votre smartphone, l'appareil intègre vos coordonnées GPS dans l'en-tête du fichier. Diffuser ces photos en ligne peut exposer l'adresse précise de votre domicile.",
-    step4Title: "Balises Bluetooth (BLE) et Sniffers Wi-Fi",
-    step4Desc: "Des commerces et gares déploient des balises Bluetooth et des bornes d'écoute Wi-Fi captant l'adresse MAC de votre téléphone pour cartographier vos cheminements.",
-    h2Audit: "2. Comment Auditer et Verrouiller les Permissions de Localisation",
+
+    h2Vectors: "1. Les Quatre Principaux Vecteurs de Traçage",
+    step1Title: "SDK d'Applications Gratuites et Courtiers de Données",
+    step1Desc: "Des utilitaires gratuits (météo, jeux, lampes de poche) intègrent des modules publicitaires qui collectent vos coordonnées en arrière-plan pour les revendre.",
+    step2Title: "Triangulation par les Antennes Relais Télécoms",
+    step2Desc: "Les opérateurs mobiles mesurent la force du signal entre plusieurs tours pour router vos communications, conservant des journaux d'emplacement.",
+    step3Title: "Métadonnées Géographiques EXIF des Photos",
+    step3Desc: "Votre appareil photo intègre par défaut la latitude et la longitude exactes dans le fichier image, exposant votre adresse lors de partages bruts.",
+    step4Title: "Balises Wi-Fi et Bluetooth dans les Commerces",
+    step4Desc: "Les centres commerciaux et gares exploitent des bornes BLE qui détectent les requêtes d'émissions radio de votre téléphone.",
+
+    h2Audit: "2. Comment Auditer et Verrouiller Vos Autorisations",
     h3Ios: "Sur Apple iPhone et iPad (iOS 17 / 18)",
-    ios1: "Rendez-vous dans Réglages > Confidentialité et sécurité > Service de localisation.",
-    ios2: "Passez en revue chaque application : remplacez l'accès 'Toujours' par 'Lorsque l'app est active' ou 'Jamais'.",
-    ios3: "Désactivez 'Position exacte' pour les services ne nécessitant aucun guidage de précision.",
-    ios4: "Allez dans Service de localisation > Services système > Désactivez 'Lieux importants' pour empêcher l'enregistrement de l'historique chiffré de vos trajets fréquents.",
+    ios1: "Ouvrez Réglages > Confidentialité et sécurité > Service de localisation.",
+    ios2: "Inspectez les applications : remplacez l'accès 'Toujours' par 'Lorsque l'app est active' ou 'Jamais'.",
+    ios3: "Désactivez 'Position exacte' pour les applications ne nécessitant pas de guidage routier.",
+    ios4: "Dans Services système, désactivez 'Lieux importants' pour empêcher le stockage local de vos trajets réguliers.",
     h3Android: "Sur Appareils Android (Android 14 / 15)",
-    and1: "Accédez à Paramètres > Confidentialité > Gestionnaire d'autorisations > Localisation.",
-    and2: "Modifiez les applications autorisées 'Toujours' pour 'Autoriser seulement si l'appli est en cours d'utilisation'.",
-    and3: "Dans Paramètres > Localisation > Services de localisation > Analyse Wi-Fi, désactivez la fonction pour empêcher le pistage passif.",
-    h2Exif: "3. Retirer les Coordonnées GPS des Photos Avant Partage",
-    pExif: "Avant de publier une image sur un forum ou un réseau social :",
-    exifIos: "Sur iOS : Ouvrez la photo dans Photos > Touchez Partager > Options (en haut) > Désactivez 'Position'.",
-    exifAndroid: "Sur Android : Ouvrez l'application Appareil photo > Paramètres > Désactivez 'Enregistrer la position géographique'.",
-    callout2Badge: "🛰️ Vérification Satellite",
-    callout2Title: "Vérifiez les Données Exposées par Votre Connexion",
-    callout2Desc: "Découvrez quelles données votre adresse IP révèle publiquement sur votre région et votre opérateur sans avoir accordé d'autorisation GPS.",
-    callout2Btn: "Vérifier la Position par IP →",
-    connectedTitle: "🔗 Guides et Références de Sécurité Associés",
-    tool1Title: "Partager Sa Position",
-    tool1Desc: "Règles de sécurité",
-    tool2Title: "Précision Géolocalisation IP",
-    tool2Desc: "Limites du pistage IP",
-    tool3Title: "Guide Fausse Localisation",
-    tool3Desc: "Simuler des capteurs",
-    tool4Title: "Politique de Confidentialité",
-    tool4Desc: "Architecture sans stockage"
+    and1: "Allez dans Paramètres > Confidentialité > Gestionnaire d'autorisations > Localisation.",
+    and2: "Modifiez les applications autorisées 'Toujours' en 'Autoriser seulement si l'appli est en cours d'utilisation'.",
+    and3: "Dans Paramètres > Localisation > Services de localisation, désactivez la recherche Wi-Fi et Bluetooth en arrière-plan.",
+
+    h2Exif: "3. Supprimer les Coordonnées GPS des Photos",
+    pExif: "Avant de publier une image sur internet ou un forum public :",
+    exifIos: "Sous iOS : Ouvrez la photo > Partager > Options en haut > Désactivez 'Lieu' avant l'envoi.",
+    exifAndroid: "Sous Android : Ouvrez l'appareil photo > Paramètres > Désactivez 'Balises géographiques'.",
+
+    workedExampleTitle: "Exemple Concret : Gérer les Permissions du Navigateur",
+    workedExampleIntro: "Comment révoquer l'accès à la position dans Chrome ou Safari :",
+    workedExampleStep1: "1. Cliquez sur l'icône de réglages du site (cadenas ou curseurs) à gauche de l'URL.",
+    workedExampleStep2: "2. Repérez la ligne 'Position' ou 'Localisation' dans la liste.",
+    workedExampleStep3: "3. Passez le réglage sur 'Bloquer' ou 'Demander'.",
+    workedExampleStep4: "4. Actualisez la page : le site ne peut plus interroger vos capteurs de position.",
+
+    commonMistakesTitle: "Erreurs Courantes sur la Confidentialité GPS",
+    commonMistakes: [
+      { mistake: "Croire que le Mode Avion désactive le GPS", explanation: "Le mode avion coupe la téléphonie et le Wi-Fi, mais la puce de réception GPS reste capable de calculer vos coordonnées hors-ligne." },
+      { mistake: "Penser que les satellites surveillent les usagers", explanation: "Les satellites GPS émettent des ondes radio sans capteur de retour : ils ignorent totalement l'identité ou le nombre des récepteurs." },
+      { mistake: "Accorder l'accès 'Toujours' sans nécessité", explanation: "L'application peut alors suivre votre position 24 heures sur 24, même avec l'écran éteint et l'appareil verrouillé." }
+    ],
+
+    faqs: [
+      { question: "Quelqu'un peut-il me suivre en direct par satellite GPS ?", answer: "Non. Les satellites GPS ne reçoivent aucun signal de votre téléphone. Le suivi en direct nécessite un logiciel connecté à internet installé sur votre appareil ou l'infrastructure de votre opérateur." },
+      { question: "Couper le Wi-Fi empêche-t-il le pistage dans les magasins ?", answer: "Pas nécessairement. Les réglages rapides laissent souvent le balayage Wi-Fi actif en tâche de fond. Vous devez le désactiver dans les paramètres avancés de localisation." },
+      { question: "Comment MyLocationLab protège-t-il mes coordonnées ?", answer: "Le calcul de position est effectué directement par votre navigateur en JavaScript. Nous ne stockons aucune coordonnée sur nos serveurs." }
+    ],
+
+    nextStepsTitle: "Prochaines Étapes et Sécurité",
+    nextSteps: [
+      { title: "Partager sa Position en Sécurité", href: "/guides/how-to-share-location/", desc: "Bonnes pratiques pour transmettre vos coordonnées de façon temporaire." },
+      { title: "API Geolocation HTML5", href: "/guides/browser-geolocation-api-guide/", desc: "Comprendre comment les navigateurs isolent l'accès aux capteurs." },
+      { title: "Simuler une Position GPS", href: "/guides/how-to-fake-or-mock-location/", desc: "Tester des services géolocalisés sans révéler votre véritable adresse." }
+    ],
+
+    callout2Badge: "🛰️ Exposition Réseau",
+    callout2Title: "Vérifiez Votre Exposition Publique par IP",
+    callout2Desc: "Découvrez les données géographiques que votre adresse IP révèle aux sites web sans accorder d'autorisation GPS au navigateur.",
+    callout2Btn: "Vérifier la Localisation IP →",
+    connectedTitle: "🔗 Guides et Références de Sécurité",
+    tool1Title: "Partage Sécurisé",
+    tool1Desc: "Conseils pratiques",
+    tool2Title: "Précision de l'IP",
+    tool2Desc: "Limites et VPN",
+    tool3Title: "Simuler Position",
+    tool3Desc: "Tests DevTools",
+    tool4Title: "Confidentialité",
+    tool4Desc: "Garantie locale"
   },
   de: {
-    title: "GPS-Datenschutz & Sicherheit: Wer verfolgt Sie? | MyLocationLab",
-    description: "Schützen Sie Ihre Standortdaten. Wie Apps, Funkzellen, Foto-EXIF-Tags und WLAN Ihr GPS tracken – und wie Sie Ihr Gerät absichern.",
-    h1: "GPS-Datenschutz & Sicherheit: Der umfassende Leitfaden",
-    subtitle: "Detaillierte Analyse mobiler Tracking-Methoden, Foto-EXIF-Geotags, Funkzellortung und praktische Schritte zur Berechtigungsüberprüfung.",
-    sectionLabel: "Lehr-Ratgeber",
-    p1: "Ihr Bewegungsprofil zählt zu den sensibelsten persönlichen Datensätzen überhaupt. Es offenbart Ihren Wohnort, Arbeitsplatz, Arztbesuche und vertrauliche Gewohnheiten.",
-    p2: "Während GPS-Satelliten reine Einweg-Sender sind, die Empfänger niemals identifizieren können, protokollieren installierte Apps, Betriebssysteme und Mobilfunkprovider Standortdaten kontinuierlich. Dieser Ratgeber erklärt die technischen Mechanismen und liefert eine Checkliste zur Absicherung Ihrer Privatsphäre.",
-    calloutBadge: "🔒 100% Client-Datenschutz",
-    calloutTitle: "Das Datenschutz-Versprechen von MyLocationLab",
-    calloutDesc: "Unsere Werkzeuge berechnen Koordinaten ausschließlich lokal im Browser. Wir speichern, archivieren oder übertragen Ihre GPS-Daten niemals auf externe Server.",
+    title: "GPS-Datenschutz & Sicherheit: Wer trackt Sie? | MyLocationLab",
+    description: "Kurz gesagt: GPS-Satelliten tracken Sie nicht, wohl aber Apps, Funkmasten und WLANs. So sichern Sie Ihre Standortberechtigungen ab.",
+    h1: "GPS-Datenschutz & Sicherheit: Der umfassende Schutzleitfaden",
+    subtitle: "Eine fundierte Analyse mobiler Tracking-Vektoren, Foto-EXIF-Geotags, Funkzellenortung und praxiserprobter Datenschutz-Audits.",
+    
+    inShort: "Kurz gesagt: GPS-Satelliten im Weltraum sind rein passive Radiosender; sie besitzen keinerlei technische Möglichkeit, Empfängergeräte zu erfassen oder zu überwachen. Auf der Erde protokollieren mobile Betriebssysteme, Werbe-SDKs, Mobilfunkmasten und WLAN-Netze jedoch kontinuierlich Ihre berechnete Position, sofern Berechtigungen nicht eingeschränkt werden.",
+
+    takeawaysTitle: "Wichtige Erkenntnisse",
+    takeaways: [
+      "GPS-Satelliten sind passive Funkfeuer; sie können Ihr Endgerät weder orten noch Daten empfangen.",
+      "Standort-Tracking erfolgt am Boden durch Werbe-SDKs, Funkzellenabfragen und WLAN-Scanning.",
+      "Smartphone-Fotos enthalten in ihren EXIF-Metadaten oft zentimetergenaue GPS-Koordinaten.",
+      "Das Entziehen der 'Immer'-Berechtigung verhindert, dass Datenhändler lückenlose Bewegungsprofile anlegen.",
+      "Überprüfen Sie Ihren Standort-Footprint mit Tools, die 100 % clientseitig arbeiten."
+    ],
+
+    p1: "Ihr Standortverlauf zählt zu den sensibelsten persönlichen Informationen überhaupt. Er gibt Aufschluss über Wohnort, Arbeitsstätte, medizinische Termine und soziale Kontakte. Wie Sie Ihre Daten bei Bedarf geschützt weitergeben, erklärt unser Leitfaden zu <a href='/guides/how-to-share-location/'>Standort sicher teilen</a>.",
+    p2: "Da moderne Geräte Koordinaten lokal ermitteln, müssen Webdienste die Privatsphäre des Nutzers respektieren. Die <a href='/privacy/'>Datenschutzerklärung</a> von MyLocationLab garantiert die reine In-Browser-Verarbeitung ohne Speicherung auf externen Servern. Wie Browser Berechtigungen kapseln, zeigt unser <a href='/guides/browser-geolocation-api-guide/'>HTML5 Geolocation API Leitfaden</a>. Zu Testzwecken können Entwickler <a href='/guides/how-to-fake-or-mock-location/'>Standort simulieren</a> oder eigene Daten im Dashboard <a href='/my-location/'>Mein Standort</a> einsehen.",
+
+    calloutBadge: "🔒 Clientseitiger Datenschutz",
+    calloutTitle: "Das MyLocationLab Datenschutz-Versprechen",
+    calloutDesc: "Unsere Werkzeuge laufen vollständig in Ihrem Browser. Wir speichern oder übermitteln Ihre GPS-Koordinaten zu keinem Zeitpunkt an externe Datenbanken.",
     calloutBtn: "Datenschutzerklärung lesen →",
-    h2Vectors: "1. Die vier primären Methoden zur Standortverfolgung",
-    step1Title: "Hintergrund-SDKs in Apps & Datenhändler",
-    step1Desc: "Kostenlose Apps (Wetterberichte, Spiele, Tools) bündeln kommerzielle Werbe-SDKs, die minütlich Koordinaten erfassen und anonymisierte Bewegungsmuster an Datenhändler veräußern.",
-    step2Title: "Funkzellen-Triangulation durch Mobilfunkanbieter",
-    step2Desc: "Ihr Netzbetreiber protokolliert Signalstärken und Laufzeiten umliegender Funkmasten zur Gesprächsvermittlung und hält Bewegungsdaten auf wenige hundert Meter genau fest.",
-    step3Title: "Eingebettete EXIF-Metadaten in Digitalfotos",
-    step3Desc: "Beim Fotografieren mit dem Smartphone speichert die Kamera exakte GPS-Werte im Bildheader. Beim unbedachten Teilen im Netz kann so versehentlich die eigene Wohnadresse offengelegt werden.",
-    step4Title: "WLAN- und Bluetooth-Beacon-Erfassung",
-    step4Desc: "Einkaufszentren und Bahnhöfe setzen Bluetooth-Low-Energy-Beacons ein, die die MAC-Adresse Ihres Geräts beim Passieren der Gänge registrieren.",
+
+    h2Vectors: "1. Die vier primären Standort-Tracking-Vektoren",
+    step1Title: "Hintergrund-SDKs in Apps und Datenhändler",
+    step1Desc: "Kostenlose Apps (Wetterberichte, Spiele, Taschenlampen) binden oft Werbe-SDKs ein, die im Hintergrund Standortverläufe an kommerzielle Datenbroker verkaufen.",
+    step2Title: "Funkzellenortung der Mobilfunkanbieter",
+    step2Desc: "Mobilfunkbetreiber erfassen Signalstärke und Laufzeiten zu Nachbarmasten zur Vermittlung von Anrufen und speichern Verkehrsdaten.",
+    step3Title: "Eingebettete EXIF-Geotags in Fotos",
+    step3Desc: "Kameras von Smartphones speichern genaue GPS-Koordinaten direkt im Bildheader, wodurch beim unbedachten Upload der Wohnort preisgegeben werden kann.",
+    step4Title: "WLAN-Probe-Requests und Bluetooth-Beacons",
+    step4Desc: "Einkaufszentren und Bahnhöfe nutzen BLE-Beacons und WLAN-Empfänger, die Ihr Smartphone beim Vorbeigehen an Geschäften registrieren.",
+
     h2Audit: "2. Standortberechtigungen prüfen und absichern",
     h3Ios: "Auf Apple iPhone & iPad (iOS 17 / 18)",
     ios1: "Öffnen Sie Einstellungen > Datenschutz & Sicherheit > Ortungsdienste.",
-    ios2: "Prüfen Sie alle Apps: Ändern Sie 'Immer' auf 'Beim Verwenden der App' oder 'Nie'.",
-    ios3: "Deaktivieren Sie 'Genauer Standort' bei Apps, die keine Turn-by-Turn-Navigation benötigen.",
-    ios4: "Wählen Sie Ortungsdienste > Systemdienste > Schalten Sie 'Wichtige Orte' ab, um interne Protokolle häufig besuchter Orte zu unterbinden.",
+    ios2: "Überprüfen Sie installierte Apps: Ändern Sie 'Immer' auf 'Beim Verwenden der App' oder 'Nie'.",
+    ios3: "Deaktivieren Sie 'Genaue Position' bei Apps, die keine exakte Navigation erfordern.",
+    ios4: "Wählen Sie Systemdienste > 'Wichtige Orte' und schalten Sie diese Funktion aus.",
     h3Android: "Auf Android-Geräten (Android 14 / 15)",
     and1: "Öffnen Sie Einstellungen > Datenschutz > Berechtigungsmanager > Standort.",
-    and2: "Überprüfen Sie Apps mit Dauerzugriff ('Immer zugelassen') und beschränken Sie diese auf 'Nur während der Nutzung zugelassen'.",
-    and3: "Wählen Sie Einstellungen > Standort > Standortdienste > WLAN-Suche und deaktivieren Sie diese gegen passives Beacon-Tracking.",
-    h2Exif: "3. GPS-Geotags vor dem Teilen aus Fotos entfernen",
-    pExif: "Vor dem Hochladen von Aufnahmen ins Internet:",
-    exifIos: "Unter iOS: Foto in der Fotos-App öffnen > Teilen-Symbol > Oben auf Optionen > Schalter 'Standort' ausschalten.",
-    exifAndroid: "Unter Android: Kamera-App > Einstellungen > 'Standortdaten speichern' deaktivieren.",
-    callout2Badge: "🛰️ Satellitencheck",
-    callout2Title: "Öffentliche Standortexposition prüfen",
-    callout2Desc: "Erfahren Sie, welche Angaben Ihre öffentliche IP-Adresse über Ihren Aufenthaltsort preisgibt – ganz ohne Freigabe des Browser-GPS.",
-    callout2Btn: "IP-Standort prüfen →",
-    connectedTitle: "🔗 Verwandte Sicherheitsratgeber",
-    tool1Title: "Standort sicher teilen",
-    tool1Desc: "Tipps zur Freigabe",
-    tool2Title: "IP-Geolokalisierungsgenauigkeit",
-    tool2Desc: "Grenzen der IP-Ortung",
-    tool3Title: "Standortsimulation-Ratgeber",
-    tool3Desc: "Sensoren simulieren",
-    tool4Title: "Datenschutzerklärung",
-    tool4Desc: "Architektur ohne Speicherung"
+    and2: "Ändern Sie Apps mit der Freigabe 'Immer zulassen' auf 'Nur während der App-Nutzung'.",
+    and3: "Wählen Sie Einstellungen > Standort > Standortdienste und schalten Sie 'WLAN-Suche' und 'Bluetooth-Suche' aus.",
+
+    h2Exif: "3. GPS-Metadaten vor dem Teilen aus Fotos entfernen",
+    pExif: "Bevor Sie Fotos ins Internet oder in öffentliche Foren hochladen:",
+    exifIos: "iOS: Foto in Fotos-App öffnen > Teilen-Symbol > oben auf 'Optionen' tippen > 'Ort' ausschalten.",
+    exifAndroid: "Android: Kamera-App öffnen > Einstellungen > 'Standort speichern' oder 'Geotags' deaktivieren.",
+
+    workedExampleTitle: "Praxisbeispiel: Website-Berechtigungen im Browser verwalten",
+    workedExampleIntro: "So widerrufen Sie den Standortzugriff in Google Chrome oder Safari:",
+    workedExampleStep1: "1. Klicken Sie links neben der Adresszeile auf das Schloss- oder Einstellungssymbol.",
+    workedExampleStep2: "2. Suchen Sie den Eintrag 'Standort' in der Berechtigungsliste.",
+    workedExampleStep3: "3. Ändern Sie die Auswahl von 'Zulassen' auf 'Blockieren' oder 'Fragen'.",
+    workedExampleStep4: "4. Seite neu laden: Die Website kann Ihre Hardwaresensoren nicht mehr ansprechen.",
+
+    commonMistakesTitle: "Häufige Missverständnisse beim Standort-Datenschutz",
+    commonMistakes: [
+      { mistake: "Glauben, der Flugmodus deaktiviere das GPS", explanation: "Der Flugmodus schaltet Mobilfunk und WLAN ab, der interne GPS-Empfänger kann Satellitensignale jedoch weiterhin passiv auswerten." },
+      { mistake: "Annehmen, Satelliten würden Nutzer beobachten", explanation: "GPS-Satelliten sind Einweg-Radiosender ohne Rückkanal; sie registrieren keine Empfängergeräte auf der Erde." },
+      { mistake: "Apps leichtfertig 'Immer'-Berechtigungen erteilen", explanation: "Ermöglicht Anwendungen die lückenlose Erfassung Ihres Aufenthaltsorts rund um die Uhr, selbst bei gesperrtem Bildschirm." }
+    ],
+
+    faqs: [
+      { question: "Kann mich jemand über GPS-Satelliten in Echtzeit verfolgen?", answer: "Nein. GPS-Satelliten empfangen keine Signale von Smartphones. Echtzeit-Tracking erfordert internetfähige Software auf Ihrem Gerät oder Zugriffe über den Mobilfunknetzbetreiber." },
+      { question: "Schützt das Ausschalten von WLAN vor Laden-Tracking?", answer: "Nicht zwangsläufig. Im Kontrollzentrum bleibt die Hintergrundsuche oft aktiv. Sie müssen 'WLAN-Suche' in den erweiterten Standorteinstellungen des Betriebssystems abschalten." },
+      { question: "Wie schützt MyLocationLab meine Privatsphäre?", answer: "Alle Berechnungen finden lokal in Ihrem Browser per JavaScript statt. Es werden keine Standortdaten auf unseren Servern gespeichert." }
+    ],
+
+    nextStepsTitle: "Nächste Schritte und Sicherheitsressourcen",
+    nextSteps: [
+      { title: "Standort sicher teilen", href: "/guides/how-to-share-location/", desc: "Best Practices für die zeitlich begrenzte Freigabe von Koordinaten." },
+      { title: "HTML5 Geolocation API", href: "/guides/browser-geolocation-api-guide/", desc: "Erfahren Sie, wie Browser Sensoren isolieren und Freigaben verwalten." },
+      { title: "Standort simulieren", href: "/guides/how-to-fake-or-mock-location/", desc: "Standortbasierte Dienste gefahrlos mit Testkoordinaten prüfen." }
+    ],
+
+    callout2Badge: "🛰️ Netzwerk-Sichtbarkeit",
+    callout2Title: "Prüfen Sie Ihren öffentlichen IP-Standort",
+    callout2Desc: "Sehen Sie, was Ihre öffentliche IP-Adresse über Region und Anbieter preisgibt, ohne dass Sie Browser-GPS-Rechte erteilen müssen.",
+    callout2Btn: "IP-Standort abfragen →",
+    connectedTitle: "🔗 Verknüpfte Leitfäden und Tools",
+    tool1Title: "Sicher teilen",
+    tool1Desc: "Praxis-Tipps",
+    tool2Title: "IP-Genauigkeit",
+    tool2Desc: "Grenzen & VPNs",
+    tool3Title: "Mock Locations",
+    tool3Desc: "DevTools-Test",
+    tool4Title: "Datenschutz",
+    tool4Desc: "Clientseitig sicher"
   },
   pt: {
-    title: "Privacidade e Segurança GPS: Quem Rastreia Você? | MyLocationLab",
-    description: "Proteja a privacidade da sua localização. Saiba como aplicativos, torres de celular, EXIF de fotos e Wi-Fi rastreiam você — e como se proteger.",
-    h1: "Privacidade e Segurança GPS: O Guia Definitivo de Proteção",
-    subtitle: "Investigação aprofundada sobre vetores de rastreamento móvel, metadados EXIF em fotos, triangulação por antenas celulares e auditoria de permissões.",
-    sectionLabel: "Guias Educativos",
-    p1: "O histórico das suas rotas físicas está entre os dados mais confidenciais que você gera. Ele revela sua casa, trabalho, consultas médicas e rotinas pessoais.",
-    p2: "Embora satélites GPS sejam meros transmissores unidirecionais que não sabem quem recebe seus sinais, aplicativos, provedores e redes celulares monitoram sua posição com frequência. Neste manual, revelamos os métodos de rastreamento e orientamos como retomar o controle da sua privacidade.",
-    calloutBadge: "🔒 100% no Navegador",
-    calloutTitle: "O Compromisso de Privacidade do MyLocationLab",
-    calloutDesc: "Nossas ferramentas processam coordenadas exclusivamente no navegador. Nunca armazenamos, gravamos ou repassamos sua posição para servidores externos.",
+    title: "Privacidade e Segurança no GPS: Quem Rastreia Você | MyLocationLab",
+    description: "Em resumo: Os satélites GPS não rastreiam você, mas aplicativos, torres celulares e redes Wi-Fi sim. Aprenda a auditar suas permissões.",
+    h1: "Privacidade e Segurança no GPS: Guia Definitivo de Proteção",
+    subtitle: "Uma investigação técnica sobre vetores de rastreamento móvel, metadados EXIF em fotos, triangulação de operadoras e auditoria de privacidade.",
+    
+    inShort: "Em resumo: Os satélites GPS em órbita são transmissores de rádio estritamente passivos; eles não têm capacidade técnica de monitorar ou registrar quem recebe seus sinais. No entanto, sistemas operacionais móveis, SDKs de anúncios, torres de telefonia e redes Wi-Fi registram continuamente sua localização calculada se você não restringir as permissões.",
+
+    takeawaysTitle: "Pontos Principais",
+    takeaways: [
+      "Os satélites GPS são emissores passivos; eles não enxergam seu celular nem gravam seus movimentos.",
+      "O rastreamento ocorre em solo através de aplicativos, torres de celular e varreduras Wi-Fi.",
+      "Fotografias tiradas com smartphones frequentemente incluem latitude e longitude exatas nos dados EXIF.",
+      "Revogar a permissão 'Sempre' impede que empresas de dados criem perfis detalhados de sua rotina.",
+      "Consulte sua exposição em tempo real com ferramentas 100% executadas no navegador."
+    ],
+
+    p1: "O histórico de deslocamentos físicos é uma das informações mais pessoais que você gera. Ele revela sua residência, local de trabalho e círculos sociais. Quando precisar enviar suas coordenadas com segurança, consulte nossas orientações sobre <a href='/guides/how-to-share-location/'>como compartilhar localização com segurança</a>.",
+    p2: "Como o smartphone calcula a posição localmente, as ferramentas web devem respeitar o ambiente do cliente. Na MyLocationLab, nossa <a href='/privacy/'>política de privacidade do cliente</a> assegura que suas coordenadas não sejam arquivadas em servidores. Para entender como os navegadores gerenciam acessos aos sensores, confira nosso <a href='/guides/browser-geolocation-api-guide/'>guia da API de Geolocalização HTML5</a>. Para testar aplicativos sem expor sua casa, aprenda a <a href='/guides/how-to-fake-or-mock-location/'>simular localização GPS</a> ou confira seus dados ativos no painel <a href='/my-location/'>minha localização</a>.",
+
+    calloutBadge: "🔒 Privacidade no Cliente",
+    calloutTitle: "Compromisso de Zero Armazenamento da MyLocationLab",
+    calloutDesc: "Nossas ferramentas rodam diretamente no seu navegador web. Jamais registramos ou enviamos suas coordenadas a bancos de dados externos.",
     calloutBtn: "Ler Política de Privacidade →",
-    h2Vectors: "1. Os Quatro Principais Vetores de Rastreamento de Posição",
-    step1Title: "SDKs em Segundo Plano e Corretores de Dados",
-    step1Desc: "Aplicativos gratuitos frequentemente incluem bibliotecas comerciais que coletam coordenadas e repassam dados de mobilidade a corretores publicitários.",
-    step2Title: "Triangulação por Torres de Celular",
-    step2Desc: "A sua operadora móvel registra constantemente o sinal do aparelho nas torres vizinhas para direcionar chamadas, guardando o trajeto do assinante com precisão de poucas centenas de metros.",
-    step3Title: "Metadados EXIF Gravados em Fotos",
-    step3Desc: "Ao tirar fotos no celular, a câmera armazena a latitude e longitude exatas nos cabeçalhos da imagem. Compartilhar a foto original pode expor inadvertidamente o local da sua residência.",
-    step4Title: "Varredura de Beacons Wi-Fi e Bluetooth",
-    step4Desc: "Shoppings e aeroportos instalam pontos de escuta Bluetooth e Wi-Fi que captam o endereço MAC do celular à medida que você circula pelos corredores.",
-    h2Audit: "2. Como Auditar e Restringir as Permissões de Localização",
+
+    h2Vectors: "1. Os Quatro Principais Vetores de Rastreamento",
+    step1Title: "SDKs em Aplicativos Gratuitos e Corretores de Dados",
+    step1Desc: "Aplicativos utilitários gratuitos costumam integrar módulos de publicidade que coletam coordenadas em segundo plano para revenda comercial.",
+    step2Title: "Triangulação de Torres de Operadoras de Telefonia",
+    step2Desc: "Operadoras registram a intensidade de sinal do seu aparelho em relação a antenas próximas para direcionar chamadas, guardando registros de localização.",
+    step3Title: "Metadados EXIF Gravados em Fotografias",
+    step3Desc: "A câmera do smartphone insere coordenadas GPS diretamente no cabeçalho do arquivo de imagem, expondo seu endereço ao publicar fotos originais.",
+    step4Title: "Varredura de Redes Wi-Fi e Beacons Bluetooth",
+    step4Desc: "Shoppings e aeroportos utilizam balizas BLE e receptores Wi-Fi que monitoram as transmissões emitidas pelo seu celular ao caminhar entre lojas.",
+
+    h2Audit: "2. Como Auditar e Restringir Permissões de Localização",
     h3Ios: "No Apple iPhone e iPad (iOS 17 / 18)",
-    ios1: "Abra Ajustes > Privacidade e Segurança > Serviços de Localização.",
-    ios2: "Revise a lista de aplicativos: modifique opções definidas como 'Sempre' para 'Durante o Uso do App' ou 'Nunca'.",
-    ios3: "Desative a 'Localização Precisa' em programas que não demandam navegação curva a curva.",
-    ios4: "Acesse Serviços de Localização > Serviços do Sistema > Desative 'Locais Importantes' para impedir o arquivamento das suas rotas habituais.",
+    ios1: "Acesse Ajustes > Privacidade e Segurança > Serviços de Localização.",
+    ios2: "Revise os aplicativos instalados: mude o acesso de 'Sempre' para 'Durante o Uso do App' ou 'Nunca'.",
+    ios3: "Desative a opção 'Localização Precisa' em aplicativos que não necessitam de navegação em tempo real.",
+    ios4: "Em Serviços do Sistema, desative 'Locais Importantes' para evitar que o iOS mantenha registros locais criptografados de suas viagens frequentes.",
     h3Android: "Em Aparelhos Android (Android 14 / 15)",
-    and1: "Vá em Configurações > Privacidade > Gerenciador de permissões > Localização.",
-    and2: "Verifique os apps em 'Permitido o tempo todo' e altere para 'Permitir durante o uso do app'.",
-    and3: "Em Configurações > Localização > Serviços de localização > Busca por Wi-Fi, desative o recurso para barrar o rastreamento passivo.",
-    h2Exif: "3. Removendo Coordenadas GPS de Fotos Antes de Postar",
-    pExif: "Antes de enviar fotos para fóruns ou redes sociais:",
-    exifIos: "No iOS: Abra a imagem no app Fotos > Toque em Compartilhar > Opções (no topo) > Desative 'Localização'.",
-    exifAndroid: "No Android: Abra a Câmera > Configurações > Desative 'Salvar localização geográfica'.",
-    callout2Badge: "🛰️ Teste de Satélite",
-    callout2Title: "Verifique a Exposição Pública da sua Conexão",
-    callout2Desc: "Descubra quais detalhes seu endereço IP público revela sobre sua cidade e provedor sem precisar liberar permissões de GPS no navegador.",
+    and1: "Acesse Configurações > Privacidade > Gerenciador de permissões > Localização.",
+    and2: "Identifique aplicativos com 'Permitido o tempo todo' e altere para 'Permitir apenas durante o uso'.",
+    and3: "Em Configurações > Localização > Serviços de localização, desative 'Busca por Wi-Fi' e 'Busca por Bluetooth'.",
+
+    h2Exif: "3. Removendo Coordenadas GPS de Fotos Antes do Envio",
+    pExif: "Antes de carregar fotos na internet ou redes sociais:",
+    exifIos: "No iOS: Abra a foto no app Fotos > toque em Compartilhar > toque em 'Opções' no topo > desative 'Localização'.",
+    exifAndroid: "No Android: Abra a Câmera > Configurações > desative 'Salvar localização' ou 'Geotags'.",
+
+    workedExampleTitle: "Exemplo Prático: Gerenciando Permissões no Navegador",
+    workedExampleIntro: "Como verificar e revogar permissões de localização no Chrome ou Safari:",
+    workedExampleStep1: "1. Clique no ícone de configurações (cadeado ou seletores) à esquerda da barra de endereços.",
+    workedExampleStep2: "2. Localize a linha 'Localização' na lista de permissões.",
+    workedExampleStep3: "3. Altere de 'Permitir' para 'Bloquear' ou 'Perguntar'.",
+    workedExampleStep4: "4. Atualize a página: o site não poderá mais consultar os sensores de posição.",
+
+    commonMistakesTitle: "Erros Comuns Sobre Privacidade de Localização",
+    commonMistakes: [
+      { mistake: "Achar que o Modo Avião desativa o GPS", explanation: "O Modo Avião desliga antenas celulares e Wi-Fi, mas o receptor GPS interno continua recebendo sinais de satélites normalmente." },
+      { mistake: "Pensar que os satélites vigiam as pessoas", explanation: "Satélites GPS são antenas de rádio unidirecionais; eles não contam com câmeras nem sabem quem recebe seus dados." },
+      { mistake: "Conceder permissão 'Sempre' sem real necessidade", explanation: "Permite que a empresa monitore sua localização 24 horas por dia, mesmo com a tela do aparelho desligada." }
+    ],
+
+    faqs: [
+      { question: "Alguém pode me rastrear em tempo real pelos satélites GPS?", answer: "Não. Os satélites GPS não recebem sinais do seu celular. O rastreamento ao vivo requer aplicativos conectados à internet no aparelho ou registros da operadora de telefonia." },
+      { question: "Desligar o Wi-Fi impede o rastreamento em shoppings?", answer: "Não necessariamente. A central de controle rápida costuma manter a varredura em segundo plano. É necessário desligar a 'Busca por Wi-Fi' nas opções avançadas de localização." },
+      { question: "Como a MyLocationLab protege meus dados?", answer: "Nossos scripts rodam exclusivamente em JavaScript no navegador. Nenhuma coordenada geográfica é enviada ou armazenada em nossos servidores." }
+    ],
+
+    nextStepsTitle: "Próximos Passos e Segurança",
+    nextSteps: [
+      { title: "Compartilhar Localização com Segurança", href: "/guides/how-to-share-location/", desc: "Dicas para compartilhar coordenadas de forma temporária e controlada." },
+      { title: "API de Geolocalização HTML5", href: "/guides/browser-geolocation-api-guide/", desc: "Entenda como os navegadores isolam o acesso ao hardware." },
+      { title: "Simular Localização GPS", href: "/guides/how-to-fake-or-mock-location/", desc: "Teste aplicativos com coordenadas simuladas sem expor sua casa." }
+    ],
+
+    callout2Badge: "🛰️ Exposição de Rede",
+    callout2Title: "Confira Sua Exposição Pública por IP",
+    callout2Desc: "Descubra o que seu endereço IP público revela sobre sua cidade e provedor sem a necessidade de liberar permissões de GPS no navegador.",
     callout2Btn: "Verificar Localização por IP →",
-    connectedTitle: "🔗 Guias e Referências de Segurança",
-    tool1Title: "Compartilhar Local com Segurança",
-    tool1Desc: "Boas práticas de envio",
-    tool2Title: "Precisão do GeoIP",
-    tool2Desc: "Limites do rastreamento por IP",
-    tool3Title: "Simulação de Localização",
-    tool3Desc: "Simular sensores",
-    tool4Title: "Política de Privacidade",
-    tool4Desc: "Arquitetura sem retenção"
+    connectedTitle: "🔗 Guias Conectados e Referências",
+    tool1Title: "Compartilhar Localização",
+    tool1Desc: "Boas práticas",
+    tool2Title: "Precisão de IP",
+    tool2Desc: "Limites e VPNs",
+    tool3Title: "Simular Localização",
+    tool3Desc: "Testes no DevTools",
+    tool4Title: "Privacidade",
+    tool4Desc: "Execução no cliente"
   },
   hi: {
-    title: "GPS प्राइवेसी और सुरक्षा: आपको कौन ट्रैक करता है | MyLocationLab",
-    description: "अपनी लोकेशन प्राइवेसी सुरक्षित रखें। जानें ऐप्स, सेल टावर, फ़ोटो EXIF और Wi-Fi आपकी GPS लोकेशन कैसे ट्रैक करते हैं — और अपना डिवाइस कैसे सुरक्षित रखें।",
-    h1: "GPS प्राइवेसी और सुरक्षा: लोकेशन सुरक्षा की संपूर्ण गाइड",
-    subtitle: "मोबाइल ट्रैकिंग के तरीके, फ़ोटो EXIF जियोटैग, सेलुलर टावर ट्रायंगुलेशन और अपनी प्राइवेसी की ऑडिट के व्यावहारिक कदमों की विस्तृत जाँच।",
-    sectionLabel: "शैक्षिक गाइड",
-    p1: "आपकी फ़िज़िकल लोकेशन का इतिहास आपके बनाए सबसे संवेदनशील निजी डेटा में से एक है। इससे पता चलता है कि आप कहाँ सोते हैं, कहाँ काम करते हैं, मेडिकल अपॉइंटमेंट, सामाजिक परिचय और रोज़ की दिनचर्या।",
-    p2: "GPS सैटेलाइट खुद पूरी तरह निष्क्रिय वन-वे ट्रांसमीटर हैं जो यह नहीं जान सकते कि उनका सिग्नल कौन पा रहा है, लेकिन आपके फ़ोन की ऐप्स, ऑपरेटिंग सिस्टम, सेलुलर ऑपरेटर और वेब सेवाएँ आपकी लोकेशन लगातार रिकॉर्ड कर सकती हैं। इस गाइड में हम बताते हैं कि लोकेशन ट्रैकिंग कैसे काम करती है और अपनी प्राइवेसी पर दोबारा नियंत्रण पाने की व्यावहारिक चेकलिस्ट देते हैं।",
-    calloutBadge: "🔒 100% क्लाइंट-साइड प्राइवेसी",
-    calloutTitle: "MyLocationLab का प्राइवेसी वादा",
-    calloutDesc: "हमारे टूल निर्देशांक पूरी तरह आपके ब्राउज़र के अंदर गणना करते हैं। हम आपके GPS निर्देशांक कभी लॉग, स्टोर या किसी डेटाबेस को ट्रांसमिट नहीं करते।",
-    calloutBtn: "प्राइवेसी पॉलिसी पढ़ें →",
-    h2Vectors: "1. लोकेशन ट्रैकिंग के चार प्रमुख स्रोत",
-    step1Title: "बैकग्राउंड ऐप SDK और विज्ञापन डेटा ब्रोकर",
-    step1Desc: "फ़्री मोबाइल ऐप्स (मौसम, गेम, टॉर्च ऐप) अक्सर कमर्शियल लोकेशन SDK बंडल करती हैं जो हर कुछ मिनट में निर्देशांक इकट्ठा करके अनामित लोकेशन ट्रेल डेटा ब्रोकर और हेज फ़ंड को बेच देती हैं।",
-    step2Title: "सेलुलर ऑपरेटर की टावर ट्रायंगुलेशन",
-    step2Desc: "आपका मोबाइल ऑपरेटर आने वाली कॉल रूट करने के लिए आसपास के सेल टावर पर आपके फ़ोन की सिग्नल स्ट्रेंग्थ और टाइमिंग एडवांस लगातार लॉग करता है, जिससे आपकी चाल कुछ सौ मीटर की सटीकता तक रिकॉर्ड होती है।",
-    step3Title: "फ़ोटो में एम्बेडेड EXIF मेटाडेटा",
-    step3Desc: "स्मार्टफ़ोन से फ़ोटो लेते समय कैमरा ऐप सटीक GPS निर्देशांक सीधे इमेज फ़ाइल के EXIF हेडर में दर्ज कर देता है। ओरिजिनल फ़ोटो फ़ोरम पर पोस्ट करने या मैसेज से भेजने से आपका घर का पता अनजाने में उजागर हो सकता है।",
-    step4Title: "Wi-Fi और ब्लूटूथ बीकन स्कैनिंग",
-    step4Desc: "रिटेल स्टोर और एयरपोर्ट Bluetooth Low Energy (BLE) बीकन और Wi-Fi प्रोब स्निफ़र तैनात करते हैं जो गलियों के बीच चलते समय आपके फ़ोन का MAC एड्रेस ट्रैक करते हैं।",
-    h2Audit: "2. लोकेशन अनुमतियाँ कैसे ऑडिट और लॉक करें",
+    title: "GPS गोपनीयता और सुरक्षा: कौन आपको ट्रैक करता है | MyLocationLab",
+    description: "संक्षेप में: GPS उपग्रह आपको ट्रैक नहीं करते, लेकिन ऐप्स, मोबाइल टावर और वाई-फ़ाई करते हैं। अपनी लोकेशन अनुमतियों को सुरक्षित करना सीखें।",
+    h1: "GPS गोपनीयता और सुरक्षा: संपूर्ण स्थान सुरक्षा गाइड",
+    subtitle: "मोबाइल ट्रैकिंग विधियों, फोटो EXIF डेटा, सेल टावर ट्राइंगुलेशन और गोपनीयता सुरक्षा का विस्तृत विश्लेषण।",
+    
+    inShort: "संक्षेप में: अंतरिक्ष में स्थित GPS उपग्रह केवल एकतरफा रेडियो सिग्नल प्रसारित करते हैं; वे यह जानने में पूरी तरह असमर्थ हैं कि उनका सिग्नल कौन प्राप्त कर रहा है। हालाँकि, फोन के ऑपरेटिंग सिस्टम, विज्ञापन कंपनियाँ, सेल्युलर टावर और वाई-फ़ाई नेटवर्क आपकी गणना की गई स्थिति को लगातार रिकॉर्ड करते हैं जब तक कि अनुमतियों को सीमित न किया जाए।",
+
+    takeawaysTitle: "मुख्य बिंदु",
+    takeaways: [
+      "GPS उपग्रह केवल रेडियो सिग्नल भेजते हैं; वे आपके उपकरण को न तो देख सकते हैं और न ही ट्रैक कर सकते हैं।",
+      "स्थान ट्रैकिंग फोन में मौजूद ऐप्स, मोबाइल टावरों और वाई-फ़ाई स्कैनिंग के माध्यम से ज़मीन पर होती है।",
+      "स्मार्टफोन से ली गई तस्वीरों में अक्सर EXIF डेटा के अंदर सटीक अक्षांश और देशांतर दर्ज होते हैं।",
+      "ऐप्स से 'हमेशा अनुमति दें' हटाकर डेटा कंपनियों को अपनी दिनचर्या का प्रोफाइल बनाने से रोका जा सकता है।",
+      "हमारे 100% क्लाइंट-साइड टूल्स से अपने डिजिटल स्थान पदचिह्न की जांच करें।"
+    ],
+
+    p1: "आपके आने-जाने का इतिहास सबसे संवेदनशील व्यक्तिगत डेटा में से एक है। यह आपके घर, कार्यस्थल और व्यक्तिगत दिनचर्या को प्रकट करता है। परिवार या आपातकालीन सेवाओं के साथ स्थान साझा करते समय हमारी गाइड <a href='/guides/how-to-share-location/'>स्थान सुरक्षित रूप से कैसे साझा करें</a> का पालन करें।",
+    p2: "चूंकि आपका उपकरण स्थान की गणना स्थानीय स्तर पर करता है, इसलिए वेब सेवाओं को उपयोगकर्ता की गोपनीयता का सम्मान करना चाहिए। MyLocationLab की <a href='/privacy/'>क्लाइंट-साइड गोपनीयता नीति</a> यह सुनिश्चित करती है कि आपके निर्देशांक किसी सर्वर पर सहेजे बिना केवल ब्राउज़र में प्रोसेस हों। ब्राउज़र सुरक्षा मानकों को समझने के लिए हमारी <a href='/guides/browser-geolocation-api-guide/'>HTML5 जियोलोकेशन API गाइड</a> पढ़ें। अपने वास्तविक पते को उजागर किए बिना परीक्षण करने के लिए <a href='/guides/how-to-fake-or-mock-location/'>मॉक या नकली स्थान कैसे सेट करें</a> देखें या अपने डेटा को <a href='/my-location/'>मेरा स्थान डैशबोर्ड</a> में जांचें।",
+
+    calloutBadge: "🔒 क्लाइंट-साइड गोपनीयता",
+    calloutTitle: "MyLocationLab का ज़ीरो-डेटा स्टोरेज वादा",
+    calloutDesc: "हमारे सभी डायग्नोस्टिक टूल पूरी तरह से आपके वेब ब्राउज़र में चलते हैं। हम आपके निर्देशांक कभी भी किसी सर्वर डेटाबेस में रिकॉर्ड नहीं करते।",
+    calloutBtn: "गोपनीयता नीति पढ़ें →",
+
+    h2Vectors: "1. स्थान ट्रैकिंग के चार मुख्य तरीके",
+    step1Title: "मुफ्त ऐप्स के बैकग्राउंड SDK और डेटा ब्रोकर्स",
+    step1Desc: "मौसम और उपयोगिता ऐप्स अक्सर व्यावसायिक SDK शामिल करते हैं जो पृष्ठभूमि में निर्देशांक एकत्र कर विज्ञापन कंपनियों को बेचते हैं।",
+    step2Title: "मोबाइल ऑपरेटर टावर ट्राइंगुलेशन",
+    step2Desc: "कॉल रूट करने के लिए टेलीकॉम कंपनियाँ नजदीकी टावरों के साथ सिग्नल शक्ति रिकॉर्ड करती हैं, जिससे स्थान का विस्तृत इतिहास बन जाता है।",
+    step3Title: "तस्वीरों में छिपा EXIF मेटाडेटा",
+    step3Desc: "स्मार्टफोन कैमरे हर फोटो में सटीक GPS निर्देशांक दर्ज करते हैं। मूल फोटो ऑनलाइन साझा करने से आपका निजी पता उजागर हो सकता है।",
+    step4Title: "वाई-फ़ाई और ब्लूटूथ बीकन स्कैनिंग",
+    step4Desc: "मॉल और हवाई अड्डे ब्लूटूथ बीकन और वाई-फ़ाई रिसीवर का उपयोग करते हैं जो आपके फोन के सिग्नल से आवाजाही ट्रैक करते हैं।",
+
+    h2Audit: "2. स्थान अनुमतियों की जांच और सुरक्षा कैसे करें",
     h3Ios: "Apple iPhone और iPad पर (iOS 17 / 18)",
     ios1: "Settings > Privacy & Security > Location Services खोलें।",
-    ios2: "नीचे स्क्रॉल करके हर इंस्टॉल की गई ऐप की समीक्षा करें: 'Always' वाली किसी भी ऐप को 'While Using the App' या 'Never' में बदलें।",
-    ios3: "उन ऐप्स के लिए 'Precise Location' बंद करें जिन्हें नेविगेशन की सटीकता की ज़रूरत नहीं है (जैसे शॉपिंग या सोशल ऐप्स)।",
-    ios4: "Location Services > System Services पर जाएँ > Significant Locations बंद करें ताकि iPhone आपकी बार-बार की विज़िट का एन्क्रिप्टेड इतिहास सेव न करे।",
-    h3Android: "Android पर (Android 14 / 15)",
-    and1: "Settings > Privacy > Permission manager > Location खोलें।",
-    and2: "'Allowed all the time' के तहत सूचीबद्ध ऐप्स की समीक्षा करें और उन्हें 'Allow only while using the app' में बदलें।",
-    and3: "Settings > Location > Location services > Wi-Fi scanning पर जाकर इसे OFF कर दें ताकि पैसिव बीकन ट्रैकिंग रुके।",
-    h2Exif: "3. शेयर करने से पहले फ़ोटो से GPS जियोटैग हटाएँ",
-    pExif: "वेब या सोशल मीडिया पर फ़ोटो अपलोड करने से पहले:",
-    exifIos: "iOS पर: Photos ऐप में फ़ोटो खोलें > Share आइकन दबाएँ > ऊपर Options दबाएँ > भेजने से पहले Location बंद करें।",
-    exifAndroid: "Android पर: Camera खोलें > Settings > 'Save location' बंद करें।",
-    callout2Badge: "🛰️ सैटेलाइट फ़िक्स",
-    callout2Title: "अपनी पब्लिक लोकेशन एक्सपोज़र जाँचें",
-    callout2Desc: "ब्राउज़र GPS अनुमति दिए बिना जानें आपका पब्लिक IP पता वेबसाइटों को आपकी भौगोलिक लोकेशन, ISP और नेटवर्क रूटिंग के बारे में क्या बताता है।",
-    callout2Btn: "पब्लिक IP लोकेशन जाँचें →",
-    connectedTitle: "🔗 संबंधित गाइड और सुरक्षा संदर्भ",
-    tool1Title: "लोकेशन सुरक्षित शेयर करें",
-    tool1Desc: "समय-सीमित शेयरिंग के सर्वोत्तम तरीके",
-    tool2Title: "IP जियोलोकेशन सटीकता",
-    tool2Desc: "VPN और IP ट्रैकिंग की सीमाएँ",
-    tool3Title: "मॉक लोकेशन गाइड",
-    tool3Desc: "डेवलपर सेंसर सिमुलेशन",
-    tool4Title: "प्राइवेसी पॉलिसी",
-    tool4Desc: "ज़ीरो-स्टोरेज आर्किटेक्चर"
+    ios2: "'Always' पर सेट ऐप्स को बदलकर 'While Using the App' या 'Never' करें।",
+    ios3: "उन ऐप्स के लिए 'Precise Location' बंद करें जिन्हें नेविगेशन की आवश्यकता नहीं है।",
+    ios4: "System Services में जाकर 'Significant Locations' को बंद करें।",
+    h3Android: "Android उपकरणों पर (Android 14 / 15)",
+    and1: "Settings > Privacy > Permission manager > Location पर जाएं।",
+    and2: "'Allowed all the time' वाले ऐप्स को 'Allow only while using the app' पर बदलें।",
+    and3: "Settings > Location > Location services में 'Wi-Fi scanning' और 'Bluetooth scanning' को बंद करें।",
+
+    h2Exif: "3. तस्वीरों से GPS डेटा कैसे हटाएं",
+    pExif: "इंटरनेट या सोशल मीडिया पर फोटो पोस्ट करने से पहले:",
+    exifIos: "iOS पर: फोटो खोलें > Share आइकन > ऊपर 'Options' पर टैप करें > 'Location' बंद करें।",
+    exifAndroid: "Android पर: कैमरा ऐप खोलें > Settings > 'Save location' या 'Geotags' को बंद करें।",
+
+    workedExampleTitle: "व्यावहारिक उदाहरण: ब्राउज़र में स्थान अनुमति कैसे हटाएं",
+    workedExampleIntro: "Google Chrome या Safari में किसी वेबसाइट की स्थान अनुमति रद्द करने की प्रक्रिया:",
+    workedExampleStep1: "1. ब्राउज़र एड्रेस बार में वेबसाइट नाम के पास ताले (Padlock) आइकन पर क्लिक करें।",
+    workedExampleStep2: "2. सूची में 'Location' विकल्प खोजें।",
+    workedExampleStep3: "3. सेटिंग को 'Allow' से बदलकर 'Block' या 'Ask' करें।",
+    workedExampleStep4: "4. पेज रिफ्रेश करें: अब वेबसाइट आपके GPS या वाई-फ़ाई डेटा तक नहीं पहुँच सकती।",
+
+    commonMistakesTitle: "स्थान गोपनीयता के बारे में आम गलतियाँ",
+    commonMistakes: [
+      { mistake: "यह मानना कि एयरप्लेन मोड GPS बंद कर देता है", explanation: "एयरप्लेन मोड नेटवर्क बंद करता है, लेकिन आंतरिक GPS उपग्रह संकेतों को तब भी प्राप्त कर सकता है।" },
+      { mistake: "यह सोचना कि उपग्रह लोगों पर नज़र रख रहे हैं", explanation: "GPS उपग्रह केवल रेडियो सिग्नल प्रसारित करते हैं; वे यह नहीं जानते कि कौन सिग्नल सुन रहा है।" },
+      { mistake: "ऐप्स को 'हमेशा अनुमति' दे देना", explanation: "यह कंपनियों को 24 घंटे आपके फोन की निगरानी करने की अनुमति देता है, भले ही स्क्रीन बंद हो।" }
+    ],
+
+    faqs: [
+      { question: "क्या कोई मुझे उपग्रहों के माध्यम से ट्रैक कर सकता है?", answer: "नहीं। GPS उपग्रह उपकरणों से सिग्नल प्राप्त नहीं करते हैं। रीयल-टाइम ट्रैकिंग केवल फोन में इंस्टॉल ऐप या मोबाइल नेटवर्क द्वारा ही संभव है।" },
+      { question: "क्या वाई-फ़ाई बंद करने से दुकानों में ट्रैकिंग रुकती है?", answer: "नहीं, क्विक टॉगल अक्सर बैकग्राउंड स्कैनिंग को खुला छोड़ देता है। सिस्टम सेटिंग्स में जाकर 'Wi-Fi scanning' को बंद करना आवश्यक है।" },
+      { question: "MyLocationLab मेरी गोपनीयता की सुरक्षा कैसे करता है?", answer: "हमारा पूरा सिस्टम आपके ब्राउज़र में JavaScript द्वारा स्थानीय रूप से काम करता है। हम किसी सर्वर पर आपका स्थान डेटा स्टोर नहीं करते।" }
+    ],
+
+    nextStepsTitle: "अगले कदम और सुरक्षा संसाधन",
+    nextSteps: [
+      { title: "स्थान सुरक्षित साझा करें", href: "/guides/how-to-share-location/", desc: "समय-सीमित और नियंत्रित तरीके से स्थान भेजने के नियम सीखें।" },
+      { title: "HTML5 जियोलोकेशन API", href: "/guides/browser-geolocation-api-guide/", desc: "वेब ब्राउज़र स्थान सुरक्षा नीतियों का विस्तृत विवरण।" },
+      { title: "नकली या मॉक स्थान सेट करें", href: "/guides/how-to-fake-or-mock-location/", desc: "परीक्षण के लिए नकली निर्देशांक का सुरक्षित उपयोग करें।" }
+    ],
+
+    callout2Badge: "🛰️ नेटवर्क दृश्यता",
+    callout2Title: "सार्वजनिक IP स्थान एक्सपोज़र देखें",
+    callout2Desc: "बिना ब्राउज़र GPS अनुमति दिए देखें कि आपकी सार्वजनिक IP वेबसाइटों को क्या जानकारी देती है।",
+    callout2Btn: "IP स्थान जांचें →",
+    connectedTitle: "🔗 जुड़े मार्गदर्शक और उपकरण",
+    tool1Title: "सुरक्षित साझाकरण",
+    tool1Desc: "व्यावहारिक सुझाव",
+    tool2Title: "IP सटीकता",
+    tool2Desc: "सीमाएं और VPN",
+    tool3Title: "मॉक लोकेशन",
+    tool3Desc: "DevTools परीक्षण",
+    tool4Title: "गोपनीयता नीति",
+    tool4Desc: "क्लाइंट-साइड सुरक्षा"
   },
   id: {
     title: "Privasi & Keamanan GPS: Siapa yang Melacak Anda | MyLocationLab",
-    description: "Lindungi privasi lokasi Anda. Ketahui cara aplikasi, menara seluler, EXIF foto, dan Wi-Fi melacak posisi GPS Anda — serta cara mengamankan perangkat.",
-    h1: "Privasi & Keamanan GPS: Panduan Utama Perlindungan Lokasi",
-    subtitle: "Kajian menyeluruh tentang vektor pelacakan seluler, geotag EXIF foto, triangulasi menara seluler, dan langkah konkret mengaudit privasi Anda.",
-    sectionLabel: "Panduan Edukasi",
-    p1: "Riwayat lokasi fisik Anda termasuk data pribadi paling sensitif yang Anda hasilkan. Data ini mengungkap tempat Anda tidur, bekerja, jadwal medis, lingkaran pertemanan, dan rutinitas harian.",
-    p2: "Meskipun satelit GPS hanyalah pemancar satu arah yang pasif dan tidak tahu siapa yang menerima sinyalnya, aplikasi, sistem operasi, operator seluler, dan layanan web di ponsel Anda dapat mencatat lokasi Anda terus-menerus. Panduan ini mengupas cara kerja pelacakan lokasi dan menyajikan daftar periksa praktis untuk mengambil kembali kendali privasi Anda.",
-    calloutBadge: "🔒 100% Privasi di Sisi Peramban",
-    calloutTitle: "Janji Privasi MyLocationLab",
-    calloutDesc: "Semua alat kami menghitung koordinat sepenuhnya di dalam peramban Anda. Kami tidak pernah mencatat, menyimpan, atau mengirimkan koordinat GPS Anda ke basis data mana pun.",
+    description: "Singkatnya: Satelit GPS tidak melacak Anda, melainkan aplikasi, menara seluler, dan Wi-Fi. Pelajari cara mengaudit dan mengamankan izin lokasi Anda.",
+    h1: "Privasi & Keamanan GPS: Panduan Perlindungan Lokasi Lengkap",
+    subtitle: "Investigasi mendalam tentang vektor pelacakan ponsel, geotag EXIF foto, triangulasi menara seluler, dan langkah audit privasi perangkat Anda.",
+    
+    inShort: "Singkatnya: Satelit GPS di orbit bumi murni berfungsi sebagai pemancar radio satu arah yang pasif; satelit sama sekali tidak memiliki kemampuan untuk memantau atau mencatat perangkat penerima. Namun, sistem operasi ponsel, SDK iklan komersial, menara seluler, dan suar Wi-Fi terus mencatat posisi hasil perhitungan perangkat jika izin tidak dibatasi.",
+
+    takeawaysTitle: "Poin-Poin Penting",
+    takeaways: [
+      "Satelit GPS bersifat pasif; satelit tidak dapat melihat ponsel Anda maupun merekam perpindahan Anda.",
+      "Pelacakan terjadi di darat melalui SDK aplikasi latar belakang, menara seluler, dan pemindaian Wi-Fi.",
+      "Foto yang diambil ponsel cerdas sering kali memuat koordinat garis lintang dan bujur di dalam header EXIF.",
+      "Mencabut izin 'Selalu' mencegah pialang data membuat profil rutinitas perjalanan harian Anda.",
+      "Periksa jejak lokasi Anda secara aman dengan peralatan yang berjalan 100% di sisi klien peramban."
+    ],
+
+    p1: "Riwayat lokasi fisik Anda adalah salah satu data pribadi paling sensitif yang Anda hasilkan. Data ini memetakan tempat tinggal, kantor, janji temu medis, dan jaringan sosial. Saat perlu mengirimkan koordinat kepada keluarga atau tim penyelamat, ikuti petunjuk kami tentang <a href='/guides/how-to-share-location/'>cara membagikan lokasi dengan aman</a>.",
+    p2: "Karena perangkat menghitung posisinya sendiri di tingkat lokal, layanan web harus menghormati privasi sisi klien. Kebijakan <a href='/privacy/'>privasi sisi klien</a> MyLocationLab menjamin koordinat Anda diproses murni di peramban tanpa disimpan ke peladen. Untuk memahami isolasi keamanan peramban, baca <a href='/guides/browser-geolocation-api-guide/'>panduan API Geolocation HTML5</a> kami. Untuk menguji layanan peta tanpa membuka alamat rumah, pelajari cara <a href='/guides/how-to-fake-or-mock-location/'>membuat lokasi palsu atau simulasi</a> atau periksa data sensor Anda di dasbor <a href='/my-location/'>lokasi saya</a>.",
+
+    calloutBadge: "🔒 Privasi Sisi Klien",
+    calloutTitle: "Komitmen Privasi Tanpa Penyimpanan MyLocationLab",
+    calloutDesc: "Alat diagnostik kami beroperasi murni di dalam peramban web Anda. Kami tidak pernah merekam, membuat profil, atau menyimpan koordinat Anda ke pangkalan data mana pun.",
     calloutBtn: "Baca Kebijakan Privasi →",
+
     h2Vectors: "1. Empat Vektor Utama Pelacakan Lokasi",
-    step1Title: "SDK Aplikasi Latar Belakang & Broker Data Iklan",
-    step1Desc: "Aplikasi seluler gratis (aplikasi cuaca, game, senter) sering memuat SDK lokasi komersial yang memanen koordinat setiap beberapa menit dan menjual jejak lokasi anonim kepada broker data dan hedge fund.",
+    step1Title: "SDK Aplikasi Latar Belakang & Pialang Data",
+    step1Desc: "Aplikasi utilitas gratis (prakiraan cuaca, gim santai, senter) kerap menyisipkan SDK iklan yang diam-diam memanen koordinat di latar belakang untuk diperjualbelikan.",
     step2Title: "Triangulasi Menara Operator Seluler",
-    step2Desc: "Operator seluler Anda terus-menerus mencatat kekuatan sinyal dan timing advance ponsel Anda di menara sekitar untuk merutekan panggilan masuk, merekam pergerakan Anda hingga presisi ratusan meter.",
-    step3Title: "Metadata EXIF yang Tertanam di Foto",
-    step3Desc: "Saat mengambil foto dengan ponsel, aplikasi kamera menyematkan koordinat GPS persis di dalam header EXIF berkas gambar. Mengunggah foto asli ke forum atau mengirimkannya lewat pesan dapat tanpa sengaja membuka alamat rumah Anda.",
-    step4Title: "Pemindaian Beacon Wi-Fi & Bluetooth",
-    step4Desc: "Toko retail dan bandara memasang beacon Bluetooth Low Energy (BLE) dan sniffer probe Wi-Fi yang melacak alamat MAC ponsel Anda saat Anda berjalan di antara rak.",
-    h2Audit: "2. Cara Mengaudit & Mengunci Izin Lokasi",
-    h3Ios: "Di Apple iPhone & iPad (iOS 17 / 18)",
-    ios1: "Buka Setelan > Privasi & Keamanan > Layanan Lokasi.",
-    ios2: "Gulir ke bawah dan audit setiap aplikasi yang terpasang: ubah yang diatur 'Selalu' menjadi 'Saat Aplikasi Digunakan' atau 'Tidak Pernah'.",
-    ios3: "Matikan 'Lokasi Presisi' untuk aplikasi yang tidak membutuhkan presisi navigasi (misalnya aplikasi belanja atau media sosial).",
-    ios4: "Buka Layanan Lokasi > Layanan Sistem > matikan Lokasi Penting agar iPhone tidak menyimpan log riwayat terenkripsi kunjungan Anda yang sering.",
-    h3Android: "Di Android (Android 14 / 15)",
-    and1: "Buka Setelan > Privasi > Pengelola izin > Lokasi.",
-    and2: "Tinjau aplikasi yang tercantum di 'Diizinkan sepanjang waktu' dan turunkan menjadi 'Izinkan hanya saat aplikasi digunakan'.",
-    and3: "Buka Setelan > Lokasi > Layanan lokasi > Pemindaian Wi-Fi dan matikan jika ingin mencegah pelacakan beacon pasif.",
+    step2Desc: "Operator seluler terus mencatat kekuatan sinyal antena ke ponsel Anda untuk menyalurkan panggilan, menghasilkan riwayat lokasi menara seluler (CSLI).",
+    step3Title: "Metadata EXIF yang Tersemat pada Foto",
+    step3Desc: "Kamera ponsel secara otomatis menanamkan koordinat GPS berketelitian tinggi pada berkas foto, sehingga mengunggah gambar asli dapat membocorkan alamat Anda.",
+    step4Title: "Pemindaian Suar Wi-Fi & Bluetooth",
+    step4Desc: "Pusat perbelanjaan dan bandara memasang suar BLE dan pelacak Wi-Fi yang mencatat sinyal perangkat Anda saat melewati pertokoan.",
+
+    h2Audit: "2. Cara Mengaudit dan Mengunci Izin Lokasi",
+    h3Ios: "Pada Apple iPhone & iPad (iOS 17 / 18)",
+    ios1: "Buka Pengaturan > Privasi & Keamanan > Layanan Lokasi.",
+    ios2: "Audit aplikasi terpasang: ubah izin 'Selalu' menjadi 'Saat Menggunakan App' atau 'Jangan Pernah'.",
+    ios3: "Nonaktifkan 'Lokasi Tepat' untuk aplikasi yang tidak membutuhkan navigasi langsung.",
+    ios4: "Buka Layanan Sistem > matikan 'Lokasi Penting' untuk menghentikan pencatatan destinasi rutin Anda.",
+    h3Android: "Pada Perangkat Android (Android 14 / 15)",
+    and1: "Buka Pengaturan > Privasi > Pengelola izin > Lokasi.",
+    and2: "Tinjau aplikasi dengan status 'Diizinkan sepanjang waktu' dan turunkan menjadi 'Hanya izinkan saat aplikasi digunakan'.",
+    and3: "Masuk ke Pengaturan > Lokasi > Layanan lokasi > matikan 'Pemindaian Wi-Fi' dan 'Pemindaian Bluetooth'.",
+
     h2Exif: "3. Menghapus Geotag GPS dari Foto Sebelum Dibagikan",
-    pExif: "Sebelum mengunggah foto ke web atau media sosial:",
-    exifIos: "Di iOS: Buka foto di aplikasi Foto > Ketuk ikon Bagikan > Ketuk Opsi di bagian atas > matikan Lokasi sebelum mengirim.",
-    exifAndroid: "Di Android: Buka Kamera > Setelan > matikan 'Simpan lokasi'.",
-    callout2Badge: "🛰️ Fix Satelit",
-    callout2Title: "Periksa Paparan Lokasi Publik Anda",
-    callout2Desc: "Lihat apa yang alamat IP publik Anda ungkapkan kepada situs web tentang lokasi geografis, ISP, dan perutean jaringan Anda tanpa memberikan izin GPS peramban.",
-    callout2Btn: "Cek Lokasi IP Publik →",
-    connectedTitle: "🔗 Panduan & Referensi Keamanan Terkait",
-    tool1Title: "Bagikan Lokasi dengan Aman",
-    tool1Desc: "Praktik terbaik berbagi terjadwal",
-    tool2Title: "Akurasi Geolokasi IP",
-    tool2Desc: "Batas pelacakan IP & VPN",
-    tool3Title: "Panduan Mock Location",
-    tool3Desc: "Simulasi sensor pengembang",
+    pExif: "Sebelum mengunggah foto ke forum terbuka atau media sosial:",
+    exifIos: "Pada iOS: Buka foto > Bagikan > Opsi di bagian atas > matikan 'Lokasi' sebelum mengirim.",
+    exifAndroid: "Pada Android: Buka Kamera > Pengaturan > matikan 'Simpan lokasi' atau 'Geotag'.",
+
+    workedExampleTitle: "Contoh Nyata: Mengelola Izin Lokasi di Peramban",
+    workedExampleIntro: "Cara mencabut izin lokasi pada Google Chrome atau Safari:",
+    workedExampleStep1: "1. Klik ikon pengaturan situs (gembok atau tuas) di bilah alamat peramban.",
+    workedExampleStep2: "2. Temukan opsi 'Lokasi' pada daftar izin situs.",
+    workedExampleStep3: "3. Ubah pengaturan dari 'Izinkan' menjadi 'Blokir' atau 'Tanya'.",
+    workedExampleStep4: "4. Muat ulang halaman: situs web tersebut tidak dapat lagi membaca koordinat Anda.",
+
+    commonMistakesTitle: "Kesalahan Umum Mengenai Privasi Lokasi",
+    commonMistakes: [
+      { mistake: "Mengira Mode Pesawat mematikan pelacakan GPS", explanation: "Mode pesawat memutus sambungan seluler dan Wi-Fi, namun modul penerima GPS tetap dapat menangkap sinyal satelit secara luring." },
+      { mistake: "Mengira satelit di langit mengawasi manusia", explanation: "Satelit GPS adalah pemancar radio searah tanpa kamera atau radar penerima; satelit tidak tahu siapa yang menerima sinyalnya." },
+      { mistake: "Memberikan izin 'Selalu' kepada aplikasi utilitas", explanation: "Mengizinkan pengembang memantau pergerakan Anda selama 24 jam sehari meskipun layar ponsel dalam keadaan terkunci." }
+    ],
+
+    faqs: [
+      { question: "Bisakah seseorang melacak saya secara langsung lewat satelit GPS?", answer: "Tidak. Satelit GPS tidak menerima sinyal dari ponsel. Pelacakan langsung membutuhkan aplikasi terhubung internet di ponsel Anda atau catatan jaringan operator seluler." },
+      { question: "Apakah mematikan Wi-Fi mencegah pelacakan di toko?", answer: "Tidak selalu. Tombol kontrol cepat sering kali membiarkan pemindaian latar belakang tetap aktif. Anda harus menonaktifkan 'Pemindaian Wi-Fi' di pengaturan lokasi lanjutan ponsel." },
+      { question: "Bagaimana MyLocationLab melindungi privasi saya?", answer: "Pemrosesan koordinat berlangsung murni di peramban Anda menggunakan JavaScript. Kami tidak pernah menyimpan koordinat Anda ke peladen kami." }
+    ],
+
+    nextStepsTitle: "Langkah Selanjutnya & Sumber Daya Keamanan",
+    nextSteps: [
+      { title: "Bagikan Lokasi dengan Aman", href: "/guides/how-to-share-location/", desc: "Praktik terbaik mengirim koordinat secara terbatas dan terkontrol." },
+      { title: "API Geolocation HTML5", href: "/guides/browser-geolocation-api-guide/", desc: "Pelajari bagaimana peramban mengisolasi akses perangkat keras pemosisian." },
+      { title: "Uji Simulasi Lokasi", href: "/guides/how-to-fake-or-mock-location/", desc: "Uji aplikasi berbasis geofencing menggunakan koordinat simulasi yang aman." }
+    ],
+
+    callout2Badge: "🛰️ Paparan Jaringan",
+    callout2Title: "Periksa Paparan Lokasi IP Publik Anda",
+    callout2Desc: "Lihat data wilayah dan penyedia jaringan yang terungkap oleh IP publik Anda tanpa perlu mengaktifkan izin GPS peramban.",
+    callout2Btn: "Periksa Lokasi IP →",
+    connectedTitle: "🔗 Panduan Terkait & Referensi Keamanan",
+    tool1Title: "Berbagi Aman",
+    tool1Desc: "Praktik terbaik",
+    tool2Title: "Akurasi IP",
+    tool2Desc: "Batasan & VPN",
+    tool3Title: "Lokasi Palsu",
+    tool3Desc: "Uji coba DevTools",
     tool4Title: "Kebijakan Privasi",
-    tool4Desc: "Arsitektur tanpa penyimpanan"
+    tool4Desc: "Jaminan sisi klien"
   }
 };
 
@@ -367,13 +670,34 @@ const c = translations[lang] || translations.en;
   h1={c.h1}
   subtitle={c.subtitle}
   section="guides"
-  sectionLabel={c.sectionLabel}
-  readTime="8 min"
-  publishDate="2026-09-22"
+  sectionLabel={lang === 'es' ? 'Guías Prácticas' : lang === 'fr' ? 'Guides Pratiques' : lang === 'de' ? 'Praxis-Leitfäden' : lang === 'pt' ? 'Guias Práticos' : lang === 'hi' ? 'मार्गदर्शिका' : lang === 'id' ? 'Panduan Praktis' : 'Practical Guides'}
+  readTime="9 min"
+  publishDate="2026-09-15"
   modifiedDate="2026-09-22"
 >
-  <p>{c.p1}</p>
-  <p>{c.p2}</p>
+  {c.inShort && (
+    <div class="card card-flat" style="margin-bottom: var(--space-6); padding: var(--space-5); border-left: 4px solid var(--color-accent-primary); background: var(--color-bg-secondary); border-radius: var(--radius-md);">
+      <p style="margin: 0; font-size: var(--text-base); line-height: 1.75; color: var(--color-text-primary); font-weight: 500;">
+        {c.inShort}
+      </p>
+    </div>
+  )}
+
+  {c.takeaways && (
+    <div class="card card-flat" style="margin-bottom: var(--space-8); padding: var(--space-6); background: var(--color-bg-card); border: 1px solid var(--color-border); border-radius: var(--radius-lg);">
+      <h3 style="margin-top: 0; margin-bottom: var(--space-3); font-size: var(--text-lg); display: flex; align-items: center; gap: var(--space-2);">
+        <span>💡</span> {c.takeawaysTitle || "Key Takeaways"}
+      </h3>
+      <ul style="margin: 0; padding-left: var(--space-5); display: flex; flex-direction: column; gap: var(--space-2); line-height: 1.75; color: var(--color-text-secondary);">
+        {c.takeaways.map((item: string) => (
+          <li>{item}</li>
+        ))}
+      </ul>
+    </div>
+  )}
+
+  <p set:html={localizeHtml(c.p1, lang)}></p>
+  <p set:html={localizeHtml(c.p2, lang)}></p>
 
   <div class="tool-callout">
     <div class="tool-callout-content">
@@ -382,12 +706,11 @@ const c = translations[lang] || translations.en;
       <p class="tool-callout-desc">{c.calloutDesc}</p>
     </div>
     <div class="tool-callout-action">
-      <a href={getLocalizedPath('/privacy/', lang)} class="btn btn-secondary">{c.calloutBtn}</a>
+      <a href={getLocalizedPath('/privacy/', lang)} class="btn btn-primary">{c.calloutBtn}</a>
     </div>
   </div>
 
   <h2>{c.h2Vectors}</h2>
-
   <div class="step-container">
     <div class="step-card">
       <div class="step-number">1</div>
@@ -396,7 +719,6 @@ const c = translations[lang] || translations.en;
         <p class="step-desc">{c.step1Desc}</p>
       </div>
     </div>
-
     <div class="step-card">
       <div class="step-number">2</div>
       <div class="step-body">
@@ -404,7 +726,6 @@ const c = translations[lang] || translations.en;
         <p class="step-desc">{c.step2Desc}</p>
       </div>
     </div>
-
     <div class="step-card">
       <div class="step-number">3</div>
       <div class="step-body">
@@ -412,7 +733,6 @@ const c = translations[lang] || translations.en;
         <p class="step-desc">{c.step3Desc}</p>
       </div>
     </div>
-
     <div class="step-card">
       <div class="step-number">4</div>
       <div class="step-body">
@@ -423,9 +743,8 @@ const c = translations[lang] || translations.en;
   </div>
 
   <h2>{c.h2Audit}</h2>
-
   <h3>{c.h3Ios}</h3>
-  <ol>
+  <ol style="line-height: 1.75; color: var(--color-text-secondary); display: flex; flex-direction: column; gap: var(--space-2);">
     <li>{c.ios1}</li>
     <li>{c.ios2}</li>
     <li>{c.ios3}</li>
@@ -433,7 +752,7 @@ const c = translations[lang] || translations.en;
   </ol>
 
   <h3>{c.h3Android}</h3>
-  <ol>
+  <ol style="line-height: 1.75; color: var(--color-text-secondary); display: flex; flex-direction: column; gap: var(--space-2);">
     <li>{c.and1}</li>
     <li>{c.and2}</li>
     <li>{c.and3}</li>
@@ -441,10 +760,60 @@ const c = translations[lang] || translations.en;
 
   <h2>{c.h2Exif}</h2>
   <p>{c.pExif}</p>
-  <ul>
+  <ul style="line-height: 1.75; color: var(--color-text-secondary); display: flex; flex-direction: column; gap: var(--space-2);">
     <li>{c.exifIos}</li>
     <li>{c.exifAndroid}</li>
   </ul>
+
+  {c.workedExampleTitle && (
+    <div class="card card-flat" style="margin: var(--space-8) 0; padding: var(--space-6); background: var(--color-bg-secondary); border-left: 4px solid var(--color-accent-success); border-radius: var(--radius-md);">
+      <h3 style="margin-top: 0; margin-bottom: var(--space-2); color: var(--color-text-primary);">🔒 {c.workedExampleTitle}</h3>
+      <p style="color: var(--color-text-secondary); margin-bottom: var(--space-4); line-height: 1.75;">{c.workedExampleIntro}</p>
+      <div style="display: flex; flex-direction: column; gap: var(--space-2); font-size: var(--text-sm); line-height: 1.75;">
+        <div style="padding: var(--space-2) var(--space-3); background: var(--color-bg-tertiary); border-radius: var(--radius-sm); font-family: var(--font-mono);">{c.workedExampleStep1}</div>
+        <div style="padding: var(--space-2) var(--space-3); background: var(--color-bg-tertiary); border-radius: var(--radius-sm); font-family: var(--font-mono);">{c.workedExampleStep2}</div>
+        <div style="padding: var(--space-2) var(--space-3); background: var(--color-bg-tertiary); border-radius: var(--radius-sm); font-family: var(--font-mono);">{c.workedExampleStep3}</div>
+        <div style="padding: var(--space-2) var(--space-3); background: var(--color-bg-tertiary); border-radius: var(--radius-sm); font-family: var(--font-mono);">{c.workedExampleStep4}</div>
+      </div>
+    </div>
+  )}
+
+  {c.commonMistakesTitle && (
+    <div style="margin: var(--space-10) 0;">
+      <h2>⚠️ {c.commonMistakesTitle}</h2>
+      <div style="display: grid; gap: var(--space-4); margin-top: var(--space-4);">
+        {c.commonMistakes.map((m: any) => (
+          <div class="card card-flat" style="padding: var(--space-4) var(--space-5); border-left: 3px solid var(--color-accent-warning);">
+            <strong style="display: block; color: var(--color-text-primary); margin-bottom: var(--space-1); font-size: var(--text-base);">{m.mistake}</strong>
+            <p style="margin: 0; color: var(--color-text-secondary); font-size: var(--text-sm); line-height: 1.75;">{m.explanation}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  )}
+
+  {c.faqs && (
+    <div style="margin: var(--space-10) 0;">
+      <h2>❓ Frequently Asked Questions</h2>
+      <FAQAccordion items={c.faqs} />
+    </div>
+  )}
+
+  {c.nextSteps && (
+    <div class="card card-flat" style="margin: var(--space-10) 0; padding: var(--space-6); background: var(--color-bg-secondary); border: 1px solid var(--color-border); border-radius: var(--radius-lg);">
+      <h3 style="margin-top: 0; margin-bottom: var(--space-4); font-size: var(--text-lg); display: flex; align-items: center; gap: var(--space-2);">
+        <span>🚀</span> {c.nextStepsTitle || "Next Steps"}
+      </h3>
+      <div style="display: grid; gap: var(--space-3);">
+        {c.nextSteps.map((step: any) => (
+          <a href={getLocalizedPath(step.href, lang)} class="card card-flat" style="display: flex; flex-direction: column; gap: var(--space-1); padding: var(--space-3) var(--space-4); text-decoration: none; border-left: 3px solid var(--color-accent-primary); background: var(--color-bg-card); transition: transform 0.15s ease;">
+            <strong style="color: var(--color-text-primary); font-size: var(--text-base);">{step.title} →</strong>
+            <span style="color: var(--color-text-secondary); font-size: var(--text-sm); line-height: 1.6;">{step.desc}</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  )}
 
   <div class="tool-callout">
     <div class="tool-callout-content">

@@ -78,6 +78,7 @@ export const ui = {
     'footer.link.geocodingComp': 'Forward vs Reverse Geocoding',
     'footer.link.decimalVsDms': 'Decimal Degrees vs DMS',
     'footer.link.faq': 'Frequently Asked Questions',
+    'footer.link.glossary': 'Geospatial & GPS Glossary',
 
     // Common
     'common.home': 'Home',
@@ -161,6 +162,7 @@ export const ui = {
     'footer.link.geocodingComp': 'Geocodificación Directa vs Inversa',
     'footer.link.decimalVsDms': 'Grados Decimales vs DMS',
     'footer.link.faq': 'Preguntas Frecuentes (FAQ)',
+    'footer.link.glossary': 'Glosario Geoespacial y GPS',
 
     // Common
     'common.home': 'Inicio',
@@ -244,6 +246,7 @@ export const ui = {
     'footer.link.geocodingComp': 'Géocodage Direct vs Inverse',
     'footer.link.decimalVsDms': 'Degrés Décimaux vs DMS',
     'footer.link.faq': 'Foire Aux Questions (FAQ)',
+    'footer.link.glossary': 'Glossaire Géospatial et GPS',
 
     // Common
     'common.home': 'Accueil',
@@ -327,6 +330,7 @@ export const ui = {
     'footer.link.geocodingComp': 'Vorwärts- vs Rückwärts-Geokodierung',
     'footer.link.decimalVsDms': 'Dezimalgrad vs GMS',
     'footer.link.faq': 'Häufig gestellte Fragen (FAQ)',
+    'footer.link.glossary': 'Geodaten- & GPS-Glossar',
 
     // Common
     'common.home': 'Startseite',
@@ -410,6 +414,7 @@ export const ui = {
     'footer.link.geocodingComp': 'Geocodificação Direta vs Reversa',
     'footer.link.decimalVsDms': 'Graus Decimais vs GMS',
     'footer.link.faq': 'Perguntas Frequentes (FAQ)',
+    'footer.link.glossary': 'Glossário Geoespacial e GPS',
 
     // Common
     'common.home': 'Início',
@@ -493,6 +498,7 @@ export const ui = {
     'footer.link.geocodingComp': 'फॉरवर्ड बनाम रिवर्स जियोकोडिंग',
     'footer.link.decimalVsDms': 'दशमलव डिग्री बनाम DMS',
     'footer.link.faq': 'अक्सर पूछे जाने वाले प्रश्न',
+    'footer.link.glossary': 'भू-स्थानिक और GPS शब्दावली (Glossary)',
 
     // Common
     'common.home': 'होम',
@@ -576,6 +582,7 @@ export const ui = {
     'footer.link.geocodingComp': 'Geocoding Langsung vs Terbalik',
     'footer.link.decimalVsDms': 'Derajat Desimal vs DMS',
     'footer.link.faq': 'Pertanyaan yang Sering Diajukan',
+    'footer.link.glossary': 'Glosarium Geospasial & GPS',
 
     // Common
     'common.home': 'Beranda',

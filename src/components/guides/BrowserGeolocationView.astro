@@ -1,9 +1,11 @@
 ---
 /**
  * BrowserGeolocationView — Multilingual Guide: HTML5 Geolocation API
+ * Fully localized across en, es, fr, de, pt, hi, id with contextual links
  */
 import ContentLayout from '../../layouts/ContentLayout.astro';
-import { getLocalizedPath, type SupportedLang, defaultLang } from '../../i18n/config';
+import FAQAccordion from '../FAQAccordion.astro';
+import { getLocalizedPath, localizeHtml, type SupportedLang, defaultLang } from '../../i18n/config';
 
 interface Props {
   lang?: SupportedLang;
@@ -13,39 +15,84 @@ const { lang = defaultLang } = Astro.props;
 
 const translations: Record<string, any> = {
   en: {
-    title: "HTML5 Geolocation API Guide | MyLocationLab",
-    description: "Master the W3C Geolocation API in JavaScript. Learn how getCurrentPosition, watchPosition, enableHighAccuracy, timeout, and permissions policies work.",
+    title: "HTML5 Geolocation API Guide: JavaScript Positioning | MyLocationLab",
+    description: "In short: The HTML5 Geolocation API lets web browsers query GPS, Wi-Fi, and IP positioning via navigator.geolocation with strict user permission.",
     h1: "HTML5 Geolocation API: Complete Web Developer & User Guide",
     subtitle: "A developer deep dive into navigator.geolocation, high accuracy GNSS queries, error handling, permission delegation, and Permissions-Policy headers.",
-    sectionLabel: "Educational Guides",
-    p1: "The W3C Geolocation API standardizes how web browsers access physical location hardware across mobile phones, tablets, and desktop workstations.",
-    p2: "Available via the JavaScript global object navigator.geolocation, this interface allows web applications—including our GPS Coordinates Finder and Where Am I tool—to securely request geographic coordinates with user consent. In this guide, we provide a complete technical overview for web developers and curious users alike.",
+    
+    inShort: "In short: The W3C HTML5 Geolocation API provides web applications with programmatic access to device positioning hardware via navigator.geolocation. By executing getCurrentPosition or watchPosition with user consent, web apps can retrieve high-precision latitude, longitude, altitude, speed, and accuracy circles directly in the browser.",
+
+    takeawaysTitle: "Key Takeaways",
+    takeaways: [
+      "Geolocation requests require explicit one-time or persistent user permission via browser prompts.",
+      "HTTPS is strictly mandatory; browsers block navigator.geolocation on unencrypted HTTP connections.",
+      "Setting enableHighAccuracy: true instructs mobile devices to engage GNSS satellite chips rather than coarse Wi-Fi.",
+      "Your coordinates are computed client-side in the browser and are never transmitted to third parties without your explicit command.",
+      "You can live-test sensor telemetry and error codes with our diagnostic accuracy monitor."
+    ],
+
+    p1: "The W3C Geolocation API standardizes how modern browsers retrieve physical location data across desktop computers, smartphones, and connected tablets. Learn how browser sensor requests contrast with satellite telemetry in our guide on <a href='/guides/how-gps-location-works/'>how GPS location works</a>.",
+    p2: "When building location-aware interfaces or verifying browser behavior, developers must understand permission models and privacy boundaries. Review our <a href='/privacy/'>client-side privacy policy</a> to see how coordinates can be handled without server storage, or read our in-depth analysis of <a href='/guides/gps-privacy-and-security/'>GPS privacy and security</a>. You can inspect live hardware precision metrics using our <a href='/tools/gps-accuracy/'>GPS accuracy checker</a>, or explore the difference between network lookups and sensor fixes in our <a href='/comparisons/gps-vs-ip-location/'>GPS vs IP location comparison</a>.",
+
     calloutBadge: "💻 Real-Time API Test",
     calloutTitle: "Inspect Your Browser's Geolocation Payload",
     calloutDesc: "Trigger a live navigator.geolocation call to view full GeolocationPosition coordinates, speed, heading, altitude, and timestamp objects.",
     calloutBtn: "Test Geolocation API →",
+
     h2Architecture: "1. Core Architecture & API Methods",
-    pArchitecture: "The W3C Geolocation specification provides three primary methods:",
+    pArchitecture: "The W3C Geolocation specification exposes three core methods under the global navigator.geolocation object:",
     step1Title: "navigator.geolocation.getCurrentPosition(success, error, options)",
-    step1Desc: "Requests a one-time snapshot of the user's current geographic position. Returns a GeolocationPosition object on success or a GeolocationPositionError on failure.",
+    step1Desc: "Queries a single snapshot of the device's current coordinates. Returns a GeolocationPosition object upon success or a GeolocationPositionError if rejected or timed out.",
     step2Title: "navigator.geolocation.watchPosition(success, error, options)",
-    step2Desc: "Registers a handler function that is automatically invoked whenever the device changes location. Returns an integer watchId used for tracking real-time movement and speed.",
+    step2Desc: "Registers an asynchronous callback handler that fires whenever the device's physical coordinates change. Returns a unique numeric watchId.",
     step3Title: "navigator.geolocation.clearWatch(watchId)",
-    step3Desc: "Cancels an active ongoing position watch registered with watchPosition(), conserving battery and terminating sensor polling.",
+    step3Desc: "Terminates an ongoing watch operation, releasing the GPS receiver chip and reducing device battery consumption.",
+
     h2Implementation: "2. Production-Ready JavaScript Implementation",
-    pImplementation: "Here is a resilient, production-ready snippet with timeout handling, fallback logic, and strict accuracy settings:",
+    pImplementation: "Here is a resilient JavaScript implementation incorporating timeout limits, cache prevention, and comprehensive error handling:",
+
     h2Options: "3. Key Configuration Options: PositionOptions",
     thOption: "Option Property",
     thType: "Type",
     thDefault: "Default",
     thImpact: "Behavior & Technical Impact",
-    highAccDesc: "When true, instructs the browser to power on internal GPS/GNSS receiver chips, providing accuracy under 3–5 meters. When false, uses low-power Wi-Fi/cellular triangulation or IP lookup.",
-    timeoutDesc: "Maximum time (in milliseconds) the browser is allowed to take before returning a TIMEOUT error code. Recommended: 8,000 to 12,000 ms.",
-    maxAgeDesc: "The maximum age of a cached position that is acceptable. Setting to 0 forces the device to acquire a fresh satellite/Wi-Fi fix.",
+    highAccDesc: "When true, instructs the mobile operating system to power on battery-intensive GNSS satellite antennas, achieving 3-5 meter precision. When false, accepts Wi-Fi or cellular triangulation.",
+    timeoutDesc: "Maximum duration (in milliseconds) the device is given to establish a position fix before raising a TIMEOUT error code (3). Recommended: 8,000 to 12,000 ms.",
+    maxAgeDesc: "Acceptable age (in milliseconds) of a previously cached coordinate fix. Setting to 0 forces an immediate fresh sensor reading.",
+
     h2Security: "4. Security & Permissions Policy Requirements",
-    sec1: "Secure Contexts (HTTPS Mandatory): Since Chrome 50 and iOS 10, the Geolocation API is strictly disabled on insecure HTTP connections. Web applications must be served over valid HTTPS.",
-    sec2: "User Gesture Requirement: Triggering geolocation calls upon button click (e.g. 'Get My Location') improves user consent rates compared to triggering an unsolicited prompt immediately on page load.",
-    sec3: "Iframe Permissions-Policy: If embedding geolocation tools inside an <iframe>, you must declare allow='geolocation' attribute in the iframe tag.",
+    sec1: "Secure Contexts (HTTPS Only): Since Chrome 50 and iOS 10, all modern browsers immediately throw a security exception if geolocation is called over an unencrypted HTTP origin.",
+    sec2: "User-Initiated Gestures: Best practice requires triggering permission prompts from user clicks (e.g. 'Locate Me') rather than unsolicited execution on page load.",
+    sec3: "Iframe Permissions Policy: Embedded <iframe> elements must explicitly declare allow='geolocation' to enable cross-origin access.",
+
+    workedExampleTitle: "Worked Code Example: Production Geolocation Function",
+    workedExampleIntro: "Use this standardized pattern to query coordinates with graceful fallbacks:",
+    workedExampleStep1: "navigator.geolocation.getCurrentPosition(",
+    workedExampleStep2: "  (pos) => console.log('Latitude:', pos.coords.latitude, 'Accuracy:', pos.coords.accuracy),",
+    workedExampleStep3: "  (err) => console.warn('Error code:', err.code, err.message),",
+    workedExampleStep4: "  { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }",
+    workedExampleStep5: ");",
+
+    commonMistakesTitle: "Common Geolocation API Mistakes",
+    commonMistakes: [
+      { mistake: "Calling getCurrentPosition over plain HTTP", explanation: "All major browsers immediately reject geolocation requests from non-HTTPS sites with a PERMISSION_DENIED error." },
+      { mistake: "Setting enableHighAccuracy without a reasonable timeout", explanation: "On desktop computers or indoor mobile devices without satellite sky view, high accuracy requests may stall indefinitely if timeout is not specified." },
+      { mistake: "Omitting the error callback handler", explanation: "If the user denies permission or location services are disabled, an unhandled exception will halt surrounding script execution." }
+    ],
+
+    faqs: [
+      { question: "Why does the browser ask for my location every time I visit?", answer: "Browsers store permissions per domain (origin). If you browse in incognito mode or clear site settings, the browser must prompt for permission again on subsequent visits." },
+      { question: "What is the difference between enableHighAccuracy true and false?", answer: "Setting enableHighAccuracy to true forces the device to power on GPS satellite chips, achieving 3 to 5 meter accuracy at the expense of higher battery usage. Setting it to false relies on low-power Wi-Fi and cell tower databases." },
+      { question: "Can a website access my location in the background without asking?", answer: "No. The W3C Geolocation API is strictly protected by browser permission boundaries. A site cannot query your position without explicit user consent." }
+    ],
+
+    nextStepsTitle: "Next Steps & Developer Tools",
+    nextSteps: [
+      { title: "Test Live GPS Accuracy", href: "/tools/gps-accuracy/", desc: "Verify real-time accuracy radius, heading, and sensor telemetry in your browser." },
+      { title: "GPS Privacy & Security", href: "/guides/gps-privacy-and-security/", desc: "Learn how modern operating systems manage and protect location permissions." },
+      { title: "Understand How GPS Works", href: "/guides/how-gps-location-works/", desc: "Explore satellite constellations, atomic clocks, and trilateration physics." }
+    ],
+
     callout2Badge: "🧭 Coordinate Conversion",
     callout2Title: "Convert Geolocation API Decimal Degrees",
     callout2Desc: "Easily convert decimal outputs from navigator.geolocation into Degrees, Minutes, Seconds (DMS) or Universal Transverse Mercator (UTM).",
@@ -58,295 +105,565 @@ const translations: Record<string, any> = {
     tool3Title: "How GPS Works",
     tool3Desc: "Underlying satellite physics",
     tool4Title: "Fix Wrong Location",
-    tool4Desc: "Permission troubleshooting"
+    tool4Desc: "Troubleshooting steps"
   },
   es: {
-    title: "Guía de la API Geolocation de HTML5 | MyLocationLab",
-    description: "Domine la API W3C Geolocation en JavaScript: getCurrentPosition, watchPosition, enableHighAccuracy, control de tiempo de espera y permisos.",
-    h1: "API Geolocation de HTML5: Guía Completa de Desarrollo y Uso",
-    subtitle: "Análisis técnico de navigator.geolocation, consultas satelitales de alta precisión, manejo de errores y cabeceras de políticas de permisos.",
-    sectionLabel: "Guías Educativas",
-    p1: "La API Geolocation del W3C estandariza el acceso de los navegadores web al hardware de posicionamiento en teléfonos móviles, tabletas y ordenadores.",
-    p2: "Disponible a través del objeto global de JavaScript navigator.geolocation, esta interfaz permite a aplicaciones web solicitar coordenadas geográficas de forma segura y con el consentimiento explícito del usuario. En esta guía detallamos su implementación técnica y mejores prácticas.",
+    title: "Guía de la API de Geolocalización HTML5 | MyLocationLab",
+    description: "En resumen: La API de geolocalización permite a los navegadores obtener coordenadas mediante GPS, Wi-Fi e IP con autorización del usuario.",
+    h1: "API de Geolocalización HTML5: Guía Completa para Desarrolladores",
+    subtitle: "Análisis técnico de navigator.geolocation, consultas satelitales de alta precisión, control de errores y directivas Permissions-Policy.",
+    
+    inShort: "En resumen: La API de geolocalización HTML5 del W3C permite a las aplicaciones web consultar el hardware de posicionamiento del dispositivo mediante navigator.geolocation. Con el consentimiento explícito del usuario, las herramientas web obtienen latitud, longitud, altitud y precisión directamente en el navegador.",
+
+    takeawaysTitle: "Puntos Clave",
+    takeaways: [
+      "El acceso a la geolocalización requiere siempre la aprobación explícita del usuario mediante avisos del navegador.",
+      "El protocolo HTTPS es obligatorio; las páginas bajo HTTP no cifrado tienen bloqueado el acceso a la API.",
+      "Activar enableHighAccuracy: true fuerza el uso de receptores satelitales GNSS frente al cálculo por Wi-Fi.",
+      "Las coordenadas se calculan localmente en el dispositivo y nunca se envían a servidores sin su autorización.",
+      "Puede probar en vivo el comportamiento de los sensores con nuestro comprobador de precisión GPS."
+    ],
+
+    p1: "La API de geolocalización estandariza el acceso a los sensores de posición en ordenadores y teléfonos móviles. Para entender cómo se relacionan las peticiones web con las señales orbitales, consulte nuestra guía sobre <a href='/guides/how-gps-location-works/'>cómo funciona el GPS</a>.",
+    p2: "Al desarrollar utilidades de mapas o comprobar el navegador, es esencial conocer los límites de privacidad. Revise nuestra <a href='/privacy/'>política de privacidad en el cliente</a> para comprobar cómo se procesan las coordenadas sin almacenamiento externo, o lea nuestro estudio sobre <a href='/guides/gps-privacy-and-security/'>privacidad y seguridad GPS</a>. Puede evaluar el margen de error de su dispositivo en el <a href='/tools/gps-accuracy/'>comprobador de precisión GPS</a> o comparar datos de red frente a satélites en nuestra comparativa de <a href='/comparisons/gps-vs-ip-location/'>GPS frente a ubicación IP</a>.",
+
     calloutBadge: "💻 Prueba de API en Vivo",
-    calloutTitle: "Inspeccione la Respuesta Geolocation de su Navegador",
-    calloutDesc: "Ejecute una llamada a navigator.geolocation para visualizar los objetos de coordenadas, velocidad, rumbo, altitud y marca de tiempo en directo.",
+    calloutTitle: "Inspeccione la Respuesta de su Navegador",
+    calloutDesc: "Ejecute una consulta navigator.geolocation en directo para ver el objeto GeolocationPosition completo con latitud, longitud y precisión.",
     calloutBtn: "Probar API de Geolocalización →",
-    h2Architecture: "1. Arquitectura Central y Métodos de la API",
-    pArchitecture: "La especificación Geolocation del W3C define tres métodos principales:",
+
+    h2Architecture: "1. Métodos y Arquitectura Principal de la API",
+    pArchitecture: "La especificación del W3C proporciona tres métodos esenciales en navigator.geolocation:",
     step1Title: "navigator.geolocation.getCurrentPosition(success, error, options)",
-    step1Desc: "Solicita una captura puntual de la posición física del usuario. Retorna un objeto GeolocationPosition en caso de éxito o GeolocationPositionError si se produce un fallo.",
+    step1Desc: "Solicita una instantánea puntual de las coordenadas actuales del usuario, devolviendo un objeto GeolocationPosition o un error.",
     step2Title: "navigator.geolocation.watchPosition(success, error, options)",
-    step2Desc: "Registra una función de escucha que se ejecuta automáticamente cuando el dispositivo cambia de posición. Devuelve un identificador watchId para rastreo continuo.",
+    step2Desc: "Registra una función que se ejecuta de forma continuada cada vez que el terminal detecta un cambio de ubicación.",
     step3Title: "navigator.geolocation.clearWatch(watchId)",
-    step3Desc: "Cancela la escucha de posición activa registrada mediante watchPosition(), ahorrando batería y desactivando los sensores del dispositivo.",
-    h2Implementation: "2. Implementación de JavaScript Lista para Producción",
-    pImplementation: "A continuación presentamos un fragmento de código robusto para producción con control de tiempo de espera, gestión de errores y máxima precisión:",
-    h2Options: "3. Opciones de Configuración Clave: PositionOptions",
+    step3Desc: "Cancela el seguimiento activo iniciado por watchPosition, apagando el sensor satelital para ahorrar batería.",
+
+    h2Implementation: "2. Implementación de JavaScript para Producción",
+    pImplementation: "A continuación se muestra un código robusto con control de tiempo de espera, anulación de caché y captura de errores:",
+
+    h2Options: "3. Opciones de Configuración: PositionOptions",
     thOption: "Propiedad",
     thType: "Tipo",
     thDefault: "Por Defecto",
-    thImpact: "Comportamiento e Impacto Técnico",
-    highAccDesc: "Si es true, indica al navegador que active el receptor GNSS/GPS interno (precisión < 3-5 metros). Si es false, recurre a Wi-Fi o triangulación celular de bajo consumo.",
-    timeoutDesc: "Tiempo máximo en milisegundos que el navegador esperará antes de emitir un error TIMEOUT. Valor recomendado: de 8.000 a 12.000 ms.",
-    maxAgeDesc: "Edad máxima admisible de una posición en caché. Asignar 0 obliga a obtener una lectura fresca de satélites o Wi-Fi.",
+    thImpact: "Comportamiento y Repercusión",
+    highAccDesc: "En true, activa los receptores GPS/GNSS del móvil para lograr 3-5 metros de precisión. En false, utiliza triangulación Wi-Fi o datos celulares de bajo consumo.",
+    timeoutDesc: "Tiempo máximo en milisegundos para obtener fijación antes de lanzar un error TIMEOUT (3). Recomendado: 8.000 a 12.000 ms.",
+    maxAgeDesc: "Antigüedad máxima admisible de coordenadas en caché. Establecer en 0 obliga a una lectura satelital inmediata.",
+
     h2Security: "4. Requisitos de Seguridad y Políticas de Permisos",
-    sec1: "Contexto Seguro Obligatorio (HTTPS): Desde Chrome 50 e iOS 10, la API de geolocalización está deshabilitada en conexiones no seguras HTTP. Requiere TLS/HTTPS.",
-    sec2: "Interacción del Usuario Requerida: Disparar la solicitud tras pulsar un botón ('Obtener Ubicación') incrementa notablemente la tasa de aceptación frente a avisos automáticos.",
-    sec3: "Directivas de Iframe: Si inserta herramientas de geolocalización dentro de un <iframe>, debe declarar el atributo allow='geolocation'.",
+    sec1: "Contextos Seguros (HTTPS Obligatorio): Todos los navegadores modernos bloquean de inmediato la API si la página se sirve sobre HTTP sin cifrar.",
+    sec2: "Acción Iniciada por el Usuario: Es una buena práctica solicitar permisos tras una pulsación explícita (como 'Ver Mi Ubicación') en lugar de abrir avisos automáticos.",
+    sec3: "Permisos en Iframes: Los marcos <iframe> deben incorporar el atributo allow='geolocation' para permitir llamadas entre dominios.",
+
+    workedExampleTitle: "Ejemplo de Código: Consulta de Geolocalización Completa",
+    workedExampleIntro: "Patrón estándar con opciones de alta precisión y control de errores:",
+    workedExampleStep1: "navigator.geolocation.getCurrentPosition(",
+    workedExampleStep2: "  (pos) => console.log('Latitud:', pos.coords.latitude, 'Precisión:', pos.coords.accuracy),",
+    workedExampleStep3: "  (err) => console.warn('Código de error:', err.code, err.message),",
+    workedExampleStep4: "  { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }",
+    workedExampleStep5: ");",
+
+    commonMistakesTitle: "Errores Comunes con la API de Geolocalización",
+    commonMistakes: [
+      { mistake: "Ejecutar la API en conexiones HTTP no seguras", explanation: "Los navegadores deniegan la solicitud inmediatamente por razones de seguridad criptográfica." },
+      { mistake: "Activar enableHighAccuracy sin definir un timeout", explanation: "En interiores o equipos sin recepción satelital, la llamada puede quedar bloqueada indefinidamente." },
+      { mistake: "No incluir la función de tratamiento de errores", explanation: "Si el usuario deniega el permiso, una excepción no controlada detendrá el resto del código JavaScript." }
+    ],
+
+    faqs: [
+      { question: "¿Por qué el navegador solicita permiso de ubicación en cada visita?", answer: "Los permisos se guardan por dominio. En ventanas de navegación privada o tras vaciar la caché, el navegador debe volver a solicitar la autorización del usuario." },
+      { question: "¿Qué diferencia existe entre enableHighAccuracy true y false?", answer: "Al activar enableHighAccuracy en true se enciende el chip GPS del teléfono (precisión de 3 a 5 metros con mayor consumo de batería). En false se emplean redes Wi-Fi y antenas celulares." },
+      { question: "¿Puede una web acceder a mi posición en segundo plano sin permiso?", answer: "No. Las directivas de seguridad del W3C impiden cualquier lectura de ubicación sin el consentimiento explícito del usuario." }
+    ],
+
+    nextStepsTitle: "Próximos Pasos y Herramientas",
+    nextSteps: [
+      { title: "Probar Precisión GPS", href: "/tools/gps-accuracy/", desc: "Compruebe el radio de precisión y telemetría de su navegador en tiempo real." },
+      { title: "Seguridad y Privacidad GPS", href: "/guides/gps-privacy-and-security/", desc: "Aprenda cómo gestionan los sistemas operativos sus datos de ubicación." },
+      { title: "Cómo Funciona el GPS", href: "/guides/how-gps-location-works/", desc: "Descubra los principios de trilateración y constelaciones de satélites." }
+    ],
+
     callout2Badge: "🧭 Conversión de Coordenadas",
-    callout2Title: "Convierta los Grados Decimales de la API",
-    callout2Desc: "Transforme los valores decimales de navigator.geolocation a Grados Minutos Segundos (DMS) o Universal Transverse Mercator (UTM).",
+    callout2Title: "Convierta Grados Decimales de la API",
+    callout2Desc: "Transforme las salidas numéricas de navigator.geolocation a Grados, Minutos, Segundos (DMS) o cuadrículas UTM.",
     callout2Btn: "Abrir Conversor →",
-    connectedTitle: "🔗 Guías y Herramientas Relacionadas",
+    connectedTitle: "🔗 Guías y Herramientas Conectadas",
     tool1Title: "Monitor de Precisión GPS",
-    tool1Desc: "Pruebas de radio en vivo",
-    tool2Title: "Guía de Ubicación Simulada",
-    tool2Desc: "Sensores en DevTools",
+    tool1Desc: "Comprobador en tiempo real",
+    tool2Title: "Guía de Ubicaciones Simuladas",
+    tool2Desc: "Pruebas en DevTools",
     tool3Title: "Cómo Funciona el GPS",
-    tool3Desc: "Física y satélites WGS84",
-    tool4Title: "Solucionar Ubicación Errónea",
-    tool4Desc: "Resolución de permisos"
+    tool3Desc: "Física de satélites",
+    tool4Title: "Corregir Ubicación",
+    tool4Desc: "Pasos de resolución"
   },
   fr: {
-    title: "Guide de l'API HTML5 Geolocation | MyLocationLab",
-    description: "Maîtrisez l'API W3C Geolocation en JavaScript : getCurrentPosition, watchPosition, enableHighAccuracy, gestion du timeout et politiques de sécurité.",
-    h1: "API HTML5 Geolocation : Le Guide Complet Développeur & Utilisateur",
-    subtitle: "Étude technique de navigator.geolocation, des requêtes GNSS haute précision, de la gestion des erreurs et des en-têtes Permissions-Policy.",
-    sectionLabel: "Guides Pédagogiques",
-    p1: "L'API Geolocation du W3C standardise la façon dont les navigateurs web communiquent avec le matériel de géolocalisation des smartphones, tablettes et ordinateurs.",
-    p2: "Accessible via l'objet global navigator.geolocation, cette interface permet aux applications web d'interroger la position de l'utilisateur avec son accord formel. Ce guide offre une vue d'ensemble technique complète et des exemples prêts pour la production.",
+    title: "Guide de l'API Geolocation HTML5 : JavaScript | MyLocationLab",
+    description: "En bref : L'API HTML5 Geolocation permet aux navigateurs de géolocaliser un appareil via GPS, Wi-Fi et IP avec l'accord de l'utilisateur.",
+    h1: "API Geolocation HTML5 : Guide Complet Développeur et Utilisateur",
+    subtitle: "Exploration technique de navigator.geolocation, requêtes GNSS haute précision, gestion d'erreurs et en-têtes Permissions-Policy.",
+    
+    inShort: "En bref : L'API W3C Geolocation offre aux applications web un accès direct aux fonctionnalités de localisation de l'appareil via navigator.geolocation. Après consentement explicite de l'utilisateur, elle retourne la latitude, la longitude, l'altitude et le rayon de précision directement dans le navigateur.",
+
+    takeawaysTitle: "Points Clés",
+    takeaways: [
+      "L'accès à la localisation nécessite systématiquement l'accord de l'utilisateur via une notification du navigateur.",
+      "Le protocole HTTPS est strictement obligatoire pour utiliser navigator.geolocation.",
+      "L'option enableHighAccuracy: true active les puces satellites GNSS pour une précision de 3 à 5 mètres.",
+      "Les coordonnées sont traitées localement dans le navigateur sans transmission automatique à des serveurs distants.",
+      "Testez les signaux de vos capteurs avec notre vérificateur de précision GPS."
+    ],
+
+    p1: "L'API Geolocation standardise l'accès aux capteurs physiques sur ordinateurs et smartphones. Découvrez comment ces requêtes logicielles exploitent les horloges spatiales dans notre guide <a href='/guides/how-gps-location-works/'>comment fonctionne le GPS</a>.",
+    p2: "Lors de l'implémentation de cartes en ligne, la sécurité des données est primordiale. Consultez notre <a href='/privacy/'>politique de confidentialité côté client</a> pour voir comment les coordonnées sont traitées sans stockage, ou lisez notre dossier sur la <a href='/guides/gps-privacy-and-security/'>sécurité et confidentialité GPS</a>. Analysez les performances de vos capteurs avec le <a href='/tools/gps-accuracy/'>testeur de précision GPS</a> ou comparez les méthodes de détection dans notre comparatif <a href='/comparisons/gps-vs-ip-location/'>GPS vs localisation IP</a>.",
+
     calloutBadge: "💻 Test API en Direct",
-    calloutTitle: "Inspectez la Réponse Géolocalisée de Votre Navigateur",
-    calloutDesc: "Déclenchez un appel navigator.geolocation pour examiner les objets de coordonnées, d'altitude, de cap, de vitesse et d'horodatage en temps réel.",
+    calloutTitle: "Inspectez la Réponse de Votre Navigateur",
+    calloutDesc: "Déclenchez un appel navigator.geolocation pour examiner l'objet GeolocationPosition avec ses coordonnées et son indice de précision.",
     calloutBtn: "Tester l'API Geolocation →",
-    h2Architecture: "1. Architecture Fondamentale et Méthodes Clés",
-    pArchitecture: "La spécification W3C repose sur trois méthodes principales :",
+
+    h2Architecture: "1. Méthodes et Architecture de l'API",
+    pArchitecture: "La spécification W3C repose sur trois méthodes principales via l'objet navigator.geolocation :",
     step1Title: "navigator.geolocation.getCurrentPosition(success, error, options)",
-    step1Desc: "Récupère une mesure ponctuelle de la position de l'appareil. Retourne un objet GeolocationPosition en cas de succès ou GeolocationPositionError en cas de refus.",
+    step1Desc: "Effectue une capture instantanée de la position géographique de l'utilisateur avec gestion d'erreurs.",
     step2Title: "navigator.geolocation.watchPosition(success, error, options)",
-    step2Desc: "Enregistre une fonction de rappel déclenchée à chaque déplacement de l'appareil. Renvoie un identifiant watchId permettant le suivi continu en direct.",
+    step2Desc: "Enregistre une fonction de rappel déclenchée automatiquement dès que l'appareil change d'emplacement.",
     step3Title: "navigator.geolocation.clearWatch(watchId)",
-    step3Desc: "Arrête la surveillance active initiée par watchPosition(), préservant l'autonomie de la batterie et libérant les capteurs physiques.",
-    h2Implementation: "2. Code JavaScript Recommandé pour la Production",
-    pImplementation: "Voici un exemple robuste intégrant gestion des délais, codes d'erreur et haute précision :",
-    h2Options: "3. Paramètres de Configuration : PositionOptions",
-    thOption: "Option",
+    step3Desc: "Arrête l'écoute active initialisée par watchPosition et met en veille le récepteur GPS pour préserver l'autonomie.",
+
+    h2Implementation: "2. Exemple d'Implémentation JavaScript pour la Production",
+    pImplementation: "Voici un extrait JavaScript complet avec gestion des délais d'attente et traitement des erreurs :",
+
+    h2Options: "3. Options de Configuration : PositionOptions",
+    thOption: "Propriété",
     thType: "Type",
-    thDefault: "Valeur par Défaut",
-    thImpact: "Comportement et Impact Technique",
-    highAccDesc: "Si true, ordonne l'activation de la puce GNSS/GPS (< 3-5 m). Si false, emploie la triangulation Wi-Fi ou réseau cellulaire économique en énergie.",
-    timeoutDesc: "Délai maximal en millisecondes alloué au navigateur avant de renvoyer l'erreur TIMEOUT. Conseillé : 8 000 à 12 000 ms.",
-    maxAgeDesc: "Âge maximal toléré pour une position en cache. La valeur 0 force une acquisition satellite ou Wi-Fi immédiate.",
-    h2Security: "4. Exigences de Sécurité et Politiques de Confidentialité",
-    sec1: "Contexte Sécurisé HTTPS Exigé : Depuis Chrome 50 et iOS 10, la géolocalisation est désactivée sur HTTP non sécurisé.",
-    sec2: "Geste Utilisateur Préconisé : Lier la demande de géolocalisation à un clic bouton améliore considérablement le taux de consentement utilisateur.",
-    sec3: "Autorisation dans les Iframes : Lors d'une intégration via <iframe>, la balise doit comporter l'attribut allow='geolocation'.",
+    thDefault: "Par Défaut",
+    thImpact: "Comportement et Impact",
+    highAccDesc: "Si true, active les puces satellites GNSS (précision 3-5 m). Si false, utilise la triangulation Wi-Fi ou cellulaire basse consommation.",
+    timeoutDesc: "Délai maximal en millisecondes avant de générer une erreur TIMEOUT (3). Recommandé : 8 000 à 12 000 ms.",
+    maxAgeDesc: "Âge maximal acceptable d'une coordonnée en cache. La valeur 0 force une nouvelle acquisition par les capteurs.",
+
+    h2Security: "4. Sécurité et Politiques d'Autorisation",
+    sec1: "Contextes Sécurisés (HTTPS Obligatoire) : Les navigateurs récents bloquent systématiquement l'API sur toute liaison HTTP non chiffrée.",
+    sec2: "Action Explicite de l'Utilisateur : Il est recommandé de déclencher la demande de permission suite à un clic volontaire.",
+    sec3: "Autorisation dans les Iframes : Les balises <iframe> doivent comporter l'attribut allow='geolocation' pour les requêtes entre domaines.",
+
+    workedExampleTitle: "Exemple de Code : Appel Complet de Géolocalisation",
+    workedExampleIntro: "Modèle standard avec gestion des erreurs et haute précision :",
+    workedExampleStep1: "navigator.geolocation.getCurrentPosition(",
+    workedExampleStep2: "  (pos) => console.log('Latitude :', pos.coords.latitude, 'Précision :', pos.coords.accuracy),",
+    workedExampleStep3: "  (err) => console.warn('Erreur :', err.code, err.message),",
+    workedExampleStep4: "  { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }",
+    workedExampleStep5: ");",
+
+    commonMistakesTitle: "Erreurs Courantes avec l'API Geolocation",
+    commonMistakes: [
+      { mistake: "Exécuter l'API sur une connexion HTTP standard", explanation: "Le navigateur refuse immédiatement la requête pour protéger la confidentialité des données." },
+      { mistake: "Activer enableHighAccuracy sans fixer de timeout", explanation: "En intérieur ou sans vue dégagée du ciel, l'appel peut rester bloqué indéfiniment." },
+      { mistake: "Oublier la fonction de rappel des erreurs", explanation: "En cas de refus de l'utilisateur, l'absence de gestionnaire interrompt l'exécution des scripts de la page." }
+    ],
+
+    faqs: [
+      { question: "Pourquoi mon navigateur me redemande-t-il l'autorisation ?", answer: "Les permissions sont conservées par domaine. En navigation privée ou après suppression des données de navigation, le navigateur redemande l'accord." },
+      { question: "Quelle est la différence entre enableHighAccuracy true et false ?", answer: "La valeur true enclenche le récepteur GPS (précision de 3 à 5 mètres avec consommation accrue de batterie). La valeur false s'appuie sur le Wi-Fi et les antennes relais." },
+      { question: "Un site peut-il accéder à ma position sans m'avertir ?", answer: "Non. Les règles de sécurité des navigateurs interdisent tout accès aux coordonnées sans validation préalable de l'utilisateur." }
+    ],
+
+    nextStepsTitle: "Prochaines Étapes et Outils",
+    nextSteps: [
+      { title: "Tester la Précision GPS", href: "/tools/gps-accuracy/", desc: "Évaluez le rayon de précision de vos capteurs en direct dans votre navigateur." },
+      { title: "Sécurité et Confidentialité GPS", href: "/guides/gps-privacy-and-security/", desc: "Découvrez comment vos données de géolocalisation sont protégées." },
+      { title: "Comment Fonctionne le GPS", href: "/guides/how-gps-location-works/", desc: "Comprenez la physique des signaux satellites et de la trilatération." }
+    ],
+
     callout2Badge: "🧭 Conversion de Coordonnées",
-    callout2Title: "Convertissez les Degrés Décimaux de l'API",
-    callout2Desc: "Convertissez sans effort les sorties décimales de l'API en Degrés Minutes Secondes (DMS) ou projection métrique UTM.",
+    callout2Title: "Convertissez Vos Degrés Décimaux",
+    callout2Desc: "Convertissez facilement les sorties de navigator.geolocation en Degrés, Minutes, Secondes (DMS) ou en grille UTM.",
     callout2Btn: "Ouvrir le Convertisseur →",
-    connectedTitle: "🔗 Guides et Outils de Test Associés",
-    tool1Title: "Moniteur de Précision GPS",
-    tool1Desc: "Testeur de rayon d'erreur",
-    tool2Title: "Guide Fausse Localisation",
-    tool2Desc: "Simulation dans les DevTools",
-    tool3Title: "Comment Fonctionne le GPS",
-    tool3Desc: "Physique des satellites WGS84",
-    tool4Title: "Corriger Position Erronée",
-    tool4Desc: "Dépannage des permissions"
+    connectedTitle: "🔗 Guides et Outils Associés",
+    tool1Title: "Précision GPS",
+    tool1Desc: "Testeur en temps réel",
+    tool2Title: "Localisation Simulée",
+    tool2Desc: "Tests sous DevTools",
+    tool3Title: "Comment Marche le GPS",
+    tool3Desc: "Signaux et satellites",
+    tool4Title: "Position Erronée",
+    tool4Desc: "Dépannage pas à pas"
   },
   de: {
-    title: "HTML5 Geolocation API Handbuch | MyLocationLab",
-    description: "Leitfaden zur W3C Geolocation API in JavaScript: getCurrentPosition, watchPosition, enableHighAccuracy, Timeouts und Berechtigungsrichtlinien.",
-    h1: "HTML5 Geolocation API: Vollständiger Entwickler- & Anwenderleitfaden",
-    subtitle: "Tiefgehende Analyse von navigator.geolocation, hochpräziser GNSS-Abfragen, Fehlerbehandlung und Permissions-Policy-Regeln.",
-    sectionLabel: "Lehr-Ratgeber",
-    p1: "Die W3C Geolocation API standardisiert den Zugriff von Webbrowsern auf Ortungssensoren in Smartphones, Tablets und PCs.",
-    p2: "Über das globale JavaScript-Objekt navigator.geolocation können Webanwendungen Standortkoordinaten nach ausdrücklicher Freigabe durch den Nutzer abfragen. Dieser Leitfaden bietet umfassende technische Einblicke und praxisnahen Produktivcode.",
+    title: "HTML5 Geolocation API Leitfaden: JavaScript-Ortung | MyLocationLab",
+    description: "Kurz gesagt: Die HTML5 Geolocation API ermöglicht Browsern den Zugriff auf GPS, WLAN und IP-Ortung via navigator.geolocation nach Freigabe.",
+    h1: "HTML5 Geolocation API: Umfassender Entwickler- und Anwenderleitfaden",
+    subtitle: "Eine detaillierte Untersuchung von navigator.geolocation, GNSS-Satellitenabfragen, Fehlerbehandlung und Permissions-Policy-Vorgaben.",
+    
+    inShort: "Kurz gesagt: Die W3C Geolocation API erlaubt Webanwendungen über das Objekt navigator.geolocation den Zugriff auf geräteeigene Ortungssensoren. Nach Zustimmung des Nutzers liefert die Schnittstelle präzise Angaben zu Breitengrad, Längengrad, Höhe, Geschwindigkeit und Genauigkeitsradius direkt im Browser.",
+
+    takeawaysTitle: "Wichtige Erkenntnisse",
+    takeaways: [
+      "Standortabfragen erfordern stets die ausdrückliche Zustimmung des Nutzers im Browser-Dialog.",
+      "HTTPS ist zwingend erforderlich; Browser blockieren navigator.geolocation auf unverschlüsselten HTTP-Websites.",
+      "Mit enableHighAccuracy: true schaltet das Gerät auf energiesensiblere Satellitensensoren mit 3 bis 5 m Präzision.",
+      "Die Koordinaten werden clientseitig im Browser berechnet und ohne Erlaubnis nicht an Server übertragen.",
+      "Überprüfen Sie Ihre Sensorsignale live mit unserem GPS-Genauigkeitstester."
+    ],
+
+    p1: "Die Geolocation API vereinheitlicht die Hardwareabfrage auf PCs, Notebooks und mobilen Endgeräten. Wie Browseranfragen mit Atomuhren im Weltall zusammenhängen, erfahren Sie in unserem Leitfaden zu <a href='/guides/how-gps-location-works/'>wie GPS funktioniert</a>.",
+    p2: "Bei der Entwicklung standortbezogener Weboberflächen stehen Sicherheits- und Datenschutzaspekte an erster Stelle. Lesen Sie unsere <a href='/privacy/'>Datenschutzerklärung</a> zur clientseitigen Datenverarbeitung oder vertiefen Sie Ihr Wissen in unserem Guide zu <a href='/guides/gps-privacy-and-security/'>GPS-Sicherheit und Datenschutz</a>. Prüfen Sie Ihren horizontalen Genauigkeitsradius mit dem <a href='/tools/gps-accuracy/'>GPS-Genauigkeitstester</a> oder vergleichen Sie Funk- mit Netzwerksignalen in unserem Bericht zu <a href='/comparisons/gps-vs-ip-location/'>GPS vs. IP-Standort</a>.",
+
     calloutBadge: "💻 Live-API-Test",
-    calloutTitle: "Geolocation-Antwort Ihres Browsers prüfen",
-    calloutDesc: "Lösen Sie einen Aufruf von navigator.geolocation aus, um Koordinaten, Geschwindigkeit, Kurs, Höhe und Zeitstempel live einzusehen.",
-    calloutBtn: "Geolocation API testen →",
+    calloutTitle: "Browser-Standortdaten abfragen",
+    calloutDesc: "Starten Sie eine navigator.geolocation-Abfrage und prüfen Sie das GeolocationPosition-Objekt auf Längengrad, Breitengrad und Genauigkeit.",
+    calloutBtn: "API-Test starten →",
+
     h2Architecture: "1. Kernarchitektur und API-Methoden",
-    pArchitecture: "Die W3C-Spezifikation umfasst drei fundamentale Methoden:",
+    pArchitecture: "Die W3C-Spezifikation stellt drei grundlegende Methoden unter navigator.geolocation bereit:",
     step1Title: "navigator.geolocation.getCurrentPosition(success, error, options)",
-    step1Desc: "Fragt eine einmalige Momentaufnahme der aktuellen Position ab. Gibt im Erfolgsfall ein GeolocationPosition-Objekt oder bei Ablehnung einen Fehler zurück.",
+    step1Desc: "Fragt einmalig die aktuellen Koordinaten des Nutzers ab und übergibt ein GeolocationPosition-Objekt.",
     step2Title: "navigator.geolocation.watchPosition(success, error, options)",
-    step2Desc: "Registriert einen Handler, der bei jeder Positionsänderung aufgerufen wird. Liefert eine watchId für die kontinuierliche Live-Verfolgung.",
+    step2Desc: "Registriert einen Handler, der automatisch ausgelöst wird, sobald sich die physische Position des Geräts ändert.",
     step3Title: "navigator.geolocation.clearWatch(watchId)",
-    step3Desc: "Beendet die mit watchPosition() gestartete kontinuierliche Abfrage, schont den Akku und deaktiviert die Ortungssensoren.",
-    h2Implementation: "2. Produktivtauglicher JavaScript-Code",
-    pImplementation: "Hier ist ein robustes Codebeispiel mit Timeout-Handling, Fehlerabfangung und aktivierter hoher Genauigkeit:",
-    h2Options: "3. Wichtige Konfigurationsoptionen: PositionOptions",
-    thOption: "Eigenschaft",
+    step3Desc: "Beendet die laufende Standortüberwachung und schaltet das Satellitenmodul zur Schonung des Akkus ab.",
+
+    h2Implementation: "2. Praxisnahe JavaScript-Implementierung",
+    pImplementation: "Hier ist ein praxiserprobtes Codebeispiel mit Timeout-Absicherung, Cache-Ausschluss und Fehlerbehandlung:",
+
+    h2Options: "3. Konfigurationsparameter: PositionOptions",
+    thOption: "Parameter",
     thType: "Typ",
-    thDefault: "Standardwert",
-    thImpact: "Funktion und technischer Einfluss",
-    highAccDesc: "Aktiviert bei true den internen GNSS/GPS-Chip (< 3-5 m Genauigkeit). Bei false wird stromsparende WLAN- oder Mobilfunk-Triangulation genutzt.",
-    timeoutDesc: "Maximale Wartezeit in Millisekunden, bevor der Fehler TIMEOUT ausgelöst wird. Empfohlen: 8.000 bis 12.000 ms.",
-    maxAgeDesc: "Maximales Alter einer gecachten Position. 0 erzwingt eine sofortige neue Messung über Satelliten oder WLAN.",
-    h2Security: "4. Sicherheitsanforderungen und Berechtigungsrichtlinien",
-    sec1: "Sicherer Kontext (HTTPS Pflicht): Seit Chrome 50 und iOS 10 ist die Geolocation API über unverschlüsseltes HTTP deaktiviert.",
-    sec2: "Nutzerinteraktion erforderlich: Das Auslösen der Anfrage per Klick ('Standort abrufen') führt zu deutlich höheren Zustimmungsraten.",
-    sec3: "Iframe-Berechtigung: Bei Einbettung in ein <iframe> muss das Attribut allow='geolocation' gesetzt werden.",
+    thDefault: "Standard",
+    thImpact: "Funktion und Auswirkung",
+    highAccDesc: "Wenn true, wird das GNSS-Satellitenmodul aktiviert (3-5 m Genauigkeit). Wenn false, werden stromsparende WLAN- oder Mobilfunkdaten genutzt.",
+    timeoutDesc: "Maximale Wartezeit in Millisekunden vor Ausgabe eines TIMEOUT-Fehlers (3). Empfohlen: 8.000 bis 12.000 ms.",
+    maxAgeDesc: "Zulässiges Höchstalter gespeicherter Koordinaten. Ein Wert von 0 erzwingt eine frische Sensorabfrage.",
+
+    h2Security: "4. Sicherheitsvorgaben und Permissions-Policy",
+    sec1: "Sichere Kontexte (Nur HTTPS): Moderne Browser blockieren Standortabfragen auf unverschlüsselten HTTP-Websites strikt.",
+    sec2: "Nutzerinteraktion: Standortdialoge sollten durch Klicks (z. B. 'Standort ermitteln') ausgelöst werden, nicht beim reinen Seitenaufruf.",
+    sec3: "Iframe-Berechtigungen: Eingebettete <iframe>-Elemente benötigen das Attribut allow='geolocation'.",
+
+    workedExampleTitle: "Code-Beispiel: Vollständige Standortabfrage",
+    workedExampleIntro: "Standardmuster für hochpräzise Standortabfragen in JavaScript:",
+    workedExampleStep1: "navigator.geolocation.getCurrentPosition(",
+    workedExampleStep2: "  (pos) => console.log('Breitengrad:', pos.coords.latitude, 'Genauigkeit:', pos.coords.accuracy),",
+    workedExampleStep3: "  (err) => console.warn('Fehlercode:', err.code, err.message),",
+    workedExampleStep4: "  { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }",
+    workedExampleStep5: ");",
+
+    commonMistakesTitle: "Häufige Fehler bei der Geolocation API",
+    commonMistakes: [
+      { mistake: "Aufruf der API über unverschlüsseltes HTTP", explanation: "Browser verweigern die Anfrage aus Sicherheitsgründen sofort mit einem PERMISSION_DENIED Fehler." },
+      { mistake: "enableHighAccuracy ohne Timeout verwenden", explanation: "In geschlossenen Räumen ohne Satellitensicht kann die Abfrage ohne Timeout unbegrenzt blockieren." },
+      { mistake: "Fehler-Callback nicht definieren", explanation: "Lehnt der Nutzer die Freigabe ab, führt eine unbehandelte Ausnahme zum Abbruch des Skripts." }
+    ],
+
+    faqs: [
+      { question: "Warum fragt der Browser bei jedem Besuch nach meinem Standort?", answer: "Berechtigungen werden pro Domain gespeichert. Im privaten Modus oder nach dem Löschen von Cookies muss die Freigabe erneut erteilt werden." },
+      { question: "Was bewirkt enableHighAccuracy: true?", answer: "Es aktiviert die GPS-Satellitenantenne des Geräts (Genauigkeit 3 bis 5 Meter bei höherem Stromverbrauch). Bei false wird auf WLAN-Knotenpunkte zurückgegriffen." },
+      { question: "Kann eine Website meinen Standort heimlich im Hintergrund abfragen?", answer: "Nein. Die Sicherheitsarchitektur moderner Browser verhindert jeden Sensorzugriff ohne vorherige Zustimmung des Nutzers." }
+    ],
+
+    nextStepsTitle: "Nächste Schritte und Tools",
+    nextSteps: [
+      { title: "GPS-Genauigkeit prüfen", href: "/tools/gps-accuracy/", desc: "Testen Sie Ihren horizontalen Genauigkeitsradius und Sensordaten in Echtzeit." },
+      { title: "GPS-Sicherheit & Datenschutz", href: "/guides/gps-privacy-and-security/", desc: "Erfahren Sie, wie moderne Betriebssysteme Standortdaten schützen." },
+      { title: "Wie GPS funktioniert", href: "/guides/how-gps-location-works/", desc: "Satellitensignale, Atomuhren und mathematische Trilateration verstehen." }
+    ],
+
     callout2Badge: "🧭 Koordinatenumrechnung",
-    callout2Title: "Dezimalgrad-Werte der API umrechnen",
-    callout2Desc: "Konvertieren Sie Dezimalausgaben bequem in Grad, Minuten, Sekunden (GMS) oder das UTM-Gittersystem.",
-    callout2Btn: "Umrechner öffnen →",
-    connectedTitle: "🔗 Verwandte Ratgeber & Testwerkzeuge",
-    tool1Title: "GPS-Genauigkeitsmonitor",
-    tool1Desc: "Echtzeit-Genauigkeitstester",
-    tool2Title: "Standortsimulation-Ratgeber",
-    tool2Desc: "DevTools-Sensoren simulieren",
+    callout2Title: "Dezimalgrad-Koordinaten umrechnen",
+    callout2Desc: "Wandeln Sie Dezimalzahlen aus navigator.geolocation in Grad-Minuten-Sekunden (DMS) oder UTM-Meterkoordinaten um.",
+    callout2Btn: "Konverter öffnen →",
+    connectedTitle: "🔗 Verknüpfte Leitfäden und Tools",
+    tool1Title: "GPS-Genauigkeitstester",
+    tool1Desc: "Echtzeit-Diagnose",
+    tool2Title: "Standort simulieren",
+    tool2Desc: "DevTools-Sensortest",
     tool3Title: "Wie GPS funktioniert",
-    tool3Desc: "Satellitenphysik & WGS84",
-    tool4Title: "Falschen Standort beheben",
-    tool4Desc: "Berechtigungen reparieren"
+    tool3Desc: "Satellitenphysik",
+    tool4Title: "Standort korrigieren",
+    tool4Desc: "Fehlerbehebung"
   },
   pt: {
-    title: "Guia da API Geolocation do HTML5 | MyLocationLab",
-    description: "Domine a API W3C Geolocation em JavaScript: aprenda getCurrentPosition, watchPosition, enableHighAccuracy, timeout e políticas de permissão.",
-    h1: "API Geolocation do HTML5: Guia Completo para Desenvolvedores e Usuários",
-    subtitle: "Uma análise técnica sobre navigator.geolocation, consultas GNSS de alta precisão, tratamento de erros e diretivas Permissions-Policy.",
-    sectionLabel: "Guias Educativos",
-    p1: "A API Geolocation do W3C padroniza como os navegadores modernos consultam os sensores de localização em smartphones, computadores e tablets.",
-    p2: "Disponível por meio do objeto global navigator.geolocation, essa interface permite que páginas web solicitem coordenadas com o consentimento explícito do usuário. Neste guia, apresentamos detalhes técnicos e código pronto para produção.",
+    title: "Guia da API de Geolocalização HTML5 | MyLocationLab",
+    description: "Em resumo: A API Geolocation permite que navegadores obtenham dados de GPS, Wi-Fi e IP via navigator.geolocation com permissão do usuário.",
+    h1: "API de Geolocalização HTML5: Guia Completo para Desenvolvedores",
+    subtitle: "Uma análise técnica de navigator.geolocation, consultas GNSS de alta precisão, tratamento de erros e diretivas Permissions-Policy.",
+    
+    inShort: "Em resumo: A API HTML5 Geolocation do W3C permite que aplicativos web acessem os sensores de posicionamento do dispositivo por meio de navigator.geolocation. Mediante autorização do usuário, a interface retorna latitude, longitude, altitude e raio de precisão diretamente no navegador.",
+
+    takeawaysTitle: "Pontos Principais",
+    takeaways: [
+      "O acesso à localização requer sempre a aprovação expressa do usuário em avisos do navegador.",
+      "O uso de HTTPS é obrigatório; conexões HTTP não seguras têm o acesso bloqueado pela API.",
+      "A opção enableHighAccuracy: true aciona receptores de satélite GNSS para obter precisão de 3 a 5 metros.",
+      "As coordenadas são geradas localmente no navegador e não são transmitidas sem seu comando.",
+      "Você pode testar a precisão dos seus sensores através do nosso monitor de precisão GPS."
+    ],
+
+    p1: "A API de Geolocalização padroniza o acesso aos sensores de posição em computadores e celulares. Para compreender a relação entre requisições de software e sinais orbitais, consulte nosso guia de <a href='/guides/how-gps-location-works/'>como o GPS funciona</a>.",
+    p2: "Ao construir interfaces que utilizam mapas, a privacidade e a segurança são prioridades absolutas. Leia nossa <a href='/privacy/'>política de privacidade do cliente</a> para entender o processamento sem armazenamento em servidor, ou veja nossa análise sobre <a href='/guides/gps-privacy-and-security/'>privacidade e segurança no GPS</a>. Você pode conferir os dados dos sensores no <a href='/tools/gps-accuracy/'>verificador de precisão GPS</a> ou examinar as diferenças entre redes e satélites no comparativo de <a href='/comparisons/gps-vs-ip-location/'>GPS vs localização por IP</a>.",
+
     calloutBadge: "💻 Teste de API em Tempo Real",
-    calloutTitle: "Inspecione a Resposta Geolocation do seu Navegador",
-    calloutDesc: "Dispare uma chamada a navigator.geolocation para conferir os dados de coordenadas, altitude, velocidade, rumo e timestamp ao vivo.",
-    calloutBtn: "Testar API de Localização →",
-    h2Architecture: "1. Arquitetura Básica e Métodos da API",
-    pArchitecture: "A especificação Geolocation do W3C organiza-se em três funções principais:",
+    calloutTitle: "Inspecione os Dados do Navegador",
+    calloutDesc: "Execute uma chamada navigator.geolocation ao vivo para analisar o objeto GeolocationPosition com coordenadas e raio de precisão.",
+    calloutBtn: "Testar API de Geolocalização →",
+
+    h2Architecture: "1. Métodos e Arquitetura Central da API",
+    pArchitecture: "A especificação do W3C organiza as consultas em três métodos sob o objeto navigator.geolocation:",
     step1Title: "navigator.geolocation.getCurrentPosition(success, error, options)",
-    step1Desc: "Solicita uma leitura única da posição atual do usuário. Retorna um objeto GeolocationPosition em caso de sucesso ou GeolocationPositionError em falhas.",
+    step1Desc: "Solicita uma leitura instantânea das coordenadas do usuário com captura de erros e opções de precisão.",
     step2Title: "navigator.geolocation.watchPosition(success, error, options)",
-    step2Desc: "Registra uma função ouvinte que é chamada sempre que o dispositivo muda de posição. Retorna um watchId para monitoramento contínuo.",
+    step2Desc: "Registra uma função ouvinte disparada automaticamente sempre que o dispositivo muda de posição.",
     step3Title: "navigator.geolocation.clearWatch(watchId)",
-    step3Desc: "Encerra o monitoramento iniciado por watchPosition(), preservando a bateria e desligando o rastreamento por sensores.",
-    h2Implementation: "2. Implementação em JavaScript Pronta para Produção",
-    pImplementation: "Veja um exemplo completo com controle de timeout, fallback e alta precisão configurada:",
+    step3Desc: "Encerra o monitoramento ativo registrado por watchPosition, desativando a antena GPS para economizar bateria.",
+
+    h2Implementation: "2. Implementação JavaScript para Produção",
+    pImplementation: "Veja um código JavaScript estruturado com limite de tempo, anulação de cache e tratamento de exceções:",
+
     h2Options: "3. Opções de Configuração: PositionOptions",
-    thOption: "Propriedade",
+    thOption: "Opção",
     thType: "Tipo",
     thDefault: "Padrão",
-    thImpact: "Comportamento e Impacto Técnico",
-    highAccDesc: "Se true, orienta o navegador a ligar o chip GNSS/GPS (< 3-5 m). Se false, utiliza triangulação Wi-Fi ou celular econômica em energia.",
-    timeoutDesc: "Tempo limite em milissegundos antes de retornar erro TIMEOUT. Recomendado: de 8.000 a 12.000 ms.",
-    maxAgeDesc: "Tempo máximo de armazenamento em cache tolerado. 0 força a coleta de uma nova coordenada de satélite ou Wi-Fi.",
+    thImpact: "Comportamento Técnico",
+    highAccDesc: "Em true, aciona o circuito receptor GNSS/GPS (3-5 metros de precisão). Em false, utiliza redes Wi-Fi e torres de celular econômicas.",
+    timeoutDesc: "Tempo limite em milissegundos antes de disparar erro TIMEOUT (3). Recomendado: 8.000 a 12.000 ms.",
+    maxAgeDesc: "Tempo máximo em que uma coordenada em cache é aceita. O valor 0 força uma nova leitura direta dos sensores.",
+
     h2Security: "4. Diretivas de Segurança e Políticas de Acesso",
-    sec1: "Contexto Seguro Obrigatório (HTTPS): Desde o Chrome 50 e iOS 10, a geolocalização é bloqueada em conexões HTTP simples.",
-    sec2: "Gesto do Usuário Recomendado: Acionar a solicitação a partir do clique em um botão ('Buscar Localização') eleva a taxa de aprovação.",
-    sec3: "Declaração em Iframes: Ao integrar ferramentas em <iframe>, inclua a diretiva allow='geolocation'.",
-    callout2Badge: "🧭 Conversor de Coordenadas",
-    callout2Title: "Converta os Graus Decimais da API",
-    callout2Desc: "Converta com facilidade as saídas decimais do navegador para Graus Minutos Segundos (GMS) ou Universal Transverse Mercator (UTM).",
+    sec1: "Contextos Seguros (Apenas HTTPS): Navegadores modernos barram instantaneamente a API em sites sem certificação SSL.",
+    sec2: "Gesto Iniciado pelo Usuário: O pedido de permissão deve ocorrer após o clique em um botão (ex: 'Localizar Meu Dispositivo').",
+    sec3: "Permissões em Iframes: Elementos <iframe> externos precisam do atributo allow='geolocation' explícito.",
+
+    workedExampleTitle: "Exemplo Prático: Código de Leitura de Posição",
+    workedExampleIntro: "Estrutura recomendada para consultas com alta precisão:",
+    workedExampleStep1: "navigator.geolocation.getCurrentPosition(",
+    workedExampleStep2: "  (pos) => console.log('Latitude:', pos.coords.latitude, 'Precisão:', pos.coords.accuracy),",
+    workedExampleStep3: "  (err) => console.warn('Erro:', err.code, err.message),",
+    workedExampleStep4: "  { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }",
+    workedExampleStep5: ");",
+
+    commonMistakesTitle: "Erros Comuns na API de Geolocalização",
+    commonMistakes: [
+      { mistake: "Chamar a API sob conexão HTTP não segura", explanation: "O navegador rejeita imediatamente o pedido exibindo erro PERMISSION_DENIED por motivos de segurança." },
+      { mistake: "Habilitar enableHighAccuracy sem configurar timeout", explanation: "Em locais fechados sem visada para o céu, a chamada pode travar indefinidamente." },
+      { mistake: "Não declarar a função de tratamento de erros", explanation: "Se o usuário recusar a permissão, uma exceção não tratada interromperá os outros scripts da página." }
+    ],
+
+    faqs: [
+      { question: "Por que o navegador solicita permissão a cada visita?", answer: "As permissões são salvas por domínio. Em abas anônimas ou após limpar dados de navegação, o aviso de permissão é reexibido." },
+      { question: "Qual a diferença de enableHighAccuracy true para false?", answer: "O valor true ativa o módulo GPS do smartphone (3 a 5 metros de margem com maior consumo). O valor false utiliza dados de Wi-Fi e antenas celulares." },
+      { question: "Um site pode acessar minha localização em segundo plano sem avisar?", answer: "Não. A arquitetura de segurança dos navegadores impede qualquer acesso sem o consentimento do usuário." }
+    ],
+
+    nextStepsTitle: "Próximos Passos e Ferramentas",
+    nextSteps: [
+      { title: "Testar Precisão do GPS", href: "/tools/gps-accuracy/", desc: "Monitore o raio de precisão e telemetria de sensores em tempo real." },
+      { title: "Privacidade e Segurança GPS", href: "/guides/gps-privacy-and-security/", desc: "Saiba como os sistemas operacionais protegem seus dados de localização." },
+      { title: "Como o GPS Funciona", href: "/guides/how-gps-location-works/", desc: "Entenda a física dos satélites, relógios atômicos e trilateração." }
+    ],
+
+    callout2Badge: "🧭 Conversão de Coordenadas",
+    callout2Title: "Converta Graus Decimais da API",
+    callout2Desc: "Transforme saídas decimais do navegador em Graus, Minutos, Segundos (DMS) ou formato UTM métrico.",
     callout2Btn: "Abrir Conversor →",
-    connectedTitle: "🔗 Guias e Ferramentas Relacionadas",
+    connectedTitle: "🔗 Guias e Ferramentas Conectadas",
     tool1Title: "Monitor de Precisão GPS",
-    tool1Desc: "Teste de margem de erro",
-    tool2Title: "Guia de Localização Falsa",
-    tool2Desc: "Simulação no DevTools",
-    tool3Title: "Como Funciona o GPS",
-    tool3Desc: "Física orbital e WGS84",
-    tool4Title: "Corrigir Local Incorreto",
-    tool4Desc: "Resolução de permissões"
+    tool1Desc: "Teste em tempo real",
+    tool2Title: "Simular Localização",
+    tool2Desc: "Testes no DevTools",
+    tool3Title: "Como o GPS Funciona",
+    tool3Desc: "Sinais de satélite",
+    tool4Title: "Corrigir Localização",
+    tool4Desc: "Passo a passo"
   },
   hi: {
-    title: "HTML5 Geolocation API गाइड | MyLocationLab",
-    description: "JavaScript में W3C Geolocation API को समझें। जानें getCurrentPosition, watchPosition, enableHighAccuracy, timeout और अनुमति नीतियाँ कैसे काम करती हैं।",
-    h1: "HTML5 Geolocation API: पूरी वेब डेवलपर और यूज़र गाइड",
-    subtitle: "navigator.geolocation, हाई-एक्यूरेसी GNSS क्वेरी, एरर हैंडलिंग, अनुमति डेलिगेशन और Permissions-Policy हेडर की डेवलपर-केंद्रित गहरी जानकारी।",
-    sectionLabel: "शैक्षिक गाइड",
-    p1: "W3C Geolocation API एक मानक तय करती है जिसके ज़रिए वेब ब्राउज़र मोबाइल फ़ोन, टैबलेट और डेस्कटॉप कंप्यूटर के लोकेशन हार्डवेयर तक पहुँचते हैं।",
-    p2: "JavaScript के ग्लोबल ऑब्जेक्ट navigator.geolocation के ज़रिए उपलब्ध यह इंटरफ़ेस वेब ऐप्लिकेशन—हमारे GPS Coordinates Finder और Where Am I टूल सहित—को उपयोगकर्ता की सहमति से सुरक्षित रूप से भौगोलिक निर्देशांक माँगने की सुविधा देता है। इस गाइड में हम वेब डेवलपर्स और जिज्ञासु उपयोगकर्ताओं, दोनों के लिए पूरी तकनीकी जानकारी देते हैं।",
+    title: "HTML5 जियोलोकेशन API गाइड: जावास्क्रिप्ट स्थिति | MyLocationLab",
+    description: "संक्षेप में: HTML5 Geolocation API ब्राउज़र को उपयोगकर्ता की अनुमति से GPS, वाई-फ़ाई और IP द्वारा स्थिति प्राप्त करने की सुविधा देती है।",
+    h1: "HTML5 जियोलोकेशन API: संपूर्ण वेब डेवलपर और उपयोगकर्ता गाइड",
+    subtitle: "navigator.geolocation, उच्च सटीकता GNSS क्वेरी, त्रुटि प्रबंधन और Permissions-Policy का विस्तृत तकनीकी विश्लेषण।",
+    
+    inShort: "संक्षेप में: W3C HTML5 जियोलोकेशन API वेब ऐप्लिकेशनों को navigator.geolocation के माध्यम से डिवाइस के पोजिशनिंग हार्डवेयर तक सीधी पहुँच प्रदान करती है। उपयोगकर्ता की अनुमति मिलने पर, यह अक्षांश, देशांतर, ऊंचाई और सटीकता दायरा सीधे ब्राउज़र में लौटाती है।",
+
+    takeawaysTitle: "मुख्य बिंदु",
+    takeaways: [
+      "स्थान अनुरोधों के लिए ब्राउज़र प्रॉम्प्ट के माध्यम से उपयोगकर्ता की स्पष्ट अनुमति अनिवार्य है।",
+      "HTTPS अनिवार्य है; असुरक्षित HTTP कनेक्शन पर ब्राउज़र जियोलोकेशन को ब्लॉक कर देते हैं।",
+      "enableHighAccuracy: true सेट करने से डिवाइस 3-5 मीटर की सटीकता के लिए उपग्रह चिप्स सक्रिय करता है।",
+      "निर्देशांक ब्राउज़र में क्लाइंट-साइड पर प्रोसेस होते हैं और आपकी अनुमति के बिना सर्वर पर नहीं भेजे जाते।",
+      "आप हमारे GPS सटीकता मॉनिटर से अपने सेंसरों की लाइव जांच कर सकते हैं।"
+    ],
+
+    p1: "जियोलोकेशन API कंप्यूटर और मोबाइल फोन पर स्थान सेंसरों तक पहुँचने का वैश्विक मानक है। ब्राउज़र अनुरोध उपग्रह संकेतों से कैसे जुड़ते हैं, यह जानने के लिए हमारी गाइड <a href='/guides/how-gps-location-works/'>GPS कैसे काम करता है</a> देखें।",
+    p2: "स्थान-आधारित वेब ऐप बनाते समय गोपनीयता सुरक्षा सबसे महत्वपूर्ण है। बिना सर्वर स्टोरेज के डेटा प्रोसेसिंग समझने के लिए हमारी <a href='/privacy/'>क्लाइंट-साइड गोपनीयता नीति</a> पढ़ें, या <a href='/guides/gps-privacy-and-security/'>GPS गोपनीयता और सुरक्षा</a> गाइड देखें। वास्तविक हार्डवेयर सटीकता जांचने के लिए हमारे <a href='/tools/gps-accuracy/'>GPS सटीकता परीक्षक</a> का उपयोग करें, या नेटवर्क और उपग्रह का अंतर जानने के लिए <a href='/comparisons/gps-vs-ip-location/'>GPS बनाम IP स्थान तुलना</a> पढ़ें।",
+
     calloutBadge: "💻 रीयल-टाइम API टेस्ट",
-    calloutTitle: "अपने ब्राउज़र का Geolocation डेटा देखें",
-    calloutDesc: "पूरे GeolocationPosition ऑब्जेक्ट—निर्देशांक, स्पीड, दिशा, ऊँचाई और टाइमस्टैम्प—देखने के लिए लाइव navigator.geolocation कॉल ट्रिगर करें।",
-    calloutBtn: "Geolocation API टेस्ट करें →",
-    h2Architecture: "1. मुख्य आर्किटेक्चर और API मेथड्स",
-    pArchitecture: "W3C Geolocation स्पेसिफिकेशन तीन प्रमुख मेथड देती है:",
+    calloutTitle: "अपने ब्राउज़र का जियोलोकेशन डेटा देखें",
+    calloutDesc: "लाइव navigator.geolocation कॉल चलाकर अक्षांश, देशांतर, गति, दिशा और सटीकता ऑब्जेक्ट की जांच करें।",
+    calloutBtn: "जियोलोकेशन API टेस्ट करें →",
+
+    h2Architecture: "1. मुख्य विधियाँ और संरचना",
+    pArchitecture: "W3C मानक navigator.geolocation के तहत तीन मुख्य विधियाँ प्रदान करता है:",
     step1Title: "navigator.geolocation.getCurrentPosition(success, error, options)",
-    step1Desc: "उपयोगकर्ता की मौजूदा भौगोलिक स्थिति का एक बार का स्नैपशॉट माँगता है। सफलता पर GeolocationPosition ऑब्जेक्ट और विफलता पर GeolocationPositionError लौटाता है।",
+    step1Desc: "उपयोगकर्ता के वर्तमान निर्देशांकों का एक बार का स्नैपशॉट प्राप्त करता है।",
     step2Title: "navigator.geolocation.watchPosition(success, error, options)",
-    step2Desc: "एक हैंडलर फ़ंक्शन रजिस्टर करता है जो डिवाइस की लोकेशन बदलने पर अपने-आप कॉल हो जाता है। रीयल-टाइम मूवमेंट और स्पीड ट्रैकिंग के लिए एक पूर्णांक watchId लौटाता है।",
+    step2Desc: "जब भी उपकरण का स्थान बदलता है, यह फ़ंक्शन स्वचालित रूप से नए निर्देशांक ट्रैक करता है।",
     step3Title: "navigator.geolocation.clearWatch(watchId)",
-    step3Desc: "watchPosition() से रजिस्टर की गई चालू लोकेशन वॉच को रद्द करता है, जिससे बैटरी बचती है और सेंसर पोलिंग बंद होती है।",
-    h2Implementation: "2. प्रोडक्शन-रेडी JavaScript इंप्लीमेंटेशन",
-    pImplementation: "यहाँ टाइमआउट हैंडलिंग, फ़ॉलबैक लॉजिक और सख़्त सटीकता सेटिंग्स के साथ एक मज़बूत, प्रोडक्शन-रेडी स्निपेट दिया गया है:",
-    h2Options: "3. प्रमुख कॉन्फ़िगरेशन विकल्प: PositionOptions",
-    thOption: "ऑप्शन प्रॉपर्टी",
-    thType: "टाइप",
+    step3Desc: "स्थान ट्रैकिंग बंद करता है और बैटरी बचाने के लिए GPS सेंसर को बंद करता है।",
+
+    h2Implementation: "2. जावास्क्रिप्ट कोड कार्यान्वयन",
+    pImplementation: "टाइमआउट और एरर हैंडलिंग के साथ एक प्रोडक्शन-रेडी जावास्क्रिप्ट कोड यहाँ दिया गया है:",
+
+    h2Options: "3. मुख्य विकल्प: PositionOptions",
+    thOption: "विकल्प",
+    thType: "प्रकार",
     thDefault: "डिफ़ॉल्ट",
-    thImpact: "व्यवहार और तकनीकी प्रभाव",
-    highAccDesc: "true होने पर ब्राउज़र इंटरनल GPS/GNSS रिसीवर चिप चालू करता है, जिससे 3–5 मीटर से बेहतर सटीकता मिलती है। false होने पर कम-पावर Wi-Fi/सेल्युलर ट्रायंगुलेशन या IP लुकअप उपयोग होता है।",
-    timeoutDesc: "ब्राउज़र को TIMEOUT एरर कोड लौटाने से पहले अधिकतम जो समय (मिलीसेकंड में) मिलता है। सुझाव: 8,000 से 12,000 ms।",
-    maxAgeDesc: "कैश की गई लोकेशन की अधिकतम स्वीकार्य आयु। 0 सेट करने पर डिवाइस को ताज़ा सैटेलाइट/Wi-Fi फ़िक्स लेने के लिए मजबूर किया जाता है।",
-    h2Security: "4. सुरक्षा और Permissions Policy आवश्यकताएँ",
-    sec1: "सिक्योर कॉन्टेक्स्ट (HTTPS अनिवार्य): Chrome 50 और iOS 10 से Geolocation API असुरक्षित HTTP कनेक्शन पर पूरी तरह बंद रहती है। वेब ऐप्लिकेशन वैध HTTPS पर ही चलाए जाने चाहिए।",
-    sec2: "उपयोगकर्ता जेस्चर आवश्यक: बटन क्लिक (जैसे 'Get My Location') पर geolocation कॉल ट्रिगर करना, पेज लोड होते ही अनचाहा प्रॉम्प्ट दिखाने की तुलना में उपयोगकर्ता की सहमति की दर बेहतर देता है।",
-    sec3: "Iframe Permissions-Policy: अगर geolocation टूल को <iframe> के अंदर एम्बेड कर रहे हैं, तो iframe टैग में allow='geolocation' एट्रिब्यूट ज़रूर डिक्लेयर करें।",
-    callout2Badge: "🧭 कोऑर्डिनेट कन्वर्ज़न",
-    callout2Title: "Geolocation API के दशमलव डिग्री बदलें",
-    callout2Desc: "navigator.geolocation के दशमलव आउटपुट को आसानी से डिग्री, मिनट, सेकंड (DMS) या Universal Transverse Mercator (UTM) में बदलें।",
+    thImpact: "व्यवहार और प्रभाव",
+    highAccDesc: "true होने पर, यह मोबाइल के GNSS चिप को सक्रिय करता है (3-5 मीटर सटीकता)। false होने पर वाई-फाई डेटाबेस का उपयोग करता है।",
+    timeoutDesc: "TIMEOUT त्रुटि कोड (3) देने से पहले मिलीसेकंड में अधिकतम समय। अनुशंसित: 8,000 से 12,000 ms।",
+    maxAgeDesc: "कैश किए गए पुराने निर्देशांकों की अधिकतम स्वीकार्य आयु। 0 सेट करने से तुरंत ताज़ा रीडिंग ली जाती है।",
+
+    h2Security: "4. सुरक्षा और अनुमति नीतियां",
+    sec1: "सुरक्षित संदर्भ (केवल HTTPS): आधुनिक ब्राउज़र साधारण HTTP वेबसाइटों पर जियोलोकेशन कॉल को ब्लॉक कर देते हैं।",
+    sec2: "उपयोगकर्ता क्लिक: अनुमति प्रॉम्प्ट हमेशा उपयोगकर्ता द्वारा बटन दबाने पर ही शुरू होना चाहिए।",
+    sec3: "Iframe अनुमतियां: एम्बेडेड <iframe> में allow='geolocation' एट्रिब्यूट होना आवश्यक है।",
+
+    workedExampleTitle: "कोड उदाहरण: संपूर्ण जियोलोकेशन कॉल",
+    workedExampleIntro: "सटीक डेटा और त्रुटि प्रबंधन के लिए मानक कोड संरचना:",
+    workedExampleStep1: "navigator.geolocation.getCurrentPosition(",
+    workedExampleStep2: "  (pos) => console.log('अक्षांश:', pos.coords.latitude, 'सटीकता:', pos.coords.accuracy),",
+    workedExampleStep3: "  (err) => console.warn('त्रुटि कोड:', err.code, err.message),",
+    workedExampleStep4: "  { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }",
+    workedExampleStep5: ");",
+
+    commonMistakesTitle: "जियोलोकेशन API में आम गलतियाँ",
+    commonMistakes: [
+      { mistake: "HTTP साइट पर जियोलोकेशन कॉल करना", explanation: "ब्राउज़र सुरक्षा कारणों से तुरंत PERMISSION_DENIED त्रुटि के साथ अनुरोध को रद्द कर देते हैं।" },
+      { mistake: "बिना टाइमआउट के enableHighAccuracy चालू करना", explanation: "कमरे के अंदर उपग्रह संकेत न मिलने पर अनुरोध अनिश्चित काल के लिए रुक सकता है।" },
+      { mistake: "त्रुटि हैंडलर न जोड़ना", explanation: "यदि उपयोगकर्ता अनुमति अस्वीकार कर देता है, तो बिना हैंडलर के स्क्रिप्ट क्रैश हो सकती है।" }
+    ],
+
+    faqs: [
+      { question: "ब्राउज़र हर बार अनुमति क्यों मांगता है?", answer: "अनुमतियां डोमेन के अनुसार सुरक्षित होती हैं। गुप्त मोड (Incognito) या कैश साफ़ करने के बाद ब्राउज़र दोबारा अनुमति मांगता है।" },
+      { question: "enableHighAccuracy true और false में क्या अंतर है?", answer: "true करने पर GPS हार्डवेयर सक्रिय होता है (3 से 5 मीटर सटीकता, अधिक बैटरी खपत)। false पर कम ऊर्जा वाले वाई-फाई डेटा का उपयोग होता है।" },
+      { question: "क्या कोई वेबसाइट बिना बताए मेरा स्थान जान सकती है?", answer: "नहीं। आधुनिक ब्राउज़र सुरक्षा नीतियां उपयोगकर्ता की स्पष्ट सहमति के बिना स्थान एक्सेस को पूरी तरह रोकती हैं।" }
+    ],
+
+    nextStepsTitle: "अगले कदम और उपकरण",
+    nextSteps: [
+      { title: "GPS सटीकता टेस्ट करें", href: "/tools/gps-accuracy/", desc: "अपने ब्राउज़र में रीयल-टाइम सटीकता दायरा और सेंसर डेटा जांचें।" },
+      { title: "GPS सुरक्षा और गोपनीयता", href: "/guides/gps-privacy-and-security/", desc: "जानें कि ऑपरेटिंग सिस्टम आपके स्थान डेटा को कैसे सुरक्षित रखते हैं।" },
+      { title: "GPS कैसे काम करता है", href: "/guides/how-gps-location-works/", desc: "उपग्रह संकेतों, परमाणु घड़ियों और ट्राइलेटरेशन की प्रक्रिया समझें।" }
+    ],
+
+    callout2Badge: "🧭 निर्देशांक रूपांतरण",
+    callout2Title: "दशमलव डिग्री निर्देशांक बदलें",
+    callout2Desc: "navigator.geolocation के दशमलव परिणामों को DMS या UTM मीटर ग्रिड में आसानी से बदलें।",
     callout2Btn: "कन्वर्टर खोलें →",
-    connectedTitle: "🔗 संबंधित गाइड और टेस्टिंग टूल",
+    connectedTitle: "🔗 जुड़े मार्गदर्शक और उपकरण",
     tool1Title: "GPS सटीकता मॉनिटर",
-    tool1Desc: "रीयल-टाइम सटीकता टेस्टर",
+    tool1Desc: "रीयल-टाइम परीक्षक",
     tool2Title: "मॉक लोकेशन गाइड",
-    tool2Desc: "DevTools सेंसर सिमुलेशन",
+    tool2Desc: "DevTools परीक्षण",
     tool3Title: "GPS कैसे काम करता है",
-    tool3Desc: "सैटेलाइट की अंतर्निहित फ़िज़िक्स",
-    tool4Title: "गलत लोकेशन ठीक करें",
-    tool4Desc: "अनुमति संबंधी समस्या निवारण"
+    tool3Desc: "उपग्रह भौतिकी",
+    tool4Title: "स्थान सुधारें",
+    tool4Desc: "समस्या निवारण"
   },
   id: {
-    title: "Panduan API Geolocation HTML5 | MyLocationLab",
-    description: "Kuasai W3C Geolocation API di JavaScript. Pelajari cara kerja getCurrentPosition, watchPosition, enableHighAccuracy, timeout, dan kebijakan izin.",
-    h1: "API Geolocation HTML5: Panduan Lengkap Pengembang & Pengguna Web",
-    subtitle: "Pembahasan mendalam untuk pengembang tentang navigator.geolocation, kueri GNSS akurasi tinggi, penanganan error, delegasi izin, dan header Permissions-Policy.",
-    sectionLabel: "Panduan Edukasi",
-    p1: "W3C Geolocation API menstandarkan cara peramban web mengakses perangkat keras lokasi di ponsel, tablet, dan komputer desktop.",
-    p2: "Tersedia melalui objek global JavaScript navigator.geolocation, antarmuka ini memungkinkan aplikasi web—termasuk GPS Coordinates Finder dan alat Where Am I kami—meminta koordinat geografis secara aman dengan persetujuan pengguna. Panduan ini menyajikan gambaran teknis lengkap bagi pengembang web maupun pengguna umum.",
-    calloutBadge: "💻 Uji API Waktu Nyata",
+    title: "Panduan API Geolocation HTML5: Pemosisian Web | MyLocationLab",
+    description: "Singkatnya: API Geolocation HTML5 memungkinkan peramban web meminta data GPS, Wi-Fi, dan IP via navigator.geolocation dengan izin pengguna.",
+    h1: "API Geolocation HTML5: Panduan Lengkap Pengembang Web dan Pengguna",
+    subtitle: "Ulasan teknis mendalam tentang navigator.geolocation, kueri satelit GNSS akurasi tinggi, penanganan galat, dan kebijakan Permissions-Policy.",
+    
+    inShort: "Singkatnya: API Geolocation HTML5 dari W3C menyediakan akses terprogram ke modul pemosisian perangkat melalui objek navigator.geolocation. Dengan persetujuan pengguna, aplikasi web dapat memperoleh garis lintang, garis bujur, ketinggian, kecepatan, dan radius akurasi langsung di peramban.",
+
+    takeawaysTitle: "Poin-Poin Penting",
+    takeaways: [
+      "Permintaan lokasi selalu memerlukan persetujuan eksplisit dari pengguna melalui dialog peramban.",
+      "Koneksi HTTPS wajib digunakan; peramban memblokir API pada situs web HTTP yang tidak terenkripsi.",
+      "Opsi enableHighAccuracy: true mengaktifkan antena satelit GNSS untuk ketelitian 3 hingga 5 meter.",
+      "Koordinat dihitung secara lokal di perangkat klien dan tidak pernah dikirim ke peladen tanpa perintah Anda.",
+      "Uji sinyal sensor dan kode galat secara langsung dengan pemantau akurasi GPS kami."
+    ],
+
+    p1: "API Geolocation menstandarkan akses perangkat keras pemosisian di komputer desktop, laptop, dan telepon pintar. Pelajari kaitan kueri web dengan sinyal jam atom antariksa dalam panduan kami tentang <a href='/guides/how-gps-location-works/'>cara kerja GPS</a>.",
+    p2: "Saat merancang antarmuka berbasis lokasi, batas privasi dan keamanan pengguna adalah hal terpenting. Baca <a href='/privacy/'>kebijakan privasi sisi klien</a> kami untuk memahami pemrosesan koordinat tanpa penyimpanan di peladen, atau pelajari analisis kami mengenai <a href='/guides/gps-privacy-and-security/'>keamanan dan privasi GPS</a>. Periksa radius akurasi perangkat Anda dengan <a href='/tools/gps-accuracy/'>pemeriksa akurasi GPS</a> atau bandingkan data jaringan dan satelit dalam perbandingan komprehensif kami tentang <a href='/comparisons/gps-vs-ip-location/'>GPS vs lokasi IP</a>.",
+
+    calloutBadge: "💻 Uji API Langsung",
     calloutTitle: "Periksa Data Geolocation Peramban Anda",
-    calloutDesc: "Jalankan panggilan navigator.geolocation secara langsung untuk melihat objek koordinat, kecepatan, arah, elevasi, dan stempel waktu GeolocationPosition secara lengkap.",
-    calloutBtn: "Uji Geolocation API →",
-    h2Architecture: "1. Arsitektur Inti & Metode API",
-    pArchitecture: "Spesifikasi Geolocation W3C menyediakan tiga metode utama:",
+    calloutDesc: "Jalankan panggilan navigator.geolocation untuk melihat objek koordinat, akurasi, kecepatan, dan stempel waktu.",
+    calloutBtn: "Uji API Geolocation →",
+
+    h2Architecture: "1. Metode Inti dan Arsitektur API",
+    pArchitecture: "Spesifikasi W3C Geolocation menyediakan tiga metode utama pada navigator.geolocation:",
     step1Title: "navigator.geolocation.getCurrentPosition(success, error, options)",
-    step1Desc: "Meminta sekali ambil posisi geografis pengguna saat ini. Mengembalikan objek GeolocationPosition jika berhasil atau GeolocationPositionError jika gagal.",
+    step1Desc: "Meminta pembacaan koordinat posisi pengguna satu kali dengan penanganan galat.",
     step2Title: "navigator.geolocation.watchPosition(success, error, options)",
-    step2Desc: "Mendaftarkan fungsi handler yang otomatis dipanggil setiap kali lokasi perangkat berubah. Mengembalikan watchId berupa bilangan bulat untuk melacak pergerakan dan kecepatan secara waktu nyata.",
+    step2Desc: "Mendaftarkan fungsi callback yang dipanggil otomatis setiap kali perangkat berpindah tempat.",
     step3Title: "navigator.geolocation.clearWatch(watchId)",
-    step3Desc: "Membatalkan pemantauan posisi aktif yang didaftarkan dengan watchPosition(), sehingga menghemat baterai dan menghentikan polling sensor.",
-    h2Implementation: "2. Implementasi JavaScript Siap Produksi",
-    pImplementation: "Berikut cuplikan kode yang tangguh dan siap produksi dengan penanganan timeout, logika fallback, dan pengaturan akurasi yang ketat:",
-    h2Options: "3. Opsi Konfigurasi Utama: PositionOptions",
-    thOption: "Properti Opsi",
+    step3Desc: "Menghentikan pemantauan aktif yang didaftarkan watchPosition untuk menghemat daya baterai.",
+
+    h2Implementation: "2. Implementasi JavaScript untuk Lingkungan Produksi",
+    pImplementation: "Berikut cuplikan JavaScript andal dengan batas waktu timeout dan penanganan galat komprehensif:",
+
+    h2Options: "3. Opsi Konfigurasi: PositionOptions",
+    thOption: "Opsi",
     thType: "Tipe",
     thDefault: "Bawaan",
-    thImpact: "Perilaku & Dampak Teknis",
-    highAccDesc: "Jika true, browser diperintahkan menyalakan chip penerima GPS/GNSS internal sehingga akurasi di bawah 3–5 meter. Jika false, digunakan triangulasi Wi-Fi/seluler hemat daya atau pencarian IP.",
-    timeoutDesc: "Waktu maksimum (dalam milidetik) yang boleh dipakai browser sebelum mengembalikan kode error TIMEOUT. Direkomendasikan: 8.000 sampai 12.000 ms.",
-    maxAgeDesc: "Usia maksimum posisi cache yang masih dapat diterima. Nilai 0 memaksa perangkat mengambil fix satelit/Wi-Fi yang baru.",
-    h2Security: "4. Persyaratan Keamanan & Kebijakan Izin",
-    sec1: "Secure Context (HTTPS Wajib): Sejak Chrome 50 dan iOS 10, Geolocation API sepenuhnya dinonaktifkan pada koneksi HTTP yang tidak aman. Aplikasi web harus disajikan lewat HTTPS yang valid.",
-    sec2: "Perlu Gestur Pengguna: Memanggil geolocation lewat klik tombol (mis. 'Get My Location') memberi tingkat persetujuan pengguna lebih baik dibanding memunculkan prompt tanpa diminta saat halaman dimuat.",
-    sec3: "Permissions-Policy Iframe: Jika menyematkan alat geolocation di dalam <iframe>, Anda wajib mendeklarasikan atribut allow='geolocation' pada tag iframe.",
+    thImpact: "Perilaku dan Dampak Teknis",
+    highAccDesc: "Jika true, mengaktifkan antena satelit GNSS (akurasi 3-5 meter). Jika false, menggunakan triangulasi Wi-Fi hemat daya.",
+    timeoutDesc: "Waktu tunggu maksimum dalam milidetik sebelum memunculkan galat TIMEOUT (3). Rekomendasi: 8.000 hingga 12.000 ms.",
+    maxAgeDesc: "Usia maksimum koordinat dalam cache yang masih dapat diterima. Nilai 0 memaksa pembacaan sensor baru.",
+
+    h2Security: "4. Persyaratan Keamanan dan Kebijakan Izin",
+    sec1: "Konteks Aman (Wajib HTTPS): Semua peramban modern memblokir API jika situs web dibuka melalui protokol HTTP biasa.",
+    sec2: "Tindakan Pengguna: Permintaan izin sebaiknya dipicu oleh klik tombol pengguna (misalnya 'Cari Lokasi Saya').",
+    sec3: "Izin Iframe: Elemen <iframe> tersemat wajib memiliki atribut allow='geolocation'.",
+
+    workedExampleTitle: "Contoh Kode Nyata: Pemanggilan Geolocation Lengkap",
+    workedExampleIntro: "Pola standar pemanggilan koordinat dengan penanganan galat:",
+    workedExampleStep1: "navigator.geolocation.getCurrentPosition(",
+    workedExampleStep2: "  (pos) => console.log('Lintang:', pos.coords.latitude, 'Akurasi:', pos.coords.accuracy),",
+    workedExampleStep3: "  (err) => console.warn('Kode Galat:', err.code, err.message),",
+    workedExampleStep4: "  { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }",
+    workedExampleStep5: ");",
+
+    commonMistakesTitle: "Kesalahan Umum pada API Geolocation",
+    commonMistakes: [
+      { mistake: "Memanggil API pada situs HTTP tanpa enkripsi", explanation: "Peramban langsung menolak permintaan dengan galat PERMISSION_DENIED demi perlindungan privasi." },
+      { mistake: "Mengaktifkan enableHighAccuracy tanpa batas waktu (timeout)", explanation: "Di dalam ruangan tanpa sinyal satelit, panggilan bisa tertahan tanpa batas waktu jika timeout diabaikan." },
+      { mistake: "Tidak menyertakan fungsi callback galat", explanation: "Jika pengguna menolak izin, ketiadaan penangan galat akan memicu penghentian skrip halaman." }
+    ],
+
+    faqs: [
+      { question: "Mengapa peramban meminta izin lokasi setiap kali berkunjung?", answer: "Izin disimpan per domain. Pada jendela penyamaran (incognito) atau setelah riwayat dihapus, peramban akan meminta izin ulang." },
+      { question: "Apa bedanya enableHighAccuracy bernilai true dan false?", answer: "Nilai true mengaktifkan modul GPS satelit (akurasi 3 hingga 5 meter dengan baterai lebih boros). Nilai false memanfaatkan pangkalan data Wi-Fi dan menara seluler." },
+      { question: "Bisakah situs web mengakses lokasi saya secara diam-diam?", answer: "Tidak. Kebijakan keamanan peramban melarang keras situs mengakses lokasi tanpa izin eksplisit pengguna." }
+    ],
+
+    nextStepsTitle: "Langkah Selanjutnya dan Alat Pengembang",
+    nextSteps: [
+      { title: "Uji Akurasi GPS", href: "/tools/gps-accuracy/", desc: "Pantau radius akurasi dan telemetri sensor secara langsung di peramban." },
+      { title: "Keamanan dan Privasi GPS", href: "/guides/gps-privacy-and-security/", desc: "Pelajari bagaimana sistem operasi mengelola dan melindungi data lokasi." },
+      { title: "Cara Kerja GPS", href: "/guides/how-gps-location-works/", desc: "Ketahui prinsip konstelasi satelit, jam atom, dan trilaterasi." }
+    ],
+
     callout2Badge: "🧭 Konversi Koordinat",
-    callout2Title: "Konversi Derajat Desimal dari Geolocation API",
-    callout2Desc: "Ubah keluaran desimal navigator.geolocation menjadi Derajat, Menit, Detik (DMS) atau Universal Transverse Mercator (UTM) dengan mudah.",
+    callout2Title: "Ubah Derajat Desimal dari API",
+    callout2Desc: "Ubah angka desimal dari navigator.geolocation menjadi Derajat, Menit, Detik (DMS) atau kisi metrik UTM.",
     callout2Btn: "Buka Konverter →",
-    connectedTitle: "🔗 Panduan & Alat Uji Terkait",
-    tool1Title: "Monitor Akurasi GPS",
-    tool1Desc: "Penguji akurasi waktu nyata",
-    tool2Title: "Panduan Mock Location",
-    tool2Desc: "Simulasi sensor DevTools",
+    connectedTitle: "🔗 Panduan dan Alat Terkait",
+    tool1Title: "Pemantau Akurasi GPS",
+    tool1Desc: "Penguji waktu nyata",
+    tool2Title: "Simulasi Lokasi",
+    tool2Desc: "Pengujian di DevTools",
     tool3Title: "Cara Kerja GPS",
-    tool3Desc: "Fisika satelit di baliknya",
-    tool4Title: "Perbaiki Lokasi Salah",
-    tool4Desc: "Pemecahan masalah izin"
+    tool3Desc: "Fisika satelit",
+    tool4Title: "Perbaiki Lokasi",
+    tool4Desc: "Langkah perbaikan"
   }
 };
 
@@ -360,13 +677,34 @@ const c = translations[lang] || translations.en;
   h1={c.h1}
   subtitle={c.subtitle}
   section="guides"
-  sectionLabel={c.sectionLabel}
-  readTime="9 min"
-  publishDate="2026-09-22"
+  sectionLabel={lang === 'es' ? 'Guías Prácticas' : lang === 'fr' ? 'Guides Pratiques' : lang === 'de' ? 'Praxis-Leitfäden' : lang === 'pt' ? 'Guias Práticos' : lang === 'hi' ? 'मार्गदर्शिका' : lang === 'id' ? 'Panduan Praktis' : 'Practical Guides'}
+  readTime="8 min"
+  publishDate="2026-09-15"
   modifiedDate="2026-09-22"
 >
-  <p>{c.p1}</p>
-  <p>{c.p2}</p>
+  {c.inShort && (
+    <div class="card card-flat" style="margin-bottom: var(--space-6); padding: var(--space-5); border-left: 4px solid var(--color-accent-primary); background: var(--color-bg-secondary); border-radius: var(--radius-md);">
+      <p style="margin: 0; font-size: var(--text-base); line-height: 1.75; color: var(--color-text-primary); font-weight: 500;">
+        {c.inShort}
+      </p>
+    </div>
+  )}
+
+  {c.takeaways && (
+    <div class="card card-flat" style="margin-bottom: var(--space-8); padding: var(--space-6); background: var(--color-bg-card); border: 1px solid var(--color-border); border-radius: var(--radius-lg);">
+      <h3 style="margin-top: 0; margin-bottom: var(--space-3); font-size: var(--text-lg); display: flex; align-items: center; gap: var(--space-2);">
+        <span>💡</span> {c.takeawaysTitle || "Key Takeaways"}
+      </h3>
+      <ul style="margin: 0; padding-left: var(--space-5); display: flex; flex-direction: column; gap: var(--space-2); line-height: 1.75; color: var(--color-text-secondary);">
+        {c.takeaways.map((item: string) => (
+          <li>{item}</li>
+        ))}
+      </ul>
+    </div>
+  )}
+
+  <p set:html={localizeHtml(c.p1, lang)}></p>
+  <p set:html={localizeHtml(c.p2, lang)}></p>
 
   <div class="tool-callout">
     <div class="tool-callout-content">
@@ -375,7 +713,7 @@ const c = translations[lang] || translations.en;
       <p class="tool-callout-desc">{c.calloutDesc}</p>
     </div>
     <div class="tool-callout-action">
-      <a href={getLocalizedPath('/tools/gps-coordinates/', lang)} class="btn btn-primary">{c.calloutBtn}</a>
+      <a href={getLocalizedPath('/tools/gps-accuracy/', lang)} class="btn btn-primary">{c.calloutBtn}</a>
     </div>
   </div>
 
@@ -386,23 +724,21 @@ const c = translations[lang] || translations.en;
     <div class="step-card">
       <div class="step-number">1</div>
       <div class="step-body">
-        <h4 class="step-title"><code>{c.step1Title}</code></h4>
+        <h4 class="step-title">{c.step1Title}</h4>
         <p class="step-desc">{c.step1Desc}</p>
       </div>
     </div>
-
     <div class="step-card">
       <div class="step-number">2</div>
       <div class="step-body">
-        <h4 class="step-title"><code>{c.step2Title}</code></h4>
+        <h4 class="step-title">{c.step2Title}</h4>
         <p class="step-desc">{c.step2Desc}</p>
       </div>
     </div>
-
     <div class="step-card">
       <div class="step-number">3</div>
       <div class="step-body">
-        <h4 class="step-title"><code>{c.step3Title}</code></h4>
+        <h4 class="step-title">{c.step3Title}</h4>
         <p class="step-desc">{c.step3Desc}</p>
       </div>
     </div>
@@ -411,41 +747,40 @@ const c = translations[lang] || translations.en;
   <h2>{c.h2Implementation}</h2>
   <p>{c.pImplementation}</p>
 
-  <pre><code>{`// Check browser support
-if ('geolocation' in navigator) {
-  const options = {
-    enableHighAccuracy: true, // Request GPS hardware rather than IP lookup
-    timeout: 10000,           // Maximum wait time of 10 seconds
-    maximumAge: 0             // Do not return cached coordinates
-  };
+  <div class="code-preview" style="background: var(--color-bg-secondary); padding: var(--space-4); border-radius: var(--radius-md); font-family: var(--font-mono); font-size: var(--text-sm); line-height: 1.6; overflow-x: auto; border: 1px solid var(--color-border); margin: var(--space-4) 0;">
+    <pre><code>{`// Production Geolocation Pattern
+const options = {
+  enableHighAccuracy: true,
+  timeout: 10000,
+  maximumAge: 0
+};
 
-  function successCallback(position) {
-    const { latitude, longitude, accuracy, altitude, heading, speed } = position.coords;
-    console.log(\`Latitude: \${latitude}, Longitude: \${longitude}\`);
-    console.log(\`Accuracy radius: \${accuracy} meters\`);
+function success(pos) {
+  const { latitude, longitude, accuracy, altitude, speed } = pos.coords;
+  console.log(\`Position: \${latitude}, \${longitude} (±\${accuracy}m)\`);
+}
+
+function error(err) {
+  switch(err.code) {
+    case err.PERMISSION_DENIED:
+      console.warn("User denied geolocation permission.");
+      break;
+    case err.POSITION_UNAVAILABLE:
+      console.warn("Location information unavailable.");
+      break;
+    case err.TIMEOUT:
+      console.warn("Location request timed out.");
+      break;
   }
+}
 
-  function errorCallback(error) {
-    switch(error.code) {
-      case error.PERMISSION_DENIED:
-        console.error("User denied Geolocation permission.");
-        break;
-      case error.POSITION_UNAVAILABLE:
-        console.error("Location information is unavailable (weak GPS/Wi-Fi signal).");
-        break;
-      case error.TIMEOUT:
-        console.error("The request to get user location timed out.");
-        break;
-    }
-  }
-
-  navigator.geolocation.getCurrentPosition(successCallback, errorCallback, options);
-} else {
-  console.warn("Geolocation API is not supported in this browser.");
+if ("geolocation" in navigator) {
+  navigator.geolocation.getCurrentPosition(success, error, options);
 }`}</code></pre>
+  </div>
 
   <h2>{c.h2Options}</h2>
-  <table>
+  <table class="data-table">
     <thead>
       <tr>
         <th>{c.thOption}</th>
@@ -477,11 +812,62 @@ if ('geolocation' in navigator) {
   </table>
 
   <h2>{c.h2Security}</h2>
-  <ul>
+  <ul style="line-height: 1.75; color: var(--color-text-secondary); display: flex; flex-direction: column; gap: var(--space-2);">
     <li>{c.sec1}</li>
     <li>{c.sec2}</li>
     <li>{c.sec3}</li>
   </ul>
+
+  {c.workedExampleTitle && (
+    <div class="card card-flat" style="margin: var(--space-8) 0; padding: var(--space-6); background: var(--color-bg-secondary); border-left: 4px solid var(--color-accent-success); border-radius: var(--radius-md);">
+      <h3 style="margin-top: 0; margin-bottom: var(--space-2); color: var(--color-text-primary);">💻 {c.workedExampleTitle}</h3>
+      <p style="color: var(--color-text-secondary); margin-bottom: var(--space-4); line-height: 1.75;">{c.workedExampleIntro}</p>
+      <div style="display: flex; flex-direction: column; gap: var(--space-1); font-size: var(--text-sm); line-height: 1.6; font-family: var(--font-mono); background: var(--color-bg-tertiary); padding: var(--space-3) var(--space-4); border-radius: var(--radius-sm);">
+        <div>{c.workedExampleStep1}</div>
+        <div style="padding-left: var(--space-4);">{c.workedExampleStep2}</div>
+        <div style="padding-left: var(--space-4);">{c.workedExampleStep3}</div>
+        <div style="padding-left: var(--space-4);">{c.workedExampleStep4}</div>
+        <div>{c.workedExampleStep5}</div>
+      </div>
+    </div>
+  )}
+
+  {c.commonMistakesTitle && (
+    <div style="margin: var(--space-10) 0;">
+      <h2>⚠️ {c.commonMistakesTitle}</h2>
+      <div style="display: grid; gap: var(--space-4); margin-top: var(--space-4);">
+        {c.commonMistakes.map((m: any) => (
+          <div class="card card-flat" style="padding: var(--space-4) var(--space-5); border-left: 3px solid var(--color-accent-warning);">
+            <strong style="display: block; color: var(--color-text-primary); margin-bottom: var(--space-1); font-size: var(--text-base);">{m.mistake}</strong>
+            <p style="margin: 0; color: var(--color-text-secondary); font-size: var(--text-sm); line-height: 1.75;">{m.explanation}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  )}
+
+  {c.faqs && (
+    <div style="margin: var(--space-10) 0;">
+      <h2>❓ Frequently Asked Questions</h2>
+      <FAQAccordion items={c.faqs} />
+    </div>
+  )}
+
+  {c.nextSteps && (
+    <div class="card card-flat" style="margin: var(--space-10) 0; padding: var(--space-6); background: var(--color-bg-secondary); border: 1px solid var(--color-border); border-radius: var(--radius-lg);">
+      <h3 style="margin-top: 0; margin-bottom: var(--space-4); font-size: var(--text-lg); display: flex; align-items: center; gap: var(--space-2);">
+        <span>🚀</span> {c.nextStepsTitle || "Next Steps"}
+      </h3>
+      <div style="display: grid; gap: var(--space-3);">
+        {c.nextSteps.map((step: any) => (
+          <a href={getLocalizedPath(step.href, lang)} class="card card-flat" style="display: flex; flex-direction: column; gap: var(--space-1); padding: var(--space-3) var(--space-4); text-decoration: none; border-left: 3px solid var(--color-accent-primary); background: var(--color-bg-card); transition: transform 0.15s ease;">
+            <strong style="color: var(--color-text-primary); font-size: var(--text-base);">{step.title} →</strong>
+            <span style="color: var(--color-text-secondary); font-size: var(--text-sm); line-height: 1.6;">{step.desc}</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  )}
 
   <div class="tool-callout">
     <div class="tool-callout-content">

@@ -9,7 +9,7 @@ import Breadcrumbs from '../Breadcrumbs.astro';
 import LocationFinder from '../LocationFinder.astro';
 import SiloNav from '../SiloNav.astro';
 import FAQAccordion from '../FAQAccordion.astro';
-import { getLocalizedPath, defaultLang, type SupportedLang } from '../../i18n/config';
+import { getLocalizedPath, defaultLang, type SupportedLang, localizeHtml } from '../../i18n/config';
 import { useTranslations } from '../../i18n/ui';
 
 export type AttributeType = 'address' | 'city' | 'coordinates' | 'country' | 'gps' | 'latitude-longitude' | 'state';
@@ -191,8 +191,8 @@ const dict: Record<AttributeType, Record<string, AttributeConfig>> = {
       subtitle: "Instantly find out what city you're currently located in. See your city name along with state, country, and exact coordinates.",
       emphasisField: "city",
       h2How: "How We Determine Your City",
-      pHow1: "Your city is determined by first getting your GPS coordinates, then using reverse geocoding to match those coordinates to administrative boundaries. The geocoding service identifies which municipality your coordinates fall within.",
-      pHow2: "Depending on local governance boundaries, you may see a metropolitan city, borough, township, or municipality name.",
+      pHow1: "Your current city is determined by locking your GPS position and matching those coordinates against municipal administrative boundaries in GIS boundary registries. If your device incorrectly places you in an adjacent municipality due to cell tower or ISP routing, consult our <a href='/guides/wrong-location/'>troubleshooting wrong location guide</a> or search any specific city using our <a href='/tools/geocoding/'>geocoding tool</a>.",
+      pHow2: "Depending on regional jurisdiction, local authorities define city borders differently from postal delivery zones. To see which broader administrative division your municipality belongs to, visit our <a href='/my-location/state/'>state and province finder</a>, or verify your sovereign territory on the <a href='/my-location/country/'>country detection page</a>.",
       h2What: "Why Identifying Your City Matters",
       bullets: [
         "Travel & Transit — Confirm your metropolitan district when exploring unfamiliar regions",
@@ -210,8 +210,8 @@ const dict: Record<AttributeType, Record<string, AttributeConfig>> = {
       subtitle: "Descubra al instante en qué ciudad o municipio se encuentra ubicado. Conozca su localidad, provincia, país y coordenadas.",
       emphasisField: "city",
       h2How: "Cómo se Identifica su Ciudad o Municipio",
-      pHow1: "Su municipio se determina calculando las coordenadas satelitales y cotejándolas con los límites administrativos oficiales mediante geocodificación inversa.",
-      pHow2: "Según la demarcación local, puede mostrarse el nombre de la capital comarcal, término municipal, pedanía o distrito metropolitano.",
+      pHow1: "Su municipio actual se identifica fijando su posición GPS y cotejando esas coordenadas con los límites administrativos oficiales en registros SIG. Si su dispositivo lo ubica por error en un municipio limítrofe por antenas o enrutamiento del proveedor, consulte nuestra <a href='/guides/wrong-location/'>guía para solucionar ubicaciones erróneas</a> o busque una ciudad concreta con nuestro <a href='/tools/geocoding/'>geocodificador</a>.",
+      pHow2: "Los límites municipales fijados por los ayuntamientos a menudo no coinciden con los distritos postales. Para comprobar a qué división territorial superior pertenece su municipio, acceda a nuestro detector de <a href='/my-location/state/'>estado o provincia</a> o verifique la demarcación nacional en la página de <a href='/my-location/country/'>mi país</a>.",
       h2What: "Utilidad de Conocer su Municipio Actual",
       bullets: [
         "Viajes y Desplazamientos — Confirme en qué demarcación territorial se encuentra al viajar",
@@ -229,8 +229,8 @@ const dict: Record<AttributeType, Record<string, AttributeConfig>> = {
       subtitle: "Identifiez instantanément votre commune ou ville actuelle. Retrouvez le nom de votre municipalité, votre département et vos coordonnées.",
       emphasisField: "city",
       h2How: "Comment Votre Commune Est Reconnue",
-      pHow1: "Votre commune est identifiée en recoupant vos coordonnées satellites avec les polygones des limites administratives officielles du territoire.",
-      pHow2: "Selon l'organisation territoriale, le système indiquera une ville principale, un arrondissement ou une commune rurale.",
+      pHow1: "Votre commune actuelle est déterminée en calculant vos coordonnées géodésiques et en les recoupant avec les limites administratives officielles du cadastre. Si votre équipement vous localise par erreur dans une commune voisine en raison d'un relais mobile ou FAI, consultez notre guide pour <a href='/guides/wrong-location/'>corriger une fausse localisation</a> ou cherchez une commune spécifique avec notre outil de <a href='/tools/geocoding/'>géocodage</a>.",
+      pHow2: "Les découpages municipaux diffèrent fréquemment des zones de distribution postale. Pour identifier la collectivité territoriale ou le département dont dépend votre commune, visitez notre page <a href='/my-location/state/'>département et région</a>, ou vérifiez votre souveraineté territoriale sur notre outil <a href='/my-location/country/'>mon pays</a>.",
       h2What: "Pourquoi Connaître Sa Commune Est Précieux",
       bullets: [
         "Voyages & Déplacements — Sachez précisément sur quel territoire municipal vous vous trouvez",
@@ -248,8 +248,8 @@ const dict: Record<AttributeType, Record<string, AttributeConfig>> = {
       subtitle: "Ermitteln Sie sekundenschnell Ihre aktuelle Stadt oder Gemeinde. Stadtname, Bundesland, Land und exakte Geodaten im Überblick.",
       emphasisField: "city",
       h2How: "Wie Ihre Stadt oder Gemeinde ermittelt wird",
-      pHow1: "Ihre Stadt wird festgestellt, indem Ihr Gerät GPS-Koordinaten erfasst und diese über Geodatenbanken mit behördlichen Verwaltungsgrenzen abgleicht.",
-      pHow2: "Je nach regionaler Gliederung wird Ihnen eine kreisfreie Großstadt, eine Ortsgemeinde oder ein Stadtbezirk ausgegeben.",
+      pHow1: "Ihre aktuelle Stadt oder Gemeinde wird ermittelt, indem Ihre Koordinaten mit amtlichen Gemeindegrenzen in GIS-Katasterdaten abgeglichen werden. Weist Ihr Gerät aufgrund von Mobilfunkzellen oder Provider-Gateways einen Nachbarort aus, hilft Ihnen unsere Anleitung zur <a href='/guides/wrong-location/'>Behebung falscher Standortdaten</a> oder die gezielte Ortssuche mit unserem <a href='/tools/geocoding/'>Geokodierer</a>.",
+      pHow2: "Verwaltungsgrenzen von Kommunen stimmen nicht zwingend mit Postleitzahlengebieten überein. Um zu prüfen, zu welchem Bundesland Ihre Gemeinde gehört, besuchen Sie unsere Seite für das <a href='/my-location/state/'>Bundesland ermitteln</a>, oder verifizieren Sie das Staatsgebiet über den <a href='/my-location/country/'>Länder-Finder</a>.",
       h2What: "Warum die genaue Stadtzuordnung wichtig ist",
       bullets: [
         "Reisen & Transit — Orientierung bei Fahrten durch fremde Ballungsräume",
@@ -267,8 +267,8 @@ const dict: Record<AttributeType, Record<string, AttributeConfig>> = {
       subtitle: "Descubra instantaneamente em qual cidade ou município você se encontra. Veja o nome do município, estado, país e coordenadas.",
       emphasisField: "city",
       h2How: "Como Sua Cidade É Identificada",
-      pHow1: "Sua cidade é descoberta cruzando suas coordenadas GPS com os polígonos dos limites municipais oficiais por geocodificação reversa.",
-      pHow2: "Dependendo da estrutura territorial da região, pode ser exibido um município polo, distrito ou região metropolitana.",
+      pHow1: "Seu município atual é determinado pelo cruzamento das coordenadas GPS com os polígonos das divisas municipais oficiais em bases cartográficas. Caso seu dispositivo indique uma cidade vizinha devido a antenas de celular ou roteamento do provedor, consulte nosso guia de <a href='/guides/wrong-location/'>correção de localização incorreta</a> ou pesquise qualquer cidade com nosso <a href='/tools/geocoding/'>geocodificador</a>.",
+      pHow2: "As divisas administrativas municipais frequentemente não coincidem com os setores postais de entrega. Para conferir a qual divisão estadual seu município pertence, acesse nosso localizador de <a href='/my-location/state/'>estado e província</a> ou valide a fronteira soberana na página de <a href='/my-location/country/'>meu país</a>.",
       h2What: "Vantagens de Confirmar Sua Cidade",
       bullets: [
         "Viagens e Trânsito — Confirme o município exato durante viagens rodoviárias",
@@ -286,8 +286,8 @@ const dict: Record<AttributeType, Record<string, AttributeConfig>> = {
       subtitle: "तुरंत जानें कि आप इस समय किस शहर में स्थित हैं। अपने शहर का नाम राज्य, देश और सटीक निर्देशांकों के साथ देखें।",
       emphasisField: "city",
       h2How: "हम आपका शहर कैसे पहचानते हैं",
-      pHow1: "आपका शहर पहले आपके GPS निर्देशांक लेकर और फिर रिवर्स जियोकोडिंग से उन निर्देशांकों को प्रशासनिक सीमाओं से मिलाकर तय होता है। जियोकोडिंग सेवा पहचानती है कि आपके निर्देशांक किस नगरपालिका सीमा के भीतर आते हैं।",
-      pHow2: "स्थानीय प्रशासनिक सीमाओं के आधार पर आपको महानगर, बरो, कस्बा या नगरपालिका का नाम दिख सकता है।",
+      pHow1: "आपका वर्तमान शहर आपके GPS निर्देशांकों को GIS सीमाओं से मिलाकर तय किया जाता है। यदि मोबाइल टावर या ISP रूटिंग के कारण आपका डिवाइस आपको किसी पड़ोसी कस्बे में दिखाता है, तो हमारा <a href='/guides/wrong-location/'>गलत लोकेशन सुधार गाइड</a> देखें या हमारे <a href='/tools/geocoding/'>जियोकोडिंग टूल</a> से किसी भी शहर को खोजें।",
+      pHow2: "स्थानीय नगरपालिका सीमाएं डाक वितरण क्षेत्रों से भिन्न हो सकती हैं। यह देखने के लिए कि आपकी नगरपालिका किस प्रशासनिक क्षेत्र में आती है, हमारा <a href='/my-location/state/'>राज्य और प्रांत खोजक</a> देखें या हमारे <a href='/my-location/country/'>देश पहचान पेज</a> पर अपनी राष्ट्रीय सीमाएं जांचें।",
       h2What: "अपना शहर जानना क्यों ज़रूरी है",
       bullets: [
         "यात्रा और परिवहन — अनजान इलाकों में अपना महानगर ज़िला पुष्टि करें",
@@ -305,8 +305,8 @@ const dict: Record<AttributeType, Record<string, AttributeConfig>> = {
       subtitle: "Ketahui secara instan Anda saat ini berada di kota mana. Lihat nama kota Anda beserta provinsi, negara, dan koordinat tepatnya.",
       emphasisField: "city",
       h2How: "Cara Kami Menentukan Kota Anda",
-      pHow1: "Kota Anda ditentukan dengan terlebih dahulu memperoleh koordinat GPS Anda, lalu memakai reverse geocoding untuk mencocokkan koordinat tersebut dengan batas administratif. Layanan geocoding mengidentifikasi munisipalitas mana yang memuat koordinat Anda.",
-      pHow2: "Tergantung batas pemerintahan setempat, Anda mungkin melihat nama kota metropolitan, borough, townships, atau munisipalitas.",
+      pHow1: "Kota Anda saat ini ditentukan dengan mencocokkan koordinat GPS Anda dengan batas administratif munisipalitas dalam basis data GIS. Jika perangkat Anda keliru menempatkan Anda di kota tetangga akibat menara seluler atau gateway ISP, simak panduan kami tentang <a href='/guides/wrong-location/'>mengatasi lokasi yang salah</a> atau cari kota tertentu menggunakan alat <a href='/tools/geocoding/'>geocoding</a> kami.",
+      pHow2: "Batas munisipalitas resmi sering kali berbeda dari zona kode pos pengantaran. Untuk melihat wilayah tingkat pertama tempat kota Anda bernaung, kunjungi alat pelacak <a href='/my-location/state/'>provinsi dan negara bagian</a> kami, atau pastikan batas kedaulatan di halaman <a href='/my-location/country/'>negara saya</a>.",
       h2What: "Mengapa Mengenali Kota Anda Penting",
       bullets: [
         "Perjalanan & Transportasi — Pastikan distrik metropolitan Anda saat menjelajahi wilayah asing",
@@ -326,8 +326,8 @@ const dict: Record<AttributeType, Record<string, AttributeConfig>> = {
       subtitle: "Get your current position coordinates in multiple formats — decimal degrees, DMS, UTM, Geohash, and Plus Code.",
       emphasisField: "lat",
       h2How: "What Are Geographic Coordinates?",
-      pHow1: "Geographic coordinates define a specific position on Earth. Latitude measures distance north/south of the Equator, while Longitude measures distance east/west of the Greenwich Prime Meridian.",
-      pHow2: "Together, these two values describe a unique location on Earth. For instance, (28.6139, 77.2090) pinpoints India Gate in New Delhi.",
+      pHow1: "Geographic coordinates define a specific position on Earth by measuring angular distance north or south of the Equator and east or west of the Prime Meridian. To understand coordinate notation and how angles translate to distance on the ground, read our detailed guide on <a href='/guides/latitude-and-longitude-explained/'>latitude and longitude explained</a>, or check our breakdown of <a href='/glossary/#decimal-degrees'>decimal degrees</a>.",
+      pHow2: "Different mapping applications and GPS hardware expect different grid representations. You can transform your coordinates into DMS or UTM using our interactive <a href='/tools/coordinate-converter/'>coordinate converter</a>, explore the pros and cons of notations in our <a href='/comparisons/decimal-degrees-vs-dms/'>Decimal Degrees vs DMS comparison</a>, or view your standalone values on the <a href='/my-location/latitude-longitude/'>latitude and longitude page</a>.",
       h2What: "Standard Coordinate Systems",
       bullets: [
         "Decimal Degrees (DD) — Standard digital format: 28.613900, 77.209000",
@@ -346,8 +346,8 @@ const dict: Record<AttributeType, Record<string, AttributeConfig>> = {
       subtitle: "Compruebe sus coordenadas actuales en múltiples estándares: grados decimales, DMS, cuadrícula UTM, Geohash y Plus Code.",
       emphasisField: "lat",
       h2How: "¿Qué son las Coordenadas Geográficas?",
-      pHow1: "Las coordenadas definen un punto específico sobre la Tierra. La Latitud mide la separación angular con el Ecuador y la Longitud la separación con el Meridiano de Greenwich.",
-      pHow2: "Juntos, ambos valores definen una posición inequívoca sobre el globo terráqueo referenciada al elipsoide WGS 84.",
+      pHow1: "Las coordenadas geográficas definen un punto específico sobre la Tierra midiendo la distancia angular al norte o sur del Ecuador y al este u oeste del meridiano de Greenwich. Para comprender la notación y cómo se traducen los ángulos a metros sobre el terreno, consulte nuestra guía sobre <a href='/guides/latitude-and-longitude-explained/'>latitud y longitud explicadas</a> o revise el concepto en el <a href='/glossary/#decimal-degrees'>glosario de grados decimales</a>.",
+      pHow2: "Diferentes aplicaciones cartográficas y receptores GPS requieren distintas representaciones de cuadrícula. Puede convertir sus coordenadas a formato sexagesimal o métrico con nuestro <a href='/tools/coordinate-converter/'>conversor de coordenadas</a>, analizar las ventajas de cada estándar en nuestra comparativa de <a href='/comparisons/decimal-degrees-vs-dms/'>Grados Decimales vs DMS</a>, o ver sus valores aislados en la página de <a href='/my-location/latitude-longitude/'>latitud y longitud</a>.",
       h2What: "Sistemas de Coordenadas Principales",
       bullets: [
         "Grados Decimales (DD) — Estándar digital universal: 28.613900, 77.209000",
@@ -366,8 +366,8 @@ const dict: Record<AttributeType, Record<string, AttributeConfig>> = {
       subtitle: "Relevez vos coordonnées géographiques sous tous les formats : degrés décimaux, DMS, UTM métrique, Geohash et Plus Code.",
       emphasisField: "lat",
       h2How: "Que Sont les Coordonnées Géographiques ?",
-      pHow1: "Les coordonnées géographiques positionnent n'importe quel point sur le globe terrestre. La latitude mesure la distance par rapport à l'Équateur, et la longitude par rapport au Méridien de Greenwich.",
-      pHow2: "La combinaison de ces deux angles définit sans ambiguïté une localisation spatiale par rapport au modèle WGS 84.",
+      pHow1: "Les coordonnées géographiques définissent un point précis sur Terre en mesurant les écarts angulaires par rapport à l'Équateur et au méridien de Greenwich. Pour comprendre la notation et la conversion des angles en distances métriques, consultez notre guide détaillé <a href='/guides/latitude-and-longitude-explained/'>latitude et longitude expliquées</a> ou le terme dans le <a href='/glossary/#decimal-degrees'>glossaire des degrés décimaux</a>.",
+      pHow2: "Les logiciels SIG et récepteurs GPS utilisent différentes représentations cartographiques. Vous pouvez convertir vos valeurs en notation DMS ou grille métrique avec notre <a href='/tools/coordinate-converter/'>convertisseur de coordonnées</a>, comparer les formats dans notre étude <a href='/comparisons/decimal-degrees-vs-dms/'>Degrés Décimaux vs DMS</a>, ou afficher vos axes sur la page dédiée <a href='/my-location/latitude-longitude/'>latitude et longitude</a>.",
       h2What: "Formats de Coordonnées Standards",
       bullets: [
         "Degrés Décimaux (DD) — Format informatique universel : 28.613900, 77.209000",
@@ -386,8 +386,8 @@ const dict: Record<AttributeType, Record<string, AttributeConfig>> = {
       subtitle: "Ermitteln Sie Ihre Positionsdaten in allen gängigen Formaten: Dezimalgrad, Grad-Minuten-Sekunden (GMS), UTM-Gitter und Geohash.",
       emphasisField: "lat",
       h2How: "Was sind geografische Koordinaten?",
-      pHow1: "Geografische Koordinaten beschreiben einen eindeutigen Punkt auf der Erdoberfläche. Die geografische Breite (Latitude) misst den Abstand zum Äquator, die geografische Länge (Longitude) zum Nullmeridian von Greenwich.",
-      pHow2: "Gemeinsam bilden beide Werte die Basis des weltweiten WGS-84-Referenzellipsoids für Satellitennavigation.",
+      pHow1: "Geografische Koordinaten definieren einen eindeutigen Punkt auf der Erde durch Winkelabstände nördlich oder südlich des Äquators sowie östlich oder westlich des Nullmeridians. Für ein fundiertes Verständnis der Notation lesen Sie unseren Leitfaden <a href='/guides/latitude-and-longitude-explained/'>Breiten- und Längengrad verständlich erklärt</a> oder den Eintrag im <a href='/glossary/#decimal-degrees'>Glossar zu Dezimalgrad</a>.",
+      pHow2: "Unterschiedliche Kartendienste und Navigationsgeräte erfordern verschiedene Koordinatenformate. Sie können Ihre Werte mit unserem <a href='/tools/coordinate-converter/'>Koordinaten-Umrechner</a> in GMS oder UTM transformieren, die Unterschiede in unserem Vergleich <a href='/comparisons/decimal-degrees-vs-dms/'>Dezimalgrad vs. GMS</a> studieren oder Ihre Werte auf der Seite für <a href='/my-location/latitude-longitude/'>Breiten- und Längengrad</a> prüfen.",
       h2What: "Übliche Koordinatensysteme",
       bullets: [
         "Dezimalgrad (DD) — Digitaler Standard: 28.613900, 77.209000",
@@ -406,8 +406,8 @@ const dict: Record<AttributeType, Record<string, AttributeConfig>> = {
       subtitle: "Obtenha as coordenadas da sua localização atual em vários formatos: graus decimais, GMS, grade métrica UTM, Geohash e Plus Code.",
       emphasisField: "lat",
       h2How: "O que são Coordenadas Geográficas?",
-      pHow1: "Coordenadas geográficas definem uma posição exata no globo. A Latitude indica o afastamento em relação à linha do Equador e a Longitude o afastamento em relação ao Meridiano de Greenwich.",
-      pHow2: "Combinados, esses dois números delimitam qualquer lugar do planeta no elipsoide WGS 84 com alta precisão métrica.",
+      pHow1: "As coordenadas geográficas definem um ponto exato na Terra medindo distâncias angulares em relação à linha do Equador e ao meridiano de Greenwich. Para entender as notações e como ângulos se traduzem em distâncias no solo, leia nosso guia sobre <a href='/guides/latitude-and-longitude-explained/'>latitude e longitude explicadas</a> ou confira o verbete no <a href='/glossary/#decimal-degrees'>glossário de graus decimais</a>.",
+      pHow2: "Diferentes softwares de mapeamento e receptores GPS exigem padrões distintos. Você pode converter seus valores para DMS ou projeção métrica em nosso <a href='/tools/coordinate-converter/'>conversor de coordenadas</a>, analisar os prós e contras em nosso comparativo de <a href='/comparisons/decimal-degrees-vs-dms/'>Graus Decimais vs DMS</a>, ou visualizar seus dados isolados na página de <a href='/my-location/latitude-longitude/'>latitude e longitude</a>.",
       h2What: "Sistemas de Notação de Coordenadas",
       bullets: [
         "Graus Decimais (DD) — Padrão digital de computação: 28.613900, 77.209000",
@@ -426,8 +426,8 @@ const dict: Record<AttributeType, Record<string, AttributeConfig>> = {
       subtitle: "अपने वर्तमान स्थिति के निर्देशांक कई फ़ॉर्मैट में पाएं — दशमलव डिग्री, DMS, UTM, Geohash और Plus Code।",
       emphasisField: "lat",
       h2How: "भौगोलिक निर्देशांक क्या हैं?",
-      pHow1: "भौगोलिक निर्देशांक पृथ्वी पर एक विशिष्ट स्थिति बताते हैं। अक्षांश भूमध्य रेखा से उत्तर/दक्षिण दूरी मापता है, जबकि देशांतर ग्रीनविच प्रधान मध्याह्न रेखा से पूर्व/पश्चिम दूरी मापता है।",
-      pHow2: "ये दोनों मान मिलकर पृथ्वी पर एक अद्वितीय स्थान बताते हैं। उदाहरण के लिए, (28.6139, 77.2090) नई दिल्ली में इंडिया गेट की पहचान करता है।",
+      pHow1: "भौगोलिक निर्देशांक भूमध्य रेखा से उत्तर या दक्षिण और ग्रीनविच मध्याह्न रेखा से पूर्व या पश्चिम की कोणीय दूरी मापकर पृथ्वी पर एक सटीक बिंदु तय करते हैं। संकेतन और दूरियों को समझने के लिए हमारा विस्तृत गाइड <a href='/guides/latitude-and-longitude-explained/'>अक्षांश और देशांतर की व्याख्या</a> पढ़ें या <a href='/glossary/#decimal-degrees'>दशमलव डिग्री शब्दावली</a> देखें।",
+      pHow2: "अलग-अलग मैपिंग एप्लिकेशन और GPS डिवाइस अलग-अलग ग्रिड प्रारूप मांगते हैं। आप हमारे <a href='/tools/coordinate-converter/'>कोऑर्डिनेट कनवर्टर</a> से निर्देशांकों को DMS या UTM में बदल सकते हैं, <a href='/comparisons/decimal-degrees-vs-dms/'>दशमलव डिग्री बनाम DMS तुलना</a> में प्रारूपों का अंतर समझ सकते हैं, या हमारे <a href='/my-location/latitude-longitude/'>अक्षांश और देशांतर पेज</a> पर मान देख सकते हैं।",
       h2What: "मानक निर्देशांक प्रणालियाँ",
       bullets: [
         "दशमलव डिग्री (DD) — मानक डिजिटल फ़ॉर्मैट: 28.613900, 77.209000",
@@ -446,8 +446,8 @@ const dict: Record<AttributeType, Record<string, AttributeConfig>> = {
       subtitle: "Dapatkan koordinat posisi Anda saat ini dalam berbagai format — derajat desimal, DMS, UTM, Geohash, dan Plus Code.",
       emphasisField: "lat",
       h2How: "Apa Itu Koordinat Geografis?",
-      pHow1: "Koordinat geografis menentukan posisi tertentu di bumi. Lintang mengukur jarak utara/selatan dari Khatulistiwa, sedangkan Bujur mengukur jarak timur/barat dari Meridian Utama Greenwich.",
-      pHow2: "Kedua nilai tersebut bersama-sama menggambarkan satu lokasi unik di bumi. Misalnya, (28.6139, 77.2090) menunjuk Monumen India Gate di New Delhi.",
+      pHow1: "Koordinat geografis menentukan posisi tertentu di bumi dengan mengukur jarak sudut ke utara atau selatan Khatulistiwa dan ke timur atau barat Meridian Utama. Untuk memahami sistem penulisan dan konversi sudut ke jarak, baca panduan lengkap kami tentang <a href='/guides/latitude-and-longitude-explained/'>penjelasan lintang dan bujur</a> atau pelajari entri <a href='/glossary/#decimal-degrees'>glosarium derajat desimal</a>.",
+      pHow2: "Aplikasi pemetaan dan perangkat GPS yang berbeda membutuhkan representasi kisi yang berbeda. Anda dapat mengonversi koordinat menjadi DMS atau UTM menggunakan alat <a href='/tools/coordinate-converter/'>konverter koordinat</a> kami, mempelajari format di perbandingan <a href='/comparisons/decimal-degrees-vs-dms/'>Derajat Desimal vs DMS</a>, atau membuka halaman <a href='/my-location/latitude-longitude/'>lintang dan bujur</a> kami.",
       h2What: "Sistem Koordinat Standar",
       bullets: [
         "Derajat Desimal (DD) — Format digital standar: 28.613900, 77.209000",
@@ -468,8 +468,8 @@ const dict: Record<AttributeType, Record<string, AttributeConfig>> = {
       subtitle: "Determine your current sovereign country, official ISO alpha-2/alpha-3 country code, and territory borders via GPS.",
       emphasisField: "country",
       h2How: "How Sovereign Borders Are Calculated",
-      pHow1: "Your device acquires latitude and longitude via satellite navigation, and our reverse geocoding engine performs a point-in-polygon lookup against sovereign international territorial boundaries.",
-      pHow2: "This ensures instantaneous country detection whether you are at an international border, on an island, or in territorial waters.",
+      pHow1: "Your current country is identified by intersecting your coordinates with national sovereign borders and international maritime boundary databases. While satellite GNSS locks directly to your geographic country, international travelers on roaming data or VPNs may appear connected elsewhere; learn why in our <a href='/guides/ip-geolocation-accuracy/'>IP geolocation accuracy guide</a> or test your current network routing on the <a href='/my-location/ip/'>my IP location page</a>.",
+      pHow2: "Country detection establishes your default timezone, primary jurisdiction, and continental region. To drill down into your immediate domestic administrative territory, check our <a href='/my-location/state/'>state and province detector</a> or find your municipal municipality on the <a href='/my-location/city/'>city finder</a>.",
       h2What: "Why Country Geolocation Is Critical",
       bullets: [
         "Customs & Immigration — Confirm entry into new national jurisdictions",
@@ -487,8 +487,8 @@ const dict: Record<AttributeType, Record<string, AttributeConfig>> = {
       subtitle: "Compruebe su país soberano actual, código ISO alfa-2/alfa-3 y límites territoriales oficiales mediante señal GPS.",
       emphasisField: "country",
       h2How: "Cómo se Calculan las Fronteras Nacionales",
-      pHow1: "Su dispositivo obtiene latitud y longitud satelital y nuestro motor compara el punto con los polígonos fronterizos reconocidos internacionalmente.",
-      pHow2: "Esto garantiza una detección certera tanto en pasos fronterizos como en islas o zonas costeras.",
+      pHow1: "Su país soberano actual se determina contrastando sus coordenadas con los límites fronterizos terrestres y marítimos reconocidos internacionalmente. Mientras los satélites identifican su país geográfico real, las conexiones bajo itinerancia (roaming) o redes VPN pueden simular otros territorios; descubra los motivos en nuestra <a href='/guides/ip-geolocation-accuracy/'>guía de precisión de geolocalización IP</a> o compruebe su enrutamiento en la página de <a href='/my-location/ip/'>mi ubicación por IP</a>.",
+      pHow2: "La identificación del país establece su huso horario, legislación y prefijos nacionales. Para profundizar en su territorio administrativo regional, consulte nuestro detector de <a href='/my-location/state/'>estado o provincia</a> o identifique el municipio exacto con el buscador de <a href='/my-location/city/'>mi ciudad</a>.",
       h2What: "Importancia de la Geolocalización de País",
       bullets: [
         "Aduanas y Pasaportes — Confirme la entrada en nuevas jurisdicciones estatales",
@@ -506,8 +506,8 @@ const dict: Record<AttributeType, Record<string, AttributeConfig>> = {
       subtitle: "Identifiez le pays souverain où vous vous situez, son code ISO officiel et ses limites territoriales via le signal GPS de votre appareil.",
       emphasisField: "country",
       h2How: "Comment Sont Calculées les Frontières Nationales",
-      pHow1: "Votre appareil relève vos coordonnées spatiales précises et le moteur de géocodage effectue un calcul géométrique d'inclusion dans les frontières internationales.",
-      pHow2: "La détection s'effectue sans ambiguïté, même à proximité immédiate des lignes frontalières ou en mer territoriale.",
+      pHow1: "Votre pays de résidence ou de séjour est identifié en croisant vos coordonnées satellites avec les polygones officiels des frontières nationales et maritimes. Si le récepteur GNSS identifie votre pays géographique réel, les forfaits en itinérance ou les connexions VPN peuvent vous rattacher à un pays distant ; découvrez ces mécanismes dans notre <a href='/guides/ip-geolocation-accuracy/'>guide de précision IP</a> ou testez votre connexion sur la page <a href='/my-location/ip/'>ma position par IP</a>.",
+      pHow2: "La détection du pays détermine votre fuseau horaire, votre devise et vos droits territoriaux. Pour affiner votre localisation territoriale, consultez notre détecteur de <a href='/my-location/state/'>département et région</a> ou retrouvez votre commune avec le localisateur de <a href='/my-location/city/'>ma commune</a>.",
       h2What: "Pourquoi la Détection du Pays Est Essentielle",
       bullets: [
         "Douanes & Passages de Frontière — Vérifiez votre entrée dans un nouvel espace juridique",
@@ -525,8 +525,8 @@ const dict: Record<AttributeType, Record<string, AttributeConfig>> = {
       subtitle: "Stellen Sie Ihren aktuellen Aufenthaltsstaat, offizielle ISO-Ländercodes und Hoheitsgrenzen sekundenschnell per GPS fest.",
       emphasisField: "country",
       h2How: "Wie Staatsgrenzen berechnet werden",
-      pHow1: "Ihr Empfänger ermittelt Koordinaten über GNSS-Satelliten, die mit Vektorpolygonen völkerrechtlicher Staatsgrenzen abgeglichen werden.",
-      pHow2: "Dies gewährleistet eine zuverlässige Zuordnung auch in Grenzregionen, auf Inseln oder in Küstengewässern.",
+      pHow1: "Ihr Aufenthaltsland wird durch Schnittmengenberechnung Ihrer Koordinaten mit völkerrechtlich anerkannten Staats- und Seegrenzen bestimmt. Während GNSS-Satelliten Ihr tatsächliches Land exakt erfassen, können Roaming-Verbindungen oder VPN-Tunnel ein anderes Land vortäuschen; Hintergründe erfahren Sie in unserem <a href='/guides/ip-geolocation-accuracy/'>Leitfaden zur IP-Genauigkeit</a> oder bei einer Überprüfung auf unserer <a href='/my-location/ip/'>IP-Standortseite</a>.",
+      pHow2: "Die Ländererkennung bestimmt Ihre Standardzeitzone, das Rechtssystem und die Mobilfunkvorwahlen. Um Ihre regionale Gliederung innerhalb des Landes genauer zu bestimmen, nutzen Sie unseren <a href='/my-location/state/'>Bundesland-Finder</a> oder ermitteln Sie Ihre Gemeinde über die Seite <a href='/my-location/city/'>In welcher Stadt bin ich</a>.",
       h2What: "Bedeutung der Landesortung",
       bullets: [
         "Zoll & Einreise — Verifizierung des Grenzübertritts in neue Hoheitsgebiete",
@@ -544,8 +544,8 @@ const dict: Record<AttributeType, Record<string, AttributeConfig>> = {
       subtitle: "Identifique seu país soberano atual, código ISO oficial e fronteiras territoriais com precisão via satélite GPS.",
       emphasisField: "country",
       h2How: "Como Fronteiras Nacionais São Calculadas",
-      pHow1: "Seu smartphone capta a latitude e longitude via satélite e o mecanismo de geocodificação realiza o cruzamento com as fronteiras internacionais.",
-      pHow2: "Garante resposta precisa mesmo em áreas de fronteira seca, arquipélagos ou águas territoriais.",
+      pHow1: "Seu país soberano atual é identificado pela interseção das suas coordenadas geográficas com as fronteiras terrestres e marítimas internacionais. Enquanto satélites apontam seu país físico com precisão, planos de roaming internacional ou túneis VPN podem atribuir um país estrangeiro; entenda as causas em nosso <a href='/guides/ip-geolocation-accuracy/'>guia de precisão de geolocalização IP</a> ou faça um teste na página de <a href='/my-location/ip/'>minha localização por IP</a>.",
+      pHow2: "A detecção de país estabelece seu fuso horário padrão, moeda oficial e jurisdição. Para detalhar sua localização em nível estadual, confira nosso detector de <a href='/my-location/state/'>estado e província</a> ou descubra sua localidade no buscador de <a href='/my-location/city/'>minha cidade</a>.",
       h2What: "Aplicações Práticas da Detecção de País",
       bullets: [
         "Imigração e Fronteiras — Confirme o ingresso em novos territórios nacionais",
@@ -563,8 +563,8 @@ const dict: Record<AttributeType, Record<string, AttributeConfig>> = {
       subtitle: "GPS के ज़रिए अपना वर्तमान संप्रभु देश, आधिकारिक ISO अल्फ़ा-2/अल्फ़ा-3 देश कोड और क्षेत्रीय सीमाएं जानें।",
       emphasisField: "country",
       h2How: "संप्रभु सीमाओं की गणना कैसे होती है",
-      pHow1: "आपका डिवाइस सैटेलाइट नेविगेशन से अक्षांश और देशांतर प्राप्त करता है, और हमारा रिवर्स जियोकोडिंग इंजन संप्रभु अंतरराष्ट्रीय क्षेत्रीय सीमाओं के विरुद्ध बिंदु-बहुभुज लुकअप करता है।",
-      pHow2: "इससे तात्कालिक देश पहचान सुनिश्चित होती है, चाहे आप अंतरराष्ट्रीय सीमा पर हों, किसी द्वीप पर हों या क्षेत्रीय जल में।",
+      pHow1: "आपका वर्तमान देश आपके निर्देशांकों को अंतरराष्ट्रीय सीमाओं और समुद्री सीमा डेटाबेस से मिलाकर पहचाना जाता है। जहां सैटेलाइट आपके भौगोलिक देश को सटीक पहचानते हैं, वहीं अंतरराष्ट्रीय रोमिंग या VPN पर कनेक्शन दूसरा देश दिखा सकते हैं; यह जानने के लिए हमारा <a href='/guides/ip-geolocation-accuracy/'>IP जियोलोकेशन सटीकता गाइड</a> पढ़ें या हमारे <a href='/my-location/ip/'>मेरी IP लोकेशन पेज</a> पर परीक्षण करें।",
+      pHow2: "देश की पहचान आपका प्राथमिक टाइमज़ोन, मुद्रा और राष्ट्रीय अधिकार-क्षेत्र तय करती है। अपने देश के भीतर घरेलू प्रशासनिक क्षेत्र की पहचान के लिए हमारा <a href='/my-location/state/'>राज्य और प्रांत खोजक</a> देखें या हमारे <a href='/my-location/city/'>शहर खोजक</a> से स्थानीय नगरपालिका जानें।",
       h2What: "देश जियोलोकेशन क्यों महत्वपूर्ण है",
       bullets: [
         "सीमा शुल्क और आप्रवासन — नए राष्ट्रीय अधिकार-क्षेत्र में प्रवेश की पुष्टि करें",
@@ -582,8 +582,8 @@ const dict: Record<AttributeType, Record<string, AttributeConfig>> = {
       subtitle: "Tentukan negara berdaulat Anda saat ini, kode negara ISO alfa-2/alfa-3 resmi, dan batas wilayah melalui GPS.",
       emphasisField: "country",
       h2How: "Cara Batas Negara Berdaulat Dihitung",
-      pHow1: "Perangkat Anda memperoleh lintang dan bujur melalui navigasi satelit, lalu mesin reverse geocoding kami melakukan pencarian titik-dalam-poligon terhadap batas wilayah internasional berdaulat.",
-      pHow2: "Ini memastikan deteksi negara seketika, baik Anda berada di perbatasan internasional, di pulau, maupun di perairan teritorial.",
+      pHow1: "Negara tempat Anda berada saat ini diidentifikasi dengan memadukan koordinat satelit dengan garis batas negara dan wilayah maritim internasional. Bila satelit mendeteksi negara fisik Anda secara langsung, koneksi roaming atau VPN bisa menampilkan negara lain; ketahui sebabnya di <a href='/guides/ip-geolocation-accuracy/'>panduan akurasi geolokasi IP</a> kami atau uji perutean jaringan di halaman <a href='/my-location/ip/'>lokasi IP saya</a>.",
+      pHow2: "Deteksi negara menentukan zona waktu, mata uang, dan hukum kedaulatan Anda. Untuk memeriksa subdivisi administratif wilayah Anda berikutnya, buka alat pendeteksi <a href='/my-location/state/'>provinsi dan negara bagian</a> kami atau temukan wilayah kota Anda di pelacak <a href='/my-location/city/'>kota saya</a>.",
       h2What: "Mengapa Geolokasi Negara Sangat Penting",
       bullets: [
         "Bea Cukai & Imigrasi — Pastikan masuk ke yurisdiksi nasional baru",
@@ -596,27 +596,69 @@ const dict: Record<AttributeType, Record<string, AttributeConfig>> = {
   },
   gps: {
     en: {
-      title: "My GPS Coordinates — Find Your GPS Location | MyLocationLab",
-      description: "Find your exact GPS coordinates instantly. Get your current latitude and longitude from GPS satellites with real-time accuracy data.",
+      title: "My GPS Coordinates — Live Satellite Latitude & Longitude | MyLocationLab",
+      description: "In short: Detect your real-time GPS coordinates directly from hardware GNSS satellites with horizontal accuracy radius, altitude, and precision diagnostics.",
       h1Prefix: "My GPS",
       h1Accent: "Coordinates",
-      subtitle: "Find your exact GPS coordinates from satellite signals. See your precise latitude, longitude, accuracy, and altitude in real-time.",
+      subtitle: "Find your exact GPS coordinates from satellite signals. See your precise latitude, longitude, accuracy radius, and elevation in real-time.",
       emphasisField: "lat",
-      h2How: "Understanding Your GPS Coordinates",
-      pHow1: "GPS (Global Positioning System) determines your position by triangulating signals from satellites orbiting 20,200 km above Earth. Your device connects to at least 4 satellites to calculate a 3D position fix.",
-      pHow2: "The resulting latitude and longitude numbers identify your point on the planet within meters of accuracy.",
-      h2What: "GPS Data Parameters Explained",
+      
+      inShort: "In short: This page accesses your device's built-in GNSS hardware via the W3C Geolocation API to report real-time latitude, longitude, and elevation. Unlike approximate IP geolocation, your coordinates are computed locally through satellite time-of-flight measurements and are never transmitted to our backend servers.",
+
+      h2How: "Understanding Your Live GPS Fix & Data Sources",
+      pHow1: "Your device determines its position by listening to radio signals transmitted by constellations 20,200 km above Earth, including GPS, Galileo, and GLONASS. When your browser requests location with high accuracy enabled, the operating system engages the GNSS baseband processor to track orbital time pulses. To see how these orbital signals are processed mathematically, read our guide on <a href='/guides/how-gps-location-works/'>how GPS location works</a>.",
+      pHow2: "Unlike desktop IP geolocation which estimates regional network hubs, hardware GPS directly measures your physical coordinate fix. You can verify your current precision threshold and satellite dilution using our <a href='/tools/gps-accuracy/'>GPS Accuracy Monitor</a>, or compare satellite positioning against network lookups in our <a href='/comparisons/gps-vs-ip-location/'>GPS vs IP Location guide</a>. To view your multi-format grid positions, visit your <a href='/my-location/coordinates/'>coordinates breakdown</a>.",
+
+      h2What: "Precision Metrics & Environmental Accuracy",
       bullets: [
-        "Latitude & Longitude — Geographic position relative to the Equator and Prime Meridian",
-        "Accuracy Radius — Estimated uncertainty boundary expressed in meters",
-        "Altitude — Vertical height calculated above the WGS 84 reference ellipsoid",
-        "Telemetry Timestamp — Exact satellite atomic time synchronization instant"
+        "Open Sky Baseline (3–5 meters) — High-confidence dual-frequency lock with 8+ visible satellites",
+        "Urban Canyon Distortion (10–30 meters) — Reflection off high-rise glass and concrete facades (multipath delay)",
+        "Indoor Attenuation (Fallback) — Complete satellite occlusion where devices fall back to Wi-Fi BSSID mapping",
+        "Ellipsoidal Elevation — Height calculated relative to the mathematical WGS 84 ellipsoid"
       ],
+
+      // Sibling comparison section
+      h2WhenToUse: "When to Use This Page vs Sibling Location Pages",
+      whenToUse: [
+        {
+          title: "Use My GPS Coordinates (/my-location/gps/)",
+          desc: "Best when you need raw hardware latitude, longitude, and accuracy radius for navigation, fieldwork, or geocaching."
+        },
+        {
+          title: "Use My Coordinates Formats (/my-location/coordinates/)",
+          desc: "Best when you need to convert your location into Degrees Minutes Seconds (DMS) or UTM grid coordinates for GIS software."
+        },
+        {
+          title: "Use My IP Location (/my-location/ip/)",
+          desc: "Best when diagnosing VPN routing, ISP server hubs, or testing geolocation behavior when satellite sensors are disabled."
+        }
+      ],
+
+      // Next steps
+      nextStepsTitle: "Next Steps: Tools & Tutorials for Your Coordinates",
+      nextSteps: [
+        {
+          title: "Check Live Accuracy & HDOP",
+          desc: "Monitor your horizontal confidence radius and sensor telemetry on the GPS Accuracy Checker.",
+          href: "/tools/gps-accuracy/"
+        },
+        {
+          title: "Convert Coordinates to DMS or UTM",
+          desc: "Transform your raw decimal degrees into surveying notations with the Coordinate Converter.",
+          href: "/tools/coordinate-converter/"
+        },
+        {
+          title: "Explore Coordinate Formats",
+          desc: "Navigate to your full coordinate formatting breakdown on My Coordinates Formats.",
+          href: "/my-location/coordinates/"
+        }
+      ],
+
       h3Related: "Related GPS & Telemetry Tools",
       faq: [
-        { question: "What are GPS coordinates?", answer: "GPS coordinates are a pair of numbers (latitude and longitude) that define an exact position on Earth, calculated via satellite trilateration." },
-        { question: "How accurate are smartphone GPS coordinates?", answer: "Modern smartphones provide 3 to 5 meter accuracy outdoors with an open sky view. Accuracy drops indoors or in dense urban canyons." },
-        { question: "What coordinate format is used?", answer: "Coordinates are shown in Decimal Degrees (DD) and can be converted into Degrees Minutes Seconds (DMS) or UTM grid coordinates." }
+        { question: "What is the difference between this page and /my-location/coordinates/?", answer: "This page focuses specifically on raw GNSS satellite hardware telemetry and accuracy radius. The /my-location/coordinates/ page breaks down multi-format notations including Decimal Degrees, DMS, and UTM for mapping applications." },
+        { question: "Why does my laptop show a different location than my smartphone?", answer: "Most laptops lack GNSS hardware and rely on Wi-Fi router BSSIDs or ISP IP geolocation, which has a 5 to 50 km error margin. Smartphones contain dedicated GPS antennas achieving 3 to 5 meter accuracy outdoors." },
+        { question: "Are my coordinates transmitted or stored when I use this page?", answer: "No. Your coordinates are processed entirely in your web browser. If you resolve a street address, coordinates are sent to OpenStreetMap's Nominatim service, but MyLocationLab never logs or stores your spatial data." }
       ]
     },
     es: {
@@ -627,8 +669,8 @@ const dict: Record<AttributeType, Record<string, AttributeConfig>> = {
       subtitle: "Encuentre sus coordenadas satelitales exactas en tiempo real. Inspeccione latitud, longitud, radio de error y altitud sobre el elipsoide WGS84.",
       emphasisField: "lat",
       h2How: "Cómo se Calculan sus Coordenadas GPS",
-      pHow1: "El GPS calcula su posición mediante la trilateración de señales de radio emitidas por satélites situados a 20.200 km de altitud. Se requiere la sintonía de al menos 4 satélites para resolver las coordenadas espaciales.",
-      pHow2: "Los valores obtenidos expresan su posición métrica exacta con respecto al elipsoide geodésico de referencia WGS 84.",
+      pHow1: "Su dispositivo determina su posición captando las señales de radio emitidas por constelaciones a 20.200 km de la Tierra, como GPS, Galileo y GLONASS. Al solicitar alta precisión, el sistema calcula pulsos orbitales mediante trilateración. Para comprender este cálculo en detalle, lea nuestra guía sobre <a href='/guides/how-gps-location-works/'>cómo funciona el GPS</a>.",
+      pHow2: "A diferencia de la geolocalización por IP que solo estima centrales del proveedor, el chip GPS mide su posición física exacta. Puede verificar su radio de error con nuestro <a href='/tools/gps-accuracy/'>comprobador de precisión GPS</a>, comparar señales satelitales con redes en la comparativa de <a href='/comparisons/gps-vs-ip-location/'>GPS vs. ubicación por IP</a>, o consultar todos sus formatos en la página de <a href='/my-location/coordinates/'>mis coordenadas</a>.",
       h2What: "Parámetros de Telemetría GPS",
       bullets: [
         "Latitud y Longitud — Coordenadas angulares respecto al Ecuador y al Meridiano de Greenwich",
@@ -651,8 +693,8 @@ const dict: Record<AttributeType, Record<string, AttributeConfig>> = {
       subtitle: "Relevez vos coordonnées GPS précises issues des signaux satellites. Latitude, longitude, altitude et rayon d'erreur en temps réel.",
       emphasisField: "lat",
       h2How: "Comment Sont Établies Vos Coordonnées GPS",
-      pHow1: "Le GPS détermine votre position par trilatération d'ondes radio provenant de satellites orbitant à 20 200 km. La réception d'au moins 4 satellites est indispensable pour résoudre la position en 3 dimensions.",
-      pHow2: "Les données calculées correspondent à une précision métrique sur l'ellipsoïde géodésique WGS 84.",
+      pHow1: "Votre appareil détermine sa position en captant les signaux radio émis par des constellations satellitaires en orbite à 20 200 km d'altitude (GPS, Galileo, GLONASS). Lorsque la haute précision est activée, le récepteur résout les impulsions d'horloge par trilatération. Pour comprendre les principes mathématiques sous-jacents, lisez notre guide <a href='/guides/how-gps-location-works/'>comment fonctionne le GPS</a>.",
+      pHow2: "Contrairement à la localisation IP qui ne repère que le répartiteur de votre FAI, le récepteur GNSS mesure directement votre position géographique. Vous pouvez mesurer votre marge d'erreur avec notre <a href='/tools/gps-accuracy/'>testeur de précision GPS</a>, analyser les différences de technologie dans notre comparatif <a href='/comparisons/gps-vs-ip-location/'>GPS vs géolocalisation IP</a>, ou explorer vos notations sur la page de <a href='/my-location/coordinates/'>coordonnées complètes</a>.",
       h2What: "Paramètres de Télémétrie Mesurés",
       bullets: [
         "Latitude & Longitude — Coordonnées angulaires par rapport à l'Équateur et au Méridien de Greenwich",
@@ -675,8 +717,8 @@ const dict: Record<AttributeType, Record<string, AttributeConfig>> = {
       subtitle: "Erfassen Sie Ihre Satellitenkoordinaten in Echtzeit. Exakter Breitengrad, Längengrad, Fehlerkreis und Höhe über dem Meeresspiegel.",
       emphasisField: "lat",
       h2How: "So funktioniert Ihre GPS-Positionsbestimmung",
-      pHow1: "Das Global Positioning System (GPS) errechnet Ihren Standort durch Laufzeitmessung von Signalen aus 20.200 km Höhe. Mindestens 4 Satelliten sind für eine exakte 3D-Positionierung erforderlich.",
-      pHow2: "Die Koordinaten basieren auf dem weltweiten geodätischen Bezugssystem WGS 84 mit sub-metrischer Genauigkeit.",
+      pHow1: "Ihr Gerät ermittelt seine Position durch den Empfang hochfrequenter Funksignale von Satellitenkonstellationen in 20.200 km Höhe (GPS, Galileo, GLONASS). Bei aktivierter hoher Genauigkeit berechnet das Betriebssystem die Signallaufzeiten mittels Trilateration. Eine detaillierte Erklärung der Messverfahren finden Sie in unserem Leitfaden <a href='/guides/how-gps-location-works/'>wie GPS funktioniert</a>.",
+      pHow2: "Im Gegensatz zur IP-Ortung, die lediglich regionale Netzknoten schätzt, erfasst der GNSS-Empfänger Ihren tatsächlichen physischen Standort. Sie können Ihren aktuellen Fehlerkreis mit unserem <a href='/tools/gps-accuracy/'>GPS-Genauigkeitsprüfer</a> analysieren, die Ortungsarten in unserem Vergleich <a href='/comparisons/gps-vs-ip-location/'>GPS vs. IP-Standort</a> gegenüberstellen oder Ihre Gitterwerte auf der Seite für <a href='/my-location/coordinates/'>Koordinaten-Formate</a> abrufen.",
       h2What: "Erfasste Telemetriedaten",
       bullets: [
         "Breitengrad & Längengrad — Geometrische Winkelposition bezüglich Äquator und Nullmeridian",
@@ -699,8 +741,8 @@ const dict: Record<AttributeType, Record<string, AttributeConfig>> = {
       subtitle: "Encontre suas coordenadas satelitais em tempo real. Consulte latitude, longitude, raio de precisão e altitude no elipsoide WGS84.",
       emphasisField: "lat",
       h2How: "Como Suas Coordenadas GPS São Determinadas",
-      pHow1: "O GPS calcula sua posição através da trilateração de ondas de rádio emitidas por satélites a 20.200 km da Terra. É necessária a sintonia com no mínimo 4 satélites para obter uma leitura tridimensional.",
-      pHow2: "Os números obtidos indicam o posicionamento métrico exato sobre o elipsoide WGS 84.",
+      pHow1: "Seu dispositivo determina a posição captando sinais de rádio transmitidos por constelações a 20.200 km de altitude, como GPS, Galileo e GLONASS. Ao ativar a alta precisão, o receptor resolve os pulsos orbitais por meio de trilateração. Para compreender a matemática por trás dessas medições, leia nosso guia sobre <a href='/guides/how-gps-location-works/'>como funciona o GPS</a>.",
+      pHow2: "Ao contrário da geolocalização por IP que apenas estima o nó do provedor, o chip GNSS afere sua coordenada física real. Você pode monitorar sua margem de erro com nosso <a href='/tools/gps-accuracy/'>verificador de precisão GPS</a>, comparar satélites e redes em nosso guia de <a href='/comparisons/gps-vs-ip-location/'>GPS vs localização por IP</a>, ou inspecionar suas notações na página de <a href='/my-location/coordinates/'>minhas coordenadas</a>.",
       h2What: "Parâmetros de Telemetria GPS",
       bullets: [
         "Latitude e Longitude — Posição angular em relação ao Equador e a Greenwich",
@@ -723,8 +765,8 @@ const dict: Record<AttributeType, Record<string, AttributeConfig>> = {
       subtitle: "सैटेलाइट सिग्नल से अपने सटीक GPS निर्देशांक जानें। अपना सटीक अक्षांश, देशांतर, सटीकता और ऊँचाई रीयल-टाइम में देखें।",
       emphasisField: "lat",
       h2How: "अपने GPS निर्देशांकों को समझें",
-      pHow1: "GPS (ग्लोबल पोज़िशनिंग सिस्टम) पृथ्वी से 20,200 km ऊँचाई पर परिक्रमा करते सैटेलाइटों के सिग्नलों को ट्रायंगुलेट करके आपकी स्थिति बताता है। आपका डिवाइस 3D पोज़िशन फ़िक्स की गणना के लिए कम से कम 4 सैटेलाइटों से जुड़ता है।",
-      pHow2: "प्राप्त अक्षांश और देशांतर संख्याएँ मीटर-स्तर की सटीकता के साथ आपका पृथ्वी पर बिंदु पहचानती हैं।",
+      pHow1: "आपका डिवाइस पृथ्वी से 20,200 किमी ऊपर परिक्रमा कर रहे GPS, गैलीलियो और ग्लोनास सैटेलाइट्स के रेडियो सिग्नलों को पकड़कर अपनी स्थिति तय करता है। उच्च सटीकता मोड में ऑपरेटिंग सिस्टम ट्राइलेटरेशन द्वारा समय दालों की गणना करता है। इन सिग्नलों के गणितीय विवरण को समझने के लिए हमारा गाइड पढ़ें कि <a href='/guides/how-gps-location-works/'>GPS कैसे काम करता है</a>।",
+      pHow2: "ISP सर्वर का अनुमान लगाने वाली IP जियोलोकेशन के विपरीत, हार्डवेयर GPS आपके वास्तविक निर्देशांक मापता है। आप हमारे <a href='/tools/gps-accuracy/'>GPS सटीकता मॉनिटर</a> से अपने त्रुटि दायरे की निगरानी कर सकते हैं, <a href='/comparisons/gps-vs-ip-location/'>GPS बनाम IP लोकेशन</a> तुलना में तकनीकों को समझ सकते हैं, या <a href='/my-location/coordinates/'>निर्देशांक हब</a> पर अपने सभी प्रारूप देख सकते हैं।",
       h2What: "GPS डेटा पैरामीटर समझाए गए",
       bullets: [
         "अक्षांश और देशांतर — भूमध्य रेखा और प्रधान मध्याह्न रेखा के सापेक्ष भौगोलिक स्थिति",
@@ -747,8 +789,8 @@ const dict: Record<AttributeType, Record<string, AttributeConfig>> = {
       subtitle: "Temukan koordinat GPS tepat Anda dari sinyal satelit. Lihat lintang, bujur, akurasi, dan ketinggian presisi Anda secara real-time.",
       emphasisField: "lat",
       h2How: "Memahami Koordinat GPS Anda",
-      pHow1: "GPS (Global Positioning System) menentukan posisi Anda dengan trilaterasi sinyal dari satelit yang mengorbit 20.200 km di atas bumi. Perangkat Anda terhubung ke minimal 4 satelit untuk menghitung posisi 3D.",
-      pHow2: "Angka lintang dan bujur yang dihasilkan mengidentifikasi titik Anda di planet ini dengan akurasi hingga meter.",
+      pHow1: "Perangkat Anda menentukan posisinya dengan menangkap sinyal radio dari konstelasi satelit di orbit 20.200 km di atas bumi (GPS, Galileo, GLONASS). Saat mode akurasi tinggi aktif, sistem operasi menghitung waktu tempuh sinyal melalui proses trilaterasi. Untuk mempelajari cara kerja matematisnya, baca panduan kami tentang <a href='/guides/how-gps-location-works/'>cara kerja GPS</a>.",
+      pHow2: "Berbeda dari geolokasi IP yang hanya memperkirakan gateway jaringan penyedia, GPS perangkat keras langsung mengukur posisi fisik Anda. Anda dapat menguji radius presisi saat ini menggunakan <a href='/tools/gps-accuracy/'>pemeriksa akurasi GPS</a>, membandingkan satelit dan jaringan dalam panduan <a href='/comparisons/gps-vs-ip-location/'>GPS vs lokasi IP</a> kami, atau memeriksa variasi format di halaman <a href='/my-location/coordinates/'>koordinat saya</a>.",
       h2What: "Parameter Data GPS Dijelaskan",
       bullets: [
         "Lintang & Bujur — Posisi geografis relatif terhadap Khatulistiwa dan Meridian Utama",
@@ -773,8 +815,8 @@ const dict: Record<AttributeType, Record<string, AttributeConfig>> = {
       subtitle: "Discover your exact latitude and longitude coordinates. High precision GPS positioning with instant map visualization.",
       emphasisField: "lat",
       h2How: "Understanding Latitude and Longitude",
-      pHow1: "Latitude lines (parallels) circle the Earth horizontally from 0° at the Equator to 90° at the poles. Longitude lines (meridians) run vertically from 0° at Greenwich to 180° at the Antimeridian.",
-      pHow2: "Together, latitude and longitude provide an unequivocal angular coordinate reference for any location on Earth.",
+      pHow1: "Lines of latitude circle the globe horizontally parallel to the Equator, while lines of longitude converge at the poles from Greenwich to the antimeridian. To explore how orbital GPS systems measure these angular values on the <a href='/glossary/#wgs-84'>WGS 84 ellipsoid</a>, read our comprehensive guide on <a href='/guides/latitude-and-longitude-explained/'>latitude and longitude explained</a>.",
+      pHow2: "While web maps and mobile navigation APIs default to decimal numbers, nautical navigation and surveyors often use degrees, minutes, and seconds. Review our <a href='/comparisons/decimal-degrees-vs-dms/'>Decimal Degrees vs DMS comparison</a> to understand formatting differences, inspect your multi-grid representation on our <a href='/my-location/coordinates/'>coordinates hub</a>, or look up coordinates anywhere using our <a href='/tools/latitude-longitude/'>latitude and longitude tool</a>.",
       h2What: "Key Precision Metrics",
       bullets: [
         "Decimal Degrees (DD) — Easy calculation format used by Google Maps and web applications",
@@ -791,8 +833,8 @@ const dict: Record<AttributeType, Record<string, AttributeConfig>> = {
       subtitle: "Consulte sus coordenadas angulares exactas. Posicionamiento GPS de alta precisión con visualización inmediata en mapa.",
       emphasisField: "lat",
       h2How: "Comprendiendo la Latitud y Longitud",
-      pHow1: "Las líneas de latitud (paralelos) rodean la Tierra de 0° en el Ecuador a 90° en los polos. Las líneas de longitud (meridianos) van de 0° en Greenwich a 180° en el antimeridiano.",
-      pHow2: "Ambas coordenadas constituyen el sistema de referencia angular universal para geolocalización física.",
+      pHow1: "Los paralelos de latitud circundan la Tierra horizontalmente desde el Ecuador hasta los polos, mientras los meridianos de longitud unen los polos desde Greenwich hasta el antimeridiano. Para comprender cómo calculan los satélites estos ángulos sobre el <a href='/glossary/#wgs-84'>elipsoide WGS 84</a>, consulte nuestra guía sobre <a href='/guides/latitude-and-longitude-explained/'>latitud y longitud explicadas</a>.",
+      pHow2: "Mientras las aplicaciones web y móviles utilizan grados decimales por omisión, la navegación náutica y la topografía emplean grados, minutos y segundos. Revise nuestra comparativa de <a href='/comparisons/decimal-degrees-vs-dms/'>Grados Decimales vs DMS</a> para dominar las conversiones, explore su posición en nuestro centro de <a href='/my-location/coordinates/'>mis coordenadas</a>, o localice cualquier punto con la herramienta de <a href='/tools/latitude-longitude/'>latitud y longitud</a>.",
       h2What: "Métricas de Precisión Clave",
       bullets: [
         "Grados Decimales (DD) — Formato estándar empleado en aplicaciones web y cartografía digital",
@@ -809,8 +851,8 @@ const dict: Record<AttributeType, Record<string, AttributeConfig>> = {
       subtitle: "Découvrez vos coordonnées angulaires exactes. Mesure de haute précision par satellite avec affichage cartographique instantané.",
       emphasisField: "lat",
       h2How: "Comprendre la Latitude et la Longitude",
-      pHow1: "Les parallèles de latitude ceinturent le globe de 0° à l'Équateur jusqu'à 90° aux pôles. Les méridiens de longitude relient les pôles de 0° à Greenwich jusqu'à 180°.",
-      pHow2: "Ce maillage géométrique permet de localiser n'importe quel point terrestre avec une exactitude absolue.",
+      pHow1: "Les parallèles de latitude ceinturent le globe de façon horizontale depuis l'Équateur jusqu'aux pôles, tandis que les méridiens de longitude relient les pôles de Greenwich à l'antiméridien. Pour découvrir comment les signaux GPS projettent ces angles sur l'<a href='/glossary/#wgs-84'>ellipsoïde WGS 84</a>, lisez notre guide <a href='/guides/latitude-and-longitude-explained/'>latitude et longitude expliquées</a>.",
+      pHow2: "Alors que les API web exploitent les nombres décimaux, la navigation maritime et l'aviation s'appuient sur les degrés, minutes et secondes. Parcourez notre comparatif <a href='/comparisons/decimal-degrees-vs-dms/'>Degrés Décimaux vs DMS</a> pour maîtriser ces notations, inspectez vos coordonnées complètes sur notre <a href='/my-location/coordinates/'>page de coordonnées</a> ou repérez un lieu avec notre outil <a href='/tools/latitude-longitude/'>latitude et longitude</a>.",
       h2What: "Indicateurs de Précision",
       bullets: [
         "Degrés Décimaux (DD) — Format informatique universel utilisé par Google Maps et le web",
@@ -827,8 +869,8 @@ const dict: Record<AttributeType, Record<string, AttributeConfig>> = {
       subtitle: "Erfassen Sie Ihre genauen Winkelkoordinaten. Hochpräzise GPS-Ortung mit sofortiger Kartendarstellung.",
       emphasisField: "lat",
       h2How: "Breitengrad und Längengrad verstehen",
-      pHow1: "Breitenkreise verlaufen parallel zum Äquator (0° bis 90° Nord/Süd). Längenmeridiane verlaufen vertikal von 0° (Greenwich) bis 180° (Antimeridian).",
-      pHow2: "Gemeinsam bilden sie das universelle Referenzgitter zur Lokalisierung auf dem WGS-84-Erdmodell.",
+      pHow1: "Breitenkreise verlaufen parallel zum Äquator (0° bis 90° Nord/Süd), während Längenmeridiane die Pole vertikal von Greenwich bis zum Antimeridian verbinden. Wie Satellitennavigationssysteme diese Winkelwerte auf dem <a href='/glossary/#wgs-84'>WGS-84-Referenzellipsoid</a> messen, erfahren Sie in unserem Leitfaden <a href='/guides/latitude-and-longitude-explained/'>Breiten- und Längengrad erklärt</a>.",
+      pHow2: "Während Webanwendungen und Kartendienste standardmäßig Dezimalwerte nutzen, arbeiten Nautik und Luftfahrt mit Grad, Minuten und Sekunden. Nutzen Sie unseren Vergleich <a href='/comparisons/decimal-degrees-vs-dms/'>Dezimalgrad vs. GMS</a> zur Orientierung, prüfen Sie Ihre alternativen Gitterformate auf unserer <a href='/my-location/coordinates/'>Koordinaten-Übersicht</a> oder suchen Sie beliebige Orte mit unserem <a href='/tools/latitude-longitude/'>Breiten- und Längengrad-Finder</a>.",
       h2What: "Wichtige Genauigkeitsmerkmale",
       bullets: [
         "Dezimalgrad (DD) — Standardformat für Webkarten und mobile Anwendungen",
@@ -845,8 +887,8 @@ const dict: Record<AttributeType, Record<string, AttributeConfig>> = {
       subtitle: "Verifique suas coordenadas angulares exatas. Posicionamento de precisão via satélite com visualização imediata no mapa.",
       emphasisField: "lat",
       h2How: "Entendendo Latitude e Longitude",
-      pHow1: "Linhas de latitude (paralelos) circundam a Terra de 0° no Equador a 90° nos polos. Linhas de longitude (meridianos) vão de 0° em Greenwich a 180° no antimeridiano.",
-      pHow2: "Essa malha geométrica permite referenciar qualquer local do planeta com precisão métrica no elipsoide WGS 84.",
+      pHow1: "As linhas de latitude contornam o globo paralelamente ao Equador, enquanto as linhas de longitude unem os polos a partir de Greenwich até o antimeridiano. Para entender como os satélites projetam esses ângulos no <a href='/glossary/#wgs-84'>elipsoide WGS 84</a>, confira nosso guia sobre <a href='/guides/latitude-and-longitude-explained/'>latitude e longitude explicadas</a>.",
+      pHow2: "Enquanto mapas digitais e APIs móveis utilizam numeração decimal, a navegação marítima e a topografia adotam graus, minutos e segundos. Consulte nosso comparativo de <a href='/comparisons/decimal-degrees-vs-dms/'>Graus Decimais vs DMS</a> para compreender a conversão, examine suas projeções na página de <a href='/my-location/coordinates/'>minhas coordenadas</a> ou pesquise novos locais com nossa ferramenta de <a href='/tools/latitude-longitude/'>latitude e longitude</a>.",
       h2What: "Formatos de Precisão",
       bullets: [
         "Graus Decimais (DD) — Formato padrão de mapas digitais e sistemas web",
@@ -863,8 +905,8 @@ const dict: Record<AttributeType, Record<string, AttributeConfig>> = {
       subtitle: "अपने सटीक अक्षांश और देशांतर निर्देशांक जानें। तुरंत नक्शा विज़ुअलाइज़ेशन के साथ उच्च परिशुद्धता GPS पोज़िशनिंग।",
       emphasisField: "lat",
       h2How: "अक्षांश और देशांतर को समझें",
-      pHow1: "अक्षांश रेखाएँ (समानांतर रेखाएँ) भूमध्य रेखा पर 0° से ध्रुवों पर 90° तक क्षैतिज रूप से पृथ्वी का चक्कर लगाती हैं। देशांतर रेखाएँ (मध्याह्न रेखाएँ) ग्रीनविच पर 0° से प्रति-मध्याह्न पर 180° तक लंबवत चलती हैं।",
-      pHow2: "अक्षांश और देशांतर मिलकर पृथ्वी पर किसी भी स्थान के लिए एक असंदिग्ध कोणीय निर्देशांक संदर्भ देते हैं।",
+      pHow1: "अक्षांश रेखाएं भूमध्य रेखा के समानांतर क्षैतिज रूप से चलती हैं, जबकि देशांतर रेखाएं ग्रीनविच से प्रति-मध्याह्न तक ध्रुवों को जोड़ती हैं। सैटेलाइट सिस्टम इन कोणीय मानों को <a href='/glossary/#wgs-84'>WGS 84 दीर्घवृत्तज</a> पर कैसे मापते हैं, यह जानने के लिए हमारा गाइड <a href='/guides/latitude-and-longitude-explained/'>अक्षांश और देशांतर की व्याख्या</a> पढ़ें।",
+      pHow2: "डिजिटल मैप और मोबाइल ऐप आमतौर पर दशमलव मान उपयोग करते हैं, जबकि समुद्री और विमानन नेविगेशन डिग्री, मिनट और सेकंड अपनाते हैं। प्रारूपों के अंतर को समझने के लिए <a href='/comparisons/decimal-degrees-vs-dms/'>दशमलव डिग्री बनाम DMS तुलना</a> देखें, हमारे <a href='/my-location/coordinates/'>निर्देशांक हब</a> पर ग्रिड मान देखें, या हमारे <a href='/tools/latitude-longitude/'>अक्षांश और देशांतर टूल</a> से कोई भी स्थान खोजें।",
       h2What: "मुख्य परिशुद्धता मापदंड",
       bullets: [
         "दशमलव डिग्री (DD) — Google Maps और वेब ऐप्स द्वारा उपयोग किया जाने वाला सरल गणना फ़ॉर्मैट",
@@ -881,8 +923,8 @@ const dict: Record<AttributeType, Record<string, AttributeConfig>> = {
       subtitle: "Temukan koordinat lintang dan bujur tepat Anda. Positioning GPS presisi tinggi dengan visualisasi peta instan.",
       emphasisField: "lat",
       h2How: "Memahami Lintang dan Bujur",
-      pHow1: "Garis lintang (paralel) mengelilingi bumi secara horizontal dari 0° di Khatulistiwa hingga 90° di kutub. Garis bujur (meridian) berjalan vertikal dari 0° di Greenwich hingga 180° di antimeridian.",
-      pHow2: "Lintang dan bujur bersama-sama memberikan acuan koordinat sudut yang tidak ambigu untuk lokasi mana pun di bumi.",
+      pHow1: "Garis lintang mengelilingi bola bumi secara horizontal sejajar dengan Khatulistiwa, sedangkan garis bujur menghubungkan kedua kutub dari Greenwich hingga antimeridian. Untuk mempelajari bagaimana sistem GPS mengukur nilai sudut ini pada <a href='/glossary/#wgs-84'>elipsoid WGS 84</a>, baca panduan kami mengenai <a href='/guides/latitude-and-longitude-explained/'>penjelasan lintang dan bujur</a>.",
+      pHow2: "Jika aplikasi peta web menggunakan bilangan desimal, pelayaran dan penerbangan sering menggunakan derajat, menit, dan detik. Pelajari variasinya melalui perbandingan <a href='/comparisons/decimal-degrees-vs-dms/'>Derajat Desimal vs DMS</a>, periksa proyeksi grid lengkap di halaman <a href='/my-location/coordinates/'>koordinat saya</a>, atau cari titik baru dengan alat <a href='/tools/latitude-longitude/'>lintang dan bujur</a> kami.",
       h2What: "Metrik Presisi Utama",
       bullets: [
         "Derajat Desimal (DD) — Format perhitungan mudah yang dipakai Google Maps dan aplikasi web",
@@ -901,8 +943,8 @@ const dict: Record<AttributeType, Record<string, AttributeConfig>> = {
       subtitle: "Detect your current state, province, department, or administrative region instantly using GPS positioning.",
       emphasisField: "state",
       h2How: "How Administrative Boundaries Are Identified",
-      pHow1: "Your state or province is identified by cross-referencing your GPS coordinates with official first-level administrative territory boundaries in GIS registries.",
-      pHow2: "Whether you are crossing US state lines, Canadian provinces, European regions, or Australian states, the border change is detected immediately.",
+      pHow1: "Your state, province, or primary administrative region is identified by cross-referencing your device coordinates with official territorial GIS polygons. When connected via mobile networks or broadband, routing gateways can occasionally register in an adjacent territory; learn how network lookups operate in our <a href='/guides/ip-geolocation-accuracy/'>IP geolocation accuracy guide</a> or inspect your exact raw fix on our <a href='/my-location/coordinates/'>coordinates hub</a>.",
+      pHow2: "Regional state boundaries govern everything from local taxes to emergency services dispatch. To explore the local municipality inside your current region, visit the <a href='/my-location/city/'>city detection tool</a>, or check the sovereign boundary on our <a href='/my-location/country/'>country location page</a>.",
       h2What: "Why State-Level Geolocation Matters",
       bullets: [
         "Tax & Commerce — Identify sales tax jurisdictions and commerce regulations",
@@ -920,8 +962,8 @@ const dict: Record<AttributeType, Record<string, AttributeConfig>> = {
       subtitle: "Identifique su estado, provincia, comunidad autónoma o región administrativa de manera inmediata mediante señal GPS.",
       emphasisField: "state",
       h2How: "Cómo se Identifican los Límites Administrativos",
-      pHow1: "Su provincia o estado se detecta comparando sus coordenadas GPS con los límites territoriales de primer nivel en bases de datos cartográficas oficiales.",
-      pHow2: "Al cruzar fronteras autonómicas o estatales, el cambio de demarcación se refleja de forma inmediata.",
+      pHow1: "Su estado, provincia o comunidad autónoma se identifica comparando las coordenadas de su dispositivo con los polígonos territoriales oficiales en registros SIG. Si navega por redes móviles o banda ancha fija, las cabeceras pueden ubicarse en regiones vecinas; conozca cómo operan estas redes en nuestra <a href='/guides/ip-geolocation-accuracy/'>guía de precisión de geolocalización IP</a> o revise su punto exacto en nuestro centro de <a href='/my-location/coordinates/'>mis coordenadas</a>.",
+      pHow2: "Las demarcaciones autonómicas y provinciales regulan normativas locales y protección civil. Para explorar el municipio específico donde se encuentra dentro de esta provincia, utilice el detector de <a href='/my-location/city/'>mi ciudad</a> o confirme los límites soberanos en la página de <a href='/my-location/country/'>mi país</a>.",
       h2What: "Utilidad de la Geolocalización Autonómica o Estatal",
       bullets: [
         "Tributación y Comercio — Conozca la fiscalidad local e impuestos de transmisiones",
@@ -939,8 +981,8 @@ const dict: Record<AttributeType, Record<string, AttributeConfig>> = {
       subtitle: "Déterminez instantanément votre département, région administrative ou province grâce à votre positionnement GPS.",
       emphasisField: "state",
       h2How: "Comment Sont Identifiées les Limites Régionales",
-      pHow1: "Votre département ou région est identifié en superposant vos coordonnées géodésiques aux polygones des divisions administratives officielles.",
-      pHow2: "La transition est immédiate lors du franchissement des limites départementales ou régionales.",
+      pHow1: "Votre département, région ou province administrative est déterminé en croisant vos coordonnées géodésiques avec les limites territoriales officielles du système d'information géographique (SIG). Si vous naviguez sur réseau mobile ou box Internet, la passerelle opérateur peut se trouver dans une région voisine ; découvrez ce fonctionnement dans notre <a href='/guides/ip-geolocation-accuracy/'>guide de précision IP</a> ou vérifiez vos coordonnées brutes sur notre page de <a href='/my-location/coordinates/'>coordonnées complètes</a>.",
+      pHow2: "Les découpages régionaux et départementaux régissent la fiscalité locale et les services publics. Pour découvrir la commune exacte où vous stationnez dans ce département, visitez notre outil <a href='/my-location/city/'>dans quelle ville suis-je</a> ou vérifiez les frontières nationales sur la page <a href='/my-location/country/'>mon pays</a>.",
       h2What: "Pourquoi Connaître Sa Région Administrative",
       bullets: [
         "Fiscalité & Réglementations — Reconnaissez les taux de taxes locales et spécificités territoriales",
@@ -958,8 +1000,8 @@ const dict: Record<AttributeType, Record<string, AttributeConfig>> = {
       subtitle: "Ermitteln Sie Ihr Bundesland, Ihren Kanton oder Regierungsbezirk sekundenschnell über GPS-Satellitenortung.",
       emphasisField: "state",
       h2How: "Wie Landesgrenzen bestimmt werden",
-      pHow1: "Ihr Bundesland wird ermittelt, indem Ihre Koordinaten mit amtlichen GIS-Katastergrenzen der Länder abgeglichen werden.",
-      pHow2: "Beim Überqueren von Bundeslandgrenzen wird der Wechsel unmittelbar erfasst.",
+      pHow1: "Ihr Bundesland oder Ihre übergeordnete Verwaltungsregion wird durch Abgleich Ihrer Geokoordinaten mit den amtlichen Katastergrenzen ermittelt. Bei mobilen Verbindungen oder Firmennetzwerken können Routing-Gateways im Nachbarbundesland registriert sein; wie Netzknoten aufgelöst werden, erklärt unser <a href='/guides/ip-geolocation-accuracy/'>Leitfaden zur IP-Genauigkeit</a>, während Sie Ihre Rohdaten auf unserer <a href='/my-location/coordinates/'>Koordinaten-Seite</a> prüfen können.",
+      pHow2: "Landesgrenzen regeln regionale Gesetze, Feiertage und Zuständigkeiten der Behörden. Um die kreisfreie Stadt oder Gemeinde innerhalb Ihres aktuellen Bundeslandes zu identifizieren, nutzen Sie den <a href='/my-location/city/'>Stadt-Finder</a> oder prüfen Sie das Staatsgebiet über den <a href='/my-location/country/'>Länder-Finder</a>.",
       h2What: "Bedeutung der regionalen Bundeslandzuordnung",
       bullets: [
         "Gesetzgebung & Verordnungen — Kenntnis der geltenden Landesbauordnungen und Feiertagsgesetze",
@@ -977,8 +1019,8 @@ const dict: Record<AttributeType, Record<string, AttributeConfig>> = {
       subtitle: "Identifique seu estado, província ou região administrativa de localização instantaneamente via posicionamento GPS.",
       emphasisField: "state",
       h2How: "Como os Limites Estaduais São Identificados",
-      pHow1: "Seu estado é identificado pelo cruzamento das coordenadas GPS com as divisões federativas oficiais registradas em órgãos cartográficos.",
-      pHow2: "Ao transitar entre estados ou divisas regionais, o sistema atualiza a jurisdição imediatamente.",
+      pHow1: "Seu estado, província ou divisão federativa é identificado pelo cruzamento das coordenadas do aparelho com os limites territoriais registrados em bases cartográficas. Em redes móveis ou conexões empresariais, os gateways podem indicar um estado adjacente; entenda as particularidades de rede no <a href='/guides/ip-geolocation-accuracy/'>guia de precisão de geolocalização IP</a> ou inspecione suas coordenadas puras em <a href='/my-location/coordinates/'>minhas coordenadas</a>.",
+      pHow2: "As divisas estaduais definem jurisdições jurídicas, alíquotas tributárias e centros de atendimento. Para conferir o município específico dentro do seu estado atual, acesse o localizador de <a href='/my-location/city/'>minha cidade</a> ou verifique os limites soberanos na página de <a href='/my-location/country/'>meu país</a>.",
       h2What: "Importância de Confirmar o Estado de Localização",
       bullets: [
         "Legislação e Trânsito — Conheça as normas de tráfego e regras estaduais de circulação",
@@ -996,8 +1038,8 @@ const dict: Record<AttributeType, Record<string, AttributeConfig>> = {
       subtitle: "GPS पोज़िशनिंग से अपना वर्तमान राज्य, प्रांत या प्रशासनिक क्षेत्र तुरंत पहचानें।",
       emphasisField: "state",
       h2How: "प्रशासनिक सीमाएं कैसे पहचानी जाती हैं",
-      pHow1: "आपका राज्य या प्रांत आपके GPS निर्देशांकों को GIS रजिस्ट्रियों में दर्ज प्रथम-स्तरीय प्रशासनिक क्षेत्र की आधिकारिक सीमाओं से मिलाकर पहचाना जाता है।",
-      pHow2: "चाहे आप अमेरिकी राज्यों की सीमाएं, कनाडाई प्रांत, यूरोपीय क्षेत्र या ऑस्ट्रेलियाई राज्य पार कर रहे हों, सीमा परिवर्तन तुरंत पहचान लिया जाता है।",
+      pHow1: "आपका राज्य, प्रांत या प्रशासनिक क्षेत्र डिवाइस निर्देशांकों को आधिकारिक क्षेत्रीय GIS सीमाओं से मिलाकर पहचाना जाता है। मोबाइल नेटवर्क या ब्रॉडबैंड पर रूटिंग गेटवे कभी-कभी पड़ोसी राज्य में दर्ज हो सकते हैं; यह समझने के लिए कि नेटवर्क कैसे काम करता है, हमारा <a href='/guides/ip-geolocation-accuracy/'>IP जियोलोकेशन सटीकता गाइड</a> पढ़ें या हमारे <a href='/my-location/coordinates/'>निर्देशांक हब</a> पर अपने सटीक मान जांचें।",
+      pHow2: "राज्य की सीमाएं स्थानीय करों से लेकर आपातकालीन सेवाओं तक का संचालन करती हैं। अपने वर्तमान राज्य के भीतर विशिष्ट नगरपालिका की पहचान के लिए हमारा <a href='/my-location/city/'>शहर खोजक</a> देखें या <a href='/my-location/country/'>देश स्थान पेज</a> पर राष्ट्रीय सीमाओं की पुष्टि करें।",
       h2What: "राज्य-स्तरीय जियोलोकेशन क्यों मायने रखती है",
       bullets: [
         "कर और वाणिज्य — बिक्री कर अधिकार-क्षेत्र और वाणिज्य नियमों की पहचान करें",
@@ -1015,8 +1057,8 @@ const dict: Record<AttributeType, Record<string, AttributeConfig>> = {
       subtitle: "Deteksi provinsi, negara bagian, atau wilayah administratif Anda saat ini secara instan menggunakan positioning GPS.",
       emphasisField: "state",
       h2How: "Cara Batas Administratif Diidentifikasi",
-      pHow1: "Negara bagian atau provinsi Anda diidentifikasi dengan mencocokkan koordinat GPS Anda dengan batas wilayah administratif tingkat pertama yang resmi dalam registri GIS.",
-      pHow2: "Baik Anda melewati batas negara bagian AS, provinsi Kanada, wilayah Eropa, atau negara bagian Australia, perubahan batas langsung terdeteksi.",
+      pHow1: "Provinsi, negara bagian, atau wilayah administratif tingkat pertama Anda diidentifikasi dengan memetakan koordinat perangkat ke poligon teritorial resmi GIS. Pada koneksi seluler atau broadband, gateway perutean terkadang terdaftar di wilayah tetangga; pelajari cara kerjanya di <a href='/guides/ip-geolocation-accuracy/'>panduan akurasi geolokasi IP</a> kami atau periksa koordinat mentah Anda di halaman <a href='/my-location/coordinates/'>koordinat saya</a>.",
+      pHow2: "Batas provinsi mengatur hukum regional, pajak daerah, dan instansi layanan masyarakat. Untuk menemukan kota atau kabupaten tempat Anda berada di dalam provinsi ini, gunakan alat pendeteksi <a href='/my-location/city/'>kota saya</a> atau periksa batas kedaulatan di halaman <a href='/my-location/country/'>negara saya</a>.",
       h2What: "Mengapa Geolokasi Tingkat Provinsi Penting",
       bullets: [
         "Pajak & Perdagangan — Identifikasi yurisdiksi pajak penjualan dan regulasi perdagangan",
@@ -1604,9 +1646,17 @@ const faqSchema = faq ? {
 
     <section class="section">
       <div class="prose" style="max-width: var(--max-width-narrow);">
+        {c.inShort && (
+          <div class="callout-box" style="margin-bottom: var(--space-6); background: var(--color-bg-secondary); border-left: 4px solid var(--color-accent-primary); padding: var(--space-4) var(--space-5); border-radius: var(--radius-md);">
+            <p style="margin: 0; font-weight: 500; font-size: var(--text-base); color: var(--color-text-primary); line-height: 1.75;">
+              {c.inShort}
+            </p>
+          </div>
+        )}
+
         <h2>{c.h2How}</h2>
-        <p>{c.pHow1}</p>
-        <p>{c.pHow2}</p>
+        <p set:html={localizeHtml(c.pHow1, lang)} />
+        <p set:html={localizeHtml(c.pHow2, lang)} />
 
         <h2>{c.h2What}</h2>
         <ul>
@@ -1615,10 +1665,40 @@ const faqSchema = faq ? {
           ))}
         </ul>
 
+        {c.whenToUse && (
+          <div style="margin: var(--space-8) 0;">
+            <h2>🧭 {c.h2WhenToUse || "When to Use This Page"}</h2>
+            <div style="display: grid; gap: var(--space-3); margin-top: var(--space-4);">
+              {c.whenToUse.map((w: any) => (
+                <div class="card card-flat" style="padding: var(--space-4) var(--space-5); border-left: 3px solid var(--color-accent-primary);">
+                  <strong style="display: block; color: var(--color-text-primary); margin-bottom: var(--space-1);">{w.title}</strong>
+                  <span style="color: var(--color-text-secondary); font-size: var(--text-sm); line-height: 1.6;">{w.desc}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
         {faq && faq.length > 0 && (
           <div style="margin-top: var(--space-8);">
             <h2>FAQ</h2>
             <FAQAccordion items={faq} includeSchema={false} />
+          </div>
+        )}
+
+        {c.nextSteps && (
+          <div class="card card-flat" style="margin: var(--space-10) 0; padding: var(--space-6); background: var(--color-bg-secondary); border: 1px solid var(--color-border); border-radius: var(--radius-lg);">
+            <h3 style="margin-top: 0; margin-bottom: var(--space-4); font-size: var(--text-lg); display: flex; align-items: center; gap: var(--space-2);">
+              <span>🚀</span> {c.nextStepsTitle || "Next Steps"}
+            </h3>
+            <div style="display: grid; gap: var(--space-3);">
+              {c.nextSteps.map((step: any) => (
+                <a href={getLocalizedPath(step.href, lang)} class="card card-flat" style="display: flex; flex-direction: column; gap: var(--space-1); padding: var(--space-3) var(--space-4); text-decoration: none; border-left: 3px solid var(--color-accent-primary); background: var(--color-bg-card); transition: transform 0.15s ease;">
+                  <strong style="color: var(--color-text-primary); font-size: var(--text-base);">{step.title} →</strong>
+                  <span style="color: var(--color-text-secondary); font-size: var(--text-sm); line-height: 1.6;">{step.desc}</span>
+                </a>
+              ))}
+            </div>
           </div>
         )}
       </div>

@@ -1,0 +1,55 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../../components/Breadcrumbs.astro';
+import { footerNav } from '../../../data/navigation.js';
+import { languages, supportedLocales, getLocalizedPath, type SupportedLang } from '../../../i18n/config';
+
+const lang = 'pt' as SupportedLang;
+
+const breadcrumbs = [
+  { label: 'Home', href: getLocalizedPath('/', lang) },
+  { label: 'Sitemap' }
+];
+
+const sitemapSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebPage',
+  name: 'MyLocationLab Sitemap',
+  url: 'https://mylocationlab.com/' + lang + '/sitemap/',
+};
+---
+
+<BaseLayout
+  lang={lang}
+  title="HTML Sitemap | MyLocationLab"
+  description="Site directory of all tools, guides, and pages."
+  activeSection="resources"
+  jsonLd={[sitemapSchema]}
+>
+  <div class="container">
+    <Breadcrumbs items={breadcrumbs} lang={lang} />
+
+    <section class="page-header" style="text-align: center; margin-bottom: var(--space-10);">
+      <h1>Site <span class="text-gradient">Directory & Sitemap</span></h1>
+    </section>
+
+    <div class="grid grid-2" style="gap: var(--space-8); margin-bottom: var(--space-16);">
+      {Object.entries(footerNav).map(([category, links]) => (
+        <div class="card" style="padding: var(--space-6);">
+          <h2 style="font-size: var(--text-xl); color: var(--color-accent-primary); margin-bottom: var(--space-4); border-bottom: 1px solid var(--color-border); padding-bottom: var(--space-2);">
+            {category}
+          </h2>
+          <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: var(--space-3);">
+            {links.map((link) => (
+              <li>
+                <a href={getLocalizedPath(link.href, lang)} style="color: var(--color-text-primary); text-decoration: none; font-weight: 500;">
+                  {link.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </div>
+  </div>
+</BaseLayout>

@@ -1,9 +1,10 @@
 ---
 /**
- * UtmCoordinatesView — Multilingual Guide: UTM Coordinates & Geodetic Datums
+ * UtmCoordinatesView — Multilingual Guide: UTM Coordinates and Datums
  */
 import ContentLayout from '../../layouts/ContentLayout.astro';
-import { getLocalizedPath, type SupportedLang, defaultLang } from '../../i18n/config';
+import FAQAccordion from '../FAQAccordion.astro';
+import { getLocalizedPath, localizeHtml, type SupportedLang, defaultLang } from '../../i18n/config';
 
 interface Props {
   lang?: SupportedLang;
@@ -13,368 +14,564 @@ const { lang = defaultLang } = Astro.props;
 
 const translations: Record<string, any> = {
   en: {
-    title: "UTM Coordinates & Datums: WGS84, NAD83 | MyLocationLab",
-    description: "Master the Universal Transverse Mercator (UTM) coordinate system, military grid reference system (MGRS), geodetic datums, false eastings, and zone projections.",
-    h1: "UTM Coordinates & Geodetic Datums: The Complete GIS Guide",
-    subtitle: "Understand how metric grid projections, UTM 6-degree zones, false northing/easting, and regional datums (NAD83, ETRS89, WGS84) shape professional surveying.",
-    sectionLabel: "Educational Guides",
-    p1: "While consumer web maps and smartphones use spherical angular coordinates (Latitude and Longitude), civil engineers, land surveyors, topographers, and military tacticians require metric Cartesian grids.",
-    p2: "The most ubiquitous metric system in global GIS is the Universal Transverse Mercator (UTM) projection. In this guide, we demystify how UTM divides the curved Earth into flat zones, how false eastings eliminate negative numbers, and how geodetic datums like WGS 84, NAD83, and ETRS89 ensure millimeter precision.",
-    calloutBadge: "🧭 Instant Conversion",
-    calloutTitle: "Convert Between UTM, Decimal Degrees & DMS",
-    calloutDesc: "Input any coordinate to calculate its UTM Zone, Easting, Northing, and hemisphere projection automatically.",
-    calloutBtn: "Open UTM Converter →",
-    h2WhatIsUtm: "1. What Is the Universal Transverse Mercator (UTM) System?",
-    pUtm1: "The UTM system is not a single map projection; it is a specialized grid system developed by the United States Army Corps of Engineers in the 1940s. It maps the Earth between 80° South latitude and 84° North latitude using a conformal Transverse Mercator cylindrical projection.",
-    h3Zones: "The 60 Longitudinal Zones (6° Width Each)",
-    pZones: "To minimize scale distortion that occurs when flattening a spherical surface, UTM divides the globe into 60 longitudinal zones numbered 1 through 60:",
-    zoneLi1: "Each zone spans 6 degrees of longitude wide (60 × 6° = 360°).",
-    zoneLi2: "Zone 1 begins at the 180th meridian (180° W to 174° W) and counts eastward.",
-    zoneLi3: "Each zone has a Central Meridian running precisely down its middle (3° from either border).",
-    h2EastingNorthing: "2. Understanding Easting, Northing & False Offsets",
-    pEastingNorthing: "Within each 6° UTM zone, any position is expressed in standard meters using two coordinates:",
-    eastingTitle: "Easting (X-Axis) & The 500,000 m False Easting",
-    eastingDesc: "To prevent negative numbers when moving west of a zone's Central Meridian, the central meridian is assigned an arbitrary False Easting of 500,000 meters. Locations west of center have eastings < 500,000 m; locations east of center have eastings > 500,000 m.",
-    northingTitle: "Northing (Y-Axis) & The Equator Baseline",
-    northingDesc: "In the Northern Hemisphere, the Equator is assigned a Northing of 0 meters. In the Southern Hemisphere, to avoid negative values, the Equator is assigned a False Northing of 10,000,000 meters, decreasing toward the South Pole.",
-    h2Datums: "3. What Is a Geodetic Datum? (WGS84 vs NAD83 vs ETRS89)",
-    pDatums: "Coordinates are meaningless without a reference frame. A geodetic datum defines the size, shape, and orientation of the mathematical ellipsoid modeling the Earth:",
-    thDatum: "Datum Name",
-    thModel: "Ellipsoid Model",
-    thCoverage: "Coverage Area",
-    thFrame: "Tectonic Frame & Key Application",
-    wgs84Desc: "Geocentric, Earth-fixed. The default global standard for GPS and consumer web mapping.",
-    nad83Desc: "Fixed to the North American tectonic plate. Used by USGS, US government, and state surveyors.",
-    etrs89Desc: "Fixed to the stable Eurasian tectonic plate. Mandated by the European Union for geospatial data.",
-    nad27Desc: "Historical regional datum centered on Meades Ranch, Kansas. Offsets of ~100m compared to WGS84.",
-    driftNote: "Tectonic Drift Note: Because the North American plate moves ~1 to 2 cm per year westward relative to the Earth's center of mass, WGS84 and NAD83 coordinates currently differ by ~1.0 to 1.5 meters across the United States.",
-    h2Mgrs: "4. Military Grid Reference System (MGRS)",
-    pMgrs: "The Military Grid Reference System (MGRS) is an alphanumeric extension of UTM developed by NATO armed forces. It divides each UTM zone into 8° latitude bands (labeled C through X) and further subdivides zones into 100,000-meter grid squares represented by two letters (e.g., 18TWK12345678).",
-    callout2Badge: "📐 Distance & Great-Circle",
-    callout2Title: "Calculate Geodesic Distances",
-    callout2Desc: "Measure the exact geodesic distance between metric or angular waypoints across the globe using our Haversine solver.",
-    callout2Btn: "Open Distance Calculator →",
-    connectedTitle: "🔗 Connected Guides & Geospatial Utilities",
+    title: "UTM Coordinates & Datums Explained: Complete Guide | MyLocationLab",
+    description: "In short: Universal Transverse Mercator (UTM) projects Earth's curved surface onto 60 metric planar zones, using false northing and easting coordinates.",
+    h1: "UTM Coordinates and Geodetic Datums Explained",
+    subtitle: "A comprehensive guide to metric grid projections, zone numbering, false eastings, and ellipsoid datums like WGS 84 and NAD83.",
+    
+    inShort: "In short: The Universal Transverse Mercator (UTM) system projects Earth's spherical surface onto a two-dimensional metric grid divided into 60 longitudinal zones of 6 degrees each. Instead of degrees, UTM measures positions in meters using Easting (X) and Northing (Y) coordinates relative to a central meridian and false origin.",
+
+    takeawaysTitle: "Key Takeaways",
+    takeaways: [
+      "UTM divides the world into 60 zones of 6° longitude each, from zone 1 (180°W to 174°W) to zone 60 (174°E to 180°E).",
+      "Coordinates are strictly metric: a false easting of 500,000 meters prevents negative numbers west of the central meridian.",
+      "A geodetic datum (like WGS 84 or NAD83) defines the reference ellipsoid model; mismatched datums can shift coordinates by hundreds of meters.",
+      "UTM distortion remains under 0.1% within each zone, making it the premier choice for military, construction, and engineering surveys.",
+      "You can convert seamlessly between metric UTM and spherical angular coordinates."
+    ],
+
+    pIntro1: "When civil engineers, military units, and topographic surveyors measure land, degrees of latitude and longitude present severe calculation challenges. Because meridians converge toward the poles, angular distances do not represent uniform physical meters.",
+    pIntro2: "To eliminate this problem, the Universal Transverse Mercator (UTM) projection maps Earth's curved ellipsoid onto flat metric planes. As detailed in our guide on <a href='/guides/latitude-and-longitude-explained/'>latitude and longitude explained</a>, spherical coordinates require trigonometric equations, whereas UTM enables Pythagorean metric math. You can convert UTM grids back to decimal degrees using our <a href='/tools/coordinate-converter/'>Coordinate Converter</a>, or review our comparison of <a href='/comparisons/decimal-degrees-vs-dms/'>Decimal Degrees vs DMS</a>. For foundational geodesy, consult our glossary entries for <a href='/glossary/#datum'>datum</a> and <a href='/glossary/#wgs-84'>WGS 84</a>.",
+
+    calloutBadge: "📐 Instant Converter",
+    calloutTitle: "Convert UTM to Latitude & Longitude",
+    calloutDesc: "Translate any UTM zone, easting, and northing coordinate into Decimal Degrees, DMS, or MGRS.",
+    calloutBtn: "Open Coordinate Converter →",
+
+    h2Zones: "1. The 60 UTM Zones: How Earth Is Sliced",
+    pZones1: "UTM divides the globe between 80° South and 84° North latitude into 60 longitudinal zones, each 6 degrees wide. Zones are numbered 1 through 60 starting at the International Date Line (180° West) and progressing eastward.",
+    zoneBullet1: "Zone Width: 6 degrees of longitude (~668 km wide at the equator, narrowing toward the poles).",
+    zoneBullet2: "Central Meridian: Each zone is centered on a meridian with a scale factor of 0.9996 to minimize edge distortion.",
+    zoneBullet3: "Latitude Bands: 20 latitude bands of 8° each (designated by letters C through X, omitting I and O) identify north-south bands.",
+
+    h2EastingNorthing: "2. Understanding Easting, Northing & False Origins",
+    pEasting1: "Unlike latitude and longitude which use negative signs for southern and western hemispheres, UTM coordinates use strictly positive meter values through false origins:",
+    eastBullet1: "False Easting (500,000 m): The central meridian of each zone is arbitrarily assigned an Easting of 500,000 meters. Points west have eastings < 500,000m; points east have eastings > 500,000m.",
+    eastBullet2: "Northern Hemisphere Northing: The Equator is 0 meters northing, increasing northward to roughly 9,300,000 meters near the Arctic.",
+    eastBullet3: "Southern Hemisphere False Northing (10,000,000 m): To avoid negative numbers in the south, the Equator is assigned a false northing of 10,000,000 meters, decreasing southward toward Antarctica.",
+
+    h2Datums: "3. What Is a Geodetic Datum? (WGS 84 vs NAD83 vs ETRS89)",
+    pDatums1: "A coordinate without a defined geodetic datum is meaningless. A datum specifies the mathematical ellipsoid model representing Earth's shape, along with an origin point and orientation:",
+    datumWgs: "WGS 84 (World Geodetic System 1984): The global standard used by GPS satellites and web mapping engines (EPSG:4326).",
+    datumNad: "NAD83 (North American Datum 1983): Optimized for the North American tectonic plate. In some regions, NAD83 coordinates differ from WGS 84 by 1 to 2 meters due to continental drift.",
+    datumEtrs: "ETRS89 (European Terrestrial Reference System 1989): Tied to the stable Eurasian plate for European cadastral surveying.",
+
+    workedExampleTitle: "Real-World Example: Reading a UTM Coordinate",
+    workedExampleIntro: "Example Coordinate: 10S 551412m E 4180421m N (San Francisco, CA)",
+    workedExampleStep1: "Zone '10': Indicates longitudinal zone 10 (spanning 126°W to 120°W).",
+    workedExampleStep2: "Band 'S': Indicates the latitude band between 32°N and 40°N.",
+    workedExampleStep3: "Easting '551,412m E': 51,412 meters east of zone 10's central meridian (123°W).",
+    workedExampleStep4: "Northing '4,180,421m N': Exactly 4,180,421 meters north of the Equator.",
+
+    commonMistakesTitle: "Common UTM and Datum Mistakes",
+    commonMistakes: [
+      { mistake: "Omitting the UTM Zone Number", explanation: "Because every zone reuses the 500,000m false easting, an easting and northing without a zone number could refer to 60 different places around the Earth." },
+      { mistake: "Mixing up WGS 84 and local historical datums", explanation: "Plotting coordinates on an old ED50 or Tokyo Datum map using WGS 84 GPS coordinates can introduce errors of 100 to 500 meters." },
+      { mistake: "Attempting to measure distances across zone boundaries", explanation: "UTM coordinates from adjacent zones cannot be subtracted directly using Euclidean distance; they must first be converted to geodetic lat/long or reprojected into a common zone." }
+    ],
+
+    faqs: [
+      { question: "Why do surveyors and militaries use UTM instead of GPS latitude/longitude?", answer: "UTM coordinates are measured in standard meters on a flat Cartesian plane. Surveyors and soldiers can calculate distances and areas using basic geometry without complex spherical trigonometry." },
+      { question: "What happens to UTM at the North and South Poles?", answer: "UTM stops at 80° South and 84° North latitude because longitudinal convergence causes extreme distortion. Polar regions use the Universal Polar Stereographic (UPS) projection instead." },
+      { question: "How does MGRS relate to UTM?", answer: "The Military Grid Reference System (MGRS) is an alphanumeric extension of UTM. It subdivides each 6° × 8° UTM zone into 100,000-meter squares identified by two letters, followed by numerical grid coordinates." }
+    ],
+
+    nextStepsTitle: "Next Steps",
+    nextSteps: [
+      { title: "Convert Coordinates Now", href: "/tools/coordinate-converter/", desc: "Translate coordinates between UTM grid zones, Decimal Degrees, and DMS." },
+      { title: "Latitude & Longitude Guide", href: "/guides/latitude-and-longitude-explained/", desc: "Master the spherical angular coordinate system underlying all datums." },
+      { title: "Decimal Degrees vs DMS Comparison", href: "/comparisons/decimal-degrees-vs-dms/", desc: "Learn how sexagesimal coordinates compare with modern decimal standards." }
+    ],
+
+    connectedGuides: "🔗 Connected Guides & Practical Tools",
     tool1Title: "Coordinate Converter",
-    tool1Desc: "UTM, DMS, DD converter",
+    tool1Desc: "Convert UTM, DD & DMS",
     tool2Title: "Latitude & Longitude",
-    tool2Desc: "Spherical geodesy guide",
-    tool3Title: "Decimal Degrees vs DMS",
-    tool3Desc: "Coordinate notation comparison",
-    tool4Title: "How GPS Works",
-    tool4Desc: "WGS84 satellite orbits"
+    tool2Desc: "Geodesy coordinate primer",
+    tool3Title: "Decimals vs DMS",
+    tool3Desc: "Format comparison",
+    tool4Title: "Distance Calculator",
+    tool4Desc: "Haversine geodesic solver"
   },
   es: {
-    title: "Coordenadas UTM y Dátums: WGS84, NAD83 | MyLocationLab",
-    description: "Domine el sistema Universal Transverse Mercator (UTM), sistema MGRS militar, dátums geodésicos, falso este y proyecciones cartográficas.",
-    h1: "Coordenadas UTM y Dátums Geodésicos: La Guía SIG Completa",
-    subtitle: "Comprenda cómo las proyecciones métricas en cuadrícula, husos UTM de 6 grados y dátums regionales (NAD83, ETRS89, WGS84) definen la topografía.",
-    sectionLabel: "Guías Educativas",
-    p1: "Mientras que los mapas web de consumo y los teléfonos móviles emplean coordenadas angulares esféricas (Latitud y Longitud), los ingenieros civiles, topógrafos y especialistas en SIG requieren cuadrículas cartesianas métricas.",
-    p2: "El sistema métrico más extendido en los SIG globales es la proyección Universal Transverse Mercator (UTM). En esta guía explicamos cómo la proyección UTM aplana la Tierra esférica en husos, cómo el falso este evita números negativos y cómo dátums como WGS 84, NAD83 y ETRS89 garantizan precisión milimétrica.",
-    calloutBadge: "🧭 Conversión Inmediata",
-    calloutTitle: "Convierta entre UTM, Grados Decimales y DMS",
-    calloutDesc: "Introduzca cualquier coordenada para calcular su Huso UTM, Este, Norte y proyección de hemisferio de manera automática.",
-    calloutBtn: "Abrir Conversor UTM →",
-    h2WhatIsUtm: "1. ¿Qué es el Sistema Universal Transversal de Mercator (UTM)?",
-    pUtm1: "El sistema UTM no es una simple proyección de mapa; es un sistema de cuadrícula especializado desarrollado por el Cuerpo de Ingenieros del Ejército de EE. UU. en la década de 1940. Cartografía la Tierra entre los 80° de latitud Sur y los 84° de latitud Norte utilizando una proyección cilíndrica conforme transversa.",
-    h3Zones: "Los 60 Husos Longitudinales (6° de Anchura Cada Uno)",
-    pZones: "Para minimizar la distorsión de escala que ocurre al aplanar una superficie curva, el sistema UTM divide el globo en 60 husos numerados del 1 al 60:",
-    zoneLi1: "Cada huso abarca 6 grados de longitud de ancho (60 × 6° = 360°).",
-    zoneLi2: "El Huso 1 comienza en el meridiano 180° (180° O a 174° O) y avanza hacia el este.",
-    zoneLi3: "Cada huso posee un Meridiano Central que discurre exactamente por su punto medio (a 3° de cada límite).",
-    h2EastingNorthing: "2. Entendiendo el Este, Norte y Falsos Orígenes",
-    pEastingNorthing: "Dentro de cada huso UTM de 6°, cualquier ubicación se expresa en metros estándar mediante dos valores numéricos:",
-    eastingTitle: "Coordenada Este (Eje X) y el Falso Este de 500.000 m",
-    eastingDesc: "Para prevenir valores negativos al desplazarse al oeste del Meridiano Central, a dicho meridiano se le asigna un Falso Este arbitrario de 500.000 metros. Las posiciones al oeste del centro tienen un Este < 500.000 m; al este, un Este > 500.000 m.",
-    northingTitle: "Coordenada Norte (Eje Y) y la Línea Base del Ecuador",
-    northingDesc: "En el Hemisferio Norte, al Ecuador se le asigna un Norte de 0 metros. En el Hemisferio Sur, para evitar cifras negativas, al Ecuador se le asigna un Falso Norte de 10.000.000 de metros que desciende hacia el Polo Sur.",
-    h2Datums: "3. ¿Qué es un Dátum Geodésico? (WGS84 vs NAD83 vs ETRS89)",
-    pDatums: "Las coordenadas carecen de sentido sin un marco de referencia. Un dátum geodésico define el tamaño, la forma y la orientación del elipsoide matemático que modela la Tierra:",
-    thDatum: "Nombre del Dátum",
-    thModel: "Modelo Elipsoidal",
-    thCoverage: "Área de Cobertura",
-    thFrame: "Marco Tectónico y Aplicación Principal",
-    wgs84Desc: "Geocéntrico y anclado a la Tierra. Estándar global por defecto para GPS y cartografía web.",
-    nad83Desc: "Fijado a la placa tectónica norteamericana. Utilizado por el USGS y organismos oficiales en EE. UU.",
-    etrs89Desc: "Fijado a la placa euroasiática estable. Obligatorio por normativa de la Unión Europea para datos geoespaciales.",
-    nad27Desc: "Dátum regional histórico centrado en Meades Ranch, Kansas. Desplazamientos de ~100m respecto a WGS84.",
-    driftNote: "Nota de Deriva Tectónica: Debido a que la placa norteamericana se desplaza de 1 a 2 cm al año hacia el oeste, las coordenadas WGS84 y NAD83 difieren actualmente entre 1,0 y 1,5 metros en territorio estadounidense.",
-    h2Mgrs: "4. Sistema de Referencia de Cuadrícula Militar (MGRS)",
-    pMgrs: "El MGRS es una extensión alfanumérica del sistema UTM diseñada por las fuerzas de la OTAN. Divide cada huso en bandas de latitud de 8° (identificadas con letras de la C a la X) y subdivide cada zona en cuadrados métricos de 100.000 metros (ej. 18TWK12345678).",
-    callout2Badge: "📐 Distancia Ortodrómica",
-    callout2Title: "Calcule Distancias Geodésicas",
-    callout2Desc: "Mida la distancia ortodrómica exacta entre coordenadas angulares o métricas con nuestra herramienta de cálculo Haversine.",
-    callout2Btn: "Abrir Calculadora de Distancia →",
-    connectedTitle: "🔗 Guías y Utilidades Relacionadas",
+    title: "Coordenadas UTM y Dátums Explicados: Guía Completa | MyLocationLab",
+    description: "En resumen: Universal Transverse Mercator (UTM) proyecta la Tierra en 60 husos métricos planos, utilizando coordenadas métricas este y norte.",
+    h1: "Coordenadas UTM y Dátums Geodésicos Explicados",
+    subtitle: "Guía completa de proyecciones métricas, numeración de husos, orígenes falsos y elipsoides como WGS 84 y ETRS89.",
+    
+    inShort: "En resumen: El sistema UTM proyecta la superficie esférica terrestre sobre un plano métrico dividido en 60 husos longitudinales de 6 grados cada uno. En lugar de grados, el UTM expresa posiciones en metros planos utilizando coordenadas Este (X) y Norte (Y).",
+
+    takeawaysTitle: "Puntos Clave",
+    takeaways: [
+      "El UTM divide el planeta en 60 husos de 6° de longitud cada uno, numerados del 1 al 60.",
+      "Las coordenadas son métricas: un falso este de 500.000 metros evita valores negativos al oeste del meridiano central.",
+      "Un dátum geodésico (como WGS 84 o ETRS89) define el elipsoide de referencia; mezclar dátums genera desvíos de cientos de metros.",
+      "La distorsión cartográfica se mantiene por debajo del 0,1% dentro de cada huso.",
+      "Es posible alternar fácilmente entre coordenadas métricas planas y ángulos esféricos."
+    ],
+
+    pIntro1: "En ingeniería civil, obras públicas y cartografía militar, medir terrenos con grados de latitud y longitud plantea cálculos esféricos complejos.",
+    pIntro2: "La proyección UTM soluciona este obstáculo transformando el elipsoide terrestre en planos métricos cartesianos. Como explicamos en nuestra guía sobre <a href='/guides/latitude-and-longitude-explained/'>latitud y longitud explicadas</a>, los ángulos requieren trigonometría, mientras que el UTM permite cálculos métricos directos. Puede convertir husos UTM con el <a href='/tools/coordinate-converter/'>Conversor de Coordenadas</a> o revisar la comparativa de <a href='/comparisons/decimal-degrees-vs-dms/'>Grados Decimales vs DMS</a>. Consulte en el glosario las definiciones de <a href='/glossary/#datum'>dátum</a> y <a href='/glossary/#wgs-84'>WGS 84</a>.",
+
+    calloutBadge: "📐 Conversor en Vivo",
+    calloutTitle: "Convierta UTM a Latitud y Longitud",
+    calloutDesc: "Transforme cualquier huso UTM, coordenada este y norte a Grados Decimales o DMS al instante.",
+    calloutBtn: "Abrir Conversor →",
+
+    h2Zones: "1. Los 60 Husos UTM: Cómo se Divide la Tierra",
+    pZones1: "El sistema UTM divide la Tierra entre 80° Sur y 84° Norte en 60 zonas longitudinales de 6° de ancho, numeradas del 1 al 60 de oeste a este.",
+    zoneBullet1: "Ancho del Huso: 6 grados de longitud (~668 km de ancho en el ecuador, estrechándose hacia los polos).",
+    zoneBullet2: "Meridiano Central: Cada huso posee un meridiano central con factor de escala 0,9996 para limitar la deformación perimetral.",
+    zoneBullet3: "Bandas de Latitud: 20 bandas de 8° (letras C a X) definen la posición norte-sur.",
+
+    h2EastingNorthing: "2. Coordenadas Este, Norte y Falsos Orígenes",
+    pEasting1: "Para evitar números negativos, el UTM recurre a orígenes artificiales en metros:",
+    eastBullet1: "Falso Este (500.000 m): El meridiano central tiene asignado un Este de 500.000 m. Los puntos al oeste miden menos de 500.000 m y al este más.",
+    eastBullet2: "Norte en Hemisferio Norte: El ecuador marca 0 m y sube hasta ~9.300.000 m cerca del Polo Norte.",
+    eastBullet3: "Falso Norte en Hemisferio Sur (10.000.000 m): Para evitar negativos, el ecuador vale 10.000.000 m y disminuye hacia el Polo Sur.",
+
+    h2Datums: "3. Qué es un Dátum Geodésico (WGS 84, ETRS89 y ED50)",
+    pDatums1: "Una coordenada sin dátum carece de rigor. El dátum especifica el elipsoide de referencia y su punto de anclaje:",
+    datumWgs: "WGS 84: El estándar global utilizado por los satélites GPS y mapas web (EPSG:4326).",
+    datumNad: "ETRS89: Dátum oficial en Europa, ligado a la placa tectónica euroasiática.",
+    datumEtrs: "ED50: Antiguo dátum histórico europeo; comparar coordenadas ED50 con WGS 84 genera desfases de más de 100 metros.",
+
+    workedExampleTitle: "Ejemplo Real: Lectura de una Coordenada UTM",
+    workedExampleIntro: "Coordenada de Ejemplo: 30T 440230m E 4474920m N (Madrid, España)",
+    workedExampleStep1: "Huso '30': Indica el huso longitudinal 30 (entre 6°O y 0° Greenwich).",
+    workedExampleStep2: "Banda 'T': Identifica la franja latitudinal entre 40°N y 48°N.",
+    workedExampleStep3: "Este '440.230m E': Situado a 59.770 metros al oeste del meridiano central (3°O).",
+    workedExampleStep4: "Norte '4.474.920m N': Ubicado a 4.474.920 metros al norte del ecuador.",
+
+    commonMistakesTitle: "Errores Comunes con UTM y Dátums",
+    commonMistakes: [
+      { mistake: "Omitir el número de huso UTM", explanation: "Como cada huso repite el valor de 500.000m, una coordenada sin huso puede corresponder a 60 lugares distintos del planeta." },
+      { mistake: "Mezclar cartografías ED50 y WGS 84", explanation: "Usar datos GPS de satélite en mapas topográficos antiguos en papel de España genera errores de más de 100 metros." },
+      { mistake: "Calcular distancias cruzando dos husos", explanation: "No se pueden restar coordenadas UTM de husos distintos directamente; deben pasarse antes a coordenadas geodésicas." }
+    ],
+
+    faqs: [
+      { question: "¿Por qué los topógrafos prefieren UTM frente a latitud y longitud?", answer: "Porque miden en metros planos cartesianos y pueden calcular superficies y distancias usando el teorema de Pitágoras sin trigonometría esférica." },
+      { question: "¿Qué ocurre en los polos con el sistema UTM?", answer: "El UTM se detiene en 80°S y 84°N debido a la deformación polar extrema. En los polos se utiliza la proyección Estereográfica Polar Universal (UPS)." },
+      { question: "¿Qué relación tiene el sistema MGRS con el UTM?", answer: "El MGRS es la adaptación militar del UTM que divide cada huso en cuadrículas de 100.000 metros identificadas por dos letras." }
+    ],
+
+    nextStepsTitle: "Siguientes Pasos",
+    nextSteps: [
+      { title: "Convertidor de Coordenadas UTM", href: "/tools/coordinate-converter/", desc: "Transforme husos UTM a Grados Decimales y viceversa." },
+      { title: "Guía de Latitud y Longitud", href: "/guides/latitude-and-longitude-explained/", desc: "Comprenda el sistema angular base de la geodesia." },
+      { title: "Grados Decimales vs DMS", href: "/comparisons/decimal-degrees-vs-dms/", desc: "Conozca las diferencias de notación sexagesimal." }
+    ],
+
+    connectedGuides: "🔗 Guías y Herramientas Conectadas",
     tool1Title: "Conversor de Coordenadas",
-    tool1Desc: "Conversión UTM, DMS y DD",
+    tool1Desc: "UTM, DD y DMS",
     tool2Title: "Latitud y Longitud",
-    tool2Desc: "Guía de geodesia esférica",
-    tool3Title: "Grados Decimales vs DMS",
-    tool3Desc: "Comparativa de notaciones",
-    tool4Title: "Cómo Funciona el GPS",
-    tool4Desc: "Órbitas y elipsoide WGS84"
+    tool2Desc: "Fundamentos angulares",
+    tool3Title: "Decimales vs DMS",
+    tool3Desc: "Formatos comparados",
+    tool4Title: "Calculadora Distancia",
+    tool4Desc: "Distancia Haversine"
   },
   fr: {
-    title: "Coordonnées UTM & Datums : WGS84, NAD83 | MyLocationLab",
-    description: "Maîtrisez le système Universal Transverse Mercator (UTM), le quadrillage militaire MGRS, les datums géodésiques et les projections cartographiques.",
-    h1: "Coordonnées UTM & Datums Géodésiques : Le Guide SIG Complet",
-    subtitle: "Comprenez le fonctionnement des projections métriques, des fuseaux UTM de 6 degrés et des datums régionaux (NAD83, ETRS89, WGS84).",
-    sectionLabel: "Guides Pédagogiques",
-    p1: "Alors que les cartes web grand public et les smartphones utilisent des coordonnées angulaires sphériques (Latitude et Longitude), les géomètres, topographes et ingénieurs SIG travaillent sur des grilles métriques planes.",
-    p2: "Le système métrique le plus répandu en géomatique est la projection Universal Transverse Mercator (UTM). Ce guide explique le découpage de la Terre en fuseaux, le rôle du faux-est pour éviter les valeurs négatives, et l'importance des datums WGS 84, NAD83 et ETRS89 pour garantir la précision centimétrique.",
-    calloutBadge: "🧭 Conversion Immédiate",
-    calloutTitle: "Convertissez entre UTM, Degrés Décimaux et DMS",
-    calloutDesc: "Saisissez n'importe quelle coordonnée pour calculer automatiquement son fuseau UTM, son Easting, son Northing et son hémisphère.",
-    calloutBtn: "Ouvrir le Convertisseur UTM →",
-    h2WhatIsUtm: "1. Qu'est-ce que le Système UTM (Universal Transverse Mercator) ?",
-    pUtm1: "Le système UTM n'est pas une projection cartographique unique, mais un système de quadrillage développé dans les années 1940 par l'armée américaine. Il cartographie la surface terrestre entre 80° Sud et 84° Nord à l'aide d'une projection cylindrique conforme transverse de Mercator.",
-    h3Zones: "Les 60 Fuseaux Longitudinaux (6° de Largeur)",
-    pZones: "Afin de limiter la distorsion d'échelle inhérente à l'aplatissement d'une sphère, l'UTM segmente le globe en 60 fuseaux numérotés de 1 à 60 :",
-    zoneLi1: "Chaque fuseau couvre 6 degrés de longitude (60 × 6° = 360°).",
-    zoneLi2: "Le Fuseau 1 débute à l'antiméridien 180° (180° O à 174° O) et progresse vers l'est.",
-    zoneLi3: "Chaque fuseau dispose d'un Méridien Central en son milieu parfait (à 3° des limites).",
-    h2EastingNorthing: "2. Comprendre l'Easting, le Northing et les Faux Décalages",
-    pEastingNorthing: "À l'intérieur de chaque fuseau de 6°, une position métrique est déterminée par deux valeurs :",
-    eastingTitle: "Easting (Axe X) et le Faux-Est de 500 000 m",
-    eastingDesc: "Pour bannir les nombres négatifs à l'ouest du Méridien Central, ce dernier se voit attribuer un Faux-Est forfaitaire de 500 000 mètres. Les points à l'ouest ont un Easting < 500 000 m ; ceux à l'est ont un Easting > 500 000 m.",
-    northingTitle: "Northing (Axe Y) et la Ligne Équatoriale",
-    northingDesc: "Dans l'Hémisphère Nord, l'Équateur correspond à un Northing de 0 mètre. Dans l'Hémisphère Sud, pour éviter toute coordonnée négative, l'Équateur reçoit un Faux-Nord de 10 000 000 de mètres qui décroît vers le Pôle Sud.",
-    h2Datums: "3. Qu'est-ce qu'un Datum Géodésique ? (WGS84 vs NAD83 vs ETRS89)",
-    pDatums: "Des coordonnées sont dénuées de sens sans système géodésique de référence. Un datum fixe la forme, le rayon et la position de l'ellipsoïde mathématique modélisant le géoïde terrestre :",
-    thDatum: "Nom du Datum",
-    thModel: "Modèle d'Ellipsoïde",
-    thCoverage: "Zone d'Application",
-    thFrame: "Cadre Tectonique et Usage",
-    wgs84Desc: "Géocentrique et lié à la Terre. Référence universelle du GPS et de la cartographie numérique en ligne.",
-    nad83Desc: "Lié à la plaque tectonique nord-américaine. Utilisé par l'USGS et les services publics américains.",
-    etrs89Desc: "Lié à la plaque eurasienne stable. Standard officiel obligatoire dans l'Union européenne.",
-    nad27Desc: "Ancien datum régional centré sur Meades Ranch (Kansas). Écarts d'environ 100 m par rapport au WGS84.",
-    driftNote: "Dérive Tectonique : La plaque nord-américaine se déplaçant de 1 à 2 cm par an vers l'ouest, les coordonnées WGS84 et NAD83 divergent actuellement de 1,0 à 1,5 mètre aux États-Unis.",
-    h2Mgrs: "4. Le Système de Référence Militaire (MGRS)",
-    pMgrs: "Le système MGRS est une déclinaison militaire alphanumérique de l'UTM créée pour les armées de l'OTAN. Il découpe chaque fuseau en bandes de latitude de 8° (lettres C à X) et en carrés métriques de 100 000 mètres (ex. 18TWK12345678).",
-    callout2Badge: "📐 Calcul Géodésique",
-    callout2Title: "Calculez des Distances Géodésiques",
-    callout2Desc: "Mesurez la distance exacte du grand cercle entre deux repères métriques ou angulaires grâce à notre formule de Haversine.",
-    callout2Btn: "Ouvrir le Calculateur de Distance →",
-    connectedTitle: "🔗 Guides et Outils Associés",
-    tool1Title: "Convertisseur de Coordonnées",
-    tool1Desc: "Conversion UTM, DMS et DD",
-    tool2Title: "Latitude et Longitude",
-    tool2Desc: "Guide de géodésie sphérique",
-    tool3Title: "Degrés Décimaux vs DMS",
-    tool3Desc: "Comparatif des formats",
-    tool4Title: "Comment Fonctionne le GPS",
-    tool4Desc: "Constellations et ellipsoïde WGS84"
+    title: "Coordonnées UTM et Datums Expliqués : Guide | MyLocationLab",
+    description: "En bref : La projection UTM découpe la Terre en 60 fuseaux métriques plans, utilisant des coordonnées métriques Easting et Northing.",
+    h1: "Coordonnées UTM et Datums Géodésiques Expliqués",
+    subtitle: "Guide complet des projections métriques, numérotation des fuseaux, faux origines et ellipsoïdes WGS 84 et Lambert.",
+    
+    inShort: "En bref : Le système Transverse Universelle de Mercator (UTM) projette la surface sphérique de la Terre sur un plan métrique en 60 fuseaux de 6 degrés. Au lieu de degrés, l'UTM mesure les positions en mètres plans grâce aux coordonnées Easting (X) et Northing (Y).",
+
+    takeawaysTitle: "Points Clés",
+    takeaways: [
+      "L'UTM découpe le globe en 60 fuseaux de 6° de longitude, numérotés de 1 à 60.",
+      "Les coordonnées sont en mètres : une fausse origine de 500 000 m évite les valeurs négatives à l'ouest du méridien central.",
+      "Un datum géodésique (comme WGS 84 ou ETRS89) définit l'ellipsoïde de référence.",
+      "La déformation cartographique est limitée à moins de 0,1 % au sein de chaque fuseau.",
+      "Les coordonnées métriques planes se convertissent directement en angles géodésiques."
+    ],
+
+    pIntro1: "Pour les géomètres, le génie civil et les armées, les degrés angulaires compliquent les calculs de distance.",
+    pIntro2: "La projection UTM transpose l'ellipsoïde terrestre en plans métriques. Comme détaillé dans notre guide sur <a href='/guides/latitude-and-longitude-explained/'>la latitude et la longitude expliquées</a>, les angles sphériques imposent des calculs lourds, tandis que l'UTM autorise la géométrie cartésienne. Vous pouvez convertir vos fuseaux avec notre <a href='/tools/coordinate-converter/'>Convertisseur de Coordonnées</a> ou lire notre analyse <a href='/comparisons/decimal-degrees-vs-dms/'>Degrés Décimaux vs DMS</a>. Consultez aussi les fiches de glossaire pour <a href='/glossary/#datum'>datum</a> et <a href='/glossary/#wgs-84'>WGS 84</a>.",
+
+    calloutBadge: "📐 Outil Métrique",
+    calloutTitle: "Convertir UTM en Latitude et Longitude",
+    calloutDesc: "Traduisez n'importe quelle coordonnée UTM en Degrés Décimaux ou DMS immédiatement.",
+    calloutBtn: "Ouvrir le Convertisseur →",
+
+    h2Zones: "1. Les 60 Fuseaux UTM : Découpage du Globe",
+    pZones1: "L'UTM découpe le monde entre 80° Sud et 84° Nord en 60 fuseaux de 6° de largeur, numérotés d'ouest en est.",
+    zoneBullet1: "Largeur de Fuseau : 6 degrés de longitude (~668 km à l'équateur).",
+    zoneBullet2: "Méridien Central : Échelle de 0,9996 pour réduire l'altération sur les bords.",
+    zoneBullet3: "Bandes de Latitude : 20 bandes de 8° (lettres C à X) précisent la position nord-sud.",
+
+    h2EastingNorthing: "2. Faux Est, Faux Nord et Coordonnées Métriques",
+    pEasting1: "L'UTM utilise des fausses origines pour manipuler uniquement des valeurs métriques positives :",
+    eastBullet1: "Faux Est (500 000 m) : Le méridien central vaut 500 000 m. Les points à l'ouest sont inférieurs à 500 000 m.",
+    eastBullet2: "Nord dans l'Hémisphère Nord : L'équateur vaut 0 m et progresse jusqu'à ~9 300 000 m.",
+    eastBullet3: "Faux Nord dans l'Hémisphère Sud (10 000 000 m) : L'équateur vaut 10 000 000 m pour éviter les nombres négatifs.",
+
+    h2Datums: "3. Qu'est-ce qu'un Datum Géodésique ? (WGS 84, RGF93, ETRS89)",
+    pDatums1: "Une coordonnée sans datum est incomplète. Le datum définit la forme mathématique de l'ellipsoïde terrestre :",
+    datumWgs: "WGS 84 : Le standard universel du GPS et du Web (EPSG:4326).",
+    datumNad: "RGF93 / Lambert-93 : Le système légal officiel en France métropolitaine.",
+    datumEtrs: "ETRS89 : Le cadre de référence européen géodésique continental.",
+
+    workedExampleTitle: "Exemple Concret : Décrypter une Coordonnée UTM",
+    workedExampleIntro: "Coordonnée : 31U 448250m E 5411960m N (Paris, France)",
+    workedExampleStep1: "Fuseau '31' : Désigne le fuseau longitudinal entre 0° et 6° Est.",
+    workedExampleStep2: "Bande 'U' : Bande latitudinale entre 48°N et 56°N.",
+    workedExampleStep3: "Easting '448 250m E' : Situé à 51 750 mètres à l'ouest du méridien 3°E.",
+    workedExampleStep4: "Northing '5 411 960m N' : Situé à 5 411 960 mètres au nord de l'équateur.",
+
+    commonMistakesTitle: "Erreurs Fréquentes avec l'UTM",
+    commonMistakes: [
+      { mistake: "Oublier le numéro de fuseau", explanation: "Chaque fuseau réutilise la même fausse origine de 500 000 m. Sans fuseau, la position est ambiguë parmi 60 lieux différents." },
+      { mistake: "Confondre WGS 84 et anciennes projections locales", explanation: "Reporter des coordonnées GPS sur d'anciennes cartes IGN en Lambert I ou NTF génère des décalages de plusieurs dizaines de mètres." },
+      { mistake: "Calculer des distances à cheval sur deux fuseaux", explanation: "On ne peut pas appliquer le théorème de Pythagore sur des coordonnées issues de deux fuseaux UTM distincts." }
+    ],
+
+    faqs: [
+      { question: "Pourquoi les armées et géomètres utilisent-ils l'UTM ?", answer: "Parce que les coordonnées sont en mètres plans et permettent des calculs de surface et de distance sans trigonométrie sphérique." },
+      { question: "Comment se positionner aux Pôles Nord et Sud ?", answer: "L'UTM s'arrête à 80°S et 84°N en raison de la convergence extrême des méridiens. On utilise alors la projection Stéréographique Polaire Universelle (UPS)." },
+      { question: "Quel est le lien entre le système MGRS et l'UTM ?", answer: "Le MGRS militaire découpe chaque fuseau UTM en carrés de 100 km désignés par deux lettres suivies de chiffres métriques." }
+    ],
+
+    nextStepsTitle: "Étapes Suivantes",
+    nextSteps: [
+      { title: "Convertisseur de Coordonnées", href: "/tools/coordinate-converter/", desc: "Basculez entre coordonnées UTM, Degrés Décimaux et DMS." },
+      { title: "Comprendre Latitude et Longitude", href: "/guides/latitude-and-longitude-explained/", desc: "Explorez les coordonnées angulaires de base." },
+      { title: "Comparatif Décimaux vs DMS", href: "/comparisons/decimal-degrees-vs-dms/", desc: "Découvrez les conventions d'écriture des angles." }
+    ],
+
+    connectedGuides: "🔗 Guides et Outils Associés",
+    tool1Title: "Convertisseur",
+    tool1Desc: "UTM, DD & DMS",
+    tool2Title: "Latitude & Longitude",
+    tool2Desc: "Bases géodésiques",
+    tool3Title: "Décimaux vs DMS",
+    tool3Desc: "Formats comparés",
+    tool4Title: "Calcul Distance",
+    tool4Desc: "Solveur géodésique"
   },
   de: {
-    title: "UTM-Koordinaten & Geodätische Daten: WGS84, NAD83 | MyLocationLab",
-    description: "Leitfaden zum Universal Transverse Mercator (UTM) Koordinatensystem, MGRS-Militärgitter, Referenzellipsoiden und Zonenprojektionen.",
-    h1: "UTM-Koordinaten & Geodätische Daten: Das Vollständige GIS-Handbuch",
-    subtitle: "Erfahren Sie, wie metrische Gitterprojektionen, 6-Grad-Zonen, False Easting und Datumsreferenzen (NAD83, ETRS89, WGS84) die Vermessung prägen.",
-    sectionLabel: "Lehr-Ratgeber",
-    p1: "Während Kartendienste für Endnutzer und Smartphones sphärische Winkelkoordinaten (Breiten- und Längengrade) verwenden, arbeiten Bauingenieure, Vermesser und GIS-Spezialisten mit kartesischen metrischen Gittern.",
-    p2: "Das verbreitetste metrische Gittersystem ist die UTM-Projektion (Universal Transverse Mercator). In diesem Handbuch erklären wir, wie UTM die gekrümmte Erde in ebene Streifen zerlegt, wie False Easting negative Werte verhindert und wie Referenzdaten wie WGS 84, NAD83 und ETRS89 Millimetergenauigkeit sichern.",
-    calloutBadge: "🧭 Sofortige Umrechnung",
-    calloutTitle: "Zwischen UTM, Dezimalgrad & GMS umrechnen",
-    calloutDesc: "Geben Sie beliebige Koordinaten ein, um UTM-Zone, Ostwert, Nordwert und Hemisphäre automatisch zu berechnen.",
-    calloutBtn: "UTM-Umrechner öffnen →",
-    h2WhatIsUtm: "1. Was ist das Universal Transverse Mercator (UTM) System?",
-    pUtm1: "Das UTM-System ist nicht bloß eine Kartenprojektion, sondern ein spezialisiertes Gitternetzsystem, das in den 1940er Jahren vom US Army Corps of Engineers entwickelt wurde. Es bildet die Erdoberfläche zwischen 80° südlicher und 84° nördlicher Breite mit einer konformen transversalen Zylinderprojektion ab.",
-    h3Zones: "Die 60 Längenzonen (jeweils 6° Breite)",
-    pZones: "Um Maßstabsverzerrungen beim Abflachen der Kugelfläche zu minimieren, teilt UTM die Erde in 60 Längenzonen (1 bis 60) ein:",
-    zoneLi1: "Jede Zone erstreckt sich über 6 Längengrade (60 × 6° = 360°).",
-    zoneLi2: "Zone 1 beginnt am 180. Längengrad (180° W bis 174° W) und verläuft ostwärts.",
-    zoneLi3: "Jede Zone besitzt einen Mittelmeridian (Central Meridian) exakt in der Mitte.",
-    h2EastingNorthing: "2. Ostwert (Easting), Nordwert (Northing) & Falsche Nullpunkte",
-    pEastingNorthing: "Innerhalb jeder 6°-Zone wird jede Koordinate in Metern über zwei Werte angegeben:",
-    eastingTitle: "Ostwert (Easting) & das 500.000 m False Easting",
-    eastingDesc: "Um negative Zahlen westlich des Mittelmeridians auszuschließen, erhält dieser einen willkürlichen Ostwert von 500.000 Metern (False Easting). Punkte westlich davon haben Werte < 500.000 m; Punkte östlich Werte > 500.000 m.",
-    northingTitle: "Nordwert (Northing) & Äquator-Bezugslinie",
-    northingDesc: "Auf der Nordhalbkugel hat der Äquator den Nordwert 0 m. Auf der Südhalbkugel wird ihm ein False Northing von 10.000.000 m zugewiesen, der nach Süden hin abnimmt.",
-    h2Datums: "3. Was ist ein geodätisches Datum? (WGS84 vs NAD83 vs ETRS89)",
-    pDatums: "Koordinaten sind ohne Bezugsrahmen bedeutungslos. Ein geodätisches Datum definiert Größe, Form und Ausrichtung des mathematischen Erdellipsoids:",
-    thDatum: "Datumsname",
-    thModel: "Ellipsoid-Modell",
-    thCoverage: "Abdeckungsbereich",
-    thFrame: "Tektonischer Rahmen & Anwendung",
-    wgs84Desc: "Geozentrisch, erdfest. Weltweiter Standard für GPS und Webkartendienste.",
-    nad83Desc: "Fest an die nordamerikanische Kontinentalplatte gekoppelt. Maßstab für US-Behörden und das USGS.",
-    etrs89Desc: "An die eurasische Kontinentalplatte gekoppelt. Von der Europäischen Union für Geodaten vorgeschrieben.",
-    nad27Desc: "Historisches Regionaldatum (Meades Ranch, Kansas). Zeigt rund 100 m Versatz gegenüber WGS84.",
-    driftNote: "Tektonische Verschiebung: Da sich die nordamerikanische Platte jährlich um 1 bis 2 cm westwärts bewegt, weichen WGS84- und NAD83-Koordinaten in den USA heute um 1,0 bis 1,5 Meter voneinander ab.",
-    h2Mgrs: "4. Militär-Geogitter-Referenzsystem (MGRS)",
-    pMgrs: "Das Military Grid Reference System (MGRS) ist eine alphanumerische Erweiterung von UTM für NATO-Streitkräfte. Es unterteilt Zonen in 8°-Breitenbänder (Buchstaben C bis X) und 100.000-Meter-Gitterquadrate (z. B. 18TWK12345678).",
-    callout2Badge: "📐 Geodätische Distanzen",
-    callout2Title: "Großkreisdistanzen berechnen",
-    callout2Desc: "Messen Sie die exakte geodätische Distanz zwischen metrischen oder Winkelkoordinaten mit unserer Haversine-Berechnung.",
-    callout2Btn: "Entfernungsrechner öffnen →",
-    connectedTitle: "🔗 Verwandte Ratgeber & Werkzeuge",
-    tool1Title: "Koordinaten-Umrechner",
-    tool1Desc: "UTM-, GMS- & DD-Konvertierung",
-    tool2Title: "Breitengrad & Längengrad",
-    tool2Desc: "Leitfaden sphärische Geodäsie",
-    tool3Title: "Dezimalgrad vs GMS",
-    tool3Desc: "Vergleich der Notationsformate",
-    tool4Title: "Wie GPS funktioniert",
-    tool4Desc: "WGS84-Umlaufbahnen & Satelliten"
+    title: "UTM-Koordinaten & Bezugssysteme erklärt | MyLocationLab",
+    description: "Kurz gesagt: Das UTM-System projiziert die gekrümmte Erdoberfläche auf 60 plane metrische Zonen mit Rechts- und Hochwerten.",
+    h1: "UTM-Koordinaten und geodätische Bezugssysteme erklärt",
+    subtitle: "Umfassender Leitfaden zu metrischen Gitterprojektionen, Zoneneinteilung, False Easting und Bezugsellipsoiden wie WGS 84.",
+    
+    inShort: "Kurz gesagt: Das Universal Transverse Mercator (UTM) System projiziert die Erdoberfläche auf ein ebenes metrisches Gitter, aufgeteilt in 60 Längenzonen à 6 Grad. Statt Gradangaben verwendet UTM plane Meterwerte: Rechtswert (Easting) und Hochwert (Northing).",
+
+    takeawaysTitle: "Zentrale Erkenntnisse",
+    takeaways: [
+      "UTM unterteilt die Erde in 60 Zonen zu je 6° geographischer Länge, durchnummeriert von 1 bis 60.",
+      "Koordinaten sind strikt metrisch: Ein False Easting von 500.000 m verhindert negative Werte westlich des Mittelmeridians.",
+      "Ein geodätisches Datum (wie WGS 84 oder ETRS89) definiert das Referenzellipsoid der Erde.",
+      "Die Streckenverzerrung liegt innerhalb einer Zone unter 0,1 %.",
+      "Die Umrechnung zwischen ebenen UTM-Metern und Kugelwinkeln ist bidirektional möglich."
+    ],
+
+    pIntro1: "Im Ingenieurbau, Katasterwesen und Militär bereiten sphärische Winkelkoordinaten erhebliche Rechenprobleme.",
+    pIntro2: "Das UTM-System projiziert die Erde auf ebene metrische Flächen. Wie in unserem Leitfaden <a href='/guides/latitude-and-longitude-explained/'>Breitengrad und Längengrad</a> dargelegt, verlangen Kugelkoordinaten Trigonometrie, während UTM einfaches Rechnen mit Metern erlaubt. Wandeln Sie UTM-Zonen mit dem <a href='/tools/coordinate-converter/'>Koordinaten-Konverter</a> um oder lesen Sie den Vergleich <a href='/comparisons/decimal-degrees-vs-dms/'>Dezimalgrad vs. GMS</a>. Fachbegriffe finden Sie im Glossar unter <a href='/glossary/#datum'>Datum</a> und <a href='/glossary/#wgs-84'>WGS 84</a>.",
+
+    calloutBadge: "📐 Sofort-Konverter",
+    calloutTitle: "UTM in Breitengrad & Längengrad umrechnen",
+    calloutDesc: "Konvertieren Sie beliebige UTM-Zonen, Rechts- und Hochwerte in Dezimalgrad oder GMS.",
+    calloutBtn: "Konverter öffnen →",
+
+    h2Zones: "1. Die 60 UTM-Zonen: Wie die Erde aufgeteilt wird",
+    pZones1: "UTM teilt die Welt zwischen 80° Süd und 84° Nord in 60 streifenförmige Zonen von jeweils 6° Breite ein.",
+    zoneBullet1: "Zonenbreite: 6 Längengrade (~668 km Breite am Äquator, zu den Polen hin schmaler).",
+    zoneBullet2: "Mittelmeridian: Besitzt einen Maßstabsfaktor von 0,9996 zur Minimierung von Randverzerrungen.",
+    zoneBullet3: "Breitenbänder: 20 Bänder à 8° (Buchstaben C bis X) kennzeichnen die Nord-Süd-Lage.",
+
+    h2EastingNorthing: "2. Rechtswert, Hochwert und False Easting",
+    pEasting1: "Um negative Zahlenwerte im UTM-Gitter auszuschließen, gelten künstliche Nullpunkte:",
+    eastBullet1: "False Easting (500.000 m): Der Mittelmeridian erhält den Rechtswert 500.000 m. Westlich gelegene Punkte liegen unter 500.000 m.",
+    eastBullet2: "Hochwert Nordhalbkugel: Der Äquator bildet den Nullpunkt (0 m) und steigt nach Norden auf ~9.300.000 m.",
+    eastBullet3: "False Northing Südhalbkugel (10.000.000 m): Der Äquator erhält den Wert 10.000.000 m und nimmt nach Süden ab.",
+
+    h2Datums: "3. Was ist ein geodätisches Bezugssystem? (WGS 84 & ETRS89)",
+    pDatums1: "Koordinaten ohne definiertes Datum sind unbrauchbar. Das Datum beschreibt das mathematische Ellipsoid:",
+    datumWgs: "WGS 84: Das globale Standardsystem für GPS-Satelliten und digitale Webkarten (EPSG:4326).",
+    datumNad: "ETRS89: Das offizielle pan-europäische Bezugssystem, fest verankert mit der eurasischen Kontinentalplatte.",
+    datumEtrs: "DHDN / Gauß-Krüger: Historisches deutsches System mit Bessel-Ellipsoid (Abweichungen bis über 100 m zu WGS 84).",
+
+    workedExampleTitle: "Praxisbeispiel: Eine UTM-Koordinate aufschlüsseln",
+    workedExampleIntro: "Beispielkoordinate: 33U 392120m E 5819440m N (Berlin, Deutschland)",
+    workedExampleStep1: "Zone '33': Bezeichnet die Längenzone 33 (12° bis 18° Ost).",
+    workedExampleStep2: "Band 'U': Bezeichnet das Breitenband zwischen 48°N und 56°N.",
+    workedExampleStep3: "Rechtswert '392.120m E': Liegt 107.880 Meter westlich des Mittelmeridians (15°O).",
+    workedExampleStep4: "Hochwert '5.819.440m N': Liegt exakt 5.819.440 Meter nördlich des Äquators.",
+
+    commonMistakesTitle: "Häufige Fehler bei UTM & Datumsangaben",
+    commonMistakes: [
+      { mistake: "Weglassen der Zonennummer", explanation: "Jede der 60 Zonen wiederholt dieselben Rechtswerte. Ohne Zonennummer ist der Ort auf 60 Zonen weltweit uneindeutig." },
+      { mistake: "Vermischen von WGS 84 und Gauß-Krüger DHDN", explanation: "Alte deutsche Katasterkarten nutzten das Bessel-Ellipsoid. Unkorrigierte GPS-Punkte weichen um rund 150 Meter ab." },
+      { mistake: "Distanzmessungen über Zonengrenzen hinweg", explanation: "Koordinaten zweier verschiedener UTM-Zonen dürfen nicht einfach subtrahiert werden." }
+    ],
+
+    faqs: [
+      { question: "Warum nutzen Vermesser und Militär UTM statt GPS-Graden?", answer: "Weil UTM-Koordinaten auf Metern basieren. Flächen und Distanzen lassen sich mit dem Satz des Pythagoras ohne sphärische Trigonometrie berechnen." },
+      { question: "Was passiert mit UTM an den Polen?", answer: "UTM endet bei 80°S und 84°N wegen extremer Meridiankonvergenz. An den Polen kommt das UPS-System (Universal Polar Stereographic) zum Einsatz." },
+      { question: "Wie hängen MGRS und UTM zusammen?", answer: "Das militärische MGRS-System unterteilt die 6° × 8° großen UTM-Zonen in 100-km-Quadrate mit zweistelligen Buchstabenkürzeln." }
+    ],
+
+    nextStepsTitle: "Nächste Schritte",
+    nextSteps: [
+      { title: "UTM-Koordinaten-Konverter", href: "/tools/coordinate-converter/", desc: "Rechnen Sie UTM-Zonen in Dezimalgrad und GMS um." },
+      { title: "Breiten- und Längengrad", href: "/guides/latitude-and-longitude-explained/", desc: "Grundlagen sphärischer Winkelkoordinaten." },
+      { title: "Dezimalgrad vs. GMS", href: "/comparisons/decimal-degrees-vs-dms/", desc: "Vergleich sexagesimaler und dezimaler Notationen." }
+    ],
+
+    connectedGuides: "🔗 Verbundene Leitfäden & Werkzeuge",
+    tool1Title: "Koordinaten-Konverter",
+    tool1Desc: "UTM, DD & GMS",
+    tool2Title: "Breiten- & Längengrad",
+    tool2Desc: "Grundlagen",
+    tool3Title: "Dezimal vs. GMS",
+    tool3Desc: "Formate vergleichen",
+    tool4Title: "Distanz-Rechner",
+    tool4Desc: "Haversine-Berechnung"
   },
   pt: {
-    title: "Coordenadas UTM e Data Geodésicos: WGS84, NAD83 | MyLocationLab",
-    description: "Domine o sistema Universal Transverse Mercator (UTM), grade militar MGRS, data geodésicos, falso este e projeções de zonas cartográficas.",
-    h1: "Coordenadas UTM e Data Geodésicos: O Guia SIG Definitivo",
-    subtitle: "Entenda como projeções métricas em grade, fusos UTM de 6 graus e data regionais (NAD83, ETRS89, WGS84) estruturam a topografia.",
-    sectionLabel: "Guias Educativos",
-    p1: "Enquanto mapas digitais e smartphones utilizam coordenadas angulares esféricas (Latitude e Longitude), engenheiros civis, agrimensores e analistas de SIG exigem grades cartesianas métricas.",
-    p2: "O sistema métrico mais consolidado em SIG global é a projeção Universal Transverse Mercator (UTM). Neste guia, explicamos como a UTM projeta a Terra curva em fusos planos, como o falso este elimina números negativos e como data como WGS 84, NAD83 e ETRS89 mantêm precisão milimétrica.",
-    calloutBadge: "🧭 Conversão Imediata",
-    calloutTitle: "Converta entre UTM, Graus Decimais e GMS",
-    calloutDesc: "Insira qualquer coordenada para calcular automaticamente seu fuso UTM, Este, Norte e projeção de hemisfério.",
-    calloutBtn: "Abrir Conversor UTM →",
-    h2WhatIsUtm: "1. O que é o Sistema Universal Transverse Mercator (UTM)?",
-    pUtm1: "O sistema UTM não é uma projeção cartográfica comum; trata-se de um sistema de grade especializada criado pelo Corpo de Engenheiros do Exército dos EUA na década de 1940. Ele mapeia o planeta entre 80° Sul e 84° Norte através de uma projeção cilíndrica transversa conforme.",
-    h3Zones: "Os 60 Fusos Longitudinais (6° de Largura Cada)",
-    pZones: "Para conter distorções de escala causadas pela planificação esférica, a UTM divide a Terra em 60 fusos longitudinais de 1 a 60:",
-    zoneLi1: "Cada fuso abrange 6 graus de longitude (60 × 6° = 360°).",
-    zoneLi2: "O Fuso 1 se inicia no meridiano 180° (180° W a 174° W) e progride a leste.",
-    zoneLi3: "Cada fuso tem um Meridiano Central exatamente no centro (a 3° de suas bordas).",
-    h2EastingNorthing: "2. Compreendendo Este, Norte e Falsas Origens",
-    pEastingNorthing: "Em cada fuso de 6°, a localização é descrita em metros por meio de dois eixos:",
-    eastingTitle: "Coordenada Este (Eixo X) e o Falso Este de 500.000 m",
-    eastingDesc: "Para impedir números negativos a oeste do Meridiano Central, atribui-se ao meridiano um Falso Este fixo de 500.000 metros. Pontos a oeste possuem Este < 500.000 m; a leste, Este > 500.000 m.",
-    northingTitle: "Coordenada Norte (Eixo Y) e a Referência Equatorial",
-    northingDesc: "No Hemisfério Norte, o Equador recebe Norte 0 m. No Hemisfério Sul, para evitar valores negativos, o Equador recebe um Falso Norte de 10.000.000 m, diminuindo em direção ao Polo Sul.",
-    h2Datums: "3. O que é um Datum Geodésico? (WGS84 vs NAD83 vs ETRS89)",
-    pDatums: "Coordenadas não têm valor sem um modelo de referência. Um datum geodésico estipula as dimensões e orientação do elipsoide geométrico que aproxima a forma real da Terra:",
-    thDatum: "Nome do Datum",
-    thModel: "Modelo Elipsoidal",
-    thCoverage: "Área de Cobertura",
-    thFrame: "Quadro Tectônico e Aplicação",
-    wgs84Desc: "Geocêntrico e fixo à Terra. Padrão universal do GPS e de mapas digitais.",
-    nad83Desc: "Vinculado à placa tectônica norte-americana. Usado pelo USGS e agências governamentais dos EUA.",
-    etrs89Desc: "Vinculado à placa estável da Eurásia. Exigido pela União Europeia para conjuntos de dados espaciais.",
-    nad27Desc: "Datum regional antigo com origem em Meades Ranch (Kansas). Apresenta desvios de ~100m em relação ao WGS84.",
-    driftNote: "Nota sobre Deriva Tectônica: Com a placa norte-americana deslizando de 1 a 2 cm ao ano para oeste, as coordenadas WGS84 e NAD83 divergem hoje entre 1,0 e 1,5 metro nos Estados Unidos.",
-    h2Mgrs: "4. Sistema de Referência de Grade Militar (MGRS)",
-    pMgrs: "O MGRS é uma variante alfanumérica do UTM concebida pelas forças da OTAN. Ele divide fusos em faixas de latitude de 8° (letras C a X) e em quadrados métricos de 100.000 metros (ex. 18TWK12345678).",
-    callout2Badge: "📐 Geodésia & Distâncias",
-    callout2Title: "Calcule Distâncias Geodésicas",
-    callout2Desc: "Meça a distância exata de círculo máximo entre coordenadas com a fórmula de Haversine em nossa ferramenta online.",
-    callout2Btn: "Abrir Calculadora de Distância →",
-    connectedTitle: "🔗 Guias e Ferramentas Relacionadas",
-    tool1Title: "Conversor de Coordenadas",
-    tool1Desc: "Conversão UTM, GMS e DD",
+    title: "Coordenadas UTM e Datums Explicados: Guia | MyLocationLab",
+    description: "Em resumo: O sistema UTM projeta a superfície curva da Terra em 60 fusos métricos planos, utilizando coordenadas métricas Easting e Northing.",
+    h1: "Coordenadas UTM e Datums Geodésicos Explicados",
+    subtitle: "Guia completo sobre projeções métricas planas, numeração de fusos, origens falsas e elipsoides como WGS 84 e SIRGAS 2000.",
+    
+    inShort: "Em resumo: O sistema Universal Transversa de Mercator (UTM) projeta a superfície esférica da Terra em um plano métrico dividido em 60 fusos de 6 graus de longitude. Em vez de graus angulares, o UTM mede distâncias em metros planos usando coordenadas Este (X) e Norte (Y).",
+
+    takeawaysTitle: "Pontos Principais",
+    takeaways: [
+      "O UTM fatia o globo em 60 fusos de 6° de longitude cada, numerados de 1 a 60.",
+      "As coordenadas são em metros: um falso este de 500.000 metros evita números negativos a oeste do meridiano central.",
+      "Um datum geodésico (como WGS 84 ou SIRGAS 2000) define o elipsoide de referência.",
+      "A deformação de escala permanece abaixo de 0,1% no interior de cada fuso.",
+      "A conversão entre metros planos e ângulos esféricos é realizada sem perdas de precisão."
+    ],
+
+    pIntro1: "Na engenharia civil, topografia e agrimensura, medir terrenos com graus de latitude e longitude impõe cálculos trigonométricos esféricos complexos.",
+    pIntro2: "O sistema UTM projeta a Terra em planos métricos cartesianos. Como detalhado em nosso guia <a href='/guides/latitude-and-longitude-explained/'>latitude e longitude explicadas</a>, ângulos exigem fórmulas esféricas, enquanto o UTM permite cálculos métricos simples. Você pode converter fusos no <a href='/tools/coordinate-converter/'>Conversor de Coordenadas</a> ou ver nossa análise de <a href='/comparisons/decimal-degrees-vs-dms/'>Graus Decimais vs DMS</a>. Veja também os verbetes de <a href='/glossary/#datum'>datum</a> e <a href='/glossary/#wgs-84'>WGS 84</a>.",
+
+    calloutBadge: "📐 Conversor Métrico",
+    calloutTitle: "Converta UTM em Latitude e Longitude",
+    calloutDesc: "Converta qualquer coordenada UTM para Graus Decimais e DMS em tempo real.",
+    calloutBtn: "Abrir Conversor →",
+
+    h2Zones: "1. Os 60 Fusos UTM: Como a Terra é Dividida",
+    pZones1: "O UTM divide o globo entre 80° Sul e 84° Norte em 60 fusos longitudinais de 6° de largura, numerados do fuso 1 ao 60 de oeste para leste.",
+    zoneBullet1: "Largura do Fuso: 6 graus de longitude (~668 km no Equador).",
+    zoneBullet2: "Meridiano Central: Fator de escala de 0,9996 para limitar deformações nas bordas.",
+    zoneBullet3: "Faixas de Latitude: 20 faixas de 8° (letras C a X) definem a posição norte-sul.",
+
+    h2EastingNorthing: "2. Coordenadas Este, Norte e Falsas Origens",
+    pEasting1: "O UTM emprega origens falsas em metros para manter todas as coordenadas positivas:",
+    eastBullet1: "Falso Este (500.000 m): O meridiano central de cada fuso vale 500.000 m. Pontos a oeste medem menos de 500.000 m.",
+    eastBullet2: "Norte no Hemisfério Norte: O Equador marca 0 m e sobe até ~9.300.000 m.",
+    eastBullet3: "Falso Norte no Hemisfério Sul (10.000.000 m): O Equador recebe o valor de 10.000.000 m e decresce em direção ao Polo Sul.",
+
+    h2Datums: "3. O que é um Datum Geodésico? (WGS 84, SIRGAS 2000 e Córrego Alegre)",
+    pDatums1: "Uma coordenada sem datum é imprecisa. O datum define o elipsoide geométrico que modela o planeta:",
+    datumWgs: "WGS 84: Padrão internacional do GPS e de mapas digitais (EPSG:4326).",
+    datumNad: "SIRGAS 2000: O datum geodésico oficial adotado no Brasil pelo IBGE, compatível com o WGS 84.",
+    datumEtrs: "Córrego Alegre / SAD69: Datums históricos brasileiros; converter coordenadas antigas para WGS 84 pode gerar diferenças de até 60 metros.",
+
+    workedExampleTitle: "Exemplo Prático: Lendo uma Coordenada UTM",
+    workedExampleIntro: "Coordenada de Exemplo: 23K 333150m E 7394280m N (São Paulo, Brasil)",
+    workedExampleStep1: "Fuso '23': Fuso longitudinal 23 (entre 48°W e 42°W).",
+    workedExampleStep2: "Faixa 'K': Faixa latitudinal entre 24°S e 16°S.",
+    workedExampleStep3: "Easting '333.150m E': Localizado a 166.850 metros a oeste do meridiano central (45°W).",
+    workedExampleStep4: "Northing '7.394.280m N': Situado a 2.605.720 metros ao sul do Equador.",
+
+    commonMistakesTitle: "Erros Comuns com UTM e Datums",
+    commonMistakes: [
+      { mistake: "Omitir o número do fuso UTM", explanation: "Como todos os fusos repetem o falso este de 500.000 m, uma coordenada sem o fuso pode indicar 60 locais diferentes no mundo." },
+      { mistake: "Misturar dados em SAD69 com WGS 84", explanation: "Trabalhos antigos no Brasil medidos em SAD69 geram erros de até 65 metros se plotados diretamente no GPS sem conversão." },
+      { mistake: "Calcular distâncias entre fusos distintos", explanation: "Coordenadas UTM de fusos diferentes não podem ser subtraídas diretamente no plano cartesiano." }
+    ],
+
+    faqs: [
+      { question: "Por que engenheiros e topógrafos preferem UTM a latitude e longitude?", answer: "Porque medem distâncias e áreas em metros planos no plano cartesiano, usando o Teorema de Pitágoras sem trigonometria esférica." },
+      { question: "O que acontece nos polos com o UTM?", answer: "O UTM termina em 80°S e 84°N devido à convergência das linhas. Nas regiões polares utiliza-se a projeção Estereográfica Polar Universal (UPS)." },
+      { question: "Qual a diferença entre UTM e MGRS?", answer: "O MGRS é a grade militar que divide cada fuso UTM em quadrados de 100.000 metros identificados por letras e números." }
+    ],
+
+    nextStepsTitle: "Próximos Passos",
+    nextSteps: [
+      { title: "Converter Coordenadas UTM", href: "/tools/coordinate-converter/", desc: "Transforme fusos métricos em Graus Decimais e DMS." },
+      { title: "Guia de Latitude e Longitude", href: "/guides/latitude-and-longitude-explained/", desc: "Aprenda sobre o sistema angular de base da geodesia." },
+      { title: "Graus Decimais vs DMS", href: "/comparisons/decimal-degrees-vs-dms/", desc: "Compare notações decimais e graus sexagesimais." }
+    ],
+
+    connectedGuides: "🔗 Guias e Ferramentas Conectadas",
+    tool1Title: "Conversor Coordenadas",
+    tool1Desc: "UTM, DD e DMS",
     tool2Title: "Latitude e Longitude",
-    tool2Desc: "Guia de geodésia esférica",
-    tool3Title: "Graus Decimais vs GMS",
-    tool3Desc: "Comparação de formatos",
-    tool4Title: "Como Funciona o GPS",
-    tool4Desc: "Constelações e elipsoide WGS84"
+    tool2Desc: "Fundamentos angulares",
+    tool3Title: "Decimais vs DMS",
+    tool3Desc: "Formatos comparados",
+    tool4Title: "Calculadora Distância",
+    tool4Desc: "Distância geodésica"
   },
   hi: {
-    title: "UTM निर्देशांक और डेटम: WGS84, NAD83 | MyLocationLab",
-    description: "Universal Transverse Mercator (UTM) निर्देशांक सिस्टम, मिलिट्री ग्रिड रेफ़रेंस सिस्टम (MGRS), जियोडेटिक डेटम, फ़ॉल्स ईस्टिंग और ज़ोन प्रोजेक्शन पर संपूर्ण गाइड।",
-    h1: "UTM निर्देशांक और जियोडेटिक डेटम: संपूर्ण GIS गाइड",
-    subtitle: "मीट्रिक ग्रिड प्रोजेक्शन, UTM 6-डिग्री ज़ोन, फ़ॉल्स नॉर्थिंग/ईस्टिंग और क्षेत्रीय डेटम (NAD83, ETRS89, WGS84) प्रोफ़ेशनल सर्वेक्षण को कैसे आकार देते हैं, समझें।",
-    sectionLabel: "शैक्षिक गाइड",
-    p1: "जहाँ कंज़्यूमर वेब मैप और स्मार्टफ़ोन गोलीय कोणीय निर्देशांक (अक्षांश और देशांतर) इस्तेमाल करते हैं, वहीं सिविल इंजीनियर, भूमि सर्वेक्षक, टोपोग्राफ़र और मिलिट्री रणनीतिकारों को मीट्रिक कार्टेशियन ग्रिड की ज़रूरत होती है।",
-    p2: "ग्लोबल GIS में सबसे व्यापक मीट्रिक सिस्टम Universal Transverse Mercator (UTM) प्रोजेक्शन है। इस गाइड में हम समझाते हैं कि UTM घुमावदार पृथ्वी को सपाट ज़ोन में कैसे बाँटता है, फ़ॉल्स ईस्टिंग ऋणात्मक संख्याएँ कैसे खत्म करता है, और WGS 84, NAD83, ETRS89 जैसे जियोडेटिक डेटम मिलीमीटर-स्तर की सटीकता कैसे सुनिश्चित करते हैं।",
-    calloutBadge: "🧭 तुरंत रूपांतरण",
-    calloutTitle: "UTM, दशमलव डिग्री और DMS के बीच बदलें",
-    calloutDesc: "कोई भी निर्देशांक दर्ज करें और उसका UTM ज़ोन, ईस्टिंग, नॉर्थिंग और गोलार्ध प्रोजेक्शन अपने-आप गणना करें।",
-    calloutBtn: "UTM कन्वर्टर खोलें →",
-    h2WhatIsUtm: "1. Universal Transverse Mercator (UTM) सिस्टम क्या है?",
-    pUtm1: "UTM सिस्टम कोई एकल मैप प्रोजेक्शन नहीं है; यह 1940 के दशक में संयुक्त राज्य अमेरिका के आर्मी कोर ऑफ़ इंजीनियर्स द्वारा विकसित एक विशेष ग्रिड सिस्टम है। यह कॉन्फ़ॉर्मल ट्रांसवर्स मर्केटर बेलनाकार प्रोजेक्शन के ज़रिए पृथ्वी को 80° दक्षिणी अक्षांश से 84° उत्तरी अक्षांश के बीच मैप करता है।",
-    h3Zones: "60 देशांतरीय ज़ोन (प्रत्येक 6° चौड़ाई)",
-    pZones: "गोलीय सतह को सपाट करते समय होने वाला स्केल विरूपण न्यूनतम करने के लिए UTM ग्लोब को 1 से 60 नंबर वाले 60 देशांतरीय ज़ोन में बाँटता है:",
-    zoneLi1: "हर ज़ोन 6 डिग्री देशांतर चौड़ा है (60 × 6° = 360°)।",
-    zoneLi2: "ज़ोन 1 की शुरुआत 180वीं मध्याह्न रेखा से होती है (180° W से 174° W) और गिनती पूर्व की ओर बढ़ती है।",
-    zoneLi3: "हर ज़ोन के ठीक बीच में एक सेंट्रल मेरिडियन चलता है (किसी भी सीमा से 3° दूर)।",
-    h2EastingNorthing: "2. ईस्टिंग, नॉर्थिंग और फ़ॉल्स ऑफ़सेट समझें",
-    pEastingNorthing: "हर 6° UTM ज़ोन में किसी भी स्थिति को दो निर्देशांकों से मानक मीटर में व्यक्त किया जाता है:",
-    eastingTitle: "ईस्टिंग (X-अक्ष) और 500,000 मी का फ़ॉल्स ईस्टिंग",
-    eastingDesc: "ज़ोन के सेंट्रल मेरिडियन से पश्चिम जाने पर ऋणात्मक संख्याएँ रोकने के लिए सेंट्रल मेरिडियन को मनमाना 500,000 मीटर का फ़ॉल्स ईस्टिंग दिया जाता है। केंद्र के पश्चिम के स्थानों की ईस्टिंग < 500,000 मी होती है; केंद्र के पूर्व के स्थानों की ईस्टिंग > 500,000 मी।",
-    northingTitle: "नॉर्थिंग (Y-अक्ष) और भूमध्य रेखा आधार रेखा",
-    northingDesc: "उत्तरी गोलार्ध में भूमध्य रेखा को 0 मीटर नॉर्थिंग दिया जाता है। दक्षिणी गोलार्ध में ऋणात्मक मान बचाने के लिए भूमध्य रेखा को 10,000,000 मीटर का फ़ॉल्स नॉर्थिंग दिया जाता है, जो दक्षिणी ध्रुव की ओर घटता जाता है।",
-    h2Datums: "3. जियोडेटिक डेटम क्या है? (WGS84 बनाम NAD83 बनाम ETRS89)",
-    pDatums: "रेफ़रेंस फ़्रेम के बिना निर्देशांक अर्थहीन हैं। जियोडेटिक डेटम पृथ्वी को मॉडल करने वाले गणितीय एलिप्सॉइड का आकार, रूप और दिशा परिभाषित करता है:",
-    thDatum: "डेटम का नाम",
-    thModel: "एलिप्सॉइड मॉडल",
-    thCoverage: "कवरेज क्षेत्र",
-    thFrame: "टेक्टोनिक फ़्रेम और प्रमुख उपयोग",
-    wgs84Desc: "जियोसेंट्रिक, पृथ्वी-स्थिर। GPS और कंज़्यूमर वेब मैपिंग का डिफ़ॉल्ट ग्लोबल मानक।",
-    nad83Desc: "उत्तरी अमेरिकी टेक्टोनिक प्लेट से स्थिर। USGS, अमेरिकी सरकार और राज्य सर्वेक्षकों द्वारा उपयोग।",
-    etrs89Desc: "स्थिर यूरेशियाई टेक्टोनिक प्लेट से स्थिर। यूरोपीय संघ द्वारा जियोस्पेशियल डेटा के लिए अनिवार्य।",
-    nad27Desc: "मीड्स रैंच, कैंसस पर केंद्रित ऐतिहासिक क्षेत्रीय डेटम। WGS84 की तुलना में ~100 मी का ऑफ़सेट।",
-    driftNote: "टेक्टोनिक ड्रिफ्ट नोट: उत्तरी अमेरिकी प्लेट पृथ्वी के द्रव्यमान केंद्र के सापेक्ष प्रति वर्ष ~1 से 2 सेमी पश्चिम की ओर खिसकती है, इसलिए संयुक्त राज्य अमेरिका में WGS84 और NAD83 निर्देशांक अभी ~1.0 से 1.5 मीटर तक भिन्न हैं।",
-    h2Mgrs: "4. मिलिट्री ग्रिड रेफ़रेंस सिस्टम (MGRS)",
-    pMgrs: "मिलिट्री ग्रिड रेफ़रेंस सिस्टम (MGRS) NATO सशस्त्र बलों द्वारा विकसित UTM का अल्फ़ान्यूमेरिक विस्तार है। यह हर UTM ज़ोन को 8° अक्षांश बैंड (C से X लेबल) में बाँटता है और ज़ोन को दो अक्षरों वाले 100,000 मीटर के ग्रिड वर्गों में उप-विभाजित करता है (जैसे 18TWK12345678)।",
-    callout2Badge: "📐 दूरी और ग्रेट-सर्कल",
-    callout2Title: "जियोडेसिक दूरियाँ गणना करें",
-    callout2Desc: "हमारे Haversine सॉल्वर से ग्लोब भर में मीट्रिक या कोणीय वेपॉइंट के बीच सटीक जियोडेसिक दूरी मापें।",
-    callout2Btn: "दूरी कैलकुलेटर खोलें →",
-    connectedTitle: "🔗 संबंधित गाइड और जियोस्पेशियल यूटिलिटी",
-    tool1Title: "कोऑर्डिनेट कन्वर्टर",
-    tool1Desc: "UTM, DMS, DD कन्वर्टर",
+    title: "UTM निर्देशांक और डेटम समझें: संपूर्ण मार्गदर्शिका | MyLocationLab",
+    description: "संक्षेप में: यूनिवर्सल ट्रांसवर्स मर्केटर (UTM) पृथ्वी की घुमावदार सतह को 60 मीट्रिक ग्रिड क्षेत्रों में समतल रूप से प्रोजेक्ट करता है।",
+    h1: "UTM निर्देशांक और भूगणितीय डेटम: संपूर्ण गाइड",
+    subtitle: "मीट्रिक ग्रिड प्रक्षेपण, ज़ोन संख्या, फाल्स ईस्टिंग और WGS 84 जैसे संदर्भ दीर्घवृत्त का तकनीकी विश्लेषण।",
+    
+    inShort: "संक्षेप में: यूनिवर्सल ट्रांसवर्स मर्केटर (UTM) प्रणाली पृथ्वी की गोलाकार सतह को 60 देशांतरीय ज़ोन (प्रत्येक 6 डिग्री चौड़ा) में समतल मीट्रिक ग्रिड पर प्रोजेक्ट करती है। डिग्री के बजाय, UTM स्थिति को मीटर में ईस्टिंग (X) और नॉर्थिंग (Y) निर्देशांकों द्वारा मापता है।",
+
+    takeawaysTitle: "मुख्य बिंदु",
+    takeaways: [
+      "UTM विश्व को 60 ज़ोन में बांटता है, प्रत्येक 6° देशांतर चौड़ा होता है।",
+      "निर्देशांक पूरी तरह मीट्रिक हैं: 500,000 मीटर का फाल्स ईस्टिंग ऋणात्मक संख्याओं को रोकता है।",
+      "भूगणितीय डेटम (जैसे WGS 84) पृथ्वी के संदर्भ आकार को परिभाषित करता है।",
+      "प्रत्येक ज़ोन के भीतर विकृति 0.1% से कम रहती है, जिससे यह सर्वेक्षण के लिए आदर्श है।",
+      "मीट्रिक UTM और कोणीय अक्षांश/देशांतर के बीच आसानी से रूपांतरण किया जा सकता है।"
+    ],
+
+    pIntro1: "इंजीनियरिंग, सेना और भूमि सर्वेक्षण में अक्षांश और देशांतर की डिग्री जटिल गणनाएं पैदा करती हैं क्योंकि रेखाएं ध्रुवों पर सिकुड़ती हैं।",
+    pIntro2: "UTM प्रणाली पृथ्वी को समतल मीट्रिक ग्रिड में बदलकर इस समस्या को हल करती है। जैसा कि हमारे <a href='/guides/latitude-and-longitude-explained/'>अक्षांश और देशांतर गाइड</a> में बताया गया है, कोणीय दूरियों के लिए त्रिकोणमिति चाहिए, जबकि UTM में सीधे मीटरों में गणना होती है। आप हमारे <a href='/tools/coordinate-converter/'>निर्देशांक परिवर्तक</a> से UTM को बदल सकते हैं या <a href='/comparisons/decimal-degrees-vs-dms/'>दशमलव डिग्री बनाम DMS</a> की तुलना देख सकते हैं। भूगणितीय आधार के लिए <a href='/glossary/#datum'>डेटम</a> और <a href='/glossary/#wgs-84'>WGS 84 शब्दावली</a> पढ़ें।",
+
+    calloutBadge: "📐 त्वरित परिवर्तक",
+    calloutTitle: "UTM को अक्षांश और देशांतर में बदलें",
+    calloutDesc: "किसी भी UTM ज़ोन, ईस्टिंग और नॉर्थिंग को तुरंत दशमलव डिग्री या DMS में बदलें।",
+    calloutBtn: "परिवर्तक खोलें →",
+
+    h2Zones: "1. 60 UTM ज़ोन: पृथ्वी का विभाजन",
+    pZones1: "UTM पृथ्वी को 80° दक्षिण और 84° उत्तर के बीच 6-6 डिग्री चौड़े 60 देशांतरीय ज़ोन में विभाजित करता है।",
+    zoneBullet1: "ज़ोन चौड़ाई: 6 डिग्री देशांतर (भूमध्य रेखा पर ~668 किमी चौड़ा)।",
+    zoneBullet2: "केंद्रीय मध्याह्न: प्रत्येक ज़ोन के केंद्र में विकृति कम करने के लिए 0.9996 का स्केल फैक्टर होता है।",
+    zoneBullet3: "अक्षांश पट्टियां: 8-8 डिग्री की 20 पट्टियां (अक्षर C से X) उत्तर-दक्षिण स्थिति दर्शाती हैं।",
+
+    h2EastingNorthing: "2. ईस्टिंग, नॉर्थिंग और फाल्स ओरिजिन",
+    pEasting1: "ऋणात्मक संख्याओं से बचने के लिए UTM कृत्रिम मीट्रिक शुरुआती बिंदुओं का उपयोग करता है:",
+    eastBullet1: "फाल्स ईस्टिंग (500,000 मीटर): केंद्रीय मध्याह्न रेखा को 500,000 मीटर माना जाता है। पश्चिम के बिंदु 500,000 से कम होते हैं।",
+    eastBullet2: "उत्तरी गोलार्ध नॉर्थिंग: भूमध्य रेखा 0 मीटर से शुरू होकर उत्तर की ओर ~9,300,000 मीटर तक बढ़ती है।",
+    eastBullet3: "दक्षिणी गोलार्ध फाल्स नॉर्थिंग (10,000,000 मीटर): भूमध्य रेखा को 10,000,000 मीटर मानकर दक्षिण की ओर घटाया जाता है।",
+
+    h2Datums: "3. भूगणितीय डेटम क्या है? (WGS 84 और भारतीय डेटम)",
+    pDatums1: "बिना डेटम के निर्देशांक अधूरा है। डेटम पृथ्वी के सटीक आकार को परिभाषित करता है:",
+    datumWgs: "WGS 84: जीपीएस और वैश्विक वेब मानचित्रों द्वारा प्रयुक्त अंतरराष्ट्रीय मानक।",
+    datumNad: "एवरेस्ट 1830 (Everest 1830): भारत और दक्षिण एशिया के ऐतिहासिक स्थलाकृतिक सर्वेक्षणों में प्रयुक्त आधार डेटम।",
+    datumEtrs: "ETRS89: यूरोपीय महाद्वीपीय प्लेट से जुड़ा आधिकारिक भूगणितीय ढांचा।",
+
+    workedExampleTitle: "व्यावहारिक उदाहरण: UTM निर्देशांक को समझना",
+    workedExampleIntro: "उदाहरण निर्देशांक: 43R 719250m E 3168420m N (नई दिल्ली, भारत)",
+    workedExampleStep1: "ज़ोन '43': देशांतरीय ज़ोन 43 (72°E से 78°E के बीच)।",
+    workedExampleStep2: "पट्टी 'R': अक्षांश पट्टी (24°N से 32°N के बीच)।",
+    workedExampleStep3: "ईस्टिंग '719,250m E': केंद्रीय मध्याह्न (75°E) से 219,250 मीटर पूर्व में।",
+    workedExampleStep4: "नॉर्थिंग '3,168,420m N': भूमध्य रेखा से ठीक 3,168,420 मीटर उत्तर में।",
+
+    commonMistakesTitle: "UTM निर्देशांकों में आम गलतियां",
+    commonMistakes: [
+      { mistake: "ज़ोन नंबर छोड़ देना", explanation: "चूंकि सभी 60 ज़ोन 500,000 मीटर दोहराते हैं, ज़ोन नंबर के बिना स्थान दुनिया में 60 अलग जगहों पर हो सकता है।" },
+      { mistake: "WGS 84 और पुराने सर्वे ऑफ इंडिया डेटम मिलाना", explanation: "एवरेस्ट 1830 और WGS 84 के बीच रूपांतरण न करने से 100 मीटर तक की त्रुटि हो सकती है।" },
+      { mistake: "दो अलग-अलग ज़ोन के बीच दूरी घटाना", explanation: "अलग-अलग ज़ोन के UTM मानों को सीधे समतल गणित से नहीं घटाया जा सकता।" }
+    ],
+
+    faqs: [
+      { question: "इंजीनियर और सेना अक्षांश/देशांतर की जगह UTM क्यों चुनते हैं?", answer: "क्योंकि UTM निर्देशांक समतल मीटर में होते हैं। पाइथागोरस प्रमेय से क्षेत्रफल और दूरी निकालना आसान होता है।" },
+      { question: "ध्रुवों पर UTM का क्या होता है?", answer: "अत्यधिक विकृति के कारण UTM 80°S और 84°N पर समाप्त हो जाता है। ध्रुवों के लिए UPS (Universal Polar Stereographic) प्रणाली प्रयोग होती है।" },
+      { question: "MGRS और UTM में क्या संबंध है?", answer: "सैन्य ग्रिड प्रणाली (MGRS) UTM का विस्तार है जो ज़ोन को 100 किमी के चौकोर ब्लॉकों में बांटती है।" }
+    ],
+
+    nextStepsTitle: "अगले कदम",
+    nextSteps: [
+      { title: "UTM निर्देशांक बदलें", href: "/tools/coordinate-converter/", desc: "UTM ज़ोन को दशमलव डिग्री और DMS में बदलें।" },
+      { title: "अक्षांश और देशांतर गाइड", href: "/guides/latitude-and-longitude-explained/", desc: "भूगणितीय कोणीय प्रणाली के आधारभूत नियम सीखें।" },
+      { title: "दशमलव डिग्री बनाम DMS", href: "/comparisons/decimal-degrees-vs-dms/", desc: "विभिन्न निर्देशांक प्रारूपों की तुलना समझें।" }
+    ],
+
+    connectedGuides: "🔗 जुड़े मार्गदर्शक और उपकरण",
+    tool1Title: "निर्देशांक परिवर्तक",
+    tool1Desc: "UTM, DD और DMS",
     tool2Title: "अक्षांश और देशांतर",
-    tool2Desc: "गोलीय जियोडेसी गाइड",
-    tool3Title: "दशमलव डिग्री बनाम DMS",
-    tool3Desc: "निर्देशांक संकेतन की तुलना",
-    tool4Title: "GPS कैसे काम करता है",
-    tool4Desc: "WGS84 सैटेलाइट ऑर्बिट"
+    tool2Desc: "भूगणित मूल सिद्धांत",
+    tool3Title: "दशमलव बनाम DMS",
+    tool3Desc: "प्रारूप तुलना",
+    tool4Title: "दूरी कैलकुलेटर",
+    tool4Desc: "हैवरसिन दूरी"
   },
   id: {
-    title: "Koordinat UTM & Datum: WGS84, NAD83 | MyLocationLab",
-    description: "Kuasai sistem koordinat Universal Transverse Mercator (UTM), sistem referensi kisi militer (MGRS), datum geodesi, false easting, dan proyeksi zona.",
-    h1: "Koordinat UTM & Datum Geodesi: Panduan GIS Lengkap",
-    subtitle: "Pahami cara proyeksi kisi metrik, zona 6 derajat UTM, false northing/easting, dan datum regional (NAD83, ETRS89, WGS84) membentuk survei profesional.",
-    sectionLabel: "Panduan Edukasi",
-    p1: "Sementara peta web konsumen dan ponsel pintar memakai koordinat sudut bola (Lintang dan Bujur), insinyur sipil, juru ukur lahan, topografer, dan ahli taktis militer membutuhkan kisi Kartesius metrik.",
-    p2: "Sistem metrik paling lazim di GIS global adalah proyeksi Universal Transverse Mercator (UTM). Dalam panduan ini, kami mengupas cara UTM membagi Bumi melengkung menjadi zona datar, cara false easting menghilangkan angka negatif, serta cara datum geodesi seperti WGS 84, NAD83, dan ETRS89 menjamin presisi milimeter.",
-    calloutBadge: "🧭 Konversi Instan",
-    calloutTitle: "Konversi antara UTM, Derajat Desimal & DMS",
-    calloutDesc: "Masukkan koordinat apa pun untuk menghitung Zona UTM, Easting, Northing, dan proyeksi belahan bumiannya secara otomatis.",
-    calloutBtn: "Buka Konverter UTM →",
-    h2WhatIsUtm: "1. Apa Itu Sistem Universal Transverse Mercator (UTM)?",
-    pUtm1: "Sistem UTM bukanlah satu proyeksi peta tunggal; ia adalah sistem kisi terspesialisasi yang dikembangkan oleh United States Army Corps of Engineers pada era 1940-an. Ia memetakan Bumi antara lintang 80° Selatan dan 84° Utara menggunakan proyeksi silinder Transverse Mercator konform.",
-    h3Zones: "60 Zona Bujur (Masing-masing Selebar 6°)",
-    pZones: "Untuk meminimalkan distorsi skala yang muncul saat permukaan bola diratakan, UTM membagi bola dunia menjadi 60 zona bujur bernomor 1 sampai 60:",
-    zoneLi1: "Setiap zona membentang selebar 6 derajat bujur (60 × 6° = 360°).",
-    zoneLi2: "Zona 1 dimulai pada meridian ke-180 (180° B sampai 174° B) dan dihitung ke arah timur.",
-    zoneLi3: "Setiap zona memiliki Meridian Utama yang berjalan tepat di tengahnya (3° dari kedua batas).",
-    h2EastingNorthing: "2. Memahami Easting, Northing & Offset Palsu",
-    pEastingNorthing: "Di dalam setiap zona UTM 6°, setiap posisi dinyatakan dalam meter standar menggunakan dua koordinat:",
-    eastingTitle: "Easting (Sumbu X) & False Easting 500.000 m",
-    eastingDesc: "Untuk mencegah angka negatif saat bergerak ke barat Meridian Utama suatu zona, meridian tengah diberi False Easting sembarang sebesar 500.000 meter. Lokasi di barat tengah memiliki easting < 500.000 m; lokasi di timur tengah memiliki easting > 500.000 m.",
-    northingTitle: "Northing (Sumbu Y) & Garis Dasar Ekuator",
-    northingDesc: "Di Belahan Utara, Ekuator diberi Northing 0 meter. Di Belahan Selatan, agar tidak ada nilai negatif, Ekuator diberi False Northing sebesar 10.000.000 meter yang berkurang menuju Kutub Selatan.",
-    h2Datums: "3. Apa Itu Datum Geodesi? (WGS84 vs NAD83 vs ETRS89)",
-    pDatums: "Koordinat tidak berarti tanpa kerangka acuan. Datum geodesi mendefinisikan ukuran, bentuk, dan orientasi elipsoid matematis yang memodelkan Bumi:",
-    thDatum: "Nama Datum",
-    thModel: "Model Elipsoid",
-    thCoverage: "Cakupan Wilayah",
-    thFrame: "Kerangka Tektonik & Aplikasi Utama",
-    wgs84Desc: "Geosentris, terkunci pada Bumi. Standar global bawaan untuk GPS dan pemetaan web konsumen.",
-    nad83Desc: "Terikat pada lempeng tektonik Amerika Utara. Dipakai USGS, pemerintah AS, dan juru ukur negara bagian.",
-    etrs89Desc: "Terikat pada lempeng tektonik Eurasia yang stabil. Diwajibkan Uni Eropa untuk data geospasial.",
-    nad27Desc: "Datum regional historis yang berpusat di Meades Ranch, Kansas. Offset ~100 m dibandingkan WGS84.",
-    driftNote: "Catatan Drif Tektonik: Karena lempeng Amerika Utara bergeser ke barat ~1 sampai 2 cm per tahun relatif terhadap pusat massa Bumi, koordinat WGS84 dan NAD83 saat ini berbeda sekitar 1,0 sampai 1,5 meter di seluruh Amerika Serikat.",
-    h2Mgrs: "4. Military Grid Reference System (MGRS)",
-    pMgrs: "Military Grid Reference System (MGRS) adalah perluasan alfanumerik UTM yang dikembangkan pasukan NATO. Ia membagi setiap zona UTM menjadi pita lintang 8° (berlabel C sampai X) dan lebih lanjut membagi zona menjadi petak kisi 100.000 meter yang diwakili dua huruf (mis. 18TWK12345678).",
-    callout2Badge: "📐 Jarak & Lingkaran Besar",
-    callout2Title: "Hitung Jarak Geodesik",
-    callout2Desc: "Ukur jarak geodesik persis antara waypoint metrik maupun sudut di seluruh bola dunia menggunakan pemecah Haversine kami.",
-    callout2Btn: "Buka Kalkulator Jarak →",
-    connectedTitle: "🔗 Panduan & Utilitas Geospasial Terkait",
+    title: "Koordinat UTM & Datum Dijelaskan: Panduan | MyLocationLab",
+    description: "Singkatnya: Universal Transverse Mercator (UTM) memproyeksikan bumi bulat ke dalam 60 zona kisi bidang datar metrik.",
+    h1: "Koordinat UTM dan Datum Geodesi Dijelaskan",
+    subtitle: "Panduan lengkap proyeksi kisi metrik, penomoran zona, false easting, dan elipsoid referensi WGS 84.",
+    
+    inShort: "Singkatnya: Sistem Universal Transverse Mercator (UTM) memproyeksikan kelengkungan bumi ke bidang datar metrik yang terbagi dalam 60 zona bujur selebar 6 derajat. Bukan menggunakan derajat, UTM mengukur posisi dalam meter menggunakan koordinat Easting (X) dan Northing (Y).",
+
+    takeawaysTitle: "Poin-Poin Penting",
+    takeaways: [
+      "UTM membagi bumi menjadi 60 zona longitudinal selebar 6° dari zona 1 hingga 60.",
+      "Koordinat berbentuk meter murni: False Easting 500.000 meter mencegah angka negatif di barat meridian tengah.",
+      "Datum geodesi (seperti WGS 84) menentukan elipsoid acuan bentuk bumi.",
+      "Distorsi skala dipertahankan di bawah 0,1% di setiap zona.",
+      "Konversi antara koordinat metrik datar dan derajat sudut bola bumi dapat dilakukan dua arah secara akurat."
+    ],
+
+    pIntro1: "Dalam teknik sipil, pemetaan wilayah, dan militer, menghitung jarak menggunakan derajat busur sudut menimbulkan kerumitan trigonometri bola bumi.",
+    pIntro2: "Proyeksi UTM mengatasi masalah ini dengan memetakan elipsoid bumi ke bidang datar metrik. Seperti diulas dalam panduan <a href='/guides/latitude-and-longitude-explained/'>penjelasan lintang dan bujur</a>, koordinat bola memerlukan rumus trigonometri, sedangkan UTM memungkinkan perhitungan Pythagoras sederhana. Konversikan zona UTM dengan <a href='/tools/coordinate-converter/'>Konverter Koordinat</a> kami atau pelajari perbandingan <a href='/comparisons/decimal-degrees-vs-dms/'>Derajat Desimal vs DMS</a>. Simak juga entri glosarium untuk <a href='/glossary/#datum'>datum</a> dan <a href='/glossary/#wgs-84'>WGS 84</a>.",
+
+    calloutBadge: "📐 Konverter Cepat",
+    calloutTitle: "Ubah UTM ke Lintang dan Bujur",
+    calloutDesc: "Ubah koordinat zona UTM, easting, dan northing menjadi Derajat Desimal dan DMS secara instan.",
+    calloutBtn: "Buka Konverter →",
+
+    h2Zones: "1. 60 Zona UTM: Pembagian Wilayah Bumi",
+    pZones1: "Sistem UTM membagi bumi antara 80° Lintang Selatan dan 84° Lintang Utara ke dalam 60 zona bujur selebar 6°.",
+    zoneBullet1: "Lebar Zona: 6 derajat bujur (~668 km di khatulistiwa).",
+    zoneBullet2: "Meridian Tengah: Skala 0,9996 untuk meminimalkan distorsi di tepi zona.",
+    zoneBullet3: "Pita Lintang: 20 pita selebar 8° (huruf C sampai X) menandai posisi utara-selatan.",
+
+    h2EastingNorthing: "2. Easting, Northing, dan Titik Nol Semu",
+    pEasting1: "UTM menggunakan titik nol semu agar semua koordinat bernilai positif dalam satuan meter:",
+    eastBullet1: "False Easting (500.000 m): Meridian tengah zona bernilai 500.000 m. Titik di sebelah barat bernilai kurang dari 500.000 m.",
+    eastBullet2: "Northing Belahan Utara: Khatulistiwa bernilai 0 m dan bertambah ke arah utara hingga ~9.300.000 m.",
+    eastBullet3: "False Northing Belahan Selatan (10.000.000 m): Khatulistiwa diberi nilai 10.000.000 m dan menurun ke arah Kutub Selatan.",
+
+    h2Datums: "3. Apa Itu Datum Geodesi? (WGS 84 vs DGN95)",
+    pDatums1: "Koordinat tanpa datum tidak memiliki ketepatan posisi. Datum menentukan elipsoid acuan matematis:",
+    datumWgs: "WGS 84: Standar global satelit GPS dan peta internet (EPSG:4326).",
+    datumNad: "DGN95 / SRGI2013: Datum Geodesi Nasional Indonesia yang selaras dengan WGS 84.",
+    datumEtrs: "Bessel 1841: Datum kolonial historis; selisih koordinat dengan WGS 84 bisa mencapai puluhan meter tanpa transformasi.",
+
+    workedExampleTitle: "Contoh Nyata: Membaca Koordinat UTM",
+    workedExampleIntro: "Contoh: 48M 703410m E 9314220m N (Jakarta, Indonesia)",
+    workedExampleStep1: "Zona '48': Zona bujur 48 (antara 102°E dan 108°E).",
+    workedExampleStep2: "Pita 'M': Pita lintang antara 8°S dan 0° Khatulistiwa.",
+    workedExampleStep3: "Easting '703.410m E': Terletak 203.410 meter di timur meridian tengah (105°E).",
+    workedExampleStep4: "Northing '9.314.220m N': Berada di belahan selatan, yaitu 685.780 meter di selatan Khatulistiwa.",
+
+    commonMistakesTitle: "Kesalahan Umum pada Koordinat UTM",
+    commonMistakes: [
+      { mistake: "Tidak mencantumkan nomor zona UTM", explanation: "Karena 60 zona menduplikasi angka 500.000 m yang sama, tanpa zona lokasi bisa merujuk ke 60 tempat berbeda di dunia." },
+      { mistake: "Mencampur datum peta lama dengan GPS modern", explanation: "Memasukkan titik GPS ke peta lama zaman Belanda tanpa transformasi datum memicu pergeseran ratusan meter." },
+      { mistake: "Menghitung jarak melintasi batas zona", explanation: "Koordinat dari dua zona UTM berlainan tidak boleh langsung dikurangkan di bidang datar." }
+    ],
+
+    faqs: [
+      { question: "Mengapa surveyor lebih memilih UTM dibanding lintang dan bujur?", answer: "Karena angka UTM bersatuan meter datar, memungkinkan perhitungan luas dan jarak dengan rumus Pythagoras tanpa trigonometri bola." },
+      { question: "Bagaimana cara memetakan Kutub Utara dan Selatan?", answer: "UTM berakhir di 80°S dan 84°N. Wilayah kutub dipetakan dengan proyeksi Universal Polar Stereographic (UPS)." },
+      { question: "Apa kaitan antara MGRS dan UTM?", answer: "MGRS adalah sistem kisi militer yang memecah zona UTM menjadi kotak-kotak 100 km dengan kode dua huruf." }
+    ],
+
+    nextStepsTitle: "Langkah Berikutnya",
+    nextSteps: [
+      { title: "Konverter Koordinat UTM", href: "/tools/coordinate-converter/", desc: "Ubah angka UTM menjadi Derajat Desimal dan DMS seketika." },
+      { title: "Panduan Lintang dan Bujur", href: "/guides/latitude-and-longitude-explained/", desc: "Pahami dasar sistem koordinat sudut bumi." },
+      { title: "Derajat Desimal vs DMS", href: "/comparisons/decimal-degrees-vs-dms/", desc: "Ketahui kelebihan format desimal pada perangkat lunak." }
+    ],
+
+    connectedGuides: "🔗 Panduan & Alat Terkait",
     tool1Title: "Konverter Koordinat",
-    tool1Desc: "Konverter UTM, DMS, DD",
+    tool1Desc: "UTM, DD & DMS",
     tool2Title: "Lintang & Bujur",
-    tool2Desc: "Panduan geodesi bola",
-    tool3Title: "Derajat Desimal vs DMS",
-    tool3Desc: "Perbandingan notasi koordinat",
-    tool4Title: "Cara Kerja GPS",
-    tool4Desc: "Orbit satelit WGS84"
+    tool2Desc: "Dasar geodesi",
+    tool3Title: "Desimal vs DMS",
+    tool3Desc: "Perbandingan format",
+    tool4Title: "Kalkulator Jarak",
+    tool4Desc: "Jarak Haversine"
   }
 };
 
@@ -388,13 +585,34 @@ const c = translations[lang] || translations.en;
   h1={c.h1}
   subtitle={c.subtitle}
   section="guides"
-  sectionLabel={c.sectionLabel}
+  sectionLabel={lang === 'es' ? 'Guías Prácticas' : lang === 'fr' ? 'Guides Pratiques' : lang === 'de' ? 'Praxis-Leitfäden' : lang === 'pt' ? 'Guias Práticos' : lang === 'hi' ? 'मार्गदर्शिका' : lang === 'id' ? 'Panduan Praktis' : 'Practical Guides'}
   readTime="9 min"
-  publishDate="2026-09-22"
+  publishDate="2026-09-15"
   modifiedDate="2026-09-22"
 >
-  <p>{c.p1}</p>
-  <p>{c.p2}</p>
+  {c.inShort && (
+    <div class="callout-box" style="margin-bottom: var(--space-6); background: var(--color-bg-secondary); border-left: 4px solid var(--color-accent-primary); padding: var(--space-4) var(--space-5); border-radius: var(--radius-md);">
+      <p style="margin: 0; font-weight: 500; font-size: var(--text-base); color: var(--color-text-primary); line-height: 1.75;">
+        {c.inShort}
+      </p>
+    </div>
+  )}
+
+  {c.takeaways && (
+    <div class="card card-flat" style="margin-bottom: var(--space-8); padding: var(--space-6); border: 1px solid var(--color-border); background: var(--color-bg-card); border-radius: var(--radius-lg);">
+      <h3 style="margin-top: 0; margin-bottom: var(--space-3); font-size: var(--text-lg); display: flex; align-items: center; gap: var(--space-2);">
+        <span>📌</span> {c.takeawaysTitle || "Key Takeaways"}
+      </h3>
+      <ul style="margin: 0; padding-left: var(--space-5); display: flex; flex-direction: column; gap: var(--space-2); color: var(--color-text-secondary); line-height: 1.75;">
+        {c.takeaways.map((item: string) => (
+          <li>{item}</li>
+        ))}
+      </ul>
+    </div>
+  )}
+
+  <p set:html={localizeHtml(c.pIntro1, lang)}></p>
+  <p set:html={localizeHtml(c.pIntro2, lang)}></p>
 
   <div class="tool-callout">
     <div class="tool-callout-content">
@@ -407,98 +625,82 @@ const c = translations[lang] || translations.en;
     </div>
   </div>
 
-  <h2>{c.h2WhatIsUtm}</h2>
-  <p>{c.pUtm1}</p>
-
-  <h3>{c.h3Zones}</h3>
-  <p>{c.pZones}</p>
+  <h2>{c.h2Zones}</h2>
+  <p>{c.pZones1}</p>
   <ul>
-    <li>{c.zoneLi1}</li>
-    <li>{c.zoneLi2}</li>
-    <li>{c.zoneLi3}</li>
+    <li><strong>{c.zoneBullet1}</strong></li>
+    <li><strong>{c.zoneBullet2}</strong></li>
+    <li><strong>{c.zoneBullet3}</strong></li>
   </ul>
 
   <h2>{c.h2EastingNorthing}</h2>
-  <p>{c.pEastingNorthing}</p>
-
-  <div class="step-container">
-    <div class="step-card">
-      <div class="step-number">E</div>
-      <div class="step-body">
-        <h4 class="step-title">{c.eastingTitle}</h4>
-        <p class="step-desc">{c.eastingDesc}</p>
-      </div>
-    </div>
-
-    <div class="step-card">
-      <div class="step-number">N</div>
-      <div class="step-body">
-        <h4 class="step-title">{c.northingTitle}</h4>
-        <p class="step-desc">{c.northingDesc}</p>
-      </div>
-    </div>
-  </div>
+  <p>{c.pEasting1}</p>
+  <ul>
+    <li><strong>{c.eastBullet1}</strong></li>
+    <li><strong>{c.eastBullet2}</strong></li>
+    <li><strong>{c.eastBullet3}</strong></li>
+  </ul>
 
   <h2>{c.h2Datums}</h2>
-  <p>{c.pDatums}</p>
+  <p>{c.pDatums1}</p>
+  <ul>
+    <li><strong>WGS 84:</strong> {c.datumWgs}</li>
+    <li><strong>Regional / Plate Reference:</strong> {c.datumNad}</li>
+    <li><strong>Historical / Local Datum:</strong> {c.datumEtrs}</li>
+  </ul>
 
-  <table>
-    <thead>
-      <tr>
-        <th>{c.thDatum}</th>
-        <th>{c.thModel}</th>
-        <th>{c.thCoverage}</th>
-        <th>{c.thFrame}</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><strong>WGS 84</strong> (EPSG:4326)</td>
-        <td>WGS 84 Ellipsoid</td>
-        <td>Global</td>
-        <td>{c.wgs84Desc}</td>
-      </tr>
-      <tr>
-        <td><strong>NAD83</strong> (North American Datum)</td>
-        <td>GRS 80</td>
-        <td>North America</td>
-        <td>{c.nad83Desc}</td>
-      </tr>
-      <tr>
-        <td><strong>ETRS89</strong> (European Terrestrial Ref)</td>
-        <td>GRS 80</td>
-        <td>Europe</td>
-        <td>{c.etrs89Desc}</td>
-      </tr>
-      <tr>
-        <td><strong>NAD27</strong> (Legacy)</td>
-        <td>Clarke 1866</td>
-        <td>North America (Historical)</td>
-        <td>{c.nad27Desc}</td>
-      </tr>
-    </tbody>
-  </table>
-
-  <blockquote>
-    <strong>{c.driftNote}</strong>
-  </blockquote>
-
-  <h2>{c.h2Mgrs}</h2>
-  <p>{c.pMgrs}</p>
-
-  <div class="tool-callout">
-    <div class="tool-callout-content">
-      <span class="tool-callout-badge">{c.callout2Badge}</span>
-      <h3 class="tool-callout-title">{c.callout2Title}</h3>
-      <p class="tool-callout-desc">{c.callout2Desc}</p>
+  {c.workedExampleTitle && (
+    <div class="card card-flat" style="margin: var(--space-8) 0; padding: var(--space-6); background: var(--color-bg-secondary); border-left: 4px solid var(--color-accent-success); border-radius: var(--radius-md);">
+      <h3 style="margin-top: 0; margin-bottom: var(--space-2); color: var(--color-text-primary);">🧮 {c.workedExampleTitle}</h3>
+      <p style="color: var(--color-text-secondary); margin-bottom: var(--space-4); line-height: 1.75;">{c.workedExampleIntro}</p>
+      <div style="display: flex; flex-direction: column; gap: var(--space-2); font-size: var(--text-sm); line-height: 1.75;">
+        <div style="padding: var(--space-2) var(--space-3); background: var(--color-bg-tertiary); border-radius: var(--radius-sm); font-family: var(--font-mono);">{c.workedExampleStep1}</div>
+        <div style="padding: var(--space-2) var(--space-3); background: var(--color-bg-tertiary); border-radius: var(--radius-sm); font-family: var(--font-mono);">{c.workedExampleStep2}</div>
+        <div style="padding: var(--space-2) var(--space-3); background: var(--color-bg-tertiary); border-radius: var(--radius-sm); font-family: var(--font-mono);">{c.workedExampleStep3}</div>
+        <div style="padding: var(--space-2) var(--space-3); background: var(--color-bg-tertiary); border-radius: var(--radius-sm); font-family: var(--font-mono);">{c.workedExampleStep4}</div>
+      </div>
     </div>
-    <div class="tool-callout-action">
-      <a href={getLocalizedPath('/tools/distance-calculator/', lang)} class="btn btn-primary">{c.callout2Btn}</a>
+  )}
+
+  {c.commonMistakes && (
+    <div style="margin: var(--space-10) 0;">
+      <h2>⚠️ {c.commonMistakesTitle || "Common Mistakes"}</h2>
+      <div style="display: grid; gap: var(--space-4); margin-top: var(--space-4);">
+        {c.commonMistakes.map((m: any) => (
+          <div class="card card-flat" style="padding: var(--space-4) var(--space-5); border-left: 3px solid var(--color-accent-warning);">
+            <strong style="display: block; color: var(--color-text-primary); margin-bottom: var(--space-1); font-size: var(--text-base);">{m.mistake}</strong>
+            <p style="margin: 0; color: var(--color-text-secondary); font-size: var(--text-sm); line-height: 1.75;">{m.explanation}</p>
+          </div>
+        ))}
+      </div>
     </div>
-  </div>
+  )}
+
+  {c.faqs && c.faqs.length > 0 && (
+    <div style="margin-top: var(--space-10);">
+      <h2>❓ FAQ: UTM Coordinates & Datums</h2>
+      <FAQAccordion items={c.faqs} includeSchema={true} />
+    </div>
+  )}
+
+  {c.nextSteps && (
+    <div class="card card-flat" style="margin: var(--space-10) 0; padding: var(--space-6); background: var(--color-bg-secondary); border: 1px solid var(--color-border); border-radius: var(--radius-lg);">
+      <h3 style="margin-top: 0; margin-bottom: var(--space-4); font-size: var(--text-lg); display: flex; align-items: center; gap: var(--space-2);">
+        <span>🚀</span> {c.nextStepsTitle || "Next Steps"}
+      </h3>
+      <div style="display: grid; gap: var(--space-3);">
+        {c.nextSteps.map((step: any) => (
+          <a href={getLocalizedPath(step.href, lang)} class="card card-flat" style="display: flex; flex-direction: column; gap: var(--space-1); padding: var(--space-3) var(--space-4); text-decoration: none; border-left: 3px solid var(--color-accent-primary); background: var(--color-bg-card); transition: transform 0.15s ease;">
+            <strong style="color: var(--color-text-primary); font-size: var(--text-base);">{step.title} →</strong>
+            <span style="color: var(--color-text-secondary); font-size: var(--text-sm); line-height: 1.6;">{step.desc}</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  )}
 
   <div class="contextual-next-box">
-    <h3 class="contextual-next-title">{c.connectedTitle}</h3>
+    <h3 class="contextual-next-title">{c.connectedGuides}</h3>
     <div class="contextual-next-grid">
       <a href={getLocalizedPath('/tools/coordinate-converter/', lang)} class="contextual-link-card">
         <span class="contextual-link-icon">🧭</span>
@@ -521,8 +723,8 @@ const c = translations[lang] || translations.en;
           <div class="contextual-link-sub">{c.tool3Desc}</div>
         </div>
       </a>
-      <a href={getLocalizedPath('/guides/how-gps-location-works/', lang)} class="contextual-link-card">
-        <span class="contextual-link-icon">🛰️</span>
+      <a href={getLocalizedPath('/tools/distance-calculator/', lang)} class="contextual-link-card">
+        <span class="contextual-link-icon">📏</span>
         <div class="contextual-link-info">
           <div class="contextual-link-title">{c.tool4Title}</div>
           <div class="contextual-link-sub">{c.tool4Desc}</div>

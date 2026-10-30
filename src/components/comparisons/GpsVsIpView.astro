@@ -1,9 +1,10 @@
 ---
 /**
- * GpsVsIpView — Multilingual Comparison: GPS Location vs IP Geolocation
+ * GpsVsIpView — Multilingual Comparison: GPS vs IP Location
  */
 import ContentLayout from '../../layouts/ContentLayout.astro';
-import { getLocalizedPath, type SupportedLang, defaultLang } from '../../i18n/config';
+import FAQAccordion from '../FAQAccordion.astro';
+import { getLocalizedPath, localizeHtml, type SupportedLang, defaultLang } from '../../i18n/config';
 
 interface Props {
   lang?: SupportedLang;
@@ -14,40 +15,76 @@ const { lang = defaultLang } = Astro.props;
 const translations: Record<string, any> = {
   en: {
     title: "GPS vs IP Location: Accuracy & Privacy | MyLocationLab",
-    description: "Compare GPS positioning with IP address geolocation. Learn how accuracy (3m vs 50km), hardware dependencies, privacy models, and latency compare.",
+    description: "In short: GPS reads microwave signals from orbital satellites to calculate your ground position within 3-5 meters, while IP geolocation looks up regional ISP database records within 5-50 km.",
     h1: "GPS Location vs. IP Geolocation: The Definitive Comparison",
     subtitle: "A side-by-side technical evaluation of satellite trilateration versus network routing table geolocation.",
+    
+    inShort: "In short: GPS calculates your physical position within 3 to 5 meters using radio signals from orbiting satellites, requiring your explicit browser permission. IP geolocation estimates your location within 5 to 50 km based on your Internet Service Provider's routing tables, operating passively in the background without needing hardware sensors.",
+
     calloutBadge: "⚖️ Live Side-by-Side Test",
     calloutTitle: "Compare Your Live GPS vs IP Geolocation",
     calloutDesc: "See the real-time difference between your device's direct GPS satellite fix and your public network IP location.",
     calloutBtn: "Check IP Location →",
+
     matrixHeading: "Head-to-Head Comparison Matrix",
     thAttr: "Attribute",
     thGps: "GPS Positioning (GNSS)",
     thIp: "IP Address Geolocation",
-    row1: ["Typical Accuracy", "3 to 5 meters (10 to 16 ft) outdoors", "10 to 80 kilometers (City/Region level)"],
+    row1: ["Typical Accuracy", "3 to 5 meters (10 to 16 ft) outdoors", "5 to 50 km (City/regional gateway level)"],
     row2: ["Underlying Technology", "Satellite radio signal time-of-flight trilateration", "ISP Autonomous System Number (ASN) database tables"],
     row3: ["User Permission Required?", "Yes (Explicit browser prompt mandatory)", "No (Inferred passively from incoming network socket)"],
     row4: ["Hardware Requirement", "Dedicated GNSS antenna & chipset (smartphone/tablet)", "Any internet-connected device (PC, server, router)"],
     row5: ["Indoor Reliability", "Weak (Attenuated by concrete/metal roofs)", "100% functional indoors"],
     row6: ["VPN / Proxy Impact", "Unaltered (Hardware GPS reads true sky signals)", "Completely masked / routed to VPN server location"],
     row7: ["Battery Consumption", "Moderate (continuous radio reception)", "Zero additional battery drain"],
+
     h2Gps: "How GPS Location Works",
-    pGps1: "GPS determines location through direct radio wave physics. Your phone contains a miniaturized antenna that captures radio waves transmitted from 20,200 km above in medium Earth orbit.",
-    pGps2: "Because the signals travel at the speed of light, calculating arrival time differences allows your phone's processor to compute its precise latitude, longitude, and altitude relative to the WGS 84 ellipsoid.",
+    pGps1: "GPS determines location through direct radio wave physics. Your phone contains a miniaturized antenna that captures radio waves transmitted from 20,200 km above in medium Earth orbit. As detailed in our guide on <a href='/guides/how-gps-location-works/'>how GPS location works</a>, satellite signals allow your phone to resolve its ground position within meters.",
+    pGps2: "Because the signals travel at the speed of light, calculating arrival time differences allows your phone's processor to compute its precise latitude, longitude, and altitude relative to the WGS 84 ellipsoid. You can test your receiver's live fix on our <a href='/my-location/gps/'>My GPS Location page</a>.",
+
     h2Ip: "How IP Geolocation Works",
-    pIp1: "IP geolocation is not a physical measurement—it is a database correlation. Every packet sent across the internet contains your public IP address. Companies like MaxMind, IPinfo, and DB-IP maintain proprietary databases that map IP blocks to:",
+    pIp1: "IP geolocation is not a physical measurement—it is a database correlation. Every packet sent across the internet contains your public IP address. As explored in our deep-dive on <a href='/guides/ip-geolocation-accuracy/'>IP geolocation accuracy and limits</a>, companies like MaxMind and IPinfo maintain proprietary databases mapping IP blocks to regional ISP gateways.",
     ipBullet1: "The ISP owning that block of IP addresses (e.g., Comcast, AT&T, Vodafone).",
     ipBullet2: "The geographical coordinates of the ISP's regional gateway router or data center.",
-    pIp2: "Because an ISP might assign the same block of IPs across an entire metropolitan area or county, IP-based positioning will never be able to identify your street address.",
+    pIp2: "Because an ISP might assign the same block of IPs across an entire metropolitan area, IP-based positioning cannot identify your street address. You can view your current detected gateway on our <a href='/my-location/ip/'>My IP Location page</a>. If your detected city looks completely incorrect, consult our <a href='/guides/wrong-location/'>Wrong Location Guide</a>.",
+
     h2Privacy: "Privacy Comparison: Which Is Safer?",
     h3GpsPrivacy: "Browser W3C Geolocation (GPS):",
     pGpsPrivacy: "Under the W3C Geolocation API standard, no website can read your GPS coordinates without your explicit, opt-in consent. The prompt displays every time unless you permanently whitelist the domain. On MyLocationLab, your coordinates are processed 100% locally in your browser and never logged.",
     h3IpPrivacy: "IP Address:",
     pIpPrivacy: "Every web server you visit automatically receives your public IP address to deliver the HTML page. While it cannot pinpoint your house, it routinely reveals your city, state, postal code, and Internet Service Provider without prompting for permission.",
+
     h2Which: "Which Method Should You Use?",
     useGpsWhen: "Use GPS When: You need turn-by-turn navigation, exact street addresses, elevation calculations, or precise distances.",
     useIpWhen: "Use IP Geolocation When: You are on a desktop workstation without GPS, want a coarse regional weather forecast, or need to detect which country or currency to default to on an e-commerce site.",
+
+    h2Scenarios: "Verdict by Scenario",
+    scenarios: [
+      { scenario: "Turn-by-Turn Navigation & Hiking", verdict: "Use GPS", desc: "Requires exact meter-level accuracy that only satellite receivers can provide." },
+      { scenario: "Regional Weather & E-Commerce Currency", verdict: "Use IP Geolocation", desc: "City-level or country-level resolution is completely sufficient without bothering the user with permission prompts." },
+      { scenario: "Indoor Desktop Browsing", verdict: "Use IP Geolocation", desc: "Desktop workstations lack GNSS antennae and cannot receive satellite signals inside buildings." },
+      { scenario: "Geofencing & Security Verification", verdict: "Use GPS", desc: "Detects physical proximity within boundaries that IP geolocation cannot accurately define." }
+    ],
+
+    h2Myths: "Myths vs. Reality",
+    myths: [
+      { myth: "Myth: Websites can secretly access your GPS location without permission.", fact: "Reality: Modern browsers strictly enforce sandbox permissions. A website cannot access your GNSS hardware coordinates without an explicit, user-initiated click approving the prompt." },
+      { myth: "Myth: IP geolocation can find your exact house or apartment number.", fact: "Reality: IP databases only know the location of your Internet Service Provider's regional routing center or central office, typically 5 to 50 km away." }
+    ],
+
+    faqs: [
+      { question: "Why does my IP location show a city 40 kilometers away?", answer: "Your ISP routes your internet traffic through a regional gateway router. The GeoIP database lists the physical location of that router or corporate data hub, not your individual home address." },
+      { question: "Does turning on a VPN affect GPS location?", answer: "No. A VPN encrypts network traffic and routes your IP through another server, altering your IP geolocation. However, your device's physical GPS chip continues receiving direct orbital radio signals unaffected by software VPN tunnels." },
+      { question: "Can websites track my elevation using IP geolocation?", answer: "No. IP geolocation only correlates network blocks to two-dimensional regional latitude and longitude. Altitude can only be measured via hardware GNSS satellite fixes or barometric pressure sensors." }
+    ],
+
+    nextStepsTitle: "Next Steps",
+    nextSteps: [
+      { title: "Inspect Your GPS Antenna", href: "/my-location/gps/", desc: "Check your live satellite fix, latitude, longitude, and current accuracy radius." },
+      { title: "Inspect Your Network IP", href: "/my-location/ip/", desc: "Check your public IP address, ISP name, Autonomous System Number, and regional city." },
+      { title: "Troubleshoot Wrong Location", href: "/guides/wrong-location/", desc: "Learn how to resolve ISP discrepancies, Wi-Fi cache mismatches, and browser permission blocks." }
+    ],
+
     connectedGuides: "🔗 Connected Guides & Practical Tools",
     tool1Title: "GPS Coordinates Finder",
     tool1Desc: "Inspect exact satellite fix",
@@ -60,275 +97,491 @@ const translations: Record<string, any> = {
   },
   es: {
     title: "GPS vs Ubicación IP: Comparativa de Precisión y Privacidad | MyLocationLab",
-    description: "Compare el posicionamiento GPS con la geolocalización por IP. Descubra diferencias de precisión (3m vs 50km), hardware, privacidad y latencia.",
+    description: "En resumen: El GPS lee microondas de satélites orbitales con precisión de 3-5 metros, mientras que la geolocalización IP consulta bases de datos de proveedores en un rango de 5-50 km.",
     h1: "Ubicación GPS vs. Geolocalización IP: La Comparativa Definitiva",
     subtitle: "Evaluación técnica de la trilateración satelital frente a las tablas de enrutamiento web.",
+    
+    inShort: "En resumen: El GPS calcula su posición física con un margen de 3 a 5 metros mediante señales de radio de satélites orbitales, requiriendo su permiso explícito en el navegador. La geolocalización IP estima su ubicación en un rango de 5 a 50 km a partir de las tablas de enrutamiento de su proveedor (ISP), funcionando pasivamente sin sensores de hardware.",
+
     calloutBadge: "⚖️ Prueba en Vivo",
     calloutTitle: "Compare su GPS Real frente a su Ubicación IP",
     calloutDesc: "Compruebe la discrepancia en tiempo real entre el cálculo de satélites de su dispositivo y la IP de su red.",
     calloutBtn: "Comprobar Ubicación IP →",
+
     matrixHeading: "Matriz Comparativa Cara a Cara",
     thAttr: "Atributo",
     thGps: "Posicionamiento GPS (GNSS)",
     thIp: "Geolocalización por Dirección IP",
-    row1: ["Precisión Típica", "3 a 5 metros al aire libre", "10 a 80 kilómetros (nivel ciudad/región)"],
+    row1: ["Precisión Típica", "3 a 5 metros al aire libre", "5 a 50 km (nivel de central o puerta de enlace del ISP)"],
     row2: ["Tecnología Subyacente", "Trilateración orbital por tiempo de vuelo de radio", "Tablas de bases de datos ASN de proveedores ISP"],
     row3: ["¿Requiere Permiso?", "Sí (Aviso explícito obligatorio en el navegador)", "No (Se deduce pasivamente de la conexión de red)"],
     row4: ["Requisito de Hardware", "Antena GNSS y chip dedicado (teléfono o tablet)", "Cualquier dispositivo conectado a Internet (PC, servidor)"],
     row5: ["Fiabilidad en Interiores", "Débil (Atenuada por techos y hormigón)", "100% funcional en interiores"],
     row6: ["Impacto de VPN / Proxy", "Sin cambios (El GPS lee señales físicas del cielo)", "Enmascarado por completo hacia el servidor VPN"],
     row7: ["Consumo de Batería", "Moderado (Recepción constante de radio)", "Cero consumo adicional de batería"],
+
     h2Gps: "Cómo Funciona la Ubicación GPS",
-    pGps1: "El GPS calcula la posición mediante física pura. Su teléfono posee una antena miniaturizada que sintoniza ondas de radio emitidas desde 20.200 km de altitud en órbita terrestre media.",
-    pGps2: "Al viajar las señales a la velocidad de la luz, el procesador calcula las diferencias de tiempo de llegada para computar latitud, longitud y altitud con respecto al elipsoide WGS 84.",
+    pGps1: "El GPS calcula la posición mediante física pura. Su teléfono posee una antena miniaturizada que sintoniza ondas de radio emitidas desde 20.200 km de altitud en órbita terrestre media. Como detallamos en nuestra guía sobre <a href='/guides/how-gps-location-works/'>cómo funciona la ubicación GPS</a>, los satélites permiten resolver su posición con precisión métrica.",
+    pGps2: "Al viajar las señales a la velocidad de la luz, el procesador calcula las diferencias de tiempo de llegada para computar latitud, longitud y altitud. Puede comprobar la señal de su antena en la página de <a href='/my-location/gps/'>Mi Ubicación GPS</a>.",
+
     h2Ip: "Cómo Funciona la Geolocalización IP",
-    pIp1: "La geolocalización IP no es una medición física: es una correlación en bases de datos. Cada paquete de red contiene su IP pública. Empresas como MaxMind o DB-IP mantienen registros que asocian bloques IP con:",
+    pIp1: "La geolocalización IP no es una medición física: es una correlación en bases de datos. Cada paquete de red contiene su IP pública. Como explicamos en nuestro informe sobre <a href='/guides/ip-geolocation-accuracy/'>precisión y límites de la geolocalización IP</a>, empresas como MaxMind mantienen registros que asocian bloques IP con centrales de telecomunicaciones.",
     ipBullet1: "El proveedor ISP propietario del bloque (ej. Telefónica, Movistar, Vodafone, Claro).",
     ipBullet2: "Las coordenadas de la central o centro de datos del proveedor.",
-    pIp2: "Dado que un proveedor puede asignar un mismo rango de direcciones IP a toda una provincia o comarca, la posición por IP jamás podrá identificar el nombre de su calle.",
+    pIp2: "Dado que un proveedor puede asignar un mismo rango de direcciones IP a toda una comarca, la posición por IP jamás podrá identificar el nombre de su calle. Compruebe su nodo de red en <a href='/my-location/ip/'>Mi Ubicación IP</a>. Si la ciudad mostrada es incorrecta, revise nuestra <a href='/guides/wrong-location/'>Guía de Ubicación Errónea</a>.",
+
     h2Privacy: "Comparativa de Privacidad: ¿Cuál es más segura?",
     h3GpsPrivacy: "Geolocalización W3C del Navegador (GPS):",
     pGpsPrivacy: "Bajo el estándar W3C, ninguna página web puede leer sus coordenadas GPS sin su consentimiento explícito y previo. En MyLocationLab, sus coordenadas se procesan 100% de manera local y jamás se envían a servidores.",
     h3IpPrivacy: "Dirección IP:",
     pIpPrivacy: "Cualquier servidor web recibe de forma automática su IP pública para responder a la solicitud. Aunque no localiza su domicilio, revela rutinariamente su ciudad, código postal y proveedor de telecomunicaciones sin pedir autorización.",
+
     h2Which: "¿Qué método debe utilizar?",
     useGpsWhen: "Utilice GPS cuando: Necesite navegación paso a paso, direcciones postales exactas, cálculo de altitud o distancias métricas precisas.",
     useIpWhen: "Utilice Geolocalización IP cuando: Esté en un ordenador de escritorio sin receptor GPS, requiera el pronóstico del tiempo regional o configuración de país por defecto.",
+
+    h2Scenarios: "Veredicto por Escenario",
+    scenarios: [
+      { scenario: "Navegación Paso a Paso y Senderismo", verdict: "Usar GPS", desc: "Requiere la precisión métrica que solo los satélites pueden proporcionar." },
+      { scenario: "Clima Regional y Moneda en Tiendas Web", verdict: "Usar Geolocalización IP", desc: "La precisión de ciudad o país es suficiente sin molestar al usuario con permisos." },
+      { scenario: "Navegación en PC de Sobremesa", verdict: "Usar Geolocalización IP", desc: "Los equipos fijos carecen de antena GNSS y están bajo techo." },
+      { scenario: "Control de Perímetros (Geofencing)", verdict: "Usar GPS", desc: "Verifica límites físicos que la IP no puede delimitar con seguridad." }
+    ],
+
+    h2Myths: "Mitos vs. Realidades",
+    myths: [
+      { myth: "Mito: Las páginas web pueden leer su GPS sin autorización previa.", fact: "Realidad: Los navegadores exigen obligatoriamente una pulsación explícita del usuario autorizando el permiso de geolocalización." },
+      { myth: "Mito: La geolocalización IP puede localizar el portal exacto de su vivienda.", fact: "Realidad: Las bases de datos IP solo registran la central o centro de enrutamiento del proveedor, situado habitualmente a entre 5 y 50 km." }
+    ],
+
+    faqs: [
+      { question: "¿Por qué mi ubicación IP marca una ciudad a 30 kilómetros?", answer: "Su operador canaliza el tráfico a través de una central regional. Las bases de datos GeoIP asocian su bloque de IP a ese centro de comunicaciones y no a su domicilio." },
+      { question: "¿Afecta una VPN a la señal GPS del móvil?", answer: "No. La VPN solo redirige el tráfico de red, cambiando la ubicación IP. El chip GPS de su móvil sigue sintonizando directamente las ondas de los satélites." },
+      { question: "¿Puede una web saber mi altitud mediante mi dirección IP?", answer: "No. La geolocalización IP es bidimensional; la altitud solo se calcula mediante satélites GNSS o sensores barométricos de hardware." }
+    ],
+
+    nextStepsTitle: "Siguientes Pasos",
+    nextSteps: [
+      { title: "Inspeccionar Antena GPS", href: "/my-location/gps/", desc: "Compruebe sus coordenadas satelitales en vivo y el radio de precisión." },
+      { title: "Inspeccionar Red IP", href: "/my-location/ip/", desc: "Consulte su dirección IP pública, proveedor ISP y ciudad de enrutamiento." },
+      { title: "Corregir Ubicación Errónea", href: "/guides/wrong-location/", desc: "Descubra cómo solucionar discrepancias causadas por VPN o cachés Wi-Fi." }
+    ],
+
     connectedGuides: "🔗 Guías y Herramientas Relacionadas",
     tool1Title: "Buscador de Coordenadas GPS",
     tool1Desc: "Inspeccione la posición satelital",
     tool2Title: "Límites de Precisión IP",
-    tool2Desc: "Cómo operan las bases GeoIP",
+    tool2Desc: "Cómo funcionan las bases GeoIP",
     tool3Title: "Corregir Ubicación Errónea",
-    tool3Desc: "Resuelva conflictos de ISP y VPN",
+    tool3Desc: "Solucione conflictos de ISP y VPN",
     tool4Title: "Monitor de Precisión GPS",
-    tool4Desc: "Pruebas de radio de error en vivo"
+    tool4Desc: "Prueba de radio de error en vivo"
   },
   fr: {
-    title: "GPS vs Position IP : Comparatif Précision & Vie Privée | MyLocationLab",
-    description: "Comparez la géolocalisation GPS et le repérage par adresse IP. Tout savoir sur la précision (3 m vs 50 km), le matériel et la confidentialité.",
-    h1: "Localisation GPS vs. Géolocalisation IP : Le Comparatif Complet",
-    subtitle: "Évaluation technique détaillée entre la trilatération satellitaire et les tables de routage Internet.",
+    title: "GPS vs Localisation IP : Précision et Confidentialité | MyLocationLab",
+    description: "En bref : Le GPS capte les signaux satellites avec une précision de 3 à 5 mètres, tandis que la géolocalisation IP interroge les bases de routage FAI entre 5 et 50 km.",
+    h1: "Localisation GPS vs. Géolocalisation IP : Le Comparatif Technique",
+    subtitle: "Évaluation comparative entre la trilatération satellitaire et les bases de routage réseau.",
+    
+    inShort: "En bref : Le GPS détermine votre position physique à 3 ou 5 mètres près en captant les signaux radio de satellites en orbite, sous réserve de votre accord explicite sur le navigateur. La géolocalisation IP estime votre zone géographique entre 5 et 50 km selon les tables de routage de votre FAI, de manière passive et sans capteur matériel.",
+
     calloutBadge: "⚖️ Test en Direct",
-    calloutTitle: "Comparez votre GPS et votre IP en Temps Réel",
-    calloutDesc: "Visualisez l'écart entre le point satellite direct de votre terminal et la position déduite de votre réseau IP public.",
-    calloutBtn: "Tester la Position IP →",
-    matrixHeading: "Matrice de Comparaison Directe",
-    thAttr: "Critère",
+    calloutTitle: "Comparez votre GPS et votre IP en Direct",
+    calloutDesc: "Visualisez l'écart en temps réel entre le capteur satellite de votre appareil et votre IP publique.",
+    calloutBtn: "Vérifier la Localisation IP →",
+
+    matrixHeading: "Matrice Comparative Directe",
+    thAttr: "Caractéristique",
     thGps: "Positionnement GPS (GNSS)",
     thIp: "Géolocalisation par Adresse IP",
-    row1: ["Précision Typique", "3 à 5 mètres en extérieur", "10 à 80 kilomètres (échelle métropole/région)"],
-    row2: ["Technologie Sous-jacente", "Trilatération temps de vol d'ondes satellitaires", "Bases de données ASN des fournisseurs d'accès (FAI)"],
-    row3: ["Autorisation Requise ?", "Oui (Fenêtre de consentement obligatoire)", "Non (Déduit de manière passive de la socket réseau)"],
-    row4: ["Matériel Nécessaire", "Puce et antenne GNSS (smartphone, tablette)", "Tout équipement connecté au réseau (PC, serveur)"],
-    row5: ["Fonctionnement en Intérieur", "Faible (Atténué par le béton armé et le métal)", "100 % opérationnel en intérieur"],
-    row6: ["Impact d'un VPN / Proxy", "Aucun (Le GPS interroge directement le ciel)", "Entièrement faussé / redirigé vers le serveur VPN"],
-    row7: ["Consommation Batterie", "Modérée (Réception radio permanente)", "Aucune consommation supplémentaire"],
-    h2Gps: "Comment Fonctionne le Signal GPS",
-    pGps1: "Le GPS repose sur des principes physiques précis. Votre appareil capte les signaux radio émis par des satellites orbitant à 20 200 km d'altitude.",
-    pGps2: "En mesurant le temps de propagation de la lumière, la puce électronique calcule sa latitude, sa longitude et son altitude par rapport à l'ellipsoïde WGS 84.",
+    row1: ["Précision Courante", "3 à 5 mètres en extérieur", "5 à 50 km (niveau ville ou passerelle régionale)"],
+    row2: ["Technologie", "Trilatération radio par temps de vol satellitaire", "Tables de bases de données ASN des FAI"],
+    row3: ["Autorisation Requise ?", "Oui (Fenêtre d'autorisation explicite obligatoire)", "Non (Déduit de la connexion réseau socket)"],
+    row4: ["Matériel Nécessaire", "Antenne GNSS et puce dédiée (smartphone, tablette)", "Tout appareil connecté (PC, serveur, box)"],
+    row5: ["Fiabilité Intérieure", "Faible (Atténuée par le béton et les toitures)", "100 % opérationnel en intérieur"],
+    row6: ["Impact d'un VPN", "Inchangé (Le GPS lit les signaux physiques du ciel)", "Totalement masqué vers l'adresse du serveur VPN"],
+    row7: ["Consommation Batterie", "Modérée (Réception radio active)", "Zéro consommation additionnelle"],
+
+    h2Gps: "Comment Fonctionne la Localisation GPS",
+    pGps1: "Le GPS repose sur les lois de propagation des ondes radio. Votre téléphone intègre une antenne miniaturisée captant les signaux émis à 20 200 km d'altitude. Comme expliqué dans notre guide sur <a href='/guides/how-gps-location-works/'>le fonctionnement du GPS</a>, les satellites permettent de calculer une position terrestre métrique.",
+    pGps2: "Le processeur mesure les écarts de temps de trajet à la vitesse de la lumière pour calculer la latitude, la longitude et l'altitude. Vous pouvez inspecter votre signal direct sur <a href='/my-location/gps/'>Ma Position GPS</a>.",
+
     h2Ip: "Comment Fonctionne la Géolocalisation IP",
-    pIp1: "La géolocalisation IP n'est pas une mesure physique : c'est une corrélation informatique. Chaque paquet émis transmet votre IP publique. Des bases comme MaxMind ou DB-IP cartographient :",
-    ipBullet1: "Le FAI titulaire de la plage d'adresses (Orange, Free, SFR, Proximus, etc.).",
-    ipBullet2: "Les coordonnées du routeur passerelle ou du centre de données régional.",
-    pIp2: "Puisqu'un même bloc IP dessert souvent des agglomérations entières, la localisation IP ne permettra jamais d'identifier votre adresse de rue.",
-    h2Privacy: "Comparatif Vie Privée : Quelle méthode est la plus sûre ?",
-    h3GpsPrivacy: "API Geolocation W3C (GPS) :",
-    pGpsPrivacy: "Le standard W3C interdit à tout site d'accéder au GPS sans autorisation explicite de l'utilisateur. Sur MyLocationLab, toutes les coordonnées sont traitées localement dans votre navigateur sans enregistrement distant.",
+    pIp1: "La géolocalisation IP est une mise en correspondance logicielle. Chaque paquet internet véhicule votre adresse IP publique. Comme détaillé dans notre étude sur <a href='/guides/ip-geolocation-accuracy/'>la précision de la géolocalisation IP</a>, des prestataires comme MaxMind cartographient les plages d'adresses vers des centres de commutation.",
+    ipBullet1: "Le fournisseur d'accès (ex. Orange, Free, SFR, Bouygues Telecom).",
+    ipBullet2: "Les coordonnées géographiques du routeur de passerelle régionale du FAI.",
+    pIp2: "Le FAI pouvant attribuer une même plage d'adresses à toute une agglomération, l'adresse IP ne peut en aucun cas identifier votre rue. Découvrez votre passerelle sur <a href='/my-location/ip/'>Ma Position IP</a>. Si la ville indiquée est erronée, lisez notre <a href='/guides/wrong-location/'>Guide de Résolution de Localisation Erronée</a>.",
+
+    h2Privacy: "Comparatif de Confidentialité : Quel Système est le Plus Sûr ?",
+    h3GpsPrivacy: "Géolocalisation W3C du Navigateur (GPS) :",
+    pGpsPrivacy: "Selon le standard W3C, aucun site ne peut lire vos coordonnées GPS sans votre accord préalable. Sur MyLocationLab, vos coordonnées sont traitées 100 % localement et ne sont jamais enregistrées.",
     h3IpPrivacy: "Adresse IP :",
-    pIpPrivacy: "Tout serveur consulté reçoit obligatoirement votre IP pour vous renvoyer la page web. Elle révèle votre ville et votre FAI sans demander d'autorisation préalable.",
-    h2Which: "Quelle méthode privilégier selon vos besoins ?",
-    useGpsWhen: "Utilisez le GPS pour : Le guidage pas à pas, la détection d'adresse exacte, la mesure d'altitude ou le calcul métrique de distances.",
-    useIpWhen: "Utilisez l'IP pour : Obtenir des prévisions météo générales sur ordinateur fixe ou configurer automatiquement une devise e-commerce.",
-    connectedGuides: "🔗 Guides Liés & Outils Pratiques",
+    pIpPrivacy: "Tout serveur web reçoit automatiquement votre adresse IP pour vous retourner les pages web. Elle dévoile votre ville et votre FAI sans demander de confirmation.",
+
+    h2Which: "Quel Système Privilégier ?",
+    useGpsWhen: "Utilisez le GPS : Pour la navigation piétonne ou routière, les adresses de voirie exactes et les calculs d'altitude.",
+    useIpWhen: "Utilisez l'IP : Sur un ordinateur fixe sans puce GPS, pour la météo régionale ou le choix de la langue par défaut.",
+
+    h2Scenarios: "Verdict par Scénario",
+    scenarios: [
+      { scenario: "Navigation Routière & Randonnée", verdict: "Utiliser le GPS", desc: "Exige une précision métrique continue que seuls les satellites peuvent assurer." },
+      { scenario: "Météo Régionale & Devise en Ligne", verdict: "Utiliser l'IP", desc: "La précision à l'échelle de la région suffit sans solliciter d'autorisation utilisateur." },
+      { scenario: "Poste Fixe de Bureau", verdict: "Utiliser l'IP", desc: "Les ordinateurs de bureau ne possèdent pas d'antenne GNSS opérationnelle." },
+      { scenario: "Géorepérage de Sécurité", verdict: "Utiliser le GPS", desc: "Vérifie les limites physiques avec une rigueur inaccessible aux tables IP." }
+    ],
+
+    h2Myths: "Mythes vs Réalités",
+    myths: [
+      { myth: "Mythe : Les sites peuvent lire votre GPS sans votre consentement.", fact: "Réalité : Les navigateurs verrouillent strictement l'accès au capteur GNSS tant que vous n'avez pas cliqué sur Autoriser." },
+      { myth: "Mythe : L'adresse IP permet de localiser votre numéro de porte.", fact: "Réalité : Les tables IP n'identifient que le centre de raccordement FAI, situé généralement entre 5 et 50 km." }
+    ],
+
+    faqs: [
+      { question: "Pourquoi mon IP me situe-t-elle dans une autre ville ?", answer: "Votre FAI achemine votre trafic via un concentrateur régional situé dans une grande agglomération voisine." },
+      { question: "L'activation d'un VPN change-t-elle ma position GPS ?", answer: "Non. Le VPN modifie l'adresse IP réseau, mais la puce GPS matérielle continue de capter directement les signaux satellites." },
+      { question: "Un site peut-il connaître mon altitude par mon IP ?", answer: "Non. La géolocalisation IP est bidimensionnelle ; seule la réception GNSS satellite calcule l'altitude géodésique." }
+    ],
+
+    nextStepsTitle: "Étapes Suivantes",
+    nextSteps: [
+      { title: "Tester l'Antenne GPS", href: "/my-location/gps/", desc: "Inspectez vos coordonnées satellite et le rayon de précision actuel." },
+      { title: "Vérifier le Réseau IP", href: "/my-location/ip/", desc: "Consultez votre IP publique, le nom de votre FAI et la ville détectée." },
+      { title: "Corriger une Position Erronée", href: "/guides/wrong-location/", desc: "Découvrez comment résoudre les erreurs d'adresses et de FAI." }
+    ],
+
+    connectedGuides: "🔗 Guides et Outils Associés",
     tool1Title: "Coordonnées GPS",
-    tool1Desc: "Consulter la position satellite",
-    tool2Title: "Limites de Précision IP",
-    tool2Desc: "Fonctionnement des bases GeoIP",
-    tool3Title: "Corriger l'Erreur de Ville",
-    tool3Desc: "Résoudre les conflits VPN et FAI",
-    tool4Title: "Moniteur de Précision GPS",
-    tool4Desc: "Test du rayon de précision"
+    tool1Desc: "Position satellite directe",
+    tool2Title: "Limites Précision IP",
+    tool2Desc: "Fonctionnement GeoIP",
+    tool3Title: "Corriger Position",
+    tool3Desc: "Résoudre conflits FAI et VPN",
+    tool4Title: "Moniteur GPS",
+    tool4Desc: "Test de rayon d'erreur"
   },
   de: {
-    title: "GPS vs IP-Ortung: Genauigkeit & Datenschutz | MyLocationLab",
-    description: "Vergleichen Sie Satelliten-GPS mit IP-Adressen-Ortung. Alle Unterschiede bei Präzision (3 m vs. 50 km), Hardware und Privatsphäre.",
-    h1: "GPS-Ortung vs. IP-Geolokalisierung: Der direkte Vergleich",
-    subtitle: "Eine fundierte technische Gegenüberstellung von Satelliten-Trilateration und Internet-Routingtabellen.",
-    calloutBadge: "⚖️ Live-Vergleich",
+    title: "GPS vs. IP-Ortung: Genauigkeit & Datenschutz | MyLocationLab",
+    description: "Kurz gesagt: GPS empfängt Satelliten-Mikrowellen mit 3-5 Metern Genauigkeit, während IP-Geolokalisierung regionale ISP-Datenbanken im Radius von 5-50 km abfragt.",
+    h1: "GPS-Standort vs. IP-Geolokalisierung: Der direkte Vergleich",
+    subtitle: "Technischer Vergleich zwischen orbitaler Satelliten-Trilateration und Netzwerk-Routing-Tabellen.",
+    
+    inShort: "Kurz gesagt: GPS ermittelt Ihren physischen Standort auf 3 bis 5 Meter genau über Funksignale von Satelliten, erfordert jedoch Ihre ausdrückliche Zustimmung im Browser. Die IP-Geolokalisierung schätzt Ihren Standort im Bereich von 5 bis 50 km anhand von Routing-Tabellen Ihres Internetanbieters, funktioniert passiv und benötigt keine Hardwaresensoren.",
+
+    calloutBadge: "⚖️ Live-Vergleichstest",
     calloutTitle: "Live-Vergleich: GPS vs. IP-Standort",
-    calloutDesc: "Erleben Sie den realen Unterschied zwischen den echten Satellitendaten Ihres Geräts und der IP-Netzwerk-Ortung.",
+    calloutDesc: "Sehen Sie die Echtzeit-Abweichung zwischen dem Satelliten-Fix Ihres Geräts und der IP-Adresse Ihres Netzwerks.",
     calloutBtn: "IP-Standort prüfen →",
-    matrixHeading: "Vergleichsmatrix im Überblick",
-    thAttr: "Kriterium",
-    thGps: "GPS-Positionsbestimmung (GNSS)",
+
+    matrixHeading: "Vergleichsmatrix",
+    thAttr: "Merkmal",
+    thGps: "GPS-Ortung (GNSS)",
     thIp: "IP-Adressen-Geolokalisierung",
-    row1: ["Typische Genauigkeit", "3 bis 5 Meter im Freien", "10 bis 80 Kilometer (Stadt-/Regionalebene)"],
-    row2: ["Technologie", "Satelliten-Laufzeitmessung (Trilateration)", "Datenbankabgleich via ASN des Internet-Providers"],
-    row3: ["Nutzerzustimmung nötig?", "Ja (Explizite Browserabfrage zwingend)", "Nein (Wird passiv aus Netzwerkpaketen ausgelesen)"],
-    row4: ["Hardware-Bedarf", "GNSS-Antenne & Empfängerchip (Smartphone/Tablet)", "Jedes internetfähige Endgerät (PC, Server, Router)"],
-    row5: ["Gebäude-Tauglichkeit", "Schwach (Signaldämpfung durch Wände & Dächer)", "100 % in Innenräumen funktionsfähig"],
-    row6: ["Einfluss von VPN / Proxy", "Keiner (GPS empfängt echte Satellitensignale)", "Vollständig verfälscht / auf VPN-Server verlagert"],
-    row7: ["Akkubelastung", "Moderat (Permanenter Funkempfang)", "Kein zusätzlicher Akkuverbrauch"],
-    h2Gps: "Funktionsweise der GPS-Ortung",
-    pGps1: "GPS funktioniert nach strengen physikalischen Gesetzen. Das Smartphone empfängt Funksignale von Satelliten in 20.200 Kilometern Höhe.",
-    pGps2: "Da sich Funksignale mit Lichtgeschwindigkeit ausbreiten, ermittelt der GNSS-Chip anhand von Laufzeitunterschieden exakte Koordinaten auf dem WGS-84-Ellipsoid.",
-    h2Ip: "Funktionsweise der IP-Geolokalisierung",
-    pIp1: "Die IP-Ortung basiert nicht auf physischen Messungen, sondern auf Datenbankzuordnungen. GeoIP-Anbieter wie MaxMind hinterlegen:",
-    ipBullet1: "Den Betreiber (Provider wie Telekom, Vodafone, Telefónica) des Adressblocks.",
-    ipBullet2: "Die Koordinaten des regionalen Einwahlknotens oder Rechenzentrums.",
-    pIp2: "Da ein Adressblock oft ein ganzes Bundesland oder einen Landkreis abdeckt, kann eine IP-Ortung niemals eine Hausnummer oder Straße bestimmen.",
+    row1: ["Typische Genauigkeit", "3 bis 5 Meter im Freien", "5 bis 50 km (Stadt- bzw. Gateway-Ebene)"],
+    row2: ["Technologie", "Satelliten-Trilateration nach Signallaufzeit", "Routing- und ASN-Datenbanktabellen der Provider"],
+    row3: ["Nutzererlaubnis erforderlich?", "Ja (Ausdrückliche Browser-Abfrage obligatorisch)", "Nein (Passiv aus Netzwerkverbindung abgeleitet)"],
+    row4: ["Hardware-Voraussetzung", "GNSS-Antenne & Chipsatz (Smartphone, Tablet)", "Jedes internetfähige Gerät (PC, Server, Router)"],
+    row5: ["Zuverlässigkeit in Gebäuden", "Schwach (Durch Beton und Metalldächer gedämpft)", "100 % funktionsfähig in Innenräumen"],
+    row6: ["Auswirkung von VPN / Proxy", "Unverändert (Hardware liest echte Himmels-Signale)", "Vollständig auf den VPN-Serverstandort umgeleitet"],
+    row7: ["Akkubelastung", "Moderat (Kontinuierlicher Funkempfang)", "Kein zusätzlicher Akkuverbrauch"],
+
+    h2Gps: "So funktioniert GPS-Standortbestimmung",
+    pGps1: "GPS basiert auf reiner Funkphysik. Ihr Smartphone besitzt eine Miniaturantenne, die Signale aus 20.200 km Höhe auffängt. Wie in unserem Leitfaden <a href='/guides/how-gps-location-works/'>Wie GPS funktioniert</a> beschrieben, ermöglichen Satellitensignale metergenaue Bodenkoordinaten.",
+    pGps2: "Durch Laufzeitberechnungen mit Lichtgeschwindigkeit ermittelt der Prozessor Breitengrad, Längengrad und Höhe. Prüfen Sie Ihren Empfang auf <a href='/my-location/gps/'>Mein GPS-Standort</a>.",
+
+    h2Ip: "So funktioniert IP-Geolokalisierung",
+    pIp1: "IP-Geolokalisierung ist keine physikalische Messung, sondern eine Datenbankkorrelation. Wie in unserer Analyse zu <a href='/guides/ip-geolocation-accuracy/'>Genauigkeit und Grenzen der IP-Ortung</a> dargelegt, führen Anbieter wie MaxMind Tabellen, die IP-Bereiche zuordnen:",
+    ipBullet1: "Dem zuständigen Internet-Provider (z. B. Deutsche Telekom, Vodafone, Telefónica).",
+    ipBullet2: "Den geographischen Koordinaten des regionalen Einwahlknotens oder Rechenzentrums.",
+    pIp2: "Da ein Provider denselben IP-Bereich einer ganzen Region zuweisen kann, kann die IP-Ortung niemals Ihre Hausnummer ermitteln. Prüfen Sie Ihren Knoten auf <a href='/my-location/ip/'>Mein IP-Standort</a>. Bei Abweichungen hilft der <a href='/guides/wrong-location/'>Leitfaden für falschen Standort</a>.",
+
     h2Privacy: "Datenschutz-Vergleich: Was ist sicherer?",
-    h3GpsPrivacy: "Browser-Geolocation-API (GPS):",
-    pGpsPrivacy: "Laut W3C-Standard darf keine Website ohne Ihre ausdrückliche Erlaubnis auf GPS-Daten zugreifen. Bei MyLocationLab erfolgt die gesamte Auswertung lokal in Ihrem Browser.",
+    h3GpsPrivacy: "W3C-Browser-Geolokalisierung (GPS):",
+    pGpsPrivacy: "Keine Website kann Ihre Koordinaten ohne ausdrückliche Genehmigung lesen. Auf MyLocationLab werden Daten zu 100 % lokal verarbeitet und nicht gespeichert.",
     h3IpPrivacy: "IP-Adresse:",
-    pIpPrivacy: "Jeder besuchte Webserver empfängt zwangsläufig Ihre öffentliche IP. Diese gibt ohne Nachfrage Ihre ungefähre Region und Ihren Netzanbieter preis.",
-    h2Which: "Welche Methode eignet sich wofür?",
-    useGpsWhen: "Nutzen Sie GPS für: Navigation, Adressauflösung, Höhenmeter-Messungen und metergenaue Distanzberechnungen.",
-    useIpWhen: "Nutzen Sie IP-Ortung für: Stationäre PCs ohne GPS, grobe Wetterberichte oder automatische Landesvoreinstellungen.",
-    connectedGuides: "🔗 Weiterführende Leitfäden & Werkzeuge",
-    tool1Title: "GPS-Koordinaten Finder",
-    tool1Desc: "Genaue Satellitenposition",
+    pIpPrivacy: "Jeder aufgerufene Webserver empfängt automatisch Ihre IP-Adresse. Sie gibt Auskunft über Stadt und Provider, ohne eine Erlaubnis einzuholen.",
+
+    h2Which: "Welche Methode sollten Sie nutzen?",
+    useGpsWhen: "Nutzen Sie GPS für: Navigation, genaue Straßenadressen, Höhenmessung und exakte Distanzen.",
+    useIpWhen: "Nutzen Sie IP für: Desktop-PCs ohne GPS, regionale Wetterberichte oder automatische Ländervoreinstellungen.",
+
+    h2Scenarios: "Empfehlung nach Szenario",
+    scenarios: [
+      { scenario: "Navigation & Wandern", verdict: "GPS nutzen", desc: "Erfordert metergenaue Positionsbestimmung unter freiem Himmel." },
+      { scenario: "Regionales Wetter & Webshop-Währung", verdict: "IP-Ortung nutzen", desc: "Stadtebene reicht vollkommen aus, ohne den Nutzer mit Berechtigungen zu stören." },
+      { scenario: "Stationärer Desktop-PC", verdict: "IP-Ortung nutzen", desc: "Bürorechner besitzen keine GNSS-Antennen und stehen in Gebäuden." },
+      { scenario: "Sicherheits-Geofencing", verdict: "GPS nutzen", desc: "Überprüft reale physische Grenzen verlässlich gegen Manipulationen." }
+    ],
+
+    h2Myths: "Mythen vs. Fakten",
+    myths: [
+      { myth: "Mythos: Webseiten können heimlich auf Ihr GPS zugreifen.", fact: "Fakt: Moderne Browser blockieren den Sensorzugriff strikt, solange der Nutzer nicht aktiv auf Zulassen klickt." },
+      { myth: "Mythos: Die IP-Adresse verrät Ihre genaue Hausanschrift.", fact: "Fakt: Datenbanken kennen nur den Einwahlknoten des Providers, der meist 5 bis 50 km entfernt liegt." }
+    ],
+
+    faqs: [
+      { question: "Warum zeigt meine IP-Ortung eine Nachbarstadt an?", answer: "Ihr Provider leitet Ihren Datenverkehr über den nächsten größeren Netzknotenpunkt. Die GeoIP-Datenbank verzeichnet diesen Standort." },
+      { question: "Ändert ein VPN meinen GPS-Standort?", answer: "Nein. Ein VPN leitet nur den Netzwerkverkehr um. Die GPS-Hardwareantenne empfängt weiterhin direkt die Satellitensignale." },
+      { question: "Können Webseiten meine Höhenlage per IP ermitteln?", answer: "Nein. IP-Ortung liefert nur zweidimensionale Koordinaten; Höhenangaben erfordern Satellitensignale oder barometrische Sensoren." }
+    ],
+
+    nextStepsTitle: "Nächste Schritte",
+    nextSteps: [
+      { title: "GPS-Antenne prüfen", href: "/my-location/gps/", desc: "Prüfen Sie Ihre Satellitenkoordinaten und den aktuellen Fehlerradius." },
+      { title: "IP-Netzwerk prüfen", href: "/my-location/ip/", desc: "Überprüfen Sie Ihre öffentliche IP, den Provider und den Routing-Standort." },
+      { title: "Standortfehler beheben", href: "/guides/wrong-location/", desc: "Erfahren Sie, wie Sie Diskrepanzen durch VPN oder WLAN-Caches korrigieren." }
+    ],
+
+    connectedGuides: "🔗 Verbundene Leitfäden & Werkzeuge",
+    tool1Title: "GPS-Koordinaten-Finder",
+    tool1Desc: "Exakter Satelliten-Fix",
     tool2Title: "IP-Genauigkeitsgrenzen",
-    tool2Desc: "So arbeiten GeoIP-Datenbanken",
-    tool3Title: "Falschen Ort korrigieren",
-    tool3Desc: "VPN- und Router-Konflikte lösen",
-    tool4Title: "GPS-Genauigkeitsprüfer",
-    tool4Desc: "Live-Fehlerradius testen"
+    tool2Desc: "GeoIP-Funktionsweise",
+    tool3Title: "Falschen Standort beheben",
+    tool3Desc: "Provider- & VPN-Konflikte lösen",
+    tool4Title: "GPS-Genauigkeits-Monitor",
+    tool4Desc: "Fehlerradius-Test"
   },
   pt: {
-    title: "GPS vs Localização IP: Comparativo de Precisão e Privacidade | MyLocationLab",
-    description: "Compare o posicionamento GPS com a geolocalização por IP. Entenda as diferenças de precisão (3m vs 50km), hardware, privacidade e latência.",
+    title: "GPS vs Localização por IP: Precisão e Privacidade | MyLocationLab",
+    description: "Em resumo: O GPS capta sinais de satélites com precisão de 3 a 5 metros, enquanto a geolocalização por IP consulta registros de roteamento do provedor entre 5 e 50 km.",
     h1: "Localização GPS vs. Geolocalização IP: O Comparativo Definitivo",
-    subtitle: "Uma análise técnica entre a trilateração por satélite e as tabelas de roteamento da Internet.",
+    subtitle: "Avaliação técnica entre a trilateração por satélites e as tabelas de roteamento de rede.",
+    
+    inShort: "Em resumo: O GPS calcula sua posição física exata dentro de 3 a 5 metros utilizando ondas de rádio de satélites orbitais, exigindo autorização expressa no navegador. A geolocalização por IP estima sua região entre 5 e 50 km a partir dos nós do seu provedor de internet, funcionando de maneira passiva sem sensores de hardware.",
+
     calloutBadge: "⚖️ Teste em Tempo Real",
-    calloutTitle: "Compare seu GPS e seu IP Lado a Lado",
-    calloutDesc: "Veja a discrepância entre a localização real do seu chip de satélite e a estimativa do seu endereço IP de rede.",
+    calloutTitle: "Compare GPS e IP Lado a Lado",
+    calloutDesc: "Veja a diferença em tempo real entre a leitura de satélites do seu aparelho e a localização do seu IP público.",
     calloutBtn: "Verificar Localização IP →",
-    matrixHeading: "Matriz de Comparação Direta",
+
+    matrixHeading: "Matriz Comparativa Direta",
     thAttr: "Atributo",
     thGps: "Posicionamento GPS (GNSS)",
-    thIp: "Geolocalização por Endereço IP",
-    row1: ["Precisão Típica", "3 a 5 metros ao ar livre", "10 a 80 quilômetros (nível cidade/região)"],
-    row2: ["Tecnologia de Fundo", "Trilateração orbital por tempo de voo de ondas de rádio", "Tabelas de provedores de internet (ASN / BGP)"],
-    row3: ["Exige Permissão?", "Sim (Janela explícita obrigatória no navegador)", "Não (Deduzido diretamente da conexão do pacote)"],
-    row4: ["Requisito de Hardware", "Antena e receptor GNSS dedicado (celular, tablet)", "Qualquer aparelho conectado à internet (PC, servidor)"],
-    row5: ["Desempenho em Interiores", "Fraco (Atenuado por concreto e lajes metálicas)", "100% operacional em ambientes fechados"],
-    row6: ["Impacto de VPN / Proxy", "Inalterado (O GPS recebe sinais físicos das antenas)", "Completamente mascarado pelo servidor VPN"],
-    row7: ["Consumo de Bateria", "Moderado (Recepção de rádio contínua)", "Nenhum consumo adicional de energia"],
-    h2Gps: "Como Funciona o Posicionamento GPS",
-    pGps1: "O GPS opera com base na física clássica e relativística. O aparelho capta ondas de rádio emitidas por satélites a 20.200 km de altitude.",
-    pGps2: "Ao comparar o tempo exato de chegada das transmissões, o processador calcula latitude, longitude e altitude no elipsoide WGS 84.",
-    h2Ip: "Como Funciona a Localização por IP",
-    pIp1: "A localização por IP não é uma medição física de ondas: trata-se de um cruzamento estatístico em bases de dados comerciais mantidas por serviços como MaxMind:",
-    ipBullet1: "Identifica a operadora de internet detentora daquele bloco IP.",
-    ipBullet2: "Mapeia as coordenadas da central de distribuição ou data center regional.",
-    pIp2: "Como as operadoras distribuem os mesmos blocos IP por cidades inteiras, a localização IP nunca conseguirá apontar seu endereço residencial.",
-    h2Privacy: "Comparativo de Privacidade: Qual é mais seguro?",
-    h3GpsPrivacy: "API Geolocation W3C (GPS):",
-    pGpsPrivacy: "O protocolo W3C impede que páginas leiam o GPS sem aprovação prévia. No MyLocationLab, as coordenadas são processadas estritamente no seu navegador e nunca salvas.",
+    thIp: "Geolocalização por IP",
+    row1: ["Precisão Típica", "3 a 5 metros ao ar livre", "5 a 50 km (nível de cidade ou central do provedor)"],
+    row2: ["Tecnologia Subjacente", "Trilateração de tempo de viagem de rádio", "Tabelas de bases de dados ASN de provedores"],
+    row3: ["Exige Permissão?", "Sim (Prompt obrigatório no navegador)", "Não (Deduzido da conexão de rede)"],
+    row4: ["Hardware Necessário", "Antena GNSS e chipset dedicado (celular, tablet)", "Qualquer aparelho conectado (PC, servidor, roteador)"],
+    row5: ["Uso em Interiores", "Fraco (Atenuado por lajes e estruturas metálicas)", "100% funcional em ambientes internos"],
+    row6: ["Impacto de VPN", "Sem alteração (O chip GPS lê os sinais do céu)", "Roteado para a cidade do servidor VPN"],
+    row7: ["Consumo de Bateria", "Moderado (Recepção contínua de rádio)", "Zero consumo adicional de energia"],
+
+    h2Gps: "Como Funciona a Localização GPS",
+    pGps1: "O GPS opera com base na física de ondas de rádio. Seu smartphone possui uma antena miniaturizada que capta transmissões emitidas a 20.200 km de altitude. Conforme abordado em nosso guia sobre <a href='/guides/how-gps-location-works/'>como funciona a localização GPS</a>, esses pulsos resolvem sua posição métrica.",
+    pGps2: "Ao calcular os tempos de percurso à velocidade da luz, o processador calcula latitude, longitude e altitude. Veja o sinal do seu sensor na página <a href='/my-location/gps/'>Minha Localização GPS</a>.",
+
+    h2Ip: "Como Funciona a Geolocalização IP",
+    pIp1: "A geolocalização por IP é uma correlação em bancos de dados. Conforme detalhado em nossa análise de <a href='/guides/ip-geolocation-accuracy/'>precisão e limites da geolocalização por IP</a>, empresas como MaxMind mapeiam faixas de IP para centrais de roteamento.",
+    ipBullet1: "O provedor proprietário do bloco (ex.: Claro, Vivo, TIM, Oi).",
+    ipBullet2: "As coordenadas geográficas do roteador ou datacenter regional do provedor.",
+    pIp2: "Como um provedor pode atribuir a mesma faixa de IPs a uma região inteira, a posição por IP jamais identificará sua rua. Verifique seu nó de rede em <a href='/my-location/ip/'>Minha Localização IP</a>. Se a cidade estiver incorreta, consulte nosso <a href='/guides/wrong-location/'>Guia de Localização Errada</a>.",
+
+    h2Privacy: "Comparativo de Privacidade: Qual é Mais Seguro?",
+    h3GpsPrivacy: "Geolocalização W3C do Navegador (GPS):",
+    pGpsPrivacy: "Sob os padrões W3C, nenhum site lê suas coordenadas GPS sem sua autorização explícita. No MyLocationLab, seus dados são processados 100% no navegador e nunca armazenados.",
     h3IpPrivacy: "Endereço IP:",
-    pIpPrivacy: "Qualquer página web recebe o seu IP público para poder entregar o conteúdo. Ele expõe a sua cidade e seu provedor sem solicitar permissão.",
-    h2Which: "Qual método você deve escolher?",
-    useGpsWhen: "Utilize GPS quando: Precisar de navegação em tempo real, endereços com número e rua, cálculo de altitude ou medições métricas.",
-    useIpWhen: "Utilize Localização IP quando: Estiver em computadores de mesa sem GPS, para previsões meteorológicas gerais ou seleção automática de moeda.",
-    connectedGuides: "🔗 Guias Relacionados e Ferramentas Práticas",
+    pIpPrivacy: "Todo servidor web recebe automaticamente seu IP para enviar a página solicitada. Isso revela sua cidade e operadora sem solicitar consentimento.",
+
+    h2Which: "Qual Método Utilizar?",
+    useGpsWhen: "Utilize GPS para: Navegação ponto a ponto, endereços de rua exatos e medições de altitude e distância.",
+    useIpWhen: "Utilize IP para: Computadores de mesa sem GPS, previsão do tempo regional ou definição automática de moeda.",
+
+    h2Scenarios: "Veredito por Cenário",
+    scenarios: [
+      { scenario: "Navegação em Ruas e Trilhas", verdict: "Usar GPS", desc: "Exige precisão métrica contínua sob o céu aberto." },
+      { scenario: "Clima Regional e Moeda em Lojas", verdict: "Usar IP", desc: "A precisão em nível de cidade atende perfeitamente sem incomodar com avisos." },
+      { scenario: "Computador Desktop em Escritório", verdict: "Usar IP", desc: "Máquinas fixas não possuem receptor de satélite." },
+      { scenario: "Cercas Virtuais de Segurança", verdict: "Usar GPS", desc: "Verifica perímetros físicos que o roteamento de IP não consegue delimitar." }
+    ],
+
+    h2Myths: "Mitos vs. Fatos",
+    myths: [
+      { myth: "Mito: Sites conseguem acessar seu GPS secretamente.", fact: "Fato: Navegadores bloqueiam o hardware GNSS até que o usuário clique em Permitir." },
+      { myth: "Mito: A localização por IP descobre o número da sua casa.", fact: "Fato: Bases de IP apenas registram a central de distribuição do provedor, distante de 5 a 50 km." }
+    ],
+
+    faqs: [
+      { question: "Por que meu IP indica uma cidade vizinha?", answer: "Seu provedor concentra a conexão em um roteador gateway centralizado nessa cidade de grande porte." },
+      { question: "Uma VPN altera a localização do meu GPS?", answer: "Não. A VPN mascara apenas o tráfego de rede e o IP. A antena física do GPS continua lendo os sinais dos satélites no céu." },
+      { question: "Sites conseguem medir minha altitude por IP?", answer: "Não. A geolocalização por IP é bidimensional; altitude requer cálculos orbitais GNSS ou sensores de pressão." }
+    ],
+
+    nextStepsTitle: "Próximos Passos",
+    nextSteps: [
+      { title: "Verificar Antena GPS", href: "/my-location/gps/", desc: "Confira suas coordenadas de satélite e a precisão horizontal atual." },
+      { title: "Verificar Rede IP", href: "/my-location/ip/", desc: "Veja seu IP público, nome da operadora e cidade detectada." },
+      { title: "Corrigir Localização Errada", href: "/guides/wrong-location/", desc: "Aprenda a solucionar conflitos causados por VPN ou cache de Wi-Fi." }
+    ],
+
+    connectedGuides: "🔗 Guias e Ferramentas Conectadas",
     tool1Title: "Coordenadas GPS",
-    tool1Desc: "Verifique a posição do satélite",
-    tool2Title: "Limites do GeoIP",
-    tool2Desc: "Como operam as bases de IP",
-    tool3Title: "Corrigir Cidade Errada",
-    tool3Desc: "Resolva conflitos de VPN e rede",
+    tool1Desc: "Fixação direta de satélites",
+    tool2Title: "Limites de Precisão IP",
+    tool2Desc: "Como funciona o GeoIP",
+    tool3Title: "Corrigir Localização",
+    tool3Desc: "Resolver conflitos de rede",
     tool4Title: "Monitor de Precisão GPS",
-    tool4Desc: "Teste o raio de erro em metros"
+    tool4Desc: "Teste de raio de erro em tempo real"
   },
   hi: {
-    title: "GPS बनाम IP लोकेशन: सटीकता और प्राइवेसी | MyLocationLab",
-    description: "GPS पोज़िशनिंग और IP पता जियोलोकेशन की तुलना करें। सटीकता (3 मी बनाम 50 किमी), हार्डवेयर निर्भरता, प्राइवेसी मॉडल और लेटेंसी के अंतर पूरी तरह जानें।",
-    h1: "GPS लोकेशन बनाम IP जियोलोकेशन: निर्णायक तुलना",
-    subtitle: "सैटेलाइट ट्राइलैटरेशन बनाम नेटवर्क राउटिंग टेबल जियोलोकेशन का पक्ष-दर-पक्ष तकनीकी मूल्यांकन।",
-    calloutBadge: "⚖️ लाइव पक्ष-दर-पक्ष टेस्ट",
-    calloutTitle: "अपनी लाइव GPS बनाम IP जियोलोकेशन की तुलना करें",
-    calloutDesc: "आपके डिवाइस के सीधे GPS सैटेलाइट फ़िक्स और आपकी पब्लिक नेटवर्क IP लोकेशन के बीच का रीयल-टाइम अंतर देखें।",
-    calloutBtn: "IP लोकेशन जाँचें →",
-    matrixHeading: "सीधा-सीधा तुलना मैट्रिक्स",
+    title: "जीपीएस बनाम आईपी लोकेशन: सटीकता और गोपनीयता | MyLocationLab",
+    description: "संक्षेप में: जीपीएस 3-5 मीटर की सटीकता के साथ उपग्रह रेडियो तरंगों से स्थिति तय करता है, जबकि आईपी जियोलोकेशन 5-50 किमी के दायरे में आईएसपी रूटिंग डेटाबेस का उपयोग करता है।",
+    h1: "जीपीएस लोकेशन बनाम आईपी जियोलोकेशन: संपूर्ण तुलना",
+    subtitle: "उपग्रह त्रिकोणीकरण और नेटवर्क रूटिंग टेबल के बीच एक सीधा तकनीकी मूल्यांकन।",
+    
+    inShort: "संक्षेप में: जीपीएस अंतरिक्ष में चक्कर काट रहे उपग्रहों से रेडियो सिग्नल प्राप्त करके 3 से 5 मीटर की सटीकता से आपकी भौतिक स्थिति तय करता है, जिसके लिए ब्राउज़र अनुमति आवश्यक है। आईपी जियोलोकेशन आपके इंटरनेट सेवा प्रदाता (आईएसपी) के आधार पर 5 से 50 किमी के दायरे में अनुमान लगाता है, जो बिना हार्डवेयर सेंसर के पृष्ठभूमि में काम करता है।",
+
+    calloutBadge: "⚖️ लाइव तुलना परीक्षण",
+    calloutTitle: "अपने जीपीएस और आईपी लोकेशन की तुलना करें",
+    calloutDesc: "अपने डिवाइस के उपग्रह जीपीएस और सार्वजनिक आईपी पते के बीच वास्तविक समय का अंतर देखें।",
+    calloutBtn: "आईपी लोकेशन जांचें →",
+
+    matrixHeading: "तुलनात्मक तालिका",
     thAttr: "विशेषता",
-    thGps: "GPS पोज़िशनिंग (GNSS)",
-    thIp: "IP पता जियोलोकेशन",
-    row1: ["सामान्य सटीकता", "बाहर 3 से 5 मीटर", "10 से 80 किलोमीटर (शहर/क्षेत्र स्तर)"],
-    row2: ["अंतर्निहित तकनीक", "सैटेलाइट रेडियो सिग्नल टाइम-ऑफ़-फ़्लाइट ट्राइलैटरेशन", "ISP ऑटोनॉमस सिस्टम नंबर (ASN) डेटाबेस टेबल"],
-    row3: ["उपयोगकर्ता अनुमति ज़रूरी?", "हाँ (स्पष्ट ब्राउज़र प्रॉम्प्ट अनिवार्य)", "नहीं (आने वाले नेटवर्क सॉकेट से निष्क्रिय रूप से अनुमानित)"],
-    row4: ["हार्डवेयर आवश्यकता", "समर्पित GNSS एंटेना और चिपसेट (स्मार्टफ़ोन/टैबलेट)", "कोई भी इंटरनेट-जुड़ा डिवाइस (PC, सर्वर, राउटर)"],
-    row5: ["इनडोर विश्वसनीयता", "कमज़ोर (कंक्रीट/धातु की छतों से क्षीण)", "इनडोर में 100% कार्यशील"],
-    row6: ["VPN / प्रॉक्सी का प्रभाव", "अपरिवर्तित (हार्डवेयर GPS असली आसमानी सिग्नल पढ़ता है)", "पूरी तरह छिपा हुआ / VPN सर्वर की लोकेशन पर रूट"],
-    row7: ["बैटरी खपत", "मध्यम (लगातार रेडियो रिसेप्शन)", "कोई अतिरिक्त बैटरी खपत नहीं"],
-    h2Gps: "GPS लोकेशन कैसे काम करती है",
-    pGps1: "GPS भौतिकी से लोकेशन तय करता है। आपके फ़ोन में एक लघु एंटेना होता है जो मध्य पृथ्वी कक्षा में 20,200 किमी ऊपर से प्रसारित रेडियो तरंगें पकड़ता है।",
-    pGps2: "चूँकि सिग्नल प्रकाश की गति से चलते हैं, आगमन समय के अंतर गणना करके आपके फ़ोन का प्रोसेसर WGS 84 एलिप्सॉइड के सापेक्ष अपना सटीक अक्षांश, देशांतर और ऊँचाई निकाल लेता है।",
-    h2Ip: "IP जियोलोकेशन कैसे काम करती है",
-    pIp1: "IP जियोलोकेशन कोई भौतिक माप नहीं है—यह डेटाबेस सहसंबंध है। इंटरनेट पर भेजा हर पैकेट आपका पब्लिक IP पता रखता है। MaxMind, IPinfo और DB-IP जैसी कंपनियाँ मालिकाना डेटाबेस रखती हैं जो IP ब्लॉक को इनसे जोड़ती हैं:",
-    ipBullet1: "उस IP पता ब्लॉक का स्वामी ISP (जैसे Jio, Airtel, Vodafone)।",
-    ipBullet2: "ISP के क्षेत्रीय गेटवे राउटर या डेटा सेंटर के भौगोलिक निर्देशांक।",
-    pIp2: "चूँकि कोई ISP पूरे महानगरीय क्षेत्र या ज़िले में एक ही IP ब्लॉक आवंटित कर सकता है, IP-आधारित पोज़िशनिंग कभी भी आपका गली का पता नहीं पहचान सकेगी।",
-    h2Privacy: "प्राइवेसी तुलना: कौन सा ज़्यादा सुरक्षित है?",
-    h3GpsPrivacy: "ब्राउज़र W3C Geolocation (GPS):",
-    pGpsPrivacy: "W3C Geolocation API मानक के तहत आपकी स्पष्ट, ऑप्ट-इन सहमति के बिना कोई वेबसाइट आपके GPS निर्देशांक नहीं पढ़ सकती। जब तक आप डोमेन को स्थायी रूप से व्हाइटलिस्ट न करें, प्रॉम्प्ट हर बार दिखता है। MyLocationLab पर आपके निर्देशांक 100% स्थानीय रूप से आपके ब्राउज़र में प्रोसेस होते हैं और कभी लॉग नहीं किए जाते।",
-    h3IpPrivacy: "IP पता:",
-    pIpPrivacy: "आपकी विज़िट किया हर वेब सर्वर HTML पेज पहुँचाने के लिए अपने-आप आपका पब्लिक IP पता प्राप्त करता है। यह आपका घर नहीं पहचान सकता, लेकिन अनुमति माँगे बिना ही नियमित रूप से आपका शहर, राज्य, पिन कोड और इंटरनेट सेवा प्रदाता उजागर कर देता है।",
-    h2Which: "कौन सी विधि आपको इस्तेमाल करनी चाहिए?",
-    useGpsWhen: "GPS तब इस्तेमाल करें: जब आपको टर्न-बाय-टर्न नेविगेशन, सटीक गली के पते, ऊँचाई की गणना या सटीक दूरियाँ चाहिए।",
-    useIpWhen: "IP जियोलोकेशन तब इस्तेमाल करें: जब आप बिना GPS वाले डेस्कटॉप वर्कस्टेशन पर हों, मोटा क्षेत्रीय मौसम पूर्वानुमान चाहते हों, या ई-कॉमर्स साइट पर कौन सा देश या मुद्रा डिफ़ॉल्ट रखना है पहचानना हो।",
-    connectedGuides: "🔗 संबंधित गाइड और व्यावहारिक टूल",
-    tool1Title: "GPS निर्देशांक फ़ाइंडर",
-    tool1Desc: "सटीक सैटेलाइट फ़िक्स देखें",
-    tool2Title: "IP सटीकता की सीमाएँ",
-    tool2Desc: "GeoIP डेटाबेस कैसे काम करते हैं",
-    tool3Title: "गलत लोकेशन ठीक करें",
-    tool3Desc: "ISP और VPN टकराव हल करें",
-    tool4Title: "GPS सटीकता मॉनिटर",
-    tool4Desc: "लाइव एरर रेडियस टेस्टिंग"
+    thGps: "जीपीएस पोजिशनिंग (GNSS)",
+    thIp: "आईपी पता जियोलोकेशन",
+    row1: ["सामान्य सटीकता", "खुले में 3 से 5 मीटर", "5 से 50 किमी (शहर या आईएसपी गेटवे स्तर)"],
+    row2: ["मूल तकनीक", "उपग्रह रेडियो सिग्नल टाइम-ऑफ-फ्लाइट ट्राइलेटरेशन", "आईएसपी ऑटोनॉमस सिस्टम नंबर (ASN) डेटाबेस"],
+    row3: ["उपयोगकर्ता अनुमति?", "हां (ब्राउज़र में स्पष्ट अनुमति अनिवार्य)", "नहीं (नेटवर्क कनेक्शन से स्वचालित पहचान)"],
+    row4: ["हार्डवेयर आवश्यकता", "समर्पित जीएनएसएस एंटीना (फोन, टैबलेट)", "कोई भी इंटरनेट युक्त डिवाइस (पीसी, सर्वर)"],
+    row5: ["भवनों के अंदर विश्वसनीयता", "कमजोर (छतों और कंक्रीट से बाधित)", "कमरों के भीतर 100% सक्रिय"],
+    row6: ["वीपीएन का प्रभाव", "अपरिवर्तित (जीपीएस उपग्रह सिग्नल ही पढ़ता है)", "पूरी तरह वीपीएन सर्वर स्थान पर स्थानांतरित"],
+    row7: ["बैटरी खपत", "मध्यम (लगातार रेडियो रिसेप्शन)", "शून्य अतिरिक्त बैटरी खपत"],
+
+    h2Gps: "जीपीएस लोकेशन कैसे काम करती है",
+    pGps1: "जीपीएस भौतिकी के नियमों पर कार्य करता है। आपके फोन में एक एंटीना होता है जो 20,200 किमी ऊंचाई से आने वाले सिग्नलों को पकड़ता है। जैसा कि हमारे मार्गदर्शक <a href='/guides/how-gps-location-works/'>जीपीएस कैसे काम करता है</a> में वर्णित है, उपग्रह सटीक निर्देशांक तय करते हैं।",
+    pGps2: "सिग्नल के पहुंचने के समय से प्रोसेसर अक्षांश, देशांतर और ऊंचाई निकालता है। आप <a href='/my-location/gps/'>मेरा जीपीएस लोकेशन पेज</a> पर अपने लाइव सेंसर की जांच कर सकते हैं।",
+
+    h2Ip: "आईपी जियोलोकेशन कैसे काम करती है",
+    pIp1: "आईपी जियोलोकेशन कोई भौतिक माप नहीं बल्कि डेटाबेस मिलान है। जैसा कि हमारे <a href='/guides/ip-geolocation-accuracy/'>आईपी सटीकता और सीमाएं गाइड</a> में बताया गया है, कंपनियां आईपी पतों को क्षेत्रीय रूटिंग केंद्रों से जोड़ती हैं:",
+    ipBullet1: "उस आईपी ब्लॉक का स्वामी इंटरनेट प्रदाता (जैसे जियो, एयरटेल, वोडाफोन)।",
+    ipBullet2: "प्रदाता के मुख्य डेटा हब या गेटवे राउटर के निर्देशांक।",
+    pIp2: "क्योंकि आईएसपी एक ही आईपी ब्लॉक पूरे जिले को दे सकता है, इसलिए आईपी कभी सड़क का पता नहीं बता सकती। अपना नेटवर्क हब <a href='/my-location/ip/'>मेरा आईपी लोकेशन</a> पर देखें। यदि शहर गलत दिखे, तो <a href='/guides/wrong-location/'>गलत लोकेशन सुधार गाइड</a> पढ़ें।",
+
+    h2Privacy: "गोपनीयता तुलना: कौन सा अधिक सुरक्षित है?",
+    h3GpsPrivacy: "ब्राउज़र W3C जियोलोकेशन (GPS):",
+    pGpsPrivacy: "W3C मानकों के तहत कोई भी वेबसाइट आपकी अनुमति के बिना जीपीएस नहीं पढ़ सकती। MyLocationLab पर डेटा 100% स्थानीय रूप से प्रोसेस होता है।",
+    h3IpPrivacy: "आईपी पता:",
+    pIpPrivacy: "वेबसाइटें आपके आईपी पते से शहर और इंटरनेट कंपनी की जानकारी बिना पूछे प्राप्त कर लेती हैं।",
+
+    h2Which: "आपको कौन सी विधि चुननी चाहिए?",
+    useGpsWhen: "जीपीएस चुनें जब: आपको सटीक सड़क नेविगेशन, ऊंचाई और निश्चित दूरी मापनी हो।",
+    useIpWhen: "आईपी चुनें जब: आप डेस्कटॉप पीसी पर हों या स्थानीय मौसम का सामान्य अनुमान चाहिए हो।",
+
+    h2Scenarios: "परिदृश्य अनुसार निर्णय",
+    scenarios: [
+      { scenario: "सड़क नेविगेशन और ट्रैकिंग", verdict: "जीपीएस चुनें", desc: "केवल उपग्रह ही सटीक मीटर-स्तरीय स्थिति प्रदान कर सकते हैं।" },
+      { scenario: "मौसम और ई-कॉमर्स मुद्रा", verdict: "आईपी चुनें", desc: "शहर या राज्य स्तर की जानकारी बिना अनुमति के पर्याप्त रहती है।" },
+      { scenario: "कार्यालय में डेस्कटॉप पीसी", verdict: "आईपी चुनें", desc: "डेस्कटॉप कंप्यूटर में उपग्रह एंटीना नहीं होता।" },
+      { scenario: "सुरक्षा जियोफेंसिंग", verdict: "जीपीएस चुनें", desc: "वास्तविक भौतिक सीमाओं की जांच केवल जीपीएस से संभव है।" }
+    ],
+
+    h2Myths: "भ्रम बनाम वास्तविकता",
+    myths: [
+      { myth: "भ्रम: वेबसाइटें बिना पूछे आपका जीपीएस डेटा चुरा सकती हैं।", fact: "वास्तविकता: आधुनिक ब्राउज़र अनुमति दिए बिना जीपीएस हार्डवेयर को पूरी तरह लॉक रखते हैं।" },
+      { myth: "भ्रम: आईपी लोकेशन से आपके मकान का नंबर पता चल सकता है।", fact: "वास्तविकता: आईपी केवल इंटरनेट कंपनी के क्षेत्रीय स्विचिंग केंद्र को दर्शाती है जो 5 से 50 किमी दूर होता है।" }
+    ],
+
+    faqs: [
+      { question: "मेरी आईपी लोकेशन दूसरा शहर क्यों दिखाती है?", answer: "आपका प्रदाता इंटरनेट ट्रैफिक को मुख्य रीजनल सर्वर से जोड़ता है, और डेटाबेस उसी सर्वर का स्थान दिखाता है।" },
+      { question: "क्या वीपीएन से जीपीएस लोकेशन बदल जाती है?", answer: "नहीं। वीपीएन केवल आईपी बदलता है, जबकि मोबाइल का जीपीएस चिपसेट सीधे आकाश से उपग्रह सिग्नल लेता है।" },
+      { question: "क्या वेबसाइटें आईपी से मेरी ऊंचाई जान सकती हैं?", answer: "नहीं। आईपी केवल द्वि-आयामी होती है; ऊंचाई केवल जीएनएसएस उपग्रहों या बैरोमीटर सेंसर से पता चलती है।" }
+    ],
+
+    nextStepsTitle: "अगले कदम",
+    nextSteps: [
+      { title: "जीपीएस एंटीना जांचें", href: "/my-location/gps/", desc: "अपने लाइव उपग्रह निर्देशांक और त्रुटि दायरा देखें।" },
+      { title: "आईपी नेटवर्क जांचें", href: "/my-location/ip/", desc: "अपना सार्वजनिक आईपी, आईएसपी का नाम और शहर देखें।" },
+      { title: "गलत लोकेशन सुधारें", href: "/guides/wrong-location/", desc: "वीपीएन और वाई-फाई विसंगतियों को ठीक करना सीखें।" }
+    ],
+
+    connectedGuides: "🔗 जुड़े मार्गदर्शक और उपकरण",
+    tool1Title: "जीपीएस निर्देशांक खोजक",
+    tool1Desc: "सटीक उपग्रह स्थिति",
+    tool2Title: "आईपी सटीकता सीमाएं",
+    tool2Desc: "GeoIP डेटाबेस कार्यप्रणाली",
+    tool3Title: "गलत लोकेशन सुधारें",
+    tool3Desc: "आईएसपी और वीपीएन समस्याएं हल करें",
+    tool4Title: "जीपीएस सटीकता मॉनिटर",
+    tool4Desc: "लाइव त्रुटि दायरा परीक्षण"
   },
   id: {
-    title: "GPS vs IP: Perbandingan Akurasi & Privasi | MyLocationLab",
-    description: "Bandingkan penentuan posisi GPS dengan geolokasi alamat IP. Pahami perbedaan akurasi (3 m vs 50 km), ketergantungan perangkat keras, privasi, dan latensi.",
-    h1: "Lokasi GPS vs Geolokasi IP: Perbandingan Paling Lengkap",
-    subtitle: "Evaluasi teknis berdampingan antara trilaterasi satelit dan geolokasi tabel routing jaringan.",
-    calloutBadge: "⚖️ Uji Berdampingan Langsung",
-    calloutTitle: "Bandingkan GPS Langsung dengan Geolokasi IP Anda",
-    calloutDesc: "Lihat perbedaan waktu nyata antara fix satelit GPS langsung perangkat Anda dan lokasi IP jaringan publik Anda.",
-    calloutBtn: "Cek Lokasi IP →",
-    matrixHeading: "Matriks Perbandingan Berhadapan",
+    title: "GPS vs Lokasi IP: Akurasi dan Privasi | MyLocationLab",
+    description: "Singkatnya: GPS membaca sinyal gelombang mikro satelit dengan akurasi 3-5 meter, sedangkan geolokasi IP memeriksa basis data perutean ISP dalam radius 5-50 km.",
+    h1: "Lokasi GPS vs. Geolokasi IP: Perbandingan Definitif",
+    subtitle: "Evaluasi teknis antara trilaterasi satelit orbital dan tabel perutean jaringan.",
+    
+    inShort: "Singkatnya: GPS menghitung posisi fisik Anda dalam rentang 3 hingga 5 meter menggunakan sinyal radio satelit orbital, membutuhkan izin browser Anda. Geolokasi IP memperkirakan lokasi Anda dalam radius 5 hingga 50 km berdasarkan tabel perutean penyedia internet (ISP), bekerja secara pasif di latar belakang tanpa sensor fisik.",
+
+    calloutBadge: "⚖️ Uji Langsung",
+    calloutTitle: "Bandingkan GPS vs IP Langsung",
+    calloutDesc: "Lihat perbedaan waktu nyata antara posisi satelit perangkat Anda dan lokasi IP jaringan publik Anda.",
+    calloutBtn: "Periksa Lokasi IP →",
+
+    matrixHeading: "Matriks Perbandingan Langsung",
     thAttr: "Atribut",
-    thGps: "Penentuan Posisi GPS (GNSS)",
+    thGps: "Posisi GPS (GNSS)",
     thIp: "Geolokasi Alamat IP",
-    row1: ["Akurasi Tipikal", "3 sampai 5 meter di luar ruangan", "10 sampai 80 kilometer (tingkat kota/wilayah)"],
-    row2: ["Teknologi yang Menjadi Dasar", "Trilaterasi waktu tempuh sinyal radio satelit", "Tabel basis data Autonomous System Number (ASN) ISP"],
-    row3: ["Perlu Izin Pengguna?", "Ya (Prompt peramban eksplisit wajib)", "Tidak (Disimpulkan pasif dari soket jaringan masuk)"],
-    row4: ["Kebutuhan Perangkat Keras", "Antena dan chipset GNSS khusus (ponsel/tablet)", "Perangkat apa pun yang terhubung internet (PC, server, router)"],
-    row5: ["Keandalan di Dalam Ruangan", "Lemah (Teredam atap beton/logam)", "100% berfungsi di dalam ruangan"],
-    row6: ["Dampak VPN / Proksi", "Tidak berubah (GPS perangkat keras membaca sinyal langit sebenarnya)", "Sepenuhnya tersamar / dirutekan ke lokasi server VPN"],
-    row7: ["Konsumsi Baterai", "Sedang (penerimaan radio terus-menerus)", "Tanpa konsumsi baterai tambahan"],
+    row1: ["Akurasi Tipikal", "3 hingga 5 meter di luar ruangan", "5 hingga 50 km (tingkat kota atau gateway ISP)"],
+    row2: ["Teknologi Dasar", "Trilaterasi waktu tempuh sinyal radio satelit", "Tabel basis data ASN penyedia internet"],
+    row3: ["Perlu Izin Pengguna?", "Ya (Wajib persetujuan di peramban)", "Tidak (Dikenali pasif dari koneksi soket)"],
+    row4: ["Kebutuhan Perangkat Keras", "Antena GNSS & chipset khusus (ponsel, tablet)", "Semua perangkat berinternet (PC, server)"],
+    row5: ["Keandalan di Dalam Ruangan", "Lemah (Terhalang atap beton atau logam)", "100% berfungsi di dalam ruangan"],
+    row6: ["Pengaruh VPN / Proksi", "Tidak berubah (GPS membaca sinyal fisik langit)", "Teralihkan sepenuhnya ke lokasi server VPN"],
+    row7: ["Konsumsi Baterai", "Moderat (Penerimaan radio aktif)", "Nol konsumsi baterai tambahan"],
+
     h2Gps: "Cara Kerja Lokasi GPS",
-    pGps1: "GPS menentukan lokasi lewat fisika. Ponsel Anda memuat antena miniatur yang menangkap gelombang radio yang dipancarkan dari ketinggian 20.200 km di orbit Bumi menengah.",
-    pGps2: "Karena sinyal merambat dengan kecepatan cahaya, dengan menghitung selisih waktu kedatangan, prosesor ponsel Anda dapat menghitung lintang, bujur, dan ketinggian presisnya relatif terhadap elipsoid WGS 84.",
+    pGps1: "GPS menentukan lokasi melalui hukum gelombang radio. Ponsel Anda menangkap gelombang yang dipancarkan dari orbit 20.200 km di atas bumi. Sebagaimana diulas dalam panduan <a href='/guides/how-gps-location-works/'>cara kerja lokasi GPS</a>, satelit menentukan posisi tanah Anda secara akurat.",
+    pGps2: "Prosesor menghitung selisih waktu tempuh cahaya untuk menentukan lintang, bujur, dan ketinggian. Uji sensor Anda pada <a href='/my-location/gps/'>Halaman Lokasi GPS Saya</a>.",
+
     h2Ip: "Cara Kerja Geolokasi IP",
-    pIp1: "Geolokasi IP bukanlah pengukuran fisik—melainkan korelasi basis data. Setiap paket yang dikirim lewat internet memuat alamat IP publik Anda. Perusahaan seperti MaxMind, IPinfo, dan DB-IP memelihara basis data miliknya yang memetakan blok IP ke:",
-    ipBullet1: "ISP pemilik blok alamat IP tersebut (mis. Telkom, IndiHome, Biznet).",
-    ipBullet2: "Koordinat geografis router gateway regional ISP atau pusat datanya.",
-    pIp2: "Karena sebuah ISP dapat menetapkan blok IP yang sama di seluruh kawasan metropolitan atau kabupaten, penentuan posisi berbasis IP tidak akan pernah mampu mengidentifikasi alamat jalan Anda.",
+    pIp1: "Geolokasi IP adalah korelasi data jaringan, bukan pengukuran fisik. Seperti dijelaskan dalam panduan <a href='/guides/ip-geolocation-accuracy/'>akurasi dan batasan geolokasi IP</a>, penyedia seperti MaxMind memetakan blok IP ke gerbang perutean:",
+    ipBullet1: "Perusahaan ISP pemilik blok IP (misalnya Telkomsel, Indosat, Biznet, XL).",
+    ipBullet2: "Koordinat pusat data atau router gateway regional ISP.",
+    pIp2: "Karena ISP membagikan blok IP yang sama untuk satu wilayah kota, IP tidak akan pernah bisa melacak nama jalan Anda. Lihat simpul jaringan Anda di <a href='/my-location/ip/'>Lokasi IP Saya</a>. Jika kotanya salah, pelajari <a href='/guides/wrong-location/'>Panduan Lokasi Salah</a>.",
+
     h2Privacy: "Perbandingan Privasi: Mana yang Lebih Aman?",
-    h3GpsPrivacy: "W3C Geolocation Peramban (GPS):",
-    pGpsPrivacy: "Di bawah standar W3C Geolocation API, tidak ada situs web yang dapat membaca koordinat GPS Anda tanpa persetujuan eksplisit opt-in dari Anda. Prompt tampil setiap kali kecuali Anda memasukkan domain itu ke daftar putih secara permanen. Di MyLocationLab, koordinat Anda diproses 100% secara lokal di peramban dan tidak pernah dicatat.",
+    h3GpsPrivacy: "Geolokasi W3C Browser (GPS):",
+    pGpsPrivacy: "Di bawah standar W3C, situs tidak dapat membaca koordinat tanpa izin eksplisit. Di MyLocationLab, data diproses 100% lokal dan tidak disimpan.",
     h3IpPrivacy: "Alamat IP:",
-    pIpPrivacy: "Setiap server web yang Anda kunjungi otomatis menerima alamat IP publik Anda untuk mengirimkan halaman HTML. Meski tidak dapat menunjuk rumah Anda, alamat ini rutin membuka kota, provinsi, kode pos, dan Penyedia Layanan Internet Anda tanpa meminta izin.",
-    h2Which: "Metode Mana yang Sebaiknya Anda Gunakan?",
-    useGpsWhen: "Gunakan GPS ketika: Anda membutuhkan navigasi belok demi belok, alamat jalan persis, perhitungan elevasi, atau jarak presisi.",
-    useIpWhen: "Gunakan Geolokasi IP ketika: Anda berada di workstation desktop tanpa GPS, hanya menginginkan prakiraan cuaca regional kasar, atau perlu mendeteksi negara atau mata uang bawaan di situs e-commerce.",
-    connectedGuides: "🔗 Panduan & Alat Praktis Terkait",
+    pIpPrivacy: "Semua server web otomatis menerima IP Anda untuk memuat laman, mengungkap kota dan operator Anda tanpa meminta izin.",
+
+    h2Which: "Metode Mana yang Sebaiknya Digunakan?",
+    useGpsWhen: "Gunakan GPS Saat: Membutuhkan navigasi jalan, alamat rumah yang akurat, atau perhitungan ketinggian dan jarak.",
+    useIpWhen: "Gunakan IP Saat: Berada di PC desktop tanpa GPS, mengecek cuaca regional, atau preferensi mata uang toko online.",
+
+    h2Scenarios: "Rekomendasi Berdasarkan Skenario",
+    scenarios: [
+      { scenario: "Navigasi Jalan & Mendaki", verdict: "Gunakan GPS", desc: "Memerlukan akurasi meter yang hanya dapat disediakan oleh satelit." },
+      { scenario: "Cuaca Regional & Toko Online", verdict: "Gunakan IP", desc: "Akurasi tingkat kota sudah cukup tanpa perlu meminta izin ke pengguna." },
+      { scenario: "PC Desktop di Kantor", verdict: "Gunakan IP", desc: "Komputer kerja tidak memiliki antena satelit dan berada di dalam gedung." },
+      { scenario: "Geofencing Keamanan", verdict: "Gunakan GPS", desc: "Memverifikasi batas wilayah fisik secara nyata." }
+    ],
+
+    h2Myths: "Mitos vs. Fakta",
+    myths: [
+      { myth: "Mitos: Situs web dapat mengambil lokasi GPS diam-diam.", fact: "Fakta: Peramban modern mengunci akses sensor hingga pengguna secara aktif menekan Izinkan." },
+      { myth: "Mitos: Geolokasi IP dapat menemukan nomor pintu rumah Anda.", fact: "Fakta: Basis data IP hanya mengetahui pusat perutean ISP yang berjarak 5 hingga 50 km." }
+    ],
+
+    faqs: [
+      { question: "Mengapa lokasi IP saya menunjukkan kota lain?", answer: "Penyedia internet menyalurkan koneksi Anda melalui router gateway terpusat di kota besar terdekat." },
+      { question: "Apakah VPN memengaruhi lokasi GPS ponsel?", answer: "Tidak. VPN hanya mengalihkan jaringan internet. Sensor GPS ponsel tetap membaca sinyal satelit secara langsung." },
+      { question: "Bisakah situs web melacak ketinggian saya lewat IP?", answer: "Tidak. IP hanya dua dimensi; ketinggian hanya bisa dibaca lewat satelit GNSS atau sensor barometer." }
+    ],
+
+    nextStepsTitle: "Langkah Berikutnya",
+    nextSteps: [
+      { title: "Periksa Antena GPS", href: "/my-location/gps/", desc: "Lihat koordinat satelit langsung dan radius galat saat ini." },
+      { title: "Periksa Jaringan IP", href: "/my-location/ip/", desc: "Lihat IP publik, nama ISP, dan kota perutean jaringan." },
+      { title: "Atasi Lokasi Salah", href: "/guides/wrong-location/", desc: "Pelajari cara mengatasi selisih lokasi akibat VPN atau perutean ISP." }
+    ],
+
+    connectedGuides: "🔗 Panduan & Alat Terkait",
     tool1Title: "Pencari Koordinat GPS",
-    tool1Desc: "Periksa fix satelit persis",
+    tool1Desc: "Titik satelit langsung",
     tool2Title: "Batas Akurasi IP",
-    tool2Desc: "Cara kerja basis data GeoIP",
+    tool2Desc: "Cara kerja GeoIP",
     tool3Title: "Perbaiki Lokasi Salah",
     tool3Desc: "Atasi konflik ISP & VPN",
     tool4Title: "Monitor Akurasi GPS",
@@ -351,8 +604,16 @@ const c = translations[lang] || translations.en;
   publishDate="2026-09-15"
   modifiedDate="2026-09-22"
 >
-  <p>{c.pGps1}</p>
-  <p>{c.pGps2}</p>
+  {c.inShort && (
+    <div class="callout-box" style="margin-bottom: var(--space-6); background: var(--color-bg-secondary); border-left: 4px solid var(--color-accent-primary); padding: var(--space-4) var(--space-5); border-radius: var(--radius-md);">
+      <p style="margin: 0; font-weight: 500; font-size: var(--text-base); color: var(--color-text-primary); line-height: 1.75;">
+        {c.inShort}
+      </p>
+    </div>
+  )}
+
+  <p set:html={localizeHtml(c.pGps1, lang)}></p>
+  <p set:html={localizeHtml(c.pGps2, lang)}></p>
 
   <!-- Live Split-Screen GPS vs IP Diagnostic Engine -->
   <div class="live-test-card" id="gps-ip-test-card">
@@ -366,60 +627,65 @@ const c = translations[lang] || translations.en;
       <!-- IP Col -->
       <div class="test-col">
         <div class="test-col-header">
-          <span style="font-weight: 700; font-size: var(--text-sm); display: flex; align-items: center; gap: 6px;">
-            🌐 Network IP Geolocation
-          </span>
-          <span class="badge" id="ip-status-badge">Detecting IP...</span>
+          <span class="dot dot-ip"></span>
+          <strong>IP Geolocation</strong>
+          <span class="badge badge-secondary" id="ip-status-badge">Detecting...</span>
         </div>
-        <div class="test-data-row">
-          <span class="test-label">Public IP</span>
-          <span class="test-value highlight" id="test-ip-val">—</span>
+        <div class="metric-row">
+          <span class="metric-lbl">Public IP:</span>
+          <span class="metric-val" id="ip-val">—</span>
         </div>
-        <div class="test-data-row">
-          <span class="test-label">City / Region</span>
-          <span class="test-value" id="test-ip-loc">—</span>
+        <div class="metric-row">
+          <span class="metric-lbl">City / Region:</span>
+          <span class="metric-val" id="ip-city">—</span>
         </div>
-        <div class="test-data-row">
-          <span class="test-label">Coordinates</span>
-          <span class="test-value" id="test-ip-coords">—</span>
+        <div class="metric-row">
+          <span class="metric-lbl">Est. Coordinates:</span>
+          <span class="metric-val" id="ip-coords">—</span>
         </div>
-        <div class="test-data-row">
-          <span class="test-label">Precision Radius</span>
-          <span class="test-value" style="color: var(--color-text-tertiary);">~15 to 80 km (ISP Hub)</span>
+        <div class="metric-row">
+          <span class="metric-lbl">Typical Accuracy:</span>
+          <span class="metric-val" id="ip-acc">~5 to 50 km</span>
         </div>
       </div>
 
       <!-- GPS Col -->
       <div class="test-col">
         <div class="test-col-header">
-          <span style="font-weight: 700; font-size: var(--text-sm); display: flex; align-items: center; gap: 6px;">
-            🛰️ Device Hardware GPS
-          </span>
-          <span class="badge" id="gps-status-badge" data-nosnippet>Standby</span>
+          <span class="dot dot-gps"></span>
+          <strong>Hardware GPS Fix</strong>
+          <span class="badge badge-secondary" id="gps-status-badge">Standby</span>
         </div>
-        <div class="test-data-row">
-          <span class="test-label">Signal Source</span>
-          <span class="test-value highlight" id="test-gps-method">—</span>
+        <div class="metric-row">
+          <span class="metric-lbl">Receiver Status:</span>
+          <span class="metric-val" id="gps-state">Click Below to Query</span>
         </div>
-        <div class="test-data-row">
-          <span class="test-label">Accuracy Radius</span>
-          <span class="test-value" id="test-gps-acc">—</span>
+        <div class="metric-row">
+          <span class="metric-lbl">Exact Lat / Long:</span>
+          <span class="metric-val" id="gps-coords">—</span>
         </div>
-        <div class="test-data-row">
-          <span class="test-label">Coordinates</span>
-          <span class="test-value" id="test-gps-coords">—</span>
+        <div class="metric-row">
+          <span class="metric-lbl">Elevation:</span>
+          <span class="metric-val" id="gps-elev">—</span>
         </div>
-        <div style="margin-top: var(--space-4); text-align: center;">
-          <button type="button" class="btn btn-primary btn-sm" id="acquire-gps-btn" style="width: 100%;">
-            📍 Acquire Hardware GPS Fix
-          </button>
-          <p id="gps-comp-error" data-nosnippet style="display: none; color: var(--color-accent-error); font-size: var(--text-xs); margin-top: var(--space-2);"></p>
+        <div class="metric-row">
+          <span class="metric-lbl">Precision Radius:</span>
+          <span class="metric-val text-success" id="gps-acc">—</span>
         </div>
       </div>
     </div>
 
-    <!-- Live Discrepancy Calculation -->
-    <div id="discrepancy-banner" class="discrepancy-banner" style="display: none;" data-nosnippet>
+    <div style="margin-top: var(--space-4); display: flex; gap: var(--space-3); flex-wrap: wrap;">
+      <button class="btn btn-primary" id="btn-run-gps">
+        Query Hardware GPS Satellites
+      </button>
+      <a href={getLocalizedPath('/my-location/ip/', lang)} class="btn btn-secondary">
+        {c.calloutBtn}
+      </a>
+    </div>
+
+    <!-- Live Discrepancy Calculator -->
+    <div class="discrepancy-card" id="discrepancy-box" style="display: none; margin-top: var(--space-4); padding: var(--space-4); background: var(--color-bg-secondary); border-radius: var(--radius-md); border-left: 4px solid var(--color-accent-primary);">
       <div style="font-size: var(--text-sm); font-weight: 700; color: var(--color-accent-primary); margin-bottom: var(--space-1);">
         🎯 Spatial Error Discrepancy Calculated
       </div>
@@ -481,16 +747,16 @@ const c = translations[lang] || translations.en;
   </table>
 
   <h2>{c.h2Gps}</h2>
-  <p>{c.pGps1}</p>
-  <p>{c.pGps2} <a href={getLocalizedPath('/guides/how-gps-location-works/', lang)}>→</a></p>
+  <p set:html={localizeHtml(c.pGps1, lang)}></p>
+  <p set:html={localizeHtml(c.pGps2, lang)}></p>
 
   <h2>{c.h2Ip}</h2>
-  <p>{c.pIp1}</p>
+  <p set:html={localizeHtml(c.pIp1, lang)}></p>
   <ul>
     <li>{c.ipBullet1}</li>
     <li>{c.ipBullet2}</li>
   </ul>
-  <p>{c.pIp2}</p>
+  <p set:html={localizeHtml(c.pIp2, lang)}></p>
 
   <h2>{c.h2Privacy}</h2>
   <h3>{c.h3GpsPrivacy}</h3>
@@ -505,6 +771,60 @@ const c = translations[lang] || translations.en;
     <li><strong>{c.useIpWhen}</strong></li>
   </ul>
 
+  {c.h2Scenarios && (
+    <div style="margin: var(--space-10) 0;">
+      <h2>⚖️ {c.h2Scenarios}</h2>
+      <div style="display: grid; gap: var(--space-4); margin-top: var(--space-4);">
+        {c.scenarios.map((s: any) => (
+          <div class="card card-flat" style="padding: var(--space-4) var(--space-5); border-left: 3px solid var(--color-accent-primary);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-1);">
+              <strong style="color: var(--color-text-primary); font-size: var(--text-base);">{s.scenario}</strong>
+              <span class="badge badge-primary">{s.verdict}</span>
+            </div>
+            <p style="margin: 0; color: var(--color-text-secondary); font-size: var(--text-sm); line-height: 1.75;">{s.desc}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  )}
+
+  {c.h2Myths && (
+    <div style="margin: var(--space-10) 0;">
+      <h2>🔍 {c.h2Myths}</h2>
+      <div style="display: grid; gap: var(--space-4); margin-top: var(--space-4);">
+        {c.myths.map((m: any) => (
+          <div class="card card-flat" style="padding: var(--space-4) var(--space-5); border-left: 3px solid var(--color-accent-warning);">
+            <strong style="display: block; color: var(--color-text-primary); margin-bottom: var(--space-1); font-size: var(--text-base);">{m.myth}</strong>
+            <p style="margin: 0; color: var(--color-text-secondary); font-size: var(--text-sm); line-height: 1.75;">{m.fact}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  )}
+
+  {c.faqs && c.faqs.length > 0 && (
+    <div style="margin-top: var(--space-10);">
+      <h2>❓ FAQ: GPS vs. IP Geolocation</h2>
+      <FAQAccordion items={c.faqs} includeSchema={true} />
+    </div>
+  )}
+
+  {c.nextSteps && (
+    <div class="card card-flat" style="margin: var(--space-10) 0; padding: var(--space-6); background: var(--color-bg-secondary); border: 1px solid var(--color-border); border-radius: var(--radius-lg);">
+      <h3 style="margin-top: 0; margin-bottom: var(--space-4); font-size: var(--text-lg); display: flex; align-items: center; gap: var(--space-2);">
+        <span>🚀</span> {c.nextStepsTitle || "Next Steps"}
+      </h3>
+      <div style="display: grid; gap: var(--space-3);">
+        {c.nextSteps.map((step: any) => (
+          <a href={getLocalizedPath(step.href, lang)} class="card card-flat" style="display: flex; flex-direction: column; gap: var(--space-1); padding: var(--space-3) var(--space-4); text-decoration: none; border-left: 3px solid var(--color-accent-primary); background: var(--color-bg-card); transition: transform 0.15s ease;">
+            <strong style="color: var(--color-text-primary); font-size: var(--text-base);">{step.title} →</strong>
+            <span style="color: var(--color-text-secondary); font-size: var(--text-sm); line-height: 1.6;">{step.desc}</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  )}
+
   <div class="contextual-next-box">
     <h3 class="contextual-next-title">{c.connectedGuides}</h3>
     <div class="contextual-next-grid">
@@ -516,7 +836,7 @@ const c = translations[lang] || translations.en;
         </div>
       </a>
       <a href={getLocalizedPath('/guides/ip-geolocation-accuracy/', lang)} class="contextual-link-card">
-        <span class="contextual-link-icon">📡</span>
+        <span class="contextual-link-icon">🌐</span>
         <div class="contextual-link-info">
           <div class="contextual-link-title">{c.tool2Title}</div>
           <div class="contextual-link-sub">{c.tool2Desc}</div>
@@ -539,152 +859,3 @@ const c = translations[lang] || translations.en;
     </div>
   </div>
 </ContentLayout>
-
-<style>
-  .live-test-card {
-    background: var(--color-bg-card);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-2xl);
-    padding: var(--space-6);
-    margin: var(--space-8) 0;
-    box-shadow: var(--shadow-md);
-  }
-  .live-test-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: var(--space-4);
-    margin-top: var(--space-5);
-  }
-  @media (max-width: 640px) {
-    .live-test-grid {
-      grid-template-columns: 1fr;
-    }
-  }
-  .test-col {
-    background: var(--color-bg-tertiary);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-xl);
-    padding: var(--space-4) var(--space-5);
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-  }
-  .test-col-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: var(--space-3);
-    padding-bottom: var(--space-2);
-    border-bottom: 1px solid var(--color-border);
-  }
-  .test-data-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-size: var(--text-xs);
-    padding: var(--space-2) 0;
-    border-bottom: 1px dashed rgba(255, 255, 255, 0.08);
-  }
-  .test-label {
-    color: var(--color-text-secondary);
-  }
-  .test-value {
-    font-family: var(--font-mono);
-    font-weight: 600;
-  }
-  .test-value.highlight {
-    color: var(--color-accent-primary);
-  }
-  .discrepancy-banner {
-    margin-top: var(--space-5);
-    padding: var(--space-5) var(--space-6);
-    border-radius: var(--radius-xl);
-    background: linear-gradient(135deg, rgba(37, 99, 235, 0.08) 0%, rgba(16, 185, 129, 0.08) 100%);
-    border: 1px solid rgba(37, 99, 235, 0.25);
-    text-align: center;
-  }
-</style>
-
-<script>
-  import IpLocation from '../../scripts/ip-location.js';
-  import GeoLocation from '../../scripts/geolocation.js';
-  import CoordUtils from '../../scripts/coordinates.js';
-
-  let ipLat: number | null = null;
-  let ipLng: number | null = null;
-  let gpsLat: number | null = null;
-  let gpsLng: number | null = null;
-
-  // Auto-load IP Location
-  (async () => {
-    try {
-      const ipData = await IpLocation.getLocation();
-      if (ipData && ipData.lat && ipData.lng) {
-        ipLat = ipData.lat;
-        ipLng = ipData.lng;
-        const ipVal = document.getElementById('test-ip-val');
-        const ipLoc = document.getElementById('test-ip-loc');
-        const ipCoords = document.getElementById('test-ip-coords');
-        const ipBadge = document.getElementById('ip-status-badge');
-
-        if (ipVal) ipVal.textContent = ipData.ip || 'Detected';
-        if (ipLoc) ipLoc.textContent = [ipData.city, ipData.region, ipData.countryCode].filter(Boolean).join(', ') || 'Global';
-        if (ipCoords) ipCoords.textContent = `${ipData.lat.toFixed(3)}°, ${ipData.lng.toFixed(3)}°`;
-        if (ipBadge) {
-          ipBadge.textContent = 'Detected';
-          ipBadge.className = 'badge badge-success';
-        }
-      }
-    } catch {
-      const ipBadge = document.getElementById('ip-status-badge');
-      if (ipBadge) ipBadge.textContent = 'Unavailable';
-    }
-  })();
-
-  // Acquire Hardware GPS Fix
-  const btn = document.getElementById('acquire-gps-btn');
-  btn?.addEventListener('click', async () => {
-    const errEl = document.getElementById('gps-comp-error');
-    const badge = document.getElementById('gps-status-badge');
-    if (errEl) errEl.style.display = 'none';
-    if (badge) badge.textContent = 'Acquiring...';
-
-    try {
-      const pos = await GeoLocation.getCurrentPosition({ enableHighAccuracy: true });
-      gpsLat = pos.coords.latitude;
-      gpsLng = pos.coords.longitude;
-      const acc = Math.round(pos.coords.accuracy);
-
-      const methodEl = document.getElementById('test-gps-method');
-      const accEl = document.getElementById('test-gps-acc');
-      const coordsEl = document.getElementById('test-gps-coords');
-
-      if (methodEl) methodEl.textContent = 'GNSS Satellite Lock';
-      if (accEl) accEl.textContent = `± ${acc} meters`;
-      if (coordsEl) coordsEl.textContent = `${gpsLat.toFixed(5)}°, ${gpsLng.toFixed(5)}°`;
-      if (badge) {
-        badge.textContent = 'Locked';
-        badge.className = 'badge badge-success';
-      }
-      if (btn) btn.style.display = 'none';
-
-      // Compute Spatial Discrepancy
-      if (ipLat !== null && ipLng !== null && gpsLat !== null && gpsLng !== null) {
-        const distKm = CoordUtils.calculateDistance(ipLat, ipLng, gpsLat, gpsLng, 'km');
-        const distMi = distKm * 0.621371;
-        const banner = document.getElementById('discrepancy-banner');
-        const distText = document.getElementById('discrepancy-dist');
-        if (distText) {
-          distText.textContent = `${distKm.toFixed(1)} km (${distMi.toFixed(1)} miles) Difference`;
-        }
-        if (banner) banner.style.display = 'block';
-      }
-    } catch (err: any) {
-      if (badge) badge.textContent = 'Error';
-      if (errEl) {
-        errEl.textContent = GeoLocation.getErrorMessage(err, document.documentElement.lang);
-        errEl.style.display = 'block';
-      }
-    }
-  });
-</script>

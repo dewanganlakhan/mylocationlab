@@ -16,9 +16,12 @@ const lang = (customLang || defaultLang) as SupportedLang;
 const translations: Record<string, any> = {
   en: {
     title: "GPS Accuracy Checker — Live Precision Test | MyLocationLab",
-    description: "Check your device's live GPS accuracy in real-time. Measure horizontal dilution of precision (HDOP), signal confidence radius in meters, speed, and heading.",
+    description: "In short: Test your live GPS horizontal accuracy radius, satellite HDOP, heading, and speed directly in your browser with zero data stored.",
     h1: "GPS Accuracy Checker",
     subtitle: "Monitor your device's real-time GNSS satellite positioning accuracy, horizontal precision radius, and sensor telemetry.",
+    
+    inShort: "In short: This tool streams live telemetry directly from your browser's GNSS receiver, measuring your real-time horizontal accuracy radius in meters alongside estimated Dilution of Precision (HDOP). Use it to test satellite signal strength, detect multipath interference, and calibrate positioning for mapping and navigation.",
+
     btnStart: "🛰️ Start Live GPS Monitor",
     btnStop: "⏹️ Stop Monitor",
     statusStandby: "Standby",
@@ -45,34 +48,112 @@ const translations: Record<string, any> = {
     speedStationary: "Stationary / 0 km/h",
     headingStatic: "Static (No Heading)",
     notAvailable: "Not Available",
+
+    // Tool steps
+    howToUseTitle: "How to Use This Tool",
+    howToUseSteps: [
+      {
+        step: "1",
+        title: "Grant Browser Location Permission",
+        desc: "Click 'Start Live GPS Monitor' above and select 'Allow' when your browser asks for geolocation access. Ensure high accuracy mode is enabled on your device settings."
+      },
+      {
+        step: "2",
+        title: "Observe Real-Time Telemetry Lock",
+        desc: "Wait 3 to 10 seconds while your device synchronizes with orbiting GNSS constellations. The horizontal accuracy radius meter will update continuously in real-time."
+      },
+      {
+        step: "3",
+        title: "Analyze and Export Snapshot",
+        desc: "Inspect your estimated HDOP, speed, and coordinates. Click 'Copy Snapshot' to record exact timestamped coordinates and precision diagnostics for your records."
+      }
+    ],
+
+    // Worked sample
+    workedExampleTitle: "Worked Example: Reading a Live Test Diagnostic",
+    workedSampleInput: "Device: Modern 5G Smartphone • Location: Suburban Park (Open Sky) • Wi-Fi: Enabled",
+    workedSampleOutput: "Reported Accuracy: ± 2.8 meters • Estimated HDOP: 0.9 (Excellent) • Ground Speed: 0.0 km/h • Altitude: 42.6 m • Confidence: 95% CEP",
+    workedSampleExplain: "Interpretation: An accuracy radius of 2.8 meters with an HDOP below 1.0 confirms a pristine dual-band satellite lock with 8+ visible satellites distributed across the sky.",
+
     h2Understanding: "Understanding GPS Accuracy & Dilution of Precision (DOP)",
-    pUnderstanding: "Browser and smartphone geolocation accuracy is expressed as a <strong>95% confidence radius</strong>. If your device reports an accuracy of ±5 meters, there is a 95% probability that your true geographic position lies within a circle of 5 meters around the reported coordinates.",
+    pUnderstanding: "Browser and smartphone geolocation accuracy is expressed as a <strong>95% confidence radius</strong>. If your device reports an accuracy of ±5 meters, there is a 95% probability that your true geographic position lies within a circle of 5 meters around the reported coordinates. Learn how satellite geometry affects this in our <a href='/glossary/#hdop'>HDOP definition</a>.",
     h3Classifications: "Accuracy Classifications",
     thRadius: "Accuracy Radius",
-    thRating: "Rating",
-    thSource: "Typical Source",
-    thSuitability: "Use Case Suitability",
+    thRating: "Signal Rating",
+    thSource: "Primary Source",
+    thSuitability: "Operational Suitability",
     row1Rating: "Exceptional",
-    row1Source: "Dual-Frequency L1/L5 GNSS",
-    row1Use: "Precision mapping, surveying, lane-level navigation",
+    row1Source: "Dual-Frequency GNSS (L1 + L5)",
+    row1Use: "Cadastral surveying, precise geocaching, drone flights",
     row2Rating: "High",
-    row2Source: "Standard Mobile GPS / GLONASS",
-    row2Use: "Turn-by-turn driving, hiking, fitness tracking",
+    row2Source: "Standard Multi-GNSS Lock",
+    row2Use: "Turn-by-turn vehicle navigation, running route tracking",
     row3Rating: "Moderate",
-    row3Source: "Wi-Fi Positioning (WPS) / Indoor",
-    row3Use: "Neighborhood-level delivery, local search",
-    row4Rating: "Low",
-    row4Source: "Cell Tower Triangulation / IP Geo",
-    row4Use: "City-level regional discovery only",
-    h2Improve: "How to Improve Your Device's GPS Accuracy",
-    li1: "<strong>Enable Wi-Fi and Bluetooth Scanning:</strong> Mobile operating systems use nearby Wi-Fi router BSSIDs to accelerate initial satellite acquisition (Assisted GPS).",
-    li2: "<strong>Step Away from 'Urban Canyons':</strong> Tall concrete and glass skyscrapers reflect satellite signals, creating <em>multipath interference</em> that degrades accuracy.",
-    li3: "<strong>Calibrate the Internal Magnetometer:</strong> Move your device in a figure-8 motion to recalibrate the electronic compass for accurate heading bearings.",
-    li4: "<strong>Ensure Unobstructed Sky View:</strong> Heavy foliage, subterranean basements, and metallic structures attenuate high-frequency satellite microwave signals.",
-    h2Related: "Related Geospatial Tools",
-    linkGps: "GPS Coordinates Finder",
-    linkGuideAccuracy: "Comprehensive Guide to Improving GPS Accuracy",
-    linkComp: "GPS vs. IP Location Comparison"
+    row3Source: "Assisted GPS + Wi-Fi Triangulation",
+    row3Use: "Ride-hailing pickups, general neighborhood mapping",
+    row4Rating: "Low / Degraded",
+    row4Source: "Cellular Tower ID / IP Routing",
+    row4Use: "City-level weather forecasts, coarse regional tagging",
+
+    // Limitations section
+    limitationsTitle: "Limitations & Environmental Accuracy Notes",
+    limitations: [
+      {
+        title: "Urban Canyons & Multipath Distortion",
+        desc: "In high-density downtowns with glass and concrete skyscrapers, satellite radio signals bounce off facades before hitting your phone. This geometric delay (multipath interference) can artificially distort accuracy by 15 to 40 meters."
+      },
+      {
+        title: "Indoor Attenuation",
+        desc: "Standard 1.5 GHz satellite signals cannot penetrate reinforced concrete ceilings or metal roofs. Indoors, browsers transparently fall back to Wi-Fi BSSID mapping or IP geolocation, which provides regional rather than street-level precision."
+      },
+      {
+        title: "Atmospheric & Ionospheric Delay",
+        desc: "Solar flares and variations in the Earth's ionosphere alter the speed of electromagnetic waves. While modern multi-frequency GNSS receivers cancel out most ionospheric delays, single-frequency consumer phones may experience 1 to 3 meters of baseline drift."
+      }
+    ],
+
+    h2Improve: "How to Maximize Hardware GPS Accuracy",
+    li1: "<strong>Clear Sky View:</strong> Move away from tall buildings, concrete overpasses, and dense wet foliage to establish direct line-of-sight with at least 6 satellites.",
+    li2: "<strong>Enable Wi-Fi Scanning:</strong> Operating systems use Wi-Fi router beacons alongside GPS to resolve initial spatial ambiguity rapidly.",
+    li3: "<strong>Calibrate Internal Compass:</strong> Wave your device in a smooth figure-eight pattern to align magnetometer sensors for true heading vectors.",
+    li4: "<strong>Toggle Airplane Mode:</strong> Cycling cellular and wireless radios forces an A-GPS ephemeris refresh from local base stations.",
+
+    // Tool FAQs
+    faqsTitle: "Frequently Asked Questions About GPS Accuracy",
+    faqs: [
+      {
+        q: "Why does my laptop report an accuracy of ±500 meters or ±15 km while my phone says ±3 meters?",
+        a: "Most desktop PCs and laptops do not have built-in GPS chips. Instead, desktop browsers approximate position using Wi-Fi database lookups or your ISP network IP address. Read our comparison of GPS vs IP location to understand the technological difference."
+      },
+      {
+        q: "What is HDOP and what is considered a good score?",
+        a: "Horizontal Dilution of Precision (HDOP) measures satellite geometry in the sky. When satellites are spread out across all quadrants, HDOP is low (below 1.0 is ideal; 1.0 to 2.0 is very good). If satellites cluster in one narrow slice of sky, HDOP spikes above 5.0 and positioning error multiplies."
+      },
+      {
+        q: "Can bad weather or cloud cover ruin my GPS accuracy?",
+        a: "Radio signals at 1.2–1.6 GHz travel through ordinary clouds, rain, and snow with minimal attenuation (typically losing less than 0.1 dB of signal). Severe thunderstorms or dense water-soaked tree canopies can cause minor degradation, but structural blockages (concrete, tunnels) have a far greater impact."
+      }
+    ],
+
+    // Next steps
+    nextStepsTitle: "Next Steps: What to Explore Next",
+    nextSteps: [
+      {
+        title: "Inspect Your Full Satellite Telemetry",
+        desc: "View your latitude, longitude, and elevation numbers on the GPS Coordinates Finder.",
+        href: "/tools/gps-coordinates/"
+      },
+      {
+        title: "Compare Satellite vs Network Precision",
+        desc: "Understand why IP addresses give city-level guesses while GPS gives meter precision in GPS vs IP Location.",
+        href: "/comparisons/gps-vs-ip-location/"
+      },
+      {
+        title: "Check Live My Location GPS Reading",
+        desc: "Explore your device's native coordinates on our dedicated My Location GPS Page.",
+        href: "/my-location/gps/"
+      }
+    ]
   },
   es: {
     title: "Comprobador de Precisión GPS — Test en Tiempo Real | MyLocationLab",
@@ -511,6 +592,40 @@ const t = translations[lang] || translations.en;
   </div>
 
   <div class="prose" style="margin-top: var(--space-12); line-height: 1.8;">
+    {t.inShort && (
+      <div class="callout-box" style="margin-bottom: var(--space-6); background: var(--color-bg-secondary); border-left: 4px solid var(--color-accent-primary); padding: var(--space-4) var(--space-5); border-radius: var(--radius-md);">
+        <p style="margin: 0; font-weight: 500; font-size: var(--text-base); color: var(--color-text-primary); line-height: 1.75;">
+          {t.inShort}
+        </p>
+      </div>
+    )}
+
+    {t.howToUseTitle && (
+      <div style="margin-bottom: var(--space-10);">
+        <h2>📋 {t.howToUseTitle}</h2>
+        <div class="step-container" style="margin-top: var(--space-4);">
+          {t.howToUseSteps.map((s: any) => (
+            <div class="step-card">
+              <div class="step-number">{s.step}</div>
+              <div class="step-body">
+                <h4 class="step-title">{s.title}</h4>
+                <p class="step-desc">{s.desc}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    )}
+
+    {t.workedExampleTitle && (
+      <div class="card card-flat" style="margin-bottom: var(--space-10); padding: var(--space-6); background: var(--color-bg-secondary); border-left: 4px solid var(--color-accent-success); border-radius: var(--radius-md);">
+        <h3 style="margin-top: 0; margin-bottom: var(--space-2); color: var(--color-text-primary);">🔬 {t.workedExampleTitle}</h3>
+        <p style="margin-bottom: var(--space-2); font-size: var(--text-sm); color: var(--color-text-secondary); font-family: var(--font-mono);"><strong>Sample Input:</strong> {t.workedSampleInput}</p>
+        <p style="margin-bottom: var(--space-2); font-size: var(--text-sm); color: var(--color-text-primary); font-family: var(--font-mono);"><strong>Measured Output:</strong> {t.workedSampleOutput}</p>
+        <p style="margin-bottom: 0; font-size: var(--text-sm); color: var(--color-text-secondary); line-height: 1.7;">{t.workedSampleExplain}</p>
+      </div>
+    )}
+
     <h2>{t.h2Understanding}</h2>
     <p set:html={t.pUnderstanding}></p>
 
@@ -552,6 +667,20 @@ const t = translations[lang] || translations.en;
       </tbody>
     </table>
 
+    {t.limitationsTitle && (
+      <div style="margin: var(--space-10) 0;">
+        <h2>⚡ {t.limitationsTitle}</h2>
+        <div style="display: grid; gap: var(--space-4); margin-top: var(--space-4);">
+          {t.limitations.map((l: any) => (
+            <div class="card card-flat" style="padding: var(--space-4) var(--space-5); border-left: 3px solid var(--color-accent-warning);">
+              <strong style="display: block; color: var(--color-text-primary); margin-bottom: var(--space-1); font-size: var(--text-base);">{l.title}</strong>
+              <p style="margin: 0; color: var(--color-text-secondary); font-size: var(--text-sm); line-height: 1.75;">{l.desc}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    )}
+
     <h2>{t.h2Improve}</h2>
     <ul>
       <li set:html={t.li1}></li>
@@ -588,13 +717,42 @@ const t = translations[lang] || translations.en;
           </>
         ) : (
           <>
-            <strong>Signal Diagnostics & Calibration:</strong> If your confidence error radius exceeds 20 meters, apply our step-by-step techniques in <a href={getLocalizedPath('/guides/improve-gps-accuracy/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">How to Improve GPS Accuracy</a> and troubleshoot in <a href={getLocalizedPath('/guides/wrong-location/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Fixing Wrong Location Issues</a>. Compare sensor limits against wired internet sockets in our guide to <a href={getLocalizedPath('/comparisons/gps-vs-ip-location/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">GPS vs IP Location</a>. View your locked satellite coordinates in our <a href={getLocalizedPath('/tools/gps-coordinates/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">GPS Coordinates Finder</a> or inspect vertical height with the <a href={getLocalizedPath('/tools/elevation-finder/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Elevation Finder</a>.
+            <strong>Signal Diagnostics & Hardware Calibration:</strong> If your confidence error radius exceeds 20 meters, apply our step-by-step techniques in <a href={getLocalizedPath('/guides/improve-gps-accuracy/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">How to Improve GPS Accuracy</a> and troubleshoot in <a href={getLocalizedPath('/guides/wrong-location/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Fixing Wrong Location Issues</a>. Compare sensor limits against wired internet sockets in our guide to <a href={getLocalizedPath('/comparisons/gps-vs-ip-location/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">GPS vs IP Location</a>. Check your hardware coordinates on our dedicated <a href={getLocalizedPath('/my-location/gps/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">My Location GPS Page</a> or verify true terrain height with the <a href={getLocalizedPath('/tools/elevation-finder/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">Elevation Finder</a>.
           </>
         )}
       </p>
     </div>
 
-    <!-- Related Tools Grid -->
+    {t.faqs && (
+      <div style="margin: var(--space-10) 0;">
+        <h2>❓ {t.faqsTitle || "Frequently Asked Questions"}</h2>
+        <div style="display: grid; gap: var(--space-4); margin-top: var(--space-4);">
+          {t.faqs.map((f: any) => (
+            <div class="card card-flat" style="padding: var(--space-5); border: 1px solid var(--color-border);">
+              <h3 style="margin-top: 0; margin-bottom: var(--space-2); font-size: var(--text-base); color: var(--color-text-primary);">{f.q}</h3>
+              <p style="margin: 0; color: var(--color-text-secondary); font-size: var(--text-sm); line-height: 1.75;">{f.a}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    )}
+
+    {t.nextSteps && (
+      <div class="card card-flat" style="margin: var(--space-10) 0; padding: var(--space-6); background: var(--color-bg-secondary); border: 1px solid var(--color-border); border-radius: var(--radius-lg);">
+        <h3 style="margin-top: 0; margin-bottom: var(--space-4); font-size: var(--text-lg); display: flex; align-items: center; gap: var(--space-2);">
+          <span>🚀</span> {t.nextStepsTitle || "Next Steps"}
+        </h3>
+        <div style="display: grid; gap: var(--space-3);">
+          {t.nextSteps.map((step: any) => (
+            <a href={getLocalizedPath(step.href, lang)} class="card card-flat" style="display: flex; flex-direction: column; gap: var(--space-1); padding: var(--space-3) var(--space-4); text-decoration: none; border-left: 3px solid var(--color-accent-primary); background: var(--color-bg-card); transition: transform 0.15s ease;">
+              <strong style="color: var(--color-text-primary); font-size: var(--text-base);">{step.title} →</strong>
+              <span style="color: var(--color-text-secondary); font-size: var(--text-sm); line-height: 1.6;">{step.desc}</span>
+            </a>
+          ))}
+        </div>
+      </div>
+    )}
+
     <div class="contextual-next-box" style="margin-top: var(--space-8);">
       <h3 class="contextual-next-title">
         <span>🛠️</span>

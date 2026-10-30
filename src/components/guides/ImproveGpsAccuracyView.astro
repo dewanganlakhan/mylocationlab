@@ -3,7 +3,8 @@
  * ImproveGpsAccuracyView — Multilingual Guide: Improve GPS Accuracy
  */
 import ContentLayout from '../../layouts/ContentLayout.astro';
-import { getLocalizedPath, type SupportedLang, defaultLang } from '../../i18n/config';
+import FAQAccordion from '../FAQAccordion.astro';
+import { getLocalizedPath, localizeHtml, type SupportedLang, defaultLang } from '../../i18n/config';
 
 interface Props {
   lang?: SupportedLang;
@@ -14,21 +15,36 @@ const { lang = defaultLang } = Astro.props;
 const translations: Record<string, any> = {
   en: {
     title: "How to Improve GPS Accuracy on Any Device | MyLocationLab",
-    description: "Fix poor GPS signals and improve location accuracy to under 3 meters. Step-by-step optimization for iOS, Android, Chrome, and desktop.",
+    description: "In short: Boost GPS accuracy under 3 meters by enabling Precise Location permissions, keeping Wi-Fi scanning on for A-GPS, and avoiding urban canyon reflections.",
     h1: "How to Improve GPS Accuracy on iPhone, Android & Desktop",
     subtitle: "Actionable steps to eliminate multipath interference, calibrate internal compass sensors, and optimize device GNSS performance.",
-    pIntro1: "Whether you are navigating on the road, geocaching, or looking up coordinates on our GPS Coordinates Finder, an inaccurate location reading can be frustrating. Modern smartphones possess GNSS chipsets capable of positional accuracy under 3 meters, yet users frequently suffer errors of 50 to 500 meters.",
-    pIntro2: "In this guide, our geospatial engineering team details the exact hardware calibration, operating system permissions, and radio environment adjustments to diagnose and maximize your device's location accuracy.",
+    
+    inShort: "In short: You can improve device GPS accuracy from 50+ meters down to under 3 meters by enabling 'Precise Location' in browser and OS permissions, keeping Wi-Fi enabled for Assisted GPS (A-GPS), calibrating your compass with a figure-8 motion, and moving away from reflective glass skyscrapers.",
+
+    takeawaysTitle: "Key Takeaways",
+    takeaways: [
+      "Wi-Fi scanning is vital for Assisted GPS (A-GPS); disabling it forces a minutes-long satellite cold start instead of a 2-second lock.",
+      "Operating systems often default to 'Approximate Location' to protect privacy, causing intentional 1 to 5 km position offsets.",
+      "Urban canyons create multipath reflections where radio waves bounce off concrete, shifting pins by 50 to 200 meters.",
+      "The figure-8 motion recalibrates the phone's internal magnetometer against interference from magnetic wallet cases.",
+      "You can verify your true error circle in real-time with our browser-based accuracy monitor."
+    ],
+
+    pIntro1: "Whether you are navigating on the road, geocaching, or verifying your antenna on our <a href='/my-location/gps/'>My GPS Location page</a>, an inaccurate position reading can be frustrating. Modern smartphones possess multi-GNSS chipsets capable of positional accuracy under 3 meters, yet users frequently suffer errors of 50 to 500 meters.",
+    pIntro2: "Understanding the underlying physics is key: as detailed in our guide on <a href='/guides/how-gps-location-works/'>how GPS location works</a>, satellite signals travel 20,200 km through the atmosphere. If your coordinates drift erratically, you can cross-check with our <a href='/tools/gps-accuracy/'>GPS Accuracy Monitor</a> or follow our troubleshooting steps for <a href='/guides/wrong-location/'>wrong location errors</a>.",
+
     calloutBadge: "🎯 Live Diagnostics",
     calloutTitle: "Test Your Current GPS Accuracy In Real-Time",
     calloutDesc: "Measure your device's horizontal dilution of precision, heading uncertainty, and coordinate lock radius instantly.",
     calloutBtn: "Open Accuracy Monitor →",
+
     h2Wifi: "1. Enable Wi-Fi & Bluetooth Scanning (Assisted GPS / A-GPS)",
-    pWifi1: "A pervasive misconception is that disabling Wi-Fi saves battery without hurting location precision. In reality, mobile operating systems rely heavily on Assisted GPS (A-GPS) and Wi-Fi Positioning Systems (WPS):",
-    wifiBullet1: "Faster Time-to-First-Fix (TTFF): With Wi-Fi/cellular enabled, your phone downloads current satellite ephemeris over the internet in under 1.5 seconds instead of waiting minutes for a satellite cold start.",
+    pWifi1: "A pervasive misconception is that disabling Wi-Fi saves battery without hurting location precision. In reality, mobile operating systems rely heavily on <a href='/glossary/#a-gps'>Assisted GPS (A-GPS)</a> and Wi-Fi positioning:",
+    wifiBullet1: "Faster Time-to-First-Fix (TTFF): With Wi-Fi/cellular enabled, your phone downloads current satellite orbital parameters over the internet in under 1.5 seconds instead of waiting minutes for a satellite cold start.",
     wifiBullet2: "BSSID Ambient Fingerprinting: Detecting nearby Wi-Fi beacons narrows your position to 10–25 meters indoors where satellite signals cannot penetrate.",
+
     h2Precise: "2. Enable 'Precise Location' in Browser & OS Permissions",
-    pPrecise: "Modern mobile operating systems include privacy toggles that limit web browsers to 'Approximate Location' (a generalized radius of 1 to 5 kilometers). If your location appears in the wrong neighborhood, this permission is almost always the cause.",
+    pPrecise: "Modern mobile operating systems include privacy toggles that limit web browsers to 'Approximate Location' (a generalized radius of 1 to 5 kilometers). If your location appears in the wrong neighborhood, check your <a href='/glossary/#hdop'>Horizontal Dilution of Precision (HDOP)</a> and ensure precise mode is toggled on.",
     iosTitle: "Apple iPhone & iPad (iOS 16 / 17 / 18)",
     iosDesc: "Open Settings > Privacy & Security > Location Services. Select Safari Websites (or Chrome). Ensure Allow Location Access is set to 'While Using the App' and toggle Precise Location to ON.",
     androidTitle: "Android Devices (Samsung, Pixel, Xiaomi)",
@@ -37,16 +53,46 @@ const translations: Record<string, any> = {
     macDesc: "Navigate to System Settings > Privacy & Security > Location Services. Ensure Location Services is checked for your browser.",
     winTitle: "Windows 10 / 11 PC",
     winDesc: "Go to Settings > Privacy & security > Location. Turn Location services ON and toggle 'Let desktop apps access your location' to ON.",
+
     h2Compass: "3. Calibrate the Magnetometer (Device Compass)",
     pCompass: "When your location indicator in mapping apps displays an erratic heading beam or spins unpredictably, the internal magnetometer has suffered magnetic drift. Metallic phone cases and magnetic wallet attachments are common culprits.",
     h3Fig8: "Figure-8 Recalibration Technique:",
-    figStep1: "1. Open your mapping application or our Latitude & Longitude Map.",
+    figStep1: "1. Open your mapping application or browser accuracy tool.",
     figStep2: "2. Hold your phone firmly with your arm extended.",
     figStep3: "3. Smoothly sweep the device through the air in a large figure-8 motion three to five times.",
     figStep4: "4. Watch the blue location cone: it will instantly narrow into a focused directional beam.",
+
     h2Multipath: "4. Mitigate Multipath Reflection & Urban Canyons",
-    pMultipath1: "In downtown areas with skyscrapers, satellite signals bounce off buildings before reaching your phone (urban canyons).",
-    pMultipath2: "How to fix: Move toward an open street intersection or park where your receiver has an unobstructed view of the sky. Avoid standing directly under metal awnings or dense canopies.",
+    pMultipath1: "In downtown areas with skyscrapers, satellite signals bounce off buildings before reaching your phone (urban canyons). The receiver interprets delayed bounce signals as added distance, distorting your computed position.",
+    pMultipath2: "How to fix: Move toward an open street intersection or park where your receiver has an unobstructed view of the sky. Avoid standing directly under metal awnings or dense tree canopies.",
+
+    workedExampleTitle: "Real-World Troubleshooting Example: The Urban Canyon Lock",
+    workedExampleIntro: "Scenario: A pedestrian in downtown Manhattan notices Google Maps places them 85 meters inside an office building across the street.",
+    workedExampleStep1: "Step 1: Check Horizontal Accuracy Radius. The browser diagnostic reports accuracy = ±92 meters with HDOP = 4.2.",
+    workedExampleStep2: "Step 2: Diagnosis. High HDOP confirms satellite geometry is blocked by skyscrapers on both sides of the avenue.",
+    workedExampleStep3: "Step 3: Corrective Action. The pedestrian steps 20 meters toward the avenue intersection and turns Wi-Fi scanning on.",
+    workedExampleStep4: "Step 4: Result. The device locks 14 multi-constellation satellites + 3 Wi-Fi BSSID beacons. Accuracy drops to ±3.2 meters immediately.",
+
+    commonMistakesTitle: "Common Mistakes That Ruin GPS Accuracy",
+    commonMistakes: [
+      { mistake: "Leaving Wi-Fi turned off in Airplane Mode", explanation: "Disabling Wi-Fi prevents A-GPS ephemeris downloads, forcing your receiver to spend 2-5 minutes calculating orbital tables directly from faint radio signals." },
+      { mistake: "Using thick magnetic or metal phone cases", explanation: "Magnets in wallet folios and car mount plates directly distort the phone's Hall-effect magnetometer, corrupting compass bearing and navigation orientation." },
+      { mistake: "Expecting satellite GPS indoors", explanation: "Satellite microwave signals cannot penetrate concrete, steel rebar, or low-E glass windows. Indoors, positioning relies on Wi-Fi and cellular networks." }
+    ],
+
+    faqs: [
+      { question: "Why does my GPS accuracy show a circle of 50 meters instead of pinpointing me?", answer: "The blue shaded circle represents your device's 68% confidence radius. A large circle indicates low satellite signal-to-noise ratio, blocked sky visibility, or that your browser has only been granted 'Approximate Location' permission." },
+      { question: "Does weather like heavy rain or snow degrade GPS accuracy?", answer: "Yes, dense storm clouds and torrential downpours introduce slight tropospheric delay and signal attenuation, typically reducing accuracy by 1 to 3 meters, though rarely causing complete signal loss." },
+      { question: "Why is GPS accuracy better on modern phones than older models?", answer: "Modern phones incorporate dual-frequency GNSS (L1 + L5 bands), receiving signals from multiple satellite constellations (GPS, Galileo, GLONASS, BeiDou) simultaneously to filter out ionospheric distortions." }
+    ],
+
+    nextStepsTitle: "Next Steps",
+    nextSteps: [
+      { title: "Test Live GPS Accuracy", href: "/tools/gps-accuracy/", desc: "Run a real-time hardware test to measure your horizontal accuracy radius and error margin." },
+      { title: "How GPS Location Works", href: "/guides/how-gps-location-works/", desc: "Learn the orbital physics of atomic time pulses and satellite trilateration." },
+      { title: "Troubleshoot Wrong Location", href: "/guides/wrong-location/", desc: "Fix persistent location mismatches caused by ISP routing or cached Wi-Fi routers." }
+    ],
+
     h2Checklist: "5. Summary Troubleshooting Checklist",
     thAction: "Action Step",
     thBenefit: "Primary Benefit",
@@ -56,339 +102,616 @@ const translations: Record<string, any> = {
     row3: ["Perform Figure-8 Calibration", "Eliminates heading drift and bearing errors", "15 seconds"],
     row4: ["Remove Magnetic Phone Cases", "Prevents internal magnetometer sensor distortion", "Instant"],
     row5: ["Move to Open Sky / Intersection", "Eliminates multipath reflection in urban canyons", "1–2 minutes"],
+
     connectedGuides: "🔗 Related Guides & Diagnostics",
     tool1Title: "Fix Wrong Location",
-    tool1Desc: "Resolve ISP & VPN mismatches",
+    tool1Desc: "Troubleshoot network mismatches",
     tool2Title: "How GPS Works",
-    tool2Desc: "Satellites, trilateration & WGS84",
+    tool2Desc: "Satellite trilateration physics",
     tool3Title: "GPS vs IP Geolocation",
-    tool3Desc: "Understanding accuracy disparities",
-    tool4Title: "Find My Street Address",
-    tool4Desc: "Current street & postal lookup"
+    tool3Desc: "Accuracy differences explained",
+    tool4Title: "My Address Finder",
+    tool4Desc: "Convert GPS to street address"
   },
   es: {
     title: "Cómo Mejorar la Precisión del GPS en Cualquier Dispositivo | MyLocationLab",
-    description: "Corrija señales débiles y consiga una precisión GPS inferior a 3 metros. Optimización paso a paso para iOS, Android, Chrome y PC.",
+    description: "En resumen: Mejore la precisión del GPS a menos de 3 metros activando Ubicación Precisa, manteniendo Wi-Fi activo para A-GPS y calibrando la brújula.",
     h1: "Cómo Mejorar la Precisión del GPS en iPhone, Android y PC",
-    subtitle: "Pasos prácticos para eliminar interferencias multitrayecto, calibrar la brújula y optimizar los sensores GNSS.",
-    pIntro1: "Tanto si conduce, practica senderismo o consulta su ubicación en nuestro Buscador de Coordenadas GPS, una señal imprecisa resulta molesta. Los smartphones actuales poseen chips GNSS capaces de alcanzar menos de 3 metros de error, pero a menudo sufren desviaciones de 50 a 500 metros.",
-    pIntro2: "En este manual, nuestros ingenieros explican la calibración de hardware, permisos del sistema operativo y ajustes ambientales para maximizar la precisión de su dispositivo.",
+    subtitle: "Pasos prácticos para eliminar interferencias multitrayecto, calibrar la brújula y optimizar el receptor GNSS.",
+    
+    inShort: "En resumen: Puede reducir el error del GPS de más de 50 metros a menos de 3 metros activando la 'Ubicación Precisa' en su navegador, manteniendo el Wi-Fi activado para el GPS Asistido (A-GPS), calibrando la brújula en forma de 8 y alejándose de fachadas acristaladas.",
+
+    takeawaysTitle: "Puntos Clave",
+    takeaways: [
+      "El escaneo Wi-Fi es vital para el GPS Asistido (A-GPS); apagarlo obliga a un arranque en frío de varios minutos.",
+      "Los sistemas operativos suelen activar por defecto la 'Ubicación Aproximada' por privacidad, creando un desfase deliberado de 1 a 5 km.",
+      "En cañones urbanos, las señales rebotan en el hormigón (multitrayecto), desplazando el punto entre 50 y 200 metros.",
+      "El movimiento en forma de 8 recalibra el magnetómetro interno frente a fundas imantadas.",
+      "Puede medir el círculo de error real en tiempo real con nuestro monitor de precisión."
+    ],
+
+    pIntro1: "Tanto si navega por carretera como si comprueba su antena en <a href='/my-location/gps/'>Mi Ubicación GPS</a>, una lectura imprecisa resulta frustrante. Los teléfonos modernos poseen receptores GNSS capaces de bajar de 3 metros de error, pero a menudo sufren desviaciones de 50 a 500 metros.",
+    pIntro2: "Entender la física satelital es esencial: como explicamos en nuestra guía sobre <a href='/guides/how-gps-location-works/'>cómo funciona la ubicación GPS</a>, las señales recorren 20.200 km. Puede comprobar su cobertura con el <a href='/tools/gps-accuracy/'>Monitor de Precisión GPS</a> o resolver fallos en la guía de <a href='/guides/wrong-location/'>ubicación errónea</a>.",
+
     calloutBadge: "🎯 Diagnóstico en Vivo",
-    calloutTitle: "Pruebe la Precisión Real de su GPS",
-    calloutDesc: "Mida en tiempo real la dilución de precisión, el rumbo magnético y el radio de error del bloqueo de coordenadas de su equipo.",
+    calloutTitle: "Pruebe su Precisión GPS en Tiempo Real",
+    calloutDesc: "Mida el radio de error horizontal, la incertidumbre de rumbo y la fijación satelital.",
     calloutBtn: "Abrir Monitor de Precisión →",
-    h2Wifi: "1. Active el Escaneo de Wi-Fi y Bluetooth (GPS Asistido / A-GPS)",
-    pWifi1: "Existe la falsa creencia de que apagar el Wi-Fi ahorra batería sin restar precisión. En realidad, los sistemas operativos móviles dependen del GPS Asistido (A-GPS) y del posicionamiento Wi-Fi (WPS):",
-    wifiBullet1: "Fijación Satelital Rápida (TTFF): Con Wi-Fi o datos móviles activos, el teléfono descarga las efemérides orbitales por internet en menos de 1,5 segundos, frente a los minutos que requiere un arranque satelital en frío.",
-    wifiBullet2: "Huella Digital de Routers (BSSID): Detectar balizas Wi-Fi cercanas reduce el margen de error a 10–25 metros en interiores donde la señal satelital no entra.",
-    h2Precise: "2. Active la 'Ubicación Precisa' en Permisos del Navegador",
-    pPrecise: "Los sistemas móviles modernos incluyen un ajuste que limita a los navegadores a 'Ubicación Aproximada' (un radio genérico de 1 a 5 km). Si su posición aparece en otro barrio, este permiso suele ser el causante.",
-    iosTitle: "Apple iPhone e iPad (iOS 16 / 17 / 18)",
-    iosDesc: "Abra Ajustes > Privacidad y Seguridad > Localización. Seleccione Sitios Web Safari (o Chrome). Elija 'Al usarse la app' y active 'Ubicación exacta'.",
-    androidTitle: "Dispositivos Android (Samsung, Xiaomi, Pixel)",
-    androidDesc: "Vaya a Ajustes > Ubicación > Permisos de apps. Toque Chrome. Seleccione 'Permitir solo si la app está en uso' y active 'Usar ubicación precisa'. Active también la precisión de ubicación de Google.",
+
+    h2Wifi: "1. Active el Escaneo Wi-Fi y Bluetooth (GPS Asistido / A-GPS)",
+    pWifi1: "Existe la falsa creencia de que apagar el Wi-Fi ahorra batería sin restar precisión. En realidad, los teléfonos dependen del <a href='/glossary/#a-gps'>GPS Asistido (A-GPS)</a>:",
+    wifiBullet1: "Fijación Rápida (TTFF): Con Wi-Fi o datos, el móvil descarga efemérides en menos de 2 segundos en lugar de esperar minutos al satélite.",
+    wifiBullet2: "Balizas BSSID: Detectar rúters cercanos ubica el dispositivo a 10-25 metros en interiores donde no entra la señal orbital.",
+
+    h2Precise: "2. Active 'Ubicación Precisa' en Permisos del Navegador y SO",
+    pPrecise: "Los sistemas móviles incluyen filtros de privacidad que limitan las webs a 'Ubicación Aproximada' (margen de 1 a 5 km). Compruebe su valor de <a href='/glossary/#hdop'>Dilución Horizontal de Precisión (HDOP)</a> y asegúrese de autorizar la precisión completa.",
+    iosTitle: "Apple iPhone y iPad (iOS)",
+    iosDesc: "Ajustes > Privacidad y seguridad > Localización > Sitios web de Safari. Marque 'Al usar la app' y active 'Ubicación precisa'.",
+    androidTitle: "Dispositivos Android (Samsung, Pixel, Xiaomi)",
+    androidDesc: "Ajustes > Ubicación > Permisos de apps > Chrome. Elija 'Permitir solo mientras se usa' y active 'Usar ubicación precisa'.",
     macTitle: "macOS (Safari y Chrome)",
-    macDesc: "Vaya a Ajustes del Sistema > Privacidad y Seguridad > Localización. Asegúrese de que su navegador tenga el permiso marcado.",
-    winTitle: "PC con Windows 10 / 11",
-    winDesc: "Vaya a Configuración > Privacidad y seguridad > Ubicación. Active los Servicios de ubicación y permita el acceso a aplicaciones de escritorio.",
-    h2Compass: "3. Calibre el Magnetómetro (Brújula Interna)",
-    pCompass: "Si el haz azul de dirección gira sin control o apunta al lado contrario, el magnetómetro ha sufrido desviación magnética. Las fundas con imanes o soportes de coche son los causantes habituales.",
+    macDesc: "Ajustes del Sistema > Privacidad y seguridad > Localización. Verifique que el navegador esté autorizado.",
+    winTitle: "Windows 10 / 11",
+    winDesc: "Configuración > Privacidad y seguridad > Ubicación. Active Servicios de ubicación y acceso para apps de escritorio.",
+
+    h2Compass: "3. Calibre el Magnetómetro (Brújula del Dispositivo)",
+    pCompass: "Cuando el haz de dirección gire sin control, el magnetómetro interno sufre desviaciones causadas por fundas metálicas o imanes de soporte de coche.",
     h3Fig8: "Técnica de Calibración en Figura de 8:",
-    figStep1: "1. Abra una app cartográfica o nuestro Mapa de Latitud y Longitud.",
-    figStep2: "2. Sostenga el teléfono con el brazo extendido firmemente.",
-    figStep3: "3. Mueva suavemente el dispositivo en el aire dibujando un gran ocho (8) de 3 a 5 veces.",
-    figStep4: "4. Observe el cono azul: se estrechará al instante en un haz direccional preciso.",
-    h2Multipath: "4. Evite el Rebote Multitrayecto en Calles Estrechas",
-    pMultipath1: "En centros urbanos con rascacielos de cristal y acero ('cañones urbanos'), las señales satelitales rebotan en las fachadas antes de alcanzar la antena del móvil.",
-    pMultipath2: "Cómo solucionarlo: Desplácese hacia una intersección abierta o plaza donde el receptor tenga línea visual directa con la bóveda celeste.",
-    h2Checklist: "5. Lista de Comprobación Rápida",
+    figStep1: "1. Abra el mapa o la herramienta de precisión.",
+    figStep2: "2. Sostenga el teléfono con el brazo extendido.",
+    figStep3: "3. Dibuje un ocho grande en el aire con suavidad de 3 a 5 veces.",
+    figStep4: "4. Observe cómo el haz azul se estrecha en una dirección fija.",
+
+    h2Multipath: "4. Evite Rebotes Multitrayecto en Calles Estrechas",
+    pMultipath1: "En calles con rascacielos, las señales rebotan en cristales y fachadas antes de llegar a la antena, sumando distancia ficticia que descoloca la posición entre 50 y 200 metros.",
+    pMultipath2: "Solución: Camine hacia un cruce amplio o parque con visibilidad abierta del cielo, evitando aleros metálicos.",
+
+    workedExampleTitle: "Ejemplo Real: Pérdida de Señal en Cañón Urbano",
+    workedExampleIntro: "Caso: Un peatón en el centro de Madrid observa que el mapa le sitúa a 80 metros de distancia, dentro de un edificio.",
+    workedExampleStep1: "Paso 1: Medición. El navegador reporta un radio de error de ±88 metros con HDOP de 4.0.",
+    workedExampleStep2: "Paso 2: Diagnóstico. Los edificios altos bloquean la línea de visión directa a los satélites.",
+    workedExampleStep3: "Paso 3: Corrección. El peatón se desplaza 15 metros hacia la intersección y activa el escaneo Wi-Fi.",
+    workedExampleStep4: "Paso 4: Resultado. El terminal sintoniza 16 satélites combinados y el error cae inmediatamente a ±3,4 metros.",
+
+    commonMistakesTitle: "Errores Comunes que Arruinan la Precisión",
+    commonMistakes: [
+      { mistake: "Apagar el Wi-Fi en modo avión", explanation: "Impide descargar las tablas A-GPS por red, obligando al sensor a una búsqueda fría lenta de varios minutos." },
+      { mistake: "Fundas magnéticas o soportes con placa de hierro", explanation: "Los imanes descalibran de forma continua el magnetómetro interno afectando al rumbo." },
+      { mistake: "Exigir cobertura satelital en sótanos", explanation: "Las microondas de satélites no traspasan forjados de hormigón armado ni cristales bajo emisivos." }
+    ],
+
+    faqs: [
+      { question: "¿Por qué el GPS muestra un círculo azul de 50 metros?", answer: "El círculo azul indica el margen de incertidumbre con 68% de confianza. Un radio grande revela mala recepción o que solo ha otorgado permiso de 'Ubicación Aproximada'." },
+      { question: "¿La lluvia o tormenta empeoran la señal GPS?", answer: "Las nubes densas y trombas de agua provocan una leve atenuación troposférica, aumentando el error en 1 o 2 metros, pero rara vez anulan la fijación." },
+      { question: "¿Por qué los móviles actuales tienen mejor GPS que los antiguos?", answer: "Porque incorporan receptores GNSS de doble frecuencia (bandas L1 y L5) compatibles con GPS, Galileo, GLONASS y BeiDou simultáneamente." }
+    ],
+
+    nextStepsTitle: "Siguientes Pasos",
+    nextSteps: [
+      { title: "Comprobar Precisión GPS en Vivo", href: "/tools/gps-accuracy/", desc: "Mida el radio de error y la dispersión satelital de su dispositivo." },
+      { title: "Cómo Funciona la Ubicación GPS", href: "/guides/how-gps-location-works/", desc: "Descubra la física orbital y la trilateración atómica." },
+      { title: "Solucionar Ubicación Errónea", href: "/guides/wrong-location/", desc: "Aprenda a corregir desajustes causados por proveedores o rúters." }
+    ],
+
+    h2Checklist: "5. Lista Rápida de Comprobación",
     thAction: "Acción",
-    thBenefit: "Beneficio Principal",
+    thBenefit: "Beneficio",
     thTime: "Tiempo",
-    row1: ["Activar escaneo Wi-Fi / Bluetooth", "Reduce tiempo de captura de minutos a < 2 s", "10 s"],
-    row2: ["Activar 'Ubicación Precisa' en navegador", "Mejora margen de error de ~3 km a < 3 m", "30 s"],
-    row3: ["Calibración en 8 de la brújula", "Elimina giro errático del rumbo", "15 s"],
-    row4: ["Retirar fundas con imanes", "Evita interferencias magnéticas en sensores", "Instantáneo"],
-    row5: ["Moverse a cielo abierto o cruce", "Elimina rebote multitrayecto en edificios", "1–2 min"],
+    row1: ["Activar Wi-Fi y Bluetooth", "Reduce tiempo de fijación a < 2 segundos", "10 segundos"],
+    row2: ["Activar Ubicación Precisa", "Mejora margen de ~3 km a < 3 metros", "30 segundos"],
+    row3: ["Calibración en 8 de la Brújula", "Elimina giros erráticos de orientación", "15 segundos"],
+    row4: ["Retirar Fundas Magnéticas", "Evita distorsión permanente del sensor", "Inmediato"],
+    row5: ["Avanzar a un Cruce Despejado", "Elimina rebotes de señal en edificios", "1–2 minutos"],
+
     connectedGuides: "🔗 Guías y Diagnósticos Relacionados",
     tool1Title: "Corregir Ubicación Errónea",
-    tool1Desc: "Resuelva desfases de ISP y VPN",
+    tool1Desc: "Conflictos de red y VPN",
     tool2Title: "Cómo Funciona el GPS",
-    tool2Desc: "Satélites, trilateración y WGS84",
+    tool2Desc: "Física de satélites",
     tool3Title: "GPS vs Ubicación IP",
     tool3Desc: "Diferencias de precisión",
-    tool4Title: "Buscar Mi Dirección",
-    tool4Desc: "Consulta de calle y código postal"
+    tool4Title: "Mi Dirección Postal",
+    tool4Desc: "Convertir GPS a calle"
   },
   fr: {
-    title: "Comment Améliorer la Précision GPS | MyLocationLab",
-    description: "Résolvez les signaux GPS faibles et obtenez une précision sous les 3 mètres. Optimisation pas à pas pour iOS, Android, Chrome et PC.",
+    title: "Comment Améliorer la Précision du GPS | MyLocationLab",
+    description: "En bref : Réduisez l'erreur GPS sous les 3 mètres en activant la localisation précise, en gardant le Wi-Fi activé pour l'A-GPS et en calibrant la boussole.",
     h1: "Comment Améliorer la Précision GPS sur iPhone, Android et PC",
-    subtitle: "Conseils pratiques pour éliminer le multitrajet, calibrer la boussole et optimiser vos puces GNSS.",
-    pIntro1: "Que vous fassiez de la randonnée ou recherchiez vos coordonnées sur notre Détecteur GPS, un point imprécis est déroutant. Les smartphones modernes intègrent des puces GNSS capables d'une précision inférieure à 3 mètres, mais subissent souvent des dérives de 50 à 500 mètres.",
-    pIntro2: "Nos ingénieurs vous guident pas à pas pour configurer les permissions, étalonner les capteurs magnétiques et neutraliser les interférences de terrain.",
+    subtitle: "Mesures concrètes pour éliminer les réflexions urbaines, calibrer la boussole et optimiser le capteur GNSS.",
+    
+    inShort: "En bref : Améliorez la précision GPS de plus de 50 mètres à moins de 3 mètres en cochant 'Position exacte' dans le navigateur, en conservant le Wi-Fi actif pour le GPS assisté (A-GPS), en calibrant la boussole en huit et en évitant les façades vitrées.",
+
+    takeawaysTitle: "Points Clés",
+    takeaways: [
+      "Le balayage Wi-Fi est indispensable à l'A-GPS pour obtenir un point en 2 secondes au lieu de plusieurs minutes.",
+      "Les navigateurs brident souvent la localisation à un rayon approximatif de 1 à 5 km par mesure de confidentialité.",
+      "Dans les rues étroites, les signaux rebondissent sur les immeubles (multitrajet), décalant la position de 50 à 200 mètres.",
+      "Le mouvement en huit réinitialise le magnétomètre perturbé par les coques à rabat aimanté.",
+      "Vous pouvez vérifier votre rayon d'erreur en direct grâce à notre moniteur de précision."
+    ],
+
+    pIntro1: "Que vous suiviez un itinéraire ou testiez votre capteur sur <a href='/my-location/gps/'>Ma Position GPS</a>, une localisation imprécise est pénalisante. Les puces GNSS modernes descendent sous 3 mètres d'erreur, mais subissent souvent des écarts de 50 à 500 mètres.",
+    pIntro2: "Comprendre les bases satellitaires est primordial : comme expliqué dans notre guide <a href='/guides/how-gps-location-works/'>Comment fonctionne le GPS</a>, les ondes traversent l'atmosphère. Vérifiez votre signal sur le <a href='/tools/gps-accuracy/'>Moniteur de Précision GPS</a> ou consultez nos astuces pour <a href='/guides/wrong-location/'>corriger une position erronée</a>.",
+
     calloutBadge: "🎯 Diagnostic en Direct",
-    calloutTitle: "Mesurez la Précision Réelle de votre GPS",
-    calloutDesc: "Contrôlez en temps réel la perte de précision (HDOP), l'orientation magnétique et le rayon d'erreur de votre appareil.",
-    calloutBtn: "Ouvrir le Moniteur de Précision →",
-    h2Wifi: "1. Activer le Balayage Wi-Fi & Bluetooth (GPS Assisté / A-GPS)",
-    pWifi1: "Couper le Wi-Fi pour économiser la batterie dégrade considérablement la précision. Les systèmes mobiles s'appuient sur l'A-GPS et le positionnement Wi-Fi :",
-    wifiBullet1: "Temps de Premier Fixe (TTFF) : Grâce à l'A-GPS, le téléphone télécharge les éphémérides des satellites en 1,5 seconde au lieu d'attendre plusieurs minutes en démarrage à froid.",
-    wifiBullet2: "Empreinte Wi-Fi (BSSID) : La détection des bornes Wi-Fi environnantes affine la position à 10–25 mètres en intérieur là où le signal GPS ne passe pas.",
-    h2Precise: "2. Activer la 'Position Exacte' dans le Navigateur",
-    pPrecise: "iOS et Android intègrent une option réduisant la position à une 'Position Approximative' (rayon de 1 à 5 km). Si votre position est décalée de plusieurs rues, vérifiez ce réglage :",
-    iosTitle: "iPhone et iPad Apple (iOS 16 / 17 / 18)",
-    iosDesc: "Ouvrez Réglages > Confidentialité et sécurité > Service de localisation. Sélectionnez Safari ou Chrome. Choisissez 'Lorsque l'app est active' et cochez 'Position exacte'.",
-    androidTitle: "Smartphones Android (Samsung, Pixel, Xiaomi)",
-    androidDesc: "Ouvrez Paramètres > Localisation > Autorisations des applications > Chrome. Choisissez 'Autoriser seulement si l'appli est en cours d'utilisation' et cochez 'Position exacte'.",
-    macTitle: "macOS (Safari & Chrome)",
-    macDesc: "Ouvrez Réglages Système > Confidentialité et sécurité > Service de localisation. Assurez-vous que votre navigateur y est autorisé.",
-    winTitle: "PC Windows 10 / 11",
-    winDesc: "Allez dans Paramètres > Confidentialité et sécurité > Emplacement. Activez les Services d'emplacement pour les applications de bureau.",
-    h2Compass: "3. Calibrer la Boussole Magnétique",
-    pCompass: "Lorsque le faisceau bleu d'orientation tournoie sans cesse, le magnétomètre interne est perturbé par des interférences magnétiques (coques aimantées, supports de voiture).",
-    h3Fig8: "Technique de Calibrage en Huit (8) :",
-    figStep1: "1. Ouvrez une application cartographique ou notre Carte Lat/Long.",
-    figStep2: "2. Tenez le téléphone fermement à bout de bras.",
-    figStep3: "3. Dessinez dans les airs un grand huit (8) trois à cinq fois de suite.",
-    figStep4: "4. Le faisceau bleu se stabilise instantanément en pointe étroite.",
-    h2Multipath: "4. Éviter le Multitrajet dans les Canyons Urbains",
-    pMultipath1: "En ville entre de hauts immeubles en verre et béton, les signaux satellites rebondissent sur les parois avant d'atteindre le récepteur.",
-    pMultipath2: "Solution : Rapprochez-vous d'un carrefour dégagé ou d'un parc avec une vue directe sur le ciel.",
-    h2Checklist: "5. Tableau Récapitulatif d'Optimisation",
+    calloutTitle: "Testez votre Précision GPS en Temps Réel",
+    calloutDesc: "Mesurez le rayon d'erreur horizontal et l'incertitude de cap de votre appareil.",
+    calloutBtn: "Ouvrir le Moniteur →",
+
+    h2Wifi: "1. Activez le Wi-Fi et le Bluetooth (GPS Assisté / A-GPS)",
+    pWifi1: "Désactiver le Wi-Fi ne protège pas votre batterie et dégrade le positionnement. Votre appareil s'appuie sur le <a href='/glossary/#a-gps'>GPS Assisté (A-GPS)</a> :",
+    wifiBullet1: "Temps d'Acquisition Éclair : Le smartphone télécharge les éphémérides par réseau cellulaire en 2 secondes.",
+    wifiBullet2: "Balises Wi-Fi BSSID : La détection des box environnantes assure une précision de 10 à 25 mètres en intérieur.",
+
+    h2Precise: "2. Activez 'Position Exacte' dans les Autorisations",
+    pPrecise: "Les navigateurs proposent un mode 'Position approximative' qui génère un flou de 1 à 5 km. Surveillez votre <a href='/glossary/#hdop'>Dilution Horizontale de Précision (HDOP)</a> et accordez l'accès précis.",
+    iosTitle: "Apple iPhone et iPad (iOS)",
+    iosDesc: "Réglages > Confidentialité et sécurité > Service de localisation > Sites Safari. Cochez 'Lorsque l'app est active' et activez 'Position exacte'.",
+    androidTitle: "Appareils Android (Samsung, Pixel, Xiaomi)",
+    androidDesc: "Paramètres > Localisation > Autorisations > Chrome. Cochez 'Toujours autoriser' et activez 'Position exacte'.",
+    macTitle: "macOS (Safari et Chrome)",
+    macDesc: "Réglages Système > Confidentialité et sécurité > Localisation. Cochez votre navigateur.",
+    winTitle: "Windows 10 / 11",
+    winDesc: "Paramètres > Confidentialité et sécurité > Emplacement. Activez les services de localisation.",
+
+    h2Compass: "3. Calibrez le Magnétomètre (Boussole de l'Appareil)",
+    pCompass: "Lorsque le faisceau bleu pivote sans raison, le magnétomètre interne est perturbé par des aimants de coques de protection.",
+    h3Fig8: "Procédure de Calibrage en 8 :",
+    figStep1: "1. Ouvrez l'outil cartographique ou le test de précision.",
+    figStep2: "2. Tenez le téléphone fermement bras tendu.",
+    figStep3: "3. Décrivez de grands huit dans les airs 3 à 5 fois d'un geste fluide.",
+    figStep4: "4. Le faisceau bleu se stabilise instantanément.",
+
+    h2Multipath: "4. Évitez les Réflexions dans les Canyons Urbains",
+    pMultipath1: "Entre de hauts immeubles vitrés, les signaux radio ricochent avant d'atteindre l'antenne, induisant un faux retard qui décale la position de 50 à 200 mètres.",
+    pMultipath2: "Solution : Rapprochez-vous d'un carrefour ouvert ou d'un parc offrant une vue dégagée vers le ciel.",
+
+    workedExampleTitle: "Exemple Concret : Erreur en Milieu Urbain Dense",
+    workedExampleIntro: "Scénario : À Paris, un utilisateur est localisé à 75 mètres de sa position réelle, au milieu de la Seine.",
+    workedExampleStep1: "Étape 1 : Diagnostic. Le navigateur relève une incertitude de ±80 m avec un HDOP dégradé à 4.1.",
+    workedExampleStep2: "Étape 2 : Cause. Les immeubles haussmanniens masquent les signaux bas sur l'horizon.",
+    workedExampleStep3: "Étape 3 : Action. L'utilisateur active le Wi-Fi et s'avance vers le carrefour dégagé le plus proche.",
+    workedExampleStep4: "Étape 4 : Résultat. 15 satellites sont verrouillés et le rayon d'erreur tombe immédiatement à ±2,9 mètres.",
+
+    commonMistakesTitle: "Erreurs Courantes Affectant la Précision",
+    commonMistakes: [
+      { mistake: "Couper le Wi-Fi en mode avion", explanation: "Empêche le téléchargement A-GPS et contraint l'antenne à une recherche laborieuse de plusieurs minutes." },
+      { mistake: "Coques à rabat pourvues d'aimants puissants", explanation: "Perturbent en permanence les capteurs à effet Hall intégrés au téléphone." },
+      { mistake: "Espérer une réception satellite en sous-sol", explanation: "Le béton armé bloque totalement les ondes micro-ondes spatiales." }
+    ],
+
+    faqs: [
+      { question: "Pourquoi mon GPS affiche-t-il un cercle bleu de 50 mètres ?", answer: "Ce cercle indique la zone d'incertitude statistique à 68 %. Un grand cercle signale des signaux brouillés ou un bridage en mode 'Position approximative'." },
+      { question: "La pluie dégrade-t-elle le signal GPS ?", answer: "Les fortes averses induisent une très légère atténuation troposphérique de 1 à 2 mètres, mais n'interrompent pas la réception." },
+      { question: "Pourquoi les smartphones récents sont-ils plus précis ?", answer: "Ils intègrent des puces GNSS bi-fréquences (L1 + L5) recevant simultanément GPS, Galileo, GLONASS et BeiDou." }
+    ],
+
+    nextStepsTitle: "Étapes Suivantes",
+    nextSteps: [
+      { title: "Tester la Précision GPS", href: "/tools/gps-accuracy/", desc: "Mesurez votre rayon d'erreur et la dispersion des signaux en direct." },
+      { title: "Comprendre le Fonctionnement GPS", href: "/guides/how-gps-location-works/", desc: "Découvrez la trilatération satellitaire et les horloges atomiques." },
+      { title: "Corriger une Position Erronée", href: "/guides/wrong-location/", desc: "Résolvez les anomalies de routage IP et de réseaux Wi-Fi." }
+    ],
+
+    h2Checklist: "5. Liste Récapitulative des Bonnes Pratiques",
     thAction: "Action",
-    thBenefit: "Gain de Précision",
+    thBenefit: "Bénéfice",
     thTime: "Durée",
-    row1: ["Activer Wi-Fi / Bluetooth", "Passe le temps de fixe de 5 min à < 2 s", "10 s"],
-    row2: ["Activer 'Position Exacte'", "Fait passer la précision de 3 km à < 3 m", "30 s"],
-    row3: ["Calibrage en 8 de la boussole", "Supprime la dérive du faisceau d'orientation", "15 s"],
-    row4: ["Retirer les coques aimantées", "Élimine les dérives des capteurs magnétiques", "Immédiat"],
-    row5: ["Se placer à ciel ouvert", "Élimine la distorsion du multitrajet urbain", "1–2 min"],
-    connectedGuides: "🔗 Guides Liés & Dépannage",
-    tool1Title: "Corriger l'Erreur de Ville",
-    tool1Desc: "Résoudre les conflits VPN et IP",
+    row1: ["Activer Wi-Fi et Bluetooth", "Fige la position en < 2 secondes", "10 secondes"],
+    row2: ["Activer Position Exacte", "Passe de ~3 km à < 3 mètres d'erreur", "30 secondes"],
+    row3: ["Calibrage en 8 de la Boussole", "Supprime les dérives d'orientation", "15 secondes"],
+    row4: ["Retirer les Coques Aimantées", "Évite la distorsion du magnétomètre", "Instantané"],
+    row5: ["Rejoindre un Carrefour Dégagé", "Élimine les réflexions sur les façades", "1–2 minutes"],
+
+    connectedGuides: "🔗 Guides et Outils Recommandés",
+    tool1Title: "Corriger Position Erronée",
+    tool1Desc: "Conflits FAI et VPN",
     tool2Title: "Comment Fonctionne le GPS",
-    tool2Desc: "Satellites, trilatération & WGS84",
-    tool3Title: "Comparatif GPS vs IP",
-    tool3Desc: "Écarts de précision",
-    tool4Title: "Mon Adresse Actuelle",
-    tool4Desc: "Recherche de rue et code postal"
+    tool2Desc: "Physique des satellites",
+    tool3Title: "GPS vs Localisation IP",
+    tool3Desc: "Comparatif de précision",
+    tool4Title: "Localiser mon Adresse",
+    tool4Desc: "Convertir coordonnées en rue"
   },
   de: {
-    title: "GPS-Genauigkeit auf Smartphone & PC verbessern | MyLocationLab",
-    description: "Schwachen GPS-Empfang beheben und Genauigkeit auf unter 3 Meter steigern. Schritt-für-Schritt-Anleitung für iOS, Android, Chrome und Windows.",
-    h1: "GPS-Genauigkeit auf iPhone, Android & Desktop verbessern",
-    subtitle: "Praktische Maßnahmen zur Vermeidung von Mehrwegeffekten, Kompass-Kalibrierung und GNSS-Empfangsoptimierung.",
-    pIntro1: "Ob bei der Navigation im Auto, beim Geocaching oder beim Prüfen von Koordinaten: Ein ungenauer Standort ist ärgerlich. Moderne GNSS-Chips schaffen Genauigkeiten unter 3 Metern, dennoch treten in der Praxis oft Abweichungen von 50 bis 500 Metern auf.",
-    pIntro2: "In dieser Anleitung erklären unsere Geodaten-Experten die richtige Sensorkalibrierung, Betriebssystem-Berechtigungen und Funkfeld-Optimierungen.",
+    title: "GPS-Genauigkeit verbessern auf jedem Gerät | MyLocationLab",
+    description: "Kurz gesagt: Verbessern Sie die GPS-Genauigkeit auf unter 3 Meter durch genauen Standortzugriff, aktiviertes WLAN für A-GPS und Kompasskalibrierung.",
+    h1: "GPS-Genauigkeit auf iPhone, Android & PC verbessern",
+    subtitle: "Praxiserprobte Maßnahmen zur Beseitigung von Mehrwegeffekten, Kompass-Drift und Fehlortungen.",
+    
+    inShort: "Kurz gesagt: Sie können die GPS-Genauigkeit von über 50 Metern auf unter 3 Meter verbessern, indem Sie 'Genauer Standort' in den Berechtigungen aktivieren, WLAN für Assisted GPS (A-GPS) eingeschaltet lassen, den Kompass durch eine Acht kalibrieren und reflektierende Hochhausfassaden meiden.",
+
+    takeawaysTitle: "Zentrale Erkenntnisse",
+    takeaways: [
+      "WLAN-Scanning ist für Assisted GPS (A-GPS) unerlässlich und verkürzt die Fix-Zeit von Minuten auf unter 2 Sekunden.",
+      "Betriebssysteme nutzen häufig den Modus 'Ungefährer Standort', was zu künstlichen Abweichungen von 1 bis 5 km führt.",
+      "In Häuserschluchten reflektieren Wände die Funksignale (Mehrwegeffekt), was die Ortung um 50 bis 200 Meter verschiebt.",
+      "Eine Acht-Bewegung neutralisiert Störmagnetfelder von Klapphüllen mit Magnetverschluss.",
+      "Den aktuellen Fehlerkreis können Sie im Browser live mit unserem Genauigkeitsmonitor prüfen."
+    ],
+
+    pIntro1: "Ob bei der Navigation im Straßenverkehr oder bei der Hardwareprüfung auf <a href='/my-location/gps/'>Mein GPS-Standort</a>: Ungenaue Positionsdaten sind störend. Moderne GNSS-Chips schaffen Abweichungen unter 3 Metern, dennoch treten häufig Fehler von 50 bis 500 Metern auf.",
+    pIntro2: "Die physikalischen Grundlagen sind entscheidend: Wie in unserem Leitfaden <a href='/guides/how-gps-location-works/'>Wie GPS funktioniert</a> dargelegt, überwinden Satellitensignale 20.200 km. Prüfen Sie Ihren Empfang mit dem <a href='/tools/gps-accuracy/'>GPS-Genauigkeits-Monitor</a> oder beheben Sie Fehler im <a href='/guides/wrong-location/'>Leitfaden für falschen Standort</a>.",
+
     calloutBadge: "🎯 Live-Diagnose",
-    calloutTitle: "Aktuelle GPS-Genauigkeit in Echtzeit testen",
-    calloutDesc: "Messen Sie Dilution of Precision (HDOP), Kompass-Unsicherheit und aktuellen Standort-Fehlerradius direkt im Browser.",
-    calloutBtn: "Genauigkeitsprüfer öffnen →",
-    h2Wifi: "1. WLAN- & Bluetooth-Suche aktivieren (Assisted GPS / A-GPS)",
-    pWifi1: "Es ist ein weit verbreiteter Irrglaube, dass abgeschaltetes WLAN Akku spart, ohne die Ortungsgenauigkeit zu beeinträchtigen. Betriebssysteme setzen auf A-GPS und WLAN-Ortung (WPS):",
-    wifiBullet1: "Schnellerer Satelliten-Lock (TTFF): Mit Internetverbindung lädt das Smartphone Ephemeriden in unter 1,5 Sekunden herunter, statt Minuten auf den Satelliten-Kaltstart zu warten.",
-    wifiBullet2: "BSSID-Router-Datenbanken: Die Erfassung bekannter WLAN-BSSIDs ermöglicht in Gebäuden eine Positionierung auf 10–25 Meter, wo Satellitensignale abgeschirmt werden.",
-    h2Precise: "2. 'Genauen Standort' in Browser & System aktivieren",
-    pPrecise: "Moderne Betriebssysteme bieten Privatsphäre-Optionen, die den Browser auf einen 'ungefähren Standort' (1 bis 5 km Umkreis) beschränken. Wenn Ihr Standort in einem falschen Viertel liegt, ist fast immer diese Option schuld.",
-    iosTitle: "Apple iPhone & iPad (iOS 16 / 17 / 18)",
-    iosDesc: "Öffnen Sie Einstellungen > Datenschutz & Sicherheit > Ortungsdienste. Wählen Sie Safari-Websites (oder Chrome). Wählen Sie 'Beim Verwenden der App' und aktivieren Sie 'Genauer Standort'.",
+    calloutTitle: "GPS-Genauigkeit in Echtzeit prüfen",
+    calloutDesc: "Messen Sie horizontalen Fehlerradius, Richtungsausrichtung und Satelliten-Lock.",
+    calloutBtn: "Genauigkeits-Monitor öffnen →",
+
+    h2Wifi: "1. WLAN- & Bluetooth-Suche aktivieren (A-GPS)",
+    pWifi1: "WLAN abzuschalten spart kaum Akku, beeinträchtigt aber die Ortung erheblich. Geräte nutzen <a href='/glossary/#a-gps'>Assisted GPS (A-GPS)</a>:",
+    wifiBullet1: "Schneller Satelliten-Fix: Das Smartphone lädt aktuelle Ephemeriden über das Mobilfunknetz in unter 2 Sekunden herunter.",
+    wifiBullet2: "BSSID-WLAN-Fingerprinting: Erkannte WLAN-Netze ermöglichen in Gebäuden eine Ortung auf 10 bis 25 Meter Genauigkeit.",
+
+    h2Precise: "2. 'Genauer Standort' in Browser & System aktivieren",
+    pPrecise: "Moderne Systeme drosseln die Präzision zum Datenschutz oft auf einen Radius von 1 bis 5 km. Prüfen Sie Ihren <a href='/glossary/#hdop'>Horizontal Dilution of Precision (HDOP)</a> Wert und schalten Sie auf genauen Zugriff um.",
+    iosTitle: "Apple iPhone & iPad (iOS)",
+    iosDesc: "Einstellungen > Datenschutz & Sicherheit > Ortungsdienste > Safari Websites. Auf 'Beim Verwenden der App' setzen und 'Genaue Position' aktivieren.",
     androidTitle: "Android-Geräte (Samsung, Pixel, Xiaomi)",
-    androidDesc: "Öffnen Sie Einstellungen > Standort > App-Berechtigungen > Chrome. Wählen Sie 'Zugriff nur während der Nutzung der App zulassen' und aktivieren Sie 'Genaue Standortermittlung verwenden'.",
+    androidDesc: "Einstellungen > Standort > App-Berechtigungen > Chrome. Auf 'Nur bei Verwendung' stellen und 'Genauen Standort verwenden' aktivieren.",
     macTitle: "macOS (Safari & Chrome)",
-    macDesc: "Navigieren Sie zu Systemeinstellungen > Datenschutz & Sicherheit > Ortungsdienste und aktivieren Sie den Zugriff für Ihren Browser.",
-    winTitle: "Windows 10 / 11 PC",
-    winDesc: "Gehen Sie zu Einstellungen > Datenschutz und Sicherheit > Position und aktivieren Sie den Positionszugriff für Desktop-Apps.",
-    h2Compass: "3. Magnetometer (Gerätekompass) kalibrieren",
-    pCompass: "Wenn der blaue Richtungskegel in Karten-Apps unruhig zittert oder sich dreht, ist das interne Magnetometer dekalibriert. Metallische Hüllen und Magnethalterungen sind häufige Ursachen.",
-    h3Fig8: "Achter-Schleifen-Methode (Figure-8):",
-    figStep1: "1. Öffnen Sie Ihre Karten-App oder unsere Koordinaten-Karte.",
-    figStep2: "2. Halten Sie das Smartphone mit ausgestrecktem Arm fest.",
-    figStep3: "3. Schwingen Sie das Gerät zügig in einer großen liegenden Acht (8) dreimal durch die Luft.",
-    figStep4: "4. Der blaue Richtungskegel verengt sich augenblicklich zu einem präzisen Strahl.",
-    h2Multipath: "4. Mehrwegeffekte in Straßenschluchten vermeiden",
-    pMultipath1: "In Innenstädten mit hohen Glasfassaden prallen Satellitensignale an Wänden ab, bevor sie die Antenne erreichen (Urban Canyons).",
-    pMultipath2: "Lösung: Bewegen Sie sich auf eine offene Straßenkreuzung oder einen Platz mit freier Sicht zum Himmel.",
+    macDesc: "Systemeinstellungen > Datenschutz & Sicherheit > Ortungsdienste. Browser aktivieren.",
+    winTitle: "Windows 10 / 11",
+    winDesc: "Einstellungen > Datenschutz & Sicherheit > Position. Positionsdienste aktivieren.",
+
+    h2Compass: "3. Magnetometer kalibrieren (Gerätekompass)",
+    pCompass: "Dreht sich der blaue Richtungskegel ziellos im Kreis, ist das Magnetometer durch magnetische Hüllen oder Kfz-Halterungen gestört.",
+    h3Fig8: "Achter-Kalibrierungsmethode:",
+    figStep1: "1. Kartenanwendung oder Genauigkeitstool öffnen.",
+    figStep2: "2. Telefon mit ausgestrecktem Arm fest halten.",
+    figStep3: "3. Das Gerät 3 bis 5 Mal zügig in Form einer liegenden Acht durch die Luft schwenken.",
+    figStep4: "4. Der Richtungskegel bündelt sich sofort zu einem stabilen Strahl.",
+
+    h2Multipath: "4. Mehrwegeffekte in Häuserschluchten vermeiden",
+    pMultipath1: "Zwischen Glasfassaden prallen Satellitensignale ab, bevor sie die Antenne erreichen. Die zusätzliche Laufzeit täuscht Distanzen vor und versetzt den Punkt um 50 bis 200 Meter.",
+    pMultipath2: "Lösung: Treten Sie auf eine breite Straßenkreuzung oder freie Grünfläche mit freiem Blick zum Himmel.",
+
+    workedExampleTitle: "Praxisbeispiel: Signalstau in der Innenstadt",
+    workedExampleIntro: "Szenario: In der Frankfurter City wird ein Fußgänger 85 Meter versetzt in einem Bankgebäude verortet.",
+    workedExampleStep1: "Schritt 1: Diagnose. Der Browser meldet eine Fehlerspanne von ±90 Metern bei einem HDOP von 4,3.",
+    workedExampleStep2: "Schritt 2: Ursache. Hochhäuser blockieren die direkte Sichtlinie zu den Satelliten.",
+    workedExampleStep3: "Schritt 3: Maßnahme. Der Nutzer bewegt sich 20 Meter zur Kreuzung und schaltet WLAN ein.",
+    workedExampleStep4: "Schritt 4: Ergebnis. 16 Satelliten loggen sich ein und die Fehlerspanne sinkt unmittelbar auf ±3,1 Meter.",
+
+    commonMistakesTitle: "Häufige Fehler bei der GPS-Nutzung",
+    commonMistakes: [
+      { mistake: "WLAN im Flugmodus komplett ausschalten", explanation: "Verhindert das Laden der A-GPS-Bahndaten und erzwingt einen quälend langen Kaltstart von mehreren Minuten." },
+      { mistake: "Handyhüllen mit Magnetverschluss oder Metallplatten", explanation: "Verfälschen dauerhaft den internen Hall-Sensor des elektronischen Kompasses." },
+      { mistake: "Satellitenempfang in Tunneln und Tiefgaragen erwarten", explanation: "Stahlbeton dämpft Satellitenfunkwellen vollständig ab." }
+    ],
+
+    faqs: [
+      { question: "Warum zeigt mein GPS einen großen blauen Kreis von 50 Metern?", answer: "Der Kreis markiert die 68%-Wahrscheinlichkeitszone. Ein großer Radius deutet auf schwachen Empfang oder die Beschränkung auf 'Ungefähren Standort' hin." },
+      { question: "Verschlechtert schlechtes Wetter den GPS-Empfang?", answer: "Starke Regen- und Gewitterwolken erzeugen eine minimale Dämpfung von 1 bis 2 Metern, führen aber extrem selten zum kompletten Signalabriss." },
+      { question: "Warum orten moderne Smartphones zuverlässiger als alte Geräte?", answer: "Sie nutzen Mehrfrequenz-GNSS (L1 + L5 Band) und empfangen GPS, Galileo, GLONASS und BeiDou parallel." }
+    ],
+
+    nextStepsTitle: "Nächste Schritte",
+    nextSteps: [
+      { title: "GPS-Genauigkeit live prüfen", href: "/tools/gps-accuracy/", desc: "Messen Sie Ihre aktuelle Signalgenauigkeit und den Fehlerradius." },
+      { title: "Wie GPS funktioniert", href: "/guides/how-gps-location-works/", desc: "Verstehen Sie Satelliten-Trilateration und Atomzeitpulse." },
+      { title: "Falschen Standort beheben", href: "/guides/wrong-location/", desc: "Beheben Sie Fehler durch Routing-Konflikte und veraltete Caches." }
+    ],
+
     h2Checklist: "5. Checkliste zur schnellen Fehlerbehebung",
     thAction: "Maßnahme",
-    thBenefit: "Hauptvorteil",
+    thBenefit: "Nutzen",
     thTime: "Dauer",
-    row1: ["WLAN- / Bluetooth-Suche aktivieren", "Satelliten-Fix von Minuten auf < 2 s verkürzt", "10 s"],
-    row2: ["'Genauen Standort' aktivieren", "Genauigkeit von ~3 km auf < 3 m verbessert", "30 s"],
-    row3: ["Kompass in Acht-Form kalibrieren", "Beseitigt Richtungs- und Peilungsfehler", "15 s"],
-    row4: ["Magnetische Hüllen entfernen", "Verhindert Sensorstörungen am Kompass", "Sofort"],
-    row5: ["Freie Sicht zum Himmel suchen", "Vermeidet Signalreflexionen an Gebäuden", "1–2 Min."],
-    connectedGuides: "🔗 Verwandte Ratgeber & Tools",
-    tool1Title: "Falschen Ort korrigieren",
-    tool1Desc: "VPN- & Provider-Konflikte lösen",
+    row1: ["WLAN-Suche einschalten", "Fix-Zeit unter 2 Sekunden", "10 Sekunden"],
+    row2: ["Genauen Standort aktivieren", "Fehler von ~3 km auf < 3 m senken", "30 Sekunden"],
+    row3: ["Kompass mit Acht kalibrieren", "Behebt Richtungsdriften", "15 Sekunden"],
+    row4: ["Magnethülle entfernen", "Beseitigt Sensorverzerrungen", "Sofort"],
+    row5: ["Freie Kreuzung aufsuchen", "Verhindert Mehrwegeffekte", "1–2 Minuten"],
+
+    connectedGuides: "🔗 Relevante Leitfäden & Werkzeuge",
+    tool1Title: "Falschen Standort beheben",
+    tool1Desc: "Routing- & VPN-Konflikte",
     tool2Title: "Wie GPS funktioniert",
-    tool2Desc: "Satelliten, Trilateration & WGS84",
+    tool2Desc: "Satelliten-Physik",
     tool3Title: "GPS vs. IP-Ortung",
-    tool3Desc: "Präzisionsunterschiede verstehen",
-    tool4Title: "Aktuelle Straßenadresse",
-    tool4Desc: "Postadresse sofort ermitteln"
+    tool3Desc: "Genauigkeitsvergleich",
+    tool4Title: "Meine Adresse finden",
+    tool4Desc: "Koordinaten in Adresse wandeln"
   },
   pt: {
     title: "Como Melhorar a Precisão do GPS no Celular e PC | MyLocationLab",
-    description: "Corrija sinais fracos e alcance precisão GPS inferior a 3 metros. Otimização prática para iPhone, Android, Chrome e Windows.",
+    description: "Em resumo: Melhore a precisão do GPS para menos de 3 metros ativando Localização Precisa, mantendo o Wi-Fi ligado para A-GPS e calibrando a bússola.",
     h1: "Como Melhorar a Precisão do GPS no iPhone, Android e PC",
-    subtitle: "Instruções práticas para eliminar erros de multicaminho, calibrar a bússola e extrair máxima precisão do GNSS.",
-    pIntro1: "Ao navegar na estrada ou consultar coordenadas no Localizador GPS, um ponto impreciso causa transtornos. Aparelhos modernos possuem chips capazes de precisão abaixo de 3 metros, mas com frequência sofrem desvios de 50 a 500 metros.",
-    pIntro2: "Neste guia prático, nossa equipe de engenharia explica como calibrar sensores, ajustar permissões e otimizar o ambiente de recepção para máxima precisão.",
-    calloutBadge: "🎯 Diagnóstico em Tempo Real",
-    calloutTitle: "Teste a Precisão Real do seu GPS",
-    calloutDesc: "Meça a diluição de precisão (HDOP), a estabilidade da bússola e o raio de erro do receptor no navegador.",
+    subtitle: "Medidas práticas para eliminar erros de reflexão multipath, calibrar a bússola e otimizar o chip GNSS.",
+    
+    inShort: "Em resumo: Você pode diminuir o erro do GPS de mais de 50 metros para menos de 3 metros ativando a 'Localização Precisa' nas permissões, mantendo o Wi-Fi ligado para o GPS Assistido (A-GPS), calibrando a bússola em movimento de 8 e evitando paredões espelhados.",
+
+    takeawaysTitle: "Pontos Principais",
+    takeaways: [
+      "O escaneamento Wi-Fi é indispensável para o A-GPS, reduzindo a busca de satélites de minutos para menos de 2 segundos.",
+      "Sistemas operacionais frequentemente ativam por padrão a 'Localização Aproximada', gerando desvios propositais de 1 a 5 km.",
+      "Em cânions urbanos, os sinais refletem no concreto (multipath), deslocando o pino em até 200 metros.",
+      "O movimento em forma de 8 recalibra o magnetômetro afetado por capinhas magnéticas.",
+      "Você pode acompanhar o raio de erro em tempo real com nosso monitor de precisão."
+    ],
+
+    pIntro1: "Ao usar aplicativos de transporte ou testar sua antena na página <a href='/my-location/gps/'>Minha Localização GPS</a>, posições imprecisas são incômodas. Celulares modernos possuem chips GNSS capazes de atingir margem inferior a 3 metros, mas falhas de 50 a 500 metros são frequentes.",
+    pIntro2: "Compreender os fundamentos é vital: como detalhado em <a href='/guides/how-gps-location-works/'>como funciona o GPS</a>, os sinais viajam 20.200 km. Verifique seu alcance no <a href='/tools/gps-accuracy/'>Monitor de Precisão GPS</a> ou resolva divergências em nosso guia de <a href='/guides/wrong-location/'>localização errada</a>.",
+
+    calloutBadge: "🎯 Diagnóstico ao Vivo",
+    calloutTitle: "Teste a Precisão do GPS em Tempo Real",
+    calloutDesc: "Meça o raio de incerteza horizontal e a orientação do sensor do seu aparelho.",
     calloutBtn: "Abrir Monitor de Precisão →",
-    h2Wifi: "1. Ative a Busca por Wi-Fi e Bluetooth (GPS Assistido / A-GPS)",
-    pWifi1: "Desativar o Wi-Fi para poupar bateria prejudica gravemente o GPS. Os sistemas operacionais dependem do A-GPS e do mapeamento Wi-Fi (WPS):",
-    wifiBullet1: "Captura Orbital Rápida (TTFF): Com internet ativa, o smartphone baixa as efemérides dos satélites em 1,5 segundo, em vez de esperar minutos em inicialização a frio.",
-    wifiBullet2: "Mapeamento de Roteadores (BSSID): A leitura de sinais Wi-Fi locais reduz a incerteza para 10–25 metros em ambientes internos onde o satélite não penetra.",
-    h2Precise: "2. Ative a 'Localização Exata' nas Permissões do Navegador",
-    pPrecise: "Sistemas recentes possuem uma opção que restringe sites à 'Localização Aproximada' (raio genérico de 1 a 5 km). Se seu local apontar para outro bairro, esta permissão é a causa.",
-    iosTitle: "Apple iPhone e iPad (iOS 16 / 17 / 18)",
-    iosDesc: "Abra Ajustes > Privacidade e Segurança > Serviços de Localização. Selecione Safari ou Chrome. Escolha 'Durante o Uso do App' e marque 'Localização Precisa'.",
-    androidTitle: "Aparelhos Android (Samsung, Xiaomi, Motorola)",
-    androidDesc: "Abra Configurações > Localização > Permissões do app > Chrome. Selecione 'Permitir durante o uso do app' e ative 'Usar localização precisa'.",
+
+    h2Wifi: "1. Ative a Busca por Wi-Fi e Bluetooth (A-GPS)",
+    pWifi1: "Desligar o Wi-Fi economiza pouca bateria e prejudica a localização. Os smartphones utilizam o <a href='/glossary/#a-gps'>GPS Assistido (A-GPS)</a>:",
+    wifiBullet1: "Fixação Ultrarrápida: Com rede de dados ou Wi-Fi, o aparelho baixa efemérides em menos de 2 segundos.",
+    wifiBullet2: "Assinatura BSSID: A leitura de roteadores vizinhos fixa a posição a 10-25 metros dentro de imóveis.",
+
+    h2Precise: "2. Ative a 'Localização Precisa' nas Permissões",
+    pPrecise: "Sistemas modernos limitam sites ao modo aproximado (raio de 1 a 5 km). Monitore o valor de <a href='/glossary/#hdop'>Diluição Horizontal de Precisão (HDOP)</a> e habilite a permissão exata.",
+    iosTitle: "Apple iPhone e iPad (iOS)",
+    iosDesc: "Ajustes > Privacidade e Segurança > Serviços de Localização > Sites do Safari. Marque 'Durante o Uso do App' e ative 'Localização Precisa'.",
+    androidTitle: "Dispositivos Android (Samsung, Pixel, Xiaomi)",
+    androidDesc: "Configurações > Localização > Permissões do app > Chrome. Selecione 'Permitir durante o uso' e ative 'Usar localização precisa'.",
     macTitle: "macOS (Safari e Chrome)",
-    macDesc: "Acesse Ajustes do Sistema > Privacidade e Segurança > Serviços de Localização e garanta a autorização para o navegador.",
-    winTitle: "PC Windows 10 / 11",
-    winDesc: "Vá em Configurações > Privacidade e segurança > Localização e ative os Serviços de localização para aplicativos.",
-    h2Compass: "3. Calibre o Magnetômetro (Bússola do Celular)",
-    pCompass: "Se o feixe azul de direção oscilar ou girar sem rumo, o sensor magnético sofreu interferência. Capas magnéticas e suportes de painel veicular são as causas habituais.",
-    h3Fig8: "Método de Calibração em Oito (8):",
-    figStep1: "1. Abra seu aplicativo de mapas ou nosso Mapa de Coordenadas.",
-    figStep2: "2. Segure o celular com o braço estendido à sua frente.",
-    figStep3: "3. Movimente o aparelho no ar desenhando a forma de um oito (8) por 3 a 5 vezes.",
-    figStep4: "4. O feixe azul se estreitará imediatamente apontando para o rumo verdadeiro.",
-    h2Multipath: "4. Evite o Reflexo de Multicaminho em Ruas Estreitas",
-    pMultipath1: "Em centros urbanos com prédios espelhados ('cânions urbanos'), os sinais de satélite ricocheteiam no vidro e concreto antes de atingir o celular.",
-    pMultipath2: "Como resolver: Vá até um cruzamento largo ou praça aberta onde o aparelho tenha visão desobstruída do céu.",
-    h2Checklist: "5. Checklist Rápido de Otimização",
+    macDesc: "Ajustes do Sistema > Privacidade e Segurança > Serviços de Localização. Marque o navegador.",
+    winTitle: "Windows 10 / 11",
+    winDesc: "Configurações > Privacidade e segurança > Localização. Ative os serviços de localização.",
+
+    h2Compass: "3. Calibre o Magnetômetro (Bússola do Aparelho)",
+    pCompass: "Se a seta de direção girar descontrolada, o sensor sofreu interferência magnética causada por capinhas com ímãs.",
+    h3Fig8: "Técnica de Calibração em 8:",
+    figStep1: "1. Abra o aplicativo de mapas ou a ferramenta de precisão.",
+    figStep2: "2. Segure o celular com firmeza e o braço estendido.",
+    figStep3: "3. Movimente o aparelho no ar desenhando um oito de 3 a 5 vezes.",
+    figStep4: "4. O feixe azul se concentrará em uma direção estável.",
+
+    h2Multipath: "4. Evite Reflexões Multipath em Centros Urbanos",
+    pMultipath1: "Prédios altos fazem os sinais refletirem antes de chegar à antena, induzindo atrasos que desviam a posição em até 200 metros.",
+    pMultipath2: "Como corrigir: Caminhe até um cruzamento aberto ou praça com visão livre para o céu.",
+
+    workedExampleTitle: "Exemplo Prático: Desvio em Cânions Urbanos",
+    workedExampleIntro: "Cenário: Na Avenida Paulista em São Paulo, o celular posiciona o pedestre dentro de uma agência bancária do outro lado da rua.",
+    workedExampleStep1: "Passo 1: Verificação. O navegador indica precisão de ±85 metros com HDOP de 3.9.",
+    workedExampleStep2: "Passo 2: Diagnóstico. Os edifícios espelhados bloqueiam a recepção direta dos satélites.",
+    workedExampleStep3: "Passo 3: Ação. O usuário caminha até a esquina aberta e ativa o escaneamento Wi-Fi.",
+    workedExampleStep4: "Passo 4: Resultado. O aparelho sintoniza 15 satélites e o erro cai instantaneamente para ±3,3 metros.",
+
+    commonMistakesTitle: "Erros Comuns que Prejudicam o GPS",
+    commonMistakes: [
+      { mistake: "Desligar o Wi-Fi no modo avião", explanation: "Impede o download das tabelas A-GPS e força o aparelho a uma busca fria demorada de vários minutos." },
+      { mistake: "Capas de celular com placas metálicas ou imãs", explanation: "Descalibram permanentemente o magnetômetro de efeito Hall do smartphone." },
+      { mistake: "Esperar sinal de satélites em subsolos", explanation: "O concreto armado bloqueia integralmente as ondas de rádio do espaço." }
+    ],
+
+    faqs: [
+      { question: "Por que meu GPS mostra um círculo azul grande de 50 metros?", answer: "O círculo indica a margem de incerteza estatística a 68%. Um círculo largo indica sinal fraco ou restrição ao modo 'Localização Aproximada'." },
+      { question: "A chuva forte piora a precisão do GPS?", answer: "Nuvens carregadas e temporais geram leve atenuação troposférica de 1 a 2 metros, mas raramente impedem a navegação." },
+      { question: "Por que celulares novos têm GPS melhor que modelos antigos?", answer: "Eles possuem receptores GNSS de dupla frequência (L1 + L5) compatíveis com GPS, Galileo, GLONASS e BeiDou simultaneamente." }
+    ],
+
+    nextStepsTitle: "Próximos Passos",
+    nextSteps: [
+      { title: "Testar Precisão do GPS ao Vivo", href: "/tools/gps-accuracy/", desc: "Meça seu raio de precisão horizontal e erro métrico atual." },
+      { title: "Como Funciona o GPS", href: "/guides/how-gps-location-works/", desc: "Entenda a trilateração de satélites e os relógios atômicos." },
+      { title: "Corrigir Localização Errada", href: "/guides/wrong-location/", desc: "Resolva problemas causados por operadoras, VPN e Wi-Fi." }
+    ],
+
+    h2Checklist: "5. Lista Rápida de Resolução",
     thAction: "Ação",
-    thBenefit: "Benefício Principal",
+    thBenefit: "Benefício",
     thTime: "Tempo",
-    row1: ["Ativar busca Wi-Fi / Bluetooth", "Reduz tempo de captura de minutos para < 2 s", "10 s"],
-    row2: ["Ativar 'Localização Precisa'", "Melhora a precisão de ~3 km para < 3 m", "30 s"],
-    row3: ["Calibrar bússola em oito (8)", "Elimina erros de rumo e direção", "15 s"],
-    row4: ["Remover capas com ímã", "Evita distorção dos sensores magnéticos", "Imediato"],
-    row5: ["Ir para área aberta ou praça", "Elimina reflexos em prédios espelhados", "1–2 min"],
-    connectedGuides: "🔗 Guias e Diagnósticos Conectados",
-    tool1Title: "Corrigir Cidade Errada",
-    tool1Desc: "Resolva divergências de VPN e rede",
+    row1: ["Ativar Wi-Fi e Bluetooth", "Fixação em menos de 2 segundos", "10 segundos"],
+    row2: ["Ativar Localização Precisa", "Reduz erro de ~3 km para < 3 metros", "30 segundos"],
+    row3: ["Calibrar Bússola em 8", "Corrige desvios de orientação", "15 segundos"],
+    row4: ["Remover Capas com Ímãs", "Evita distorções no sensor", "Imediato"],
+    row5: ["Ir para Cruzamento Aberto", "Elimina reflexões em prédios", "1–2 minutos"],
+
+    connectedGuides: "🔗 Guias e Diagnósticos Recomendados",
+    tool1Title: "Corrigir Localização Errada",
+    tool1Desc: "Conflitos de rede e VPN",
     tool2Title: "Como Funciona o GPS",
-    tool2Desc: "Satélites, trilateração e WGS84",
+    tool2Desc: "Física dos satélites",
     tool3Title: "GPS vs Localização IP",
-    tool3Desc: "Entenda disparidades de precisão",
-    tool4Title: "Meu Endereço Atual",
-    tool4Desc: "Consulta de rua e CEP em tempo real"
+    tool3Desc: "Diferenças de precisão",
+    tool4Title: "Meu Endereço de Rua",
+    tool4Desc: "Converter GPS em endereço"
   },
   hi: {
-    title: "किसी भी डिवाइस पर GPS सटीकता कैसे बढ़ाएँ | MyLocationLab",
-    description: "कमज़ोर GPS सिग्नल ठीक करें और लोकेशन सटीकता 3 मीटर से नीचे लाएँ। iOS, Android, Chrome और डेस्कटॉप के लिए स्टेप-बाय-स्टेप ऑप्टिमाइज़ेशन गाइड।",
-    h1: "iPhone, Android और डेस्कटॉप पर GPS सटीकता कैसे बढ़ाएँ",
-    subtitle: "मल्टीपाथ इंटरफ़ेरेंस दूर करने, इंटरनल कंपास सेंसर कैलिब्रेट करने और डिवाइस के GNSS परफ़ॉर्मेंस को बेहतर बनाने के व्यावहारिक कदम।",
-    pIntro1: "सड़क पर नेविगेट करते समय, जियोकैशिंग करते समय या हमारे GPS Coordinates Finder पर निर्देशांक देखते समय गलत लोकेशन बहुत परेशान करती है। आधुनिक स्मार्टफ़ोन में 3 मीटर से बेहतर सटीकता देने वाले GNSS चिपसेट होते हैं, फिर भी उपयोगकर्ताओं को अक्सर 50 से 500 मीटर की त्रुटि झेलनी पड़ती है।",
-    pIntro2: "इस गाइड में हमारी जियोस्पेशियल इंजीनियरिंग टीम आपके डिवाइस की लोकेशन सटीकता की जाँच और अधिकतम करने के लिए सटीक हार्डवेयर कैलिब्रेशन, ऑपरेटिंग सिस्टम अनुमतियाँ और रेडियो एनवायरनमेंट सेटिंग्स विस्तार से बताती है।",
-    calloutBadge: "🎯 लाइव डायग्नोस्टिक्स",
-    calloutTitle: "अपनी मौजूदा GPS सटीकता रीयल-टाइम में जाँचें",
-    calloutDesc: "अपने डिवाइस का हॉरिज़ॉन्टल डाइल्यूशन ऑफ़ प्रिसिशन, हेडिंग अनिश्चितता और निर्देशांक लॉक रेडियस तुरंत मापें।",
-    calloutBtn: "एक्यूरेसी मॉनिटर खोलें →",
-    h2Wifi: "1. Wi-Fi और Bluetooth स्कैनिंग चालू करें (असिस्टेड GPS / A-GPS)",
-    pWifi1: "एक आम गलतफ़हमी यह है कि Wi-Fi बंद करने से बैटरी बचती है और लोकेशन सटीकता पर कोई असर नहीं होता। असल में मोबाइल ऑपरेटिंग सिस्टम असिस्टेड GPS (A-GPS) और Wi-Fi पोज़िशनिंग सिस्टम (WPS) पर काफ़ी निर्भर करते हैं:",
-    wifiBullet1: "तेज़ टाइम-टू-फ़र्स्ट-फ़िक्स (TTFF): Wi-Fi/सेल्युलर चालू होने पर फ़ोन सैटेलाइट का मौजूदा इफ़ेमेरिस इंटरनेट से 1.5 सेकंड में डाउनलोड कर लेता है, सैटेलाइट कोल्ड स्टार्ट के कई मिनट इंतज़ार की बजाय।",
-    wifiBullet2: "BSSID एम्बिएंट फ़िंगरप्रिंटिंग: आसपास के Wi-Fi बीकन पहचानने से इनडोर में आपकी स्थिति 10–25 मीटर तक सिमट जाती है, जहाँ सैटेलाइट सिग्नल अंदर नहीं आ पाते।",
-    h2Precise: "2. ब्राउज़र और OS अनुमतियों में 'Precise Location' चालू करें",
-    pPrecise: "आधुनिक मोबाइल ऑपरेटिंग सिस्टम में प्राइवेसी टॉगल होते हैं जो वेब ब्राउज़र को 'Approximate Location' (1 से 5 किलोमीटर का सामान्य रेडियस) तक सीमित कर देते हैं। अगर आपकी लोकेशन गलत मोहल्ले में दिखे, तो लगभग हमेशा यही अनुमति ज़िम्मेदार होती है।",
-    iosTitle: "Apple iPhone और iPad (iOS 16 / 17 / 18)",
-    iosDesc: "Settings > Privacy & Security > Location Services खोलें। Safari Websites (या Chrome) चुनें। Allow Location Access को 'While Using the App' पर रखें और Precise Location को ON करें।",
-    androidTitle: "Android डिवाइस (Samsung, Pixel, Xiaomi)",
-    androidDesc: "Settings > Location > App permissions खोलें। Chrome दबाएँ। 'Allow only while using the app' चुनें और 'Use precise location' ON है यह सुनिश्चित करें। Google Location Accuracy भी चालू करें।",
+    title: "किसी भी डिवाइस पर जीपीएस सटीकता कैसे सुधारें | MyLocationLab",
+    description: "संक्षेप में: सटीक लोकेशन अनुमति चालू करके, A-GPS के लिए वाई-फाई सक्रिय रखकर और दिशा सेंसर को 8 की आकृति में घुमाकर जीपीएस त्रुटि 3 मीटर से कम करें।",
+    h1: "iPhone, Android और PC पर जीपीएस सटीकता कैसे सुधारें",
+    subtitle: "मल्टीपाथ सिग्नल रुकावटें दूर करने, कंपास कैलिब्रेट करने और जीएनएसएस प्रदर्शन सुधारने के उपाय।",
+    
+    inShort: "संक्षेप में: आप ब्राउज़र में 'सटीक लोकेशन' अनुमति देकर, असिस्टेड जीपीएस (A-GPS) के लिए वाई-फाई चालू रखकर, फोन को 8 की आकृति में घुमाकर और ऊंची इमारतों से दूर खुली जगह पर जाकर जीपीएस त्रुटि को 50+ मीटर से घटाकर 3 मीटर से कम कर सकते हैं।",
+
+    takeawaysTitle: "मुख्य बिंदु",
+    takeaways: [
+      "A-GPS के लिए वाई-फाई स्कैनिंग जरूरी है; इसे बंद करने से सैटेलाइट लॉक में मिनटों का समय लग सकता है।",
+      "ऑपरेटिंग सिस्टम अक्सर गोपनीयता के लिए 'अनुमानित स्थान' चुनते हैं, जिससे 1 से 5 किमी की त्रुटि होती है।",
+      "इमारतों के बीच सिग्नल कंक्रीट से टकराते हैं (मल्टीपाथ), जिससे 50 से 200 मीटर का भटकाव होता है।",
+      "8 की आकृति में घुमाने से मैग्नेटिक कवर के कारण भटका कंपास तुरंत ठीक हो जाता है।",
+      "आप हमारे लाइव सटीकता मॉनिटर से अपने वास्तविक त्रुटि दायरे की जांच कर सकते हैं।"
+    ],
+
+    pIntro1: "चाहे आप सड़क पर नेविगेट कर रहे हों या <a href='/my-location/gps/'>मेरा जीपीएस लोकेशन पेज</a> पर एंटीना जांच रहे हों, गलत स्थान दिखना कष्टप्रद होता है। स्मार्टफोन 3 मीटर से कम त्रुटि देने में सक्षम हैं, फिर भी 50 से 500 मीटर की गलतियां आम हैं।",
+    pIntro2: "इसके पीछे के विज्ञान को समझना जरूरी है: जैसा कि हमारे मार्गदर्शक <a href='/guides/how-gps-location-works/'>जीपीएस कैसे काम करता है</a> में समझाया गया है, सिग्नल 20,200 किमी की यात्रा करते हैं। अपने डिवाइस की जांच <a href='/tools/gps-accuracy/'>जीपीएस सटीकता मॉनिटर</a> से करें या <a href='/guides/wrong-location/'>गलत लोकेशन सुधार गाइड</a> पढ़ें।",
+
+    calloutBadge: "🎯 लाइव निदान",
+    calloutTitle: "वास्तविक समय में जीपीएस सटीकता जांचें",
+    calloutDesc: "अपने डिवाइस की क्षैतिज सटीकता, दिशा और सिग्नल लॉक तुरंत मापें।",
+    calloutBtn: "मॉनिटर खोलें →",
+
+    h2Wifi: "1. वाई-फाई और ब्लूटूथ स्कैनिंग चालू करें (A-GPS)",
+    pWifi1: "वाई-फाई बंद करने से जीपीएस कमजोर होता है। मोबाइल सिस्टम <a href='/glossary/#a-gps'>असिस्टेड जीपीएस (A-GPS)</a> पर निर्भर रहते हैं:",
+    wifiBullet1: "तेज सैटेलाइट लॉक: फोन इंटरनेट से उपग्रह डेटा 2 सेकंड से भी कम समय में डाउनलोड कर लेता है।",
+    wifiBullet2: "BSSID वाई-फाई पहचान: कमरों के अंदर जहां उपग्रह सिग्नल नहीं पहुंचते, वहां पास के वाई-फाई राउटर 10-25 मीटर की सटीकता देते हैं।",
+
+    h2Precise: "2. 'सटीक लोकेशन' (Precise Location) चालू करें",
+    pPrecise: "ब्राउज़र में 'अनुमानित लोकेशन' चालू होने पर 1 से 5 किमी की त्रुटि आती है। अपना <a href='/glossary/#hdop'>हॉरिजॉन्टल डाइल्यूशन ऑफ प्रिसिजन (HDOP)</a> जांचें और सटीक मोड सक्षम करें।",
+    iosTitle: "Apple iPhone और iPad (iOS)",
+    iosDesc: "Settings > Privacy & Security > Location Services > Safari Websites पर जाएं। 'While Using the App' चुनें और 'Precise Location' चालू करें।",
+    androidTitle: "Android उपकरण (Samsung, Pixel, Xiaomi)",
+    androidDesc: "Settings > Location > App permissions > Chrome पर जाएं। 'Allow only while using the app' चुनें और 'Use precise location' चालू करें।",
     macTitle: "macOS (Safari और Chrome)",
-    macDesc: "System Settings > Privacy & Security > Location Services पर जाएँ। अपने ब्राउज़र के लिए Location Services पर टिक होना सुनिश्चित करें।",
-    winTitle: "Windows 10 / 11 PC",
-    winDesc: "Settings > Privacy & security > Location पर जाएँ। Location services ON करें और 'Let desktop apps access your location' को ON करें।",
-    h2Compass: "3. मैग्नेटोमीटर (डिवाइस कंपास) कैलिब्रेट करें",
-    pCompass: "जब मैपिंग ऐप में आपका लोकेशन इंडिकेटर बेतरतीब दिशा दिखाए या घूमता रहे, तो इंटरनल मैग्नेटोमीटर में मैग्नेटिक ड्रिफ्ट आ गई है। धातु के फ़ोन कवर और मैग्नेटिक वॉलेट अटैचमेंट आम वजहें हैं।",
-    h3Fig8: "फ़िगर-8 रीकैलिब्रेशन तकनीक:",
-    figStep1: "1. अपना मैपिंग ऐप या हमारा Latitude & Longitude Map खोलें।",
-    figStep2: "2. फ़ोन को बाह फैलाकर मज़बूती से पकड़ें।",
-    figStep3: "3. डिवाइस को हवा में बड़े फ़िगर-8 आंदोलन में तीन से पाँच बार सहजता से घुमाएँ।",
-    figStep4: "4. नीले लोकेशन कोन को देखें: वह तुरंत सिमटकर एक केंद्रित दिशा किरण बन जाएगा।",
-    h2Multipath: "4. मल्टीपाथ रिफ्लेक्शन और अर्बन कैनियन से बचाव",
-    pMultipath1: "गगनचुंबी इमारतों वाले शहरी इलाकों में सैटेलाइट सिग्नल आपके फ़ोन तक पहुँचने से पहले इमारतों से टकराकर लौटते हैं (अर्बन कैनियन)।",
-    pMultipath2: "समाधान: खुले चौराहे या पार्क की ओर बढ़ें जहाँ आपके रिसीवर को आसमान की बिना रुकावट वाली दृष्टि मिले। धातु की छतों या घने पेड़ों के ठीक नीचे खड़े होने से बचें।",
-    h2Checklist: "5. समस्या निवारण सारांश चेकलिस्ट",
-    thAction: "कार्य",
-    thBenefit: "प्रमुख लाभ",
-    thTime: "लगने वाला समय",
-    row1: ["Wi-Fi / Bluetooth स्कैनिंग चालू करें", "सैटेलाइट लॉक का समय मिनटों से घटाकर < 2 सेकंड", "10 सेकंड"],
-    row2: ["ब्राउज़र में 'Precise Location' चालू करें", "सटीकता ~3 किमी से सुधारकर < 3 मीटर", "30 सेकंड"],
-    row3: ["फ़िगर-8 कैलिब्रेशन करें", "हेडिंग ड्रिफ्ट और दिशा त्रुटि खत्म करता है", "15 सेकंड"],
-    row4: ["मैग्नेटिक फ़ोन कवर हटाएँ", "इंटरनल मैग्नेटोमीटर सेंसर का विकृत होना रोकता है", "तुरंत"],
-    row5: ["खुला आसमान / चौराहा अपनाएँ", "अर्बन कैनियन में मल्टीपाथ रिफ्लेक्शन खत्म करता है", "1–2 मिनट"],
-    connectedGuides: "🔗 संबंधित गाइड और डायग्नोस्टिक्स",
-    tool1Title: "गलत लोकेशन ठीक करें",
-    tool1Desc: "ISP और VPN बेमेल हल करें",
-    tool2Title: "GPS कैसे काम करता है",
-    tool2Desc: "सैटेलाइट, ट्राइलैटरेशन और WGS84",
-    tool3Title: "GPS बनाम IP जियोलोकेशन",
-    tool3Desc: "सटीकता के अंतर को समझें",
-    tool4Title: "अपना स्ट्रीट पता खोजें",
-    tool4Desc: "मौजूदा गली और डाक कोड लुकअप"
+    macDesc: "System Settings > Privacy & Security > Location Services में जाएं और ब्राउज़र को अनुमति दें।",
+    winTitle: "Windows 10 / 11",
+    winDesc: "Settings > Privacy & security > Location में जाएं और लोकेशन सेवाएं चालू करें।",
+
+    h2Compass: "3. फोन के कंपास (मैग्नेटोमीटर) को कैलिब्रेट करें",
+    pCompass: "यदि दिशा सूचक गोल-गोल घूम रहा हो, तो फोन के कंपास पर चुंबकीय कवर या कार माउंट का असर पड़ा है।",
+    h3Fig8: "8 की आकृति में घुमाने की विधि:",
+    figStep1: "1. मैप ऐप या सटीकता टूल खोलें।",
+    figStep2: "2. हाथ सीधा रखते हुए फोन को मजबूती से पकड़ें।",
+    figStep3: "3. हवा में फोन को 3 से 5 बार धीरे-धीरे 8 की आकृति में घुमाएं।",
+    figStep4: "4. नीला दिशा सूचक तुरंत स्थिर हो जाएगा।",
+
+    h2Multipath: "4. ऊंची इमारतों के बीच सिग्नल के भटकाव से बचें",
+    pMultipath1: "कांच और कंक्रीट की ऊंची इमारतों से उपग्रह तरंगें टकराकर देरी से पहुंचती हैं, जिससे 50 से 200 मीटर की गलती हो जाती है।",
+    pMultipath2: "समाधान: किसी खुले चौराहे या पार्क की ओर जाएं जहां आकाश साफ दिखाई दे।",
+
+    workedExampleTitle: "व्यावहारिक उदाहरण: कंक्रीट के जंगलों में भटकाव",
+    workedExampleIntro: "परिदृश्य: दिल्ली के कनॉट प्लेस में पैदल चलते समय ऐप आपको सड़क की बजाय 80 मीटर दूर इमारत के अंदर दिखाता है।",
+    workedExampleStep1: "चरण 1: जांच। ब्राउज़र में त्रुटि दायरा ±85 मीटर और HDOP 4.0 दिखता है।",
+    workedExampleStep2: "चरण 2: कारण। ऊंची इमारतें उपग्रहों की सीधी रेखा को रोक रही हैं।",
+    workedExampleStep3: "चरण 3: सुधार। व्यक्ति 20 मीटर खुले चौराहे की ओर जाता है और वाई-फाई चालू करता है।",
+    workedExampleStep4: "चरण 4: परिणाम। फोन 15 उपग्रहों को लॉक करता है और त्रुटि घटकर तुरंत ±3.1 मीटर रह जाती है।",
+
+    commonMistakesTitle: "जीपीएस सटीकता बिगाड़ने वाली सामान्य गलतियां",
+    commonMistakes: [
+      { mistake: "फ्लाइट मोड में वाई-फाई बंद रखना", explanation: "यह A-GPS डेटा डाउनलोड होने से रोकता है, जिससे सैटेलाइट खोजने में 5 मिनट तक लग सकते हैं।" },
+      { mistake: "चुंबकीय या धातु वाले फोन कवर", explanation: "चुंबक फोन के आंतरिक दिशा सेंसर को पूरी तरह खराब कर देते हैं।" },
+      { mistake: "बेसमेंट में उपग्रह सिग्नल की उम्मीद करना", explanation: "कंक्रीट की छतें अंतरिक्ष से आने वाली रेडियो तरंगों को पूरी तरह रोक देती हैं।" }
+    ],
+
+    faqs: [
+      { question: "जीपीएस में 50 मीटर का बड़ा नीला गोला क्यों दिखता है?", answer: "नीला गोला अनिश्चितता का दायरा है। बड़ा गोला कमजोर सिग्नल या 'अनुमानित लोकेशन' अनुमति का संकेत देता है।" },
+      { question: "क्या बारिश से जीपीएस खराब होता है?", answer: "घने बादलों और मूसलाधार बारिश से 1-2 मीटर का मामूली असर पड़ सकता है, पर सिग्नल पूरी तरह बंद नहीं होता।" },
+      { question: "नए फोन पुराने फोन से बेहतर जीपीएस क्यों देते हैं?", answer: "नए फोन ड्यूल-फ्रीक्वेंसी GNSS (L1 + L5) चिपसेट का उपयोग करते हैं और GPS, Galileo, BeiDou को एक साथ पकड़ते हैं।" }
+    ],
+
+    nextStepsTitle: "अगले कदम",
+    nextSteps: [
+      { title: "लाइव जीपीएस सटीकता मापें", href: "/tools/gps-accuracy/", desc: "अपने डिवाइस की सटीक त्रुटि सीमा और सिग्नल कवरेज देखें।" },
+      { title: "जीपीएस कैसे काम करता है", href: "/guides/how-gps-location-works/", desc: "उपग्रह त्रिकोणीकरण और परमाणु घड़ी भौतिकी सीखें।" },
+      { title: "गलत लोकेशन सुधारें", href: "/guides/wrong-location/", desc: "आईएसपी और वाई-फाई विसंगतियों को ठीक करना सीखें।" }
+    ],
+
+    h2Checklist: "5. त्वरित समस्या निवारण सूची",
+    thAction: "कार्रवाई",
+    thBenefit: "लाभ",
+    thTime: "समय",
+    row1: ["वाई-फाई चालू करें", "सैटेलाइट लॉक 2 सेकंड से कम में", "10 सेकंड"],
+    row2: ["सटीक लोकेशन चालू करें", "त्रुटि 3 किमी से घटकर < 3 मीटर", "30 सेकंड"],
+    row3: ["8 के आकार में घुमाएं", "दिशा सूचक स्थिर करें", "15 सेकंड"],
+    row4: ["चुंबकीय कवर हटाएं", "सेंसर भटकाव रोकें", "तुरंत"],
+    row5: ["खुले चौराहे पर जाएं", "इमारतों से सिग्नल का टकराव रोकें", "1–2 मिनट"],
+
+    connectedGuides: "🔗 जुड़े मार्गदर्शक और उपकरण",
+    tool1Title: "गलत लोकेशन सुधारें",
+    tool1Desc: "नेटवर्क और वीपीएन विसंगतियां",
+    tool2Title: "जीपीएस कैसे काम करता है",
+    tool2Desc: "उपग्रह भौतिकी",
+    tool3Title: "जीपीएस बनाम आईपी",
+    tool3Desc: "सटीकता अंतर समझें",
+    tool4Title: "सड़क का पता खोजें",
+    tool4Desc: "जीपीएस को पते में बदलें"
   },
   id: {
     title: "Cara Meningkatkan Akurasi GPS di Semua Perangkat | MyLocationLab",
-    description: "Atasi sinyal GPS lemah dan tingkatkan akurasi lokasi hingga di bawah 3 meter. Optimasi bertahap untuk iOS, Android, Chrome, dan komputer desktop.",
-    h1: "Cara Meningkatkan Akurasi GPS di iPhone, Android & Desktop",
-    subtitle: "Langkah konkret menghilangkan interferensi multipath, mengkalibrasi sensor kompas internal, dan mengoptimalkan performa GNSS perangkat.",
-    pIntro1: "Baik sedang bernavigasi di jalan, bermain geocaching, atau mencari koordinat di GPS Coordinates Finder kami, pembacaan lokasi yang tidak akurat sangat mengganggu. Ponsel modern memiliki chipset GNSS yang mampu akurasi di bawah 3 meter, namun pengguna sering mengalami galat 50 sampai 500 meter.",
-    pIntro2: "Dalam panduan ini, tim teknik geospasial kami merinci kalibrasi perangkat keras, izin sistem operasi, dan penyesuaian lingkungan radio yang tepat untuk mendiagnosis dan memaksimalkan akurasi lokasi perangkat Anda.",
-    calloutBadge: "🎯 Diagnostik Langsung",
-    calloutTitle: "Uji Akurasi GPS Anda Saat Ini Secara Waktu Nyata",
-    calloutDesc: "Ukur dilusi presisi horizontal, ketidakpastian arah, dan radius penguncian koordinat perangkat Anda secara instan.",
+    description: "Singkatnya: Tingkatkan akurasi GPS di bawah 3 meter dengan mengaktifkan Lokasi Presisi, menyalakan Wi-Fi untuk A-GPS, dan mengalibrasi kompas perangkat.",
+    h1: "Cara Meningkatkan Akurasi GPS di iPhone, Android & PC",
+    subtitle: "Langkah praktis mengatasi pantulan multipath, mengalibrasi sensor kompas, dan memaksimalkan penerimaan GNSS.",
+    
+    inShort: "Singkatnya: Anda dapat meningkatkan akurasi GPS dari galat 50+ meter menjadi di bawah 3 meter dengan mengaktifkan 'Lokasi Presisi' pada izin peramban, membiarkan Wi-Fi aktif untuk Assisted GPS (A-GPS), mengalibrasi kompas lewat gerakan angka 8, dan menjauhi pantulan gedung kaca.",
+
+    takeawaysTitle: "Poin-Poin Penting",
+    takeaways: [
+      "Pemindaian Wi-Fi sangat penting untuk A-GPS guna mengunduh data orbit satelit dalam 2 detik, bukan menunggu bermenit-menit.",
+      "Sistem operasi sering membatasi lokasi ke mode 'Perkiraan Lokasi' demi privasi, menciptakan selisih sengaja 1 hingga 5 km.",
+      "Di kawasan gedung bertingkat, sinyal memantul pada kaca dan beton (multipath), menggeser posisi 50 hingga 200 meter.",
+      "Gerakan angka 8 mengalibrasi ulang sensor magnetometer dari gangguan casing magnetik.",
+      "Pantau lingkaran radius galat perangkat Anda secara waktu nyata dengan monitor akurasi kami."
+    ],
+
+    pIntro1: "Saat bernavigasi di jalan atau menguji sensor di halaman <a href='/my-location/gps/'>Lokasi GPS Saya</a>, titik koordinat yang meleset sangat menyulitkan. Ponsel modern memiliki penerima GNSS yang mampu mencapai akurasi di bawah 3 meter, namun pengguna kerap mengalami galat 50 hingga 500 meter.",
+    pIntro2: "Memahami prinsip fisika satelit sangat membantu: seperti diulas di panduan <a href='/guides/how-gps-location-works/'>cara kerja lokasi GPS</a>, sinvil menempuh jarak 20.200 km. Pantau ketelitian Anda di <a href='/tools/gps-accuracy/'>Monitor Akurasi GPS</a> atau ikuti solusi pada panduan <a href='/guides/wrong-location/'>mengatasi lokasi salah</a>.",
+
+    calloutBadge: "🎯 Diagnosis Langsung",
+    calloutTitle: "Uji Akurasi GPS Anda Waktu Nyata",
+    calloutDesc: "Ukur radius galat horizontal dan ketidakpastian arah kompas perangkat Anda.",
     calloutBtn: "Buka Monitor Akurasi →",
-    h2Wifi: "1. Aktifkan Pemindaian Wi-Fi & Bluetooth (Assisted GPS / A-GPS)",
-    pWifi1: "Mitos yang beredar menyebut mematikan Wi-Fi menghemat baterai tanpa merusak presisi lokasi. Kenyataannya, sistem operasi seluler sangat bergantung pada Assisted GPS (A-GPS) dan Wi-Fi Positioning System (WPS):",
-    wifiBullet1: "Time-to-First-Fix (TTFF) Lebih Cepat: Dengan Wi-Fi/seluler aktif, ponsel mengunduh ephemeris satelit terkini lewat internet dalam waktu di bawah 1,5 detik, bukan menunggu berapa menit untuk cold start satelit.",
-    wifiBullet2: "Fingerprinting Ambient BSSID: Mendeteksi beacon Wi-Fi di sekitar mempersempit posisi Anda menjadi 10–25 meter di dalam ruangan tempat sinyal satelit tidak dapat menembus.",
-    h2Precise: "2. Aktifkan 'Lokasi Presisi' di Izin Peramban & OS",
-    pPrecise: "Sistem operasi seluler modern memiliki sakelar privasi yang membatasi peramban web pada 'Lokasi Perkiraan' (radius umum 1 sampai 5 kilometer). Jika lokasi Anda muncul di lingkungan yang salah, izin ini hampir selalu penyebabnya.",
-    iosTitle: "Apple iPhone & iPad (iOS 16 / 17 / 18)",
-    iosDesc: "Buka Setelan > Privasi & Keamanan > Layanan Lokasi. Pilih Situs Web Safari (atau Chrome). Pastikan Izinkan Akses Lokasi diatur 'Saat Aplikasi Digunakan' dan nyalakan Lokasi Presisi.",
+
+    h2Wifi: "1. Aktifkan Pemindaian Wi-Fi & Bluetooth (A-GPS)",
+    pWifi1: "Mematikan Wi-Fi tidak banyak menghemat baterai dan justru merusak akurasi GPS. Ponsel Anda sangat bergantung pada <a href='/glossary/#a-gps'>Assisted GPS (A-GPS)</a>:",
+    wifiBullet1: "Penguncian Satelit Cepat: Lewat jaringan internet, ponsel mengunduh tabel efemeris satelit dalam waktu kurang dari 2 detik.",
+    wifiBullet2: "Pengenalan BSSID Wi-Fi: Sinyal router di sekitar membantu menentukan lokasi 10-25 meter di dalam gedung bertingkat.",
+
+    h2Precise: "2. Aktifkan 'Lokasi Presisi' pada Izin Browser dan OS",
+    pPrecise: "Browser modern menyediakan setelan privasi yang membatasi situs ke 'Perkiraan Lokasi' (radius 1 sampai 5 km). Periksa nilai <a href='/glossary/#hdop'>Horizontal Dilution of Precision (HDOP)</a> Anda dan aktifkan izin presisi.",
+    iosTitle: "Apple iPhone & iPad (iOS)",
+    iosDesc: "Pengaturan > Privasi & Keamanan > Layanan Lokasi > Situs Web Safari. Pilih 'Saat Menggunakan App' dan aktifkan 'Lokasi Tepat'.",
     androidTitle: "Perangkat Android (Samsung, Pixel, Xiaomi)",
-    androidDesc: "Buka Setelan > Lokasi > Izin aplikasi. Ketuk Chrome. Pilih 'Izinkan hanya saat aplikasi digunakan' dan pastikan 'Gunakan lokasi presisi' aktif. Aktifkan juga Google Location Accuracy.",
+    androidDesc: "Setelan > Lokasi > Izin aplikasi > Chrome. Pilih 'Hanya izinkan saat aplikasi digunakan' dan aktifkan 'Gunakan lokasi akurat'.",
     macTitle: "macOS (Safari & Chrome)",
-    macDesc: "Buka Setelan Sistem > Privasi & Keamanan > Layanan Lokasi. Pastikan Layanan Lokasi dicentang untuk peramban Anda.",
-    winTitle: "PC Windows 10 / 11",
-    winDesc: "Buka Setelan > Privasi & keamanan > Lokasi. Nyalakan Layanan lokasi dan aktifkan 'Izinkan aplikasi desktop mengakses lokasi Anda'.",
-    h2Compass: "3. Kalibrasi Magnetometer (Kompas Perangkat)",
-    pCompass: "Ketika indikator lokasi di aplikasi peta menampilkan arah yang acak atau berputar tak terduga, magnetometer internal mengalami penyimpangan magnetik. Sarung ponsel logam dan dudukan dompet magnetik adalah penyebab umumnya.",
-    h3Fig8: "Teknik Kalibrasi Ulang Angka-8:",
-    figStep1: "1. Buka aplikasi peta Anda atau Peta Lintang & Bujur kami.",
-    figStep2: "2. Pegang ponsel dengan mantap sambil merentangkan lengan.",
-    figStep3: "3. Sapukan perangkat dengan halus di udara membentuk angka-8 besar sebanyak tiga sampai lima kali.",
-    figStep4: "4. Amati kerucut lokasi biru: ia akan seketika menyempit menjadi berkas arah yang terfokus.",
-    h2Multipath: "4. Kurangi Pantulan Multipath & Kanion Urban",
-    pMultipath1: "Di kawasan pusat kota berpencakar langit, sinyal satelit memantul pada bangunan sebelum mencapai ponsel Anda (kanion urban).",
-    pMultipath2: "Cara memperbaikinya: Bergeraklah ke persimpangan jalan yang terbuka atau taman tempat penerima Anda memiliki pandangan langit tanpa halangan. Hindari berdiri tepat di bawah kanopi logam atau tajuk pohon rapat.",
-    h2Checklist: "5. Daftar Periksa Ringkas Penyelesaian Masalah",
-    thAction: "Langkah Aksi",
-    thBenefit: "Manfaat Utama",
-    thTime: "Waktu yang Dibutuhkan",
-    row1: ["Aktifkan pemindaian Wi-Fi / Bluetooth", "Memangkas waktu kunci satelit dari menit menjadi < 2 detik", "10 detik"],
-    row2: ["Nyalakan 'Lokasi Presisi' di Peramban", "Meningkatkan akurasi dari ~3 km menjadi < 3 meter", "30 detik"],
-    row3: ["Lakukan Kalibrasi Angka-8", "Menghilangkan hanyutan arah dan galat bearing", "15 detik"],
-    row4: ["Lepas Sarung Ponsel Bermagnet", "Mencegah distorsi sensor magnetometer internal", "Instan"],
-    row5: ["Pindah ke Langit Terbuka / Persimpangan", "Menghilangkan pantulan multipath di kanion urban", "1–2 menit"],
+    macDesc: "Pengaturan Sistem > Privasi & Keamanan > Layanan Lokasi. Centang browser Anda.",
+    winTitle: "Windows 10 / 11",
+    winDesc: "Pengaturan > Privasi & keamanan > Lokasi. Aktifkan Layanan lokasi.",
+
+    h2Compass: "3. Kalibrasi Magnetometer (Kompas Ponsel)",
+    pCompass: "Jika arah panah biru berputar tak menentu, sensor magnetometer mengalami distorsi akibat casing dengan pengait magnet atau dudukan mobil.",
+    h3Fig8: "Metode Kalibrasi Angka 8:",
+    figStep1: "1. Buka aplikasi peta atau alat monitor akurasi.",
+    figStep2: "2. Pegang ponsel dengan mantap dan rentangkan lengan Anda.",
+    figStep3: "3. Gerakkan ponsel membentuk pola angka 8 besar di udara sebanyak 3 hingga 5 kali.",
+    figStep4: "4. Sorot biru penunjuk arah akan menyempit dan stabil seketika.",
+
+    h2Multipath: "4. Atasi Pantulan Multipath di Kawasan Gedung Tinggi",
+    pMultipath1: "Di antara gedung pencakar langit, sinyal memantul pada kaca sebelum mencapai ponsel, menambah waktu tempuh semu yang menggeser titik sejauh 50-200 meter.",
+    pMultipath2: "Cara mengatasi: Berjalanlah ke persimpangan jalan atau area terbuka dengan pandangan langit luas.",
+
+    workedExampleTitle: "Contoh Kasus: Galat Sinyal di Lembah Perkotaan",
+    workedExampleIntro: "Skenario: Di pusat kota Jakarta, ponsel memosisikan pejalan kaki 80 meter di dalam gedung seberang jalan.",
+    workedExampleStep1: "Langkah 1: Pemeriksaan. Browser melaporkan radius galat ±85 meter dengan nilai HDOP 4,2.",
+    workedExampleStep2: "Langkah 2: Penyebab. Deretan gedung tinggi menghalangi garis pandang langsung ke satelit.",
+    workedExampleStep3: "Langkah 3: Solusi. Pengguna berjalan 15 meter ke arah persimpangan jalan dan menyalakan Wi-Fi.",
+    workedExampleStep4: "Langkah 4: Hasil. Ponsel mengunci 15 satelit gabungan dan radius galat seketika turun ke ±3,2 meter.",
+
+    commonMistakesTitle: "Kesalahan Umum yang Mengacaukan Akurasi GPS",
+    commonMistakes: [
+      { mistake: "Mematikan Wi-Fi saat di mode pesawat", explanation: "Mencegah unduhan tabel A-GPS dan memaksa ponsel melakukan pencarian satelit dingin selama bermenit-menit." },
+      { mistake: "Memakai casing ponsel bermagnet", explanation: "Mengacaukan sensor Hall elektronik internal yang mengukur arah kompas navigasi." },
+      { mistake: "Mengharapkan sinyal satelit di basement bawah tanah", explanation: "Struktur beton bertulang menyerap habis gelombang mikro satelit." }
+    ],
+
+    faqs: [
+      { question: "Mengapa GPS saya menampilkan lingkaran biru 50 meter?", answer: "Lingkaran biru adalah radius ketidakpastian 68%. Lingkaran besar menandakan penerimaan sinyal buruk atau situs hanya diberi izin 'Perkiraan Lokasi'." },
+      { question: "Apakah cuaca mendung dan hujan deras merusak GPS?", answer: "Awan tebal dan hujan lebat hanya menimbulkan redaman troposfer ringan 1 hingga 2 meter, sangat jarang memutus sinyal sepenuhnya." },
+      { question: "Mengapa ponsel baru memiliki GPS lebih akurat dibanding ponsel lama?", answer: "Ponsel modern memakai chipset GNSS frekuensi ganda (L1 + L5) yang menangkap satelit GPS, Galileo, GLONASS, dan BeiDou secara simultan." }
+    ],
+
+    nextStepsTitle: "Langkah Berikutnya",
+    nextSteps: [
+      { title: "Uji Akurasi GPS Langsung", href: "/tools/gps-accuracy/", desc: "Ukur radius galat horizontal dan ketepatan penerima sinyal Anda." },
+      { title: "Cara Kerja Lokasi GPS", href: "/guides/how-gps-location-works/", desc: "Pelajari trilaterasi satelit dan pulsa jam atom waktu tempuh." },
+      { title: "Atasi Lokasi Salah", href: "/guides/wrong-location/", desc: "Perbaiki masalah perutean ISP dan konflik jaringan Wi-Fi." }
+    ],
+
+    h2Checklist: "5. Ringkasan Tindakan Perbaikan",
+    thAction: "Tindakan",
+    thBenefit: "Manfaat",
+    thTime: "Waktu",
+    row1: ["Nyalakan Wi-Fi & Bluetooth", "Kunci satelit dalam < 2 detik", "10 detik"],
+    row2: ["Aktifkan Lokasi Presisi", "Pangkas galat dari ~3 km ke < 3 meter", "30 detik"],
+    row3: ["Kalibrasi Angka 8 Kompas", "Hilangkan arah yang berputar", "15 detik"],
+    row4: ["Lepas Casing Magnetik", "Cegah distorsi sensor internal", "Seketika"],
+    row5: ["Menuju Persimpangan Terbuka", "Hilangkan pantulan pada gedung", "1–2 menit"],
+
     connectedGuides: "🔗 Panduan & Diagnostik Terkait",
-    tool1Title: "Perbaiki Lokasi Salah",
-    tool1Desc: "Atasi ketidakcocokan ISP & VPN",
+    tool1Title: "Atasi Lokasi Salah",
+    tool1Desc: "Konflik jaringan dan VPN",
     tool2Title: "Cara Kerja GPS",
-    tool2Desc: "Satelit, trilaterasi & WGS84",
-    tool3Title: "Geolokasi GPS vs IP",
-    tool3Desc: "Memahami disparitas akurasi",
-    tool4Title: "Temukan Alamat Jalan Saya",
-    tool4Desc: "Pencarian jalan & kode pos saat ini"
+    tool2Desc: "Fisika sinyal satelit",
+    tool3Title: "GPS vs Lokasi IP",
+    tool3Desc: "Perbedaan akurasi",
+    tool4Title: "Cari Alamat Jalan",
+    tool4Desc: "Ubah GPS jadi alamat"
   }
 };
 
@@ -402,13 +725,34 @@ const c = translations[lang] || translations.en;
   h1={c.h1}
   subtitle={c.subtitle}
   section="guides"
-  sectionLabel={lang === 'es' ? 'Guías Educativas' : lang === 'fr' ? 'Guides Pédagogiques' : lang === 'de' ? 'Fachratgeber' : lang === 'pt' ? 'Guias Educativos' : lang === 'hi' ? 'शैक्षिक गाइड' : lang === 'id' ? 'Panduan Edukasi' : 'Educational Guides'}
-  readTime="8 min"
+  sectionLabel={lang === 'es' ? 'Guías Prácticas' : lang === 'fr' ? 'Guides Pratiques' : lang === 'de' ? 'Praxis-Leitfäden' : lang === 'pt' ? 'Guias Práticos' : lang === 'hi' ? 'मार्गदर्शिका' : lang === 'id' ? 'Panduan Praktis' : 'Practical Guides'}
+  readTime="7 min"
   publishDate="2026-09-15"
   modifiedDate="2026-09-22"
 >
-  <p>{c.pIntro1}</p>
-  <p>{c.pIntro2}</p>
+  {c.inShort && (
+    <div class="callout-box" style="margin-bottom: var(--space-6); background: var(--color-bg-secondary); border-left: 4px solid var(--color-accent-primary); padding: var(--space-4) var(--space-5); border-radius: var(--radius-md);">
+      <p style="margin: 0; font-weight: 500; font-size: var(--text-base); color: var(--color-text-primary); line-height: 1.75;">
+        {c.inShort}
+      </p>
+    </div>
+  )}
+
+  {c.takeaways && (
+    <div class="card card-flat" style="margin-bottom: var(--space-8); padding: var(--space-6); border: 1px solid var(--color-border); background: var(--color-bg-card); border-radius: var(--radius-lg);">
+      <h3 style="margin-top: 0; margin-bottom: var(--space-3); font-size: var(--text-lg); display: flex; align-items: center; gap: var(--space-2);">
+        <span>📌</span> {c.takeawaysTitle || "Key Takeaways"}
+      </h3>
+      <ul style="margin: 0; padding-left: var(--space-5); display: flex; flex-direction: column; gap: var(--space-2); color: var(--color-text-secondary); line-height: 1.75;">
+        {c.takeaways.map((item: string) => (
+          <li>{item}</li>
+        ))}
+      </ul>
+    </div>
+  )}
+
+  <p set:html={localizeHtml(c.pIntro1, lang)}></p>
+  <p set:html={localizeHtml(c.pIntro2, lang)}></p>
 
   <div class="tool-callout">
     <div class="tool-callout-content">
@@ -422,14 +766,14 @@ const c = translations[lang] || translations.en;
   </div>
 
   <h2>{c.h2Wifi}</h2>
-  <p>{c.pWifi1}</p>
+  <p set:html={localizeHtml(c.pWifi1, lang)}></p>
   <ul>
     <li><strong>{c.wifiBullet1}</strong></li>
     <li><strong>{c.wifiBullet2}</strong></li>
   </ul>
 
   <h2>{c.h2Precise}</h2>
-  <p>{c.pPrecise}</p>
+  <p set:html={localizeHtml(c.pPrecise, lang)}></p>
 
   <div class="step-container">
     <div class="step-card">
@@ -476,8 +820,35 @@ const c = translations[lang] || translations.en;
   </ol>
 
   <h2>{c.h2Multipath}</h2>
-  <p>{c.pMultipath1}</p>
-  <p>{c.pMultipath2}</p>
+  <p set:html={localizeHtml(c.pMultipath1, lang)}></p>
+  <p set:html={localizeHtml(c.pMultipath2, lang)}></p>
+
+  {c.workedExampleTitle && (
+    <div class="card card-flat" style="margin: var(--space-8) 0; padding: var(--space-6); background: var(--color-bg-secondary); border-left: 4px solid var(--color-accent-success); border-radius: var(--radius-md);">
+      <h3 style="margin-top: 0; margin-bottom: var(--space-2); color: var(--color-text-primary);">🧮 {c.workedExampleTitle}</h3>
+      <p style="color: var(--color-text-secondary); margin-bottom: var(--space-4); line-height: 1.75;">{c.workedExampleIntro}</p>
+      <div style="display: flex; flex-direction: column; gap: var(--space-2); font-size: var(--text-sm); line-height: 1.75;">
+        <div style="padding: var(--space-2) var(--space-3); background: var(--color-bg-tertiary); border-radius: var(--radius-sm); font-family: var(--font-mono);">{c.workedExampleStep1}</div>
+        <div style="padding: var(--space-2) var(--space-3); background: var(--color-bg-tertiary); border-radius: var(--radius-sm); font-family: var(--font-mono);">{c.workedExampleStep2}</div>
+        <div style="padding: var(--space-2) var(--space-3); background: var(--color-bg-tertiary); border-radius: var(--radius-sm); font-family: var(--font-mono);">{c.workedExampleStep3}</div>
+        <div style="padding: var(--space-2) var(--space-3); background: var(--color-bg-tertiary); border-radius: var(--radius-sm); font-family: var(--font-mono);">{c.workedExampleStep4}</div>
+      </div>
+    </div>
+  )}
+
+  {c.commonMistakes && (
+    <div style="margin: var(--space-10) 0;">
+      <h2>⚠️ {c.commonMistakesTitle || "Common Mistakes"}</h2>
+      <div style="display: grid; gap: var(--space-4); margin-top: var(--space-4);">
+        {c.commonMistakes.map((m: any) => (
+          <div class="card card-flat" style="padding: var(--space-4) var(--space-5); border-left: 3px solid var(--color-accent-warning);">
+            <strong style="display: block; color: var(--color-text-primary); margin-bottom: var(--space-1); font-size: var(--text-base);">{m.mistake}</strong>
+            <p style="margin: 0; color: var(--color-text-secondary); font-size: var(--text-sm); line-height: 1.75;">{m.explanation}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  )}
 
   <h2>{c.h2Checklist}</h2>
   <table>
@@ -516,6 +887,29 @@ const c = translations[lang] || translations.en;
       </tr>
     </tbody>
   </table>
+
+  {c.faqs && c.faqs.length > 0 && (
+    <div style="margin-top: var(--space-10);">
+      <h2>❓ FAQ: GPS Accuracy</h2>
+      <FAQAccordion items={c.faqs} includeSchema={true} />
+    </div>
+  )}
+
+  {c.nextSteps && (
+    <div class="card card-flat" style="margin: var(--space-10) 0; padding: var(--space-6); background: var(--color-bg-secondary); border: 1px solid var(--color-border); border-radius: var(--radius-lg);">
+      <h3 style="margin-top: 0; margin-bottom: var(--space-4); font-size: var(--text-lg); display: flex; align-items: center; gap: var(--space-2);">
+        <span>🚀</span> {c.nextStepsTitle || "Next Steps"}
+      </h3>
+      <div style="display: grid; gap: var(--space-3);">
+        {c.nextSteps.map((step: any) => (
+          <a href={getLocalizedPath(step.href, lang)} class="card card-flat" style="display: flex; flex-direction: column; gap: var(--space-1); padding: var(--space-3) var(--space-4); text-decoration: none; border-left: 3px solid var(--color-accent-primary); background: var(--color-bg-card); transition: transform 0.15s ease;">
+            <strong style="color: var(--color-text-primary); font-size: var(--text-base);">{step.title} →</strong>
+            <span style="color: var(--color-text-secondary); font-size: var(--text-sm); line-height: 1.6;">{step.desc}</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  )}
 
   <div class="contextual-next-box">
     <h3 class="contextual-next-title">{c.connectedGuides}</h3>

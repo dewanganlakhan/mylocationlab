@@ -3,7 +3,8 @@
  * WrongLocationView — Multilingual Guide: Why Is My Location Wrong
  */
 import ContentLayout from '../../layouts/ContentLayout.astro';
-import { getLocalizedPath, type SupportedLang, defaultLang } from '../../i18n/config';
+import FAQAccordion from '../FAQAccordion.astro';
+import { getLocalizedPath, localizeHtml, type SupportedLang, defaultLang } from '../../i18n/config';
 
 interface Props {
   lang?: SupportedLang;
@@ -13,27 +14,42 @@ const { lang = defaultLang } = Astro.props;
 
 const translations: Record<string, any> = {
   en: {
-    title: "Why Is My Location Wrong? How to Fix It | MyLocationLab",
-    description: "Fix wrong location errors on any device. Why your location shows a different city, and how to resolve ISP, VPN, and Wi-Fi issues.",
+    title: "Why Is My Location Wrong? Complete Fix Guide | MyLocationLab",
+    description: "In short: Wrong location is caused by VPN routing, ISP IP address databases mapped to distant data centers, or stale Wi-Fi router BSSID records. Here is how to fix it.",
     h1: "Why Is My Location Wrong? Complete Troubleshooting Guide",
     subtitle: "Understand the root causes behind inaccurate geolocations, ISP IP routing mismatches, stale Wi-Fi router BSSIDs, and how to fix them.",
-    pIntro1: "Have you opened a website or app only to find it believes you are hundreds of miles away in another city, state, or even country?",
-    pIntro2: "'Wrong location' issues are among the most frequent technical problems web users encounter. Because modern devices determine location through GPS, cell towers, Wi-Fi databases, and IP routing, a single outdated signal can distort your position.",
+    
+    inShort: "In short: Your device displays the wrong location when an active VPN tunnels your connection through a distant server, when your Internet Service Provider assigns an IP block registered to a regional data hub 5 to 50 km away, or when global databases associate your Wi-Fi router's MAC address with its previous physical location.",
+
+    takeawaysTitle: "Key Takeaways",
+    takeaways: [
+      "Desktop computers lack satellite GPS chips and rely on ISP IP databases, which routinely misplace users by 5 to 50 km.",
+      "VPNs encrypt and route traffic through remote servers, completely masking your true IP geolocation.",
+      "Moving a Wi-Fi router carries its old physical location in global BSSID databases until updated by smartphone scans.",
+      "Browser permission settings frequently default to 'Approximate Location', enforcing an artificial 2 to 5 km fuzzing radius.",
+      "You can compare your network routing against hardware sensors by testing your live fix."
+    ],
+
+    pIntro1: "Have you opened a website or app only to find it believes you are hundreds of miles away in another city, state, or even country? Testing your connection with our <a href='/my-location/ip/'>My IP Location tool</a> can immediately reveal which network hub is being detected.",
+    pIntro2: "Wrong location issues are among the most frequent technical problems web users encounter. Because modern devices determine location through GPS, cell towers, Wi-Fi databases, and IP routing, a single outdated signal can distort your position. Learn how hardware and network methods differ in our guide to <a href='/comparisons/gps-vs-ip-location/'>GPS vs IP Location</a>.",
+
     calloutBadge: "🔍 Real-Time Diagnosis",
     calloutTitle: "Compare Your GPS vs IP Geolocation",
     calloutDesc: "Check what location your browser returns compared to your external IP address to identify whether the issue is hardware-related or network-based.",
     calloutBtn: "Check IP Location →",
+
     h2Reasons: "1. The 5 Most Common Reasons Your Location Is Wrong",
     r1Title: "Active VPN or Corporate Proxy Tunneling",
-    r1Desc: "If you have an active VPN or proxy, your traffic exits through a remote data center. Websites performing IP lookups will see the data center's city rather than your physical coordinates.",
+    r1Desc: "If you have an active VPN or proxy, your traffic exits through a remote data center. Websites performing IP lookups will see the data center's city rather than your physical coordinates. For more on network precision, read our analysis of <a href='/guides/ip-geolocation-accuracy/'>IP geolocation accuracy and limits</a>.",
     r2Title: "Desktop Computer Lacking Hardware GPS",
-    r2Desc: "Desktop PCs and wired laptops lack satellite GPS chips. They rely entirely on ISP IP databases, which only map IP blocks to the nearest telecom distribution center—often 20 to 100 miles away.",
+    r2Desc: "Desktop PCs and wired workstations lack satellite GPS chips. They rely entirely on ISP IP databases, which only map IP blocks to the nearest telecom distribution center—often 5 to 50 km away. To inspect your satellite antenna instead, visit <a href='/my-location/gps/'>My GPS Location</a>.",
     r3Title: "Stale Wi-Fi Router BSSID Databases (Moved Routers)",
-    r3Desc: "When you move homes or buy a used Wi-Fi router, location databases still associate your router's MAC address (BSSID) with its old location until refreshed by nearby smartphone scans.",
+    r3Desc: "When you move homes or buy a used Wi-Fi router, global positioning databases still associate your router's MAC address (<a href='/glossary/#bssid'>BSSID</a>) with its old physical address until refreshed by nearby smartphone scans.",
     r4Title: "'Approximate Location' Permission Enabled",
-    r4Desc: "iOS and Android browsers default to 'Approximate Location' if precise permissions are declined, creating a deliberate 2 to 5 kilometer offset.",
-    r5Title: "Multipath Reflection in Dense Urban Areas",
-    r5Desc: "In downtown city centers with skyscrapers, satellite signals bounce off glass and concrete surfaces, introducing transit delays that shift your pin by 50–200 meters.",
+    r4Desc: "iOS and Android browsers default to 'Approximate Location' if precise permissions are declined, creating a deliberate 2 to 5 kilometer offset. Follow our steps in <a href='/guides/improve-gps-accuracy/'>How to Improve GPS Accuracy</a> to restore meter-level precision.",
+    r5Title: "Multipath Reflection or Location Mocking",
+    r5Desc: "In dense urban centers, radio reflections can shift positions by 50 to 200 meters. Alternatively, testing tools may have active mock providers; learn more in our guide on <a href='/guides/how-to-fake-or-mock-location/'>how to fake or mock location</a>.",
+
     h2Fixes: "2. Step-by-Step Fixes by Device and Platform",
     h3Chrome: "Fixing on Google Chrome (Desktop & Mobile)",
     cStep1: "1. Click the tune/padlock icon on the left of the address bar.",
@@ -49,318 +65,611 @@ const translations: Record<string, any> = {
     wStep1: "1. Open Windows Settings > Privacy & security > Location.",
     wStep2: "2. Enable Location services and 'Let desktop apps access your location'.",
     wStep3: "3. Set your default location under 'Default location' if your PC has no GPS card.",
+
     h2Router: "3. How to Force-Refresh a Relocated Wi-Fi Router",
     pRouter1: "If you recently moved residences and your Wi-Fi network still places your devices at your previous home:",
-    pRouter2: "Connect an Android phone or iPhone to your Wi-Fi network, walk outside with a clear sky view, open Google Maps or Apple Maps, and wait 5–10 minutes with a strong GPS lock. The phone will passively upload the new BSSID + GPS pairing to global location databases (updates within 48–72 hours).",
+    pRouter2: "Connect an Android phone or iPhone to your Wi-Fi network, walk outside with a clear sky view, open Google Maps or Apple Maps, and wait 5–10 minutes with a strong GPS lock. The phone will passively upload the new BSSID + GPS pairing to global location databases (typically updating within 48 to 72 hours).",
+
+    workedExampleTitle: "Real-World Troubleshooting Example: The Moved Wi-Fi Router",
+    workedExampleIntro: "Scenario: A family moves from Chicago to Denver, taking their existing Wi-Fi router. Every laptop connected to the Wi-Fi in Denver reports their weather and local news as Chicago.",
+    workedExampleStep1: "Step 1: Identify the source. Mobile phones on cellular report Denver, but laptops on Wi-Fi report Chicago.",
+    workedExampleStep2: "Step 2: Diagnosis. The router's BSSID (MAC address) is cached in global Wi-Fi location databases associated with the old Chicago street address.",
+    workedExampleStep3: "Step 3: Solution. An Android phone connected to the Wi-Fi is used outdoors for 10 minutes with active GPS location enabled.",
+    workedExampleStep4: "Step 4: Verification. Within 48 hours, Google Location Services updates the BSSID record, and all home laptops immediately resolve to Denver.",
+
+    commonMistakesTitle: "Common Mistakes When Troubleshooting Location",
+    commonMistakes: [
+      { mistake: "Assuming web servers can read GPS without permission", explanation: "Browsers strictly forbid hardware sensor access unless you click Allow on the permission prompt." },
+      { mistake: "Forgetting an active corporate VPN", explanation: "Work laptops frequently tunnel background traffic through remote company gateways in different states or countries." },
+      { mistake: "Clearing browser cache instead of resetting permissions", explanation: "Location is governed by per-origin site permissions and network IP routing, not temporary browser cookies or cache files." }
+    ],
+
+    faqs: [
+      { question: "Why does my location show an entirely different country?", answer: "An active VPN tunnel, corporate proxy, or privacy-oriented browser extension (like iCloud Private Relay or Tor) routes your connection through an exit node located in another country." },
+      { question: "Why does my desktop PC say I am 30 miles away?", answer: "Desktop computers do not have satellite GPS antennas. They rely solely on your ISP's public IP address, which points to your regional internet exchange point or central gateway." },
+      { question: "Can I manually set my location in my web browser?", answer: "Yes. In Chromium browsers (Chrome, Edge, Brave), open Developer Tools (F12) > More tools > Sensors, and choose 'Location' to override your latitude and longitude coordinates for testing." }
+    ],
+
+    nextStepsTitle: "Next Steps",
+    nextSteps: [
+      { title: "Check Your IP Geolocation", href: "/my-location/ip/", desc: "Inspect what city, ISP, and network routing hub your connection displays to the world." },
+      { title: "Improve GPS Accuracy", href: "/guides/improve-gps-accuracy/", desc: "Learn how to optimize hardware sensors and eliminate satellite multipath errors." },
+      { title: "GPS vs IP Location Guide", href: "/comparisons/gps-vs-ip-location/", desc: "Explore the technical differences between satellite trilateration and GeoIP tables." }
+    ],
+
     connectedGuides: "🔗 Connected Guides & Diagnostics",
     tool1Title: "Improve GPS Accuracy",
     tool1Desc: "Hardware & sensor calibration",
     tool2Title: "IP Geolocation Accuracy",
     tool2Desc: "How GeoIP databases work",
     tool3Title: "GPS vs IP Geolocation",
-    tool3Desc: "Why IP can be 50 miles off",
-    tool4Title: "GPS Coordinates Finder",
-    tool4Desc: "Direct satellite coordinate lock"
+    tool3Desc: "Satellite vs network lookup",
+    tool4Title: "My IP Location",
+    tool4Desc: "Inspect network gateway"
   },
   es: {
-    title: "¿Por qué Mi Ubicación es Errónea? Soluciones | MyLocationLab",
-    description: "Solucione errores de ubicación en cualquier dispositivo. Descubra por qué aparece otra ciudad y cómo resolver problemas de ISP, VPN y Wi-Fi.",
-    h1: "¿Por qué mi ubicación es errónea? Guía Completa de Soluciones",
-    subtitle: "Comprenda las causas de geolocalizaciones incorrectas, desvíos de IP del proveedor, routers Wi-Fi trasladados y cómo corregirlos.",
-    pIntro1: "¿Alguna vez ha abierto una web o aplicación y ha descubierto que le sitúa a cientos de kilómetros de distancia en otra ciudad o provincia?",
-    pIntro2: "Los fallos de 'ubicación incorrecta' se encuentran entre los problemas técnicos más comunes en la red. Dado que los dispositivos combinan GPS, antenas celulares, bases de datos Wi-Fi y tablas de IP, una sola fuente desactualizada puede desviar su posición.",
-    calloutBadge: "🔍 Diagnóstico en Tiempo Real",
-    calloutTitle: "Compare su Posición GPS vs. Ubicación por IP",
-    calloutDesc: "Verifique la discrepancia entre el navegador y su dirección IP pública para identificar si el fallo es de hardware o de red.",
+    title: "¿Por Qué Mi Ubicación Es Incorrecta? Guía Completa | MyLocationLab",
+    description: "En resumen: La ubicación incorrecta se debe al enrutamiento de VPN, bases de datos IP de proveedores asignadas a centrales lejanas o cachés de rúters Wi-Fi antiguos.",
+    h1: "¿Por Qué Mi Ubicación Es Incorrecta? Guía Completa de Solución",
+    subtitle: "Comprenda las causas de geolocalizaciones erróneas, desajustes de IP de operadoras, BSSID de rúters antiguos y cómo corregirlos.",
+    
+    inShort: "En resumen: Su dispositivo muestra una ubicación incorrecta cuando una VPN activa desvía la conexión a otra ciudad, cuando su proveedor (ISP) asigna una IP vinculada a un nodo central a 5-50 km, o cuando las bases de datos recuerdan la dirección antigua de su rúter Wi-Fi.",
+
+    takeawaysTitle: "Puntos Clave",
+    takeaways: [
+      "Los ordenadores de sobremesa no tienen GPS y dependen de bases IP, con desajustes típicos de 5 a 50 km.",
+      "Las VPN desvían el tráfico por servidores remotos, enmascarando su ubicación real.",
+      "Mover un rúter traslada su dirección antigua en bases de datos BSSID hasta que se actualice.",
+      "Los permisos en modo 'Ubicación Aproximada' añaden un margen forzado de 2 a 5 km por privacidad.",
+      "Puede comparar su IP con la antena física para diagnosticar la causa exacta."
+    ],
+
+    pIntro1: "Comprobar su conexión en <a href='/my-location/ip/'>Mi Ubicación IP</a> permite identificar de inmediato qué centralita o nodo de red está detectando el navegador.",
+    pIntro2: "Los errores de ubicación son de los problemas técnicos más frecuentes. Los dispositivos combinan GPS, antenas de telefonía y enrutamiento IP. Revise las diferencias técnicas en nuestra guía de <a href='/comparisons/gps-vs-ip-location/'>GPS vs Ubicación IP</a>.",
+
+    calloutBadge: "🔍 Diagnóstico en Vivo",
+    calloutTitle: "Compare su GPS con su Ubicación IP",
+    calloutDesc: "Compruebe qué posición devuelve el navegador frente a su IP externa para averiguar si el problema es de hardware o de red.",
     calloutBtn: "Comprobar Ubicación IP →",
-    h2Reasons: "1. Las 5 Causas Más Frecuentes de Ubicaciones Erróneas",
+
+    h2Reasons: "1. Las 5 Causas Más Comunes de Ubicación Incorrecta",
     r1Title: "VPN Activa o Proxy Corporativo",
-    r1Desc: "Si utiliza una VPN o proxy, su tráfico sale a través de un centro de datos remoto. Las páginas web ven la ciudad del servidor VPN en vez de sus coordenadas físicas.",
-    r2Title: "Ordenador de Escritorio sin Antena GPS",
-    r2Desc: "Los PCs de sobremesa carecen de receptor satelital GPS. Dependen 100% de bases de datos IP de proveedores, que solo localizan la central comarcal más cercana (a 20-80 km).",
-    r3Title: "Bases de Datos BSSID de Routers Wi-Fi Trasladados",
-    r3Desc: "Al mudarse de domicilio o comprar un router Wi-Fi de segunda mano, las bases de Apple y Google asocian la MAC (BSSID) con la casa anterior hasta que se actualicen.",
+    r1Desc: "Si utiliza VPN, su conexión sale por un centro de datos lejano. Las páginas leerán la ciudad de ese servidor. Para más detalles, lea sobre <a href='/guides/ip-geolocation-accuracy/'>precisión de la geolocalización IP</a>.",
+    r2Title: "Ordenador de Escritorio sin Chip GPS",
+    r2Desc: "Los ordenadores fijos carecen de antena satelital y dependen de bases de datos IP vinculadas a centrales comarcales. Para probar satélites, visite <a href='/my-location/gps/'>Mi Ubicación GPS</a>.",
+    r3Title: "Bases de Rúters Wi-Fi Desactualizadas (BSSID)",
+    r3Desc: "Al mudarse de casa, las bases de posicionamiento siguen asociando la MAC (<a href='/glossary/#bssid'>BSSID</a>) del rúter con el domicilio anterior hasta que teléfonos cercanos la actualicen.",
     r4Title: "Permiso de 'Ubicación Aproximada' Activado",
-    r4Desc: "Los navegadores en iOS y Android reducen la precisión a 'Aproximada' (un radio de 2 a 5 km) si no se conceden permisos precisos.",
-    r5Title: "Rebote Multitrayecto en Entornos Urbanos",
-    r5Desc: "En calles rodeadas de edificios altos, las ondas satelitales rebotan en fachadas, sumando retrasos que desplazan su marcador entre 50 y 200 metros.",
+    r4Desc: "Los móviles aplican un desfase deliberado de 2 a 5 km si no autoriza la precisión total. Siga nuestra guía para <a href='/guides/improve-gps-accuracy/'>mejorar la precisión del GPS</a>.",
+    r5Title: "Rebote Multitrayecto o Simulación de Ubicación",
+    r5Desc: "En calles estrechas las señales rebotan. También pueden existir simuladores activos; aprenda más en la guía sobre <a href='/guides/how-to-fake-or-mock-location/'>cómo falsear o simular ubicación</a>.",
+
     h2Fixes: "2. Soluciones Paso a Paso por Dispositivo",
-    h3Chrome: "Solución en Google Chrome (Escritorio y Móvil)",
-    cStep1: "1. Haga clic en el icono del candado a la izquierda de la barra de direcciones.",
-    cStep2: "2. Localice Ubicación y seleccione Permitir.",
-    cStep3: "3. Si estaba bloqueada, elija 'Restablecer permisos' y recargue la página.",
-    cStep4: "4. En Android, verifique en Ajustes > Ubicación que la Precisión de ubicación de Google esté activada.",
-    h3Safari: "Solución en Apple Safari (iOS y macOS)",
-    sStep1: "1. En iPhone: Vaya a Ajustes > Privacidad y Seguridad > Localización.",
-    sStep2: "2. Toque Sitios Web Safari y seleccione 'Al usarse la app'.",
-    sStep3: "3. Asegúrese de que el interruptor 'Ubicación exacta' esté activado.",
-    sStep4: "4. En Mac: Vaya a Ajustes del Sistema > Privacidad y Seguridad > Localización y verifique Safari.",
+    h3Chrome: "Solución en Google Chrome",
+    cStep1: "1. Haga clic en el icono del candado o ajustes a la izquierda de la barra de direcciones.",
+    cStep2: "2. Busque Ubicación y elija Permitir.",
+    cStep3: "3. Si estaba bloqueado, pulse 'Restablecer permisos' y recargue.",
+    cStep4: "4. En Android, verifique que la Precisión de ubicación de Google esté activada.",
+    h3Safari: "Solución en Safari (Apple iOS y Mac)",
+    sStep1: "1. En iPhone: Ajustes > Privacidad y seguridad > Localización.",
+    sStep2: "2. Seleccione Sitios web de Safari y marque 'Al usar la app'.",
+    sStep3: "3. Active el interruptor de 'Ubicación precisa'.",
+    sStep4: "4. En Mac: Ajustes del Sistema > Privacidad > Localización y marque Safari.",
     h3Windows: "Solución en Windows 10 / 11",
-    wStep1: "1. Abra Configuración > Privacidad y seguridad > Ubicación.",
-    wStep2: "2. Active los Servicios de ubicación y el acceso para aplicaciones de escritorio.",
-    wStep3: "3. Fije una 'Ubicación predeterminada' si su PC no tiene Wi-Fi ni tarjeta GPS.",
-    h2Router: "3. Cómo Forzar la Actualización de un Router Wi-Fi Trasladado",
-    pRouter1: "Si se ha mudado recientemente y su Wi-Fi sigue ubicándole en su domicilio anterior:",
-    pRouter2: "Conecte un móvil con GPS activo a su red Wi-Fi, salga al exterior con vista clara del cielo, abra Google Maps o Apple Maps y espere 5-10 minutos con señal fija. El teléfono registrará el BSSID junto a las nuevas coordenadas y actualizará las bases globales en 48-72 horas.",
+    wStep1: "1. Configuración > Privacidad y seguridad > Ubicación.",
+    wStep2: "2. Active los servicios de ubicación y el acceso de aplicaciones.",
+    wStep3: "3. Defina su ubicación predeterminada si su PC no tiene tarjeta GPS.",
+
+    h2Router: "3. Cómo Actualizar la Posición de un Rúter Trasladado",
+    pRouter1: "Si se mudó recientemente y su red Wi-Fi sigue ubicándole en su casa antigua:",
+    pRouter2: "Conecte un teléfono móvil a la red Wi-Fi, salga al exterior con visión despejada del cielo, abra Google Maps o Apple Maps y espere de 5 a 10 minutos con el GPS bloqueado. El teléfono subirá el nuevo emparejamiento BSSID + GPS a las bases mundiales (se actualiza en 48-72 horas).",
+
+    workedExampleTitle: "Ejemplo Real: El Rúter Trasladado de Ciudad",
+    workedExampleIntro: "Caso: Una persona se muda de Valencia a Madrid llevando su rúter Wi-Fi. Todos los portátiles conectados marcan el tiempo y noticias de Valencia.",
+    workedExampleStep1: "Paso 1: Identificación. Los móviles con datos marcan Madrid; los portátiles por Wi-Fi marcan Valencia.",
+    workedExampleStep2: "Paso 2: Diagnóstico. La dirección BSSID del rúter sigue registrada en Valencia.",
+    workedExampleStep3: "Paso 3: Solución. Se conecta un móvil Android al Wi-Fi en el balcón durante 10 minutos con GPS activo.",
+    workedExampleStep4: "Paso 4: Resultado. A las 48 horas las bases mundiales actualizan el rúter y los portátiles marcan Madrid.",
+
+    commonMistakesTitle: "Errores Comunes al Diagnosticar Ubicación",
+    commonMistakes: [
+      { mistake: "Creer que las webs leen el GPS sin permiso", explanation: "Los navegadores prohíben por completo acceder a los sensores si el usuario no pulsa Permitir." },
+      { mistake: "Olvidar que la VPN del trabajo sigue conectada", explanation: "Las VPN corporativas dirigen el tráfico por la sede central de la empresa en otra región." },
+      { mistake: "Borrar el historial en vez de revisar permisos", explanation: "La ubicación depende de los permisos del sitio web y del enrutamiento IP, no de las cookies." }
+    ],
+
+    faqs: [
+      { question: "¿Por qué mi ubicación muestra un país completamente diferente?", answer: "Una VPN activa, un proxy corporativo o un servicio como iCloud Private Relay canalizan su conexión a través de un nodo de salida en el extranjero." },
+      { question: "¿Por qué mi ordenador marca una ciudad a 40 km?", answer: "Los PC fijos no tienen antena GPS y se geolocalizan por la IP pública asignada por su operadora en el nodo regional más cercano." },
+      { question: "¿Puedo falsear manualmente las coordenadas en mi navegador?", answer: "Sí. En Chrome o Edge presione F12 para abrir Herramientas de desarrollo > Más herramientas > Sensores, y anule manualmente la latitud y longitud." }
+    ],
+
+    nextStepsTitle: "Siguientes Pasos",
+    nextSteps: [
+      { title: "Verificar Geolocalización IP", href: "/my-location/ip/", desc: "Inspeccione qué ciudad, proveedor y nodo de red muestra su conexión." },
+      { title: "Mejorar la Precisión GPS", href: "/guides/improve-gps-accuracy/", desc: "Aprenda a calibrar sensores y eliminar rebotes satelitales." },
+      { title: "Guía GPS vs Ubicación IP", href: "/comparisons/gps-vs-ip-location/", desc: "Conozca las diferencias entre satélites orbitales y bases de datos GeoIP." }
+    ],
+
     connectedGuides: "🔗 Guías y Diagnósticos Conectados",
     tool1Title: "Mejorar Precisión GPS",
-    tool1Desc: "Calibración de hardware y sensores",
-    tool2Title: "Precisión de la IP",
-    tool2Desc: "Cómo operan las bases GeoIP",
-    tool3Title: "GPS vs Geolocalización IP",
-    tool3Desc: "Por qué la IP falla por 50 km",
-    tool4Title: "Buscador de Coordenadas",
-    tool4Desc: "Fijación directa por satélites"
+    tool1Desc: "Calibración de hardware",
+    tool2Title: "Precisión IP",
+    tool2Desc: "Bases de datos GeoIP",
+    tool3Title: "GPS vs Ubicación IP",
+    tool3Desc: "Diferencias técnicas",
+    tool4Title: "Mi Ubicación IP",
+    tool4Desc: "Inspeccionar nodo de red"
   },
   fr: {
-    title: "Pourquoi ma Position est Fausse ? Solutions | MyLocationLab",
-    description: "Corrigez les erreurs de localisation. Pourquoi votre position affiche une autre ville et comment résoudre les soucis de FAI, VPN et Wi-Fi.",
-    h1: "Pourquoi ma position est-elle fausse ? Guide de Dépannage",
-    subtitle: "Causes techniques des erreurs de géolocalisation, décalages IP des FAI, routeurs Wi-Fi déplacés et solutions concrètes.",
-    pIntro1: "Vous est-il déjà arrivé d'ouvrir un site web pour constater qu'il vous situe à des centaines de kilomètres dans une autre ville ?",
-    pIntro2: "Les anomalies de 'position erronée' figurent parmi les plus courantes sur le web. Les terminaux combinant puces GPS, antennes relais, réseaux Wi-Fi et bases GeoIP, une seule référence obsolète fausse le résultat.",
-    calloutBadge: "🔍 Diagnostic en Temps Réel",
-    calloutTitle: "Comparez votre GPS et votre IP Publique",
-    calloutDesc: "Visualisez l'écart entre le point relevé par le navigateur et votre adresse IP pour cerner si le souci vient du matériel ou du réseau.",
-    calloutBtn: "Tester la Position IP →",
-    h2Reasons: "1. Les 5 Causes Majeures d'une Mauvaise Localisation",
-    r1Title: "VPN Actif ou Proxy d'Entreprise",
-    r1Desc: "Si vous utilisez un VPN ou un relais privé, vos paquets transitent par un centre de données distant. Les sites web visualisent la ville du serveur VPN au lieu de votre emplacement réel.",
-    r2Title: "Ordinateur de Bureau Sans Puce GPS",
-    r2Desc: "Les PC fixes et stations de travail ne possèdent pas de récepteur GPS. Ils dépendent exclusivement des bases IP qui pointent vers le concentrateur régional du FAI (décalage de 20 à 80 km).",
-    r3Title: "Base Wi-Fi BSSID Obsolète (Déménagement de Box)",
-    r3Desc: "En déménageant votre box Wi-Fi, les référentiels d'Apple et Google continuent d'associer son adresse MAC (BSSID) à votre ancien logement jusqu'à actualisation.",
-    r4Title: "Permission 'Position Approximative' Active",
-    r4Desc: "Les navigateurs mobiles basculent par défaut en mode 'Position Approximative' (flou volontaire de 2 à 5 km) lorsque l'accès précis est refusé.",
-    r5Title: "Réflexion Multitrajet en Milieu Urbain",
-    r5Desc: "Entre des immeubles hauts, les ondes satellitaires ricochent sur le verre et le béton, décalant le curseur de 50 à 200 mètres.",
-    h2Fixes: "2. Procédures de Résolution par Appareil",
-    h3Chrome: "Résolution sur Google Chrome (PC & Mobile)",
-    cStep1: "1. Cliquez sur l'icône de cadenas à gauche de la barre d'adresse.",
-    cStep2: "2. Réglez l'autorisation Position sur Autoriser.",
-    cStep3: "3. Si l'accès était bloqué, réinitialisez les autorisations et rechargez.",
-    cStep4: "4. Sur smartphone Android, vérifiez que la Précision de la localisation Google est active.",
-    h3Safari: "Résolution sur Apple Safari (iOS & macOS)",
-    sStep1: "1. Sur iPhone : Réglages > Confidentialité et sécurité > Service de localisation.",
-    sStep2: "2. Choisissez Sites web Safari puis 'Lorsque l'app est active'.",
-    sStep3: "3. Activez l'option 'Position exacte'.",
-    sStep4: "4. Sur Mac : Réglages Système > Confidentialité et sécurité > Service de localisation.",
+    title: "Pourquoi Ma Position Est Fausse ? Guide | MyLocationLab",
+    description: "En bref : Une position erronée s'explique par un VPN actif, une adresse IP routée vers un centre FAI distant ou un ancien enregistrement Wi-Fi BSSID.",
+    h1: "Pourquoi Ma Position Est Fausse ? Guide de Dépannage",
+    subtitle: "Comprenez les causes des anomalies de géolocalisation, des décalages IP et des mémoires de box Wi-Fi.",
+    
+    inShort: "En bref : Votre appareil affiche une position inexacte lorsqu'un VPN achemine vos paquets vers un serveur distant, lorsque votre FAI attribue une adresse IP reliée à un concentrateur situé à 5-50 km, ou lorsque les bases mondiales conservent l'ancienne adresse de votre box Wi-Fi.",
+
+    takeawaysTitle: "Points Clés",
+    takeaways: [
+      "Les ordinateurs de bureau sans puce GPS dépendent des tables IP, avec un décalage habituel de 5 à 50 km.",
+      "Un VPN masque totalement votre adresse IP réelle au profit de celle du serveur distant.",
+      "Déménager une box Wi-Fi déplace son adresse BSSID obsolète dans les bases jusqu'à réactualisation.",
+      "L'option 'Position approximative' crée volontairement un flou de 2 à 5 km pour protéger la vie privée.",
+      "Comparer l'IP et les coordonnées satellites permet de cerner la source de l'erreur."
+    ],
+
+    pIntro1: "Vérifier votre réseau sur <a href='/my-location/ip/'>Ma Position IP</a> permet de découvrir instantanément quel nœud FAI est identifié par les sites web.",
+    pIntro2: "Les anomalies de localisation figurent parmi les pannes web les plus courantes. Les appareils combinent GPS, relais 4G et IP. Découvrez les aspects techniques dans notre guide <a href='/comparisons/gps-vs-ip-location/'>GPS vs Localisation IP</a>.",
+
+    calloutBadge: "🔍 Diagnostic en Direct",
+    calloutTitle: "Comparez votre GPS et votre IP",
+    calloutDesc: "Identifiez si le dysfonctionnement provient de votre matériel satellite ou du routage réseau.",
+    calloutBtn: "Vérifier la Localisation IP →",
+
+    h2Reasons: "1. Les 5 Raisons Fréquentes d'une Position Erronée",
+    r1Title: "Tunnel VPN ou Proxy d'Entreprise",
+    r1Desc: "Un VPN fait sortir vos connexions par un centre de données distant. Pour en savoir plus, consultez notre étude sur <a href='/guides/ip-geolocation-accuracy/'>la précision de la géolocalisation IP</a>.",
+    r2Title: "Ordinateur Fixe Dépourvu de Puce GPS",
+    r2Desc: "Les PC de bureau n'ont pas d'antenne satellite et dépendent du FAI. Pour tester un vrai récepteur orbital, utilisez <a href='/my-location/gps/'>Ma Position GPS</a>.",
+    r3Title: "Base de Données BSSID Wi-Fi Obsolète",
+    r3Desc: "Lors d'un déménagement, les registres associent l'adresse MAC (<a href='/glossary/#bssid'>BSSID</a>) de la box à l'ancien logement jusqu'au prochain scan participatif.",
+    r4Title: "Autorisation 'Position Approximative' Active",
+    r4Desc: "Les systèmes d'exploitation appliquent un décalage de 2 à 5 km. Suivez notre guide pour <a href='/guides/improve-gps-accuracy/'>améliorer la précision GPS</a>.",
+    r5Title: "Réflexions Urbaines ou Faux Signaux",
+    r5Desc: "Les façades vitrées dévient les ondes. Des utilitaires de simulation peuvent aussi être actifs ; lisez notre guide pour <a href='/guides/how-to-fake-or-mock-location/'>simuler ou modifier sa position</a>.",
+
+    h2Fixes: "2. Solutions Étape par Étape par Plateforme",
+    h3Chrome: "Résolution sur Google Chrome",
+    cStep1: "1. Cliquez sur l'icône de réglages à gauche de l'URL.",
+    cStep2: "2. Réglez Position sur Autoriser.",
+    cStep3: "3. Cliquez sur Réinitialiser les autorisations si nécessaire.",
+    cStep4: "4. Sur Android, activez la précision de localisation Google.",
+    h3Safari: "Résolution sur Safari (iOS et macOS)",
+    sStep1: "1. Sur iPhone : Réglages > Confidentialité > Service de localisation.",
+    sStep2: "2. Sélectionnez Sites Safari et choisissez 'Lorsque l'app est active'.",
+    sStep3: "3. Cochez l'interrupteur 'Position exacte'.",
+    sStep4: "4. Sur Mac : Réglages Système > Confidentialité > Localisation.",
     h3Windows: "Résolution sur Windows 10 / 11",
-    wStep1: "1. Ouvrez Paramètres > Confidentialité et sécurité > Emplacement.",
-    wStep2: "2. Activez les Services d'emplacement pour les applications de bureau.",
-    wStep3: "3. Configurez un emplacement par défaut si votre PC n'a ni Wi-Fi ni GPS.",
-    h2Router: "3. Comment Réactualiser l'Emplacement d'une Box Déplacée",
-    pRouter1: "Si après un déménagement votre box Wi-Fi continue de vous situer à votre ancienne adresse :",
-    pRouter2: "Connectez un smartphone avec GPS actif à votre Wi-Fi, sortez sous ciel dégagé, ouvrez Google Maps et maintenez un pointage GPS stable pendant 10 minutes. Le téléphone transmettra passivement la nouvelle association BSSID/GPS (mise à jour sous 48 à 72 h).",
-    connectedGuides: "🔗 Guides & Outils Liés",
-    tool1Title: "Améliorer la Précision GPS",
-    tool1Desc: "Étalonnage capteurs et matériel",
-    tool2Title: "Précision de l'IP",
-    tool2Desc: "Fonctionnement des bases GeoIP",
-    tool3Title: "GPS vs Géolocalisation IP",
-    tool3Desc: "Pourquoi l'IP dévie de 50 km",
-    tool4Title: "Coordonnées GPS",
-    tool4Desc: "Signal satellite direct"
+    wStep1: "1. Paramètres > Confidentialité et sécurité > Emplacement.",
+    wStep2: "2. Activez les services de localisation.",
+    wStep3: "3. Définissez un emplacement par défaut si le PC n'a pas de GPS.",
+
+    h2Router: "3. Forcer la Mise à Jour d'une Box Wi-Fi Déplacée",
+    pRouter1: "Si votre réseau Wi-Fi vous localise toujours à votre ancienne adresse :",
+    pRouter2: "Connectez un smartphone à votre box, sortez dehors sous un ciel dégagé, ouvrez Google Maps ou Plans pendant 5 à 10 minutes avec un signal GPS actif. Le téléphone transmettra la nouvelle correspondance BSSID + GPS aux bases mondiales (délai de 48 à 72 h).",
+
+    workedExampleTitle: "Exemple Concret : La Box Wi-Fi Déménagée",
+    workedExampleIntro: "Scénario : Une personne emménage de Lyon à Marseille avec sa box. Tous les PC connectés affichent la météo de Lyon.",
+    workedExampleStep1: "Étape 1 : Constat. Les téléphones en 4G affichent Marseille, mais les PC en Wi-Fi indiquent Lyon.",
+    workedExampleStep2: "Étape 2 : Origine. Le BSSID de la box est toujours répertorié à Lyon.",
+    workedExampleStep3: "Étape 3 : Action. Un smartphone Android connecté en Wi-Fi est utilisé dehors 10 min avec le GPS.",
+    workedExampleStep4: "Étape 4 : Résultat. En 48 heures, les services mettent à jour l'entrée et les PC indiquent Marseille.",
+
+    commonMistakesTitle: "Erreurs Fréquentes de Diagnostic",
+    commonMistakes: [
+      { mistake: "Penser qu'un site lit le GPS sans autorisation", explanation: "Les navigateurs bloquent strictement les coordonnées tant qu'on n'a pas cliqué sur Autoriser." },
+      { mistake: "Oublier le VPN de télétravail", explanation: "Les connexions professionnelles transitent par les serveurs centraux de l'entreprise situés ailleurs." },
+      { mistake: "Vider le cache web au lieu des autorisations", explanation: "La géolocalisation dépend des droits accordés au domaine et du réseau IP, pas des cookies." }
+    ],
+
+    faqs: [
+      { question: "Pourquoi suis-je localisé dans un pays étranger ?", answer: "Un VPN actif, un proxy ou un relais privé achemine votre trafic via un serveur situé à l'étranger." },
+      { question: "Pourquoi mon ordinateur se trompe-t-il de 40 km ?", answer: "Les ordinateurs fixes n'ont pas de GPS satellite et s'appuient sur l'adresse IP publique fournie par le FAI au nœud régional le plus proche." },
+      { question: "Puis-je forcer manuellement mes coordonnées sur le navigateur ?", answer: "Oui. Dans Chrome ou Edge, appuyez sur F12 > Plus d'outils > Capteurs, puis saisissez manuellement la latitude et la longitude souhaitées." }
+    ],
+
+    nextStepsTitle: "Étapes Suivantes",
+    nextSteps: [
+      { title: "Vérifier la Géolocalisation IP", href: "/my-location/ip/", desc: "Inspectez votre IP publique, votre FAI et la commune détectée." },
+      { title: "Améliorer la Précision GPS", href: "/guides/improve-gps-accuracy/", desc: "Calibrez vos capteurs et réduisez les erreurs de réflexion." },
+      { title: "Guide GPS vs Localisation IP", href: "/comparisons/gps-vs-ip-location/", desc: "Comprenez les divergences entre satellites et routage réseau." }
+    ],
+
+    connectedGuides: "🔗 Guides et Outils Associés",
+    tool1Title: "Améliorer Précision GPS",
+    tool1Desc: "Calibrage matériel",
+    tool2Title: "Précision IP",
+    tool2Desc: "Fonctionnement GeoIP",
+    tool3Title: "GPS vs Localisation IP",
+    tool3Desc: "Différences techniques",
+    tool4Title: "Ma Position IP",
+    tool4Desc: "Inspecter passerelle réseau"
   },
   de: {
-    title: "Warum ist mein Standort falsch? Lösungen | MyLocationLab",
-    description: "Standortfehler auf jedem Gerät beheben. Warum eine falsche Stadt angezeigt wird und wie Sie Provider-, VPN- und WLAN-Konflikte lösen.",
-    h1: "Warum ist mein Standort falsch? Vollständiger Problemlöser",
-    subtitle: "Hintergründe fehlerhafter Geodaten, Provider-IP-Routings, umgezogener WLAN-Router und konkrete Lösungsansätze.",
-    pIntro1: "Haben Sie schon einmal eine Website geöffnet und festgestellt, dass Sie hunderte Kilometer entfernt in einer völlig anderen Stadt verortet werden?",
-    pIntro2: "Standortfehler gehören zu den häufigsten Ärgernissen im Web. Da Endgeräte GPS, Mobilfunkmasten, WLAN-BSSIDs und GeoIP-Tabellen kombinieren, führt schon ein einzelner veralteter Parameter zu groben Abweichungen.",
-    calloutBadge: "🔍 Echtzeit-Diagnose",
-    calloutTitle: "Live-Vergleich: GPS vs. IP-Netzwerkortung",
-    calloutDesc: "Vergleichen Sie die Sensor-Daten Ihres Browsers mit Ihrer öffentlichen IP, um festzustellen, ob ein Hardware- oder Netzwerkfehler vorliegt.",
+    title: "Warum ist mein Standort falsch? Anleitung | MyLocationLab",
+    description: "Kurz gesagt: Ein falscher Standort entsteht durch aktive VPNs, IP-Routing über entfernte Provider-Knoten oder veraltete WLAN-Router-BSSID-Einträge.",
+    h1: "Warum ist mein Standort falsch? Leitfaden zur Fehlerbehebung",
+    subtitle: "Ursachen für fehlerhafte Geolokalisierung, Provider-IP-Abweichungen und veraltete WLAN-Caches verstehen und beheben.",
+    
+    inShort: "Kurz gesagt: Ihr Gerät zeigt einen falschen Standort an, wenn ein aktives VPN Ihren Datenverkehr über einen entfernten Server leitet, Ihr Provider eine IP-Adresse aus einem 5 bis 50 km entfernten Rechenzentrum zuweist oder globale Datenbanken noch die alte Adresse Ihres WLAN-Routers gespeichert haben.",
+
+    takeawaysTitle: "Zentrale Erkenntnisse",
+    takeaways: [
+      "Desktop-PCs ohne GPS-Hardware nutzen IP-Datenbanken mit typischen Abweichungen von 5 bis 50 km.",
+      "Ein aktives VPN leitet den Datenverkehr um und verfälscht die IP-Geolokalisierung vollständig.",
+      "Nach einem Umzug verbleibt die alte Adresse des Routers in weltweiten BSSID-Datenbanken.",
+      "Die Berechtigung 'Ungefährer Standort' erzwingt aus Datenschutzgründen einen Versatz von 2 bis 5 km.",
+      "Ein Abgleich zwischen IP und Hardware-Fix grenzt den Fehler schnell ein."
+    ],
+
+    pIntro1: "Mit unserem Werkzeug <a href='/my-location/ip/'>Mein IP-Standort</a> sehen Sie sofort, welcher Netzknoten von Webseiten erkannt wird.",
+    pIntro2: "Standortfehler gehören zu den häufigsten Problemen im Web. Geräte kombinieren Satelliten, Funkzellen und IP-Routen. Erfahren Sie mehr über die technischen Unterschiede im Leitfaden <a href='/comparisons/gps-vs-ip-location/'>GPS vs. IP-Ortung</a>.",
+
+    calloutBadge: "🔍 Live-Diagnose",
+    calloutTitle: "GPS- vs. IP-Standort vergleichen",
+    calloutDesc: "Prüfen Sie, ob das Problem durch Hardware-Sensoren oder Netzwerk-Routing verursacht wird.",
     calloutBtn: "IP-Standort prüfen →",
-    h2Reasons: "1. Die 5 häufigsten Ursachen für falsche Standortdaten",
+
+    h2Reasons: "1. Die 5 häufigsten Ursachen für falsche Standorte",
     r1Title: "Aktives VPN oder Firmen-Proxy",
-    r1Desc: "Bei aktiver VPN-Verbindung läuft der Datenverkehr über ein entferntes Rechenzentrum. Webdienste sehen den Standort des VPN-Servers statt Ihrer echten Koordinaten.",
-    r2Title: "Stationärer PC ohne GPS-Empfänger",
-    r2Desc: "Desktop-Rechner besitzen keine Satelliten-Chips. Sie werden über Provider-Datenbanken lokalisiert, die IP-Blöcke nur dem regionalen Einwahlknoten (oft 20–80 km entfernt) zuordnen.",
-    r3Title: "Veraltete BSSID-Datenbanken (Umgezogene Router)",
-    r3Desc: "Nach einem Umzug verknüpfen Google und Apple die MAC-Adresse (BSSID) Ihres WLAN-Routers noch mit der alten Adresse, bis Mobilgeräte neue Daten einspeisen.",
-    r4Title: "'Ungenaue Standortermittlung' aktiv",
-    r4Desc: "Browser in iOS und Android drosseln die Ortung auf 2 bis 5 km Umkreis, wenn präzise Standortrechte verweigert wurden.",
-    r5Title: "Mehrwegeffekte in dichten Häuserschluchten",
-    r5Desc: "In Straßenschluchten reflektieren Glasfassaden die Satellitensignale, was zu Abweichungen von 50 bis 200 Metern führt.",
-    h2Fixes: "2. Schritt-für-Schritt-Anleitung zur Fehlerbehebung",
+    r1Desc: "Bei aktivem VPN verlassen Ihre Daten das Internet an einem entfernten Serverstandort. Details dazu finden Sie in unserer Analyse zu <a href='/guides/ip-geolocation-accuracy/'>Genauigkeit und Grenzen der IP-Ortung</a>.",
+    r2Title: "Desktop-PC ohne GPS-Empfänger",
+    r2Desc: "Bürorechner besitzen keine Satellitenantenne. Sie verlassen sich auf Einwahlknoten der Provider. Zur Hardwareprüfung siehe <a href='/my-location/gps/'>Mein GPS-Standort</a>.",
+    r3Title: "Veraltete WLAN-Router-Datenbanken (BSSID)",
+    r3Desc: "Nach einem Umzug verknüpfen Geodatenbanken die MAC-Adresse (<a href='/glossary/#bssid'>BSSID</a>) des Routers noch mit der alten Anschrift.",
+    r4Title: "Berechtigung 'Ungefährer Standort' aktiv",
+    r4Desc: "Systeme fügen künstliche Abweichungen von 2 bis 5 km ein. Nutzen Sie unsere Anleitung zu <a href='/guides/improve-gps-accuracy/'>GPS-Genauigkeit verbessern</a>.",
+    r5Title: "Mehrwegeffekte oder Standort-Simulation",
+    r5Desc: "In Straßenschluchten reflektieren Signale. Auch Entwickler-Tools können aktiv sein; mehr dazu im Leitfaden <a href='/guides/how-to-fake-or-mock-location/'>Standort fälschen oder simulieren</a>.",
+
+    h2Fixes: "2. Schritt-für-Schritt-Lösungen je Plattform",
     h3Chrome: "Fehlerbehebung in Google Chrome",
-    cStep1: "1. Klicken Sie auf das Schloss-Symbol links in der Adressleiste.",
-    cStep2: "2. Setzen Sie die Berechtigung für Standort auf Zulassen.",
-    cStep3: "3. War der Zugriff blockiert, Berechtigungen zurücksetzen und Seite neu laden.",
-    cStep4: "4. Auf Android sicherstellen, dass die Google-Standortgenauigkeit aktiv ist.",
-    h3Safari: "Fehlerbehebung in Apple Safari (iOS & macOS)",
+    cStep1: "1. Klicken Sie auf das Schlosssymbol links in der Adressleiste.",
+    cStep2: "2. Stellen Sie Standort auf Zulassen.",
+    cStep3: "3. Klicken Sie bei Bedarf auf Berechtigungen zurücksetzen.",
+    cStep4: "4. Aktivieren Sie unter Android die Google-Standortgenauigkeit.",
+    h3Safari: "Fehlerbehebung in Safari (iOS & Mac)",
     sStep1: "1. Auf dem iPhone: Einstellungen > Datenschutz & Sicherheit > Ortungsdienste.",
-    sStep2: "2. Safari-Websites wählen und 'Beim Verwenden der App' aktivieren.",
-    sStep3: "3. Den Schalter 'Genauer Standort' einschalten.",
-    sStep4: "4. Auf dem Mac: Systemeinstellungen > Datenschutz & Sicherheit > Ortungsdienste prüfen.",
-    h3Windows: "Fehlerbehebung unter Windows 10 / 11",
-    wStep1: "1. Einstellungen > Datenschutz und Sicherheit > Position öffnen.",
-    wStep2: "2. Positionszugriff für Desktop-Apps aktivieren.",
-    wStep3: "3. Einen Standard-Standort festlegen, falls der PC kein WLAN besitzt.",
-    h2Router: "3. Umgezogenen WLAN-Router neu kalibrieren",
-    pRouter1: "Wenn Ihr WLAN-Netzwerk Sie nach einem Wohnungswechsel weiterhin am alten Wohnort verortet:",
-    pRouter2: "Verbinden Sie ein Smartphone mit aktivem GPS mit Ihrem Heim-WLAN, gehen Sie unter freien Himmel, öffnen Sie Google Maps und warten Sie 10 Minuten bei stabiler Satellitenverbindung. Das Gerät meldet die neue BSSID-GPS-Paarung automatisch (Aktualisierung binnen 48–72 Stunden).",
-    connectedGuides: "🔗 Weiterführende Leitfäden",
+    sStep2: "2. Safari Websites wählen und 'Beim Verwenden der App' markieren.",
+    sStep3: "3. 'Genaue Position' aktivieren.",
+    sStep4: "4. Auf dem Mac: Systemeinstellungen > Datenschutz > Ortungsdienste prüfen.",
+    h3Windows: "Fehlerbehebung in Windows 10 / 11",
+    wStep1: "1. Einstellungen > Datenschutz & Sicherheit > Position.",
+    wStep2: "2. Positionsdienste und App-Zugriff aktivieren.",
+    wStep3: "3. Standardposition festlegen, falls der PC kein GPS besitzt.",
+
+    h2Router: "3. Aktualisierung umgezogener WLAN-Router erzwingen",
+    pRouter1: "Wenn Ihr WLAN-Netzwerk Sie weiterhin an Ihrem alten Wohnort verortet:",
+    pRouter2: "Verbinden Sie ein Smartphone mit dem WLAN, gehen Sie ins Freie unter freien Himmel, öffnen Sie Google Maps oder Apple Karten und warten Sie 5 bis 10 Minuten mit aktivem GPS-Fix. Das Smartphone übermittelt die neue BSSID-GPS-Verknüpfung an globale Geodatenbanken (Aktualisierung binnen 48 bis 72 Stunden).",
+
+    workedExampleTitle: "Praxisbeispiel: Der umgezogene WLAN-Router",
+    workedExampleIntro: "Szenario: Eine Familie zieht von Hamburg nach München und nimmt ihren Router mit. Laptops im WLAN zeigen Hamburger Wetterberichte.",
+    workedExampleStep1: "Schritt 1: Diagnose. Mobiltelefone im Mobilfunknetz erkennen München, PCs im WLAN verharren in Hamburg.",
+    workedExampleStep2: "Schritt 2: Ursache. Die Router-BSSID ist noch mit Hamburg verknüpft.",
+    workedExampleStep3: "Schritt 3: Maßnahme. Ein Android-Handy wird im WLAN für 10 Minuten im Garten mit GPS genutzt.",
+    workedExampleStep4: "Schritt 4: Ergebnis. Nach 48 Stunden aktualisiert der Ortungsdienst die BSSID und Laptops lokalisieren München.",
+
+    commonMistakesTitle: "Häufige Fehler bei der Diagnose",
+    commonMistakes: [
+      { mistake: "Annehmen, Webseiten lesen GPS ohne Erlaubnis", explanation: "Browser verweigern den Zugriff strikt ohne aktives Klicken auf Zulassen." },
+      { mistake: "Aktives Firmen-VPN vergessen", explanation: "Dienstliche VPNs leiten den Datenverkehr über zentrale Server an anderen Standorten um." },
+      { mistake: "Browser-Cache leeren statt Berechtigungen prüfen", explanation: "Geolokalisierung hängt von Domain-Rechten und IP-Routing ab, nicht von Cookies." }
+    ],
+
+    faqs: [
+      { question: "Warum befinde ich mich laut Webseite im Ausland?", answer: "Ein aktives VPN, Proxy-Server oder Dienste wie iCloud Privat-Relay leiten Ihren Internetverkehr über ausländische Server." },
+      { question: "Warum weicht mein PC-Standort um 40 km ab?", answer: "PCs ohne GPS-Empfänger nutzen die IP-Adresse des Providers, die zum nächsten regionalen Einwahlknotenpunkt führt." },
+      { question: "Kann ich Koordinaten im Browser manuell überschreiben?", answer: "Ja. In Chrome oder Edge drücken Sie F12 für Entwicklertools > Weitere Tools > Sensoren und tragen Breiten- und Längengrad manuell ein." }
+    ],
+
+    nextStepsTitle: "Nächste Schritte",
+    nextSteps: [
+      { title: "IP-Geolokalisierung prüfen", href: "/my-location/ip/", desc: "Sehen Sie Ihre öffentliche IP, den Provider und den Routing-Knoten." },
+      { title: "GPS-Genauigkeit verbessern", href: "/guides/improve-gps-accuracy/", desc: "Sensoren kalibrieren und Signalreflexionen an Gebäuden vermeiden." },
+      { title: "GPS vs. IP-Ortung", href: "/comparisons/gps-vs-ip-location/", desc: "Unterschiede zwischen Satellitenpeilung und Netzwerk-Datenbanken." }
+    ],
+
+    connectedGuides: "🔗 Relevante Leitfäden & Werkzeuge",
     tool1Title: "GPS-Genauigkeit verbessern",
-    tool1Desc: "Hardware- & Sensorkalibrierung",
-    tool2Title: "IP-Ortungsgenauigkeit",
-    tool2Desc: "Wie GeoIP-Datenbanken arbeiten",
-    tool3Title: "GPS vs. IP-Vergleich",
-    tool3Desc: "Warum IPs 50 km abweichen",
-    tool4Title: "GPS-Koordinaten Finder",
-    tool4Desc: "Direkte Satellitenortung"
+    tool1Desc: "Hardware-Kalibrierung",
+    tool2Title: "IP-Genauigkeit",
+    tool2Desc: "GeoIP-Datenbanken",
+    tool3Title: "GPS vs. IP-Ortung",
+    tool3Desc: "Technischer Vergleich",
+    tool4Title: "Mein IP-Standort",
+    tool4Desc: "Netzknoten prüfen"
   },
   pt: {
-    title: "Por que Minha Localização Está Errada? Soluções | MyLocationLab",
-    description: "Corrija erros de localização em qualquer aparelho. Entenda por que aparece outra cidade e como resolver conflitos de provedor, VPN e Wi-Fi.",
-    h1: "Por que minha localização está errada? Guia de Diagnóstico",
-    subtitle: "Entenda as causas técnicas de posicionamentos imprecisos, divergências de IP, roteadores transferidos e como corrigir.",
-    pIntro1: "Você já acessou uma página e descobriu que ela aponta sua posição a centenas de quilômetros de distância em outra cidade?",
-    pIntro2: "Erros de 'cidade errada' são muito frequentes. Como aparelhos combinam GPS, antenas celulares, bancos de Wi-Fi e tabelas de IP, um único sinal desatualizado desvia o ponto no mapa.",
+    title: "Por Que Minha Localização Está Errada? | MyLocationLab",
+    description: "Em resumo: Localização errada é provocada por VPN ativa, roteamento de IP em centrais distantes ou registros antigos de roteadores Wi-Fi.",
+    h1: "Por Que Minha Localização Está Errada? Guia Completo",
+    subtitle: "Entenda os motivos de erros de geolocalização, divergências de IP da operadora e como corrigir caches de roteadores.",
+    
+    inShort: "Em resumo: Seu aparelho exibe localização errada quando uma VPN ativa direciona a conexão para outra cidade, quando a operadora de internet atribui um IP vinculado a uma central a 5-50 km, ou quando bancos de dados mantêm o endereço antigo do seu roteador Wi-Fi.",
+
+    takeawaysTitle: "Pontos Principais",
+    takeaways: [
+      "Computadores de mesa não possuem chip GPS e dependem do IP da operadora, com desvios de 5 a 50 km.",
+      "VPNs mascaram totalmente o seu IP verdadeiro redirecionando o tráfego para outros servidores.",
+      "Mudar de casa mantém o endereço antigo do roteador em bases BSSID até que ocorra uma nova leitura.",
+      "A permissão em modo 'Localização Aproximada' impõe um erro intencional de 2 a 5 km por privacidade.",
+      "Testar a antena física em paralelo com a rede ajuda a identificar a raiz do problema."
+    ],
+
+    pIntro1: "Ao consultar nossa ferramenta <a href='/my-location/ip/'>Minha Localização IP</a>, você descobre na hora qual nó ou cidade sua conexão está informando.",
+    pIntro2: "Erros de localização estão entre as falhas técnicas mais frequentes na web. Aparelhos modernos combinam satélites, torres e IP. Conheça as diferenças em nosso guia de <a href='/comparisons/gps-vs-ip-location/'>GPS vs Localização por IP</a>.",
+
     calloutBadge: "🔍 Diagnóstico em Tempo Real",
-    calloutTitle: "Compare seu GPS vs. Localização por IP",
-    calloutDesc: "Verifique o ponto do seu navegador contra o seu endereço IP público para identificar se a causa é de hardware ou de rede.",
+    calloutTitle: "Compare GPS e Localização por IP",
+    calloutDesc: "Verifique a leitura do navegador frente ao IP externo para identificar se a falha é de hardware ou rede.",
     calloutBtn: "Verificar Localização IP →",
-    h2Reasons: "1. As 5 Causas Mais Comuns para Localizações Erradas",
-    r1Title: "VPN Ativa ou Proxy Empresarial",
-    r1Desc: "Com uma VPN ativa, o tráfego de rede sai por um data center distante. As páginas visualizam a cidade do servidor VPN e não suas coordenadas físicas.",
-    r2Title: "Computador de Mesa sem Chip GPS",
-    r2Desc: "Desktops e notebooks cabeados não contam com receptor de satélite. Dependem exclusivamente de bases IP que mapeiam a central do provedor (desvio de 20 a 80 km).",
-    r3Title: "Bancos de BSSID Desatualizados (Roteadores Mudados)",
-    r3Desc: "Ao mudar de residência, as bases de dados da Apple e do Google continuam associando o endereço MAC (BSSID) do roteador ao endereço antigo até que sejam atualizadas.",
+
+    h2Reasons: "1. As 5 Causas Mais Comuns de Localização Incorreta",
+    r1Title: "VPN Ativa ou Proxy Corporativo",
+    r1Desc: "Com VPN ligada, seu tráfego sai por um datacenter remoto. Saiba mais em nossa análise de <a href='/guides/ip-geolocation-accuracy/'>precisão da geolocalização por IP</a>.",
+    r2Title: "Computador sem Receptor GPS",
+    r2Desc: "Máquinas desktop não sintonizam satélites e dependem de centrais da operadora. Para testar satélites, acesse <a href='/my-location/gps/'>Minha Localização GPS</a>.",
+    r3Title: "Bases de Roteadores Wi-Fi Antigas (BSSID)",
+    r3Desc: "Ao mudar de residência, bancos de localização ainda associam o MAC (<a href='/glossary/#bssid'>BSSID</a>) do roteador ao endereço anterior até que celulares vizinhos o atualizem.",
     r4Title: "Permissão de 'Localização Aproximada' Ativa",
-    r4Desc: "Navegadores no iOS e Android limitam a leitura a um círculo de 2 a 5 km se a permissão exata não for autorizada.",
-    r5Title: "Reflexos de Multicaminho em Áreas Urbanas",
-    r5Desc: "Em centros urbanos com prédios altos, os sinais de satélite ricocheteiam no concreto, gerando desvios de 50 a 200 metros.",
-    h2Fixes: "2. Procedimento de Correção por Sistema",
-    h3Chrome: "Correção no Google Chrome (PC e Celular)",
-    cStep1: "1. Clique no ícone de cadeado à esquerda da barra de endereços.",
-    cStep2: "2. Localize o item Localização e selecione Permitir.",
-    cStep3: "3. Se estava bloqueado, redefina as permissões e recarregue a página.",
-    cStep4: "4. No Android, verifique se a Precisão do local do Google está ligada.",
-    h3Safari: "Correção no Apple Safari (iOS e macOS)",
+    r4Desc: "Navegadores aplicam um erro forçado de 2 a 5 km se você recusar a precisão total. Siga nosso guia de <a href='/guides/improve-gps-accuracy/'>como melhorar a precisão do GPS</a>.",
+    r5Title: "Reflexão Multipath ou Simulação de Localização",
+    r5Desc: "Em centros urbanos os sinais refletem em prédios. Aplicativos de mock também causam desvios; veja mais em <a href='/guides/how-to-fake-or-mock-location/'>como simular localização</a>.",
+
+    h2Fixes: "2. Passo a Passo de Correção por Sistema",
+    h3Chrome: "Correção no Google Chrome",
+    cStep1: "1. Clique no ícone de cadeado ou ajustes à esquerda da URL.",
+    cStep2: "2. Altere Localização para Permitir.",
+    cStep3: "3. Se necessário, clique em Redefinir permissões e recarregue.",
+    cStep4: "4. No Android, ative a Precisão de Localização do Google.",
+    h3Safari: "Correção no Safari (Apple iOS e macOS)",
     sStep1: "1. No iPhone: Ajustes > Privacidade e Segurança > Serviços de Localização.",
-    sStep2: "2. Toque em Sites do Safari e selecione 'Durante o Uso do App'.",
-    sStep3: "3. Ative a chave 'Localização Precisa'.",
-    sStep4: "4. No Mac: Ajustes do Sistema > Privacidade e Segurança > Serviços de Localização.",
+    sStep2: "2. Toque em Sites do Safari e marque 'Durante o Uso do App'.",
+    sStep3: "3. Ligue a opção 'Localização Precisa'.",
+    sStep4: "4. No Mac: Ajustes do Sistema > Privacidade e Segurança > Localização.",
     h3Windows: "Correção no Windows 10 / 11",
-    wStep1: "1. Abra Configurações > Privacidade e segurança > Localização.",
-    wStep2: "2. Ative os Serviços de localização para aplicativos.",
-    wStep3: "3. Defina um 'Local padrão' caso o computador não possua Wi-Fi ou GPS.",
+    wStep1: "1. Configurações > Privacidade e segurança > Localização.",
+    wStep2: "2. Ative os serviços de localização.",
+    wStep3: "3. Defina um local padrão caso seu computador não tenha placa GPS.",
+
     h2Router: "3. Como Atualizar um Roteador Wi-Fi Mudado de Endereço",
-    pRouter1: "Se após mudar de casa o seu Wi-Fi continua apontando seu endereço anterior:",
-    pRouter2: "Conecte um celular com GPS ativo ao Wi-Fi residencial, vá para a calçada sob céu aberto, abra o Google Maps e aguarde 10 minutos com o GPS travado. O telefone sincronizará o novo par BSSID/GPS com os servidores globais (atualização em 48–72 horas).",
+    pRouter1: "Se sua rede Wi-Fi continua apontando para sua residência antiga:",
+    pRouter2: "Conecte um smartphone ao Wi-Fi, vá para uma área externa com céu aberto, abra o Google Maps ou Apple Maps e aguarde de 5 a 10 minutos com o GPS fixado. O aparelho enviará o novo vínculo BSSID + GPS para as bases mundiais (atualização em 48 a 72 horas).",
+
+    workedExampleTitle: "Exemplo Prático: O Roteador Mudado de Cidade",
+    workedExampleIntro: "Cenário: Uma pessoa se muda de Belo Horizonte para Brasília levando seu roteador. Todos os notebooks no Wi-Fi indicam notícias de BH.",
+    workedExampleStep1: "Passo 1: Constatação. Celulares no 4G apontam Brasília, mas notebooks no Wi-Fi apontam Belo Horizonte.",
+    workedExampleStep2: "Passo 2: Causa. O BSSID do roteador continua vinculado ao cadastro mineiro.",
+    workedExampleStep3: "Passo 3: Ação. Um celular Android conectado ao Wi-Fi é usado na varanda por 10 minutos com GPS ligado.",
+    workedExampleStep4: "Passo 4: Conclusão. Em 48 horas as bases globais atualizam o cadastro e os computadores localizam Brasília.",
+
+    commonMistakesTitle: "Erros Comuns ao Diagnosticar",
+    commonMistakes: [
+      { mistake: "Achar que sites leem GPS sem permissão", explanation: "Navegadores impedem terminantemente o acesso a sensores sem que você clique em Permitir." },
+      { mistake: "Esquecer a VPN do trabalho conectada", explanation: "VPNs corporativas encaminham todo o tráfego para a matriz da empresa em outro estado." },
+      { mistake: "Limpar histórico em vez de revisar permissões", explanation: "A localização depende das permissões do site e do IP da rede, não de cookies armazenados." }
+    ],
+
+    faqs: [
+      { question: "Por que minha localização indica outro país?", answer: "Uma VPN ativa, proxy ou serviço como o Retransmissor Privado do iCloud roteia sua navegação por servidores no exterior." },
+      { question: "Por que meu computador erra a cidade por 30 km?", answer: "PCs de mesa não possuem GPS e dependem do bloco IP alocado pelo provedor na central regional mais próxima." },
+      { question: "Posso simular coordenadas no navegador?", answer: "Sim. No Chrome ou Edge pressione F12 para abrir as Ferramentas do Desenvolvedor > Mais ferramentas > Sensores e defina latitude e longitude manualmente." }
+    ],
+
+    nextStepsTitle: "Próximos Passos",
+    nextSteps: [
+      { title: "Verificar Geolocalização IP", href: "/my-location/ip/", desc: "Veja qual IP público, provedor e central de rede sua conexão revela." },
+      { title: "Melhorar a Precisão do GPS", href: "/guides/improve-gps-accuracy/", desc: "Calibre sensores internos e reduza desvios de sinal." },
+      { title: "Guia GPS vs Localização por IP", href: "/comparisons/gps-vs-ip-location/", desc: "Aprenda as diferenças entre sinais orbitais e bancos de dados GeoIP." }
+    ],
+
     connectedGuides: "🔗 Guias e Diagnósticos Conectados",
-    tool1Title: "Melhorar Precisão do GPS",
-    tool1Desc: "Calibração de sensores e antenas",
-    tool2Title: "Precisão do GeoIP",
-    tool2Desc: "Como operam as bases de IP",
+    tool1Title: "Melhorar Precisão GPS",
+    tool1Desc: "Calibração de hardware",
+    tool2Title: "Precisão por IP",
+    tool2Desc: "Bancos de dados GeoIP",
     tool3Title: "GPS vs Localização IP",
-    tool3Desc: "Por que o IP erra por 50 km",
-    tool4Title: "Localizador GPS",
-    tool4Desc: "Coordenadas diretas por satélite"
+    tool3Desc: "Diferenças técnicas",
+    tool4Title: "Minha Localização IP",
+    tool4Desc: "Inspecionar nó de rede"
   },
   hi: {
-    title: "मेरी लोकेशन गलत क्यों दिखती है? कैसे ठीक करें | MyLocationLab",
-    description: "किसी भी डिवाइस पर गलत लोकेशन की समस्या ठीक करें। जानें आपकी लोकेशन दूसरा शहर क्यों दिखाती है, और ISP, VPN और Wi-Fi संबंधी समस्याएँ कैसे हल करें।",
-    h1: "मेरी लोकेशन गलत क्यों दिखती है? संपूर्ण समस्या निवारण गाइड",
-    subtitle: "गलत जियोलोकेशन की जड़ कारण, ISP IP राउटिंग बेमेल, पुराने Wi-Fi राउटर BSSIDs और इन्हें ठीक करने के तरीके समझें।",
-    pIntro1: "क्या आपने कभी कोई वेबसाइट या ऐप खोला है और पाया है कि वह आपको सैकड़ों मील दूर किसी दूसरे शहर, राज्य या यहाँ तक कि दूसरे देश में मान लेता है?",
-    pIntro2: "'गलत लोकेशन' की समस्याएँ वेब उपयोगकर्ताओं के सामने आने वाली सबसे आम तकनीकी समस्याओं में से हैं। चूँकि आधुनिक डिवाइस GPS, सेल टावर, Wi-Fi डेटाबेस और IP राउटिंग से लोकेशन तय करते हैं, एक ही पुराना सिग्नल आपकी स्थिति बिगाड़ सकता है।",
-    calloutBadge: "🔍 रीयल-टाइम निदान",
-    calloutTitle: "अपनी GPS बनाम IP जियोलोकेशन की तुलना करें",
-    calloutDesc: "यह पहचानने के लिए कि समस्या हार्डवेयर की है या नेटवर्क की, अपने ब्राउज़र की लौटाई लोकेशन और आपके एक्सटर्नल IP पते की तुलना करें।",
-    calloutBtn: "IP लोकेशन जाँचें →",
-    h2Reasons: "1. आपकी लोकेशन गलत दिखने के 5 सबसे आम कारण",
-    r1Title: "चालू VPN या कॉर्पोरेट प्रॉक्सी टनलिंग",
-    r1Desc: "अगर आपका VPN या प्रॉक्सी चालू है, तो आपका ट्रैफ़िक किसी दूर के डेटा सेंटर से बाहर निकलता है। IP लुकअप करने वाली वेबसाइटें आपके भौतिक निर्देशांक की जगह डेटा सेंटर का शहर देखती हैं।",
-    r2Title: "हार्डवेयर GPS से वंचित डेस्कटॉप कंप्यूटर",
-    r2Desc: "डेस्कटॉप PC और वायर्ड लैपटॉप में सैटेलाइट GPS चिप नहीं होते। वे पूरी तरह ISP IP डेटाबेस पर निर्भर हैं, जो IP ब्लॉक को सिर्फ़ नज़दीकी टेलीकॉम वितरण केंद्र से जोड़ते हैं—अक्सर 30 से 160 किलोमीटर दूर।",
-    r3Title: "पुराने Wi-Fi राउटर BSSID डेटाबेस (हटाए गए राउटर)",
-    r3Desc: "जब आप घर बदलते हैं या इस्तेमाल किया हुआ Wi-Fi राउटर खरीदते हैं, तो आसपास के स्मार्टफ़ोन स्कैन द्वारा रिफ़्रेश होने तक लोकेशन डेटाबेस आपके राउटर का MAC एड्रेस (BSSID) पुरानी लोकेशन से ही जोड़े रहते हैं।",
-    r4Title: "'Approximate Location' अनुमति चालू",
-    r4Desc: "सटीक अनुमति न देने पर iOS और Android ब्राउज़र डिफ़ॉल्ट रूप से 'Approximate Location' पर आ जाते हैं, जिससे जानबूझकर 2 से 5 किलोमीटर का ऑफ़सेट बनता है।",
-    r5Title: "घने शहरी इलाकों में मल्टीपाथ रिफ्लेक्शन",
-    r5Desc: "गगनचुंबी इमारतों वाले शहरी केंद्रों में सैटेलाइट सिग्नल काँच और कंक्रीट की सतहों से टकराते हैं, जिससे ट्रांज़िट देरी होती है और आपका पिन 50–200 मीटर खिसक जाता है।",
-    h2Fixes: "2. डिवाइस और प्लेटफ़ॉर्म के अनुसार स्टेप-बाय-स्टेप समाधान",
-    h3Chrome: "Google Chrome में समाधान (डेस्कटॉप और मोबाइल)",
-    cStep1: "1. एड्रेस बार के बाईं ओर tune/लॉक आइकन पर क्लिक करें।",
-    cStep2: "2. Location ढूँढें और सुनिश्चित करें कि वह Allow पर है।",
-    cStep3: "3. अगर ब्लॉक है, तो 'Reset permissions' पर क्लिक करें और वेबपेज फिर से लोड करें।",
-    cStep4: "4. मोबाइल पर सुनिश्चित करें कि Android Settings > Location > Google Location Accuracy ON है।",
-    h3Safari: "Apple Safari में समाधान (iOS और macOS)",
-    sStep1: "1. iPhone पर: Settings > Privacy & Security > Location Services पर जाएँ।",
-    sStep2: "2. Safari Websites टैप करें और 'While Using the App' चुनें।",
-    sStep3: "3. 'Precise Location' टॉगल ON करें।",
-    sStep4: "4. Mac पर: System Settings > Privacy & Security > Location Services पर जाकर देखें कि Safari को अनुमति है।",
-    h3Windows: "Windows 10 / 11 में समाधान",
-    wStep1: "1. Windows Settings > Privacy & security > Location खोलें।",
-    wStep2: "2. Location services और 'Let desktop apps access your location' चालू करें।",
-    wStep3: "3. अगर आपके PC में GPS कार्ड नहीं है, तो 'Default location' के तहत अपनी डिफ़ॉल्ट लोकेशन सेट करें।",
-    h2Router: "3. स्थानांतरित Wi-Fi राउटर को फ़ोर्स-रिफ़्रेश कैसे करें",
-    pRouter1: "अगर आप हाल ही में घर बदले हैं और आपका Wi-Fi नेटवर्क अब भी आपके डिवाइस को पुराने घर पर रखता है:",
-    pRouter2: "एक Android फ़ोन या iPhone को अपने Wi-Fi नेटवर्क से जोड़ें, खुले आसमान के नीचे बाहर जाएँ, Google Maps या Apple Maps खोलें और मज़बूत GPS लॉक के साथ 5–10 मिनट प्रतीक्षा करें। फ़ोन नया BSSID + GPS जोड़ा ग्लोबल लोकेशन डेटाबेस को पैसिव रूप से अपलोड कर देगा (48–72 घंटे में अपडेट)।",
-    connectedGuides: "🔗 संबंधित गाइड और डायग्नोस्टिक्स",
-    tool1Title: "GPS सटीकता बढ़ाएँ",
-    tool1Desc: "हार्डवेयर और सेंसर कैलिब्रेशन",
-    tool2Title: "IP जियोलोकेशन सटीकता",
-    tool2Desc: "GeoIP डेटाबेस कैसे काम करते हैं",
-    tool3Title: "GPS बनाम IP जियोलोकेशन",
-    tool3Desc: "IP 80 किमी तक क्यों चूकता है",
-    tool4Title: "GPS निर्देशांक फ़ाइंडर",
-    tool4Desc: "सीधा सैटेलाइट निर्देशांक लॉक"
+    title: "मेरी लोकेशन गलत क्यों दिख रही है? समाधान | MyLocationLab",
+    description: "संक्षेप में: गलत लोकेशन वीपीएन, आईएसपी के दूरस्थ डेटाबेस या पुराने पते से जुड़े वाई-फाई राउटर के कारण होती है। इसे ठीक करने के उपाय जानें।",
+    h1: "मेरी लोकेशन गलत क्यों दिख रही है? संपूर्ण समाधान गाइड",
+    subtitle: "गलत भौगोलिक स्थिति, आईएसपी नेटवर्क विसंगतियों और पुराने वाई-फाई BSSID रिकॉर्ड के कारणों को समझें और सुधारें।",
+    
+    inShort: "संक्षेप में: आपका डिवाइस गलत स्थान तब दिखाता है जब सक्रिय वीपीएन ट्रैफिक को दूरस्थ सर्वर से जोड़ता है, जब आपका इंटरनेट प्रदाता 5 से 50 किमी दूर स्थित क्षेत्रीय गेटवे का आईपी पता देता है, या जब वैश्विक डेटाबेस आपके वाई-फाई राउटर को उसके पुराने पते पर दर्ज रखते हैं।",
+
+    takeawaysTitle: "मुख्य बिंदु",
+    takeaways: [
+      "डेस्कटॉप पीसी में जीपीएस चिप नहीं होती, वे आईएसपी आईपी पर निर्भर रहते हैं जिसमें 5 से 50 किमी का अंतर सामान्य है।",
+      "सक्रिय वीपीएन आपके नेटवर्क को दूरस्थ सर्वर से जोड़कर वास्तविक स्थान को छिपा देता है।",
+      "घर बदलने पर राउटर का पुराना पता BSSID डेटाबेस में बना रहता है जब तक कि नया स्कैन न हो।",
+      "ब्राउज़र में 'अनुमानित स्थान' अनुमति चालू होने से 2 से 5 किमी का जानबूझकर अंतर डाला जाता है।",
+      "नेटवर्क आईपी और जीपीएस एंटीना की तुलना करके समस्या की जड़ पहचानी जा सकती है।"
+    ],
+
+    pIntro1: "हमारे <a href='/my-location/ip/'>मेरा आईपी लोकेशन टूल</a> से जांच करके आप तुरंत जान सकते हैं कि वेबसाइटें आपको किस शहर में देख रही हैं।",
+    pIntro2: "गलत लोकेशन की समस्या बहुत आम है क्योंकि डिवाइस जीपीएस, सेल टॉवर और आईपी का मिलाजुला उपयोग करते हैं। तकनीकी अंतर समझने के लिए <a href='/comparisons/gps-vs-ip-location/'>जीपीएस बनाम आईपी लोकेशन गाइड</a> पढ़ें।",
+
+    calloutBadge: "🔍 लाइव निदान",
+    calloutTitle: "अपने जीपीएस और आईपी स्थान की तुलना करें",
+    calloutDesc: "जांचें कि समस्या हार्डवेयर जीपीएस से है या नेटवर्क आईपी रूटिंग से।",
+    calloutBtn: "आईपी लोकेशन जांचें →",
+
+    h2Reasons: "1. लोकेशन गलत दिखने के 5 मुख्य कारण",
+    r1Title: "सक्रिय वीपीएन या कॉर्पोरेट प्रॉक्सी",
+    r1Desc: "यदि वीपीएन चालू है, तो वेबसाइटें वीपीएन सर्वर का शहर देखेंगी। विस्तृत जानकारी के लिए <a href='/guides/ip-geolocation-accuracy/'>आईपी जियोलोकेशन सटीकता और सीमाएं</a> पढ़ें।",
+    r2Title: "डेस्कटॉप पीसी में जीपीएस चिप न होना",
+    r2Desc: "कंप्यूटर में उपग्रह एंटीना नहीं होता। वे प्रदाता के आईपी डेटाबेस पर निर्भर रहते हैं। उपग्रह सेंसर जांचने के लिए <a href='/my-location/gps/'>मेरा जीपीएस लोकेशन</a> देखें।",
+    r3Title: "राउटर का पुराना BSSID डेटाबेस रिकॉर्ड",
+    r3Desc: "घर बदलने पर राउटर का मैक एड्रेस (<a href='/glossary/#bssid'>BSSID</a>) पुराने घर से जुड़ा रहता है जब तक फोन का जीपीएस उसे अपडेट न करे।",
+    r4Title: "'अनुमानित लोकेशन' अनुमति सक्षम होना",
+    r4Desc: "अनुमति में सटीक मोड बंद होने पर 2 से 5 किमी का अंतर आता है। सुधारने के लिए <a href='/guides/improve-gps-accuracy/'>जीपीएस सटीकता कैसे सुधारें</a> पढ़ें।",
+    r5Title: "इमारतों से सिग्नल का टकराव या फेक लोकेशन",
+    r5Desc: "कांच की इमारतों से सिग्नल भटकते हैं। डेवलपर मॉक लोकेशन भी चालू हो सकती है; अधिक जानकारी <a href='/guides/how-to-fake-or-mock-location/'>स्थान कैसे बदलें या मॉक करें</a> में देखें।",
+
+    h2Fixes: "2. विभिन्न प्लेटफॉर्म पर सुधार के कदम",
+    h3Chrome: "Google Chrome पर समाधान",
+    cStep1: "1. एड्रेस बार के बाईं ओर ताले के निशान पर क्लिक करें।",
+    cStep2: "2. Location को Allow पर सेट करें।",
+    cStep3: "3. जरूरत पड़ने पर Reset permissions दबाकर पेज रीलोड करें।",
+    cStep4: "4. Android पर Google Location Accuracy चालू रखें।",
+    h3Safari: "Apple Safari (iOS और Mac) पर समाधान",
+    sStep1: "1. iPhone पर: Settings > Privacy & Security > Location Services में जाएं।",
+    sStep2: "2. Safari Websites चुनें और 'While Using the App' करें।",
+    sStep3: "3. 'Precise Location' टॉगल चालू करें।",
+    sStep4: "4. Mac पर: System Settings > Privacy > Location Services में सफारी चेक करें।",
+    h3Windows: "Windows 10 / 11 पर समाधान",
+    wStep1: "1. Settings > Privacy & security > Location में जाएं।",
+    wStep2: "2. लोकेशन सेवाएं और ऐप्स के लिए अनुमति चालू करें।",
+    wStep3: "3. यदि पीसी में जीपीएस नहीं है तो 'Default location' सेट करें।",
+
+    h2Router: "3. स्थानांतरित वाई-फाई राउटर का स्थान कैसे अपडेट करें",
+    pRouter1: "यदि आपका वाई-फाई अभी भी आपको पुराने घर में दिखाता है:",
+    pRouter2: "एक स्मार्टफोन को वाई-फाई से जोड़ें, खुले आसमान के नीचे जाएं, गूगल मैप्स खोलें और 5-10 मिनट तक सक्रिय जीपीएस के साथ रुकें। फोन नया BSSID + GPS डेटा अपलोड कर देगा (48 से 72 घंटों में अपडेट होता है)।",
+
+    workedExampleTitle: "व्यावहारिक उदाहरण: नए शहर में पुराना राउटर",
+    workedExampleIntro: "परिदृश्य: एक व्यक्ति मुंबई से दिल्ली आता है और अपना राउटर साथ लाता है। वाई-फाई से जुड़े लैपटॉप मुंबई का मौसम दिखाते हैं।",
+    workedExampleStep1: "चरण 1: पहचान। 4G पर फोन दिल्ली दिखाते हैं, लेकिन वाई-फाई पर लैपटॉप मुंबई।",
+    workedExampleStep2: "चरण 2: कारण। राउटर का BSSID डेटाबेस में मुंबई से जुड़ा है।",
+    workedExampleStep3: "चरण 3: समाधान। बालकनी में वाई-फाई से जुड़े फोन पर 10 मिनट जीपीएस चलाया गया।",
+    workedExampleStep4: "चरण 4: परिणाम। 48 घंटों में वैश्विक रिकॉर्ड अपडेट हो गया और लैपटॉप दिल्ली दिखाने लगे।",
+
+    commonMistakesTitle: "समस्या निवारण में सामान्य गलतियां",
+    commonMistakes: [
+      { mistake: "यह सोचना कि वेबसाइटें बिना पूछे जीपीएस पढ़ सकती हैं", explanation: "ब्राउज़र स्पष्ट अनुमति के बिना किसी भी हार्डवेयर सेंसर को लॉक रखते हैं।" },
+      { mistake: "ऑफिस का वीपीएन चालू भूल जाना", explanation: "कॉर्पोरेट वीपीएन ट्रैफिक को कंपनी के दूसरे राज्य स्थित मुख्य सर्वर से जोड़ते हैं।" },
+      { mistake: "अनुमति जांचने के बजाय ब्राउज़र हिस्ट्री डिलीट करना", explanation: "स्थान वेबसाइट अनुमतियों और नेटवर्क आईपी पर निर्भर करता है, कुकीज पर नहीं।" }
+    ],
+
+    faqs: [
+      { question: "मेरी लोकेशन दूसरा देश क्यों दिखा रही है?", answer: "सक्रिय वीपीएन, प्रॉक्सी या आईक्लाउड प्राइवेट रिले आपके ट्रैफिक को विदेश स्थित सर्वर से गुजारते हैं।" },
+      { question: "मेरा कंप्यूटर 40 किमी दूर का स्थान क्यों दिखाता है?", answer: "डेस्कटॉप पीसी में जीपीएस नहीं होता और वे इंटरनेट प्रदाता के मुख्य रीजनल एक्सचेंज की आईपी दिखाते हैं।" },
+      { question: "क्या मैं ब्राउज़र में खुद निर्देशांक दर्ज कर सकता हूँ?", answer: "हाँ। क्रोम में F12 दबाकर डेवलपर टूल्स > More tools > Sensors में जाएं और अपनी पसंद का अक्षांश और देशांतर भरें।" }
+    ],
+
+    nextStepsTitle: "अगले कदम",
+    nextSteps: [
+      { title: "आईपी जियोलोकेशन जांचें", href: "/my-location/ip/", desc: "देखें कि आपका सार्वजनिक आईपी और प्रदाता क्या लोकेशन दिखा रहे हैं।" },
+      { title: "जीपीएस सटीकता सुधारें", href: "/guides/improve-gps-accuracy/", desc: "हार्डवेयर सेंसर कैलिब्रेट करें और सिग्नल रुकावटें हटाएं।" },
+      { title: "जीपीएस बनाम आईपी लोकेशन", href: "/comparisons/gps-vs-ip-location/", desc: "उपग्रह सिग्नल और आईपी डेटाबेस के अंतर को समझें।" }
+    ],
+
+    connectedGuides: "🔗 जुड़े मार्गदर्शक और उपकरण",
+    tool1Title: "जीपीएस सटीकता सुधारें",
+    tool1Desc: "हार्डवेयर कैलिब्रेशन",
+    tool2Title: "आईपी सटीकता",
+    tool2Desc: "GeoIP डेटाबेस",
+    tool3Title: "जीपीएस बनाम आईपी",
+    tool3Desc: "तकनीकी तुलना",
+    tool4Title: "मेरा आईपी स्थान",
+    tool4Desc: "नेटवर्क गेटवे जांचें"
   },
   id: {
-    title: "Mengapa Lokasi Saya Salah? Cara Memperbaikinya | MyLocationLab",
-    description: "Perbaiki galat lokasi salah di semua perangkat. Ketahui mengapa lokasi Anda menunjukkan kota lain, serta cara mengatasi masalah ISP, VPN, dan Wi-Fi.",
-    h1: "Mengapa Lokasi Saya Salah? Panduan Pemecahan Masalah Lengkap",
-    subtitle: "Pahami akar penyebab geolokasi yang tidak akurat, ketidakcocokan routing IP ISP, BSSID router Wi-Fi usang, dan cara memperbaikinya.",
-    pIntro1: "Pernahkah Anda membuka situs web atau aplikasi dan mendapati ia mengira Anda berada ratusan kilometer jauhnya di kota, provinsi, atau bahkan negara lain?",
-    pIntro2: "Masalah 'lokasi salah' termasuk keluhan teknis yang paling sering dialami pengguna web. Karena perangkat modern menentukan lokasi melalui GPS, menara seluler, basis data Wi-Fi, dan routing IP, satu sinkel usang pun dapat menggeser posisi Anda.",
+    title: "Mengapa Lokasi Saya Salah? Panduan Lengkap | MyLocationLab",
+    description: "Singkatnya: Lokasi salah disebabkan oleh perutean VPN, basis data IP ISP yang terpetakan ke pusat data jauh, atau cache BSSID router Wi-Fi lama.",
+    h1: "Mengapa Lokasi Saya Salah? Panduan Perbaikan Lengkap",
+    subtitle: "Pahami akar masalah ketidakakuratan geolokasi, ketidaksesuaian perutean IP ISP, dan data router Wi-Fi lama.",
+    
+    inShort: "Singkatnya: Perangkat Anda menampilkan lokasi salah jika VPN aktif mengalihkan koneksi ke server jauh, jika ISP memberikan alamat IP yang terdaftar di pusat data regional berjarak 5 hingga 50 km, atau jika basis data global masih menyimpan alamat fisik lama dari router Wi-Fi Anda.",
+
+    takeawaysTitle: "Poin-Poin Penting",
+    takeaways: [
+      "Komputer desktop tidak memiliki chip GPS satelit dan bergantung pada basis data IP dengan selisih 5 hingga 50 km.",
+      "VPN mengarahkan jaringan melalui server jauh, mengubah lokasi geolokasi IP Anda sepenuhnya.",
+      "Memindahkan router Wi-Fi ke rumah baru membawa data lokasi BSSID lama hingga diperbarui oleh ponsel.",
+      "Setelan izin browser sering membatasi ke 'Perkiraan Lokasi', menciptakan selisih sengaja 2 sampai 5 km.",
+      "Bandingkan IP jaringan dengan sensor antena fisik untuk menemukan sumber masalah."
+    ],
+
+    pIntro1: "Memeriksa koneksi Anda di <a href='/my-location/ip/'>Lokasi IP Saya</a> akan langsung mengungkap kota dan simpul jaringan mana yang terbaca oleh situs web.",
+    pIntro2: "Masalah lokasi salah adalah salah satu gangguan paling umum di internet. Perangkat memadukan satelit, BTS, dan perutean IP. Pelajari perbedaan teknisnya di panduan <a href='/comparisons/gps-vs-ip-location/'>GPS vs Lokasi IP</a>.",
+
     calloutBadge: "🔍 Diagnosis Waktu Nyata",
-    calloutTitle: "Bandingkan GPS dengan Geolokasi IP Anda",
-    calloutDesc: "Periksa lokasi yang dikembalikan peramban Anda dibandingkan alamat IP eksternal Anda untuk menentukan apakah masalahnya ada pada perangkat keras atau jaringan.",
-    calloutBtn: "Cek Lokasi IP →",
+    calloutTitle: "Bandingkan GPS vs Lokasi IP",
+    calloutDesc: "Periksa lokasi yang dilaporkan browser dibanding IP eksternal untuk mengetahui apakah masalah berasal dari perangkat keras atau jaringan.",
+    calloutBtn: "Periksa Lokasi IP →",
+
     h2Reasons: "1. 5 Penyebab Paling Umum Lokasi Anda Salah",
-    r1Title: "VPN Aktif atau Tunneling Proksi Korporasi",
-    r1Desc: "Jika VPN atau proksi Anda aktif, lalu lintas Anda keluar melalui pusat data jauh. Situs web yang melakukan pencarian IP akan melihat kota pusat data tersebut alih-alih koordinat fisik Anda.",
-    r2Title: "Komputer Desktop Tanpa GPS Perangkat Keras",
-    r2Desc: "PC desktop dan laptop berkabel tidak memiliki chip GPS satelit. Keduanya sepenuhnya bergantung pada basis data IP ISP, yang hanya memetakan blok IP ke pusat distribusi telekom terdekat—sering kali 30 sampai 160 kilometer jauhnya.",
-    r3Title: "Basis Data BSSID Router Wi-Fi Usang (Router Pindahan)",
-    r3Desc: "Saat Anda pindah rumah atau membeli router Wi-Fi bekas, basis data lokasi masih mengaitkan alamat MAC (BSSID) router Anda dengan lokasi lamanya hingga diperbarui oleh pemindaian ponsel di sekitar.",
-    r4Title: "Izin 'Lokasi Perkiraan' Aktif",
-    r4Desc: "Peramban iOS dan Android beralih ke 'Lokasi Perkiraan' secara bawaan jika izin presisi ditolak, menciptakan offset disengaja sebesar 2 sampai 5 kilometer.",
-    r5Title: "Pantulan Multipath di Kawasan Urban Padat",
-    r5Desc: "Di pusat kota berpencakar langit, sinyal satelit memantul pada permukaan kaca dan beton, menimbulkan jeda perambatan yang menggeser pin Anda sejauh 50–200 meter.",
-    h2Fixes: "2. Perbaikan Bertahap Berdasarkan Perangkat dan Platform",
-    h3Chrome: "Perbaikan di Google Chrome (Desktop & Seluler)",
-    cStep1: "1. Klik ikon pengaturan/gembok di sebelah kiri bilah alamat.",
-    cStep2: "2. Temukan Lokasi dan pastikan diatur ke Izinkan.",
-    cStep3: "3. Jika terblokir, klik 'Reset permissions' lalu muat ulang halaman webnya.",
-    cStep4: "4. Di ponsel, pastikan Setelan Android > Lokasi > Google Location Accuracy dalam keadaan AKTIF.",
-    h3Safari: "Perbaikan di Apple Safari (iOS & macOS)",
-    sStep1: "1. Di iPhone: Buka Setelan > Privasi & Keamanan > Layanan Lokasi.",
-    sStep2: "2. Ketuk Situs Web Safari dan pilih 'Saat Aplikasi Digunakan'.",
-    sStep3: "3. Nyalakan sakelar 'Lokasi Presisi'.",
-    sStep4: "4. Di Mac: Buka Setelan Sistem > Privasi & Keamanan > Layanan Lokasi dan pastikan Safari diizinkan.",
+    r1Title: "Tunneling VPN Aktif atau Proksi Kantor",
+    r1Desc: "Jika menggunakan VPN, koneksi keluar melalui pusat data jauh. Pelajari selengkapnya di panduan <a href='/guides/ip-geolocation-accuracy/'>akurasi dan batasan geolokasi IP</a>.",
+    r2Title: "Komputer PC Desktop Tanpa Chip GPS",
+    r2Desc: "PC meja tidak memiliki penerima satelit dan mengandalkan basis data IP ISP. Untuk menguji antena satelit langsung, buka <a href='/my-location/gps/'>Lokasi GPS Saya</a>.",
+    r3Title: "Basis Data BSSID Router Wi-Fi Lama",
+    r3Desc: "Saat pindah rumah, basis data posisi masih mengaitkan alamat MAC (<a href='/glossary/#bssid'>BSSID</a>) router dengan lokasi rumah lama sampai diperbarui ponsel terdekat.",
+    r4Title: "Izin 'Perkiraan Lokasi' Aktif",
+    r4Desc: "Browser memberikan selisih 2 hingga 5 km jika izin presisi ditolak. Ikuti langkah di <a href='/guides/improve-gps-accuracy/'>cara meningkatkan akurasi GPS</a>.",
+    r5Title: "Pantulan Multipath atau Pemalsuan Lokasi",
+    r5Desc: "Di antara gedung bertingkat sinyal memantul. Aplikasi pemalsu lokasi juga bisa aktif; pelajari di panduan <a href='/guides/how-to-fake-or-mock-location/'>cara memalsukan lokasi</a>.",
+
+    h2Fixes: "2. Langkah Perbaikan Berdasarkan Perangkat",
+    h3Chrome: "Perbaikan di Google Chrome",
+    cStep1: "1. Klik ikon setelan di sebelah kiri kolom alamat URL.",
+    cStep2: "2. Pastikan Lokasi diatur ke Izinkan.",
+    cStep3: "3. Klik 'Reset izin' jika sebelumnya terblokir.",
+    cStep4: "4. Di Android, aktifkan Akurasi Lokasi Google.",
+    h3Safari: "Perbaikan di Safari (iOS & Mac)",
+    sStep1: "1. Di iPhone: Pengaturan > Privasi & Keamanan > Layanan Lokasi.",
+    sStep2: "2. Pilih Situs Web Safari dan centang 'Saat Menggunakan App'.",
+    sStep3: "3. Aktifkan sakelar 'Lokasi Tepat'.",
+    sStep4: "4. Di Mac: Pengaturan Sistem > Privasi > Layanan Lokasi.",
     h3Windows: "Perbaikan di Windows 10 / 11",
-    wStep1: "1. Buka Setelan Windows > Privasi & keamanan > Lokasi.",
-    wStep2: "2. Aktifkan Layanan lokasi dan 'Izinkan aplikasi desktop mengakses lokasi Anda'.",
-    wStep3: "3. Tetapkan lokasi bawaan Anda di 'Lokasi default' jika PC Anda tidak memiliki kartu GPS.",
-    h2Router: "3. Cara Memaksa Pembaruan Router Wi-Fi yang Pindah Tempat",
-    pRouter1: "Jika Anda baru pindah tempat tinggal dan jaringan Wi-Fi Anda masih menempatkan perangkat Anda di rumah lama:",
-    pRouter2: "Hubungkan ponsel Android atau iPhone ke jaringan Wi-Fi Anda, berjalanlah ke luar dengan pandangan langit terbuka, buka Google Maps atau Apple Maps, dan tunggu 5–10 menit dengan kunci GPS yang kuat. Ponsel akan mengunggah pasangan BSSID + GPS baru secara pasif ke basis data lokasi global (pembaruan dalam 48–72 jam).",
+    wStep1: "1. Pengaturan > Privasi & keamanan > Lokasi.",
+    wStep2: "2. Aktifkan Layanan lokasi dan akses aplikasi desktop.",
+    wStep3: "3. Tentukan lokasi default jika komputer tidak memiliki GPS.",
+
+    h2Router: "3. Cara Memperbarui Lokasi Router Wi-Fi yang Pindah Rumah",
+    pRouter1: "Jika Wi-Fi Anda masih mendeteksi alamat di rumah lama:",
+    pRouter2: "Hubungkan ponsel pintar ke Wi-Fi tersebut, keluar ruangan ke tempat terbuka, buka Google Maps atau Apple Maps, dan tunggu 5–10 menit dengan GPS aktif. Ponsel akan mengunggah pasangan BSSID + GPS baru ke basis data dunia (biasanya terbarui dalam 48–72 jam).",
+
+    workedExampleTitle: "Contoh Nyata: Router Wi-Fi yang Pindah Kota",
+    workedExampleIntro: "Skenario: Seseorang pindah dari Surabaya ke Jakarta membawa router Wi-Fi pribadinya. Semua laptop di Wi-Fi menampilkan berita dan cuaca Surabaya.",
+    workedExampleStep1: "Langkah 1: Identifikasi. Ponsel di jaringan 4G mendeteksi Jakarta, namun laptop di Wi-Fi menunjukkan Surabaya.",
+    workedExampleStep2: "Langkah 2: Penyebab. BSSID router masih terdaftar pada koordinat Surabaya.",
+    workedExampleStep3: "Langkah 3: Solusi. Ponsel Android terhubung ke Wi-Fi dibawa ke halaman luar selama 10 menit dengan GPS menyala.",
+    workedExampleStep4: "Langkah 4: Hasil. Dalam 48 jam basis data global memperbarui data router dan laptop langsung mendeteksi Jakarta.",
+
+    commonMistakesTitle: "Kesalahan Umum Saat Memperbaiki Lokasi",
+    commonMistakes: [
+      { mistake: "Mengira situs web bisa membaca GPS tanpa izin", explanation: "Browser memblokir penuh sensor lokasi hingga pengguna mengklik Izinkan." },
+      { mistake: "Lupa mematikan VPN kantor", explanation: "VPN kerja mengalirkan seluruh koneksi ke server pusat perusahaan di kota atau negara lain." },
+      { mistake: "Menghapus riwayat browser alih-alih mengecek izin", explanation: "Lokasi diatur oleh izin situs per domain dan IP jaringan, bukan file cookie." }
+    ],
+
+    faqs: [
+      { question: "Mengapa lokasi saya berada di negara lain?", answer: "VPN yang aktif, proxy kantor, atau fitur seperti iCloud Private Relay mengalirkan koneksi Anda melalui server di luar negeri." },
+      { question: "Mengapa komputer desktop saya meleset 40 km?", answer: "Komputer kerja tidak memiliki antena satelit GPS dan mengandalkan IP publik yang dialokasikan ISP di simpul jaringan terdekat." },
+      { question: "Bisakah saya memasukkan koordinat manual di browser?", answer: "Bisa. Di Chrome atau Edge tekan F12 untuk membuka Alat Pengembang > Alat lainnya > Sensor, lalu tentukan lintang dan bujur secara manual." }
+    ],
+
+    nextStepsTitle: "Langkah Berikutnya",
+    nextSteps: [
+      { title: "Periksa Geolokasi IP", href: "/my-location/ip/", desc: "Lihat alamat IP publik, operator ISP, dan kota yang terbaca." },
+      { title: "Tingkatkan Akurasi GPS", href: "/guides/improve-gps-accuracy/", desc: "Pelajari kalibrasi sensor dan hilangkan pantulan sinyal." },
+      { title: "Panduan GPS vs Lokasi IP", href: "/comparisons/gps-vs-ip-location/", desc: "Pahami perbedaan antara satelit orbit dan basis data jaringan." }
+    ],
+
     connectedGuides: "🔗 Panduan & Diagnostik Terkait",
     tool1Title: "Tingkatkan Akurasi GPS",
-    tool1Desc: "Kalibrasi perangkat keras & sensor",
-    tool2Title: "Akurasi Geolokasi IP",
+    tool1Desc: "Kalibrasi perangkat keras",
+    tool2Title: "Akurasi IP",
     tool2Desc: "Cara kerja basis data GeoIP",
-    tool3Title: "Geolokasi GPS vs IP",
-    tool3Desc: "Mengapa IP bisa meleset 80 km",
-    tool4Title: "Pencari Koordinat GPS",
-    tool4Desc: "Kunci koordinat satelit langsung"
+    tool3Title: "GPS vs Lokasi IP",
+    tool3Desc: "Perbandingan teknis",
+    tool4Title: "Lokasi IP Saya",
+    tool4Desc: "Periksa gateway jaringan"
   }
 };
 
@@ -374,13 +683,34 @@ const c = translations[lang] || translations.en;
   h1={c.h1}
   subtitle={c.subtitle}
   section="guides"
-  sectionLabel={lang === 'es' ? 'Guías Educativas' : lang === 'fr' ? 'Guides Pédagogiques' : lang === 'de' ? 'Fachratgeber' : lang === 'pt' ? 'Guias Educativos' : lang === 'hi' ? 'शैक्षिक गाइड' : lang === 'id' ? 'Panduan Edukasi' : 'Educational Guides'}
-  readTime="8 min"
+  sectionLabel={lang === 'es' ? 'Guías Prácticas' : lang === 'fr' ? 'Guides Pratiques' : lang === 'de' ? 'Praxis-Leitfäden' : lang === 'pt' ? 'Guias Práticos' : lang === 'hi' ? 'मार्गदर्शिका' : lang === 'id' ? 'Panduan Praktis' : 'Practical Guides'}
+  readTime="7 min"
   publishDate="2026-09-15"
   modifiedDate="2026-09-22"
 >
-  <p>{c.pIntro1}</p>
-  <p>{c.pIntro2}</p>
+  {c.inShort && (
+    <div class="callout-box" style="margin-bottom: var(--space-6); background: var(--color-bg-secondary); border-left: 4px solid var(--color-accent-primary); padding: var(--space-4) var(--space-5); border-radius: var(--radius-md);">
+      <p style="margin: 0; font-weight: 500; font-size: var(--text-base); color: var(--color-text-primary); line-height: 1.75;">
+        {c.inShort}
+      </p>
+    </div>
+  )}
+
+  {c.takeaways && (
+    <div class="card card-flat" style="margin-bottom: var(--space-8); padding: var(--space-6); border: 1px solid var(--color-border); background: var(--color-bg-card); border-radius: var(--radius-lg);">
+      <h3 style="margin-top: 0; margin-bottom: var(--space-3); font-size: var(--text-lg); display: flex; align-items: center; gap: var(--space-2);">
+        <span>📌</span> {c.takeawaysTitle || "Key Takeaways"}
+      </h3>
+      <ul style="margin: 0; padding-left: var(--space-5); display: flex; flex-direction: column; gap: var(--space-2); color: var(--color-text-secondary); line-height: 1.75;">
+        {c.takeaways.map((item: string) => (
+          <li>{item}</li>
+        ))}
+      </ul>
+    </div>
+  )}
+
+  <p set:html={localizeHtml(c.pIntro1, lang)}></p>
+  <p set:html={localizeHtml(c.pIntro2, lang)}></p>
 
   <div class="tool-callout">
     <div class="tool-callout-content">
@@ -394,12 +724,13 @@ const c = translations[lang] || translations.en;
   </div>
 
   <h2>{c.h2Reasons}</h2>
+  
   <div class="step-container">
     <div class="step-card">
       <div class="step-number">1</div>
       <div class="step-body">
         <h4 class="step-title">{c.r1Title}</h4>
-        <p class="step-desc">{c.r1Desc}</p>
+        <p class="step-desc" set:html={localizeHtml(c.r1Desc, lang)}></p>
       </div>
     </div>
 
@@ -407,7 +738,7 @@ const c = translations[lang] || translations.en;
       <div class="step-number">2</div>
       <div class="step-body">
         <h4 class="step-title">{c.r2Title}</h4>
-        <p class="step-desc">{c.r2Desc}</p>
+        <p class="step-desc" set:html={localizeHtml(c.r2Desc, lang)}></p>
       </div>
     </div>
 
@@ -415,7 +746,7 @@ const c = translations[lang] || translations.en;
       <div class="step-number">3</div>
       <div class="step-body">
         <h4 class="step-title">{c.r3Title}</h4>
-        <p class="step-desc">{c.r3Desc}</p>
+        <p class="step-desc" set:html={localizeHtml(c.r3Desc, lang)}></p>
       </div>
     </div>
 
@@ -423,7 +754,7 @@ const c = translations[lang] || translations.en;
       <div class="step-number">4</div>
       <div class="step-body">
         <h4 class="step-title">{c.r4Title}</h4>
-        <p class="step-desc">{c.r4Desc}</p>
+        <p class="step-desc" set:html={localizeHtml(c.r4Desc, lang)}></p>
       </div>
     </div>
 
@@ -431,12 +762,13 @@ const c = translations[lang] || translations.en;
       <div class="step-number">5</div>
       <div class="step-body">
         <h4 class="step-title">{c.r5Title}</h4>
-        <p class="step-desc">{c.r5Desc}</p>
+        <p class="step-desc" set:html={localizeHtml(c.r5Desc, lang)}></p>
       </div>
     </div>
   </div>
 
   <h2>{c.h2Fixes}</h2>
+
   <h3>{c.h3Chrome}</h3>
   <ol>
     <li>{c.cStep1}</li>
@@ -462,20 +794,70 @@ const c = translations[lang] || translations.en;
 
   <h2>{c.h2Router}</h2>
   <p>{c.pRouter1}</p>
-  <p>{c.pRouter2}</p>
+  <p set:html={localizeHtml(c.pRouter2, lang)}></p>
+
+  {c.workedExampleTitle && (
+    <div class="card card-flat" style="margin: var(--space-8) 0; padding: var(--space-6); background: var(--color-bg-secondary); border-left: 4px solid var(--color-accent-success); border-radius: var(--radius-md);">
+      <h3 style="margin-top: 0; margin-bottom: var(--space-2); color: var(--color-text-primary);">🧮 {c.workedExampleTitle}</h3>
+      <p style="color: var(--color-text-secondary); margin-bottom: var(--space-4); line-height: 1.75;">{c.workedExampleIntro}</p>
+      <div style="display: flex; flex-direction: column; gap: var(--space-2); font-size: var(--text-sm); line-height: 1.75;">
+        <div style="padding: var(--space-2) var(--space-3); background: var(--color-bg-tertiary); border-radius: var(--radius-sm); font-family: var(--font-mono);">{c.workedExampleStep1}</div>
+        <div style="padding: var(--space-2) var(--space-3); background: var(--color-bg-tertiary); border-radius: var(--radius-sm); font-family: var(--font-mono);">{c.workedExampleStep2}</div>
+        <div style="padding: var(--space-2) var(--space-3); background: var(--color-bg-tertiary); border-radius: var(--radius-sm); font-family: var(--font-mono);">{c.workedExampleStep3}</div>
+        <div style="padding: var(--space-2) var(--space-3); background: var(--color-bg-tertiary); border-radius: var(--radius-sm); font-family: var(--font-mono);">{c.workedExampleStep4}</div>
+      </div>
+    </div>
+  )}
+
+  {c.commonMistakes && (
+    <div style="margin: var(--space-10) 0;">
+      <h2>⚠️ {c.commonMistakesTitle || "Common Mistakes"}</h2>
+      <div style="display: grid; gap: var(--space-4); margin-top: var(--space-4);">
+        {c.commonMistakes.map((m: any) => (
+          <div class="card card-flat" style="padding: var(--space-4) var(--space-5); border-left: 3px solid var(--color-accent-warning);">
+            <strong style="display: block; color: var(--color-text-primary); margin-bottom: var(--space-1); font-size: var(--text-base);">{m.mistake}</strong>
+            <p style="margin: 0; color: var(--color-text-secondary); font-size: var(--text-sm); line-height: 1.75;">{m.explanation}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  )}
+
+  {c.faqs && c.faqs.length > 0 && (
+    <div style="margin-top: var(--space-10);">
+      <h2>❓ FAQ: Wrong Location Fixes</h2>
+      <FAQAccordion items={c.faqs} includeSchema={true} />
+    </div>
+  )}
+
+  {c.nextSteps && (
+    <div class="card card-flat" style="margin: var(--space-10) 0; padding: var(--space-6); background: var(--color-bg-secondary); border: 1px solid var(--color-border); border-radius: var(--radius-lg);">
+      <h3 style="margin-top: 0; margin-bottom: var(--space-4); font-size: var(--text-lg); display: flex; align-items: center; gap: var(--space-2);">
+        <span>🚀</span> {c.nextStepsTitle || "Next Steps"}
+      </h3>
+      <div style="display: grid; gap: var(--space-3);">
+        {c.nextSteps.map((step: any) => (
+          <a href={getLocalizedPath(step.href, lang)} class="card card-flat" style="display: flex; flex-direction: column; gap: var(--space-1); padding: var(--space-3) var(--space-4); text-decoration: none; border-left: 3px solid var(--color-accent-primary); background: var(--color-bg-card); transition: transform 0.15s ease;">
+            <strong style="color: var(--color-text-primary); font-size: var(--text-base);">{step.title} →</strong>
+            <span style="color: var(--color-text-secondary); font-size: var(--text-sm); line-height: 1.6;">{step.desc}</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  )}
 
   <div class="contextual-next-box">
     <h3 class="contextual-next-title">{c.connectedGuides}</h3>
     <div class="contextual-next-grid">
       <a href={getLocalizedPath('/guides/improve-gps-accuracy/', lang)} class="contextual-link-card">
-        <span class="contextual-link-icon">⚡</span>
+        <span class="contextual-link-icon">🎯</span>
         <div class="contextual-link-info">
           <div class="contextual-link-title">{c.tool1Title}</div>
           <div class="contextual-link-sub">{c.tool1Desc}</div>
         </div>
       </a>
       <a href={getLocalizedPath('/guides/ip-geolocation-accuracy/', lang)} class="contextual-link-card">
-        <span class="contextual-link-icon">📡</span>
+        <span class="contextual-link-icon">🌐</span>
         <div class="contextual-link-info">
           <div class="contextual-link-title">{c.tool2Title}</div>
           <div class="contextual-link-sub">{c.tool2Desc}</div>
@@ -488,8 +870,8 @@ const c = translations[lang] || translations.en;
           <div class="contextual-link-sub">{c.tool3Desc}</div>
         </div>
       </a>
-      <a href={getLocalizedPath('/tools/gps-coordinates/', lang)} class="contextual-link-card">
-        <span class="contextual-link-icon">🛰️</span>
+      <a href={getLocalizedPath('/my-location/ip/', lang)} class="contextual-link-card">
+        <span class="contextual-link-icon">📡</span>
         <div class="contextual-link-info">
           <div class="contextual-link-title">{c.tool4Title}</div>
           <div class="contextual-link-sub">{c.tool4Desc}</div>

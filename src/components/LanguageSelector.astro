@@ -4,6 +4,7 @@
  * Zero-CLS dropdown with keyboard accessibility and instant localized route switching.
  */
 import { languages, supportedLocales, getLocalizedPath, type SupportedLang } from '../i18n/config';
+import { useTranslations } from '../i18n/ui';
 
 interface Props {
   currentLang?: string;
@@ -21,6 +22,7 @@ const {
 
 const activeLocale = (currentLang in languages ? currentLang : 'en') as SupportedLang;
 const currentLanguageInfo = languages[activeLocale];
+const t = useTranslations(activeLocale);
 ---
 
 <div class={`lang-selector-wrapper ${isMobileDrawer ? 'is-drawer' : ''}`} data-lang-selector id={id}>
@@ -29,7 +31,7 @@ const currentLanguageInfo = languages[activeLocale];
     class="lang-selector-btn"
     aria-expanded="false"
     aria-haspopup="true"
-    aria-label={`Language selector. Current language is ${currentLanguageInfo.name}`}
+    aria-label={`${t('lang.select')}. ${t('lang.current')}: ${currentLanguageInfo.name}`}
     data-lang-trigger
   >
     <!-- Globe Icon -->
@@ -49,9 +51,9 @@ const currentLanguageInfo = languages[activeLocale];
   </button>
 
   <!-- Dropdown Menu -->
-  <div class="lang-dropdown-menu" role="menu" aria-label="Available languages">
+  <div class="lang-dropdown-menu" role="menu" aria-label={t('lang.select')}>
     <div class="lang-dropdown-header">
-      <span>Select Language</span>
+      <span>{t('lang.select')}</span>
     </div>
     <ul class="lang-dropdown-list" role="none">
       {supportedLocales.map((code) => {

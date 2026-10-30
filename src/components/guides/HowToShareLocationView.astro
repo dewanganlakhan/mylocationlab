@@ -1,9 +1,11 @@
 ---
 /**
  * HowToShareLocationView — Multilingual Guide: How to Share Your Location Safely
+ * Fully localized across en, es, fr, de, pt, hi, id with contextual links
  */
 import ContentLayout from '../../layouts/ContentLayout.astro';
-import { getLocalizedPath, type SupportedLang, defaultLang } from '../../i18n/config';
+import FAQAccordion from '../FAQAccordion.astro';
+import { getLocalizedPath, localizeHtml, type SupportedLang, defaultLang } from '../../i18n/config';
 
 interface Props {
   lang?: SupportedLang;
@@ -13,44 +15,89 @@ const { lang = defaultLang } = Astro.props;
 
 const translations: Record<string, any> = {
   en: {
-    title: "How to Share Your Location Safely | MyLocationLab",
-    description: "Share your exact GPS location safely with friends, family, and emergency contacts on iPhone, Android, WhatsApp, Maps, and QR codes.",
+    title: "How to Share Your Location Safely on Any Device | MyLocationLab",
+    description: "In short: Learn how to share real-time live locations and static GPS pins safely across iPhone, Android, WhatsApp, Maps, and QR codes.",
     h1: "How to Share Your Location Safely: The Complete Guide",
     subtitle: "A step-by-step tutorial on sharing real-time live locations and static coordinates across messaging platforms, Apple Find My, Google Maps, and browser QR codes.",
-    sectionLabel: "Educational Guides",
-    p1: "Whether you are meeting a friend at a crowded festival, coordinating roadside assistance, or letting family track your journey home, knowing how to share your location quickly and securely is an essential modern skill.",
-    p2: "There are two distinct types of location sharing: Live Real-Time Tracking (which continuously broadcasts your movement for a set duration) and Static Pin Sharing (which sends a single snapshot of your latitude and longitude). In this guide, we show you how to do both across every major platform and how to generate private web links using our Share Location tool and Location QR Code Generator.",
+    
+    inShort: "In short: You can share your location in two ways: real-time live tracking (which streams your moving coordinates for a set duration) or a static pin (a snapshot of your current latitude and longitude). For safety, always set an automatic expiration time (such as 1 hour) and use direct encrypted messaging rather than public links.",
+
+    takeawaysTitle: "Key Takeaways",
+    takeaways: [
+      "Choose static pin sharing for meeting spots; reserve live tracking for active journeys and emergency situations.",
+      "Always set a time limit (e.g. 15 minutes or 1 hour) rather than sharing indefinitely.",
+      "You can generate instant, contactless map links and QR codes without installing third-party tracking apps.",
+      "Photos taken on smartphones contain embedded GPS coordinates; strip metadata before posting publicly.",
+      "Verify your active coordinates before sharing to ensure satellite accuracy."
+    ],
+
+    p1: "Whether you are coordinating roadside assistance, meeting friends at a crowded festival, or letting family confirm your safe arrival, knowing how to share your location quickly and securely is an essential modern skill. You can generate private, zero-tracking web links instantly using our <a href='/share-location/'>Share Location hub</a>.",
+    p2: "Before sharing, it is best practice to review your exact position and format. Check your current latitude, longitude, and elevation using our <a href='/my-location/coordinates/'>My Coordinates tool</a>, or convert raw numbers into standard formats with our <a href='/tools/coordinate-converter/'>Coordinate Converter</a>. For physical handouts, event badges, or emergency posters, create a scannable graphic with our <a href='/tools/location-qr-code/'>Location QR Code Generator</a>. To prevent unauthorized tracking or persistent data broker profiling, review our comprehensive guide on <a href='/guides/gps-privacy-and-security/'>GPS privacy and security</a>.",
+
     calloutBadge: "🔗 Instant Web Sharing",
     calloutTitle: "Generate a Private Location Share Link",
     calloutDesc: "Get your current GPS position and generate a one-click share link compatible with Apple Maps, Google Maps, and SMS messaging without installing any apps.",
     calloutBtn: "Create Share Link →",
-    h2Apple: "1. Sharing Location on Apple iPhone (iOS / iMessage / Apple Maps)",
-    pApple: "Apple devices offer native location sharing directly within Messages and the Find My application:",
-    step1Title: "Share via iMessage (Quickest Method)",
-    step1Desc: "Open a conversation in Messages > Tap the + icon > Select Location. Choose either 'Send Pin' (static location) or 'Share' (Live location for 1 hour, until end of day, or indefinitely).",
-    step2Title: "Share via Apple Find My",
-    step2Desc: "Open the Find My app > Tap the People tab > Tap Start Sharing Location > Enter the contact's name > Choose duration. This allows family members to see your live battery status and arrival notifications.",
+
+    h2Apple: "1. Sharing Location on Apple iPhone (iOS & Apple Maps)",
+    pApple: "Apple devices provide built-in sharing through Messages and the Find My application:",
+    step1Title: "Share via iMessage (Fastest Native Method)",
+    step1Desc: "Open Messages > select conversation > tap the '+' icon > choose Location. Select 'Send Pin' for a static snapshot or 'Share' for 1 hour, until end of day, or indefinitely.",
+    step2Title: "Share via Apple Find My (Persistent Tracking)",
+    step2Desc: "Open Find My > People tab > tap 'Start Sharing Location' > select contact > choose duration. Contacts can view your live progress and battery percentage.",
+
     h2Android: "2. Sharing Location on Android & Google Maps",
-    pAndroid: "Google Maps provides cross-platform live location sharing that works seamlessly between Android, iPhone, and desktop computers:",
+    pAndroid: "Google Maps provides universal cross-platform sharing compatible with iOS, Android, and web browsers:",
     step3Title: "Share Real-Time Movement in Google Maps",
-    step3Desc: "Open Google Maps > Tap your profile circle in the top right > Tap Location sharing > Tap New share > Select duration (e.g. 1 hour or 'Until you turn this off') > Select contacts or copy the private sharing link.",
-    step4Title: "Drop & Share a Static Pin",
-    step4Desc: "Press and hold anywhere on Google Maps to drop a red pin. Tap the bottom info sheet, tap Share, and copy the coordinate link.",
+    step3Desc: "Open Google Maps > tap your profile avatar (top right) > Location sharing > New share > choose duration (e.g. 1 hour) > select contact or copy the secure link.",
+    step4Title: "Drop & Share a Static Map Pin",
+    step4Desc: "Long-press any location on the map to place a red pin > tap the bottom sheet > tap Share to send coordinates directly via text message.",
+
     h2Messaging: "3. Sharing Location on WhatsApp & Telegram",
-    pMessaging: "Messaging apps allow end-to-end encrypted location sharing:",
-    msgLi1: "WhatsApp: Open a chat > Tap the + or paperclip icon > Select Location. Choose 'Share Live Location' (15 min, 1 hr, or 8 hrs) or 'Send Your Current Location'.",
-    msgLi2: "Telegram: Open chat > Tap paperclip icon > Select Location > Choose 'Send My Current Location' or 'Share My Live Location for...'. Telegram also allows proximity alerts when contacts are within a set distance.",
+    pMessaging: "Messaging apps support end-to-end encrypted coordinate transmissions:",
+    msgLi1: "WhatsApp: Open chat > tap '+' or paperclip > Location > select 'Share Live Location' (15 min, 1 hr, or 8 hrs) or 'Send Your Current Location'.",
+    msgLi2: "Telegram: Open chat > tap paperclip > Location > select 'Send My Current Location' or 'Share My Live Location for...'. Telegram supports proximity alerts when friends approach.",
+
     h2Qr: "4. Sharing via Browser QR Codes (Contactless Sharing)",
-    pQr: "If you are organizing an event, giving flyers to attendees, or displaying coordinates on a poster, generating a QR code is the most efficient method:",
+    pQr: "When coordinating events, printing flyers, or posting trail markers, QR codes allow anyone to open exact coordinates in Google Maps or Apple Maps without typing.",
+
+    h2Privacy: "5. Best Practices for Safe Location Sharing",
+    pPrivacy: "Protect your personal security whenever distributing geographical data:",
+    privLi1: "Set automatic expiration timers: Default to 15 or 60 minutes. Avoid 'Indefinitely' unless sharing with immediate family.",
+    privLi2: "Audit ongoing shares: Regularly inspect active Google Maps and Apple Find My sessions to revoke stale connections.",
+    privLi3: "Strip photo EXIF tags: Before texting original camera photos to acquaintances, disable geotagging in camera settings.",
+
+    workedExampleTitle: "Real-World Worked Example: Sharing a Temporary 1-Hour Link",
+    workedExampleIntro: "How to send a secure, temporary meetup location via SMS or WhatsApp:",
+    workedExampleStep1: "1. Open your browser and navigate to our Share Location tool.",
+    workedExampleStep2: "2. Allow one-time location permission to acquire your high-accuracy GPS fix.",
+    workedExampleStep3: "3. Click 'Copy Universal Map Link' (creates an https://maps.google.com link formatted with your exact coordinates).",
+    workedExampleStep4: "4. Paste the link into your messaging app with a clear note: 'Meet here at 2:00 PM; link expires upon arrival.'",
+
+    commonMistakesTitle: "Common Mistakes When Sharing Location",
+    commonMistakes: [
+      { mistake: "Leaving live tracking active indefinitely", explanation: "Forgetting to turn off live sharing allows contacts to monitor your location days or weeks later. Always select time-limited options." },
+      { mistake: "Sharing live tracking instead of a static pin", explanation: "If you simply want someone to meet you at a cafe, send a static pin. Live sharing consumes continuous phone battery and broadcasts unnecessary movement." },
+      { mistake: "Posting unedited smartphone photos to public forums", explanation: "Original JPEG images contain embedded GPS coordinates in EXIF headers, revealing the exact building where the photo was taken." }
+    ],
+
+    faqs: [
+      { question: "What is the difference between Live Location and Current Location?", answer: "Current Location (Static Pin) sends a one-time snapshot of where you are right now. Live Location continuously updates and broadcasts your movement in real-time for a set duration (e.g., 1 hour)." },
+      { question: "Can someone track me after my live location session ends?", answer: "No. Once the expiration timer elapses or you manually tap 'Stop Sharing', the application immediately ceases transmitting coordinates and revokes map access." },
+      { question: "How does a Location QR code work?", answer: "A location QR code encodes a standard geographical URI (geo:lat,lng or Google Maps URL). When scanned by a smartphone camera, it opens the coordinates directly in the device's native navigation app." }
+    ],
+
+    nextStepsTitle: "Next Steps & Sharing Tools",
+    nextSteps: [
+      { title: "Generate Shareable Link", href: "/share-location/", desc: "Create a private, zero-storage map link for any contact or emergency service." },
+      { title: "Create Location QR Code", href: "/tools/location-qr-code/", desc: "Generate a scannable map graphic for flyers, posters, or business cards." },
+      { title: "GPS Privacy & Security", href: "/guides/gps-privacy-and-security/", desc: "Learn how to audit location permissions and prevent unwanted tracking." }
+    ],
+
     callout2Badge: "📱 QR Code Generator",
     callout2Title: "Create a Scannable Location QR Code",
     callout2Desc: "Encode any latitude, longitude, or map link into a high-resolution QR code that opens instantly in Google Maps or Apple Maps when scanned by any phone camera.",
     callout2Btn: "Generate QR Code →",
-    h2Privacy: "5. Location Privacy: Best Practices for Sharing",
-    pPrivacy: "Sharing your geolocation is sensitive personal data. Follow these essential safety guidelines:",
-    privLi1: "Always set a time limit: Never share live location 'indefinitely' unless with trusted family members. Default to 1 hour.",
-    privLi2: "Audit active shares: Regularly check Google Maps > Location Sharing and iOS Find My to terminate stale share sessions.",
-    privLi3: "Review EXIF photo metadata: Photos taken on smartphones embed precise GPS coordinates in EXIF tags. Remove them before posting publicly.",
     connectedTitle: "🔗 Connected Guides & Practical Tools",
     tool1Title: "Share Location Hub",
     tool1Desc: "Create shareable map links",
@@ -59,301 +106,571 @@ const translations: Record<string, any> = {
     tool3Title: "GPS Privacy & Security",
     tool3Desc: "Protect against tracking",
     tool4Title: "GPS Coordinates Finder",
-    tool4Desc: "Inspect exact lat/lng"
+    tool4Desc: "High-precision satellite lock"
   },
   es: {
     title: "Cómo Compartir su Ubicación de Forma Segura | MyLocationLab",
-    description: "Comparta su posición GPS exacta con amigos, familiares o emergencias en iPhone, Android, WhatsApp, Google Maps y códigos QR.",
+    description: "En resumen: Aprenda a compartir ubicaciones en tiempo real y chinchetas fijas de forma segura en iPhone, Android, WhatsApp y códigos QR.",
     h1: "Cómo Compartir su Ubicación con Seguridad: Guía Completa",
-    subtitle: "Tutorial paso a paso para compartir trayectos en tiempo real y coordenadas fijas en apps de mensajería, Apple Encontrar, Google Maps y QR.",
-    sectionLabel: "Guías Educativas",
-    p1: "Tanto si va a encontrarse con alguien en un lugar concurrido, organizar asistencia en carretera o mantener a su familia informada durante un viaje, saber compartir su ubicación con rapidez y privacidad es fundamental.",
-    p2: "Existen dos modalidades principales: el Rastreo en Tiempo Real (que transmite su movimiento continuo por un tiempo determinado) y el Envío de Marcador Estático (que remite una captura puntual de sus coordenadas). En este tutorial detallamos ambos métodos para las principales plataformas.",
-    calloutBadge: "🔗 Enlace Web Directo",
+    subtitle: "Tutorial paso a paso para compartir ubicaciones en vivo y coordenadas estáticas en apps de mensajería, Apple Buscar, Google Maps y códigos QR.",
+    
+    inShort: "En resumen: Puede compartir su ubicación de dos maneras: seguimiento en vivo en tiempo real (que transmite sus movimientos durante un periodo definido) o una chincheta estática (captura puntual de latitud y longitud). Por seguridad, establezca siempre un límite de tiempo (como 1 hora) y use canales cifrados.",
+
+    takeawaysTitle: "Puntos Clave",
+    takeaways: [
+      "Use chinchetas estáticas para puntos de encuentro; reserve el seguimiento en vivo para trayectos y emergencias.",
+      "Establezca siempre un límite de tiempo (15 minutos o 1 hora) en lugar de compartir indefinidamente.",
+      "Puede generar enlaces web y códigos QR instantáneos sin instalar apps de rastreo de terceros.",
+      "Las fotos del móvil contienen coordenadas GPS; elimine los metadatos antes de publicarlas en internet.",
+      "Verifique sus coordenadas antes del envío para asegurar un bloqueo satelital preciso."
+    ],
+
+    p1: "Ya sea para solicitar asistencia en carretera, reunirse con amigos en un evento multitudinario o avisar a la familia de su llegada, saber compartir su posición con rapidez y seguridad es imprescindible. Puede crear enlaces web privados y sin rastreo en nuestro portal para <a href='/share-location/'>compartir ubicación</a>.",
+    p2: "Antes de enviar sus datos, conviene verificar el formato y la precisión. Compruebe su latitud, longitud y altitud con nuestra utilidad de <a href='/my-location/coordinates/'>mis coordenadas</a> o convierta formatos con el <a href='/tools/coordinate-converter/'>conversor de coordenadas</a>. Para carteles o eventos físicos, diseñe una imagen escaneable con el <a href='/tools/location-qr-code/'>generador de códigos QR de ubicación</a>. Para evitar perfiles publicitarios no deseados, lea nuestra guía sobre <a href='/guides/gps-privacy-and-security/'>privacidad y seguridad GPS</a>.",
+
+    calloutBadge: "🔗 Enlaces Web Seguros",
     calloutTitle: "Genere un Enlace Privado de Ubicación",
-    calloutDesc: "Obtenga sus coordenadas GPS y genere un enlace seguro compatible con Apple Maps, Google Maps y mensajería SMS sin instalar ninguna aplicación.",
+    calloutDesc: "Obtenga sus coordenadas GPS y genere un enlace compatible con Google Maps y Apple Maps sin necesidad de instalar apps adicionales.",
     calloutBtn: "Crear Enlace para Compartir →",
-    h2Apple: "1. Compartir Ubicación en Apple iPhone (iOS / iMessage / Apple Maps)",
-    pApple: "Los dispositivos Apple integran funciones de ubicación directamente en Mensajes y en la aplicación Encontrar:",
-    step1Title: "Compartir por iMessage (Método más Rápido)",
-    step1Desc: "Abra una conversación en Mensajes > Toque el icono + > Seleccione Ubicación. Elija 'Enviar Marcador' (estático) o 'Compartir' (en vivo durante 1 hora, hasta fin del día o indefinidamente).",
-    step2Title: "Compartir mediante la App Encontrar de Apple",
-    step2Desc: "Abra la app Encontrar > Pestaña Personas > Compartir Mi Ubicación > Elija el contacto y la duración. Permite a familiares consultar el nivel de batería y recibir avisos de llegada.",
+
+    h2Apple: "1. Compartir Ubicación en Apple iPhone (iOS y Mapas)",
+    pApple: "Los dispositivos Apple ofrecen opciones nativas a través de Mensajes y la app Buscar:",
+    step1Title: "Compartir por iMessage (Método Rápido)",
+    step1Desc: "Abra Mensajes > conversación > icono '+' > Ubicación. Elija 'Enviar chincheta' (estática) o 'Compartir' (en vivo durante 1 hora, hasta el fin del día o indefinidamente).",
+    step2Title: "Compartir mediante la App Buscar de Apple",
+    step2Desc: "Abra Buscar > pestaña Personas > Compartir mi ubicación > seleccione contacto > elija duración. El receptor verá su posición y porcentaje de batería.",
+
     h2Android: "2. Compartir Ubicación en Android y Google Maps",
-    pAndroid: "Google Maps ofrece seguimiento continuo multiplataforma compatible entre Android, iPhone y ordenadores:",
+    pAndroid: "Google Maps ofrece compatibilidad universal entre Android, iPhone y navegadores web:",
     step3Title: "Compartir Movimiento en Tiempo Real en Google Maps",
-    step3Desc: "Abra Google Maps > Toque su foto de perfil > Compartir ubicación > Compartir con alguien > Fije el tiempo (ej. 1 hora o 'Hasta que desactives esto') > Elija los contactos o copie el enlace.",
-    step4Title: "Marcar y Compartir un Punto Fijo",
-    step4Desc: "Mantenga pulsado cualquier punto en Google Maps para colocar una chincheta roja. Despliegue el panel inferior, pulse Compartir y copie el enlace con coordenadas.",
+    step3Desc: "Abra Google Maps > pulse su perfil (arriba a la derecha) > Compartir ubicación > Compartir con alguien > elija duración > copie el enlace o seleccione contacto.",
+    step4Title: "Enviar una Chincheta Estática",
+    step4Desc: "Mantenga pulsado cualquier punto del mapa para colocar una chincheta roja > toque la ficha inferior > Compartir para enviar el enlace por mensaje.",
+
     h2Messaging: "3. Compartir Ubicación en WhatsApp y Telegram",
     pMessaging: "Las aplicaciones de mensajería incorporan cifrado de extremo a extremo:",
-    msgLi1: "WhatsApp: En un chat, toque el icono de adjuntar (+) > Ubicación > Seleccione 'Ubicación en tiempo real' (15 min, 1 h u 8 h) o 'Enviar mi ubicación actual'.",
-    msgLi2: "Telegram: En el chat, pulse el icono del clip > Ubicación > Elija 'Enviar mi ubicación actual' o 'Compartir mi ubicación en directo...'. Incluye alertas de proximidad.",
-    h2Qr: "4. Compartir Mediante Códigos QR (Sin Contacto)",
-    pQr: "Para folletos de eventos, carteles o tarjetas de visita, generar un código QR con sus coordenadas es la solución más rápida:",
-    callout2Badge: "📱 Generador de Códigos QR",
-    callout2Title: "Cree un Código QR de su Ubicación",
-    callout2Desc: "Convierta sus coordenadas en un código QR de alta resolución que se abrirá directamente en Google Maps o Apple Maps al enfocar con la cámara del móvil.",
+    msgLi1: "WhatsApp: Abra un chat > pulse '+' o clip > Ubicación > elija 'Ubicación en tiempo real' (15 min, 1 h u 8 h) o 'Enviar mi ubicación actual'.",
+    msgLi2: "Telegram: Abra un chat > icono de clip > Ubicación > 'Enviar mi ubicación actual' o 'Compartir mi ubicación en directo durante...'.",
+
+    h2Qr: "4. Compartir Mediante Códigos QR en el Navegador",
+    pQr: "Para folletos de eventos, carteles o rutas al aire libre, los códigos QR permiten abrir las coordenadas en Google Maps o Apple Maps al instante con la cámara del teléfono.",
+
+    h2Privacy: "5. Pautas de Privacidad al Compartir su Ubicación",
+    pPrivacy: "Proteja su seguridad personal siempre que distribuya datos geográficos:",
+    privLi1: "Fije siempre un límite de tiempo: No comparta 'indefinidamente' salvo con familiares directos. Se recomienda 1 hora.",
+    privLi2: "Audite sesiones activas: Revise periódicamente Google Maps y Buscar de Apple para detener enlaces antiguos.",
+    privLi3: "Elimine metadatos EXIF de fotos: Antes de enviar fotos originales a desconocidos, desactive la geolocalización en la cámara.",
+
+    workedExampleTitle: "Ejemplo Práctico: Enviar un Enlace Temporal de 1 Hora",
+    workedExampleIntro: "Cómo generar y enviar un punto de encuentro temporal por SMS o WhatsApp:",
+    workedExampleStep1: "1. Abra el navegador y acceda a nuestra herramienta Compartir Ubicación.",
+    workedExampleStep2: "2. Conceda permiso para que el navegador adquiera una lectura precisa por satélite.",
+    workedExampleStep3: "3. Pulse 'Copiar Enlace Universal de Mapa' (crea un enlace directo a Google Maps con sus coordenadas).",
+    workedExampleStep4: "4. Pegue el enlace en su app de chat con el texto: 'Punto de encuentro a las 14:00; el enlace caduca tras la llegada.'",
+
+    commonMistakesTitle: "Errores Comunes al Compartir Ubicación",
+    commonMistakes: [
+      { mistake: "Dejar el seguimiento en vivo activo indefinidamente", explanation: "Olvidar desactivar la ubicación en vivo permite que contactos sigan viendo su posición días después. Use siempre límites de tiempo." },
+      { mistake: "Enviar ubicación en vivo en lugar de una chincheta fija", explanation: "Para un encuentro en un restaurante basta una chincheta fija. El seguimiento en vivo consume batería continuamente de forma innecesaria." },
+      { mistake: "Publicar fotos originales en redes sociales", explanation: "Las fotos contienen coordenadas GPS exactas en sus metadatos EXIF, desvelando el portal o edificio exacto de la toma." }
+    ],
+
+    faqs: [
+      { question: "¿Cuál es la diferencia entre Ubicación en tiempo real y Ubicación actual?", answer: "La Ubicación actual (chincheta estática) envía una foto fija de dónde se encuentra ahora mismo. La Ubicación en tiempo real actualiza y transmite sus movimientos en directo durante un tiempo fijado (p. ej. 1 hora)." },
+      { question: "¿Pueden rastrearme una vez concluido el tiempo fijado?", answer: "No. Al expirar el temporizador o pulsar 'Dejar de compartir', la app detiene de inmediato la transmisión de coordenadas y anula el acceso al mapa." },
+      { question: "¿Cómo funciona un código QR de ubicación?", answer: "Codifica un enlace geográfico estándar (como geo:lat,lng o una URL de mapas). Al escanearlo con la cámara del móvil, se abre automáticamente en la app de navegación del dispositivo." }
+    ],
+
+    nextStepsTitle: "Próximos Pasos y Herramientas",
+    nextSteps: [
+      { title: "Compartir Ubicación Web", href: "/share-location/", desc: "Genere un enlace privado sin almacenamiento en servidores." },
+      { title: "Generador de Código QR", href: "/tools/location-qr-code/", desc: "Cree códigos QR de mapas listos para escanear e imprimir." },
+      { title: "Privacidad y Seguridad GPS", href: "/guides/gps-privacy-and-security/", desc: "Aprenda a auditar permisos y evitar el rastreo no deseado." }
+    ],
+
+    callout2Badge: "📱 Generador QR",
+    callout2Title: "Cree un Código QR de Ubicación Escaneable",
+    callout2Desc: "Convierta cualquier coordenada o enlace de mapa en un código QR que se abre directamente en Google Maps o Apple Maps con la cámara del teléfono.",
     callout2Btn: "Generar Código QR →",
-    h2Privacy: "5. Buenas Prácticas de Privacidad al Compartir",
-    pPrivacy: "Su geolocalización es un dato de carácter sensible. Siga estas pautas de seguridad:",
-    privLi1: "Establezca siempre un límite de tiempo: Nunca comparta la ubicación de forma indefinida salvo con familiares de total confianza. Por defecto use 1 hora.",
-    privLi2: "Revise sus sesiones activas: Compruebe periódicamente en Google Maps y Apple Encontrar qué personas tienen acceso y cierre vínculos obsoletos.",
-    privLi3: "Cuidado con los metadatos EXIF: Las fotos tomadas con el móvil guardan coordenadas exactas. Revise nuestra guía de Privacidad GPS para proteger sus imágenes.",
-    connectedTitle: "🔗 Guías y Utilidades Relacionadas",
+    connectedTitle: "🔗 Guías Conectadas y Herramientas Prácticas",
     tool1Title: "Compartir Ubicación",
-    tool1Desc: "Enlaces web compartibles",
-    tool2Title: "Código QR de Ubicación",
-    tool2Desc: "Códigos de mapa escaneables",
-    tool3Title: "Privacidad y Seguridad GPS",
-    tool3Desc: "Protección frente al rastreo",
-    tool4Title: "Buscador de Coordenadas GPS",
-    tool4Desc: "Compruebe lat/lon exacta"
+    tool1Desc: "Enlaces de mapa",
+    tool2Title: "Código QR",
+    tool2Desc: "Códigos escaneables",
+    tool3Title: "Privacidad GPS",
+    tool3Desc: "Protección frente a rastreo",
+    tool4Title: "Coordenadas GPS",
+    tool4Desc: "Lectura por satélite"
   },
   fr: {
     title: "Comment Partager Sa Position en Toute Sécurité | MyLocationLab",
-    description: "Partagez votre position GPS exacte avec vos proches ou les secours sur iPhone, Android, WhatsApp, Google Maps et codes QR.",
+    description: "En bref : Partagez votre position GPS en temps réel ou par repère fixe en toute sécurité sur iPhone, Android, WhatsApp et codes QR.",
     h1: "Comment Partager Sa Position en Toute Sécurité : Le Guide Complet",
-    subtitle: "Tutoriel étape par étape pour transmettre vos déplacements en temps réel et vos coordonnées fixes sur toutes les plateformes mobiles.",
-    sectionLabel: "Guides Pédagogiques",
-    p1: "Que ce soit pour retrouver un ami lors d'un événement, guider une dépanneuse ou rassurer des proches pendant un trajet, savoir partager sa position avec précision et discrétion est devenu indispensable.",
-    p2: "On distingue deux modes d'envoi : le Suivi en Temps Réel (qui diffuse vos mouvements de manière continue pendant une période définie) et l'Épingle Statique (qui transmet un cliché ponctuel de vos coordonnées). Ce guide explore les deux méthodes sur l'ensemble des systèmes d'exploitation.",
-    calloutBadge: "🔗 Partage Web Direct",
-    calloutTitle: "Générez un Lien Sécurisé de Localisation",
-    calloutDesc: "Relevez vos coordonnées GPS et créez un lien de partage universel compatible avec Apple Plans, Google Maps et SMS sans installer d'application.",
+    subtitle: "Tutoriel pas à pas pour transmettre votre position en direct ou des coordonnées fixes via messageries, Apple Localiser, Google Maps et codes QR.",
+    
+    inShort: "En bref : Vous pouvez partager votre position de deux manières : le suivi en temps réel (qui transmet vos déplacements pendant une durée définie) ou un repère fixe (instantané de vos coordonnées). Par sécurité, fixez toujours une limite de temps (par exemple 1 heure) et privilégiez les liens privés chiffrés.",
+
+    takeawaysTitle: "Points Clés",
+    takeaways: [
+      "Privilégiez les repères fixes pour les rendez-vous ; réservez le partage en direct aux trajets et situations d'urgence.",
+      "Fixez toujours une durée limite (15 minutes ou 1 heure) plutôt qu'un partage indéfini.",
+      "Générez des liens et des codes QR sans installer d'applications de traçage tierces.",
+      "Les photos mobiles contiennent des coordonnées GPS ; supprimez les métadonnées avant de les publier.",
+      "Vérifiez vos coordonnées avant l'envoi pour garantir la précision du signal satellite."
+    ],
+
+    p1: "Qu'il s'agisse de guider une dépanneuse, de retrouver des amis dans un lieu fréquenté ou de rassurer vos proches sur un trajet, savoir partager sa position avec précision est indispensable. Vous pouvez créer des liens privés et sans suivi sur notre portail <a href='/share-location/'>partager ma position</a>.",
+    p2: "Avant de transmettre vos données, vérifiez leur exactitude. Consultez votre latitude, longitude et altitude avec notre outil <a href='/my-location/coordinates/'>mes coordonnées</a> ou convertissez vos formats grâce au <a href='/tools/coordinate-converter/'>convertisseur de coordonnées</a>. Pour des affiches ou des invitations papier, créez une image imprimable avec notre <a href='/tools/location-qr-code/'>générateur de code QR de localisation</a>. Pour vous prémunir contre le profilage publicitaire, explorez notre guide sur la <a href='/guides/gps-privacy-and-security/'>sécurité et confidentialité GPS</a>.",
+
+    calloutBadge: "🔗 Liens Web Sécurisés",
+    calloutTitle: "Générez un Lien Privé de Localisation",
+    calloutDesc: "Obtenez vos coordonnées GPS et créez un lien universel compatible avec Google Maps, Apple Maps et SMS sans installer d'application.",
     calloutBtn: "Créer un Lien de Partage →",
-    h2Apple: "1. Partager Sa Position sur Apple iPhone (iOS / iMessage / Apple Plans)",
-    pApple: "Les appareils Apple intègrent le partage de position directement dans Messages et dans l'application Localiser :",
-    step1Title: "Partage via iMessage (Méthode Express)",
-    step1Desc: "Ouvrez une conversation dans Messages > Touchez l'icône + > Localisation. Sélectionnez soit 'Envoyer le repère' (statique), soit 'Partager' (en direct pendant 1 h, jusqu'à la fin de la journée ou indéfiniment).",
-    step2Title: "Partage via l'Application Localiser",
-    step2Desc: "Ouvrez Localiser > Onglet Personnes > Partager ma position > Saisissez le contact et la durée. Vos proches pourront également consulter votre niveau de batterie.",
-    h2Android: "2. Partager Sa Position sur Android & Google Maps",
-    pAndroid: "Google Maps propose un partage de localisation en direct multiplateforme entre Android, iPhone et ordinateurs :",
+
+    h2Apple: "1. Partager Sa Position sur Apple iPhone (iOS et Apple Maps)",
+    pApple: "Les appareils Apple intègrent des fonctionnalités natives dans Messages et l'application Localiser :",
+    step1Title: "Partage via iMessage (Méthode Rapide)",
+    step1Desc: "Ouvrez Messages > conversation > icône '+' > Lieu. Choisissez 'Envoyer un repère' (fixe) ou 'Partager' (en direct pendant 1 heure, jusqu'à la fin de la journée ou indéfiniment).",
+    step2Title: "Partage via Apple Localiser",
+    step2Desc: "Ouvrez Localiser > onglet Personnes > Partager ma position > choisissez le contact et la durée. Le destinataire verra votre trajet et votre niveau de batterie.",
+
+    h2Android: "2. Partager Sa Position sur Android et Google Maps",
+    pAndroid: "Google Maps offre un partage multiplateforme compatible avec iOS, Android et ordinateurs :",
     step3Title: "Partager Ses Déplacements en Direct sur Google Maps",
-    step3Desc: "Ouvrez Google Maps > Touchez votre avatar > Partage de position > Nouveau partage > Définissez la durée (ex. 1 heure) > Choisissez les destinataires ou copiez le lien.",
+    step3Desc: "Ouvrez Google Maps > appuyez sur votre photo de profil > Partage de position > Nouveau partage > choisissez la durée > copiez le lien ou sélectionnez un contact.",
     step4Title: "Déposer et Partager un Repère Fixe",
-    step4Desc: "Maintenez le doigt sur n'importe quel point de la carte pour placer un repère rouge. Faites glisser le panneau vers le haut, touchez Partager et copiez le lien.",
-    h2Messaging: "3. Partager Sa Position sur WhatsApp & Telegram",
-    pMessaging: "Les messageries instantanées offrent un partage chiffré de bout en bout :",
-    msgLi1: "WhatsApp : Dans une discussion, touchez le trombone ou le + > Localisation > Choisissez 'Partager localisation en direct' (15 min, 1 h, 8 h) ou 'Envoyer votre position actuelle'.",
-    msgLi2: "Telegram : Dans le chat, touchez le trombone > Localisation > 'Envoyer ma position actuelle' ou 'Partager ma position en direct...'. Inclut des alertes de proximité.",
-    h2Qr: "4. Partage par QR Code (Solution Sans Contact)",
-    pQr: "Pour orienter les participants d'un événement ou imprimer des coordonnées sur une affiche, le QR code est le moyen le plus simple :",
-    callout2Badge: "📱 Générateur de QR Code",
-    callout2Title: "Créez un QR Code de Votre Position",
-    callout2Desc: "Encodez vos coordonnées dans un QR code net prêt à être scanné par l'appareil photo de n'importe quel smartphone pour ouvrir directement Google Maps.",
-    callout2Btn: "Générer un QR Code →",
-    h2Privacy: "5. Bonnes Pratiques de Sécurité et Confidentialité",
-    pPrivacy: "Vos coordonnées constituent des données personnelles sensibles. Adoptez ces réflexes de sécurité :",
-    privLi1: "Limitez toujours la durée : Ne partagez jamais votre position en continu sans date d'expiration, sauf avec des proches de confiance absolue. Privilégiez 1 heure.",
-    privLi2: "Contrôlez vos partages actifs : Vérifiez régulièrement les autorisations dans Google Maps et Apple Localiser pour révoquer les sessions oubliées.",
-    privLi3: "Méfiez-vous des métadonnées EXIF : Les photos prises avec un smartphone intègrent vos coordonnées exactes. Consultez notre guide Sécurité GPS pour vous prémunir.",
+    step4Desc: "Appuyez longuement sur la carte pour déposer un repère rouge > appuyez sur le volet du bas > Partager pour envoyer le lien des coordonnées.",
+
+    h2Messaging: "3. Partager Sa Position sur WhatsApp et Telegram",
+    pMessaging: "Les messageries instantanées intègrent le chiffrement de bout en bout :",
+    msgLi1: "WhatsApp : Ouvrez une discussion > icône '+' ou trombone > Localisation > 'Partager localisation en direct' (15 min, 1 h ou 8 h) ou 'Envoyer votre position actuelle'.",
+    msgLi2: "Telegram : Ouvrez une discussion > trombone > Localisation > 'Envoyer ma position actuelle' ou 'Partager ma position en direct pendant...'.",
+
+    h2Qr: "4. Partage Sans Contact par Code QR",
+    pQr: "Pour des événements, des affiches ou des circuits de randonnée, un code QR permet à chacun d'ouvrir directement les coordonnées dans son application de navigation.",
+
+    h2Privacy: "5. Bonnes Pratiques pour Partager Sa Position",
+    pPrivacy: "Protégez votre vie privée lors de l'envoi de données géographiques :",
+    privLi1: "Fixez une durée d'expiration automatique : Privilégiez 1 heure. Évitez les partages indéfinis sauf pour les proches très intimes.",
+    privLi2: "Auditez vos partages en cours : Vérifiez régulièrement Google Maps et Apple Localiser pour interrompre les sessions oubliées.",
+    privLi3: "Supprimez les données EXIF des photos : Désactivez la géolocalisation de l'appareil photo avant d'envoyer des clichés originaux.",
+
+    workedExampleTitle: "Exemple Concret : Envoyer un Lien Temporaire d'une Heure",
+    workedExampleIntro: "Comment générer un lien d'arrivée temporaire par SMS ou WhatsApp :",
+    workedExampleStep1: "1. Ouvrez votre navigateur et accédez à notre outil Partager ma position.",
+    workedExampleStep2: "2. Autorisez la géolocalisation pour obtenir vos coordonnées GPS par satellite.",
+    workedExampleStep3: "3. Cliquez sur 'Copier le lien universel' (génère une URL Google Maps directe avec vos coordonnées).",
+    workedExampleStep4: "4. Collez le lien dans votre message : 'Rendez-vous ici à 14h ; le lien expire à notre arrivée.'",
+
+    commonMistakesTitle: "Erreurs Courantes Lors du Partage de Position",
+    commonMistakes: [
+      { mistake: "Laisser le suivi en direct actif indéfiniment", explanation: "Oublier de désactiver le partage permet à des tiers de vous localiser plusieurs jours après. Choisissez toujours une fin automatique." },
+      { mistake: "Partager en direct pour un simple lieu de rendez-vous", explanation: "Pour un point fixe, un simple repère suffit. Le suivi en direct sollicite la batterie en continu de manière inutile." },
+      { mistake: "Publier des photos originales sur des forums publics", explanation: "Les fichiers JPEG contiennent des métadonnées EXIF qui indiquent l'adresse et le bâtiment exacts de la prise de vue." }
+    ],
+
+    faqs: [
+      { question: "Quelle est la différence entre Localisation en direct et Position actuelle ?", answer: "La Position actuelle (repère fixe) transmet un instantané unique de l'endroit où vous vous trouvez. La Localisation en direct met à jour vos mouvements en continu pendant la durée choisie (ex. 1 heure)." },
+      { question: "Quelqu'un peut-il me suivre après la fin de la durée prévue ?", answer: "Non. Dès que le compte à rebours s'achève ou si vous cliquez sur 'Arrêter le partage', la transmission s'interrompt immédiatement et l'accès à la carte est révoqué." },
+      { question: "Comment fonctionne un code QR de localisation ?", answer: "Il encode un lien géographique standard. Lorsqu'un smartphone le scanne avec son appareil photo, les coordonnées s'affichent directement dans son application GPS favorite." }
+    ],
+
+    nextStepsTitle: "Prochaines Étapes et Outils",
+    nextSteps: [
+      { title: "Partager ma Position", href: "/share-location/", desc: "Créez un lien de carte privé sans enregistrement sur nos serveurs." },
+      { title: "Générateur de Code QR", href: "/tools/location-qr-code/", desc: "Générez un code QR de carte prêt à être imprimé ou scanné." },
+      { title: "Sécurité et Confidentialité GPS", href: "/guides/gps-privacy-and-security/", desc: "Apprenez à contrôler vos autorisations pour éviter les abus." }
+    ],
+
+    callout2Badge: "📱 Générateur QR",
+    callout2Title: "Créez un Code QR de Localisation",
+    callout2Desc: "Convertissez des coordonnées ou un lien de carte en code QR lisible par l'appareil photo de n'importe quel smartphone pour l'ouvrir dans Google Maps ou Apple Maps.",
+    callout2Btn: "Générer un Code QR →",
     connectedTitle: "🔗 Guides et Outils Pratiques",
     tool1Title: "Partage de Position",
-    tool1Desc: "Liens de carte partageables",
-    tool2Title: "QR Code de Localisation",
-    tool2Desc: "Codes de carte à scanner",
-    tool3Title: "Confidentialité & Sécurité GPS",
-    tool3Desc: "Se protéger du pistage",
-    tool4Title: "Buscador Coordonnées GPS",
-    tool4Desc: "Relever lat/lon exacte"
+    tool1Desc: "Liens de carte",
+    tool2Title: "Code QR de Carte",
+    tool2Desc: "Codes scannables",
+    tool3Title: "Sécurité GPS",
+    tool3Desc: "Protection des données",
+    tool4Title: "Coordonnées GPS",
+    tool4Desc: "Précision satellite"
   },
   de: {
-    title: "Standort sicher teilen: Der umfassende Leitfaden | MyLocationLab",
-    description: "Teilen Sie Ihren GPS-Standort sicher mit Freunden, Familie oder Notfalldiensten auf iPhone, Android, WhatsApp, Google Maps und per QR-Code.",
-    h1: "Standort sicher teilen: Der vollständige Praxisleitfaden",
-    subtitle: "Schritt-für-Schritt-Anleitung für Live-Standortübertragung und feste Koordinaten über Messenger, Apple 'Wo ist?', Google Maps und QR-Codes.",
-    sectionLabel: "Lehr-Ratgeber",
-    p1: "Ob bei Verabredungen auf Großveranstaltungen, bei Pannen auf Reisen oder zur Beruhigung der Familie während der Heimfahrt: Den eigenen Standort schnell und sicher weiterzugeben, ist heute unerlässlich.",
-    p2: "Es gibt zwei Hauptformen der Standortfreigabe: Live-Echtzeit-Tracking (kontinuierliche Bewegungsübertragung für eine festgelegte Zeit) und feste Stecknadeln (einmalige Momentaufnahme von Breitengrad und Längengrad). Dieser Leitfaden erklärt beide Verfahren für alle gängigen Plattformen.",
-    calloutBadge: "🔗 Direkter Weblink",
-    calloutTitle: "Privaten Standort-Freigabelink erstellen",
-    calloutDesc: "Ermitteln Sie Ihre GPS-Position und erzeugen Sie mit einem Klick einen Freigabelink für Apple Maps, Google Maps oder SMS – ohne zusätzliche Apps.",
-    calloutBtn: "Freigabelink erstellen →",
-    h2Apple: "1. Standort auf dem Apple iPhone teilen (iOS / iMessage / Wo ist?)",
-    pApple: "Apple-Geräte bieten integrierte Freigabefunktionen direkt in der Nachrichten-App sowie in 'Wo ist?':",
+    title: "Standort sicher teilen auf jedem Gerät | MyLocationLab",
+    description: "Kurz gesagt: Erfahren Sie, wie Sie Live-Standorte und statische GPS-Pins auf iPhone, Android, WhatsApp und per QR-Code sicher teilen.",
+    h1: "Standort sicher teilen: Der umfassende Praxisleitfaden",
+    subtitle: "Schritt-für-Schritt-Anleitung für das Teilen von Live-Standorten und statischen Koordinaten über Messenger, Apple Wo ist?, Google Maps und QR-Codes.",
+    
+    inShort: "Kurz gesagt: Sie können Ihren Standort auf zwei Arten teilen: als Live-Tracking in Echtzeit (das Ihre Bewegungen für eine bestimmte Zeitspanne überträgt) oder als statischen Pin (einmalige Momentaufnahme von Breiten- und Längengrad). Setzen Sie aus Sicherheitsgründen stets ein automatisches Zeitlimit (z. B. 1 Stunde).",
+
+    takeawaysTitle: "Wichtige Erkenntnisse",
+    takeaways: [
+      "Nutzen Sie statische Pins für Treffpunkte; reservieren Sie Live-Standorte für Fahrten und Notfälle.",
+      "Wählen Sie stets eine Zeitbegrenzung (z. B. 15 Minuten oder 1 Stunde) statt unbegrenzter Freigabe.",
+      "Erstellen Sie kontaktlose Karten-Links und QR-Codes ohne Installation zusätzlicher Spionage-Apps.",
+      "Smartphone-Fotos enthalten GPS-Metadaten; entfernen Sie EXIF-Tags vor dem Hochladen im Netz.",
+      "Prüfen Sie Ihre aktiven Koordinaten vor dem Versenden auf optimale Satellitengenauigkeit."
+    ],
+
+    p1: "Ob bei einer Autopanne, beim Treffen auf einem vollen Festivalgelände oder um Angehörigen die sichere Heimfahrt zu bestätigen: Die sichere Weitergabe von Koordinaten ist im Alltag unverzichtbar. Erstellen Sie private, trackingfreie Links direkt in unserem Bereich <a href='/share-location/'>Standort teilen</a>.",
+    p2: "Vor dem Teilen empfiehlt sich ein kurzer Check Ihrer Koordinaten. Prüfen Sie Breiten- und Längengrad in unserem Tool <a href='/my-location/coordinates/'>Meine Koordinaten</a> oder wandeln Sie Formate mit dem <a href='/tools/coordinate-converter/'>Koordinaten-Umrechner</a> um. Für Aushänge, Flyer oder Einladungen erstellen Sie scannbare Grafiken mit unserem <a href='/tools/location-qr-code/'>Standort-QR-Code-Generator</a>. Um sich vor unerwünschter Überwachung zu schützen, lesen Sie unseren Leitfaden zu <a href='/guides/gps-privacy-and-security/'>GPS-Sicherheit und Datenschutz</a>.",
+
+    calloutBadge: "🔗 Sichere Web-Links",
+    calloutTitle: "Privaten Standort-Link erstellen",
+    calloutDesc: "Ermitteln Sie Ihre GPS-Position und erzeugen Sie einen universellen Link für Google Maps, Apple Maps und SMS ohne zusätzliche App-Installation.",
+    calloutBtn: "Standort-Link erstellen →",
+
+    h2Apple: "1. Standort teilen auf Apple iPhone (iOS & Apple Karten)",
+    pApple: "Apple-Geräte bieten integrierte Freigaben über Nachrichten und die 'Wo ist?'-App:",
     step1Title: "Per iMessage teilen (Schnellste Methode)",
-    step1Desc: "Öffnen Sie einen Chat in Nachrichten > Tippen Sie auf das +-Symbol > Standort. Wählen Sie 'Stecknadel senden' (fest) oder 'Teilen' (Live für 1 Stunde, bis zum Ende des Tages oder dauerhaft).",
-    step2Title: "Über die Apple 'Wo ist?'-App",
-    step2Desc: "Öffnen Sie 'Wo ist?' > Personen > 'Standort teilen' > Kontakt und Dauer auswählen. Familienmitglieder können so auch den Akkustand und Ankunftsbenachrichtigungen sehen.",
-    h2Android: "2. Standort auf Android & Google Maps teilen",
-    pAndroid: "Google Maps ermöglicht plattformübergreifendes Live-Tracking zwischen Android, iPhone und Desktop-Computern:",
-    step3Title: "Echtzeit-Bewegung in Google Maps freigeben",
-    step3Desc: "Öffnen Sie Google Maps > Profilbild oben rechts > 'Standortfreigabe' > 'Neue Freigabe' > Dauer festlegen (z. B. 1 Stunde) > Kontakte auswählen oder privaten Link kopieren.",
-    step4Title: "Feste Stecknadel setzen und teilen",
-    step4Desc: "Halten Sie den Finger auf eine beliebige Stelle in Google Maps, um eine rote Nadel zu setzen. Wischen Sie das Menü nach oben, tippen Sie auf 'Teilen' und kopieren Sie den Link.",
+    step1Desc: "Nachrichten-App öffnen > Chat wählen > '+'-Symbol > Standort. Wählen Sie 'Stecknadel senden' (statisch) oder 'Teilen' (Live für 1 Stunde, bis zum Ende des Tages oder unbegrenzt).",
+    step2Title: "Über Apple 'Wo ist?' teilen",
+    step2Desc: "'Wo ist?'-App öffnen > Reiter Personen > 'Standort teilen' > Kontakt wählen > Dauer festlegen. Der Empfänger sieht Ihren Weg und Akkustand.",
+
+    h2Android: "2. Standort teilen auf Android & Google Maps",
+    pAndroid: "Google Maps funktioniert plattformübergreifend zwischen Android, iOS und Desktop-PCs:",
+    step3Title: "Live-Standort in Google Maps teilen",
+    step3Desc: "Google Maps öffnen > Profilbild oben rechts antippen > Standortfreigabe > Neue Freigabe > Dauer wählen (z. B. 1 Stunde) > Link kopieren oder Kontakt auswählen.",
+    step4Title: "Statische Stecknadel teilen",
+    step4Desc: "Einen beliebigen Punkt auf der Karte gedrückt halten > rote Stecknadel setzen > untere Leiste antippen > Teilen wählen.",
+
     h2Messaging: "3. Standort über WhatsApp & Telegram teilen",
-    pMessaging: "Messenger-Dienste bieten Ende-zu-Ende-verschlüsselte Standortübertragungen:",
-    msgLi1: "WhatsApp: Im Chat auf das Büroklammer- oder +-Symbol > Standort > 'Live-Standort teilen' (15 Min., 1 Std., 8 Std.) oder 'Aktuellen Standort senden'.",
-    msgLi2: "Telegram: Büroklammer > Standort > 'Aktuellen Standort senden' oder 'Meinen Live-Standort teilen...'. Unterstützt auch automatische Annäherungsalarme.",
-    h2Qr: "4. Standort per QR-Code teilen (Kontaktlos & Plakate)",
-    pQr: "Für Flyer, Einladungen oder Aushänge bei Veranstaltungen ist ein QR-Code die komfortabelste Lösung:",
+    pMessaging: "Messenger-Apps nutzen Ende-zu-Ende-Verschlüsselung für Standortdaten:",
+    msgLi1: "WhatsApp: Chat öffnen > '+' oder Büroklammer > Standort > 'Live-Standort teilen' (15 Min., 1 Std. oder 8 Std.) oder 'Aktuellen Standort senden'.",
+    msgLi2: "Telegram: Chat öffnen > Büroklammer > Standort > 'Meinen aktuellen Standort senden' oder 'Meinen Live-Standort teilen für...'.",
+
+    h2Qr: "4. Kontaktloses Teilen via QR-Code im Browser",
+    pQr: "Für Flyer, Aushänge oder Wanderrouten ermöglicht ein QR-Code das direkte Öffnen der Zielkoordinaten in Google Maps oder Apple Karten mit der Handykamera.",
+
+    h2Privacy: "5. Datenschutzregeln beim Teilen von Standorten",
+    pPrivacy: "Schützen Sie Ihre Privatsphäre bei der Weitergabe von Geodaten:",
+    privLi1: "Automatisches Ablaufdatum setzen: Nutzen Sie 15 oder 60 Minuten. Vermeiden Sie 'Dauerhaft', außer bei engsten Familienangehörigen.",
+    privLi2: "Laufende Freigaben prüfen: Kontrollieren Sie Google Maps und Apple 'Wo ist?' regelmäßig auf veraltete Freigaben.",
+    privLi3: "EXIF-Metadaten entfernen: Deaktivieren Sie Geotags in der Kamera-App vor dem Versenden von Originalbildern.",
+
+    workedExampleTitle: "Praxisbeispiel: Temporären 1-Stunden-Treffpunkt teilen",
+    workedExampleIntro: "So senden Sie einen geschützten Treffpunkt per SMS oder WhatsApp:",
+    workedExampleStep1: "1. Rufen Sie im Browser unser Tool 'Standort teilen' auf.",
+    workedExampleStep2: "2. Erteilen Sie die Standortfreigabe für einen präzisen GPS-Satellitenabgleich.",
+    workedExampleStep3: "3. Klicken Sie auf 'Universellen Karten-Link kopieren' (erzeugt eine saubere Maps-URL mit Koordinaten).",
+    workedExampleStep4: "4. Fügen Sie den Link in den Chat ein: 'Treffpunkt um 14:00 Uhr; Link verfällt bei Ankunft.'",
+
+    commonMistakesTitle: "Häufige Fehler beim Teilen des Standorts",
+    commonMistakes: [
+      { mistake: "Live-Tracking dauerhaft aktiv lassen", explanation: "Wer vergisst, die Freigabe zu beenden, teilt seinen Aufenthaltsort noch Tage später. Nutzen Sie stets feste Zeitfenster." },
+      { mistake: "Live-Standort statt statischer Stecknadel senden", explanation: "Für einen einfachen Treffpunkt reicht ein statischer Pin. Live-Tracking belastet unnötig den Akku." },
+      { mistake: "Originalfotos in öffentlichen Foren posten", explanation: "Digitale Fotos enthalten EXIF-Daten mit genauen Koordinaten Ihres Zuhauses oder Büros." }
+    ],
+
+    faqs: [
+      { question: "Was ist der Unterschied zwischen Live-Standort und aktuellem Standort?", answer: "Der aktuelle Standort (statische Stecknadel) ist eine einmalige Momentaufnahme Ihrer jetzigen Position. Der Live-Standort überträgt Ihre Bewegungen in Echtzeit über eine gewählte Dauer (z. B. 1 Stunde)." },
+      { question: "Kann mich jemand nach Ablauf der Freigabe weiter verfolgen?", answer: "Nein. Sobald der Timer abgelaufen ist oder Sie 'Freigabe beenden' wählen, wird die Übertragung sofort gestoppt und der Kartenzugriff erlischt." },
+      { question: "Wie funktioniert ein Standort-QR-Code?", answer: "Der QR-Code speichert eine universelle Geo-Adresse. Wird er mit einer Smartphone-Kamera gescannt, öffnet sich direkt die Navigations-App des Nutzers." }
+    ],
+
+    nextStepsTitle: "Nächste Schritte und Tools",
+    nextSteps: [
+      { title: "Standort teilen Hub", href: "/share-location/", desc: "Erstellen Sie geschützte Karten-Links ohne Server-Speicherung." },
+      { title: "Standort-QR-Code", href: "/tools/location-qr-code/", desc: "Erzeugen Sie scannbare Karten-Codes für Flyer und Plakate." },
+      { title: "GPS-Sicherheit & Datenschutz", href: "/guides/gps-privacy-and-security/", desc: "Lernen Sie, wie Sie App-Berechtigungen kontrollieren und absichern." }
+    ],
+
     callout2Badge: "📱 QR-Code-Generator",
-    callout2Title: "Scannbaren Standort-QR-Code generieren",
-    callout2Desc: "Wandeln Sie Koordinaten in einen hochauflösenden QR-Code um, der sich beim Scannen mit der Smartphone-Kamera sofort in Google Maps öffnet.",
+    callout2Title: "Scannbaren Standort-QR-Code erstellen",
+    callout2Desc: "Wandeln Sie Koordinaten in einen hochauflösenden QR-Code um, der sich beim Scannen direkt in Google Maps oder Apple Karten öffnet.",
     callout2Btn: "QR-Code erstellen →",
-    h2Privacy: "5. Datenschutz: Sicherheitstipps bei der Standortfreigabe",
-    pPrivacy: "Standortdaten gehören zu den sensibelsten persönlichen Informationen. Beachten Sie folgende Grundregeln:",
-    privLi1: "Immer ein Zeitlimit setzen: Teilen Sie Live-Standorte nie dauerhaft, außer mit engsten Vertrauten. Standard: 1 Stunde.",
-    privLi2: "Aktive Freigaben regelmäßig prüfen: Kontrollieren Sie in Google Maps und Apple 'Wo ist?', welche Freigaben noch aktiv sind, und beenden Sie veraltete Verbindungen.",
-    privLi3: "Achtung bei EXIF-Fotodaten: Fotos mit dem Smartphone enthalten oft exakte GPS-Tags. Entfernen Sie diese vor Veröffentlichungen im Internet.",
-    connectedTitle: "🔗 Verwandte Ratgeber & Werkzeuge",
+    connectedTitle: "🔗 Verknüpfte Leitfäden und Tools",
     tool1Title: "Standort teilen",
-    tool1Desc: "Teilbare Kartenlinks",
+    tool1Desc: "Karten-Links",
     tool2Title: "Standort-QR-Code",
-    tool2Desc: "Scannbare Kartencodes",
-    tool3Title: "GPS-Datenschutz & Sicherheit",
-    tool3Desc: "Vor Tracking schützen",
-    tool4Title: "GPS-Koordinaten-Finder",
-    tool4Desc: "Genaue Breiten-/Längengrade"
+    tool2Desc: "Scannbare Codes",
+    tool3Title: "GPS-Datenschutz",
+    tool3Desc: "Tracking stoppen",
+    tool4Title: "GPS-Koordinaten",
+    tool4Desc: "Satellitenfix"
   },
   pt: {
-    title: "Como Compartilhar sua Localização com Segurança | MyLocationLab",
-    description: "Compartilhe sua localização GPS exata com amigos, família e serviços de emergência no iPhone, Android, WhatsApp, Maps e códigos QR.",
-    h1: "Como Compartilhar sua Localização com Segurança: Guia Completo",
-    subtitle: "Tutorial passo a passo sobre compartilhamento de localização em tempo real e pontos fixos no WhatsApp, Apple Buscar, Google Maps e QR codes.",
-    sectionLabel: "Guias Educativos",
-    p1: "Seja para encontrar amigos em um evento cheio, solicitar reboque na estrada ou tranquilizar familiares durante uma viagem, saber compartilhar sua localização com rapidez e privacidade é essencial.",
-    p2: "Existem dois formatos principais: o Rastreamento em Tempo Real (que transmite seu trajeto dinâmico durante um período específico) e o Ponto Fixo (que envia um registro estático da sua latitude e longitude). Neste guia, abordamos ambas as opções em todos os sistemas operacionais.",
-    calloutBadge: "🔗 Link Direto de Compartilhamento",
-    calloutTitle: "Gere um Link Privado de Localização",
-    calloutDesc: "Descubra sua posição GPS e crie um link direto compatível com Apple Maps, Google Maps e SMS sem instalar nenhum aplicativo adicional.",
+    title: "Como Compartilhar Sua Localização com Segurança | MyLocationLab",
+    description: "Em resumo: Saiba como compartilhar localização em tempo real e pontos fixos no iPhone, Android, WhatsApp e códigos QR com segurança.",
+    h1: "Como Compartilhar Sua Localização com Segurança: Guia Completo",
+    subtitle: "Um tutorial passo a passo para enviar localização em tempo real e coordenadas estáticas no WhatsApp, Apple Buscar, Google Maps e QR codes.",
+    
+    inShort: "Em resumo: É possível compartilhar sua posição de duas formas: rastreamento em tempo real (que transmite seu deslocamento por um período programado) ou ponto estático (uma foto fixa de latitude e longitude). Por segurança, determine sempre um limite de tempo (como 1 hora) e use mensagens privadas criptografadas.",
+
+    takeawaysTitle: "Pontos Principais",
+    takeaways: [
+      "Use pontos estáticos para encontros; reserve o rastreamento em tempo real para deslocamentos e emergências.",
+      "Defina sempre um tempo limite de compartilhamento (15 minutos ou 1 hora) em vez de compartilhar indefinidamente.",
+      "Crie links e códigos QR instantâneos sem precisar instalar aplicativos espiões de terceiros.",
+      "Fotos tiradas no celular contêm coordenadas GPS; remova os metadados antes de publicar na web.",
+      "Confirme suas coordenadas ativas antes do envio para assegurar um sinal satelital de alta precisão."
+    ],
+
+    p1: "Seja para pedir socorro mecânico na estrada, encontrar amigos em um show lotado ou avisar a família que chegou bem, saber compartilhar sua posição com agilidade é indispensável. Você pode gerar links seguros e sem rastreamento em nosso portal para <a href='/share-location/'>compartilhar localização</a>.",
+    p2: "Antes de enviar suas informações, vale a pena verificar os formatos de coordenadas. Veja sua latitude, longitude e altitude em <a href='/my-location/coordinates/'>minhas coordenadas</a> ou faça conversões no <a href='/tools/coordinate-converter/'>conversor de coordenadas</a>. Para cartazes ou convites impressos, crie uma imagem escaneável com nosso <a href='/tools/location-qr-code/'>gerador de QR code de localização</a>. Para se proteger contra rastreamento comercial indevido, leia nosso guia sobre <a href='/guides/gps-privacy-and-security/'>privacidade e segurança no GPS</a>.",
+
+    calloutBadge: "🔗 Links Seguros",
+    calloutTitle: "Gerar Link Privado de Localização",
+    calloutDesc: "Obtenha sua posição GPS e crie um link direto para Google Maps e Apple Maps sem instalar aplicativos extras.",
     calloutBtn: "Criar Link de Compartilhamento →",
-    h2Apple: "1. Compartilhar Localização no Apple iPhone (iOS / iMessage / Buscar)",
-    pApple: "Os aparelhos da Apple possuem recursos nativos em Mensagens e no aplicativo Buscar:",
-    step1Title: "Via iMessage (Método mais Prático)",
-    step1Desc: "Abra a conversa em Mensagens > Toque no ícone + > Localização. Escolha 'Enviar Alfinete' (estático) ou 'Compartilhar' (ao vivo por 1 hora, até o fim do dia ou indefinidamente).",
-    step2Title: "Via Aplicativo Buscar da Apple",
-    step2Desc: "Abra o Buscar > Aba Pessoas > Compartilhar Localização > Escolha o contato e o tempo desejado. Permite visualizar o nível de bateria e alertas de chegada.",
-    h2Android: "2. Compartilhar Localização no Android e Google Maps",
-    pAndroid: "O Google Maps viabiliza o acompanhamento em tempo real entre celulares Android, iPhones e computadores:",
-    step3Title: "Compartilhar Trajeto ao Vivo no Google Maps",
-    step3Desc: "Abra o Google Maps > Toque na foto do perfil > Compartilhar local > Novo compartilhamento > Defina a duração (ex. 1 hora) > Selecione os contatos ou copie o link privado.",
-    step4Title: "Fixar e Enviar um Alfinete Estático",
-    step4Desc: "Pressione qualquer ponto no mapa para inserir um marcador vermelho. Arraste a barra inferior para cima, toque em Compartilhar e copie o link.",
-    h2Messaging: "3. Compartilhar Localização no WhatsApp e Telegram",
-    pMessaging: "Os aplicativos de mensagens utilizam criptografia de ponta a ponta:",
-    msgLi1: "WhatsApp: No chat, toque no clipe ou no + > Localização > 'Localização em tempo real' (15 min, 1 h ou 8 h) ou 'Enviar sua localização atual'.",
-    msgLi2: "Telegram: Toque no clipe > Localização > 'Enviar Minha Localização Atual' ou 'Compartilhar Localização em Tempo Real...'. Suporta alertas de proximidade.",
-    h2Qr: "4. Compartilhamento por Código QR (Sem Contato Físico)",
-    pQr: "Em cartazes, convites ou eventos, um QR code é o formato mais rápido para guiar pessoas até o local:",
-    callout2Badge: "📱 Gerador de QR Code",
-    callout2Title: "Crie um QR Code da sua Localização",
-    callout2Desc: "Converta latitude e longitude em um QR code nítido que abre diretamente no Google Maps ao ser escaneado por qualquer câmera de smartphone.",
-    callout2Btn: "Gerar Código QR →",
+
+    h2Apple: "1. Compartilhando Localização no Apple iPhone (iOS e Mapas)",
+    pApple: "Aparelhos Apple contam com recursos nativos no Mensagens e no aplicativo Buscar:",
+    step1Title: "Compartilhar pelo iMessage (Método Mais Rápido)",
+    step1Desc: "Abra o Mensagens > conversa > toque no '+' > Localização. Escolha 'Enviar Alfinete' (estático) ou 'Compartilhar' (em tempo real por 1 hora, até o fim do dia ou indefinidamente).",
+    step2Title: "Compartilhar pelo Aplicativo Buscar",
+    step2Desc: "Abra o Buscar > aba Pessoas > Compartilhar Localização > selecione o contato > determine a duração. O contato verá seu trajeto e bateria.",
+
+    h2Android: "2. Compartilhando Localização no Android e Google Maps",
+    pAndroid: "O Google Maps funciona de forma multiplataforma entre Android, iOS e computadores:",
+    step3Title: "Compartilhar Trajeto em Tempo Real no Google Maps",
+    step3Desc: "Abra o Google Maps > toque na sua foto de perfil > Compartilhar local > Novo compartilhamento > defina o tempo > copie o link ou escolha o contato.",
+    step4Title: "Enviar um Ponto Estático no Mapa",
+    step4Desc: "Pressione qualquer ponto no mapa para soltar um alfinete vermelho > toque no painel inferior > Compartilhar para enviar as coordenadas.",
+
+    h2Messaging: "3. Compartilhando no WhatsApp e Telegram",
+    pMessaging: "Aplicativos de conversa contam com criptografia de ponta a ponta:",
+    msgLi1: "WhatsApp: Abra a conversa > toque no '+' ou clipe > Localização > 'Localização em tempo real' (15 min, 1 h ou 8 h) ou 'Enviar sua localização atual'.",
+    msgLi2: "Telegram: Abra a conversa > clipe > Localização > 'Enviar minha localização atual' ou 'Compartilhar minha localização em tempo real por...'.",
+
+    h2Qr: "4. Compartilhamento Sem Contato por Código QR",
+    pQr: "Para eventos, cartazes de trilhas ou impressos, um código QR permite abrir as coordenadas no Google Maps ou Apple Maps diretamente pela câmera do celular.",
+
     h2Privacy: "5. Boas Práticas de Privacidade ao Compartilhar",
-    pPrivacy: "Sua posição geográfica é uma informação pessoal confidencial. Mantenha os seguintes cuidados:",
-    privLi1: "Defina sempre um tempo limite: Nunca compartilhe localização em tempo real por tempo indeterminado, exceto com familiares diretos. O padrão ideal é 1 hora.",
-    privLi2: "Revise sessões ativas: Verifique com frequência no Google Maps e no Buscar da Apple quem ainda tem acesso à sua rota e encerre links antigos.",
-    privLi3: "Atenção aos metadados EXIF: Fotos tiradas no celular guardam coordenadas GPS nas etiquetas EXIF. Remova-as antes de postar publicamente.",
-    connectedTitle: "🔗 Guias e Ferramentas Relacionadas",
-    tool1Title: "Compartilhar Localização",
-    tool1Desc: "Links de mapas compartilháveis",
-    tool2Title: "QR Code de Localização",
-    tool2Desc: "Códigos de mapa escaneáveis",
-    tool3Title: "Privacidade e Segurança GPS",
-    tool3Desc: "Proteção contra rastreamento",
-    tool4Title: "Buscador Coordenadas GPS",
-    tool4Desc: "Veja lat/lon exata"
+    pPrivacy: "Mantenha sua segurança pessoal ao distribuir dados geográficos:",
+    privLi1: "Defina tempo de expiração automático: Prefira 1 hora. Evite compartilhamentos indefinidos exceto com familiares diretos.",
+    privLi2: "Revise sessões ativas: Abra periodicamente o Google Maps e o Buscar da Apple para encerrar compartilhamentos antigos.",
+    privLi3: "Remova metadados EXIF de fotos: Desative a gravação de localização na câmera antes de enviar fotos originais.",
+
+    workedExampleTitle: "Exemplo Prático: Enviando um Link Temporário de 1 Hora",
+    workedExampleIntro: "Como enviar um ponto de encontro temporário por SMS ou WhatsApp:",
+    workedExampleStep1: "1. Acesse nossa ferramenta Compartilhar Localização no navegador.",
+    workedExampleStep2: "2. Conceda permissão para que o navegador obtenha coordenadas GPS de alta precisão.",
+    workedExampleStep3: "3. Clique em 'Copiar Link Universal de Mapa' (cria uma URL direta para Google Maps com suas coordenadas).",
+    workedExampleStep4: "4. Cole o link no WhatsApp com a mensagem: 'Ponto de encontro às 14h; o link expira ao chegarmos.'",
+
+    commonMistakesTitle: "Erros Comuns ao Compartilhar Localização",
+    commonMistakes: [
+      { mistake: "Deixar o rastreamento em tempo real ativo indefinidamente", explanation: "Esquecer a transmissão ligada permite que contatos vejam onde você está dias depois. Use sempre limites automáticos de tempo." },
+      { mistake: "Enviar localização ao vivo em vez de ponto fixo", explanation: "Para marcar um ponto de encontro estático, um alfinete basta. O rastreamento ao vivo consome bateria continuamente." },
+      { mistake: "Postar fotos originais em redes sociais abertas", explanation: "Arquivos de foto contêm coordenadas GPS embutidas nos dados EXIF, revelando o endereço exato do local da foto." }
+    ],
+
+    faqs: [
+      { question: "Qual a diferença entre Localização em tempo real e Localização atual?", answer: "A Localização atual (ponto estático) envia um registro único do local onde você está agora. A Localização em tempo real transmite seus deslocamentos continuamente durante o tempo escolhido (ex: 1 hora)." },
+      { question: "Alguém pode me rastrear após o tempo limite expirar?", answer: "Não. Assim que o cronômetro chega ao fim ou você encerra o compartilhamento, a transmissão de coordenadas é cortada e o acesso ao mapa é revogado." },
+      { question: "Como funciona um QR code de localização?", answer: "Ele armazena um link geográfico padrão. Ao ser escaneado pela câmera de qualquer celular moderno, abre imediatamente o aplicativo de mapas nativo do aparelho." }
+    ],
+
+    nextStepsTitle: "Próximos Passos e Ferramentas",
+    nextSteps: [
+      { title: "Compartilhar Localização", href: "/share-location/", desc: "Crie um link de mapa privado sem gravação em nossos servidores." },
+      { title: "Criar QR Code de Localização", href: "/tools/location-qr-code/", desc: "Gere códigos escaneáveis para cartazes e impressos." },
+      { title: "Privacidade e Segurança GPS", href: "/guides/gps-privacy-and-security/", desc: "Saiba como auditar permissões e barrar rastreamento indevido." }
+    ],
+
+    callout2Badge: "📱 Gerador de QR Code",
+    callout2Title: "Crie um QR Code de Localização Escaneável",
+    callout2Desc: "Transforme qualquer coordenada ou link de mapa em um QR code nítido que abre instantaneamente no Google Maps ou Apple Maps pela câmera do celular.",
+    callout2Btn: "Gerar QR Code →",
+    connectedTitle: "🔗 Guias e Ferramentas Conectadas",
+    tool1Title: "Compartilhar Local",
+    tool1Desc: "Links de mapas",
+    tool2Title: "Código QR",
+    tool2Desc: "Códigos de mapa",
+    tool3Title: "Privacidade GPS",
+    tool3Desc: "Evitar rastreamento",
+    tool4Title: "Coordenadas GPS",
+    tool4Desc: "Bloqueio satelital"
   },
   hi: {
-    title: "अपनी लोकेशन सुरक्षित कैसे शेयर करें | MyLocationLab",
-    description: "दोस्तों, परिवार और इमरजेंसी संपर्कों के साथ iPhone, Android, WhatsApp, Maps और QR कोड पर अपनी सटीक GPS लोकेशन सुरक्षित रूप से शेयर करना सीखें।",
-    h1: "अपनी लोकेशन सुरक्षित शेयर कैसे करें: संपूर्ण गाइड",
-    subtitle: "मैसेजिंग ऐप्स, Apple Find My, Google Maps और ब्राउज़र QR कोड के ज़रिए रीयल-टाइम लाइव लोकेशन और स्टैटिक निर्देशांक शेयर करने की स्टेप-बाय-स्टेप ट्यूटोरियल।",
-    sectionLabel: "शैक्षिक गाइड",
-    p1: "भीड़-भाड़ वाले फ़ेस्टिवल में दोस्त से मिलना हो, सड़क किनारे मदद बुलानी हो या परिवार को घर के सफ़र पर आपकी लोकेशन देखने देनी हो — अपनी लोकेशन तेज़ी और सुरक्षा से शेयर करना आज का ज़रूरी हुनर है।",
-    p2: "लोकेशन शेयरिंग के दो अलग प्रकार हैं: लाइव रीयल-टाइम ट्रैकिंग (जो तय समय तक लगातार आपकी चाल प्रसारित करती है) और स्टैटिक पिन शेयरिंग (जो आपके अक्षांश-देशांतर का एक स्नैपशॉट भेजती है)। इस गाइड में हम हर बड़े प्लेटफ़ॉर्म पर दोनों तरीके और हमारे Share Location टूल व Location QR Code Generator से प्राइवेट वेब लिंक बनाना सिखाते हैं।",
-    calloutBadge: "🔗 इंस्टेंट वेब शेयरिंग",
-    calloutTitle: "प्राइवेट लोकेशन शेयर लिंक बनाएँ",
-    calloutDesc: "अपनी मौजूदा GPS लोकेशन पाएँ और बिना कोई ऐप इंस्टॉल किए Apple Maps, Google Maps और SMS के साथ काम करने वाला वन-क्लिक शेयर लिंक बनाएँ।",
-    calloutBtn: "शेयर लिंक बनाएँ →",
-    h2Apple: "1. Apple iPhone पर लोकेशन शेयर करना (iOS / iMessage / Apple Maps)",
-    pApple: "Apple डिवाइस Messages और Find My ऐप के अंदर ही नेटिव लोकेशन शेयरिंग देते हैं:",
-    step1Title: "iMessage से शेयर करें (सबसे तेज़ तरीका)",
-    step1Desc: "Messages में कोई बातचीत खोलें > + आइकन दबाएँ > Location चुनें। 'Send Pin' (स्टैटिक लोकेशन) या 'Share' (1 घंटे, दिनभर या अनिश्चितकाल तक की लाइव लोकेशन) में से चुनें।",
-    step2Title: "Apple Find My से शेयर करें",
-    step2Desc: "Find My ऐप खोलें > People टैब दबाएँ > Start Sharing Location दबाएँ > संपर्क का नाम डालें > अवधि चुनें। इससे परिवार को आपकी लाइव बैटरी स्थिति और पहुँचने की सूचनाएँ दिखती हैं।",
-    h2Android: "2. Android और Google Maps पर लोकेशन शेयर करना",
-    pAndroid: "Google Maps क्रॉस-प्लेटफ़ॉर्म लाइव लोकेशन शेयरिंग देता है जो Android, iPhone और डेस्कटॉप के बीच सहज काम करती है:",
-    step3Title: "Google Maps में रीयल-टाइम चाल शेयर करें",
-    step3Desc: "Google Maps खोलें > ऊपर दाईं ओर अपनी प्रोफ़ाइल सर्कल दबाएँ > Location sharing दबाएँ > New share दबाएँ > अवधि चुनें (जैसे 1 घंटा या 'Until you turn this off') > संपर्क चुनें या प्राइवेट शेयरिंग लिंक कॉपी करें।",
-    step4Title: "स्टैटिक पिन डालें और शेयर करें",
-    step4Desc: "Google Maps पर कहीं भी दबाकर रखें, लाल पिन आ जाएगा। नीचे की इन्फ़ो शीट दबाएँ, Share दबाएँ और निर्देशांक लिंक कॉपी करें।",
-    h2Messaging: "3. WhatsApp और Telegram पर लोकेशन शेयर करना",
-    pMessaging: "मैसेजिंग ऐप्स एंड-टू-एंड एन्क्रिप्टेड लोकेशन शेयरिंग की सुविधा देते हैं:",
-    msgLi1: "WhatsApp: कोई चैट खोलें > + या पेपरक्लिप आइकन दबाएँ > Location चुनें। 'Share Live Location' (15 मिनट, 1 घंटा या 8 घंटे) या 'Send Your Current Location' चुनें।",
-    msgLi2: "Telegram: चैट खोलें > पेपरक्लिप आइकन दबाएँ > Location चुनें > 'Send My Current Location' या 'Share My Live Location for...' चुनें। तय दूरी के भीतर संपर्क होने पर Telegram प्रॉक्सिमिटी अलर्ट भी देता है।",
-    h2Qr: "4. ब्राउज़र QR कोड से शेयर करना (कॉन्टैक्टलेस शेयरिंग)",
-    pQr: "अगर आप इवेंट आयोजित कर रहे हैं, अटेंडी को फ़्लायर दे रहे हैं या पोस्टर पर निर्देशांक दिखा रहे हैं, तो QR कोड बनाना सबसे असरदार तरीका है:",
+    title: "अपना स्थान सुरक्षित रूप से कैसे साझा करें | MyLocationLab",
+    description: "संक्षेप में: iPhone, Android, WhatsApp और QR कोड पर लाइव स्थान और स्थिर GPS पिन सुरक्षित रूप से साझा करने का तरीका जानें।",
+    h1: "स्थान सुरक्षित रूप से कैसे साझा करें: संपूर्ण मार्गदर्शिका",
+    subtitle: "मैसेजिंग ऐप्स, Apple Find My, Google Maps और ब्राउज़र QR कोड पर रीयल-टाइम स्थान और स्थिर निर्देशांक साझा करने का ट्यूटोरियल।",
+    
+    inShort: "संक्षेप में: आप अपना स्थान दो प्रकार से साझा कर सकते हैं: रीयल-टाइम लाइव ट्रैकिंग (जो एक निश्चित समय के लिए आपकी आवाजाही का प्रसारण करती है) या एक स्थिर पिन (आपके वर्तमान अक्षांश और देशांतर का एक स्नैपशॉट)। सुरक्षा के लिए, हमेशा एक समय सीमा (जैसे 1 घंटा) निर्धारित करें।",
+
+    takeawaysTitle: "मुख्य बिंदु",
+    takeaways: [
+      "मिलने के स्थानों के लिए स्थिर पिन चुनें; यात्राओं और आपात स्थिति के लिए लाइव ट्रैकिंग का उपयोग करें।",
+      "हमेशा एक समय सीमा (15 मिनट या 1 घंटा) निर्धारित करें, अनिश्चित काल के लिए साझा न करें।",
+      "अतिरिक्त ट्रैकिंग ऐप इंस्टॉल किए बिना तत्काल संपर्क रहित मैप लिंक और QR कोड बनाए जा सकते हैं।",
+      "स्मार्टफोन की तस्वीरों में GPS निर्देशांक छिपे होते हैं; सार्वजनिक रूप से पोस्ट करने से पहले मेटाडेटा हटाएं।",
+      "साझा करने से पहले अपने निर्देशांक जांचें ताकि सटीक उपग्रह लॉकिंग सुनिश्चित हो सके।"
+    ],
+
+    p1: "चाहे आपको सड़क पर आपातकालीन सहायता बुलानी हो, किसी भीड़भाड़ वाले आयोजन में दोस्तों से मिलना हो, या परिवार को सुरक्षित यात्रा की जानकारी देनी हो, सुरक्षित रूप से स्थान साझा करना एक आवश्यक कौशल है। आप हमारे <a href='/share-location/'>स्थान साझा करें हब</a> पर बिना किसी डेटा स्टोरेज के निजी वेब लिंक बना सकते हैं।",
+    p2: "स्थान भेजने से पहले अपने निर्देशांक जांचना बेहतर होता है। हमारे <a href='/my-location/coordinates/'>मेरे निर्देशांक टूल</a> से अपना अक्षांश, देशांतर और ऊंचाई देखें या <a href='/tools/coordinate-converter/'>निर्देशांक परिवर्तक</a> से प्रारूप बदलें। कार्यक्रमों और पोस्टरों के लिए हमारे <a href='/tools/location-qr-code/'>स्थान QR कोड जनरेटर</a> से एक स्कैन करने योग्य कोड बनाएं। अनावश्यक ऑनलाइन ट्रैकिंग से बचने के लिए हमारी गाइड <a href='/guides/gps-privacy-and-security/'>GPS गोपनीयता और सुरक्षा</a> पढ़ें।",
+
+    calloutBadge: "🔗 सुरक्षित वेब शेयरिंग",
+    calloutTitle: "निजी स्थान शेयर लिंक बनाएं",
+    calloutDesc: "अपनी वर्तमान GPS स्थिति प्राप्त करें और बिना कोई ऐप डाउनलोड किए Google Maps, Apple Maps और SMS के लिए एक-क्लिक शेयर लिंक बनाएं।",
+    calloutBtn: "शेयर लिंक बनाएं →",
+
+    h2Apple: "1. Apple iPhone पर स्थान साझा करना (iOS और Maps)",
+    pApple: "Apple डिवाइस Messages और Find My ऐप में इन-बिल्ट शेयरिंग विकल्प देते हैं:",
+    step1Title: "iMessage से साझा करें (सबसे तेज़ तरीका)",
+    step1Desc: "Messages खोलें > चैट चुनें > '+' आइकन > Location। 'Send Pin' (स्थिर पिन) या 'Share' (1 घंटा, दिन के अंत तक, या हमेशा) चुनें।",
+    step2Title: "Apple Find My से साझा करें",
+    step2Desc: "Find My ऐप खोलें > People टैब > 'Start Sharing Location' > संपर्क चुनें > समय तय करें। संपर्क आपकी लाइव स्थिति और बैटरी देख सकते हैं।",
+
+    h2Android: "2. Android और Google Maps पर स्थान साझा करना",
+    pAndroid: "Google Maps Android, iPhone और कंप्यूटर सभी पर आसानी से काम करता है:",
+    step3Title: "Google Maps में रीयल-टाइम स्थान साझा करें",
+    step3Desc: "Google Maps खोलें > प्रोफ़ाइल आइकन > Location sharing > New share > समय चुनें (उदा. 1 घंटा) > संपर्क चुनें या सुरक्षित लिंक कॉपी करें।",
+    step4Title: "स्थिर पिन ड्रॉप और शेयर करें",
+    step4Desc: "नक्शे पर किसी भी जगह को दबाकर रखें ताकि लाल पिन लग जाए > नीचे दिए गए कार्ड पर टैप करें > Share दबाकर निर्देशांक भेजें।",
+
+    h2Messaging: "3. WhatsApp और Telegram पर साझा करना",
+    pMessaging: "मैसेजिंग ऐप्स एंड-टू-एंड एन्क्रिप्शन के साथ स्थान भेजते हैं:",
+    msgLi1: "WhatsApp: चैट खोलें > '+' या पेपरक्लिप > Location > 'Share Live Location' (15 मिनट, 1 घंटा या 8 घंटे) या 'Send Your Current Location' चुनें।",
+    msgLi2: "Telegram: चैट खोलें > पेपरक्लिप > Location > 'Send My Current Location' या 'Share My Live Location for...' चुनें।",
+
+    h2Qr: "4. ब्राउज़र QR कोड से संपर्क रहित शेयरिंग",
+    pQr: "पोस्टर, इवेंट या गाइड के लिए QR कोड सबसे अच्छा तरीका है, जिसे किसी भी फोन के कैमरे से स्कैन करके मैप में खोला जा सकता है।",
+
+    h2Privacy: "5. स्थान साझा करते समय सुरक्षा नियम",
+    pPrivacy: "भौगोलिक डेटा भेजते समय अपनी व्यक्तिगत सुरक्षा का ध्यान रखें:",
+    privLi1: "स्वचालित समय सीमा तय करें: हमेशा 15 मिनट या 1 घंटे का चयन करें। केवल करीबी परिवार के अलावा 'हमेशा' न चुनें।",
+    privLi2: "सक्रिय शेयरिंग की जांच करें: पुराने लिंक बंद करने के लिए Google Maps और Apple Find My में समय-समय पर जांच करें।",
+    privLi3: "तस्वीरों से EXIF डेटा हटाएं: किसी अनजान व्यक्ति को फोटो भेजने से पहले कैमरा सेटिंग्स में लोकेशन टैग बंद कर दें।",
+
+    workedExampleTitle: "व्यावहारिक उदाहरण: 1 घंटे का अस्थायी शेयर लिंक भेजना",
+    workedExampleIntro: "SMS या WhatsApp पर अस्थायी मिलने का स्थान कैसे भेजें:",
+    workedExampleStep1: "1. ब्राउज़र खोलें और हमारे 'स्थान साझा करें' टूल पर जाएं।",
+    workedExampleStep2: "2. सटीक उपग्रह GPS लॉक प्राप्त करने के लिए ब्राउज़र को अनुमति दें।",
+    workedExampleStep3: "3. 'यूनिवर्सल मैप लिंक कॉपी करें' पर क्लिक करें (यह निर्देशांकों के साथ Google Maps लिंक बनाता है)।",
+    workedExampleStep4: "4. लिंक को चैट में पेस्ट करें: 'दोपहर 2:00 बजे यहाँ मिलें; पहुँचने पर लिंक समाप्त हो जाएगा।'",
+
+    commonMistakesTitle: "स्थान साझा करते समय आम गलतियाँ",
+    commonMistakes: [
+      { mistake: "लाइव ट्रैकिंग को हमेशा चालू छोड़ देना", explanation: "शेयरिंग बंद करना भूल जाने पर लोग कई दिनों बाद भी आपका स्थान देख सकते हैं। हमेशा समय-सीमित विकल्प चुनें।" },
+      { mistake: "स्थिर पिन की जगह लाइव ट्रैकिंग भेजना", explanation: "केवल मिलने के स्थान के लिए स्थिर पिन पर्याप्त है। लाइव ट्रैकिंग से फोन की बैटरी लगातार खर्च होती है।" },
+      { mistake: "पब्लिक सोशल मीडिया पर मूल फोटो डालना", explanation: "कैमरे की मूल फोटो में EXIF डेटा होता है, जो उस घर या इमारत का सटीक पता उजागर कर देता है।" }
+    ],
+
+    faqs: [
+      { question: "लाइव लोकेशन और करंट लोकेशन में क्या अंतर है?", answer: "करंट लोकेशन (स्थिर पिन) आपकी वर्तमान स्थिति का एक बार का स्नैपशॉट भेजता है। लाइव लोकेशन चुनी गई अवधि (उदा. 1 घंटा) के दौरान आपके चलने-फिरने को रीयल-टाइम में अपडेट करता है।" },
+      { question: "समय समाप्त होने के बाद क्या कोई मुझे ट्रैक कर सकता है?", answer: "नहीं। जैसे ही समय समाप्त होता है या आप 'Stop Sharing' दबाते हैं, सिग्नल भेजना तुरंत बंद हो जाता है और मैप का उपयोग समाप्त हो जाता है।" },
+      { question: "लोकेशन QR कोड कैसे काम करता है?", answer: "यह एक भौगोलिक लिंक को कोड में बदल देता है। जब कोई इसे फोन के कैमरे से स्कैन करता है, तो यह सीधे नेविगेशन ऐप में खुल जाता है।" }
+    ],
+
+    nextStepsTitle: "अगले कदम और उपयोगी उपकरण",
+    nextSteps: [
+      { title: "स्थान साझा करें हब", href: "/share-location/", desc: "बिना सर्वर स्टोरेज के निजी मैप लिंक बनाएं।" },
+      { title: "लोकेशन QR कोड जनरेटर", href: "/tools/location-qr-code/", desc: "पोस्टर और आमंत्रणों के लिए स्कैन करने योग्य कोड बनाएं।" },
+      { title: "GPS गोपनीयता और सुरक्षा", href: "/guides/gps-privacy-and-security/", desc: "स्थान अनुमतियों को नियंत्रित करना और सुरक्षित रखना सीखें।" }
+    ],
+
     callout2Badge: "📱 QR कोड जनरेटर",
-    callout2Title: "स्कैन करने योग्य लोकेशन QR कोड बनाएँ",
-    callout2Desc: "किसी भी अक्षांश, देशांतर या मैप लिंक को हाई-रेज़ोल्यूशन QR कोड में एन्कोड करें जो किसी भी फ़ोन कैमरे से स्कैन करने पर Google Maps या Apple Maps में तुरंत खुले।",
-    callout2Btn: "QR कोड बनाएँ →",
-    h2Privacy: "5. लोकेशन प्राइवेसी: शेयरिंग के लिए सर्वोत्तम तरीके",
-    pPrivacy: "अपनी जियोलोकेशन शेयर करना संवेदनशील निजी डेटा है। ये ज़रूरी सुरक्षा दिशानिर्देश अपनाएँ:",
-    privLi1: "हमेशा समय-सीमा तय करें: भरोसेमंद परिवार के सिवा कभी भी लाइव लोकेशन 'अनिश्चितकाल' के लिए शेयर न करें। डिफ़ॉल्ट रूप से 1 घंटा रखें।",
-    privLi2: "चालू शेयर की ऑडिट करें: पुराने शेयर सेशन बंद करने के लिए नियमित रूप से Google Maps > Location Sharing और iOS Find My जाँचें।",
-    privLi3: "EXIF फ़ोटो मेटाडेटा जाँचें: स्मार्टफ़ोन से ली गई फ़ोटो के EXIF टैग में सटीक GPS निर्देशांक होते हैं। पब्लिकली पोस्ट करने से पहले उन्हें हटा दें।",
-    connectedTitle: "🔗 संबंधित गाइड और व्यावहारिक टूल",
-    tool1Title: "शेयर लोकेशन हब",
-    tool1Desc: "शेयर करने योग्य मैप लिंक बनाएँ",
+    callout2Title: "स्कैन करने योग्य लोकेशन QR कोड बनाएं",
+    callout2Desc: "किसी भी अक्षांश, देशांतर या मैप लिंक को एक स्पष्ट QR कोड में बदलें जो फोन कैमरे से स्कैन करने पर तुरंत खुलता है।",
+    callout2Btn: "QR कोड बनाएं →",
+    connectedTitle: "🔗 जुड़े मार्गदर्शक और उपकरण",
+    tool1Title: "स्थान साझा करें",
+    tool1Desc: "मैप लिंक बनाएं",
     tool2Title: "लोकेशन QR कोड",
-    tool2Desc: "स्कैन करने योग्य मैप कोड",
-    tool3Title: "GPS प्राइवेसी और सुरक्षा",
-    tool3Desc: "ट्रैकिंग से सुरक्षा",
-    tool4Title: "GPS निर्देशांक फ़ाइंडर",
-    tool4Desc: "सटीक अक्षांश/देशांतर देखें"
+    tool2Desc: "स्कैन करने योग्य कोड",
+    tool3Title: "GPS गोपनीयता",
+    tool3Desc: "ट्रैकिंग से बचाव",
+    tool4Title: "GPS निर्देशांक",
+    tool4Desc: "उपग्रह लॉक"
   },
   id: {
-    title: "Cara Membagikan Lokasi Anda dengan Aman | MyLocationLab",
-    description: "Bagikan lokasi GPS Anda dengan aman kepada teman, keluarga, dan kontak darurat melalui iPhone, Android, WhatsApp, Google Maps, dan tautan kode QR.",
-    h1: "Cara Membagikan Lokasi dengan Aman: Panduan Lengkap",
-    subtitle: "Tutorial langkah demi langkah untuk membagikan lokasi langsung secara waktu nyata dan koordinat statis melalui aplikasi pesan, Apple Find My, Google Maps, dan kode QR peramban.",
-    sectionLabel: "Panduan Edukasi",
-    p1: "Baik bertemu teman di festival yang ramai, mengatur bantuan di pinggir jalan, atau membiarkan keluarga memantau perjalanan pulang Anda, mengetahui cara membagikan lokasi dengan cepat dan aman adalah keterampilan penting masa kini.",
-    p2: "Ada dua jenis pembagian lokasi: Pelacakan Langsung Waktu Nyata (yang menyiarkan pergerakan Anda terus-menerus selama durasi tertentu) dan Berbagi Pin Statis (yang mengirim sekali potret lintang dan bujur Anda). Panduan ini menunjukkan cara melakukan keduanya di semua platform utama, serta membuat tautan web privat dengan alat Share Location dan Location QR Code Generator kami.",
-    calloutBadge: "🔗 Berbagi Web Instan",
-    calloutTitle: "Buat Tautan Berbagi Lokasi Privat",
-    calloutDesc: "Dapatkan posisi GPS Anda saat ini dan buat tautan berbagi sekali klik yang kompatibel dengan Apple Maps, Google Maps, dan pesan SMS tanpa memasang aplikasi apa pun.",
+    title: "Cara Membagikan Lokasi Anda dengan Aman di Perangkat Apa Pun | MyLocationLab",
+    description: "Singkatnya: Pelajari cara membagikan lokasi langsung (live) dan pin GPS statis secara aman di iPhone, Android, WhatsApp, dan kode QR.",
+    h1: "Cara Membagikan Lokasi Anda dengan Aman: Panduan Lengkap",
+    subtitle: "Tutorial langkah demi langkah untuk membagikan lokasi langsung dan koordinat statis melalui aplikasi perpesanan, Apple Lacak, Google Maps, dan kode QR.",
+    
+    inShort: "Singkatnya: Anda dapat membagikan posisi dengan dua cara: pelacakan langsung (live tracking yang menyiarkan pergerakan Anda selama durasi tertentu) atau pin statis (rekaman koordinat lintang dan bujur saat ini). Demi keamanan, selalu tetapkan batas waktu otomatis (misalnya 1 jam) dan gunakan pesan terenkripsi pribadi.",
+
+    takeawaysTitle: "Poin-Poin Penting",
+    takeaways: [
+      "Gunakan pin statis untuk titik temu; gunakan pelacakan langsung hanya untuk perjalanan aktif dan darurat.",
+      "Selalu tentukan batas waktu berbagi (15 menit atau 1 jam) daripada berbagi tanpa batas.",
+      "Anda dapat membuat tautan web dan kode QR tanpa memasang aplikasi pelacak pihak ketiga.",
+      "Foto dari kamera ponsel memuat koordinat GPS; hapus metadata EXIF sebelum membagikannya secara publik.",
+      "Periksa koordinat aktif Anda sebelum dikirim guna memastikan ketelitian sinyal satelit."
+    ],
+
+    p1: "Baik saat membutuhkan derek darurat di jalan, bertemu rekan di tengah festival yang ramai, atau memberi tahu keluarga bahwa Anda telah tiba dengan selamat, membagikan posisi secara aman adalah keahlian yang sangat penting. Anda dapat membuat tautan web pribadi tanpa pelacakan di portal <a href='/share-location/'>berbagi lokasi</a> kami.",
+    p2: "Sebelum mengirimkan informasi lokasi, ada baiknya Anda memeriksa format koordinat yang digunakan. Tinjau garis lintang, garis bujur, dan ketinggian Anda dengan alat <a href='/my-location/coordinates/'>koordinat saya</a> atau ubah formatnya melalui <a href='/tools/coordinate-converter/'>konverter koordinat</a>. Untuk selebaran acara atau tanda penunjuk fisik, buat grafis yang dapat dipindai dengan <a href='/tools/location-qr-code/'>generator kode QR lokasi</a> kami. Untuk melindungi diri dari pengintaian komersial, baca panduan kami mengenai <a href='/guides/gps-privacy-and-security/'>keamanan dan privasi GPS</a>.",
+
+    calloutBadge: "🔗 Tautan Web Aman",
+    calloutTitle: "Buat Tautan Berbagi Lokasi Pribadi",
+    calloutDesc: "Dapatkan posisi GPS Anda saat ini dan buat tautan langsung yang kompatibel dengan Google Maps, Apple Maps, dan SMS tanpa perlu memasang aplikasi tambahan.",
     calloutBtn: "Buat Tautan Berbagi →",
-    h2Apple: "1. Berbagi Lokasi di Apple iPhone (iOS / iMessage / Apple Maps)",
-    pApple: "Perangkat Apple menyediakan berbagi lokasi bawaan langsung di dalam Messages dan aplikasi Find My:",
-    step1Title: "Bagikan via iMessage (Cara Tercepat)",
-    step1Desc: "Buka percakapan di Messages > Ketuk ikon + > pilih Lokasi. Pilih 'Kirim Pin' (lokasi statis) atau 'Bagikan' (lokasi langsung selama 1 jam, hingga akhir hari, atau tanpa batas waktu).",
-    step2Title: "Bagikan via Apple Find My",
-    step2Desc: "Buka aplikasi Find My > Ketuk tab People > Ketuk Start Sharing Location > masukkan nama kontak > pilih durasinya. Dengan ini keluarga dapat melihat status baterai Anda secara langsung dan notifikasi kedatangan.",
-    h2Android: "2. Berbagi Lokasi di Android & Google Maps",
-    pAndroid: "Google Maps menyediakan berbagi lokasi langsung lintas platform yang berjalan mulus antara Android, iPhone, dan komputer desktop:",
-    step3Title: "Bagikan Pergerakan Waktu Nyata di Google Maps",
-    step3Desc: "Buka Google Maps > Ketuk lingkaran profil Anda di kanan atas > Ketuk Location sharing > Ketuk New share > pilih durasi (mis. 1 jam atau 'Hingga Anda mematikan ini') > pilih kontak atau salin tautan berbagi privatnya.",
-    step4Title: "Pasang & Bagikan Pin Statis",
-    step4Desc: "Tekan dan tahan di titik mana pun pada Google Maps untuk memasang pin merah. Ketuk lembar info di bagian bawah, ketuk Bagikan, lalu salin tautan koordinatnya.",
-    h2Messaging: "3. Berbagi Lokasi di WhatsApp & Telegram",
-    pMessaging: "Aplikasi pesan mengizinkan berbagi lokasi terenkripsi ujung ke ujung:",
-    msgLi1: "WhatsApp: Buka obrolan > Ketuk ikon + atau kertas klip > pilih Lokasi. Pilih 'Bagikan Lokasi Langsung' (15 menit, 1 jam, atau 8 jam) atau 'Kirim Lokasi Anda Saat Ini'.",
-    msgLi2: "Telegram: Buka obrolan > Ketuk ikon kertas klip > pilih Lokasi > pilih 'Kirim Lokasi Saya Saat Ini' atau 'Bagikan Lokasi Langsung Saya selama...'. Telegram juga menyediakan peringatan kedekatan saat kontak berada dalam jarak tertentu.",
-    h2Qr: "4. Berbagi melalui Kode QR Peramban (Tanpa Kontak)",
-    pQr: "Jika Anda menyelenggarakan acara, membagikan selebaran kepada peserta, atau menampilkan koordinat di poster, membuat kode QR adalah cara paling efisien:",
-    callout2Badge: "📱 Pembuat Kode QR",
+
+    h2Apple: "1. Membagikan Lokasi di Apple iPhone (iOS & Apple Maps)",
+    pApple: "Perangkat Apple menyediakan fitur berbagi bawaan di Pesan (iMessage) dan aplikasi Lacak (Find My):",
+    step1Title: "Berbagi via iMessage (Metode Tercepat)",
+    step1Desc: "Buka Pesan > pilih percakapan > ketuk ikon '+' > Lokasi. Pilih 'Kirim Pin' (statis) atau 'Bagikan' (langsung selama 1 jam, sampai akhir hari, atau tanpa batas).",
+    step2Title: "Berbagi via Aplikasi Apple Lacak",
+    step2Desc: "Buka aplikasi Lacak > tab Orang > 'Mulai Berbagi Lokasi' > pilih kontak > tentukan durasi. Kontak dapat melihat pergerakan dan sisa baterai Anda.",
+
+    h2Android: "2. Membagikan Lokasi di Android & Google Maps",
+    pAndroid: "Google Maps dapat digunakan lintas platform antara Android, iPhone, dan komputer desktop:",
+    step3Title: "Berbagi Pergerakan Langsung di Google Maps",
+    step3Desc: "Buka Google Maps > ketuk foto profil di kanan atas > Berbagi lokasi > Bagikan lokasi > atur durasi (misal 1 jam) > salin tautan atau pilih kontak.",
+    step4Title: "Menjatuhkan dan Membagikan Pin Statis",
+    step4Desc: "Tekan lama area mana pun di peta untuk menaruh pin merah > ketuk panel info di bagian bawah > Bagikan untuk mengirim koordinat melalui teks.",
+
+    h2Messaging: "3. Membagikan Lokasi di WhatsApp & Telegram",
+    pMessaging: "Aplikasi perpesanan mendukung transmisi koordinat terenkripsi ujung-ke-ujung:",
+    msgLi1: "WhatsApp: Buka obrolan > ketuk '+' atau klip kertas > Lokasi > pilih 'Berbagi Lokasi Terkini' (15 mnt, 1 jam, atau 8 jam) atau 'Kirim Lokasi Anda Saat Ini'.",
+    msgLi2: "Telegram: Buka obrolan > klip kertas > Lokasi > pilih 'Kirim Lokasi Saya Saat Ini' atau 'Bagikan Lokasi Langsung Saya Selama...'.",
+
+    h2Qr: "4. Berbagi Tanpa Kontak Melalui Kode QR Peramban",
+    pQr: "Saat menyelenggarakan acara, mencetak selebaran, atau membuat papan petunjuk, kode QR memungkinkan siapa saja membuka titik koordinat langsung di Google Maps atau Apple Maps dengan kamera ponsel.",
+
+    h2Privacy: "5. Praktik Terbaik Menjaga Privasi Saat Berbagi",
+    pPrivacy: "Lindungi keselamatan pribadi Anda setiap kali membagikan informasi geografis:",
+    privLi1: "Tetapkan batas waktu otomatis: Pilih 15 atau 60 menit. Hindari opsi 'Tanpa batas' kecuali untuk anggota keluarga inti.",
+    privLi2: "Audit sesi aktif: Periksa Google Maps dan Apple Lacak secara rutin untuk memutus tautan berbagi yang sudah tidak diperlukan.",
+    privLi3: "Hapus metadata EXIF foto: Matikan geotag pada kamera sebelum mengirim berkas gambar asli ke orang lain.",
+
+    workedExampleTitle: "Contoh Nyata: Mengirimkan Tautan Pertemuan Sementara 1 Jam",
+    workedExampleIntro: "Cara membuat dan membagikan titik temu sementara melalui SMS atau WhatsApp:",
+    workedExampleStep1: "1. Buka peramban dan masuk ke alat Berbagi Lokasi kami.",
+    workedExampleStep2: "2. Berikan izin lokasi agar peramban memperoleh penguncian satelit GPS yang akurat.",
+    workedExampleStep3: "3. Klik 'Salin Tautan Peta Universal' (menghasilkan tautan Google Maps langsung berisi koordinat Anda).",
+    workedExampleStep4: "4. Tempel tautan tersebut ke pesan chat: 'Bertemu di sini pukul 14.00; tautan kedaluwarsa setelah kita tiba.'",
+
+    commonMistakesTitle: "Kesalahan Umum Saat Membagikan Lokasi",
+    commonMistakes: [
+      { mistake: "Membiarkan pelacakan langsung aktif tanpa batas", explanation: "Lupa mematikan berbagi langsung memungkinkan orang lain melihat posisi Anda berhari-hari kemudian. Selalu pilih opsi berbatas waktu." },
+      { mistake: "Mengirim lokasi langsung padahal hanya butuh titik temu", explanation: "Untuk lokasi pertemuan statis di restoran, cukup kirim pin statis. Pelacakan langsung menguras baterai ponsel secara sia-sia." },
+      { mistake: "Mengunggah foto asli kamera ke media sosial terbuka", explanation: "Foto JPEG asli menyimpan koordinat GPS di header EXIF, mengungkap alamat gedung tempat foto diambil." }
+    ],
+
+    faqs: [
+      { question: "Apa bedanya Lokasi Langsung (Live) dan Lokasi Saat Ini?", answer: "Lokasi Saat Ini (pin statis) adalah foto satu kali dari tempat Anda berada sekarang. Lokasi Langsung terus memperbarui pergerakan Anda secara waktu nyata selama durasi yang ditentukan (misal 1 jam)." },
+      { question: "Bisakah seseorang melacak saya setelah durasi berbagi habis?", answer: "Tidak. Begitu penghitung waktu habis atau Anda mengetuk 'Hentikan Berbagi', pengiriman koordinat langsung terputus dan akses peta dicabut." },
+      { question: "Bagaimana cara kerja kode QR lokasi?", answer: "Kode QR menyimpan tautan geografis standar. Saat dipindai dengan kamera ponsel cerdas, koordinat langsung terbuka di aplikasi peta bawaan perangkat." }
+    ],
+
+    nextStepsTitle: "Langkah Selanjutnya & Alat Berbagi",
+    nextSteps: [
+      { title: "Pusat Berbagi Lokasi", href: "/share-location/", desc: "Buat tautan peta pribadi tanpa penyimpanan di peladen." },
+      { title: "Generator Kode QR Lokasi", href: "/tools/location-qr-code/", desc: "Buat gambar kode QR yang dapat dipindai dan dicetak." },
+      { title: "Keamanan & Privasi GPS", href: "/guides/gps-privacy-and-security/", desc: "Pelajari cara mengaudit izin dan mencegah pelacakan yang tidak diinginkan." }
+    ],
+
+    callout2Badge: "📱 Generator Kode QR",
     callout2Title: "Buat Kode QR Lokasi yang Dapat Dipindai",
-    callout2Desc: "Enkode lintang, bujur, atau tautan peta apa pun menjadi kode QR resolusi tinggi yang langsung terbuka di Google Maps atau Apple Maps saat dipindai kamera ponsel mana pun.",
+    callout2Desc: "Ubah koordinat atau tautan peta menjadi kode QR resolusi tinggi yang langsung terbuka di Google Maps atau Apple Maps saat dipindai kamera ponsel.",
     callout2Btn: "Buat Kode QR →",
-    h2Privacy: "5. Privasi Lokasi: Praktik Terbaik Saat Berbagi",
-    pPrivacy: "Membagikan geolokasi Anda adalah data pribadi yang sensitif. Ikuti panduan keamanan penting berikut:",
-    privLi1: "Selalu tetapkan batas waktu: Jangan pernah membagikan lokasi langsung 'tanpa batas' kecuali kepada keluarga terdekat yang tepercaya. Gunakan 1 jam sebagai bawaan.",
-    privLi2: "Audit berbagi yang aktif: Periksa secara berkala Google Maps > Location Sharing dan iOS Find My untuk mengakhiri sesi berbagi yang sudah tidak dipakai.",
-    privLi3: "Periksa metadata foto EXIF: Foto yang diambil ponsel menyematkan koordinat GPS presisi dalam tag EXIF. Hapus sebelum dipublikasikan.",
-    connectedTitle: "🔗 Panduan & Alat Praktis Terkait",
-    tool1Title: "Pusat Berbagi Lokasi",
-    tool1Desc: "Buat tautan peta yang bisa dibagikan",
+    connectedTitle: "🔗 Panduan Terkait & Alat Praktis",
+    tool1Title: "Berbagi Lokasi",
+    tool1Desc: "Tautan peta aman",
     tool2Title: "Kode QR Lokasi",
-    tool2Desc: "Kode peta yang dapat dipindai",
-    tool3Title: "Privasi & Keamanan GPS",
-    tool3Desc: "Perlindungan dari pelacakan",
-    tool4Title: "Pencari Koordinat GPS",
-    tool4Desc: "Periksa lintang/bujur persis"
+    tool2Desc: "Kode peta scannable",
+    tool3Title: "Privasi GPS",
+    tool3Desc: "Perlindungan pelacakan",
+    tool4Title: "Koordinat GPS",
+    tool4Desc: "Kunci satelit"
   }
 };
 
@@ -367,13 +684,34 @@ const c = translations[lang] || translations.en;
   h1={c.h1}
   subtitle={c.subtitle}
   section="guides"
-  sectionLabel={c.sectionLabel}
-  readTime="7 min"
-  publishDate="2026-09-22"
+  sectionLabel={lang === 'es' ? 'Guías Prácticas' : lang === 'fr' ? 'Guides Pratiques' : lang === 'de' ? 'Praxis-Leitfäden' : lang === 'pt' ? 'Guias Práticos' : lang === 'hi' ? 'मार्गदर्शिका' : lang === 'id' ? 'Panduan Praktis' : 'Practical Guides'}
+  readTime="8 min"
+  publishDate="2026-09-15"
   modifiedDate="2026-09-22"
 >
-  <p>{c.p1}</p>
-  <p>{c.p2}</p>
+  {c.inShort && (
+    <div class="card card-flat" style="margin-bottom: var(--space-6); padding: var(--space-5); border-left: 4px solid var(--color-accent-primary); background: var(--color-bg-secondary); border-radius: var(--radius-md);">
+      <p style="margin: 0; font-size: var(--text-base); line-height: 1.75; color: var(--color-text-primary); font-weight: 500;">
+        {c.inShort}
+      </p>
+    </div>
+  )}
+
+  {c.takeaways && (
+    <div class="card card-flat" style="margin-bottom: var(--space-8); padding: var(--space-6); background: var(--color-bg-card); border: 1px solid var(--color-border); border-radius: var(--radius-lg);">
+      <h3 style="margin-top: 0; margin-bottom: var(--space-3); font-size: var(--text-lg); display: flex; align-items: center; gap: var(--space-2);">
+        <span>💡</span> {c.takeawaysTitle || "Key Takeaways"}
+      </h3>
+      <ul style="margin: 0; padding-left: var(--space-5); display: flex; flex-direction: column; gap: var(--space-2); line-height: 1.75; color: var(--color-text-secondary);">
+        {c.takeaways.map((item: string) => (
+          <li>{item}</li>
+        ))}
+      </ul>
+    </div>
+  )}
+
+  <p set:html={localizeHtml(c.p1, lang)}></p>
+  <p set:html={localizeHtml(c.p2, lang)}></p>
 
   <div class="tool-callout">
     <div class="tool-callout-content">
@@ -388,7 +726,6 @@ const c = translations[lang] || translations.en;
 
   <h2>{c.h2Apple}</h2>
   <p>{c.pApple}</p>
-
   <div class="step-container">
     <div class="step-card">
       <div class="step-number">1</div>
@@ -397,7 +734,6 @@ const c = translations[lang] || translations.en;
         <p class="step-desc">{c.step1Desc}</p>
       </div>
     </div>
-
     <div class="step-card">
       <div class="step-number">2</div>
       <div class="step-body">
@@ -409,7 +745,6 @@ const c = translations[lang] || translations.en;
 
   <h2>{c.h2Android}</h2>
   <p>{c.pAndroid}</p>
-
   <div class="step-container">
     <div class="step-card">
       <div class="step-number">1</div>
@@ -418,7 +753,6 @@ const c = translations[lang] || translations.en;
         <p class="step-desc">{c.step3Desc}</p>
       </div>
     </div>
-
     <div class="step-card">
       <div class="step-number">2</div>
       <div class="step-body">
@@ -430,7 +764,7 @@ const c = translations[lang] || translations.en;
 
   <h2>{c.h2Messaging}</h2>
   <p>{c.pMessaging}</p>
-  <ul>
+  <ul style="line-height: 1.75; color: var(--color-text-secondary); display: flex; flex-direction: column; gap: var(--space-2);">
     <li>{c.msgLi1}</li>
     <li>{c.msgLi2}</li>
   </ul>
@@ -451,11 +785,61 @@ const c = translations[lang] || translations.en;
 
   <h2>{c.h2Privacy}</h2>
   <p>{c.pPrivacy}</p>
-  <ul>
+  <ul style="line-height: 1.75; color: var(--color-text-secondary); display: flex; flex-direction: column; gap: var(--space-2);">
     <li>{c.privLi1}</li>
     <li>{c.privLi2}</li>
     <li>{c.privLi3}</li>
   </ul>
+
+  {c.workedExampleTitle && (
+    <div class="card card-flat" style="margin: var(--space-8) 0; padding: var(--space-6); background: var(--color-bg-secondary); border-left: 4px solid var(--color-accent-success); border-radius: var(--radius-md);">
+      <h3 style="margin-top: 0; margin-bottom: var(--space-2); color: var(--color-text-primary);">📍 {c.workedExampleTitle}</h3>
+      <p style="color: var(--color-text-secondary); margin-bottom: var(--space-4); line-height: 1.75;">{c.workedExampleIntro}</p>
+      <div style="display: flex; flex-direction: column; gap: var(--space-2); font-size: var(--text-sm); line-height: 1.75;">
+        <div style="padding: var(--space-2) var(--space-3); background: var(--color-bg-tertiary); border-radius: var(--radius-sm); font-family: var(--font-mono);">{c.workedExampleStep1}</div>
+        <div style="padding: var(--space-2) var(--space-3); background: var(--color-bg-tertiary); border-radius: var(--radius-sm); font-family: var(--font-mono);">{c.workedExampleStep2}</div>
+        <div style="padding: var(--space-2) var(--space-3); background: var(--color-bg-tertiary); border-radius: var(--radius-sm); font-family: var(--font-mono);">{c.workedExampleStep3}</div>
+        <div style="padding: var(--space-2) var(--space-3); background: var(--color-bg-tertiary); border-radius: var(--radius-sm); font-family: var(--font-mono);">{c.workedExampleStep4}</div>
+      </div>
+    </div>
+  )}
+
+  {c.commonMistakesTitle && (
+    <div style="margin: var(--space-10) 0;">
+      <h2>⚠️ {c.commonMistakesTitle}</h2>
+      <div style="display: grid; gap: var(--space-4); margin-top: var(--space-4);">
+        {c.commonMistakes.map((m: any) => (
+          <div class="card card-flat" style="padding: var(--space-4) var(--space-5); border-left: 3px solid var(--color-accent-warning);">
+            <strong style="display: block; color: var(--color-text-primary); margin-bottom: var(--space-1); font-size: var(--text-base);">{m.mistake}</strong>
+            <p style="margin: 0; color: var(--color-text-secondary); font-size: var(--text-sm); line-height: 1.75;">{m.explanation}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  )}
+
+  {c.faqs && (
+    <div style="margin: var(--space-10) 0;">
+      <h2>❓ Frequently Asked Questions</h2>
+      <FAQAccordion items={c.faqs} />
+    </div>
+  )}
+
+  {c.nextSteps && (
+    <div class="card card-flat" style="margin: var(--space-10) 0; padding: var(--space-6); background: var(--color-bg-secondary); border: 1px solid var(--color-border); border-radius: var(--radius-lg);">
+      <h3 style="margin-top: 0; margin-bottom: var(--space-4); font-size: var(--text-lg); display: flex; align-items: center; gap: var(--space-2);">
+        <span>🚀</span> {c.nextStepsTitle || "Next Steps"}
+      </h3>
+      <div style="display: grid; gap: var(--space-3);">
+        {c.nextSteps.map((step: any) => (
+          <a href={getLocalizedPath(step.href, lang)} class="card card-flat" style="display: flex; flex-direction: column; gap: var(--space-1); padding: var(--space-3) var(--space-4); text-decoration: none; border-left: 3px solid var(--color-accent-primary); background: var(--color-bg-card); transition: transform 0.15s ease;">
+            <strong style="color: var(--color-text-primary); font-size: var(--text-base);">{step.title} →</strong>
+            <span style="color: var(--color-text-secondary); font-size: var(--text-sm); line-height: 1.6;">{step.desc}</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  )}
 
   <div class="contextual-next-box">
     <h3 class="contextual-next-title">{c.connectedTitle}</h3>

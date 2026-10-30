@@ -3,7 +3,8 @@
  * DecimalVsDmsView — Multilingual Comparison: Decimal Degrees vs DMS
  */
 import ContentLayout from '../../layouts/ContentLayout.astro';
-import { getLocalizedPath, type SupportedLang, defaultLang } from '../../i18n/config';
+import FAQAccordion from '../FAQAccordion.astro';
+import { getLocalizedPath, localizeHtml, type SupportedLang, defaultLang } from '../../i18n/config';
 
 interface Props {
   lang?: SupportedLang;
@@ -14,25 +15,31 @@ const { lang = defaultLang } = Astro.props;
 const translations: Record<string, any> = {
   en: {
     title: "Decimal Degrees vs DMS: Coordinate Formats | MyLocationLab",
-    description: "Compare Decimal Degrees (DD) and Degrees Minutes Seconds (DMS). Understand conversion formulas, floating point storage, and GIS application compatibility.",
+    description: "In short: Decimal Degrees (DD) use base-10 floats for software and web maps, while Degrees Minutes Seconds (DMS) use base-60 sexagesimal notation for maritime and aviation charts.",
     h1: "Decimal Degrees (DD) vs. DMS: Coordinate Systems Compared",
     subtitle: "A mathematical and engineering comparison between sexagesimal navigation and decimal GIS coordinate standards.",
-    p1: "When recording geographic coordinates, you will encounter two primary notation systems: Decimal Degrees (DD) and Degrees, Minutes, Seconds (DMS).",
-    p2: "While both represent the exact same geographic location on the WGS 84 ellipsoid, they are optimized for vastly different computing environments and human use cases.",
+    
+    inShort: "In short: Decimal Degrees (DD) represent coordinates as simple positive or negative decimal numbers (like 37.7749, -122.4194) designed for computer databases and web APIs. Degrees, Minutes, and Seconds (DMS) express the exact same point using sexagesimal base-60 angles (like 37° 46' 30″ N, 122° 25' 10″ W) historically favored by maritime navigators and pilots.",
+
+    p1: "When recording geographic coordinates, you will encounter two primary notation systems: Decimal Degrees (DD) and Degrees, Minutes, Seconds (DMS). While both reference the same physical location on the geodetic ellipsoid, our <a href='/tools/coordinate-converter/'>Coordinate Converter</a> allows seamless translation between them.",
+    p2: "Understanding the underlying geodesy is essential: as detailed in our guide on <a href='/guides/latitude-and-longitude-explained/'>latitude and longitude explained</a>, coordinates measure angular distances from the Equator and Prime Meridian. To explore projected metric coordinates rather than angular systems, consult our breakdown of <a href='/guides/utm-coordinates-and-datums/'>UTM coordinates and datums</a>, or inspect our <a href='/glossary/#decimal-degrees'>glossary definition of decimal degrees</a>.",
+
     calloutBadge: "🧭 Instant Conversion Tool",
     calloutTitle: "Convert Decimal Degrees to DMS Instantly",
     calloutDesc: "Input any coordinate in Decimal Degrees, DMS, or UTM to see the live bidirectional conversion with precision rounding.",
     calloutBtn: "Open Coordinate Converter →",
+
     matrixHeading: "Overview Comparison Matrix",
     thAttr: "Attribute",
     thDd: "Decimal Degrees (DD)",
     thDms: "Degrees, Minutes, Seconds (DMS)",
-    row1: ["Format Example", "37.774929, -122.419416", "37° 46' 29.7444\" N, 122° 25' 9.8976\" W"],
+    row1: ["Format Example", "37.774929, -122.419416", "37° 46' 29.7444″ N, 122° 25' 9.8976″ W"],
     row2: ["Primary Environment", "Web mapping (Leaflet, Mapbox, Google Maps), databases (PostGIS), GeoJSON", "Maritime nautical charts, aviation flight plans, topographic paper maps"],
     row3: ["Base System", "Base-10 decimal standard", "Base-60 sexagesimal standard (Babylonian origin)"],
     row4: ["Hemisphere Notation", "Positive / Negative signs (+ for N/E, - for S/W)", "Cardinal directional letters (N, S, E, W)"],
     row5: ["Database Storage", "Native 64-bit floating point (DOUBLE PRECISION, 8 bytes)", "Requires string parsing or three separate columns"],
     row6: ["Mathematical Operations", "Directly usable in Haversine distance and trigonometry formulas", "Must be converted to decimals before trigonometric operations"],
+
     h2Formulas: "The Mathematical Conversion Formulas",
     step1Title: "Converting DMS to Decimal Degrees (DD)",
     step1Formula: "DD = Degrees + (Minutes / 60) + (Seconds / 3600)",
@@ -41,9 +48,38 @@ const translations: Record<string, any> = {
     step2_1: "1. Whole number = Degrees (e.g. Math.floor(Math.abs(DD))).",
     step2_2: "2. Multiply fractional remainder by 60 = Minutes.",
     step2_3: "3. Multiply remaining fractional minute by 60 = Seconds.",
+
     h2Why: "Why Web Mapping APIs Standardized on Decimal Degrees",
-    pWhy1: "In software engineering, strings are expensive to process, parse, and validate. DMS notation includes multiple non-standard Unicode glyphs (degree symbol °, prime ', double prime \") that create frequent character encoding bugs.",
+    pWhy1: "In software engineering, strings are expensive to process, parse, and validate. DMS notation includes multiple non-standard Unicode glyphs (degree symbol °, prime ', double prime ″) that create frequent character encoding bugs. In contrast, decimal coordinates can be queried directly in <a href='/tools/latitude-longitude/'>Latitude and Longitude Finder</a> utilities.",
     pWhy2: "Decimal Degrees allow geospatial engines (such as PostGIS or browser JavaScript engines) to treat coordinates as pure numerical floats. This makes bounding box queries, spatial clustering, and great-circle calculations orders of magnitude faster.",
+
+    h2Scenarios: "Verdict by Scenario",
+    scenarios: [
+      { scenario: "Web Development & APIs", verdict: "Use Decimal Degrees", desc: "GeoJSON, Leaflet, Google Maps, and OpenLayers strictly expect numeric float arrays [lat, lng]." },
+      { scenario: "Marine & Aviation Navigation", verdict: "Use DMS", desc: "Nautical charts and air traffic clearances use sexagesimal minutes where 1 nautical mile equals 1 minute of latitude." },
+      { scenario: "Voice Radio Communication", verdict: "Use DMS", desc: "Speaking '37 degrees, 46 minutes, 30 seconds North' is far less prone to mishearing than reciting multiple decimal digits." },
+      { scenario: "Spatial Database Indexing", verdict: "Use Decimal Degrees", desc: "PostGIS and spatial R-tree indexes require IEEE 754 floating point numbers for fast bounding box calculations." }
+    ],
+
+    h2Myths: "Myths vs. Reality",
+    myths: [
+      { myth: "Myth: DMS is inherently more precise than Decimal Degrees.", fact: "Reality: Precision is a function of significant figures, not format. 5 decimal places in DD resolves to ~1.1 meters, while 6 decimal places resolves to ~0.11 meters, exceeding standard DMS resolution." },
+      { myth: "Myth: Negative coordinates indicate elevation below sea level.", fact: "Reality: The negative sign in Decimal Degrees purely indicates hemisphere: negative latitude means South of the Equator, and negative longitude means West of the Prime Meridian." }
+    ],
+
+    faqs: [
+      { question: "How many decimal places in Decimal Degrees are needed for smartphone GPS?", answer: "Smartphone GPS typically achieves 3 to 5 meter accuracy under open skies. In Decimal Degrees, 5 decimal places provides a resolution of roughly 1.1 meters, which comfortably matches consumer GNSS hardware limits." },
+      { question: "Why do nautical charts still use degrees, minutes, and seconds?", answer: "One minute of latitude on Earth's surface corresponds almost exactly to one international nautical mile (1,852 meters). Navigators can measure distance directly on a paper chart margin using dividers." },
+      { question: "Can I convert UTM coordinates directly into DMS?", answer: "Yes, but it requires two steps: first unprojecting the metric UTM northing and easting back to geodetic latitude/longitude on the WGS 84 ellipsoid, and then converting those decimals into degrees, minutes, and seconds." }
+    ],
+
+    nextStepsTitle: "Next Steps",
+    nextSteps: [
+      { title: "Convert Your Coordinates", href: "/tools/coordinate-converter/", desc: "Instantly translate coordinates between DD, DMS, and UTM with live precision rounding." },
+      { title: "Latitude & Longitude Guide", href: "/guides/latitude-and-longitude-explained/", desc: "Learn how geodetic datums and angular coordinates define positions across the Earth." },
+      { title: "UTM & Datums Guide", href: "/guides/utm-coordinates-and-datums/", desc: "Explore metric grid projections and false northing/easting coordinates for engineering." }
+    ],
+
     connectedGuides: "🔗 Connected Guides & Practical Tools",
     tool1Title: "Coordinate Converter",
     tool1Desc: "Convert DD, DMS & UTM",
@@ -56,25 +92,31 @@ const translations: Record<string, any> = {
   },
   es: {
     title: "Grados Decimales vs DMS: Formatos de Coordenadas | MyLocationLab",
-    description: "Compare Grados Decimales (DD) y Grados Minutos Segundos (DMS). Fórmulas matemáticas de conversión, almacenamiento flotante y compatibilidad SIG.",
+    description: "En resumen: Los Grados Decimales (DD) usan números flotantes para software y mapas web, mientras que DMS utiliza notación sexagesimal para navegación náutica.",
     h1: "Grados Decimales (DD) vs. DMS: Comparativa de Sistemas de Coordenadas",
     subtitle: "Una comparativa técnica y matemática entre la navegación sexagesimal clásica y los estándares decimales modernos de SIG.",
-    p1: "Al registrar coordenadas geográficas, encontrará dos sistemas principales de notación: Grados Decimales (DD) y Grados, Minutos y Segundos (DMS).",
-    p2: "Aunque ambos representan exactamente el mismo punto sobre el elipsoide WGS 84, están optimizados para entornos de computación y usos humanos completamente distintos.",
+    
+    inShort: "En resumen: Los Grados Decimales (DD) representan coordenadas como números decimales positivos o negativos (como 37.7749, -122.4194) diseñados para bases de datos y APIs web. Grados, Minutos y Segundos (DMS) expresan exactamente el mismo punto mediante ángulos sexagesimales en base 60 (como 37° 46' 30″ N, 122° 25' 10″ O) utilizados tradicionalmente en aviación y navegación marítima.",
+
+    p1: "Al registrar coordenadas geográficas, encontrará dos sistemas principales de notación: Grados Decimales (DD) y Grados, Minutos y Segundos (DMS). Aunque ambos representan la misma posición geodésica, nuestro <a href='/tools/coordinate-converter/'>Conversor de Coordenadas</a> permite alternar entre ambos al instante.",
+    p2: "Comprender la geodesia de base es fundamental: como explicamos en nuestra guía sobre <a href='/guides/latitude-and-longitude-explained/'>latitud y longitud explicadas</a>, las coordenadas miden distancias angulares. Si prefiere trabajar con proyecciones métricas planas, revise nuestra guía de <a href='/guides/utm-coordinates-and-datums/'>coordenadas UTM y dátums</a>, o consulte la definición en el <a href='/glossary/#decimal-degrees'>glosario de grados decimales</a>.",
+
     calloutBadge: "🧭 Herramienta Instantánea",
     calloutTitle: "Convierta Grados Decimales a DMS en Vivo",
     calloutDesc: "Introduzca cualquier coordenada en DD, DMS o UTM y obtenga la conversión bidireccional automática con redondeo de precisión.",
     calloutBtn: "Abrir Conversor de Coordenadas →",
+
     matrixHeading: "Matriz General de Comparación",
     thAttr: "Atributo",
     thDd: "Grados Decimales (DD)",
     thDms: "Grados, Minutos, Segundos (DMS)",
-    row1: ["Ejemplo de Formato", "37.774929, -122.419416", "37° 46' 29.7444\" N, 122° 25' 9.8976\" O"],
+    row1: ["Ejemplo de Formato", "37.774929, -122.419416", "37° 46' 29.7444″ N, 122° 25' 9.8976″ O"],
     row2: ["Entorno Principal", "Cartografía web (Leaflet, Mapbox, Google Maps), bases de datos (PostGIS), GeoJSON", "Cartas náuticas marítimas, planes de vuelo aeronáuticos, mapas topográficos en papel"],
     row3: ["Sistema Base", "Base decimal (base 10)", "Sistema sexagesimal (base 60, origen babilónico)"],
     row4: ["Hemisferio", "Signos Positivo / Negativo (+ para N/E, - para S/O)", "Letras cardinales (N, S, E, O / W)"],
     row5: ["Almacenamiento BD", "Coma flotante nativa de 64 bits (DOUBLE PRECISION, 8 bytes)", "Requiere análisis léxico de texto o 3 columnas independientes"],
     row6: ["Operaciones Matemáticas", "Listo para fórmulas trigonométricas y distancia Haversine directa", "Obliga a convertir a decimal antes de cualquier cálculo espacial"],
+
     h2Formulas: "Fórmulas Matemáticas de Conversión",
     step1Title: "Conversión de DMS a Grados Decimales (DD)",
     step1Formula: "DD = Grados + (Minutos / 60) + (Segundos / 3600)",
@@ -83,9 +125,38 @@ const translations: Record<string, any> = {
     step2_1: "1. Parte entera = Grados (ej. Math.floor(Math.abs(DD))).",
     step2_2: "2. Multiplicar la fracción decimal restante por 60 = Minutos.",
     step2_3: "3. Multiplicar la fracción restante de minuto por 60 = Segundos.",
+
     h2Why: "Por qué las APIs Web Cartográficas adoptaron los Grados Decimales",
-    pWhy1: "En desarrollo de software, procesar y validar cadenas de texto resulta costoso. La notación DMS incluye símbolos no estándar (símbolo de grado °, apóstrofe de minuto ', comilla de segundo \") que provocan fallos frecuentes de codificación tipográfica.",
-    pWhy2: "Los Grados Decimales permiten a los motores espaciales (como PostGIS o JavaScript del navegador) tratar las coordenadas como números flotantes puros, acelerando consultas de bounding box, clustering y distancias.",
+    pWhy1: "En desarrollo de software, procesar y validar cadenas de texto resulta costoso. La notación DMS incluye caracteres no estándar (símbolo °, apóstrofes y comillas) propensos a fallos de codificación tipográfica. En cambio, con el <a href='/tools/latitude-longitude/'>Buscador de Latitud y Longitud</a> se procesan números limpios.",
+    pWhy2: "Los Grados Decimales permiten a los motores espaciales tratar las coordenadas como números flotantes puros, acelerando consultas de bounding box, clustering y distancias.",
+
+    h2Scenarios: "Veredicto por Caso de Uso",
+    scenarios: [
+      { scenario: "Desarrollo Web y APIs", verdict: "Usar Grados Decimales", desc: "GeoJSON, Leaflet y Google Maps requieren arrays numéricos nativos [lat, lng]." },
+      { scenario: "Navegación Marítima y Aérea", verdict: "Usar DMS", desc: "Las cartas náuticas relacionan 1 minuto de latitud con exactamente 1 milla náutica." },
+      { scenario: "Comunicaciones por Radio", verdict: "Usar DMS", desc: "Dictar grados, minutos y segundos reduce notablemente confusiones vocales frente a secuencias decimales." },
+      { scenario: "Bases de Datos Espaciales", verdict: "Usar Grados Decimales", desc: "PostGIS y árboles R espaciales aprovechan la coma flotante IEEE 754 para índices de alto rendimiento." }
+    ],
+
+    h2Myths: "Mitos vs. Realidad",
+    myths: [
+      { myth: "Mito: La notación DMS es inherentemente más precisa que los decimales.", fact: "Realidad: La precisión depende de los decimales utilizados; 5 decimales en DD ofrecen 1,1 metros de resolución, superando el segundo de arco habitual." },
+      { myth: "Mito: Una coordenada negativa indica una altitud bajo el nivel del mar.", fact: "Realidad: En coordenadas decimales, el signo negativo denota el hemisferio: latitud negativa es Sur y longitud negativa es Oeste." }
+    ],
+
+    faqs: [
+      { question: "¿Cuántos decimales se necesitan en Grados Decimales para un GPS móvil?", answer: "El GPS civil de un smartphone tiene un margen de 3 a 5 metros. En formato decimal, 5 cifras tras la coma otorgan una resolución de aproximadamente 1,1 metros, más que suficiente para igualar la precisión del sensor." },
+      { question: "¿Por qué las cartas náuticas siguen usando grados, minutos y segundos?", answer: "Porque un minuto de arco de latitud equivale a una milla náutica (1.852 metros), permitiendo medir distancias directamente en el margen del mapa con un compás." },
+      { question: "¿Se pueden transformar coordenadas UTM directamente a DMS?", answer: "Sí, pero mediante dos etapas: primero se desproyecta la coordenada métrica a latitud y longitud geodésica WGS 84, y posteriormente se pasan los decimales a minutos y segundos sexagesimales." }
+    ],
+
+    nextStepsTitle: "Siguientes Pasos",
+    nextSteps: [
+      { title: "Convertidor de Coordenadas", href: "/tools/coordinate-converter/", desc: "Transforme coordenadas entre DD, DMS y UTM con cálculo bidireccional instantáneo." },
+      { title: "Guía de Latitud y Longitud", href: "/guides/latitude-and-longitude-explained/", desc: "Descubra cómo los dátums geodésicos modelan las coordenadas de todo el planeta." },
+      { title: "Guía de Coordenadas UTM", href: "/guides/utm-coordinates-and-datums/", desc: "Conozca las proyecciones cartográficas métricas utilizadas en ingeniería y topografía." }
+    ],
+
     connectedGuides: "🔗 Guías y Herramientas Conectadas",
     tool1Title: "Conversor de Coordenadas",
     tool1Desc: "Convierta DD, DMS y UTM",
@@ -98,213 +169,388 @@ const translations: Record<string, any> = {
   },
   fr: {
     title: "Degrés Décimaux vs DMS : Formats de Coordonnées | MyLocationLab",
-    description: "Comparez les Degrés Décimaux (DD) et Degrés Minutes Secondes (DMS). Formules de conversion, stockage informatique en virgule flottante et compatibilité SIG.",
-    h1: "Degrés Décimaux (DD) vs. DMS : Comparatif des Notations",
-    subtitle: "Une analyse mathématique et informatique entre navigation sexagésimale et standards SIG décimaux modernes.",
-    p1: "Lors de la saisie de coordonnées géographiques, deux systèmes dominent : les Degrés Décimaux (DD) et les Degrés, Minutes, Secondes (DMS).",
-    p2: "Bien qu'ils désignent rigoureusement le même point physique sur l'ellipsoïde WGS 84, ils répondent à des logiques informatiques et humaines radicalement différentes.",
+    description: "En bref : Les Degrés Décimaux (DD) utilisent des nombres flottants pour les cartes web, tandis que les DMS s'appuient sur la notation sexagésimale en base 60.",
+    h1: "Degrés Décimaux (DD) vs. DMS : Comparatif des Systèmes de Coordonnées",
+    subtitle: "Une analyse géodésique et mathématique entre la navigation maritime et les standards cartographiques du Web.",
+    
+    inShort: "En bref : Les Degrés Décimaux (DD) expriment une position par de simples nombres décimaux positifs ou négatifs (ex. 37.7749, -122.4194) optimisés pour les bases de données et les SIG. Les Degrés, Minutes et Secondes (DMS) traduisent exactement le même point en base 60 (ex. 37° 46' 30″ N, 122° 25' 10″ O), format historique de l'aviation et de la marine.",
+
+    p1: "Lors de la manipulation de coordonnées géographiques, deux conventions s'imposent : les Degrés Décimaux (DD) et les Degrés, Minutes, Secondes (DMS). Notre <a href='/tools/coordinate-converter/'>Convertisseur de Coordonnées</a> permet de basculer instantanément de l'un à l'autre.",
+    p2: "Comprendre les principes sous-jacents est capital : comme détaillé dans notre guide sur <a href='/guides/latitude-and-longitude-explained/'>la latitude et la longitude expliquées</a>, les coordonnées mesurent des écarts angulaires. Pour les systèmes métriques projetés, consultez notre analyse des <a href='/guides/utm-coordinates-and-datums/'>coordonnées UTM et datums</a>, ou la fiche de notre <a href='/glossary/#decimal-degrees'>glossaire des degrés décimaux</a>.",
+
     calloutBadge: "🧭 Outil Instantané",
-    calloutTitle: "Convertissez vos Degrés Décimaux en DMS",
-    calloutDesc: "Saisissez n'importe quelle coordonnée en DD, DMS ou UTM pour obtenir la conversion immédiate avec arrondi de précision.",
-    calloutBtn: "Ouvrir le Convertisseur de Coordonnées →",
-    matrixHeading: "Matrice de Comparaison Globale",
-    thAttr: "Critère",
+    calloutTitle: "Convertissez les Degrés Décimaux en DMS",
+    calloutDesc: "Saisissez n'importe quelle coordonnée en DD, DMS ou UTM pour une conversion bidirectionnelle en direct.",
+    calloutBtn: "Ouvrir le Convertisseur →",
+
+    matrixHeading: "Matrice de Comparaison",
+    thAttr: "Caractéristique",
     thDd: "Degrés Décimaux (DD)",
     thDms: "Degrés, Minutes, Secondes (DMS)",
-    row1: ["Exemple", "48.858370, 2.294481", "48° 51' 30.132\" N, 2° 17' 40.1316\" E"],
-    row2: ["Usage Principal", "Cartographie web (Leaflet, Mapbox, Google Maps), bases SIG (PostGIS), GeoJSON", "Cartes marines nautiques, navigation aérienne, cartes IGN papier"],
-    row3: ["Système Numérique", "Base décimale standard (base 10)", "Système sexagésimal (base 60, héritage babylonien)"],
-    row4: ["Hémisphères", "Signes Positif / Négatif (+ pour N/E, - pour S/O)", "Lettres cardinales (N, S, E, O / W)"],
-    row5: ["Stockage Informatique", "Flottant 64 bits natif (DOUBLE PRECISION, 8 octets)", "Nécessite du parsing textuel ou 3 colonnes dédiées"],
-    row6: ["Opérations Trigonométriques", "Directement calculable avec la formule de Haversine", "Nécessite une conversion préalable en décimal"],
+    row1: ["Exemple", "37.774929, -122.419416", "37° 46' 29.7444″ N, 122° 25' 9.8976″ O"],
+    row2: ["Usage Principal", "Cartographie web (Leaflet, Google Maps, GeoJSON, PostGIS)", "Cartes marines, plans de vol aéronautiques, navigation papier"],
+    row3: ["Système de Base", "Base 10 décimale", "Base 60 sexagésimale (origine babylonienne)"],
+    row4: ["Hémisphères", "Signes + / - (+ pour N/E, - pour S/O)", "Lettres cardinales (N, S, E, O)"],
+    row5: ["Stockage BDD", "Nombre flottant 64 bits (8 octets)", "Chaîne de caractères complexe ou 3 colonnes"],
+    row6: ["Calculs Géodésiques", "Prêt pour les formules trigonométriques directes", "Conversion préalable en décimal obligatoire"],
+
     h2Formulas: "Formules Mathématiques de Conversion",
     step1Title: "Conversion de DMS en Degrés Décimaux (DD)",
     step1Formula: "DD = Degrés + (Minutes / 60) + (Secondes / 3600)",
-    step1Note: "Remarque : Si l'hémisphère est Sud (S) ou Ouest (O/W), multipliez la valeur finale par -1.",
-    step2Title: "Conversion de Degrés Décimaux (DD) en DMS",
-    step2_1: "1. Partie entière = Degrés (ex. Math.floor(Math.abs(DD))).",
-    step2_2: "2. Multiplier le reste décimal par 60 = Minutes.",
-    step2_3: "3. Multiplier le reste fractionnaire de minute par 60 = Secondes.",
-    h2Why: "Pourquoi le Web Cartographique a Standardisé les Degrés Décimaux",
-    pWhy1: "En programmation, le traitement et la validation de chaînes textuelles sont lents. La notation DMS contient des caractères spéciaux (degré °, prime ', double prime \") sources d'erreurs d'encodage fréquentes.",
-    pWhy2: "Les Degrés Décimaux permettent aux moteurs géospatiaux de manipuler les coordonnées comme de simples nombres flottants, rendant les calculs spatiaux infiniment plus véloces.",
-    connectedGuides: "🔗 Guides & Outils Liés",
+    step1Note: "Remarque : Si l'hémisphère est Sud (S) ou Ouest (O/W), multipliez par -1.",
+    step2Title: "Conversion de Degrés Décimaux en DMS",
+    step2_1: "1. Partie entière = Degrés.",
+    step2_2: "2. Fraction restante multipliée par 60 = Minutes.",
+    step2_3: "3. Seconde fraction restante multipliée par 60 = Secondes.",
+
+    h2Why: "Pourquoi le Web a Standardisé sur les Degrés Décimaux",
+    pWhy1: "En programmation, parser des chaînes textuelles contenant des symboles variés (° et apostrophes) génère de fréquentes erreurs d'encodage. À l'inverse, l'outil de <a href='/tools/latitude-longitude/'>Recherche Latitude et Longitude</a> s'appuie sur des nombres purs sans ambiguïté.",
+    pWhy2: "Les moteurs spatiaux manipulent les nombres décimaux à très haute vitesse pour le clustering et les calculs géodésiques.",
+
+    h2Scenarios: "Verdict par Scénario",
+    scenarios: [
+      { scenario: "Développement Web & APIs", verdict: "Privilégier les Décimaux", desc: "GeoJSON et Mapbox exigent des valeurs numériques strictes." },
+      { scenario: "Navigation Maritime & Aérienne", verdict: "Privilégier les DMS", desc: "1 minute d'arc de latitude correspond exactement à un mille marin." },
+      { scenario: "Communications Vocales Radio", verdict: "Privilégier les DMS", desc: "Énoncer degrés, minutes et secondes évite les erreurs de prononciation de suites décimales." },
+      { scenario: "Indexation en Base Spatiale", verdict: "Privilégier les Décimaux", desc: "Les index PostGIS tirent parti des formats flottants IEEE 754." }
+    ],
+
+    h2Myths: "Mythes vs Réalités",
+    myths: [
+      { myth: "Mythe : La notation DMS est plus précise que les degrés décimaux.", fact: "Réalité : La précision dépend du nombre de chiffres ; 5 décimales en DD équivalent à 1,1 m, ce qui dépasse la seconde d'arc classique." },
+      { myth: "Mythe : Une coordonnée négative indique une altitude sous le niveau de la mer.", fact: "Réalité : Le signe moins indique l'hémisphère Sud pour la latitude et l'hémisphère Ouest pour la longitude." }
+    ],
+
+    faqs: [
+      { question: "Combien de décimales faut-il pour un GPS de smartphone ?", answer: "Avec 5 décimales, la précision spatiale atteint environ 1,1 mètre, ce qui couvre parfaitement la marge physique d'un récepteur grand public (3 à 5 mètres)." },
+      { question: "Pourquoi la marine conserve-t-elle les DMS ?", answer: "Parce qu'une minute de latitude équivaut à un mille marin (1 852 m), ce qui permet des mesures de distance instantanées au compas sur une carte papier." },
+      { question: "Peut-on convertir directement l'UTM en DMS ?", answer: "Il faut d'abord recalculer les coordonnées géodésiques WGS 84 depuis la projection métrique, puis décomposer les valeurs décimales en minutes et secondes." }
+    ],
+
+    nextStepsTitle: "Étapes Suivantes",
+    nextSteps: [
+      { title: "Convertisseur de Coordonnées", href: "/tools/coordinate-converter/", desc: "Basculez vos coordonnées entre DD, DMS et UTM en temps réel." },
+      { title: "Comprendre Latitude et Longitude", href: "/guides/latitude-and-longitude-explained/", desc: "Explorez les fondamentaux géodésiques et les méridiens terrestres." },
+      { title: "Guide UTM et Datums", href: "/guides/utm-coordinates-and-datums/", desc: "Comprenez les grilles métriques planes utilisées par les géomètres." }
+    ],
+
+    connectedGuides: "🔗 Guides et Outils Associés",
     tool1Title: "Convertisseur de Coordonnées",
-    tool1Desc: "Convertir DD, DMS & UTM",
+    tool1Desc: "Convertissez DD, DMS & UTM",
     tool2Title: "Latitude & Longitude",
-    tool2Desc: "Guide des coordonnées géodésiques",
+    tool2Desc: "Guide des coordonnées",
     tool3Title: "Guide UTM & Datums",
-    tool3Desc: "Projections cartographiques",
+    tool3Desc: "Projections métriques",
     tool4Title: "Calculateur de Distance",
-    tool4Desc: "Distance géodésique Haversine"
+    tool4Desc: "Solveur géodésique Haversine"
   },
   de: {
-    title: "Dezimalgrad vs GMS: Koordinatenformate im Vergleich | MyLocationLab",
-    description: "Dezimalgrad (DD) und Grad Minuten Sekunden (GMS) im technischen Vergleich. Umrechnungsformeln, Fließkomma-Speicherung und GIS-Standards.",
+    title: "Dezimalgrad vs. GMS: Koordinatenformate | MyLocationLab",
+    description: "Kurz gesagt: Dezimalgrad (DD) nutzen Gleitkommazahlen für Software und Webkarten, während GMS auf das 60er-System für Luft- und Seefahrt setzt.",
     h1: "Dezimalgrad (DD) vs. GMS: Koordinatensysteme im Vergleich",
-    subtitle: "Ein mathematischer und softwaretechnischer Vergleich zwischen sexagesimaler Seefahrt und modernen GIS-Dezimalstandards.",
-    p1: "Beim Erfassen von Geokoordinaten begegnen Ihnen zwei Hauptnotationssysteme: Dezimalgrad (DD) und Grad, Minuten, Sekunden (GMS).",
-    p2: "Obwohl beide denselben Punkt auf dem WGS-84-Referenzellipsoid beschreiben, eignen sie sich für völlig unterschiedliche Einsatzgebiete.",
-    calloutBadge: "🧭 Live-Umrechner",
-    calloutTitle: "Dezimalgrad jetzt in GMS umrechnen",
-    calloutDesc: "Geben Sie beliebige Koordinaten in DD, GMS oder UTM ein, um eine automatische bidirektionale Umrechnung zu erhalten.",
-    calloutBtn: "Koordinaten-Umrechner öffnen →",
-    matrixHeading: "Vergleichsmatrix der Notationsformate",
-    thAttr: "Merkmal",
+    subtitle: "Ein mathematischer und geodätischer Vergleich zwischen historischer Navigation und modernen GIS-Standards.",
+    
+    inShort: "Kurz gesagt: Dezimalgrad (DD) erfassen Koordinaten als einfache positive oder negative Dezimalzahlen (z. B. 37.7749, -122.4194) für Datenbanken und Web-APIs. Grad, Minuten und Sekunden (GMS) stellen denselben Punkt im sexagesimalen 60er-System dar (z. B. 37° 46' 30″ N, 122° 25' 10″ W), wie es in Seefahrt und Luftfahrt gebräuchlich ist.",
+
+    p1: "In der Geodäsie begegnen Ihnen zwei primäre Notationen: Dezimalgrad (DD) und Grad, Minuten, Sekunden (GMS). Mit unserem <a href='/tools/coordinate-converter/'>Koordinaten-Konverter</a> wechseln Sie nahtlos zwischen beiden Darstellungen.",
+    p2: "Für ein fundiertes Verständnis empfiehlt sich unser Leitfaden zu <a href='/guides/latitude-and-longitude-explained/'>Breitengrad und Längengrad</a>, der Winkelmessungen am Äquator erläutert. Für metrische Projektionen siehe unseren Leitfaden zu <a href='/guides/utm-coordinates-and-datums/'>UTM-Koordinaten und Bezugssystemen</a> oder den Eintrag im <a href='/glossary/#decimal-degrees'>Glossar zu Dezimalgrad</a>.",
+
+    calloutBadge: "🧭 Live-Konverter",
+    calloutTitle: "Dezimalgrad direkt in GMS umrechnen",
+    calloutDesc: "Geben Sie beliebige Koordinaten in DD, GMS oder UTM ein und erhalten Sie die bidirektionale Konvertierung.",
+    calloutBtn: "Konverter öffnen →",
+
+    matrixHeading: "Vergleichsmatrix",
+    thAttr: "Eigenschaft",
     thDd: "Dezimalgrad (DD)",
     thDms: "Grad, Minuten, Sekunden (GMS)",
-    row1: ["Formatbeispiel", "52.520008, 13.404954", "52° 31' 12.0288\" N, 13° 24' 17.8344\" O"],
-    row2: ["Haupteinsatzgebiet", "Webkarten (Leaflet, Mapbox, Google Maps), GIS-Datenbanken (PostGIS), GeoJSON", "Nautische Seekarten, Luftfahrt-Flugpläne, topografische Papierkarten"],
-    row3: ["Zahlensystem", "Dezimalsystem (Basis 10)", "Sexagesimalsystem (Basis 60, babylonischen Ursprungs)"],
-    row4: ["Hemisphären", "Vorzeichen Plus / Minus (+ für N/O, - für S/W)", "Himmelsrichtungsbuchstaben (N, S, O/E, W)"],
-    row5: ["Datenbankspeicherung", "Natives 64-Bit-Fließkomma (DOUBLE PRECISION, 8 Byte)", "Erfordert String-Parsing oder 3 separate Tabellenspalten"],
-    row6: ["Mathematische Berechnungen", "Direkt in Haversine- und trigonometrischen Formeln nutzbar", "Muss vor Berechnungen zwingend in Dezimalzahlen konvertiert werden"],
-    h2Formulas: "Die mathematischen Umrechnungsformeln",
-    step1Title: "Umrechnung von GMS in Dezimalgrad (DD)",
+    row1: ["Beispiel", "37.774929, -122.419416", "37° 46' 29.7444″ N, 122° 25' 9.8976″ W"],
+    row2: ["Haupteinsatz", "Webkarten (Leaflet, Mapbox, Google Maps), PostGIS, GeoJSON", "Seekarten, Luftfahrt, topografische Papierkarten"],
+    row3: ["Zahlensystem", "Dezimalsystem (Basis 10)", "Sexagesimalsystem (Basis 60, babylonisch)"],
+    row4: ["Hemisphären", "Vorzeichen (+ für N/O, - für S/W)", "Himmelsrichtungen (N, S, O/E, W)"],
+    row5: ["Speicherung", "64-Bit-Gleitkommazahl (8 Bytes)", "Komplexe Textzeichenkette oder 3 Spalten"],
+    row6: ["Berechnungen", "Direkt in Haversine- und Trigonometrie-Formeln nutzbar", "Muss vor Berechnungen zwingend in Dezimal umgerechnet werden"],
+
+    h2Formulas: "Mathematische Umrechnungsformeln",
+    step1Title: "GMS in Dezimalgrad (DD) umrechnen",
     step1Formula: "DD = Grad + (Minuten / 60) + (Sekunden / 3600)",
-    step1Note: "Hinweis: Liegt der Punkt auf der Süd- oder Westhalbkugel, multiplizieren Sie das Ergebnis mit -1.",
-    step2Title: "Umrechnung von Dezimalgrad (DD) in GMS",
-    step2_1: "1. Ganze Zahl = Grad (z. B. Math.floor(Math.abs(DD))).",
-    step2_2: "2. Den Nachkommaanteil mit 60 multiplizieren = Minuten.",
-    step2_3: "3. Den verbleibenden Nachkommaanteil mit 60 multiplizieren = Sekunden.",
-    h2Why: "Warum Web-Mapping-APIs auf Dezimalgrad setzen",
-    pWhy1: "In der Softwareentwicklung ist die Verarbeitung von Textstrings rechenintensiv. Die GMS-Schreibweise verwendet Sonderzeichen (Gradzeichen °, Minute ', Sekunde \"), die regelmäßig zu Zeichensatzfehlern führen.",
-    pWhy2: "Dezimalgrade erlauben Geodaten-Engines (wie PostGIS oder JavaScript-Engines), Koordinaten als reine Fließkommazahlen zu verarbeiten, was räumliche Filterungen enorm beschleunigt.",
-    connectedGuides: "🔗 Weiterführende Leitfäden & Werkzeuge",
-    tool1Title: "Koordinaten-Umrechner",
-    tool1Desc: "DD, GMS & UTM umrechnen",
+    step1Note: "Hinweis: Bei Süd (S) oder West (W) mit -1 multiplizieren.",
+    step2Title: "Dezimalgrad (DD) in GMS umrechnen",
+    step2_1: "1. Ganzzahl = Grad.",
+    step2_2: "2. Verbleibender Nachkommateil × 60 = Minuten.",
+    step2_3: "3. Weiterer Nachkommateil × 60 = Sekunden.",
+
+    h2Why: "Warum Web-APIs auf Dezimalgrad setzen",
+    pWhy1: "Textstrings mit Sonderzeichen (° und Anführungszeichen) erzeugen regelmäßig Parsing-Fehler. Unser <a href='/tools/latitude-longitude/'>Breiten- und Längengrad-Finder</a> verarbeitet dagegen reine Zahlenwerte ohne Formatbrüche.",
+    pWhy2: "Räumliche Datenbanken wie PostGIS verarbeiten reine Fließkommazahlen um ein Vielfaches schneller bei Bounding-Box- und Cluster-Abfragen.",
+
+    h2Scenarios: "Empfehlung nach Szenario",
+    scenarios: [
+      { scenario: "Webentwicklung & APIs", verdict: "Dezimalgrad nutzen", desc: "GeoJSON und Kartendienste verlangen rein numerische Float-Arrays." },
+      { scenario: "See- & Luftfahrt", verdict: "GMS nutzen", desc: "1 Bogenminute auf dem Meridian entspricht genau 1 Seemeile." },
+      { scenario: "Sprechfunk im Notfall", verdict: "GMS nutzen", desc: "Das Ansagen von Grad und Minuten beugt Übertragungsfehlern vor." },
+      { scenario: "Geodatenbanken", verdict: "Dezimalgrad nutzen", desc: "PostGIS-R-Baum-Indizes basieren auf IEEE 754 Fließkommazahlen." }
+    ],
+
+    h2Myths: "Mythen vs. Fakten",
+    myths: [
+      { myth: "Mythos: GMS ist genauer als Dezimalgrad.", fact: "Fakt: Genauigkeit hängt von den Nachkommastellen ab; 5 Dezimalstellen entsprechen 1,1 Metern Genauigkeit." },
+      { myth: "Mythos: Ein Minuszeichen steht für Orte unter dem Meeresspiegel.", fact: "Fakt: Das Vorzeichen kennzeichnet die Erdhalbkugel (negativ = Süd bzw. West)." }
+    ],
+
+    faqs: [
+      { question: "Wie viele Dezimalstellen genügen für Smartphone-GPS?", answer: "5 Nachkommastellen bieten eine rechnerische Auflösung von 1,1 Metern und passen optimal zu den 3 bis 5 Metern Genauigkeit mobiler GNSS-Chips." },
+      { question: "Warum nutzt die Seefahrt weiterhin GMS?", answer: "Weil 1 Bogenminute auf dem Breitengrad exakt einer Seemeile (1.852 m) entspricht, was Distanzmessungen mit dem Zirkel ermöglicht." },
+      { question: "Kann man UTM direkt in GMS umrechnen?", answer: "Erst wird der UTM-Rechts- und Hochwert in WGS-84-Dezimalgrade zurückgerechnet und anschließend in Grad, Minuten und Sekunden zerlegt." }
+    ],
+
+    nextStepsTitle: "Nächste Schritte",
+    nextSteps: [
+      { title: "Koordinaten-Konverter", href: "/tools/coordinate-converter/", desc: "Rechnen Sie Koordinaten zwischen DD, GMS und UTM live um." },
+      { title: "Breiten- und Längengrad", href: "/guides/latitude-and-longitude-explained/", desc: "Grundlagen der sphärischen Erdkoordinaten und Bezugssysteme." },
+      { title: "UTM & Bezugssysteme", href: "/guides/utm-coordinates-and-datums/", desc: "Verstehen Sie metrische Streifenprojektionen in Vermessung und Technik." }
+    ],
+
+    connectedGuides: "🔗 Verbundene Anleitungen & Werkzeuge",
+    tool1Title: "Koordinaten-Konverter",
+    tool1Desc: "DD, GMS & UTM umwandeln",
     tool2Title: "Breiten- & Längengrad",
-    tool2Desc: "Geodäsie-Grundlagen",
-    tool3Title: "UTM & Datums-Guide",
-    tool3Desc: "Metrische Kartenprojektionen",
-    tool4Title: "Entfernungsrechner",
-    tool4Desc: "Haversine-Distanzberechnung"
+    tool2Desc: "Grundlagen der Geodäsie",
+    tool3Title: "UTM & Bezugssysteme",
+    tool3Desc: "Metrische Gitterprojektionen",
+    tool4Title: "Distanz-Rechner",
+    tool4Desc: "Haversine-Entfernungsberechnung"
   },
   pt: {
-    title: "Graus Decimais vs GMS: Formatos de Coordenadas | MyLocationLab",
-    description: "Compare Graus Decimais (DD) e Graus Minutos Segundos (GMS). Fórmulas de conversão matemática, armazenamento em ponto flutuante e padrões SIG.",
-    h1: "Graus Decimais (DD) vs. GMS: Comparativo de Notações",
-    subtitle: "Uma avaliação matemática e computacional entre a navegação sexagesimal clássica e os padrões decimais para geoprocessamento.",
-    p1: "Ao registrar coordenadas geográficas, você encontrará dois sistemas principais: Graus Decimais (DD) e Graus, Minutos e Segundos (GMS).",
-    p2: "Embora ambos definam a mesma coordenada física no elipsoide WGS 84, eles atendem a exigências técnicas e práticas distintas.",
-    calloutBadge: "🧭 Conversor em Tempo Real",
-    calloutTitle: "Converta Graus Decimais em GMS Instantaneamente",
-    calloutDesc: "Digite coordenadas em DD, GMS ou UTM para visualizar a conversão bidirecional imediata com arredondamento preciso.",
-    calloutBtn: "Abrir Conversor de Coordenadas →",
-    matrixHeading: "Matriz Geral de Comparação",
+    title: "Graus Decimais vs DMS: Formatos de Coordenadas | MyLocationLab",
+    description: "Em resumo: Graus Decimais (DD) usam pontos flutuantes para softwares e mapas web, enquanto DMS adota a notação sexagesimal base 60.",
+    h1: "Graus Decimais (DD) vs. DMS: Comparativo de Sistemas de Coordenadas",
+    subtitle: "Uma análise matemática e técnica entre a navegação tradicional e os padrões digitais de SIG.",
+    
+    inShort: "Em resumo: Os Graus Decimais (DD) expressam posições por números decimais positivos ou negativos (como 37.7749, -122.4194) otimizados para bancos de dados e APIs web. Graus, Minutos e Segundos (DMS) representam o mesmo ponto no formato sexagesimal base 60 (como 37° 46' 30″ N, 122° 25' 10″ O), padrão clássico da marinha e aviação.",
+
+    p1: "Ao lidar com coordenadas geográficas, você encontrará dois formatos principais: Graus Decimais (DD) e Graus, Minutos e Segundos (DMS). Nosso <a href='/tools/coordinate-converter/'>Conversor de Coordenadas</a> realiza a transformação bidirecional instantânea.",
+    p2: "Compreender os conceitos geodésicos é essencial: confira nosso guia sobre <a href='/guides/latitude-and-longitude-explained/'>latitude e longitude explicadas</a> para entender distâncias angulares. Se precisar de coordenadas métricas projetadas, leia sobre <a href='/guides/utm-coordinates-and-datums/'>coordenadas UTM e datums</a> ou veja o termo no <a href='/glossary/#decimal-degrees'>glossário de graus decimais</a>.",
+
+    calloutBadge: "🧭 Ferramenta Instantânea",
+    calloutTitle: "Converta Graus Decimais para DMS em Tempo Real",
+    calloutDesc: "Insira coordenadas em DD, DMS ou UTM e veja o resultado com arredondamento preciso.",
+    calloutBtn: "Abrir Conversor →",
+
+    matrixHeading: "Matriz de Comparação",
     thAttr: "Atributo",
     thDd: "Graus Decimais (DD)",
-    thDms: "Graus, Minutos, Segundos (GMS)",
-    row1: ["Exemplo de Formato", "-23.550520, -46.633308", "23° 33' 1.872\" S, 46° 37' 59.9088\" O"],
-    row2: ["Ambiente Principal", "Mapas web (Leaflet, Mapbox, Google Maps), bancos de dados (PostGIS), GeoJSON", "Cartas náuticas marítimas, aviação civil, mapas topográficos em papel"],
-    row3: ["Base Numérica", "Padrão decimal (base 10)", "Padrão sexagesimal (base 60, origem babilônica)"],
-    row4: ["Hemisférios", "Sinais Positivo / Negativo (+ para N/L, - para S/O)", "Letras cardeais (N, S, L/E, O/W)"],
-    row5: ["Armazenamento em Banco", "Ponto flutuante nativo de 64 bits (DOUBLE PRECISION, 8 bytes)", "Exige decomposição de texto ou 3 colunas independentes"],
-    row6: ["Operações Espaciais", "Diretamente processável em fórmulas trigonométricas de Haversine", "Deve ser convertido em decimal antes de qualquer cálculo vetorial"],
+    thDms: "Graus, Minutos, Segundos (DMS)",
+    row1: ["Exemplo de Formato", "37.774929, -122.419416", "37° 46' 29.7444″ N, 122° 25' 9.8976″ O"],
+    row2: ["Ambiente Principal", "Mapas web (Leaflet, Mapbox, Google Maps), bancos de dados (PostGIS), GeoJSON", "Cartas náuticas marítimas, aviação, mapas topográficos impressos"],
+    row3: ["Sistema Base", "Base 10 decimal", "Base 60 sexagesimal (origem babilônica)"],
+    row4: ["Hemisférios", "Sinais + / - (+ para N/L, - para S/O)", "Letras cardeais (N, S, E/L, W/O)"],
+    row5: ["Armazenamento BD", "Ponto flutuante nativo de 64 bits (8 bytes)", "Texto estruturado ou 3 colunas independentes"],
+    row6: ["Cálculos Matemáticos", "Uso imediato em fórmulas trigonométricas e Haversine", "Exige conversão prévia para decimal"],
+
     h2Formulas: "Fórmulas Matemáticas de Conversão",
-    step1Title: "Conversão de GMS para Graus Decimais (DD)",
+    step1Title: "Converter DMS para Graus Decimais (DD)",
     step1Formula: "DD = Graus + (Minutos / 60) + (Segundos / 3600)",
-    step1Note: "Atenção: Se o hemisfério for Sul (S) ou Oeste (O/W), multiplique o resultado por -1.",
-    step2Title: "Conversão de Graus Decimais (DD) para GMS",
-    step2_1: "1. Parte inteira = Graus (ex.: Math.floor(Math.abs(DD))).",
-    step2_2: "2. Multiplicar a sobra decimal por 60 = Minutos.",
-    step2_3: "3. Multiplicar a fração de minuto restante por 60 = Segundos.",
-    h2Why: "Por que as APIs de Mapas Web adotaram os Graus Decimais",
-    pWhy1: "No desenvolvimento de software, manipular strings com caracteres especiais (símbolo de grau °, aspas ' e \") gera lentidão e erros frequentes de codificação UTF-8.",
-    pWhy2: "Com os Graus Decimais, bibliotecas espaciais tratam posições como simples números contínuos, acelerando consultas de bounding box e cálculos de distância por ordens de grandeza.",
-    connectedGuides: "🔗 Guias e Ferramentas Relacionadas",
+    step1Note: "Nota: Se o hemisfério for Sul (S) ou Oeste (W/O), multiplique o resultado por -1.",
+    step2Title: "Converter Graus Decimais (DD) para DMS",
+    step2_1: "1. Número inteiro = Graus.",
+    step2_2: "2. Fração decimal restante × 60 = Minutos.",
+    step2_3: "3. Nova fração restante × 60 = Segundos.",
+
+    h2Why: "Por que APIs de Mapas Padronizaram em Graus Decimais",
+    pWhy1: "Na programação de software, tratar textos com caracteres como o símbolo de grau (°) gera erros de codificação frequentes. Nossa ferramenta de <a href='/tools/latitude-longitude/'>Latitude e Longitude</a> opera com valores numéricos limpos.",
+    pWhy2: "Graus decimais permitem que bancos de dados espaciais realizem consultas de bounding box e clusters com alto desempenho.",
+
+    h2Scenarios: "Veredito por Cenário",
+    scenarios: [
+      { scenario: "Desenvolvimento Web & APIs", verdict: "Usar Graus Decimais", desc: "GeoJSON e mapas interativos exigem matrizes numéricas." },
+      { scenario: "Navegação Marítima & Aérea", verdict: "Usar DMS", desc: "1 minuto de arco na latitude corresponde a 1 milha náutica." },
+      { scenario: "Comunicação por Rádio", verdict: "Usar DMS", desc: "Falar graus e minutos evita ambiguidades de longas sequências decimais." },
+      { scenario: "Indexação em Bancos Espaciais", verdict: "Usar Graus Decimais", desc: "PostGIS processa números IEEE 754 com velocidade máxima." }
+    ],
+
+    h2Myths: "Mitos vs. Fatos",
+    myths: [
+      { myth: "Mito: DMS é mais preciso que graus decimais.", fact: "Fato: A precisão depende das casas decimais; 5 casas em DD alcançam 1,1 metro de resolução." },
+      { myth: "Mito: Coordenadas negativas indicam altitude abaixo do mar.", fact: "Fato: O sinal negativo apenas indica o hemisfério (Sul para latitude e Oeste para longitude)." }
+    ],
+
+    faqs: [
+      { question: "Quantas casas decimais são necessárias para GPS de celular?", answer: "5 casas decimais fornecem cerca de 1,1 metro de resolução, cobrindo com folga a margem de 3 a 5 metros do hardware comum." },
+      { question: "Por que cartas náuticas ainda utilizam DMS?", answer: "Porque 1 minuto de latitude equivale exatamente a 1 milha náutica (1.852 m), facilitando medições no mapa com compasso." },
+      { question: "É possível converter UTM diretamente para DMS?", answer: "Sim, realizando primeiro o recálculo para latitude e longitude geodésica WGS 84 e depois convertendo os decimais em minutos e segundos." }
+    ],
+
+    nextStepsTitle: "Próximos Passos",
+    nextSteps: [
+      { title: "Conversor de Coordenadas", href: "/tools/coordinate-converter/", desc: "Converta coordenadas entre DD, DMS e UTM com cálculo ao vivo." },
+      { title: "Guia de Latitude e Longitude", href: "/guides/latitude-and-longitude-explained/", desc: "Aprenda como os referenciais geodésicos posicionam qualquer ponto na Terra." },
+      { title: "Guia de Coordenadas UTM", href: "/guides/utm-coordinates-and-datums/", desc: "Entenda as projeções métricas planas usadas na engenharia." }
+    ],
+
+    connectedGuides: "🔗 Guias e Ferramentas Conectadas",
     tool1Title: "Conversor de Coordenadas",
-    tool1Desc: "Converta DD, GMS e UTM",
+    tool1Desc: "Converta DD, DMS e UTM",
     tool2Title: "Latitude e Longitude",
     tool2Desc: "Fundamentos de geodésia",
     tool3Title: "Guia UTM e Datums",
-    tool3Desc: "Projeções métricas planas",
+    tool3Desc: "Projeções métricas",
     tool4Title: "Calculadora de Distância",
     tool4Desc: "Cálculo geodésico Haversine"
   },
   hi: {
-    title: "दशमलव डिग्री बनाम DMS: निर्देशांक फ़ॉर्मैट | MyLocationLab",
-    description: "दशमलव डिग्री (DD) और डिग्री मिनट सेकंड (DMS) की तुलना करें। रूपांतरण फ़ॉर्मूले, फ़्लोटिंग पॉइंट स्टोरेज और GIS ऐप कम्पैटिबिलिटी की पूरी जानकारी।",
-    h1: "दशमलव डिग्री (DD) बनाम DMS: निर्देशांक सिस्टम की तुलना",
-    subtitle: "षषाधारी नेविगेशन और दशमलव GIS निर्देशांक मानकों के बीच गणितीय और इंजीनियरिंग तुलना।",
-    p1: "भौगोलिक निर्देशांक दर्ज करते समय आप दो प्रमुख संकेतन प्रणालियों से मिलेंगे: दशमलव डिग्री (DD) और डिग्री, मिनट, सेकंड (DMS)।",
-    p2: "हालाँकि दोनों WGS 84 एलिप्सॉइड पर बिल्कुल एक ही भौगोलिक स्थान दर्शाते हैं, लेकिन ये बिल्कुल अलग कंप्यूटिंग एनवायरनमेंट और मानवीय उपयोग के लिए अनुकूलित हैं।",
-    calloutBadge: "🧭 तुरंत रूपांतरण टूल",
-    calloutTitle: "दशमलव डिग्री को तुरंत DMS में बदलें",
-    calloutDesc: "दशमलव डिग्री, DMS या UTM में कोई भी निर्देशांक दर्ज करें और सटीक राउंडिंग के साथ लाइव दो-तरफ़ा रूपांतरण देखें।",
-    calloutBtn: "कोऑर्डिनेट कन्वर्टर खोलें →",
-    matrixHeading: "अवलोकन तुलना मैट्रिक्स",
+    title: "दशमलव डिग्री बनाम DMS: निर्देशांक प्रारूप | MyLocationLab",
+    description: "संक्षेप में: दशमलव डिग्री (DD) सॉफ्टवेयर और वेब मैप के लिए बेस-10 फ्लोट का उपयोग करती है, जबकि DMS समुद्री और विमानन नेविगेशन के लिए बेस-60 प्रणाली अपनाती है।",
+    h1: "दशमलव डिग्री (DD) बनाम DMS: निर्देशांक प्रणालियों की तुलना",
+    subtitle: "पारंपरिक षष्टक नेविगेशन और आधुनिक जीआईएस मानकों के बीच एक तकनीकी और गणितीय तुलना।",
+    
+    inShort: "संक्षेप में: दशमलव डिग्री (DD) निर्देशांकों को साधारण सकारात्मक या नकारात्मक दशमलव संख्याओं (जैसे 37.7749, -122.4194) के रूप में दर्शाती है, जो कंप्यूटर डेटाबेस और वेब मैप के लिए अनुकूलित हैं। डिग्री, मिनट और सेकंड (DMS) उसी स्थान को बेस-60 प्रणाली (जैसे 37° 46' 30″ N, 122° 25' 10″ W) में व्यक्त करते हैं, जिसका उपयोग समुद्री और विमानन नेविगेशन में होता है।",
+
+    p1: "भौगोलिक निर्देशांक दर्ज करते समय आपको दो मुख्य प्रारूप मिलेंगे: दशमलव डिग्री (DD) और डिग्री, मिनट, सेकंड (DMS)। हमारा <a href='/tools/coordinate-converter/'>निर्देशांक परिवर्तक</a> दोनों के बीच त्वरित रूपांतरण की सुविधा देता है।",
+    p2: "इसकी भूगणितीय संरचना को समझना आवश्यक है: जैसा कि हमारे <a href='/guides/latitude-and-longitude-explained/'>अक्षांश और देशांतर गाइड</a> में बताया गया है, निर्देशांक कोणीय दूरी मापते हैं। समतल मीट्रिक ग्रिड के लिए हमारा <a href='/guides/utm-coordinates-and-datums/'>UTM निर्देशांक और डेटम गाइड</a> देखें, या <a href='/glossary/#decimal-degrees'>दशमलव डिग्री शब्दावली</a> पढ़ें।",
+
+    calloutBadge: "🧭 त्वरित रूपांतरण उपकरण",
+    calloutTitle: "दशमलव डिग्री को DMS में तुरंत बदलें",
+    calloutDesc: "सटीक परिणाम देखने के लिए DD, DMS या UTM में कोई भी निर्देशांक दर्ज करें।",
+    calloutBtn: "परिवर्तक खोलें →",
+
+    matrixHeading: "तुलनात्मक तालिका",
     thAttr: "विशेषता",
     thDd: "दशमलव डिग्री (DD)",
     thDms: "डिग्री, मिनट, सेकंड (DMS)",
-    row1: ["फ़ॉर्मैट उदाहरण", "28.613939, 77.209023", "28° 36' 50.1804\" N, 77° 12' 32.4828\" E"],
-    row2: ["प्रमुख वातावरण", "वेब मैपिंग (Leaflet, Mapbox, Google Maps), डेटाबेस (PostGIS), GeoJSON", "समुद्री नॉटिकल चार्ट, विमानन फ़्लाइट प्लान, टोपोग्राफ़िक काग़ज़ी नक्शे"],
-    row3: ["आधार प्रणाली", "बेस-10 दशमलव मानक", "बेस-60 षषाधारी मानक (बेबीलोनी मूल)"],
-    row4: ["गोलार्ध संकेतन", "धनात्मक / ऋणात्मक चिह्न (+ उत्तर/पूर्व, - दक्षिण/पश्चिम के लिए)", "दिशात्मक अक्षर (N, S, E, W)"],
-    row5: ["डेटाबेस स्टोरेज", "नेटिव 64-बिट फ़्लोटिंग पॉइंट (DOUBLE PRECISION, 8 बाइट)", "स्ट्रिंग पार्सिंग या तीन अलग कॉलम चाहिए"],
-    row6: ["गणितीय संक्रियाएँ", "Haversine दूरी और त्रिकोणमिति फ़ॉर्मूलों में सीधे उपयोग योग्य", "त्रिकोणमितीय संक्रियाओं से पहले दशमलव में बदलना ज़रूरी"],
-    h2Formulas: "गणितीय रूपांतरण फ़ॉर्मूले",
+    row1: ["प्रारूप उदाहरण", "37.774929, -122.419416", "37° 46' 29.7444″ N, 122° 25' 9.8976″ W"],
+    row2: ["मुख्य उपयोग", "वेब मैपिंग (Google Maps, Leaflet), डेटाबेस (PostGIS), GeoJSON", "समुद्री नौवहन चार्ट, विमानन उड़ान योजनाएं, स्थलाकृतिक मानचित्र"],
+    row3: ["आधार प्रणाली", "दशमलव प्रणाली (बेस 10)", "षष्टक प्रणाली (बेस 60, बेबीलोनियन मूल)"],
+    row4: ["गोलार्ध संकेत", "धनात्मक / ऋणात्मक चिह्न (+ उत्तर/पूर्व, - दक्षिण/पश्चिम)", "दिशात्मक अक्षर (N, S, E, W)"],
+    row5: ["डेटाबेस संग्रहण", "64-बिट फ्लोटिंग पॉइंट (8 बाइट्स)", "स्ट्रिंग टेक्स्ट या 3 अलग कॉलम"],
+    row6: ["त्रिकोणमितीय गणना", "हैवरसिन दूरी और सूत्रों में सीधे उपयोग योग्य", "गणना से पहले दशमलव में बदलना अनिवार्य"],
+
+    h2Formulas: "गणितीय रूपांतरण सूत्र",
     step1Title: "DMS से दशमलव डिग्री (DD) में रूपांतरण",
     step1Formula: "DD = डिग्री + (मिनट / 60) + (सेकंड / 3600)",
-    step1Note: "ध्यान दें: अगर गोलार्ध दक्षिण (S) या पश्चिम (W) है, तो निकले हुए दशमलव मान को -1 से गुणा करें।",
+    step1Note: "नोट: यदि गोलार्ध दक्षिण (S) या पश्चिम (W) है, तो परिणाम को -1 से गुणा करें।",
     step2Title: "दशमलव डिग्री (DD) से DMS में रूपांतरण",
-    step2_1: "1. पूर्ण संख्या = डिग्री (जैसे Math.floor(Math.abs(DD)))।",
-    step2_2: "2. शेष भिन्नात्मक भाग को 60 से गुणा करें = मिनट।",
-    step2_3: "3. बचे हुए भिन्नात्मक मिनट को 60 से गुणा करें = सेकंड।",
-    h2Why: "वेब मैपिंग API दशमलव डिग्री पर क्यों टिके",
-    pWhy1: "सॉफ़्टवेयर इंजीनियरिंग में स्ट्रिंग प्रोसेस, पार्स और वैलिडेट करना महँगा होता है। DMS संकेतन में कई गैर-मानक Unicode ग्लिफ़ (डिग्री चिह्न °, प्राइम ', डबल प्राइम \") होते हैं जो अक्सर कैरेक्टर एन्कोडिंग बग पैदा करते हैं।",
-    pWhy2: "दशमलव डिग्री जियोस्पेशियल इंजन (जैसे PostGIS या ब्राउज़र JavaScript इंजन) को निर्देशांकों को शुद्ध संख्यात्मक फ़्लोट की तरह लेने देते हैं। इससे बाउंडिंग बॉक्स क्वेरी, स्पेशियल क्लस्टरिंग और ग्रेट-सर्कल गणनाएँ कई गुना तेज़ हो जाती हैं।",
-    connectedGuides: "🔗 संबंधित गाइड और व्यावहारिक टूल",
-    tool1Title: "कोऑर्डिनेट कन्वर्टर",
+    step2_1: "1. पूर्णांक संख्या = डिग्री।",
+    step2_2: "2. शेष दशमलव × 60 = मिनट।",
+    step2_3: "3. अगला शेष दशमलव × 60 = सेकंड।",
+
+    h2Why: "वेब मैपिंग एपीआई दशमलव डिग्री को क्यों प्राथमिकता देते हैं",
+    pWhy1: "सॉफ्टवेयर में डिग्री प्रतीक (°) जैसे विशेष वर्ण पार्सिंग त्रुटियां उत्पन्न करते हैं। हमारा <a href='/tools/latitude-longitude/'>अक्षांश और देशांतर खोजक</a> शुद्ध संख्याओं पर त्रुटिहीन कार्य करता है।",
+    pWhy2: "दशमलव संख्याएं स्थानिक डेटाबेस को अत्यंत तीव्र गति से बाउंडिंग बॉक्स और क्लस्टरिंग गणनाएं करने में सक्षम बनाती हैं।",
+
+    h2Scenarios: "परिदृश्य अनुसार निर्णय",
+    scenarios: [
+      { scenario: "वेब विकास और एपीआई", verdict: "दशमलव डिग्री चुनें", desc: "GeoJSON और मैप लाइब्रेरी केवल संख्यात्मक फ्लोट सरणियों को स्वीकार करती हैं।" },
+      { scenario: "समुद्री और विमानन नेविगेशन", verdict: "DMS चुनें", desc: "अक्षांश का 1 मिनट सीधे 1 समुद्री मील (नॉटिकल मील) के बराबर होता है।" },
+      { scenario: "वॉइस रेडियो संचार", verdict: "DMS चुनें", desc: "डिग्री, मिनट और सेकंड बोलना लंबी दशमलव संख्याओं की तुलना में अधिक स्पष्ट रहता है।" },
+      { scenario: "स्थानिक डेटाबेस अनुक्रमण", verdict: "दशमलव डिग्री चुनें", desc: "PostGIS फ्लोटिंग पॉइंट नंबरों पर तेजी से स्थानिक इंडेक्स तैयार करता है।" }
+    ],
+
+    h2Myths: "भ्रम बनाम वास्तविकता",
+    myths: [
+      { myth: "भ्रम: DMS दशमलव डिग्री से अधिक सटीक होता है।", fact: "वास्तविकता: सटीकता दशमलव स्थानों पर निर्भर करती है; DD में 5 दशमलव स्थान लगभग 1.1 मीटर की सटीकता देते हैं।" },
+      { myth: "भ्रम: ऋणात्मक निर्देशांक समुद्र तल से नीचे की ऊंचाई दर्शाते हैं।", fact: "वास्तविकता: ऋणात्मक चिह्न केवल गोलार्ध दर्शाता है (ऋणात्मक अक्षांश = दक्षिण, ऋणात्मक देशांतर = पश्चिम)।" }
+    ],
+
+    faqs: [
+      { question: "स्मार्टफोन जीपीएस के लिए कितने दशमलव अंक पर्याप्त हैं?", answer: "5 दशमलव स्थान लगभग 1.1 मीटर का विभेदन देते हैं, जो सामान्य मोबाइल जीपीएस चिपसेट की 3 से 5 मीटर की सीमा के लिए पूर्णतः पर्याप्त है।" },
+      { question: "नौवहन चार्ट अभी भी DMS का उपयोग क्यों करते हैं?", answer: "क्योंकि अक्षांश का 1 मिनट सीधे 1 नॉटिकल मील (1,852 मीटर) के बराबर होता है, जिससे मानचित्र पर दूरी मापना आसान होता है।" },
+      { question: "क्या UTM निर्देशांक को सीधे DMS में बदला जा सकता है?", answer: "हां, लेकिन दो चरणों में: पहले UTM मीट्रिक मानों को WGS 84 अक्षांश/देशांतर में बदला जाता है, फिर उन्हें डिग्री, मिनट और सेकंड में विभाजित किया जाता है।" }
+    ],
+
+    nextStepsTitle: "अगले कदम",
+    nextSteps: [
+      { title: "निर्देशांक परिवर्तक", href: "/tools/coordinate-converter/", desc: "DD, DMS और UTM के बीच निर्देशांक तुरंत बदलें।" },
+      { title: "अक्षांश और देशांतर गाइड", href: "/guides/latitude-and-longitude-explained/", desc: "सीखें कि भूगणितीय डेटम पृथ्वी पर सटीक स्थिति कैसे तय करते हैं।" },
+      { title: "UTM निर्देशांक और डेटम", href: "/guides/utm-coordinates-and-datums/", desc: "इंजीनियरिंग और सर्वेक्षण में प्रयुक्त मीट्रिक ग्रिड प्रणालियों को समझें।" }
+    ],
+
+    connectedGuides: "🔗 जुड़े मार्गदर्शक और उपकरण",
+    tool1Title: "निर्देशांक परिवर्तक",
     tool1Desc: "DD, DMS और UTM बदलें",
     tool2Title: "अक्षांश और देशांतर",
-    tool2Desc: "जियोडेसी निर्देशांक परिचय",
+    tool2Desc: "भूगणित मूल सिद्धांत",
     tool3Title: "UTM और डेटम गाइड",
-    tool3Desc: "मीट्रिक ग्रिड प्रोजेक्शन",
+    tool3Desc: "मीट्रिक ग्रिड प्रक्षेपण",
     tool4Title: "दूरी कैलकुलेटर",
-    tool4Desc: "Haversine जियोडेसिक सॉल्वर"
+    tool4Desc: "हैवरसिन भूगणितीय हलकर्ता"
   },
   id: {
     title: "Derajat Desimal vs DMS: Format Koordinat | MyLocationLab",
-    description: "Bandingkan Derajat Desimal (DD) dan Derajat Menit Detik (DMS). Pahami rumus konversi, penyimpanan titik mengambang, dan kompatibilitas aplikasi GIS.",
-    h1: "Derajat Desimal (DD) vs DMS: Perbandingan Sistem Koordinat",
-    subtitle: "Perbandingan matematis dan rekayasa antara navigasi seksagesimal dan standar koordinat GIS desimal.",
-    p1: "Saat mencatat koordinat geografis, Anda akan menjumpai dua sistem notasi utama: Derajat Desimal (DD) dan Derajat, Menit, Detik (DMS).",
-    p2: "Meskipun keduanya mewakili lokasi geografis yang persis sama pada elipsoid WGS 84, keduanya dioptimalkan untuk lingkungan komputasi dan kasus penggunaan manusia yang sangat berbeda.",
-    calloutBadge: "🧭 Alat Konversi Instan",
-    calloutTitle: "Konversi Derajat Desimal ke DMS Seketika",
-    calloutDesc: "Masukkan koordinat apa pun dalam Derajat Desimal, DMS, atau UTM untuk melihat konversi dua arah langsung dengan pembulatan presisi.",
-    calloutBtn: "Buka Konverter Koordinat →",
-    matrixHeading: "Matriks Perbandingan Ringkasan",
+    description: "Singkatnya: Derajat Desimal (DD) menggunakan angka pecahan desimal untuk perangkat lunak dan peta web, sedangkan DMS menggunakan format sudut berbasis 60.",
+    h1: "Derajat Desimal (DD) vs. DMS: Perbandingan Format Koordinat",
+    subtitle: "Perbandingan matematis dan teknis antara navigasi tradisional dan standar sistem informasi geografis modern.",
+    
+    inShort: "Singkatnya: Derajat Desimal (DD) menyatakan koordinat sebagai angka desimal positif atau negatif (seperti 37.7749, -122.4194) yang dioptimalkan untuk basis data komputer dan peta web. Derajat, Menit, dan Detik (DMS) menyatakan titik yang sama dalam notasi sudut berbasis 60 (seperti 37° 46' 30″ N, 122° 25' 10″ W) yang umum digunakan dalam navigasi laut dan penerbangan.",
+
+    p1: "Saat mencatat koordinat geografis, Anda akan menemukan dua format utama: Derajat Desimal (DD) serta Derajat, Menit, Detik (DMS). Gunakan <a href='/tools/coordinate-converter/'>Konverter Koordinat</a> kami untuk mengubah kedua format secara instan.",
+    p2: "Memahami dasar geodesi sangat penting: pelajari panduan kami tentang <a href='/guides/latitude-and-longitude-explained/'>penjelasan lintang dan bujur</a> untuk memahami jarak sudut. Untuk proyeksi metrik datar, pelajari panduan <a href='/guides/utm-coordinates-and-datums/'>koordinat UTM dan datum</a> atau baca entri <a href='/glossary/#decimal-degrees'>glosarium derajat desimal</a>.",
+
+    calloutBadge: "🧭 Konverter Cepat",
+    calloutTitle: "Konversi Derajat Desimal ke DMS Langsung",
+    calloutDesc: "Masukkan koordinat DD, DMS, atau UTM untuk melihat hasil konversi dua arah otomatis.",
+    calloutBtn: "Buka Konverter →",
+
+    matrixHeading: "Matriks Perbandingan",
     thAttr: "Atribut",
     thDd: "Derajat Desimal (DD)",
     thDms: "Derajat, Menit, Detik (DMS)",
-    row1: ["Contoh Format", "-6.208815, 106.845659", "6° 12' 31.734\" S, 106° 50' 44.3724\" E"],
-    row2: ["Lingkungan Utama", "Pemetaan web (Leaflet, Mapbox, Google Maps), basis data (PostGIS), GeoJSON", "Peta laut maritim, rencana penerbangan pesawat, peta topografi kertas"],
-    row3: ["Sistem Basis", "Standar desimal basis-10", "Standar seksagesimal basis-60 (berasal dari Babilonia)"],
-    row4: ["Notasi Belahan Bumi", "Tanda Positif / Negatif (+ untuk U/T, - untuk S/B)", "Huruf arah mata angin (N, S, E, W)"],
-    row5: ["Penyimpanan Basis Data", "Titik mengambang 64-bit native (DOUBLE PRECISION, 8 byte)", "Perlu penguraian string atau tiga kolom terpisah"],
-    row6: ["Operasi Matematis", "Langsung dipakai dalam rumus jarak Haversine dan trigonometri", "Harus dikonversi ke desimal sebelum operasi trigonometri"],
-    h2Formulas: "Rumus Konversi Matematis",
-    step1Title: "Mengonversi DMS ke Derajat Desimal (DD)",
+    row1: ["Contoh Format", "37.774929, -122.419416", "37° 46' 29.7444″ N, 122° 25' 9.8976″ W"],
+    row2: ["Lingkungan Utama", "Peta web (Google Maps, Leaflet), basis data (PostGIS), GeoJSON", "Peta laut maritim, rencana penerbangan, peta topografi cetak"],
+    row3: ["Sistem Bilangan", "Desimal (basis 10)", "Seksagesimal (basis 60, asal Babilonia)"],
+    row4: ["Tanda Belahan Bumi", "Tanda + / - (+ untuk U/T, - untuk S/B)", "Huruf arah mata angin (N/U, S, E/T, W/B)"],
+    row5: ["Penyimpanan Basis Data", "Bilangan pecahan 64-bit (8 byte)", "Teks string atau 3 kolom terpisah"],
+    row6: ["Operasi Matematika", "Dapat langsung digunakan pada rumus trigonometri dan Haversine", "Wajib diubah ke desimal sebelum perhitungan spasial"],
+
+    h2Formulas: "Rumus Matematis Konversi",
+    step1Title: "Mengubah DMS ke Derajat Desimal (DD)",
     step1Formula: "DD = Derajat + (Menit / 60) + (Detik / 3600)",
-    step1Note: "Catatan: Jika belahan buminya Selatan (S) atau Barat (W), kalikan nilai desimal hasilnya dengan -1.",
-    step2Title: "Mengonversi Derajat Desimal (DD) ke DMS",
-    step2_1: "1. Bilangan bulat = Derajat (mis. Math.floor(Math.abs(DD))).",
-    step2_2: "2. Kalikan sisa pecahannya dengan 60 = Menit.",
-    step2_3: "3. Kalikan sisa pecahan menit dengan 60 = Detik.",
-    h2Why: "Mengapa API Pemetaan Web membakukan Derajat Desimal",
-    pWhy1: "Dalam rekayasa perangkat lunak, string mahal untuk diproses, diurai, dan divalidasi. Notasi DMS memuat beberapa glif Unicode non-standar (simbol derajat °, prime ', double prime \") yang kerap memicu bug penyandian karakter.",
-    pWhy2: "Derajat Desimal memungkinkan mesin geospasial (seperti PostGIS atau mesin JavaScript peramban) memperlakukan koordinat sebagai float numerik murni. Ini membuat kueri bounding box, pengklasteran spasial, dan perhitungan lingkaran besar berorde besaran lebih cepat.",
-    connectedGuides: "🔗 Panduan & Alat Praktis Terkait",
+    step1Note: "Catatan: Jika belahan bumi Selatan (S) atau Barat (W), kalikan hasil desimal dengan -1.",
+    step2Title: "Mengubah Derajat Desimal (DD) ke DMS",
+    step2_1: "1. Angka bulat = Derajat.",
+    step2_2: "2. Sisa pecahan × 60 = Menit.",
+    step2_3: "3. Sisa pecahan menit × 60 = Detik.",
+
+    h2Why: "Mengapa API Peta Menstandarkan Derajat Desimal",
+    pWhy1: "Dalam pemrograman, memproses teks dengan simbol derajat (°) sering memicu kesalahan format. Alat <a href='/tools/latitude-longitude/'>Pencari Lintang dan Bujur</a> kami memproses angka numerik secara bersih.",
+    pWhy2: "Format desimal memungkinkan mesin spasial memproses kueri pembatas wilayah (bounding box) dan pengelompokan secara jauh lebih cepat.",
+
+    h2Scenarios: "Rekomendasi Berdasarkan Skenario",
+    scenarios: [
+      { scenario: "Pengembangan Web & API", verdict: "Gunakan Derajat Desimal", desc: "GeoJSON dan pustaka peta hanya menerima larik angka numerik murni." },
+      { scenario: "Navigasi Laut & Udara", verdict: "Gunakan DMS", desc: "1 menit busur lintang setara tepat dengan 1 mil laut (nautical mile)." },
+      { scenario: "Komunikasi Radio Suara", verdict: "Gunakan DMS", desc: "Mengucapkan derajat dan menit jauh lebih minim risiko salah dengar dibanding deretan angka desimal." },
+      { scenario: "Pengindeksan Basis Data Spasial", verdict: "Gunakan Derajat Desimal", desc: "PostGIS memanfaatkan indeks R-tree berbasis angka pecahan IEEE 754." }
+    ],
+
+    h2Myths: "Mitos vs. Fakta",
+    myths: [
+      { myth: "Mitos: Notasi DMS lebih akurat dibanding derajat desimal.", fact: "Fakta: Akurasi bergantung pada jumlah angka desimal; 5 angka di belakang koma pada DD memberikan resolusi 1,1 meter." },
+      { myth: "Mitos: Koordinat negatif menandakan ketinggian di bawah laut.", fact: "Fakta: Tanda negatif hanya menunjukkan belahan bumi (lintang negatif = Selatan, bujur negatif = Barat)." }
+    ],
+
+    faqs: [
+      { question: "Berapa banyak angka desimal yang diperlukan untuk GPS ponsel?", answer: "5 angka di belakang koma memberikan ketelitian sekitar 1,1 meter, sangat ideal untuk mengimbangi akurasi fisik antena ponsel (3 hingga 5 meter)." },
+      { question: "Mengapa navigasi maritim tetap menggunakan DMS?", answer: "Karena 1 menit busur lintang setara dengan satu mil laut (1.852 meter), mempermudah pengukuran jarak langsung pada peta kertas." },
+      { question: "Bisakah koordinat UTM langsung diubah ke DMS?", answer: "Bisa, tetapi melalui dua tahap: hitung balik koordinat metrik ke lintang/bujur WGS 84, lalu pecah angka desimal menjadi derajat, menit, dan detik." }
+    ],
+
+    nextStepsTitle: "Langkah Berikutnya",
+    nextSteps: [
+      { title: "Konverter Koordinat", href: "/tools/coordinate-converter/", desc: "Ubah koordinat antara DD, DMS, dan UTM secara interaktif." },
+      { title: "Panduan Lintang dan Bujur", href: "/guides/latitude-and-longitude-explained/", desc: "Pelajari bagaimana datum geodesi menentukan posisi di seluruh permukaan bumi." },
+      { title: "Panduan UTM & Datum", href: "/guides/utm-coordinates-and-datums/", desc: "Pahami proyeksi kisi metrik yang banyak dipakai dalam pemetaan teknik." }
+    ],
+
+    connectedGuides: "🔗 Panduan & Alat Terkait",
     tool1Title: "Konverter Koordinat",
     tool1Desc: "Konversi DD, DMS & UTM",
     tool2Title: "Lintang & Bujur",
-    tool2Desc: "Pengantar koordinat geodesi",
+    tool2Desc: "Dasar geodesi koordinat",
     tool3Title: "Panduan UTM & Datum",
     tool3Desc: "Proyeksi kisi metrik",
     tool4Title: "Kalkulator Jarak",
-    tool4Desc: "Pemecah geodesik Haversine"
+    tool4Desc: "Penyelesai geodesik Haversine"
   }
 };
 
@@ -323,8 +569,16 @@ const c = translations[lang] || translations.en;
   publishDate="2026-09-15"
   modifiedDate="2026-09-22"
 >
-  <p>{c.p1}</p>
-  <p>{c.p2}</p>
+  {c.inShort && (
+    <div class="callout-box" style="margin-bottom: var(--space-6); background: var(--color-bg-secondary); border-left: 4px solid var(--color-accent-primary); padding: var(--space-4) var(--space-5); border-radius: var(--radius-md);">
+      <p style="margin: 0; font-weight: 500; font-size: var(--text-base); color: var(--color-text-primary); line-height: 1.75;">
+        {c.inShort}
+      </p>
+    </div>
+  )}
+
+  <p set:html={localizeHtml(c.p1, lang)}></p>
+  <p set:html={localizeHtml(c.p2, lang)}></p>
 
   <div class="tool-callout">
     <div class="tool-callout-content">
@@ -408,8 +662,62 @@ const c = translations[lang] || translations.en;
   </div>
 
   <h2>{c.h2Why}</h2>
-  <p>{c.pWhy1}</p>
-  <p>{c.pWhy2}</p>
+  <p set:html={localizeHtml(c.pWhy1, lang)}></p>
+  <p set:html={localizeHtml(c.pWhy2, lang)}></p>
+
+  {c.h2Scenarios && (
+    <div style="margin: var(--space-10) 0;">
+      <h2>⚖️ {c.h2Scenarios}</h2>
+      <div style="display: grid; gap: var(--space-4); margin-top: var(--space-4);">
+        {c.scenarios.map((s: any) => (
+          <div class="card card-flat" style="padding: var(--space-4) var(--space-5); border-left: 3px solid var(--color-accent-primary);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-1);">
+              <strong style="color: var(--color-text-primary); font-size: var(--text-base);">{s.scenario}</strong>
+              <span class="badge badge-primary">{s.verdict}</span>
+            </div>
+            <p style="margin: 0; color: var(--color-text-secondary); font-size: var(--text-sm); line-height: 1.75;">{s.desc}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  )}
+
+  {c.h2Myths && (
+    <div style="margin: var(--space-10) 0;">
+      <h2>🔍 {c.h2Myths}</h2>
+      <div style="display: grid; gap: var(--space-4); margin-top: var(--space-4);">
+        {c.myths.map((m: any) => (
+          <div class="card card-flat" style="padding: var(--space-4) var(--space-5); border-left: 3px solid var(--color-accent-warning);">
+            <strong style="display: block; color: var(--color-text-primary); margin-bottom: var(--space-1); font-size: var(--text-base);">{m.myth}</strong>
+            <p style="margin: 0; color: var(--color-text-secondary); font-size: var(--text-sm); line-height: 1.75;">{m.fact}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  )}
+
+  {c.faqs && c.faqs.length > 0 && (
+    <div style="margin-top: var(--space-10);">
+      <h2>❓ FAQ: Decimal Degrees & DMS</h2>
+      <FAQAccordion items={c.faqs} includeSchema={true} />
+    </div>
+  )}
+
+  {c.nextSteps && (
+    <div class="card card-flat" style="margin: var(--space-10) 0; padding: var(--space-6); background: var(--color-bg-secondary); border: 1px solid var(--color-border); border-radius: var(--radius-lg);">
+      <h3 style="margin-top: 0; margin-bottom: var(--space-4); font-size: var(--text-lg); display: flex; align-items: center; gap: var(--space-2);">
+        <span>🚀</span> {c.nextStepsTitle || "Next Steps"}
+      </h3>
+      <div style="display: grid; gap: var(--space-3);">
+        {c.nextSteps.map((step: any) => (
+          <a href={getLocalizedPath(step.href, lang)} class="card card-flat" style="display: flex; flex-direction: column; gap: var(--space-1); padding: var(--space-3) var(--space-4); text-decoration: none; border-left: 3px solid var(--color-accent-primary); background: var(--color-bg-card); transition: transform 0.15s ease;">
+            <strong style="color: var(--color-text-primary); font-size: var(--text-base);">{step.title} →</strong>
+            <span style="color: var(--color-text-secondary); font-size: var(--text-sm); line-height: 1.6;">{step.desc}</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  )}
 
   <div class="contextual-next-box">
     <h3 class="contextual-next-title">{c.connectedGuides}</h3>

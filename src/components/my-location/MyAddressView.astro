@@ -21,6 +21,7 @@ import {
   getLocalizedPath,
   defaultLang,
   type SupportedLang,
+  localizeHtml,
 } from "../../i18n/config";
 
 interface Props {
@@ -411,7 +412,7 @@ const contentData: Record<SupportedLang, AddressPageData> = {
       "Sobre los Códigos Postales: En municipios pequeños rurales suele existir un único código postal general, mientras que en grandes capitales cada calle o distrito dispone de un código postal específico.",
     h2How: "Cómo se Identifica su Dirección (Geocodificación Inversa)",
     pHowIntro:
-      "Su teléfono no lee placas de calle; calcula coordenadas numéricas mediante trilateración satelital. La geocodificación inversa coteja esas coordenadas con OpenStreetMap para asociar el punto con la dirección más cercana:",
+      "Su teléfono no lee placas de calle; calcula coordenadas numéricas mediante satélites. El servicio de <a href='/tools/reverse-geocoding/' class='text-link'>geocodificación inversa</a> coteja esas coordenadas con OpenStreetMap para asociar el punto con la dirección más cercana. Para convertir una dirección postal en coordenadas, pruebe nuestro <a href='/tools/geocoding/' class='text-link'>geocodificador</a>:",
     techHeaders: [
       "Método",
       "Precisión Típica",
@@ -439,7 +440,7 @@ const contentData: Record<SupportedLang, AddressPageData> = {
       ],
     ],
     pTechSummary:
-      "Para conocer las diferencias entre satélites físicos y enrutamiento web, consulte nuestra comparativa de <a href='/es/comparisons/gps-vs-ip-location/' class='text-link'>GPS vs. Ubicación por IP</a> y descubra <a href='/es/guides/how-gps-location-works/' class='text-link'>cómo funciona el GPS</a>.",
+      "Para conocer las diferencias entre satélites físicos y enrutamiento web, consulte nuestra comparativa de <a href='/comparisons/gps-vs-ip-location/' class='text-link'>GPS vs. Ubicación por IP</a> y descubra <a href='/guides/how-gps-location-works/' class='text-link'>cómo funciona el GPS</a>.",
     h2UseCases: "Casos Prácticos para Usar su Dirección Actual",
     useCases: [
       {
@@ -658,7 +659,7 @@ const contentData: Record<SupportedLang, AddressPageData> = {
       "À propos des Codes Postaux : Dans les communes rurales, un code postal unique dessert l'ensemble du territoire communal. Dans les grandes métropoles, le code postal varie par arrondissement ou secteur de distribution.",
     h2How: "Comment Votre Adresse Est Identifiée (Géocodage Inverse)",
     pHowIntro:
-      "Votre smartphone ne lit pas les plaques murales ; il calcule des coordonnées spatiales. Le moteur de géocodage inverse interroge la cartographie OpenStreetMap pour identifier le bâtiment et la chaussée les plus proches :",
+      "Votre smartphone ne lit pas les plaques murales ; il calcule des coordonnées spatiales. Le moteur de <a href='/tools/reverse-geocoding/' class='text-link'>géocodage inverse</a> interroge la cartographie OpenStreetMap pour identifier le bâtiment et la chaussée les plus proches. Pour trouver les coordonnées à partir d'une adresse, utilisez notre <a href='/tools/geocoding/' class='text-link'>géocodeur</a> :",
     techHeaders: [
       "Technologie",
       "Précision Habituelle",
@@ -686,7 +687,7 @@ const contentData: Record<SupportedLang, AddressPageData> = {
       ],
     ],
     pTechSummary:
-      "Pour approfondir la différence entre ondes radio satellitaires et routage réseau, lisez notre comparatif <a href='/fr/comparisons/gps-vs-ip-location/' class='text-link'>GPS vs. Géolocalisation IP</a> et découvrez <a href='/fr/guides/how-gps-location-works/' class='text-link'>comment fonctionne le GPS</a>.",
+      "Pour approfondir la différence entre ondes radio satellitaires et routage réseau, lisez notre comparatif <a href='/comparisons/gps-vs-ip-location/' class='text-link'>GPS vs. Géolocalisation IP</a> et découvrez <a href='/guides/how-gps-location-works/' class='text-link'>comment fonctionne le GPS</a>.",
     h2UseCases: "Dans Quelles Situations Utiliser Votre Adresse Actuelle ?",
     useCases: [
       {
@@ -910,7 +911,7 @@ const contentData: Record<SupportedLang, AddressPageData> = {
       "Hinweis zu Postleitzahlen: In ländlichen Regionen gilt häufig eine einheitliche Postleitzahl für das gesamte Gemeindegebiet. In Großstädten variiert die PLZ nach Straßenzug oder Zustellbezirk.",
     h2How: "Wie Ihre Adresse Ermittelt Wird (Reverse Geocoding)",
     pHowIntro:
-      "Ihr Smartphone liest keine Straßenschilder ab; es empfängt Satellitensignale und errechnet Geokoordinaten. Beim Reverse Geocoding wird dieser Punkt mit der OpenStreetMap-Datenbank abgeglichen, um die nächstgelegene Hausnummer zu bestimmen:",
+      "Ihr Smartphone liest keine Straßenschilder ab; es empfängt Satellitensignale und errechnet Geokoordinaten. Beim <a href='/tools/reverse-geocoding/' class='text-link'>Reverse Geocoding</a> wird dieser Punkt mit der OpenStreetMap-Datenbank abgeglichen, um die Anschrift zu bestimmen. Für die umgekehrte Suche nach Koordinaten nutzen Sie unseren <a href='/tools/geocoding/' class='text-link'>Geokodierer</a>:",
     techHeaders: [
       "Ortungsverfahren",
       "Typische Genauigkeit",
@@ -938,7 +939,7 @@ const contentData: Record<SupportedLang, AddressPageData> = {
       ],
     ],
     pTechSummary:
-      "Möchten Sie den Unterschied zwischen Satellitenfunk und Internet-Routing verstehen? Lesen Sie unseren Vergleich <a href='/de/comparisons/gps-vs-ip-location/' class='text-link'>GPS vs. IP-Standort</a> und erfahren Sie, <a href='/de/guides/how-gps-location-works/' class='text-link'>wie GPS funktioniert</a>.",
+      "Möchten Sie den Unterschied zwischen Satellitenfunk und Internet-Routing verstehen? Lesen Sie unseren Vergleich <a href='/comparisons/gps-vs-ip-location/' class='text-link'>GPS vs. IP-Standort</a> und erfahren Sie, <a href='/guides/how-gps-location-works/' class='text-link'>wie GPS funktioniert</a>.",
     h2UseCases: "Praktische Anwendungsbereiche für Ihre Aktuelle Adresse",
     useCases: [
       {
@@ -1152,7 +1153,7 @@ const contentData: Record<SupportedLang, AddressPageData> = {
       "Sobre o CEP em cidades brasileiras: Em cidades do interior (geralmente com menos de 50.000 habitantes), é comum haver um CEP genérico único para todo o município (com final -000). Já em capitais e regiões metropolitanas, cada rua ou trecho possui um CEP exclusivo.",
     h2How: "Como Seu Endereço É Identificado (Geocodificação Reversa)",
     pHowIntro:
-      "Seu celular não lê placas de rua; ele calcula coordenadas geográficas. A geocodificação reversa cruza esses dados com a malha cartográfica do OpenStreetMap para apontar o imóvel ou via mais próxima:",
+      "Seu celular não lê placas de rua; ele calcula coordenadas geográficas. A <a href='/tools/reverse-geocoding/' class='text-link'>geocodificação reversa</a> cruza esses dados com a malha cartográfica do OpenStreetMap para apontar o imóvel ou via mais próxima. Para converter qualquer endereço em coordenadas, experimente nosso <a href='/tools/geocoding/' class='text-link'>geocodificador</a>:",
     techHeaders: [
       "Tecnologia",
       "Precisão Típica",
@@ -1180,7 +1181,7 @@ const contentData: Record<SupportedLang, AddressPageData> = {
       ],
     ],
     pTechSummary:
-      "Para entender a diferença entre sensores físicos e conexões de rede, veja nosso comparativo de <a href='/pt/comparisons/gps-vs-ip-location/' class='text-link'>GPS vs. Localização IP</a> e entenda <a href='/pt/guides/how-gps-location-works/' class='text-link'>como funciona o GPS</a>.",
+      "Para entender a diferença entre sensores físicos e conexões de rede, veja nosso comparativo de <a href='/comparisons/gps-vs-ip-location/' class='text-link'>GPS vs. Localização IP</a> e entenda <a href='/guides/how-gps-location-works/' class='text-link'>como funciona o GPS</a>.",
     h2UseCases: "Principais Situações Para Usar o Seu Endereço Atual",
     useCases: [
       {
@@ -1401,7 +1402,7 @@ const contentData: Record<SupportedLang, AddressPageData> = {
       "पिन कोड के बारे में: भारत में 6 अंकों का पिन कोड डाक वितरण की रीढ़ है। ग्रामीण क्षेत्रों में एक पिन कोड कई गांवों को कवर कर सकता है, जबकि बड़े शहरों में अलग-अलग इलाकों के अलग-अलग पिन कोड होते हैं।",
     h2How: "आपका पता कैसे पहचाना जाता है (रिवर्स जियोकोडिंग)",
     pHowIntro:
-      "आपका डिवाइस पते का नाम नहीं पढ़ता, बल्कि सैटेलाइट से अक्षांश और देशांतर की गणना करता है। रिवर्स जियोकोडिंग प्रक्रिया उन निर्देशांकों को OpenStreetMap के डेटा से मिलाकर निकटतम सड़क पता बताती है:",
+      "आपका डिवाइस पते का नाम नहीं पढ़ता, बल्कि सैटेलाइट से अक्षांश और देशांतर की गणना करता है। हमारी <a href='/tools/reverse-geocoding/' class='text-link'>रिवर्स जियोकोडिंग</a> प्रक्रिया उन निर्देशांकों को OpenStreetMap से मिलाकर निकटतम सड़क पता बताती है। सड़क के पते से निर्देशांक प्राप्त करने के लिए हमारा <a href='/tools/geocoding/' class='text-link'>जियोकोडर</a> आज़माएँ:",
     techHeaders: ["तकनीक", "सामान्य सटीकता", "कब उपयोग होती है", "पते का स्तर"],
     techRows: [
       [
@@ -1424,7 +1425,7 @@ const contentData: Record<SupportedLang, AddressPageData> = {
       ],
     ],
     pTechSummary:
-      "सैटेलाइट GPS और इंटरनेट नेटवर्क के बीच के अंतर को समझने के लिए <a href='/hi/comparisons/gps-vs-ip-location/' class='text-link'>GPS बनाम IP लोकेशन</a> तुलना पढ़ें और जानें <a href='/hi/guides/how-gps-location-works/' class='text-link'>GPS कैसे काम करता है</a>।",
+      "सैटेलाइट GPS और इंटरनेट नेटवर्क के बीच के अंतर को समझने के लिए <a href='/comparisons/gps-vs-ip-location/' class='text-link'>GPS बनाम IP लोकेशन</a> तुलना पढ़ें और जानें <a href='/guides/how-gps-location-works/' class='text-link'>GPS कैसे काम करता है</a>।",
     h2UseCases: "वर्तमान पता जानने के प्रमुख व्यावहारिक उपयोग",
     useCases: [
       {
@@ -1654,7 +1655,7 @@ const contentData: Record<SupportedLang, AddressPageData> = {
       "Tentang Kode Pos di Indonesia: Kode pos di Indonesia terdiri dari 5 digit angka. Angka pertama menunjukkan wilayah pos, angka berikutnya menunjukkan kabupaten/kota dan kecamatan/kelurahan pengantaran.",
     h2How: "Bagaimana Alamat Anda Ditemukan (Reverse Geocoding)",
     pHowIntro:
-      "Perangkat Anda tidak membaca papan nama jalan secara fisik; perangkat menghitung titik koordinat lintang dan bujur. Mesin reverse geocoding mencocokkan titik tersebut dengan basis data OpenStreetMap untuk menemukan jalan terdekat:",
+      "Perangkat Anda tidak membaca papan nama jalan secara fisik; perangkat menghitung titik koordinat lintang dan bujur. Layanan <a href='/tools/reverse-geocoding/' class='text-link'>reverse geocoding</a> mencocokkan titik tersebut dengan basis data OpenStreetMap untuk menemukan jalan terdekat. Untuk mengubah alamat jalan menjadi koordinat, gunakan alat <a href='/tools/geocoding/' class='text-link'>geocoder</a> kami:",
     techHeaders: [
       "Metode Posisi",
       "Akurasi Khas",
@@ -1682,7 +1683,7 @@ const contentData: Record<SupportedLang, AddressPageData> = {
       ],
     ],
     pTechSummary:
-      "Ingin mempelajari perbedaan antara sensor satelit fisik dan perutean internet? Baca perbandingan <a href='/id/comparisons/gps-vs-ip-location/' class='text-link'>GPS vs Lokasi IP</a> dan pahami <a href='/id/guides/how-gps-location-works/' class='text-link'>cara kerja GPS</a>.",
+      "Ingin mempelajari perbedaan antara sensor satelit fisik dan perutean internet? Baca perbandingan <a href='/comparisons/gps-vs-ip-location/' class='text-link'>GPS vs Lokasi IP</a> dan pahami <a href='/guides/how-gps-location-works/' class='text-link'>cara kerja GPS</a>.",
     h2UseCases: "Situasi Praktis Menggunakan Alamat Anda Saat Ini",
     useCases: [
       {
@@ -2288,7 +2289,7 @@ const siloData = siloLinkLabels[lang] || siloLinkLabels.en;
         </p>
 
         <h2>{c.h2How}</h2>
-        <p set:html={c.pHowIntro} />
+        <p set:html={localizeHtml(c.pHowIntro, lang)} />
 
         <div class="table-responsive">
           <table>
@@ -2317,7 +2318,7 @@ const siloData = siloLinkLabels[lang] || siloLinkLabels.en;
           </table>
         </div>
 
-        <p set:html={c.pTechSummary} />
+        <p set:html={localizeHtml(c.pTechSummary, lang)} />
 
         <h2>{c.h2UseCases}</h2>
         <ul class="feature-bullets">

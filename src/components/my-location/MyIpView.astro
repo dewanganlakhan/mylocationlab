@@ -7,7 +7,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import Breadcrumbs from '../Breadcrumbs.astro';
 import FAQAccordion from '../FAQAccordion.astro';
 import SiloNav from '../SiloNav.astro';
-import { getLocalizedPath, defaultLang, type SupportedLang } from '../../i18n/config';
+import { getLocalizedPath, defaultLang, type SupportedLang, localizeHtml } from '../../i18n/config';
 import { useTranslations } from '../../i18n/ui';
 
 interface Props {
@@ -38,11 +38,11 @@ const translations: Record<string, any> = {
     btnCopy: "📋 Copy IP",
     btnMaps: "🗺️ Open in Maps",
     h2What: "What Is IP Geolocation?",
-    pWhat1: "IP geolocation determines your approximate location based on your IP address — the numerical label assigned to your internet connection by your Internet Service Provider (ISP). Unlike GPS, it doesn't require any device sensors or user permission.",
-    pWhat2: "IP location databases map IP address ranges to geographic locations. While not as precise as GPS, it's useful as a fallback when GPS is unavailable, or for quickly identifying your approximate location without any permissions.",
+    pWhat1: "IP geolocation determines your approximate position based on your public IP address — the routing label assigned to your internet connection by your Internet Service Provider (ISP). To understand how network routing differs from satellite triangulation, compare <a href='/comparisons/gps-vs-ip-location/'>GPS vs IP location</a> or read our <a href='/guides/ip-geolocation-accuracy/'>IP geolocation accuracy guide</a>.",
+    pWhat2: "While hardware sensors provide exact coordinates on our <a href='/my-location/gps/'>satellite GPS position</a> page, IP lookups query commercial mapping databases without requiring device sensor permissions. If your reported town looks incorrect due to carrier routing, see our <a href='/guides/wrong-location/'>troubleshooting wrong location guide</a>, or consult the <a href='/glossary/#ip-geolocation'>IP geolocation glossary entry</a> for protocol details.",
     h2Limit: "Limitations of IP Geolocation",
     bullets: [
-      "Accuracy — Typically city-level only (10 to 80 km error radius)",
+      "Accuracy — Typically within 5 to 50 km depending on ISP routing and regional infrastructure",
       "VPN / Proxy Impact — Shows the egress server's location, not your physical house",
       "Mobile CGNAT Networks — May show the carrier's regional gateway rather than your local town",
       "Corporate Networks — Reflects centralized headquarters or proxy gateways"
@@ -74,12 +74,12 @@ const translations: Record<string, any> = {
     btnCopy: "📋 Copiar IP",
     btnMaps: "🗺️ Abrir en Mapas",
     h2What: "¿Qué es la Geolocalización por IP?",
-    pWhat1: "La geolocalización por IP calcula su ubicación aproximada a partir de su dirección IP pública, identificador asignado por su proveedor de telecomunicaciones (ISP). A diferencia del GPS, no requiere receptores satelitales ni autorizaciones previas.",
-    pWhat2: "Bases de datos especializadas asocian bloques de direcciones IP a demarcaciones cartográficas. Resulta idóneo cuando no se dispone de chip GPS.",
+    pWhat1: "La geolocalización por IP calcula su ubicación aproximada a partir de su dirección IP pública asignada por su proveedor de telecomunicaciones (ISP). Para comprender cómo difiere el enrutamiento de red de la triangulación satelital, consulte nuestra comparativa de <a href='/comparisons/gps-vs-ip-location/'>GPS vs. ubicación por IP</a> o lea la <a href='/guides/ip-geolocation-accuracy/'>guía de precisión de geolocalización IP</a>.",
+    pWhat2: "Mientras que los sensores de hardware ofrecen coordenadas exactas en nuestra página de <a href='/my-location/gps/'>posición GPS por satélite</a>, las consultas de IP emplean bases de datos cartográficas sin requerir permisos de navegador. Si su municipio aparece desplazado por el enrutamiento del operador, revise nuestra <a href='/guides/wrong-location/'>guía para solucionar ubicaciones erróneas</a> o consulte el término en el <a href='/glossary/#ip-geolocation'>glosario de geolocalización IP</a>.",
     h2Limit: "Limitaciones de la Localización por IP",
     bullets: [
-      "Precisión — Margen de error de 10 a 80 km (escala metropolitana o comarcal)",
-      "Impacto de VPNs — Muestra la ubicación del servidor intermediario y no su domicilio",
+      "Precisión — Típicamente entre 5 y 50 km según el enrutamiento del ISP y la infraestructura regional",
+      "Impacto de VPNs — Muestra la ubicación del servidor intermediario y no su domicilio real",
       "Redes Móviles 4G/5G — Refleja la cabecera regional del operador y no su calle",
       "Redes de Empresa — Señala la central o cortafuegos corporativo"
     ],
@@ -110,12 +110,12 @@ const translations: Record<string, any> = {
     btnCopy: "📋 Copier l'IP",
     btnMaps: "🗺️ Ouvrir dans Maps",
     h2What: "Qu'est-ce que la Géolocalisation par IP ?",
-    pWhat1: "La géolocalisation par IP identifie votre position générale à partir de l'adresse numérique attribuée à votre box ou connexion par votre Fournisseur d'Accès Internet (FAI). Aucun capteur GPS n'est nécessaire.",
-    pWhat2: "Des registres mettent en correspondance les sous-réseaux IP avec des métropoles. C'est la solution par défaut sur les postes fixes de bureau.",
+    pWhat1: "La géolocalisation par IP détermine votre position approximative à partir de votre adresse IP publique attribuée par votre Fournisseur d'Accès Internet (FAI). Pour comprendre les différences entre le routage réseau et les satellites, consultez notre comparatif <a href='/comparisons/gps-vs-ip-location/'>GPS vs géolocalisation IP</a> ou notre <a href='/guides/ip-geolocation-accuracy/'>guide de précision de l'adresse IP</a>.",
+    pWhat2: "Tandis que les récepteurs matériels fournissent des mesures précises sur notre page de <a href='/my-location/gps/'>coordonnées GPS par satellite</a>, la géolocalisation IP interroge des registres réseau sans solliciter d'autorisation. Si la ville affichée est inexacte en raison de la passerelle de votre opérateur, découvrez notre guide pour <a href='/guides/wrong-location/'>corriger une fausse localisation</a> ou le <a href='/glossary/#ip-geolocation'>glossaire de géolocalisation IP</a>.",
     h2Limit: "Limites de la Géolocalisation IP",
     bullets: [
-      "Précision — Rayon d'incertitude de 10 à 80 km (niveau agglomération)",
-      "Impact des VPN — Affiche la passerelle du serveur distant et non votre adresse",
+      "Précision — Typiquement entre 5 et 50 km selon le routage du FAI et les infrastructures régionales",
+      "Impact des VPN — Affiche la passerelle du serveur distant et non votre adresse réelle",
       "Réseaux Mobiles — Pointe souvent vers le concentrateur régional du FAI",
       "Réseaux d'Entreprise — Indique le siège social ou le proxy central"
     ],
@@ -146,11 +146,11 @@ const translations: Record<string, any> = {
     btnCopy: "📋 IP kopieren",
     btnMaps: "🗺️ In Karten öffnen",
     h2What: "Was ist IP-Geolokalisierung?",
-    pWhat1: "Die IP-Geolokalisierung ermittelt Ihren ungefähren Standort anhand der öffentlichen IP-Adresse Ihres Internetanschlusses. Im Gegensatz zu GPS sind dafür keine Gerätesensoren oder Freigaben nötig.",
-    pWhat2: "Datenbanken ordnen IP-Blöcke geografischen Regionen zu. Dies dient als idealer Ersatz, wenn kein Satellitenempfänger verfügbar ist.",
+    pWhat1: "Die IP-Geolokalisierung ermittelt Ihren ungefähren Standort anhand der öffentlichen IP-Adresse Ihres Internetanschlusses. Um zu verstehen, wie sich Routingtabellen von Satellitensignalen unterscheiden, vergleichen Sie <a href='/comparisons/gps-vs-ip-location/'>GPS vs. IP-Standort</a> oder lesen Sie unseren <a href='/guides/ip-geolocation-accuracy/'>Leitfaden zur IP-Standortgenauigkeit</a>.",
+    pWhat2: "Während physische GNSS-Sensoren auf unserer Seite für <a href='/my-location/gps/'>Satelliten-GPS-Koordinaten</a> punktgenaue Messungen liefern, greift die IP-Ortung auf regionale Datenbanken ohne Sensorberechtigungen zu. Weicht die angezeigte Stadt durch Provider-Knoten ab, hilft unsere Anleitung zur <a href='/guides/wrong-location/'>Behebung falscher Standortdaten</a> sowie der Eintrag im <a href='/glossary/#ip-geolocation'>Glossar zu IP-Geolokalisierung</a>.",
     h2Limit: "Grenzen der IP-Ortung",
     bullets: [
-      "Genauigkeit — Meist nur auf Stadt- oder Regionsebene (10 bis 80 km Abweichung)",
+      "Genauigkeit — Typischerweise zwischen 5 und 50 km abhängig von ISP-Routing und regionaler Infrastruktur",
       "VPN- & Proxy-Einfluss — Zeigt den Serverstandort des VPN-Betreibers an",
       "Mobilfunknetze — Weist oft den regionalen Netzknotenpunkt des Providers aus",
       "Firmennetzwerke — Zeigt den Unternehmenssitz oder das zentrale Gateway"
@@ -182,11 +182,11 @@ const translations: Record<string, any> = {
     btnCopy: "📋 Copiar IP",
     btnMaps: "🗺️ Abrir no Maps",
     h2What: "O que é Geolocalização por IP?",
-    pWhat1: "A geolocalização por IP deduz sua posição aproximada baseando-se no endereço IP atribuído pelo seu provedor de internet (ISP). Não demanda sensores de GPS nem autorizações de navegador.",
-    pWhat2: "Bases de dados relacionam blocos de IPs a cidades e regiões administrativas. É o método padrão para computadores de mesa sem antena GPS.",
+    pWhat1: "A geolocalização por IP deduz sua posição aproximada baseando-se no endereço IP atribuído pelo seu provedor de internet (ISP). Para entender como o roteamento de pacotes difere da triangulação orbital, confira nosso comparativo de <a href='/comparisons/gps-vs-ip-location/'>GPS vs localização por IP</a> ou leia o <a href='/guides/ip-geolocation-accuracy/'>guia de precisão de geolocalização IP</a>.",
+    pWhat2: "Enquanto receptores físicos oferecem coordenadas exatas em nossa página de <a href='/my-location/gps/'>coordenadas GPS por satélite</a>, as consultas de IP usam cadastros sem exigir permissões de sensores. Se a cidade exibida estiver incorreta devido ao gateway da operadora, confira nosso guia de <a href='/guides/wrong-location/'>correção de localização incorreta</a> e o verbete no <a href='/glossary/#ip-geolocation'>glossário de geolocalização IP</a>.",
     h2Limit: "Limitações da Localização por IP",
     bullets: [
-      "Precisão — Margem de erro típica de 10 a 80 km (nível metropolitano)",
+      "Precisão — Tipicamente entre 5 e 50 km dependendo do roteamento do ISP e da infraestrutura regional",
       "Efeito de VPNs — Mostra o servidor de saída e não seu endereço real",
       "Redes Celulares — Aponta com frequência a central regional da operadora",
       "Redes Corporativas — Identifica o datacenter ou sede da empresa"
@@ -218,11 +218,11 @@ const translations: Record<string, any> = {
     btnCopy: "📋 IP कॉपी करें",
     btnMaps: "🗺️ नक्शों में खोलें",
     h2What: "IP जियोलोकेशन क्या है?",
-    pWhat1: "IP जियोलोकेशन आपके IP पते के आधार पर आपकी अनुमानित लोकेशन बताती है — यह संख्यात्मक पहचान आपका इंटरनेट सेवा प्रदाता (ISP) आपके इंटरनेट कनेक्शन को देता है। GPS के विपरीत, इसमें किसी डिवाइस सेंसर या उपयोगकर्ता की अनुमति की ज़रूरत नहीं होती।",
-    pWhat2: "IP लोकेशन डेटाबेस IP पता रेंज को भौगोलिक स्थानों से जोड़ते हैं। GPS जितनी सटीक न होकर भी, जब GPS उपलब्ध न हो या बिना अनुमति अनुमानित लोकेशन जल्दी जाननी हो, तब यह उपयोगी है।",
+    pWhat1: "IP जियोलोकेशन आपके इंटरनेट सेवा प्रदाता (ISP) द्वारा दिए गए पब्लिक IP पते के आधार पर आपकी अनुमानित स्थिति बताता है। नेटवर्क रूटिंग और सैटेलाइट ट्राइलेटरेशन के अंतर को समझने के लिए हमारी <a href='/comparisons/gps-vs-ip-location/'>GPS बनाम IP लोकेशन तुलना</a> देखें या हमारा <a href='/guides/ip-geolocation-accuracy/'>IP जियोलोकेशन सटीकता गाइड</a> पढ़ें।",
+    pWhat2: "सटीक स्थिति के लिए हमारे <a href='/my-location/gps/'>सैटेलाइट GPS निर्देशांक</a> पेज पर डिवाइस सेंसर काम करते हैं, जबकि IP लुकअप बिना किसी अनुमति के डेटाबेस से शहर स्तर की पहचान करता है। यदि ISP गेटवे के कारण आपका शहर गलत दिख रहा है, तो हमारा <a href='/guides/wrong-location/'>गलत लोकेशन सुधार गाइड</a> देखें और <a href='/glossary/#ip-geolocation'>IP जियोलोकेशन शब्दावली</a> पढ़ें।",
     h2Limit: "IP जियोलोकेशन की सीमाएं",
     bullets: [
-      "सटीकता — आमतौर पर केवल शहर-स्तर तक (10 से 80 km त्रुटि त्रिज्या)",
+      "सटीकता — ISP रूटिंग और क्षेत्रीय बुनियादी ढांचे के आधार पर आमतौर पर 5 से 50 किमी के भीतर",
       "VPN / प्रॉक्सी का प्रभाव — आपके घर के बजाय एग्रेस सर्वर की लोकेशन दिखाता है",
       "मोबाइल CGNAT नेटवर्क — आपके शहर के बजाय ऑपरेटर के क्षेत्रीय गेटवे को दिखा सकता है",
       "कॉर्पोरेट नेटवर्क — केंद्रीकृत मुख्यालय या प्रॉक्सी गेटवे दिखाता है"
@@ -254,11 +254,11 @@ const translations: Record<string, any> = {
     btnCopy: "📋 Salin IP",
     btnMaps: "🗺️ Buka di Peta",
     h2What: "Apa Itu Geolokasi IP?",
-    pWhat1: "Geolokasi IP menentukan perkiraan lokasi Anda berdasarkan alamat IP — label numerik yang diberikan penyedia layanan internet (ISP) kepada koneksi Anda. Berbeda dengan GPS, ini tidak memerlukan sensor perangkat maupun izin pengguna.",
-    pWhat2: "Basis data lokasi IP memetakan rentang alamat IP ke lokasi geografis. Meski tidak sepresisi GPS, ini berguna sebagai cadangan saat GPS tidak tersedia, atau untuk mengetahui perkiraan lokasi Anda dengan cepat tanpa izin apa pun.",
+    pWhat1: "Geolokasi IP menentukan perkiraan lokasi Anda berdasarkan alamat IP publik yang diberikan oleh Penyedia Layanan Internet (ISP). Untuk memahami perbedaan rute jaringan internet dengan triangulasi satelit, baca perbandingan <a href='/comparisons/gps-vs-ip-location/'>GPS vs Lokasi IP</a> kami atau pelajari <a href='/guides/ip-geolocation-accuracy/'>panduan akurasi geolokasi IP</a>.",
+    pWhat2: "Sementara sensor perangkat keras menyediakan koordinat presisi di halaman <a href='/my-location/gps/'>koordinat GPS satelit</a> kami, pencarian IP memanfaatkan basis data tanpa memerlukan izin sensor peramban. Jika kota yang tertera meleset karena gateway operator, lihat panduan <a href='/guides/wrong-location/'>mengatasi lokasi yang salah</a> kami serta entri <a href='/glossary/#ip-geolocation'>glosarium geolokasi IP</a>.",
     h2Limit: "Keterbatasan Geolokasi IP",
     bullets: [
-      "Akurasi — Umumnya hanya setingkat kota (radius galat 10 hingga 80 km)",
+      "Akurasi — Umumnya berkisar antara 5 hingga 50 km tergantung perutean ISP dan infrastruktur regional",
       "Dampak VPN / Proksi — Menampilkan lokasi server keluar, bukan rumah fisik Anda",
       "Jaringan Seluler CGNAT — Mungkin menampilkan gateway regional operator, bukan kota Anda",
       "Jaringan Perusahaan — Mencerminkan kantor pusat atau gateway proksi terpusat"
@@ -381,8 +381,8 @@ const faqSchema = {
     <section class="section">
       <div class="prose" style="max-width: var(--max-width-narrow);">
         <h2>{c.h2What}</h2>
-        <p>{c.pWhat1}</p>
-        <p>{c.pWhat2}</p>
+        <p set:html={localizeHtml(c.pWhat1, lang)} />
+        <p set:html={localizeHtml(c.pWhat2, lang)} />
 
         <h2>{c.h2Limit}</h2>
         <ul>

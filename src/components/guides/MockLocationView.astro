@@ -1,9 +1,11 @@
 ---
 /**
  * MockLocationView — Multilingual Guide: How Mock Locations Work
+ * Fully localized across en, es, fr, de, pt, hi, id with contextual links
  */
 import ContentLayout from '../../layouts/ContentLayout.astro';
-import { getLocalizedPath, type SupportedLang, defaultLang } from '../../i18n/config';
+import FAQAccordion from '../FAQAccordion.astro';
+import { getLocalizedPath, localizeHtml, type SupportedLang, defaultLang } from '../../i18n/config';
 
 interface Props {
   lang?: SupportedLang;
@@ -13,40 +15,84 @@ const { lang = defaultLang } = Astro.props;
 
 const translations: Record<string, any> = {
   en: {
-    title: "How Mock Locations Work — GPS Testing | MyLocationLab",
-    description: "Learn how Android Mock Location providers, iOS Xcode GPX simulation, and Chrome DevTools Sensors emulate GPS coordinates for software testing and QA.",
+    title: "How Mock Locations Work: Testing & Spoofing GPS | MyLocationLab",
+    description: "In short: Learn how developers emulate GPS coordinates using Chrome DevTools Sensors, Android Mock Locations, and iOS Xcode GPX simulation.",
     h1: "How Mock Locations Work: Testing & Spoofing GPS for Developers",
     subtitle: "A developer and QA testing walkthrough explaining Android mock location providers, Xcode GPX route simulation, and Chrome DevTools sensor overrides.",
-    sectionLabel: "Educational Guides",
-    p1: "When engineering location-based applications—such as delivery dispatch systems, dating apps, transit trackers, or geofencing utilities—developers and QA testers need to simulate coordinates across different continents without physically travelling there.",
-    p2: "Modern operating systems include dedicated Mock Location APIs designed specifically for testing. In this guide, we detail how to emulate GPS coordinates on desktop browsers, Android, and iOS, how mock location flags work under the hood, and how to verify mock fixes with our GPS Coordinates Finder.",
+    
+    inShort: "In short: Mock locations allow developers and testers to simulate arbitrary geographic coordinates on a device without physically traveling there. Modern operating systems and browsers provide native testing APIs—such as Chrome DevTools Sensors, Android Developer Options, and Xcode GPX files—that feed synthetic latitude and longitude values directly to software applications.",
+
+    takeawaysTitle: "Key Takeaways",
+    takeaways: [
+      "Chrome and Edge DevTools provide instant, zero-install coordinate mocking via the Sensors tab.",
+      "Android supports system-wide mock providers via Developer Options for testing native mobile applications.",
+      "iOS requires connected Mac Xcode simulation or GPX route playback for development builds.",
+      "Banking and ride-hailing apps detect mock locations using operating system flags like Location.isMock().",
+      "You can inspect synthetic fixes and verify simulated error radiuses using our live diagnostic tools."
+    ],
+
+    p1: "When engineering location-aware software—such as dispatch systems, geofencing alarms, or local content engines—developers and QA testers need to verify coordinate behavior across distant continents. If unexpected coordinates appear during normal browsing, consult our troubleshooting guide on <a href='/guides/wrong-location/'>fixing wrong location errors</a>.",
+    p2: "To test how web applications handle positioning events, developers can invoke navigator.geolocation in combination with browser sensor overrides; learn the underlying implementation details in our <a href='/guides/browser-geolocation-api-guide/'>HTML5 Geolocation API guide</a>. For QA verification, monitor simulated horizontal radius and heading with our <a href='/tools/gps-accuracy/'>GPS accuracy checker</a>, or compare active coordinates against real satellite telemetry in our <a href='/my-location/gps/'>My GPS Coordinates hub</a>. To understand how location simulation impacts user privacy and mobile device security, read our complete guide to <a href='/guides/gps-privacy-and-security/'>GPS privacy and security</a>.",
+
     calloutBadge: "🧪 Live Coordinate Verification",
     calloutTitle: "Verify Your Emulated GPS Coordinates",
     calloutDesc: "Open our live GPS inspector to confirm that your browser or emulator reflects the exact latitude, longitude, and accuracy radius you configured.",
     calloutBtn: "Test Live Coordinates →",
+
     h2Browser: "1. Mocking Location in Google Chrome & Edge (DevTools Sensors)",
-    pBrowser: "Desktop browsers provide the fastest way to emulate custom coordinates without installing any software or mobile apps:",
+    pBrowser: "Desktop Chromium browsers provide the fastest way to emulate custom coordinates without installing any extensions or third-party software:",
     step1Title: "Open Developer Tools",
-    step1Desc: "Press F12 (or Cmd + Option + I on macOS) to open Chrome/Edge DevTools.",
+    step1Desc: "Press F12 (or Cmd + Option + I on macOS / Ctrl + Shift + I on Windows) to open browser DevTools.",
     step2Title: "Open the Sensors Drawer",
-    step2Desc: "Press Cmd + Shift + P (macOS) or Ctrl + Shift + P (Windows) > Type 'Sensors' > Select 'Show Sensors'.",
+    step2Desc: "Press Cmd + Shift + P (macOS) or Ctrl + Shift + P (Windows) > type 'Sensors' > select 'Show Sensors'.",
     step3Title: "Select Preset or Custom Coordinates",
-    step3Desc: "Under Location, choose from presets (e.g. London, Tokyo, San Francisco) or select 'Other...' and enter custom Latitude and Longitude values.",
+    step3Desc: "Under 'Location', choose from presets (e.g. London, Tokyo, San Francisco) or select 'Other...' and enter custom Latitude, Longitude, and Timezone ID.",
+
     h2Android: "2. Mock Locations on Android (Developer Options)",
-    pAndroid: "Android includes a native LocationManager testing subsystem:",
-    and1: "Enable Developer Options: Go to Settings > About Phone > Tap Build Number 7 times until you see 'You are now a developer!'.",
-    and2: "Install a reputable mock GPS utility (e.g., GPS Emulator or Mock Locations).",
-    and3: "Go to Settings > System > Developer Options > Select mock location app > Choose your testing app.",
-    and4: "Set your desired coordinates and start the mock broadcast.",
+    pAndroid: "Android includes a native LocationManager testing subsystem designed for QA automation:",
+    and1: "Enable Developer Options: Open Settings > About Phone > tap 'Build Number' 7 times until you see 'You are now a developer!'.",
+    and2: "Install a reputable mock GPS provider app from the Google Play Store (e.g., GPS Emulator or Mock Locations).",
+    and3: "Navigate to Settings > System > Developer Options > tap 'Select mock location app' > select your installed testing tool.",
+    and4: "Open the mock provider app, search for your target test coordinates, and start the synthetic broadcast.",
+
     h2Ios: "3. Simulating GPX Routes on iOS with Xcode",
-    pIos: "Apple iOS does not have a direct user-facing toggle for mock coordinates, but developers can simulate locations using Apple's official development toolchain:",
-    ios1: "Connect your iPhone to a Mac running Xcode.",
-    ios2: "Create a .gpx (GPS Exchange Format) file containing waypoint coordinates, elevation, and timestamps.",
-    ios3: "In the Xcode Debug menu, select Simulate Location and choose your GPX waypoint file or route track.",
+    pIos: "Apple iOS does not expose a user-facing toggle for mock GPS, but developers can simulate locations using official Apple developer tools:",
+    ios1: "Connect your iPhone or iPad to a Mac running Xcode.",
+    ios2: "Create a .gpx (GPS Exchange Format) XML file containing target waypoint coordinates, elevations, and timestamps.",
+    ios3: "In the Xcode Debug menu, select 'Simulate Location' and choose your GPX waypoint or route playback file.",
+
     h2Detection: "4. How Apps Detect Mock Locations Under the Hood",
-    pDetection: "To prevent fraud in banking, gaming, and ride-hailing apps, mobile operating systems expose programmatic flags that inform applications when a mock location provider is active:",
-    det1: "Android: Location.isFromMockProvider() (API 18+) or Location.isMock() (API 31+) returns true if the position was generated by a testing provider.",
-    det2: "iOS: Comparison between cellular network timing and GPS timestamps identifies synthetic coordinates.",
+    pDetection: "To combat fraud in banking, anti-cheating in games, and fair dispatch in delivery apps, mobile operating systems expose programmatic flags to alert apps when synthetic positions are active:",
+    det1: "Android Mock Flags: Location.isFromMockProvider() (API 18+) and Location.isMock() (API 31+) return boolean true if coordinates originated from a mock provider.",
+    det2: "Network & Sensor Discrepancies: Applications compare GPS timestamps against cell tower timing advance and Wi-Fi BSSID signals to spot synthetic anomalies.",
+
+    workedExampleTitle: "Real-World Worked Example: Overriding Location in Chrome DevTools",
+    workedExampleIntro: "Step-by-step example setting your browser position to Paris, France (48.8584° N, 2.2945° E):",
+    workedExampleStep1: "1. Open Chrome DevTools > press Cmd + Shift + P (Ctrl + Shift + P) > type 'Sensors' > press Enter.",
+    workedExampleStep2: "2. In the Sensors tab, click the 'Location' dropdown and choose 'Other...'.",
+    workedExampleStep3: "3. Input Latitude: 48.8584 and Longitude: 2.2945 (Eiffel Tower coordinates).",
+    workedExampleStep4: "4. Open our My Location tool: the browser will immediately report Paris as your active position.",
+
+    commonMistakesTitle: "Common Mistakes When Mocking Location",
+    commonMistakes: [
+      { mistake: "Forgetting to turn off DevTools sensor overrides", explanation: "Once enabled, Chrome maintains the sensor override in that tab until closed or reset, causing websites to display the wrong city unexpectedly." },
+      { mistake: "Expecting browser mock location to change your IP address", explanation: "Mocking location only overrides navigator.geolocation. Your public IP address remains tied to your real physical ISP unless you route through a VPN." },
+      { mistake: "Testing on production apps with mock flags active", explanation: "Banking and security apps will automatically flag accounts or block transactions if Location.isMock() evaluates to true." }
+    ],
+
+    faqs: [
+      { question: "Does mocking GPS location change my IP address?", answer: "No. Mocking GPS only alters the hardware coordinates reported by the device's location APIs. Websites that determine your location via IP address will still see your real ISP gateway unless you use a VPN or proxy." },
+      { question: "How do I reset my browser back to real GPS?", answer: "In Chrome DevTools > Sensors drawer, click the 'Location' dropdown and select 'No override'. In mobile devices, disable the mock location app in Developer Options." },
+      { question: "Can websites detect if I am using Chrome DevTools Sensors?", answer: "Standard web applications cannot directly check if Chrome DevTools Sensors is active, but inconsistencies between your IP location and reported GPS coordinates may indicate simulation." }
+    ],
+
+    nextStepsTitle: "Next Steps & Developer Diagnostics",
+    nextSteps: [
+      { title: "HTML5 Geolocation Guide", href: "/guides/browser-geolocation-api-guide/", desc: "Master navigator.geolocation methods, parameters, and error handling." },
+      { title: "GPS Accuracy Checker", href: "/tools/gps-accuracy/", desc: "Verify live accuracy radiuses and coordinate streaming in your browser." },
+      { title: "Fix Wrong Location Errors", href: "/guides/wrong-location/", desc: "Diagnose unwanted location offsets caused by stale sensor overrides." }
+    ],
+
     callout2Badge: "🧭 Format Conversion",
     callout2Title: "Convert Target Test Coordinates",
     callout2Desc: "Convert GPS test waypoints between Decimal Degrees (DD), Degrees-Minutes-Seconds (DMS), and Universal Transverse Mercator (UTM).",
@@ -58,302 +104,566 @@ const translations: Record<string, any> = {
     tool2Desc: "Test simulated error radiuses",
     tool3Title: "How GPS Works",
     tool3Desc: "Satellite trilateration physics",
-    tool4Title: "GPS Privacy & Security",
-    tool4Desc: "Preventing location tracking"
+    tool4Title: "Fix Wrong Location",
+    tool4Desc: "Troubleshooting steps"
   },
   es: {
-    title: "Cómo Funcionan las Ubicaciones Simuladas | MyLocationLab",
-    description: "Aprenda cómo los proveedores Mock Location de Android, la simulación GPX en Xcode para iOS y los sensores DevTools emulan coordenadas GPS.",
-    h1: "Ubicaciones Simuladas: Pruebas y Emulación de GPS para Desarrolladores",
-    subtitle: "Guía para desarrolladores y control de calidad (QA) sobre proveedores de ubicación simulada en Android, rutas GPX en Xcode y DevTools.",
-    sectionLabel: "Guías Educativas",
-    p1: "Al desarrollar aplicaciones basadas en localización—como sistemas de reparto, flotas, apps de citas o delimitaciones geofencing—los desarrolladores y equipos de QA necesitan simular coordenadas en cualquier parte del mundo sin viajar físicamente.",
-    p2: "Los sistemas operativos modernos incorporan APIs especializadas de Mock Location concebidas específicamente para entornos de pruebas. En esta guía detallamos cómo emular coordenadas en navegadores, Android e iOS, y cómo verificar la señal simulada.",
+    title: "Cómo Simular Ubicaciones GPS: Guía para Desarrolladores | MyLocationLab",
+    description: "En resumen: Aprenda a emular coordenadas GPS mediante Chrome DevTools Sensors, opciones de desarrollador de Android y GPX en Xcode.",
+    h1: "Cómo Simular Ubicaciones: Guía de Pruebas GPS para Desarrolladores",
+    subtitle: "Tutorial técnico para desarrolladores y QA sobre proveedores de ubicación simulada en Android, rutas GPX en Xcode y sensores en DevTools.",
+    
+    inShort: "En resumen: Las ubicaciones simuladas permiten a desarrolladores y equipos de control de calidad probar coordenadas geográficas sin desplazarse físicamente. Los navegadores y sistemas operativos disponen de APIs nativas de prueba—como Sensors en Chrome DevTools, opciones de desarrollador en Android y archivos GPX en Xcode—para enviar datos sintéticos a las aplicaciones.",
+
+    takeawaysTitle: "Puntos Clave",
+    takeaways: [
+      "Chrome y Edge DevTools permiten simular coordenadas al instante desde la pestaña Sensors sin instalar software.",
+      "Android admite proveedores de ubicación simulada a nivel de sistema mediante las Opciones de Desarrollador.",
+      "iOS requiere depuración conectada a Xcode en macOS con archivos de puntos GPX.",
+      "Las apps bancarias y de transporte detectan ubicaciones simuladas mediante indicadores del sistema como Location.isMock().",
+      "Puede verificar coordenadas sintéticas y radios de precisión con nuestras herramientas de diagnóstico."
+    ],
+
+    p1: "Al diseñar aplicaciones con servicios basados en mapas—como flotas de reparto, alertas de geovallas o motores de contenido local—los equipos de desarrollo necesitan verificar el comportamiento en distintos continentes. Si observa coordenadas incoherentes en su navegador habitual, consulte nuestra guía para <a href='/guides/wrong-location/'>corregir ubicación errónea</a>.",
+    p2: "Para probar cómo reacciona una aplicación web ante eventos de posicionamiento, los desarrolladores combinan navigator.geolocation con sensores simulados; consulte los detalles de implementación en nuestra <a href='/guides/browser-geolocation-api-guide/'>guía de la API de geolocalización</a>. Para pruebas de control de calidad, analice el radio de precisión con el <a href='/tools/gps-accuracy/'>comprobador de precisión GPS</a> o compare sus coordenadas simuladas con señales satelitales reales en el panel de <a href='/my-location/gps/'>mis coordenadas GPS</a>. Para conocer el impacto en la seguridad del dispositivo, revise la guía sobre <a href='/guides/gps-privacy-and-security/'>privacidad y seguridad GPS</a>.",
+
     calloutBadge: "🧪 Verificación de Coordenadas",
     calloutTitle: "Compruebe sus Coordenadas GPS Simuladas",
-    calloutDesc: "Abra nuestro inspector GPS para confirmar que su navegador o emulador refleja con exactitud la latitud, longitud y radio de precisión configurados.",
+    calloutDesc: "Abra nuestro comprobador GPS para confirmar que su navegador o emulador refleja exactamente la latitud y longitud configuradas.",
     calloutBtn: "Probar Coordenadas en Vivo →",
-    h2Browser: "1. Simulación en Google Chrome y Edge (Sensores de DevTools)",
-    pBrowser: "Los navegadores de escritorio ofrecen la forma más ágil de probar coordenadas sin instalar herramientas adicionales:",
-    step1Title: "Abra las Herramientas de Desarrollador",
-    step1Desc: "Pulse F12 (o Cmd + Opción + I en macOS) para abrir las DevTools de Chrome o Edge.",
-    step2Title: "Abra el Panel de Sensores",
-    step2Desc: "Pulse Cmd + Shift + P (macOS) o Ctrl + Shift + P (Windows) > Escriba 'Sensors' > Elija 'Show Sensors'.",
-    step3Title: "Seleccione una Ciudad o Coordenadas Personalizadas",
-    step3Desc: "En el menú Desplegable Location, elija ciudades preconfiguradas o seleccione 'Other...' para ingresar valores manuales de Latitud y Longitud.",
+
+    h2Browser: "1. Simulación de Ubicación en Google Chrome y Edge (DevTools Sensors)",
+    pBrowser: "Los navegadores basados en Chromium ofrecen la vía más rápida para emular coordenadas sin extensiones:",
+    step1Title: "Abrir Herramientas para Desarrolladores",
+    step1Desc: "Pulse F12 (o Cmd + Opción + I en macOS / Ctrl + Shift + I en Windows) para abrir DevTools.",
+    step2Title: "Abrir el Panel Sensors",
+    step2Desc: "Pulse Cmd + Shift + P (macOS) o Ctrl + Shift + P (Windows) > escriba 'Sensors' > elija 'Show Sensors'.",
+    step3Title: "Seleccionar Ciudad o Coordenadas Personalizadas",
+    step3Desc: "En el menú 'Location', escoja ciudades predefinidas (Londres, Tokio) o elija 'Other...' e introduzca latitud y longitud personalizadas.",
+
     h2Android: "2. Ubicaciones Simuladas en Android (Opciones de Desarrollador)",
-    pAndroid: "Android cuenta con un subsistema nativo de pruebas en LocationManager:",
-    and1: "Active Opciones de desarrollador: Ajustes > Información del teléfono > Toque 7 veces el Número de compilación.",
-    and2: "Descargue una app de simulación de GPS fiable (ej. GPS Emulator o Mock Locations).",
-    and3: "Vaya a Ajustes > Sistema > Opciones para desarrolladores > Elegir aplicación para simular ubicación > Seleccione su app.",
-    and4: "Configure las coordenadas deseadas e inicie la transmisión simulada.",
+    pAndroid: "Android incluye un subsistema nativo de pruebas en LocationManager:",
+    and1: "Activar Opciones de Desarrollador: Vaya a Ajustes > Información del teléfono > pulse 'Número de compilación' 7 veces consecutivas.",
+    and2: "Instale una app de pruebas fiable desde Google Play Store (por ejemplo, GPS Emulator o Fake GPS).",
+    and3: "Vaya a Ajustes > Sistema > Opciones de desarrollador > pulse 'Elegir aplicación para simular ubicación' > elija la app instalada.",
+    and4: "Abra la app, defina las coordenadas deseadas e inicie la emisión simulada.",
+
     h2Ios: "3. Simulación de Rutas GPX en iOS con Xcode",
-    pIos: "Apple no ofrece un conmutador directo para usuarios, pero los desarrolladores pueden simular ubicaciones con el entorno oficial Xcode:",
-    ios1: "Conecte su iPhone a un Mac con Xcode instalado.",
-    ios2: "Cree un archivo .gpx (GPS Exchange Format) con coordenadas de waypoints, elevación y marcas de tiempo.",
-    ios3: "En el menú Debug de Xcode, seleccione Simulate Location y cargue su archivo de ruta GPX.",
-    h2Detection: "4. Cómo Detectan las Aplicaciones una Ubicación Simulada",
-    pDetection: "Para impedir fraudes en banca, juegos y apps de transporte, los sistemas operativos ofrecen flags que alertan a las aplicaciones si el GPS es simulado:",
-    det1: "Android: Location.isFromMockProvider() (API 18+) o Location.isMock() (API 31+) devuelve true si la lectura procede de una app de prueba.",
-    det2: "iOS: La comparación de tiempos entre torres celulares y el reloj GPS detecta discrepancias en señales sintéticas.",
+    pIos: "Apple iOS no incluye un interruptor directo para usuarios, pero permite simular ubicaciones en Xcode:",
+    ios1: "Conecte su iPhone o iPad a un Mac con Xcode abierto.",
+    ios2: "Cree un archivo XML con extensión .gpx que contenga waypoints, altitud y marcas de tiempo.",
+    ios3: "En el menú Debug de Xcode, seleccione 'Simulate Location' y elija su archivo de ruta GPX.",
+
+    h2Detection: "4. Cómo Detectan las Apps las Ubicaciones Simuladas",
+    pDetection: "Para prevenir fraudes en banca y juegos móviles, los sistemas operativos incorporan indicadores técnicos:",
+    det1: "Indicadores en Android: Location.isFromMockProvider() (API 18+) y Location.isMock() (API 31+) devuelven true si la señal proviene de un proveedor de pruebas.",
+    det2: "Discrepancias de Red: Las aplicaciones comparan la hora satelital con los desfases de antenas de telefonía y redes Wi-Fi para detectar anomalías.",
+
+    workedExampleTitle: "Ejemplo Práctico: Configurar París en Chrome DevTools",
+    workedExampleIntro: "Pasos para situar su navegador en París, Francia (48.8584° N, 2.2945° E):",
+    workedExampleStep1: "1. Abra DevTools > pulse Cmd + Shift + P (Ctrl + Shift + P) > escriba 'Sensors' > Enter.",
+    workedExampleStep2: "2. En el panel Sensors, despliegue el menú 'Location' y seleccione 'Other...'.",
+    workedExampleStep3: "3. Introduzca Latitud: 48.8584 y Longitud: 2.2945 (Torre Eiffel).",
+    workedExampleStep4: "4. Abra nuestra herramienta Mi Ubicación: el navegador mostrará París como posición activa.",
+
+    commonMistakesTitle: "Errores Comunes al Simular Ubicaciones",
+    commonMistakes: [
+      { mistake: "Olvidar desactivar la simulación en DevTools", explanation: "Chrome mantiene la emulación en esa pestaña hasta que se restablece en 'No override', provocando ubicaciones erróneas en otras webs." },
+      { mistake: "Pensar que simular GPS cambia la dirección IP", explanation: "La simulación solo modifica navigator.geolocation. Su dirección IP pública sigue indicando su operador real salvo si usa una VPN." },
+      { mistake: "Usar ubicaciones simuladas en apps de banca", explanation: "Las apps financieras bloquean operaciones o marcan cuentas si detectan el indicador Location.isMock()." }
+    ],
+
+    faqs: [
+      { question: "¿Simular la ubicación GPS cambia mi dirección IP pública?", answer: "No. La simulación de GPS solo altera las coordenadas que reportan los sensores de navegación. Los sitios que leen su ubicación mediante IP seguirán viendo su operador de internet real." },
+      { question: "¿Cómo restauro mi navegador a la señal GPS real?", answer: "En la pestaña Sensors de DevTools, abra el desplegable 'Location' y elija 'No override'. En móviles, desactive la app de simulación en las Opciones de Desarrollador." },
+      { question: "¿Pueden las páginas web saber si uso DevTools Sensors?", answer: "Las webs estándar no pueden consultar si la pestaña Sensors está activa, aunque una discrepancia evidente entre su IP y su GPS puede ser detectada por sistemas de seguridad avanzados." }
+    ],
+
+    nextStepsTitle: "Próximos Pasos y Diagnósticos",
+    nextSteps: [
+      { title: "API de Geolocalización HTML5", href: "/guides/browser-geolocation-api-guide/", desc: "Conozca los métodos, parámetros y control de excepciones en JavaScript." },
+      { title: "Comprobador de Precisión GPS", href: "/tools/gps-accuracy/", desc: "Inspeccione el radio de precisión y telemetría de sensores en vivo." },
+      { title: "Corregir Ubicación Errónea", href: "/guides/wrong-location/", desc: "Solucione desvíos de ubicación ocasionados por sensores simulados olvidados." }
+    ],
+
     callout2Badge: "🧭 Conversión de Formatos",
-    callout2Title: "Convierta sus Coordenadas de Prueba",
-    callout2Desc: "Transforme puntos de prueba entre Grados Decimales (DD), Grados Minutos Segundos (DMS) y la cuadrícula métrica UTM.",
+    callout2Title: "Convierta Coordenadas de Prueba",
+    callout2Desc: "Transforme waypoints de prueba entre Grados Decimales (DD), Grados-Minutos-Segundos (DMS) y coordenadas métricas UTM.",
     callout2Btn: "Abrir Conversor de Coordenadas →",
     connectedTitle: "🔗 Guías y Herramientas Conectadas",
-    tool1Title: "API Geolocation de HTML5",
-    tool1Desc: "Guía de código e integración",
-    tool2Title: "Monitor de Precisión GPS",
-    tool2Desc: "Pruebas de radio de error",
+    tool1Title: "API Geolocation",
+    tool1Desc: "Guía de código",
+    tool2Title: "Monitor de Precisión",
+    tool2Desc: "Pruebas de error simuladas",
     tool3Title: "Cómo Funciona el GPS",
-    tool3Desc: "Física y satélites WGS84",
-    tool4Title: "Privacidad y Seguridad GPS",
-    tool4Desc: "Protección frente al rastreo"
+    tool3Desc: "Física de satélites",
+    tool4Title: "Corregir Ubicación",
+    tool4Desc: "Pasos de resolución"
   },
   fr: {
-    title: "Comment Fonctionne la Fausse Localisation | MyLocationLab",
-    description: "Apprenez comment simuler des coordonnées GPS avec les Mock Locations d'Android, les fichiers GPX sous Xcode et les capteurs DevTools.",
-    h1: "Fausse Localisation GPS : Guide de Test et Simulation pour Développeurs",
-    subtitle: "Tutoriel technique pour développeurs et équipes QA sur les fournisseurs de localisation fictive Android, Xcode et DevTools.",
-    sectionLabel: "Guides Pédagogiques",
-    p1: "Lors de la création d'applications géolocalisées (livraison, transport, réseaux sociaux), développeurs et testeurs ont besoin d'émuler des coordonnées partout dans le monde sans se déplacer.",
-    p2: "Les systèmes d'exploitation modernes intègrent des sous-systèmes de Mock Location expressément prévus à cet effet. Ce guide explique la mise en place sur navigateur, Android et iOS, ainsi que les méthodes de détection logicielle.",
-    calloutBadge: "🧪 Vérification en Direct",
+    title: "Comment Simuler une Position GPS pour Développeurs | MyLocationLab",
+    description: "En bref : Apprenez à simuler des coordonnées GPS avec Chrome DevTools Sensors, les options développeur d'Android et les fichiers GPX sur Xcode.",
+    h1: "Comment Simuler une Position GPS : Le Guide Développeur et QA",
+    subtitle: "Tutoriel complet sur les fournisseurs de position fictive sous Android, la simulation GPX sous Xcode et l'émulation de capteurs dans DevTools.",
+    
+    inShort: "En bref : La simulation de position (mock location) permet aux développeurs et testeurs d'émuler des coordonnées géographiques sans avoir à se déplacer physiquement. Les navigateurs et systèmes d'exploitation proposent des interfaces dédiées—comme l'onglet Sensors de DevTools, les options développeur Android et les fichiers GPX sous Xcode—pour injecter des positions de test.",
+
+    takeawaysTitle: "Points Clés",
+    takeaways: [
+      "Chrome et Edge DevTools permettent d'émuler des coordonnées immédiatement depuis l'onglet Sensors.",
+      "Android prend en charge les applications de position fictive au niveau système via les Options pour les développeurs.",
+      "iOS nécessite une liaison de débogage avec Xcode sur Mac et des fichiers de trajets GPX.",
+      "Les applications bancaires et de transport détectent les positions simulées via des indicateurs comme Location.isMock().",
+      "Vérifiez vos coordonnées de test avec nos outils de diagnostic en direct."
+    ],
+
+    p1: "Lors du développement d'applications géolocalisées—comme les services de livraison, le geofencing ou les moteurs de recherche de proximité—les développeurs doivent tester des coordonnées sur tous les continents. Si votre navigateur habituel affiche des coordonnées incohérentes, consultez notre guide pour <a href='/guides/wrong-location/'>corriger une localisation erronée</a>.",
+    p2: "Pour analyser la réaction de vos interfaces Web aux événements de géolocalisation, combinez navigator.geolocation et l'émulation de capteurs ; retrouvez les détails du code dans notre <a href='/guides/browser-geolocation-api-guide/'>guide de l'API Geolocation HTML5</a>. Pour vos tests d'assurance qualité, contrôlez le rayon de précision simulé avec notre <a href='/tools/gps-accuracy/'>testeur de précision GPS</a> ou comparez vos positions fictives aux signaux satellites réels dans notre espace <a href='/my-location/gps/'>coordonnées GPS</a>. Pour évaluer les enjeux sur la confidentialité, explorez notre dossier sur la <a href='/guides/gps-privacy-and-security/'>sécurité et confidentialité GPS</a>.",
+
+    calloutBadge: "🧪 Vérification des Coordonnées",
     calloutTitle: "Vérifiez Vos Coordonnées GPS Émulées",
-    calloutDesc: "Consultez notre moniteur GPS pour vérifier que votre navigateur ou émulateur reflète fidèlement la latitude, la longitude et le rayon de précision simulés.",
+    calloutDesc: "Ouvrez notre inspecteur GPS en direct pour vérifier que votre navigateur reflète bien la latitude, la longitude et le rayon configurés.",
     calloutBtn: "Tester les Coordonnées en Direct →",
-    h2Browser: "1. Simuler Sa Position dans Chrome & Edge (Onglet Capteurs)",
-    pBrowser: "Sur ordinateur, les outils pour développeurs permettent d'émuler des coordonnées en quelques secondes sans aucune installation :",
-    step1Title: "Ouvrez les Outils Développeur",
-    step1Desc: "Appuyez sur F12 (ou Cmd + Option + I sur Mac) pour ouvrir les DevTools.",
-    step2Title: "Affichez l'Onglet Capteurs (Sensors)",
-    step2Desc: "Pressez Cmd + Maj + P (Mac) ou Ctrl + Maj + P (Windows) > Saisissez 'Sensors' > Sélectionnez 'Show Sensors'.",
-    step3Title: "Choisissez des Coordonnées Prédéfinies ou Manuelles",
-    step3Desc: "Dans la section Location, sélectionnez une métropole (Tokyo, Londres, Paris) ou choisissez 'Other...' pour saisir vos propres valeurs.",
-    h2Android: "2. Localisation Fictive sous Android (Options pour Développeurs)",
-    pAndroid: "Android intègre un module de test au sein de LocationManager :",
-    and1: "Activez les Options pour développeurs : Paramètres > À propos du téléphone > Appuyez 7 fois sur Numéro de build.",
-    and2: "Installez une application de simulation reconnue (ex. GPS Emulator ou Mock Locations).",
-    and3: "Allez dans Paramètres > Système > Options pour les développeurs > Sélectionner l'application de position fictive.",
-    and4: "Définissez vos coordonnées cibles et lancez la diffusion.",
-    h2Ios: "3. Simulation de Trajets GPX sous iOS avec Xcode",
-    pIos: "Apple ne propose pas d'option directe aux utilisateurs, mais permet aux développeurs de simuler des itinéraires via Xcode :",
-    ios1: "Raccordez votre iPhone à un Mac exécutant Xcode.",
-    ios2: "Créez un fichier .gpx contenant la liste des coordonnées, altitudes et horodatages du trajet.",
-    ios3: "Dans le menu Debug de Xcode, sélectionnez Simulate Location et importez votre fichier GPX.",
-    h2Detection: "4. Comment les Applications Détectent-elles les Faux Signaux ?",
-    pDetection: "Pour lutter contre la fraude dans le transport et la banque, les systèmes mobiles fournissent des indicateurs logiciels :",
-    det1: "Android : Location.isFromMockProvider() (API 18+) ou Location.isMock() (API 31+) renvoie true en présence d'un fournisseur fictif.",
-    det2: "iOS : La comparaison entre l'horodatage réseau cellulaire et l'horloge GPS isole les coordonnées synthétiques.",
+
+    h2Browser: "1. Émuler une Position dans Google Chrome et Edge (DevTools Sensors)",
+    pBrowser: "Les navigateurs Chromium permettent d'émuler des coordonnées sans installer d'extension :",
+    step1Title: "Ouvrir les Outils de Développement",
+    step1Desc: "Appuyez sur F12 (ou Cmd + Option + I sous macOS / Ctrl + Shift + I sous Windows).",
+    step2Title: "Ouvrir l'Onglet Sensors",
+    step2Desc: "Appuyez sur Cmd + Shift + P (macOS) ou Ctrl + Shift + P (Windows) > tapez 'Sensors' > sélectionnez 'Show Sensors'.",
+    step3Title: "Choisir des Coordonnées Prédéfinies ou Personnalisées",
+    step3Desc: "Dans la liste 'Location', choisissez une ville (Londres, Tokyo) ou sélectionnez 'Other...' pour saisir latitude et longitude.",
+
+    h2Android: "2. Positions Fictives sur Android (Options Développeur)",
+    pAndroid: "Android intègre un sous-système de test dans le LocationManager :",
+    and1: "Activer les Options Développeur : Paramètres > À propos du téléphone > appuyez 7 fois sur 'Numéro de build'.",
+    and2: "Installez une application de position fictive éprouvée sur le Google Play Store (ex. GPS Emulator).",
+    and3: "Accédez à Paramètres > Système > Options pour les développeurs > 'Sélectionner l'application de position fictive' > choisissez votre outil.",
+    and4: "Ouvrez l'application, entrez vos coordonnées cibles et lancez la diffusion simulée.",
+
+    h2Ios: "3. Simuler des Trajets GPX sous iOS avec Xcode",
+    pIos: "iOS ne propose pas de réglage grand public, mais les développeurs peuvent injecter des positions via Xcode :",
+    ios1: "Connectez votre appareil iOS à un Mac exécutant Xcode.",
+    ios2: "Créez un fichier XML .gpx contenant les balises de points de passage, altitudes et horodatages.",
+    ios3: "Dans le menu Debug de Xcode, sélectionnez 'Simulate Location' et choisissez votre fichier GPX.",
+
+    h2Detection: "4. Comment les Applications Détectent les Positions Simulées",
+    pDetection: "Pour contrer les fraudes bancaires ou le contournement de tarifs de transport, les systèmes mobiles intègrent des indicateurs :",
+    det1: "Indicateurs Android : Location.isFromMockProvider() et Location.isMock() renvoient true si la coordonnée provient d'un simulateur.",
+    det2: "Cohérence Réseau : Les applications comparent les temps de propagation des antennes cellulaires et réseaux Wi-Fi avec le signal GPS.",
+
+    workedExampleTitle: "Exemple Concret : Configurer Paris dans Chrome DevTools",
+    workedExampleIntro: "Procédure pour positionner le navigateur à Paris (48.8584° N, 2.2945° E) :",
+    workedExampleStep1: "1. Ouvrez DevTools > Cmd + Shift + P (Ctrl + Shift + P) > tapez 'Sensors' > Entrée.",
+    workedExampleStep2: "2. Dans le volet Sensors, cliquez sur 'Location' et choisissez 'Other...'.",
+    workedExampleStep3: "3. Renseignez Latitude : 48.8584 et Longitude : 2.2945 (Tour Eiffel).",
+    workedExampleStep4: "4. Ouvrez notre outil Ma Position : le navigateur affichera immédiatement Paris.",
+
+    commonMistakesTitle: "Erreurs Courantes Lors de la Simulation de Position",
+    commonMistakes: [
+      { mistake: "Oublier de désactiver l'émulation dans DevTools", explanation: "L'onglet conserve la position simulée tant qu'elle n'est pas réinitialisée sur 'No override', faussant les requêtes futures." },
+      { mistake: "Penser que la simulation modifie l'adresse IP", explanation: "La simulation n'altère que navigator.geolocation. Votre IP publique reste rattachée à votre véritable fournisseur d'accès." },
+      { mistake: "Lancer des applications bancaires avec le simulateur actif", explanation: "Les applications sécurisées bloquent automatiquement les transactions si l'indicateur isMock() est détecté." }
+    ],
+
+    faqs: [
+      { question: "La simulation de position GPS change-t-elle mon adresse IP ?", answer: "Non. Elle ne modifie que les coordonnées renvoyées par les capteurs de l'appareil. Les sites identifiant votre position par IP verront toujours votre connexion réelle sans VPN." },
+      { question: "Comment rétablir le signal satellite réel dans mon navigateur ?", answer: "Dans l'onglet Sensors de DevTools, sélectionnez 'No override' dans le menu Location. Sur mobile, désactivez l'application de position fictive dans les options développeur." },
+      { question: "Les sites web savent-ils si j'utilise DevTools Sensors ?", answer: "Les sites web ne peuvent pas directement vérifier si l'onglet Sensors est ouvert, mais un écart flagrant entre l'IP et les coordonnées peut être relevé." }
+    ],
+
+    nextStepsTitle: "Prochaines Étapes et Outils Développeur",
+    nextSteps: [
+      { title: "API Geolocation HTML5", href: "/guides/browser-geolocation-api-guide/", desc: "Maîtriser les méthodes de géolocalisation et les paramètres de précision." },
+      { title: "Vérificateur de Précision GPS", href: "/tools/gps-accuracy/", desc: "Tester en direct la stabilité et le rayon d'erreur des coordonnées." },
+      { title: "Corriger une Position Erronée", href: "/guides/wrong-location/", desc: "Résoudre les décalages de localisation causés par des simulations actives." }
+    ],
+
     callout2Badge: "🧭 Conversion de Formats",
-    callout2Title: "Convertissez Vos Points de Test",
-    callout2Desc: "Convertissez les coordonnées de vos jeux d'essai entre Degrés Décimaux (DD), Degrés Minutes Secondes (DMS) et projection UTM.",
+    callout2Title: "Convertissez Vos Coordonnées de Test",
+    callout2Desc: "Convertissez vos points de test entre Degrés Décimaux (DD), Degrés-Minutes-Secondes (DMS) et grille métrique UTM.",
     callout2Btn: "Ouvrir le Convertisseur de Coordonnées →",
     connectedTitle: "🔗 Guides et Outils Associés",
-    tool1Title: "API HTML5 Geolocation",
-    tool1Desc: "Guide d'intégration web",
-    tool2Title: "Moniteur de Précision GPS",
-    tool2Desc: "Tester les rayons d'erreur",
-    tool3Title: "Comment Fonctionne le GPS",
-    tool3Desc: "Physique des satellites WGS84",
-    tool4Title: "Vie Privée & Sécurité GPS",
-    tool4Desc: "Se protéger du pistage"
+    tool1Title: "API Geolocation",
+    tool1Desc: "Guide d'implémentation",
+    tool2Title: "Précision GPS",
+    tool2Desc: "Test des rayons d'erreur",
+    tool3Title: "Comment Marche le GPS",
+    tool3Desc: "Signaux et satellites",
+    tool4Title: "Position Erronée",
+    tool4Desc: "Dépannage pas à pas"
   },
   de: {
-    title: "Wie gefälschte Standorte funktionieren | MyLocationLab",
-    description: "Erfahren Sie, wie Android Mock Locations, Xcode-GPX-Routen auf iOS und Chrome DevTools GPS-Koordinaten für Entwickler-Tests simulieren.",
-    h1: "Gefälschte Standorte: GPS-Simulation & Tests für Entwickler",
-    subtitle: "Umfassender Leitfaden für Entwickler und QA-Tester zu Android Mock Locations, Xcode GPX-Routensimulation und DevTools-Sensoren.",
-    sectionLabel: "Lehr-Ratgeber",
-    p1: "Bei der Entwicklung standortbasierter Anwendungen (Lieferdienste, Flottensteuerung, ÖPNV-Apps) müssen Entwickler und Tester Koordinaten weltweit testen, ohne dafür verreisen zu müssen.",
-    p2: "Moderne Betriebssysteme bieten spezialisierte Mock-Location-APIs eigens für Testumgebungen. Dieser Leitfaden beschreibt die Umsetzung in Browsern, auf Android und iOS sowie die Mechanismen zur softwareseitigen Erkennung gefälschter Standorte.",
-    calloutBadge: "🧪 Live-Koordinatenprüfung",
-    calloutTitle: "Simulierte GPS-Koordinaten verifizieren",
-    calloutDesc: "Nutzen Sie unseren Live-GPS-Inspektor, um zu kontrollieren, ob Ihr Browser oder Emulator die eingestellte Position und Genauigkeit korrekt übernimmt.",
-    calloutBtn: "Koordinaten live testen →",
-    h2Browser: "1. Standort in Chrome & Edge simulieren (DevTools Sensoren)",
-    pBrowser: "Desktop-Browser bieten den schnellsten Weg, beliebige Koordinaten ohne App-Installationen zu emulieren:",
+    title: "Standort simulieren (Mock Location): Entwickler-Guide | MyLocationLab",
+    description: "Kurz gesagt: Erfahren Sie, wie Entwickler GPS-Koordinaten über Chrome DevTools Sensors, Android Mock Locations und Xcode GPX testen.",
+    h1: "Standort simulieren: GPS-Testing & Spoofing für Entwickler",
+    subtitle: "Ein praktischer QA- und Entwickler-Leitfaden zu Android-Testanbietern, Xcode-GPX-Routensimulation und Chrome DevTools Sensor-Overrides.",
+    
+    inShort: "Kurz gesagt: Die Standortsimulation (Mock Location) ermöglicht Entwicklern und Testern das Emulieren beliebiger geografischer Koordinaten, ohne physisch dorthin reisen zu müssen. Moderne Plattformen bieten native Test-APIs—wie Chrome DevTools Sensors, Android-Entwickleroptionen und Xcode-GPX-Dateien—zur Übergabe künstlicher Koordinaten an Anwendungen.",
+
+    takeawaysTitle: "Wichtige Erkenntnisse",
+    takeaways: [
+      "Chrome und Edge DevTools ermöglichen sofortige Standortsimulationen über die Sensors-Leiste ohne Zusatzsoftware.",
+      "Android unterstützt systemweite Mock-Location-Anbieter über die Entwickleroptionen für mobile App-Tests.",
+      "iOS erfordert eine Debug-Verbindung zu Xcode auf macOS mit strukturierten GPX-Wegpunktdateien.",
+      "Banking- und Ride-Sharing-Apps erkennen simulierte Standorte anhand von System-Flags wie Location.isMock().",
+      "Überprüfen Sie künstliche Koordinaten und Genauigkeitsradien mit unseren Live-Diagnosetools."
+    ],
+
+    p1: "Bei der Entwicklung standortbasierter Webdienste—wie Lieferverfolgungen, Geofencing-Zonen oder regionalen Inhalten—müssen Testteams Funktionen auf anderen Kontinenten prüfen. Sollte Ihr Browser im Normalbetrieb falsche Regionen anzeigen, nutzen Sie unsere Anleitung zu <a href='/guides/wrong-location/'>falschen Standort beheben</a>.",
+    p2: "Um das Zusammenspiel von Web-Apps mit Standortevents zu prüfen, kombinieren Entwickler navigator.geolocation mit simulierten Sensordaten; technische Details finden Sie in unserem <a href='/guides/browser-geolocation-api-guide/'>HTML5 Geolocation API Leitfaden</a>. Für QA-Tests empfiehlt sich die Prüfung des Genauigkeitsradius mit dem <a href='/tools/gps-accuracy/'>GPS-Genauigkeitstester</a> oder der Vergleich mit echten Satellitendaten im Bereich <a href='/my-location/gps/'>GPS-Koordinaten</a>. Wie Standortsimulationen den Gerätedatenschutz beeinflussen, erläutert unser Guide zu <a href='/guides/gps-privacy-and-security/'>GPS-Datenschutz & Sicherheit</a>.",
+
+    calloutBadge: "🧪 Koordinaten-Verifikation",
+    calloutTitle: "Simulierte GPS-Koordinaten prüfen",
+    calloutDesc: "Öffnen Sie unseren GPS-Inspektor, um sicherzustellen, dass Ihr Browser oder Emulator die eingestellten Koordinaten fehlerfrei übernimmt.",
+    calloutBtn: "Live-Koordinaten testen →",
+
+    h2Browser: "1. Standort simulieren in Google Chrome & Edge (DevTools Sensors)",
+    pBrowser: "Chromium-Browser bieten die schnellste Möglichkeit zur Koordinatenemulation ohne Add-ons:",
     step1Title: "Entwicklertools öffnen",
-    step1Desc: "Drücken Sie F12 (oder Cmd + Option + I auf macOS), um die DevTools zu öffnen.",
-    step2Title: "Sensoren-Tab aufrufen",
-    step2Desc: "Drücken Sie Cmd + Shift + P (macOS) bzw. Strg + Umschalt + P (Windows) > Tippen Sie 'Sensors' ein > Wählen Sie 'Show Sensors'.",
-    step3Title: "Voreingestellte oder eigene Koordinaten wählen",
-    step3Desc: "Wählen Sie unter Location eine Metropole (z. B. Berlin, Tokio) oder stellen Sie 'Other...' für manuelle Breiten- und Längengrade ein.",
+    step1Desc: "Drücken Sie F12 (oder Cmd + Option + I auf macOS / Strg + Umschalt + I unter Windows).",
+    step2Title: "Sensors-Drawer öffnen",
+    step2Desc: "Drücken Sie Cmd + Umschalt + P (macOS) bzw. Strg + Umschalt + P (Windows) > tippen Sie 'Sensors' ein > wählen Sie 'Show Sensors'.",
+    step3Title: "Stadt oder eigene Koordinaten wählen",
+    step3Desc: "Wählen Sie unter 'Location' eine Vorgabe (London, Tokio) oder 'Other...' zur Eingabe von Breitengrad und Längengrad.",
+
     h2Android: "2. Mock Locations unter Android (Entwickleroptionen)",
-    pAndroid: "Android verfügt über ein natives Test-Subsystem im LocationManager:",
-    and1: "Entwickleroptionen aktivieren: Einstellungen > Über das Telefon > 7-mal auf Build-Nummer tippen.",
-    and2: "Installieren Sie eine seriöse GPS-Simulator-App (z. B. GPS Emulator).",
-    and3: "Wählen Sie Einstellungen > System > Entwickleroptionen > App für simulierte Standorte auswählen.",
-    and4: "Geben Sie die gewünschten Koordinaten ein und starten Sie die Simulation.",
-    h2Ios: "3. GPX-Routensimulation auf iOS mit Xcode",
-    pIos: "Apple bietet zwar keinen Endnutzer-Schalter, Entwickler können Standorte jedoch über Xcode emulieren:",
-    ios1: "Verbinden Sie Ihr iPhone mit einem Mac, auf dem Xcode läuft.",
+    pAndroid: "Android verfügt über ein integriertes Test-Subsystem im LocationManager:",
+    and1: "Entwickleroptionen aktivieren: Einstellungen > Telefoninfo > 7-mal schnell auf 'Build-Nummer' tippen.",
+    and2: "Installieren Sie eine vertrauenswürdige Mock-GPS-App aus dem Google Play Store (z. B. GPS Emulator).",
+    and3: "Wählen Sie Einstellungen > System > Entwickleroptionen > 'App für simulierte Standorte auswählen' > Ihre App festlegen.",
+    and4: "Öffnen Sie die App, setzen Sie die Wunschkoordinaten und starten Sie die Übertragung.",
+
+    h2Ios: "3. GPX-Routen unter iOS mit Xcode simulieren",
+    pIos: "Apple iOS bietet keine einfache Benutzereinstellung, unterstützt aber Simulationen in Xcode:",
+    ios1: "Verbinden Sie das iPhone per Kabel mit einem Mac, auf dem Xcode läuft.",
     ios2: "Erstellen Sie eine .gpx-Datei mit Wegpunkten, Höhenangaben und Zeitstempeln.",
-    ios3: "Wählen Sie im Debug-Menü von Xcode Simulate Location und laden Sie Ihre GPX-Routendatei.",
-    h2Detection: "4. Wie Apps gefälschte Standorte erkennen",
-    pDetection: "Um Betrug bei Banking- und Mobilitäts-Apps zu verhindern, bieten Betriebssysteme entsprechende Erkennungsfunktionen:",
-    det1: "Android: Location.isFromMockProvider() (ab API 18) oder Location.isMock() (ab API 31) meldet true bei Test-Providern.",
-    det2: "iOS: Zeitabgleiche zwischen Mobilfunkmasten und GPS-Uhr entlarven synthetische Messwerte.",
-    callout2Badge: "🧭 Formatkonvertierung",
+    ios3: "Wählen Sie im Xcode Debug-Menü 'Simulate Location' und laden Sie die GPX-Datei.",
+
+    h2Detection: "4. Wie Apps simulierte Standorte erkennen",
+    pDetection: "Um Betrug in Finanz- und Fahrdienst-Apps zu verhindern, werten Betriebssysteme Prüfmerkmale aus:",
+    det1: "Android-Flags: Location.isFromMockProvider() und Location.isMock() geben true zurück, wenn Koordinaten aus Testquellen stammen.",
+    det2: "Plausibilitätsprüfung: Apps vergleichen GPS-Daten mit Mobilfunklaufzeiten und WLAN-Umgebungen.",
+
+    workedExampleTitle: "Praxisbeispiel: Paris in Chrome DevTools einstellen",
+    workedExampleIntro: "So setzen Sie den Browserstandort auf Paris, Frankreich (48.8584° N, 2.2945° E):",
+    workedExampleStep1: "1. DevTools öffnen > Cmd + Umschalt + P (Strg + Umschalt + P) > 'Sensors' eingeben > Enter.",
+    workedExampleStep2: "2. In der Sensors-Leiste beim Menü 'Location' den Eintrag 'Other...' wählen.",
+    workedExampleStep3: "3. Latitude: 48.8584 und Longitude: 2.2945 (Eiffelturm) eintragen.",
+    workedExampleStep4: "4. Rufen Sie unser Tool Mein Standort auf: Der Browser meldet sofort Paris als aktuelle Position.",
+
+    commonMistakesTitle: "Häufige Fehler beim Simulieren von Standorten",
+    commonMistakes: [
+      { mistake: "Sensors-Override im Tab vergessen", explanation: "Chrome behält die simulierte Position in diesem Tab bei, bis 'No override' gewählt wird, was zu Verwirrung bei späteren Suchen führt." },
+      { mistake: "Annehmen, Mock Location ändere die IP-Adresse", explanation: "Simulierte Standorte ändern nur navigator.geolocation. Die öffentliche IP-Adresse bleibt unverändert beim Provider." },
+      { mistake: "Banking-Apps mit aktivem Mock-Provider nutzen", explanation: "Sicherheitskritische Apps verweigern Transaktionen, sobald das isMock()-Flag aktiv ist." }
+    ],
+
+    faqs: [
+      { question: "Ändert das Simulieren von GPS-Daten meine IP-Adresse?", answer: "Nein. Die Simulation wirkt sich ausschließlich auf die geräteeigenen Ortungsschnittstellen aus. Dienste, die Ihren Standort über die IP-Adresse prüfen, sehen weiterhin Ihren realen Internetanschluss." },
+      { question: "Wie schalte ich den Browser wieder auf echte GPS-Daten zurück?", answer: "Wählen Sie in den DevTools unter Sensors im Dropdown-Menü 'Location' einfach 'No override'. Auf Mobilgeräten schalten Sie die Mock-Location-App in den Entwickleroptionen ab." },
+      { question: "Können Websites erkennen, dass ich DevTools Sensors nutze?", answer: "Webseiten können nicht direkt sehen, ob die Sensors-Leiste aktiv ist. Große Diskrepanzen zwischen IP- und GPS-Standort können jedoch als Hinweis gewertet werden." }
+    ],
+
+    nextStepsTitle: "Nächste Schritte und Diagnose-Tools",
+    nextSteps: [
+      { title: "HTML5 Geolocation API", href: "/guides/browser-geolocation-api-guide/", desc: "Funktionen, Parameter und Fehlerbehandlung in JavaScript beherrschen." },
+      { title: "GPS-Genauigkeitstester", href: "/tools/gps-accuracy/", desc: "Genauigkeitsradien und Sensorwerte direkt im Browser überprüfen." },
+      { title: "Falschen Standort beheben", href: "/guides/wrong-location/", desc: "Ungewollte Standortabweichungen durch vergessene Simulationen beseitigen." }
+    ],
+
+    callout2Badge: "🧭 Format-Umrechnung",
     callout2Title: "Test-Koordinaten umrechnen",
-    callout2Desc: "Konvertieren Sie Test-Wegpunkte zwischen Dezimalgrad (DD), Grad-Minuten-Sekunden (GMS) und UTM-Gitterkoordinaten.",
+    callout2Desc: "Wandeln Sie Testkoordinaten zwischen Dezimalgrad (DD), Grad-Minuten-Sekunden (DMS) und UTM-Metern um.",
     callout2Btn: "Koordinaten-Umrechner öffnen →",
-    connectedTitle: "🔗 Verwandte Ratgeber & Testwerkzeuge",
-    tool1Title: "HTML5 Geolocation API",
-    tool1Desc: "Code-Implementierung",
-    tool2Title: "GPS-Genauigkeitsmonitor",
-    tool2Desc: "Fehlerradien prüfen",
+    connectedTitle: "🔗 Verknüpfte Leitfäden und Tools",
+    tool1Title: "HTML5 Geolocation",
+    tool1Desc: "Code-Leitfaden",
+    tool2Title: "Genauigkeitstester",
+    tool2Desc: "Fehlerradius-Check",
     tool3Title: "Wie GPS funktioniert",
-    tool3Desc: "Satellitenphysik & WGS84",
-    tool4Title: "GPS-Datenschutz & Sicherheit",
-    tool4Desc: "Tracking unterbinden"
+    tool3Desc: "Satellitenphysik",
+    tool4Title: "Standort korrigieren",
+    tool4Desc: "Fehlerbehebung"
   },
   pt: {
-    title: "Como Funciona a Localização Simulada | MyLocationLab",
-    description: "Saiba como provedores de Mock Location no Android, simulação GPX no Xcode e sensores do Chrome DevTools emulam coordenadas GPS.",
-    h1: "Localização Simulada: Testes e Emulação de GPS para Desenvolvedores",
-    subtitle: "Guia completo para desenvolvedores e equipes de QA sobre provedores de localização falsa no Android, Xcode e Chrome DevTools.",
-    sectionLabel: "Guias Educativos",
-    p1: "Ao desenvolver aplicações baseadas em localização—como serviços de entrega, mobilidade urbana ou delimitação de cercas virtuais—testadores e engenheiros precisam validar coordenadas sem se deslocar fisicamente.",
-    p2: "Sistemas operacionais modernos oferecem subsistemas oficiais de Mock Location específicos para testes. Neste guia, mostramos como configurar coordenadas simuladas no navegador, Android e iOS, além das rotinas de detecção antifraude.",
-    calloutBadge: "🧪 Verificação de Coordenadas",
-    calloutTitle: "Confirme suas Coordenadas GPS Simuladas",
-    calloutDesc: "Acesse nosso inspetor de GPS para garantir que seu navegador ou emulador reproduz perfeitamente a latitude, longitude e raio de precisão simulados.",
+    title: "Como Simular Localização GPS: Guia para Desenvolvedores | MyLocationLab",
+    description: "Em resumo: Aprenda a emular coordenadas GPS com o Chrome DevTools Sensors, opções de desenvolvedor do Android e arquivos GPX no Xcode.",
+    h1: "Como Simular Localizações: Guia de Testes GPS para Desenvolvedores",
+    subtitle: "Um tutorial técnico para desenvolvedores e testes de QA sobre provedores de localização falsa no Android, rotas GPX no Xcode e DevTools.",
+    
+    inShort: "Em resumo: A simulação de localização (mock location) permite que desenvolvedores e analistas de qualidade testem coordenadas geográficas no dispositivo sem precisar viajar fisicamente. Navegadores e sistemas operacionais oferecem ferramentas nativas—como a aba Sensors do Chrome DevTools, opções de desenvolvedor no Android e arquivos GPX no Xcode—para injetar coordenadas sintéticas.",
+
+    takeawaysTitle: "Pontos Principais",
+    takeaways: [
+      "O Chrome e o Edge DevTools permitem simular posições imediatamente na aba Sensors sem instalar extensões.",
+      "O Android suporta aplicativos de localização simulada em nível de sistema pelas Opções do Desenvolvedor.",
+      "O iOS requer depuração conectada ao Xcode no macOS com arquivos estruturados em formato GPX.",
+      "Aplicativos de bancos e transporte detectam posições falsas através de sinalizadores como Location.isMock().",
+      "Confirme as coordenadas de teste e o raio de precisão com nossas ferramentas de diagnóstico em tempo real."
+    ],
+
+    p1: "Ao desenvolver sistemas que utilizam mapas—como logística de entregas, cercas virtuais ou serviços regionais—os times de desenvolvimento precisam testar o comportamento em diferentes continentes. Se o seu navegador apresentar posições incoerentes durante o uso comum, consulte nosso guia para <a href='/guides/wrong-location/'>corrigir localização errada</a>.",
+    p2: "Para testar como uma aplicação web responde a chamadas de posicionamento, os desenvolvedores utilizam navigator.geolocation com sensores emulados; veja as instruções de implementação em nosso <a href='/guides/browser-geolocation-api-guide/'>guia da API de Geolocalização HTML5</a>. Para testes de qualidade, avalie o raio de erro com o <a href='/tools/gps-accuracy/'>verificador de precisão GPS</a> ou compare os dados simulados com as coordenadas de satélite no painel de <a href='/my-location/gps/'>minhas coordenadas GPS</a>. Para entender as repercussões na segurança do dispositivo, leia o artigo sobre <a href='/guides/gps-privacy-and-security/'>privacidade e segurança no GPS</a>.",
+
+    calloutBadge: "🧪 Verificação de Teste",
+    calloutTitle: "Confira Suas Coordenadas GPS Simuladas",
+    calloutDesc: "Abra nosso verificador de GPS em tempo real para confirmar se seu navegador ou emulador reflete com precisão a latitude e a longitude configuradas.",
     calloutBtn: "Testar Coordenadas ao Vivo →",
-    h2Browser: "1. Simulação no Chrome e Edge (Sensores do DevTools)",
-    pBrowser: "Navegadores no computador oferecem a forma mais ágil de emular posições sem instalar aplicativos adicionais:",
-    step1Title: "Abra as Ferramentas de Desenvolvedor",
-    step1Desc: "Pressione F12 (ou Cmd + Option + I no macOS) para abrir o DevTools.",
-    step2Title: "Abra a Aba de Sensores",
-    step2Desc: "Pressione Cmd + Shift + P (macOS) ou Ctrl + Shift + P (Windows) > Digite 'Sensors' > Selecione 'Show Sensors'.",
-    step3Title: "Escolha Cidades Prontas ou Coordenadas Manuais",
-    step3Desc: "No menu Location, selecione cidades como Londres ou São Paulo, ou clique em 'Other...' para inserir sua própria Latitude e Longitude.",
+
+    h2Browser: "1. Simulando Localização no Google Chrome e Edge (DevTools Sensors)",
+    pBrowser: "Navegadores Chromium oferecem o caminho mais rápido para simular coordenadas sem necessidade de programas adicionais:",
+    step1Title: "Abrir as Ferramentas do Desenvolvedor",
+    step1Desc: "Pressione F12 (ou Cmd + Option + I no macOS / Ctrl + Shift + I no Windows).",
+    step2Title: "Abrir a Aba Sensors",
+    step2Desc: "Pressione Cmd + Shift + P (macOS) ou Ctrl + Shift + P (Windows) > digite 'Sensors' > escolha 'Show Sensors'.",
+    step3Title: "Selecionar Cidades ou Coordenadas Próprias",
+    step3Desc: "No menu 'Location', escolha uma cidade padrão (Londres, Tóquio) ou selecione 'Other...' para inserir latitude e longitude personalizadas.",
+
     h2Android: "2. Localização Simulada no Android (Opções do Desenvolvedor)",
-    pAndroid: "O Android traz um módulo de testes integrado ao LocationManager:",
-    and1: "Ative as Opções do Desenvolvedor: Configurações > Sobre o Telefone > Toque 7 vezes em Número da Versão.",
-    and2: "Instale um aplicativo de GPS falso confiável (ex. GPS Emulator ou Mock Locations).",
-    and3: "Vá em Configurações > Sistema > Opções do Desenvolvedor > Selecionar app de local fictício.",
-    and4: "Defina as coordenadas pretendidas e inicie a transmissão.",
-    h2Ios: "3. Simulação de Rotas GPX no iOS com Xcode",
-    pIos: "A Apple não possui botão direto para o usuário final, mas permite simular trajetos através do ambiente oficial Xcode:",
-    ios1: "Conecte seu iPhone a um Mac com o Xcode aberto.",
-    ios2: "Crie um arquivo .gpx com a lista de coordenadas, altitudes e horários da rota.",
-    ios3: "No menu Debug do Xcode, acione Simulate Location e selecione o arquivo GPX gerado.",
-    h2Detection: "4. Como os Aplicativos Detectam Coordenadas Falsas",
-    pDetection: "Para barrar fraudes em transportes e aplicativos financeiros, os sistemas expõem parâmetros programáticos de checagem:",
-    det1: "Android: Location.isFromMockProvider() (API 18+) ou Location.isMock() (API 31+) retorna true quando o sinal vem de um provedor de teste.",
-    det2: "iOS: A discrepância entre o relógio das antenas de celular e os registros de GPS revela coordenadas sintéticas.",
+    pAndroid: "O Android conta com um subsistema nativo de testes no LocationManager:",
+    and1: "Ativar Opções do Desenvolvedor: Ajustes > Sobre o telefone > toque 7 vezes seguidas em 'Número da versão'.",
+    and2: "Instale um aplicativo seguro de mock GPS da Google Play Store (ex: GPS Emulator).",
+    and3: "Acesse Ajustes > Sistema > Opções do desenvolvedor > 'Selecionar app de local fictício' > escolha o app instalado.",
+    and4: "Abra o aplicativo, defina as coordenadas de teste e inicie a transmissão simulada.",
+
+    h2Ios: "3. Simulando Rotas GPX no iOS com Xcode",
+    pIos: "O iOS não possui um botão direto de simulação, mas permite testes via Xcode no macOS:",
+    ios1: "Conecte seu iPhone ou iPad ao Mac com o Xcode aberto.",
+    ios2: "Crie um arquivo XML .gpx com as coordenadas dos pontos de passagem, altitude e horários.",
+    ios3: "No menu Debug do Xcode, clique em 'Simulate Location' e carregue seu arquivo GPX.",
+
+    h2Detection: "4. Como os Aplicativos Detectam Localizações Simuladas",
+    pDetection: "Para combater fraudes em aplicativos bancários e de mobilidade urbana, os sistemas móveis expõem verificações:",
+    det1: "Sinalizadores do Android: Location.isFromMockProvider() e Location.isMock() retornam true caso a posição venha de um emulador.",
+    det2: "Cruzamento com Antenas: Aplicativos analisam a coerência entre sinal de GPS, antenas de telefonia e redes Wi-Fi locais.",
+
+    workedExampleTitle: "Exemplo Prático: Configurando Paris no Chrome DevTools",
+    workedExampleIntro: "Como apontar o navegador para Paris, França (48.8584° N, 2.2945° E):",
+    workedExampleStep1: "1. Abra o DevTools > pressione Cmd + Shift + P (Ctrl + Shift + P) > digite 'Sensors' > Enter.",
+    workedExampleStep2: "2. Na aba Sensors, clique no menu 'Location' e selecione 'Other...'.",
+    workedExampleStep3: "3. Preencha Latitude: 48.8584 e Longitude: 2.2945 (Torre Eiffel).",
+    workedExampleStep4: "4. Abra nossa ferramenta Minha Localização: o navegador mostrará Paris como posição ativa.",
+
+    commonMistakesTitle: "Erros Comuns ao Simular Localização",
+    commonMistakes: [
+      { mistake: "Esquecer a simulação ativa no DevTools", explanation: "O Chrome mantém a emulação na aba até que seja alterada para 'No override', gerando confusão em pesquisas futuras." },
+      { mistake: "Achar que simular GPS altera o endereço IP", explanation: "A simulação altera apenas navigator.geolocation. Seu IP público continuará apontando para seu provedor real a menos que use uma VPN." },
+      { mistake: "Usar apps de banco com a simulação ativa", explanation: "Bancos bloqueiam transações de segurança se o sinalizador isMock() estiver ativado no sistema." }
+    ],
+
+    faqs: [
+      { question: "Simular o GPS altera meu endereço IP público?", answer: "Não. A simulação altera apenas as coordenadas retornadas pelos sensores do aparelho. Sites que localizam você por IP continuarão identificando seu provedor de internet real." },
+      { question: "Como faço para voltar ao sinal real de GPS no navegador?", answer: "Na aba Sensors do DevTools, clique no menu Location e selecione 'No override'. No celular, desative o app de localização fictícia nas Opções do Desenvolvedor." },
+      { question: "Os sites conseguem saber se estou usando o DevTools Sensors?", answer: "Sites comuns não conseguem verificar se a aba Sensors está aberta, mas divergências gritantes entre IP e GPS podem ser detectadas por firewalls de segurança." }
+    ],
+
+    nextStepsTitle: "Próximos Passos e Ferramentas",
+    nextSteps: [
+      { title: "API de Geolocalização HTML5", href: "/guides/browser-geolocation-api-guide/", desc: "Aprenda a controlar métodos de localização e tratamento de erros em JavaScript." },
+      { title: "Verificador de Precisão GPS", href: "/tools/gps-accuracy/", desc: "Monitore o raio de precisão e dados de sensores em tempo real." },
+      { title: "Corrigir Localização Errada", href: "/guides/wrong-location/", desc: "Elimine desvios de localização causados por simulações esquecidas." }
+    ],
+
     callout2Badge: "🧭 Conversão de Formatos",
-    callout2Title: "Converta suas Coordenadas de Teste",
-    callout2Desc: "Converta pontos de teste entre Graus Decimais (DD), Graus Minutos Segundos (GMS) e a grade métrica UTM.",
+    callout2Title: "Converta Coordenadas de Teste",
+    callout2Desc: "Converta waypoints de teste entre Graus Decimais (DD), Graus-Minutos-Segundos (DMS) e grade métrica UTM.",
     callout2Btn: "Abrir Conversor de Coordenadas →",
     connectedTitle: "🔗 Guias e Ferramentas Conectadas",
-    tool1Title: "API Geolocation do HTML5",
-    tool1Desc: "Guia de integração",
-    tool2Title: "Monitor de Precisão GPS",
-    tool2Desc: "Testar margens de erro",
-    tool3Title: "Como Funciona o GPS",
-    tool3Desc: "Física orbital e WGS84",
-    tool4Title: "Privacidade e Segurança GPS",
-    tool4Desc: "Evitar rastreamento"
+    tool1Title: "API Geolocation",
+    tool1Desc: "Guia de implementação",
+    tool2Title: "Monitor de Precisão",
+    tool2Desc: "Testes de erro simulado",
+    tool3Title: "Como o GPS Funciona",
+    tool3Desc: "Física de satélites",
+    tool4Title: "Corrigir Localização",
+    tool4Desc: "Passos de solução"
   },
   hi: {
-    title: "मॉक लोकेशन कैसे काम करती है — GPS टेस्टिंग | MyLocationLab",
-    description: "जानें Android Mock Location प्रोवाइडर, iOS Xcode GPX सिमुलेशन और Chrome DevTools Sensors कैसे सॉफ़्टवेयर टेस्टिंग और QA के लिए GPS निर्देशांक एमुलेट करते हैं।",
-    h1: "मॉक लोकेशन कैसे काम करती है: डेवलपर्स के लिए GPS टेस्टिंग और स्पूफ़िंग",
-    subtitle: "डेवलपर और QA टेस्टिंग वॉकथ्रू: Android मॉक लोकेशन प्रोवाइडर, Xcode GPX रूट सिमुलेशन और Chrome DevTools सेंसर ओवरराइड की व्याख्या।",
-    sectionLabel: "शैक्षिक गाइड",
-    p1: "लोकेशन-आधारित ऐप्लिकेशन बनाते समय—जैसे डिलीवरी डिस्पैच सिस्टम, डेटिंग ऐप्स, ट्रांज़िट ट्रैकर या जियोफ़ेंसिंग यूटिलिटी—डेवलपर्स और QA टेस्टर को भौतिक रूप से वहाँ जाए बिना अलग-अलग महाद्वीपों के निर्देशांक सिमुलेट करने की ज़रूरत पड़ती है।",
-    p2: "आधुनिक ऑपरेटिंग सिस्टम में टेस्टिंग के लिए बने समर्पित Mock Location API होते हैं। इस गाइड में हम बताते हैं कि डेस्कटॉप ब्राउज़र, Android और iOS पर GPS निर्देशांक कैसे एमुलेट करें, मॉक लोकेशन फ़्लैग अंदर से कैसे काम करते हैं, और हमारे GPS Coordinates Finder से मॉक फ़िक्स कैसे सत्यापित करें।",
-    calloutBadge: "🧪 लाइव निर्देशांक सत्यापन",
-    calloutTitle: "अपने एमुलेटेड GPS निर्देशांक सत्यापित करें",
-    calloutDesc: "हमारा लाइव GPS इंस्पेक्टर खोलें और पुष्टि करें कि आपका ब्राउज़र या एमुलेटर आपके कॉन्फ़िगर किए गए सटीक अक्षांश, देशांतर और सटीकता रेडियस को दिखा रहा है।",
+    title: "मॉक या नकली स्थान कैसे सेट करें: डेवलपर गाइड | MyLocationLab",
+    description: "संक्षेप में: Chrome DevTools Sensors, Android Mock Location और iOS Xcode GPX से GPS निर्देशांकों का परीक्षण करना सीखें।",
+    h1: "मॉक लोकेशन कैसे काम करती है: डेवलपर्स के लिए GPS टेस्टिंग",
+    subtitle: "Android मॉक लोकेशन प्रोवाइडर, Xcode GPX रूट सिमुलेशन और Chrome DevTools सेंसर ओवरराइड पर विस्तृत ट्यूटोरियल।",
+    
+    inShort: "संक्षेप में: मॉक लोकेशन डेवलपर्स और टेस्टर्स को किसी स्थान पर व्यक्तिगत रूप से जाए बिना दुनिया के किसी भी हिस्से के निर्देशांकों का परीक्षण करने की सुविधा देती है। आधुनिक ब्राउज़र और ऑपरेटिंग सिस्टम में अंतर्निहित टेस्टिंग टूल होते हैं—जैसे Chrome DevTools Sensors, Android डेवलपर विकल्प और Xcode GPX फ़ाइलें—जो ऐप्स को नकली निर्देशांक भेजते हैं।",
+
+    takeawaysTitle: "मुख्य बिंदु",
+    takeaways: [
+      "Chrome और Edge DevTools बिना किसी सॉफ़्टवेयर के Sensors टैब से सीधे निर्देशांक बदलने की सुविधा देते हैं।",
+      "Android मोबाइल ऐप्स के परीक्षण के लिए डेवलपर विकल्पों में सिस्टम-स्तरीय मॉक प्रोवाइडर का समर्थन करता है।",
+      "iOS के लिए macOS पर Xcode से जुड़े डिवाइस और GPX फाइलों की आवश्यकता होती है।",
+      "बैंकिंग और कैब बुकिंग ऐप्स Location.isMock() जैसे सिस्टम फ़्लैग से नकली स्थानों की पहचान कर लेते हैं।",
+      "हमारे लाइव टूल से आप अपने सिम्युलेटेड निर्देशांकों और सटीकता दायरे की जांच कर सकते हैं।"
+    ],
+
+    p1: "मैप-आधारित वेब एप्लिकेशन बनाते समय—जैसे डिलीवरी ट्रैकिंग, जियोफेंसिंग सुरक्षा या स्थानीय कंटेंट—डेवलपर्स को विभिन्न देशों में परीक्षण करना पड़ता है। यदि सामान्य ब्राउज़िंग में गलत स्थान दिखाई दे, तो हमारी गाइड <a href='/guides/wrong-location/'>गलत स्थान सुधारें</a> देखें।",
+    p2: "वेब ऐप्स में पोजिशनिंग कोड के परीक्षण के लिए डेवलपर्स navigator.geolocation का उपयोग करते हैं; इसे विस्तार से समझने के लिए हमारी <a href='/guides/browser-geolocation-api-guide/'>HTML5 जियोलोकेशन API गाइड</a> पढ़ें। QA परीक्षण के दौरान सटीकता दायरे की जांच के लिए <a href='/tools/gps-accuracy/'>GPS सटीकता परीक्षक</a> का उपयोग करें, या नकली डेटा की तुलना वास्तविक उपग्रह निर्देशांकों से करने के लिए <a href='/my-location/gps/'>मेरे GPS निर्देशांक</a> देखें। मोबाइल सुरक्षा पर इसके प्रभाव को समझने के लिए हमारी <a href='/guides/gps-privacy-and-security/'>GPS गोपनीयता और सुरक्षा</a> गाइड पढ़ें।",
+
+    calloutBadge: "🧪 निर्देशांक सत्यापन",
+    calloutTitle: "अपने सिम्युलेटेड GPS निर्देशांकों की जांच करें",
+    calloutDesc: "हमारे लाइव GPS इंस्पेक्टर से पुष्टि करें कि आपका ब्राउज़र ठीक वही अक्षांश और देशांतर दिखा रहा है जो आपने सेट किया है।",
     calloutBtn: "लाइव निर्देशांक टेस्ट करें →",
-    h2Browser: "1. Google Chrome और Edge में लोकेशन मॉक करना (DevTools Sensors)",
-    pBrowser: "डेस्कटॉप ब्राउज़र बिना कोई सॉफ़्टवेयर या मोबाइल ऐप इंस्टॉल किए कस्टम निर्देशांक एमुलेट करने का सबसे तेज़ तरीका देते हैं:",
-    step1Title: "डेवलपर टूल खोलें",
-    step1Desc: "Chrome/Edge DevTools खोलने के लिए F12 दबाएँ (macOS पर Cmd + Option + I)।",
-    step2Title: "सेंसर्स ड्रॉअर खोलें",
-    step2Desc: "Cmd + Shift + P (macOS) या Ctrl + Shift + P (Windows) दबाएँ > 'Sensors' टाइप करें > 'Show Sensors' चुनें।",
-    step3Title: "प्रीसेट या कस्टम निर्देशांक चुनें",
-    step3Desc: "Location के तहत प्रीसेट (जैसे लंदन, टोक्यो, सैन फ़्रांसिस्को) में से चुनें या 'Other...' चुनकर कस्टम अक्षांश और देशांतर मान दर्ज करें।",
+
+    h2Browser: "1. Google Chrome और Edge में लोकेशन बदलना (DevTools Sensors)",
+    pBrowser: "ब्राउज़र में बिना कोई ऐप डाउनलोड किए निर्देशांक बदलने का यह सबसे तेज़ तरीका है:",
+    step1Title: "डेवलपर टूल्स खोलें",
+    step1Desc: "F12 दबाएं (या Mac पर Cmd + Option + I / Windows पर Ctrl + Shift + I)।",
+    step2Title: "Sensors टैब खोलें",
+    step2Desc: "Cmd + Shift + P (Mac) या Ctrl + Shift + P (Windows) दबाएं > 'Sensors' टाइप करें > 'Show Sensors' चुनें।",
+    step3Title: "पूर्वनिर्धारित शहर या मनचाहे निर्देशांक चुनें",
+    step3Desc: "'Location' में जाकर लंदन या टोक्यो चुनें, या 'Other...' चुनकर अपना अक्षांश और देशांतर दर्ज करें।",
+
     h2Android: "2. Android पर मॉक लोकेशन (डेवलपर विकल्प)",
-    pAndroid: "Android में नेटिव LocationManager टेस्टिंग सबसिस्टम है:",
-    and1: "डेवलपर विकल्प चालू करें: Settings > About Phone पर जाएँ > 'You are now a developer!' दिखने तक Build Number पर 7 बार टैप करें।",
-    and2: "कोई भरोसेमंद मॉक GPS यूटिलिटी इंस्टॉल करें (जैसे GPS Emulator या Mock Locations)।",
-    and3: "Settings > System > Developer Options पर जाएँ > Select mock location app चुनें > अपनी टेस्टिंग ऐप चुनें।",
-    and4: "अपने मनचाहे निर्देशांक सेट करें और मॉक ब्रॉडकास्ट शुरू करें।",
-    h2Ios: "3. Xcode से iOS पर GPX रूट सिमुलेट करना",
-    pIos: "Apple iOS में मॉक निर्देशांक के लिए सीधा यूज़र-फ़ेसिंग टॉगल नहीं है, लेकिन डेवलपर Apple की आधिकारिक डेवलपमेंट टूलचेन से लोकेशन सिमुलेट कर सकते हैं:",
-    ios1: "अपने iPhone को Xcode चला रहे Mac से कनेक्ट करें।",
-    ios2: "वेपॉइंट निर्देशांक, ऊँचाई और टाइमस्टैम्प वाली एक .gpx (GPS Exchange Format) फ़ाइल बनाएँ।",
-    ios3: "Xcode Debug मेन्यू में Simulate Location चुनें और अपनी GPX वेपॉइंट फ़ाइल या रूट ट्रैक चुनें।",
-    h2Detection: "4. ऐप्स अंदर से मॉक लोकेशन कैसे पकड़ती हैं",
-    pDetection: "बैंकिंग, गेमिंग और राइड-हेलिंग ऐप्स में फ़्रॉड रोकने के लिए मोबाइल ऑपरेटिंग सिस्टम प्रोग्रामेटिक फ़्लैग देते हैं जो ऐप्स को बताते हैं कि मॉक लोकेशन प्रोवाइडर चालू है:",
-    det1: "Android: Location.isFromMockProvider() (API 18+) या Location.isMock() (API 31+) true लौटाता है अगर स्थिति टेस्टिंग प्रोवाइडर से बनी हो।",
-    det2: "iOS: सेल्युलर नेटवर्क टाइमिंग और GPS टाइमस्टैम्प की तुलना सिंथेटिक निर्देशांक पहचानती है।",
-    callout2Badge: "🧭 फ़ॉर्मैट रूपांतरण",
-    callout2Title: "टेस्ट टारगेट निर्देशांक बदलें",
-    callout2Desc: "GPS टेस्ट वेपॉइंट को दशमलव डिग्री (DD), डिग्री-मिनट-सेकंड (DMS) और Universal Transverse Mercator (UTM) के बीच बदलें।",
-    callout2Btn: "कोऑर्डिनेट कन्वर्टर खोलें →",
-    connectedTitle: "🔗 संबंधित गाइड और टेस्टिंग टूल",
-    tool1Title: "HTML5 Geolocation API",
-    tool1Desc: "कोड इंप्लीमेंटेशन गाइड",
-    tool2Title: "GPS सटीकता मॉनिटर",
-    tool2Desc: "सिमुलेटेड एरर रेडियस टेस्ट करें",
+    pAndroid: "Android में परीक्षण के लिए एक समर्पित सबसिस्टम होता है:",
+    and1: "डेवलपर विकल्प चालू करें: Settings > About Phone > 'Build Number' पर लगातार 7 बार टैप करें।",
+    and2: "Google Play Store से एक सुरक्षित मॉक GPS ऐप इंस्टॉल करें (उदा. GPS Emulator)।",
+    and3: "Settings > System > Developer Options > 'Select mock location app' > अपनी ऐप चुनें।",
+    and4: "ऐप खोलें, इच्छित स्थान चुनें और सिमुलेशन शुरू करें।",
+
+    h2Ios: "3. iOS पर Xcode से GPX रूट सिमुलेट करना",
+    pIos: "Apple iOS में सीधा उपयोगकर्ता बटन नहीं होता, लेकिन Xcode से परीक्षण किया जा सकता है:",
+    ios1: "अपने iPhone को Mac से कनेक्ट करें जिसमें Xcode खुला हो।",
+    ios2: "वेपॉइंट निर्देशांक और समय के साथ एक .gpx XML फ़ाइल बनाएं।",
+    ios3: "Xcode के Debug मेनू में जाकर 'Simulate Location' चुनें और अपनी GPX फ़ाइल लोड करें।",
+
+    h2Detection: "4. ऐप्स नकली स्थान का पता कैसे लगाते हैं",
+    pDetection: "बैंकिंग और गेमिंग ऐप्स में धोखाधड़ी रोकने के लिए ऑपरेटिंग सिस्टम विशेष संकेत प्रदान करते हैं:",
+    det1: "Android फ़्लैग: Location.isFromMockProvider() और Location.isMock() नकली स्थान होने पर true लौटाते हैं।",
+    det2: "नेटवर्क तुलना: ऐप्स GPS सिग्नल की तुलना मोबाइल टावर और वाई-फ़ाई डेटा से करके विसंगति पहचानते हैं।",
+
+    workedExampleTitle: "व्यावहारिक उदाहरण: Chrome DevTools में पेरिस सेट करना",
+    workedExampleIntro: "ब्राउज़र की स्थिति को पेरिस, फ्रांस (48.8584° N, 2.2945° E) पर सेट करने के चरण:",
+    workedExampleStep1: "1. DevTools खोलें > Cmd + Shift + P (Ctrl + Shift + P) > 'Sensors' टाइप करें > Enter दबाएं।",
+    workedExampleStep2: "2. Sensors टैब में 'Location' मेनू से 'Other...' चुनें।",
+    workedExampleStep3: "3. Latitude: 48.8584 और Longitude: 2.2945 (एफिल टॉवर) दर्ज करें।",
+    workedExampleStep4: "4. हमारे 'मेरा स्थान' टूल पर जाएं: ब्राउज़र तुरंत पेरिस को आपकी सक्रिय स्थिति के रूप में दिखाएगा।",
+
+    commonMistakesTitle: "लोकेशन सिमुलेशन में आम गलतियाँ",
+    commonMistakes: [
+      { mistake: "Sensors टैब में सिमुलेशन बंद करना भूल जाना", explanation: "जब तक 'No override' न चुना जाए, Chrome उस टैब में वही नकली स्थिति दिखाता रहेगा, जिससे बाद में भ्रम होता है।" },
+      { mistake: "यह सोचना कि मॉक लोकेशन से IP एड्रेस बदल जाता है", explanation: "मॉक लोकेशन केवल navigator.geolocation को बदलती है। आपका सार्वजनिक IP प्रदाता वही रहता है जब तक कि आप VPN न लगाएं।" },
+      { mistake: "नकली स्थान चालू रखकर बैंकिंग ऐप खोलना", explanation: "यदि isMock() सक्रिय है, तो वित्तीय ऐप्स सुरक्षा कारणों से खाते को ब्लॉक कर सकते हैं।" }
+    ],
+
+    faqs: [
+      { question: "क्या GPS मॉक करने से मेरा IP एड्रेस बदल जाएगा?", answer: "नहीं। यह केवल उपकरण के सेंसर निर्देशांकों को बदलता है। जो वेबसाइटें IP द्वारा स्थान जांचती हैं, वे अभी भी आपका वास्तविक इंटरनेट कनेक्शन ही देखेंगी।" },
+      { question: "ब्राउज़र को वापस सामान्य GPS पर कैसे लाएं?", answer: "Chrome DevTools के Sensors टैब में 'Location' ड्रॉपडाउन से 'No override' चुनें। फोन में डेवलपर विकल्प से मॉक ऐप हटा दें।" },
+      { question: "क्या वेबसाइटें जान सकती हैं कि मैं Sensors का उपयोग कर रहा हूँ?", answer: "वेबसाइटें सीधे DevTools को नहीं देख सकतीं, लेकिन IP और GPS में बड़ा अंतर होने पर सुरक्षा प्रणालियाँ अलर्ट कर सकती हैं।" }
+    ],
+
+    nextStepsTitle: "अगले कदम और डेवलपर टूल्स",
+    nextSteps: [
+      { title: "HTML5 जियोलोकेशन गाइड", href: "/guides/browser-geolocation-api-guide/", desc: "जावास्क्रिप्ट में स्थान विधियों और एरर हैंडलिंग को समझें।" },
+      { title: "GPS सटीकता परीक्षक", href: "/tools/gps-accuracy/", desc: "अपने ब्राउज़र में सटीकता दायरा और लाइव सेंसर डेटा जांचें।" },
+      { title: "गलत स्थान कैसे सुधारें", href: "/guides/wrong-location/", desc: "अवांछित सेंसर सेटिंग्स के कारण होने वाली त्रुटियों को ठीक करें।" }
+    ],
+
+    callout2Badge: "🧭 प्रारूप रूपांतरण",
+    callout2Title: "परीक्षण निर्देशांक बदलें",
+    callout2Desc: "टेस्ट वेपॉइंट्स को दशमलव डिग्री (DD), DMS और UTM मीटर में आसानी से बदलें।",
+    callout2Btn: "निर्देशांक परिवर्तक खोलें →",
+    connectedTitle: "🔗 जुड़े मार्गदर्शक और उपकरण",
+    tool1Title: "जियोलोकेशन API",
+    tool1Desc: "कोड गाइड",
+    tool2Title: "सटीकता मॉनिटर",
+    tool2Desc: "त्रुटि दायरा परीक्षण",
     tool3Title: "GPS कैसे काम करता है",
-    tool3Desc: "सैटेलाइट ट्राइलैटरेशन फ़िज़िक्स",
-    tool4Title: "GPS प्राइवेसी और सुरक्षा",
-    tool4Desc: "लोकेशन ट्रैकिंग से बचाव"
+    tool3Desc: "उपग्रह भौतिकी",
+    tool4Title: "स्थान सुधारें",
+    tool4Desc: "समस्या निवारण"
   },
   id: {
-    title: "Cara Kerja Mock Location — Pengujian GPS | MyLocationLab",
-    description: "Pelajari cara penyedia Mock Location Android, simulasi rute GPX Xcode di iOS, dan Sensors Chrome DevTools meniru koordinat GPS untuk QA perangkat lunak.",
-    h1: "Cara Kerja Mock Location: Menguji & Meniru GPS untuk Pengembang",
-    subtitle: "Panduan pengujian bagi pengembang dan QA tentang penyedia mock location Android, simulasi rute GPX Xcode, dan penimpaan sensor Chrome DevTools.",
-    sectionLabel: "Panduan Edukasi",
-    p1: "Saat membangun aplikasi berbasis lokasi—seperti sistem penugasan pengiriman, aplikasi kencan, pelacak transportasi umum, atau utilitas geofencing—pengembang dan penguji QA perlu mensimulasikan koordinat di berbagai benua tanpa harus bepergian ke sana.",
-    p2: "Sistem operasi modern menyertakan API Mock Location khusus yang memang dirancang untuk pengujian. Dalam panduan ini, kami merinci cara meniru koordinat GPS di peramban desktop, Android, dan iOS, cara kerja flag mock location di balik layar, serta cara memverifikasi fix mock dengan GPS Coordinates Finder kami.",
-    calloutBadge: "🧪 Verifikasi Koordinat Langsung",
-    calloutTitle: "Verifikasi Koordinat GPS Hasil Tiruan Anda",
-    calloutDesc: "Buka inspektor GPS langsung kami untuk memastikan peramban atau emulator Anda menampilkan lintang, bujur, dan radius akurasi yang Anda konfigurasikan.",
+    title: "Cara Meniru atau Memalsukan Lokasi GPS untuk Pengembang | MyLocationLab",
+    description: "Singkatnya: Pelajari cara meniru koordinat GPS menggunakan Chrome DevTools Sensors, Opsi Pengembang Android, dan simulasi GPX di Xcode.",
+    h1: "Cara Kerja Mock Location: Pengujian & Simulasi GPS Pengembang",
+    subtitle: "Panduan pengujian QA dan pengembang mengenai penyedia lokasi tiruan Android, simulasi rute GPX di Xcode, dan sensor DevTools.",
+    
+    inShort: "Singkatnya: Lokasi tiruan (mock location) memungkinkan pengembang dan penguji perangkat lunak merekayasa koordinat geografis di perangkat tanpa harus bepergian secara fisik. Peramban dan sistem operasi modern menyediakan API pengujian terintegrasi—seperti Chrome DevTools Sensors, Opsi Pengembang Android, dan berkas GPX di Xcode—untuk mengirimkan koordinat buatan ke aplikasi.",
+
+    takeawaysTitle: "Poin-Poin Penting",
+    takeaways: [
+      "Chrome dan Edge DevTools menyediakan pengujian posisi instan tanpa pasang aplikasi melalui laci Sensors.",
+      "Android mendukung penyedia lokasi tiruan tingkat sistem melalui Opsi Pengembang untuk uji aplikasi seluler.",
+      "iOS memerlukan sambungan kabel ke Xcode di Mac dan berkas titik rute GPX.",
+      "Aplikasi perbankan dan transportasi mendeteksi koordinat palsu melalui penanda sistem seperti Location.isMock().",
+      "Verifikasi titik pengujian dan radius akurasi dengan alat diagnostik waktu nyata kami."
+    ],
+
+    p1: "Saat mengembangkan perangkat lunak berbasis lokasi—seperti aplikasi logistik armada, alarm geofencing, atau konten regional—pengembang perlu memverifikasi reaksi sistem di berbagai belahan dunia. Jika peramban Anda memunculkan kota yang salah di luar sesi pengujian, simak panduan kami tentang <a href='/guides/wrong-location/'>memperbaiki kesalahan lokasi</a>.",
+    p2: "Untuk melihat respons aplikasi web terhadap data navigasi, pengembang memadukan navigator.geolocation dengan simulasi sensor; pelajari kodenya di <a href='/guides/browser-geolocation-api-guide/'>panduan API Geolocation HTML5</a>. Untuk pengujian jaminan kualitas (QA), pantau radius kesalahan simulasi di <a href='/tools/gps-accuracy/'>pemeriksa akurasi GPS</a> atau bandingkan titik simulasi dengan data satelit asli di <a href='/my-location/gps/'>koordinat GPS saya</a>. Untuk memahami dampak simulasi terhadap perlindungan privasi perangkat, baca ulasan kami tentang <a href='/guides/gps-privacy-and-security/'>keamanan dan privasi GPS</a>.",
+
+    calloutBadge: "🧪 Verifikasi Koordinat",
+    calloutTitle: "Periksa Koordinat GPS Simulasi Anda",
+    calloutDesc: "Buka inspektur GPS langsung kami untuk memastikan peramban atau emulator Anda mencerminkan garis lintang dan bujur yang telah Anda setel.",
     calloutBtn: "Uji Koordinat Langsung →",
-    h2Browser: "1. Meniru Lokasi di Google Chrome & Edge (Sensors DevTools)",
-    pBrowser: "Peramban desktop menyediakan cara tercepat meniru koordinat khusus tanpa memasang perangkat lunak atau aplikasi seluler apa pun:",
-    step1Title: "Buka Developer Tools",
-    step1Desc: "Tekan F12 (atau Cmd + Option + I di macOS) untuk membuka DevTools Chrome/Edge.",
+
+    h2Browser: "1. Meniru Lokasi di Google Chrome & Edge (DevTools Sensors)",
+    pBrowser: "Peramban berbasis Chromium menyediakan cara tercepat untuk merekayasa koordinat tanpa memasang ekstensi:",
+    step1Title: "Buka Alat Pengembang (DevTools)",
+    step1Desc: "Tekan F12 (atau Cmd + Option + I di macOS / Ctrl + Shift + I di Windows).",
     step2Title: "Buka Panel Sensors",
     step2Desc: "Tekan Cmd + Shift + P (macOS) atau Ctrl + Shift + P (Windows) > ketik 'Sensors' > pilih 'Show Sensors'.",
-    step3Title: "Pilih Koordinat Preset atau Kustom",
-    step3Desc: "Di bagian Location, pilih dari preset (mis. London, Tokyo, San Francisco) atau pilih 'Other...' lalu masukkan nilai Lintang dan Bujur kustom Anda.",
-    h2Android: "2. Mock Location di Android (Developer Options)",
-    pAndroid: "Android memiliki subsistem pengujian LocationManager bawaan:",
-    and1: "Aktifkan Developer Options: Buka Setelan > Tentang Ponsel > Ketuk Nomor Bentukan 7 kali hingga muncul 'Anda kini seorang pengembang!'.",
-    and2: "Pasang utilitas mock GPS yang tepercaya (mis. GPS Emulator atau Mock Locations).",
-    and3: "Buka Setelan > Sistem > Developer Options > Pilih aplikasi mock location > pilih aplikasi pengujian Anda.",
-    and4: "Atur koordinat yang diinginkan dan mulai siaran mock-nya.",
-    h2Ios: "3. Mensimulasikan Rute GPX di iOS dengan Xcode",
-    pIos: "Apple iOS tidak menyediakan sakelar langsung bagi pengguna untuk koordinat tiruan, tetapi pengembang dapat mensimulasikan lokasi menggunakan rangkaian alat pengembangan resmi Apple:",
-    ios1: "Hubungkan iPhone Anda ke Mac yang menjalankan Xcode.",
-    ios2: "Buat berkas .gpx (GPS Exchange Format) yang memuat koordinat waypoint, elevasi, dan stempel waktu.",
-    ios3: "Di menu Debug Xcode, pilih Simulate Location lalu pilih berkas waypoint GPX atau jalur rute Anda.",
-    h2Detection: "4. Cara Aplikasi Mendeteksi Mock Location di Balik Layar",
-    pDetection: "Untuk mencegah penipuan pada aplikasi perbankan, gim, dan ride-hailing, sistem operasi seluler membuka flag programatik yang memberi tahu aplikasi saat penyedia lokasi tiruan aktif:",
-    det1: "Android: Location.isFromMockProvider() (API 18+) atau Location.isMock() (API 31+) mengembalikan true jika posisi dibuat oleh penyedia pengujian.",
-    det2: "iOS: Perbandingan antara waktu jaringan seluler dan stempel waktu GPS mengidentifikasi koordinat sintetis.",
+    step3Title: "Pilih Kota Bawaan atau Koordinat Kustom",
+    step3Desc: "Pada menu 'Location', pilih kota bawaan (London, Tokyo) atau pilih 'Other...' untuk memasukkan lintang dan bujur kustom.",
+
+    h2Android: "2. Lokasi Tiruan di Android (Opsi Pengembang)",
+    pAndroid: "Android menyediakan subsistem pengujian terintegrasi di dalam LocationManager:",
+    and1: "Aktifkan Opsi Pengembang: Masuk ke Pengaturan > Tentang Ponsel > ketuk 'Nomor Versi' (Build Number) 7 kali berturut-turut.",
+    and2: "Pasang aplikasi mock GPS terpercaya dari Google Play Store (misalnya GPS Emulator).",
+    and3: "Buka Pengaturan > Sistem > Opsi Pengembang > 'Pilih aplikasi lokasi tiruan' > pilih aplikasi Anda.",
+    and4: "Buka aplikasi tiruan tersebut, tentukan titik koordinat yang diinginkan, dan mulai siaran koordinat.",
+
+    h2Ios: "3. Simulasi Rute GPX di iOS dengan Xcode",
+    pIos: "iOS tidak menyediakan tombol khusus bagi pengguna umum, tetapi pengembang dapat mengujinya melalui Xcode:",
+    ios1: "Hubungkan perangkat iOS ke komputer Mac yang menjalankan Xcode.",
+    ios2: "Buat berkas XML berformat .gpx yang memuat koordinat waypoint, ketinggian, dan stempel waktu.",
+    ios3: "Di menu Debug Xcode, pilih 'Simulate Location' dan pilih berkas GPX Anda.",
+
+    h2Detection: "4. Bagaimana Aplikasi Mendeteksi Lokasi Tiruan",
+    pDetection: "Demi mencegah penipuan di aplikasi perbankan atau kecurangan pemesanan transportasi, sistem operasi menyediakan penanda deteksi:",
+    det1: "Penanda Android: Location.isFromMockProvider() dan Location.isMock() menghasilkan nilai true jika koordinat berasal dari aplikasi tiruan.",
+    det2: "Pemeriksaan Jaringan: Aplikasi membandingkan data satelit dengan penundaan waktu menara seluler dan sinyal Wi-Fi.",
+
+    workedExampleTitle: "Contoh Nyata: Menyetel Paris di Chrome DevTools",
+    workedExampleIntro: "Langkah mengatur posisi peramban ke Paris, Prancis (48.8584° N, 2.2945° E):",
+    workedExampleStep1: "1. Buka DevTools > tekan Cmd + Shift + P (Ctrl + Shift + P) > ketik 'Sensors' > Enter.",
+    workedExampleStep2: "2. Pada panel Sensors, klik menu tarik-turun 'Location' dan pilih 'Other...'.",
+    workedExampleStep3: "3. Masukkan Latitude: 48.8584 dan Longitude: 2.2945 (Menara Eiffel).",
+    workedExampleStep4: "4. Buka alat Lokasi Saya kami: peramban akan langsung melaporkan Paris sebagai lokasi aktif Anda.",
+
+    commonMistakesTitle: "Kesalahan Umum Saat Meniru Lokasi",
+    commonMistakes: [
+      { mistake: "Lupa menonaktifkan simulasi di DevTools", explanation: "Chrome akan mempertahankan koordinat tiruan di tab tersebut hingga diubah kembali ke 'No override', memicu kesalahan pada penelusuran lain." },
+      { mistake: "Mengira mock location mengubah alamat IP", explanation: "Simulasi hanya mengubah navigator.geolocation. IP publik Anda tetap terhubung ke ISP asli Anda kecuali memakai VPN." },
+      { mistake: "Membuka aplikasi perbankan saat mock GPS aktif", explanation: "Aplikasi keuangan akan membatasi transaksi jika mendeteksi penanda isMock() aktif pada sistem." }
+    ],
+
+    faqs: [
+      { question: "Apakah meniru lokasi GPS mengubah alamat IP saya?", answer: "Tidak. Simulasi GPS hanya memengaruhi koordinat sensor navigasi. Layanan yang melacak wilayah Anda melalui IP akan tetap melihat jaringan penyedia internet asli Anda." },
+      { question: "Bagaimana cara mengembalikan peramban ke sinyal GPS asli?", answer: "Pada panel Sensors di DevTools, buka menu Location dan pilih 'No override'. Di ponsel, matikan aplikasi lokasi tiruan di Opsi Pengembang." },
+      { question: "Bisakah situs web mengetahui jika saya memakai DevTools Sensors?", answer: "Situs web biasa tidak dapat memeriksa apakah panel Sensors sedang terbuka, namun ketidakcocokan besar antara IP dan GPS dapat memicu tanda peringatan." }
+    ],
+
+    nextStepsTitle: "Langkah Selanjutnya & Alat Diagnostik",
+    nextSteps: [
+      { title: "Panduan API Geolocation", href: "/guides/browser-geolocation-api-guide/", desc: "Pelajari metode navigator.geolocation dan penanganan galat di JavaScript." },
+      { title: "Pemeriksa Akurasi GPS", href: "/tools/gps-accuracy/", desc: "Periksa radius kesalahan koordinat dan telemetri sensor secara langsung." },
+      { title: "Perbaiki Lokasi Keliru", href: "/guides/wrong-location/", desc: "Atasi perbedaan wilayah yang disebabkan oleh simulasi sensor yang belum dinonaktifkan." }
+    ],
+
     callout2Badge: "🧭 Konversi Format",
-    callout2Title: "Konversi Koordinat Target Pengujian",
-    callout2Desc: "Konversi waypoint pengujian GPS antara Derajat Desimal (DD), Derajat-Menit-Detik (DMS), dan Universal Transverse Mercator (UTM).",
+    callout2Title: "Ubah Format Koordinat Uji",
+    callout2Desc: "Ubah koordinat titik uji antara Derajat Desimal (DD), Derajat-Menit-Detik (DMS), dan kisi metrik UTM.",
     callout2Btn: "Buka Konverter Koordinat →",
-    connectedTitle: "🔗 Panduan & Alat Pengujian Terkait",
-    tool1Title: "HTML5 Geolocation API",
-    tool1Desc: "Panduan implementasi kode",
-    tool2Title: "Monitor Akurasi GPS",
-    tool2Desc: "Uji radius galat simulasi",
+    connectedTitle: "🔗 Panduan Terkait & Alat Uji",
+    tool1Title: "API Geolocation",
+    tool1Desc: "Panduan kode",
+    tool2Title: "Pemantau Akurasi",
+    tool2Desc: "Uji radius galat",
     tool3Title: "Cara Kerja GPS",
-    tool3Desc: "Fisika trilaterasi satelit",
-    tool4Title: "Privasi & Keamanan GPS",
-    tool4Desc: "Mencegah pelacakan lokasi"
+    tool3Desc: "Fisika satelit",
+    tool4Title: "Perbaiki Lokasi",
+    tool4Desc: "Langkah perbaikan"
   }
 };
 
@@ -367,13 +677,34 @@ const c = translations[lang] || translations.en;
   h1={c.h1}
   subtitle={c.subtitle}
   section="guides"
-  sectionLabel={c.sectionLabel}
+  sectionLabel={lang === 'es' ? 'Guías Prácticas' : lang === 'fr' ? 'Guides Pratiques' : lang === 'de' ? 'Praxis-Leitfäden' : lang === 'pt' ? 'Guias Práticos' : lang === 'hi' ? 'मार्गदर्शिका' : lang === 'id' ? 'Panduan Praktis' : 'Practical Guides'}
   readTime="8 min"
-  publishDate="2026-09-22"
+  publishDate="2026-09-15"
   modifiedDate="2026-09-22"
 >
-  <p>{c.p1}</p>
-  <p>{c.p2}</p>
+  {c.inShort && (
+    <div class="card card-flat" style="margin-bottom: var(--space-6); padding: var(--space-5); border-left: 4px solid var(--color-accent-primary); background: var(--color-bg-secondary); border-radius: var(--radius-md);">
+      <p style="margin: 0; font-size: var(--text-base); line-height: 1.75; color: var(--color-text-primary); font-weight: 500;">
+        {c.inShort}
+      </p>
+    </div>
+  )}
+
+  {c.takeaways && (
+    <div class="card card-flat" style="margin-bottom: var(--space-8); padding: var(--space-6); background: var(--color-bg-card); border: 1px solid var(--color-border); border-radius: var(--radius-lg);">
+      <h3 style="margin-top: 0; margin-bottom: var(--space-3); font-size: var(--text-lg); display: flex; align-items: center; gap: var(--space-2);">
+        <span>💡</span> {c.takeawaysTitle || "Key Takeaways"}
+      </h3>
+      <ul style="margin: 0; padding-left: var(--space-5); display: flex; flex-direction: column; gap: var(--space-2); line-height: 1.75; color: var(--color-text-secondary);">
+        {c.takeaways.map((item: string) => (
+          <li>{item}</li>
+        ))}
+      </ul>
+    </div>
+  )}
+
+  <p set:html={localizeHtml(c.p1, lang)}></p>
+  <p set:html={localizeHtml(c.p2, lang)}></p>
 
   <div class="tool-callout">
     <div class="tool-callout-content">
@@ -382,13 +713,12 @@ const c = translations[lang] || translations.en;
       <p class="tool-callout-desc">{c.calloutDesc}</p>
     </div>
     <div class="tool-callout-action">
-      <a href={getLocalizedPath('/tools/gps-coordinates/', lang)} class="btn btn-primary">{c.calloutBtn}</a>
+      <a href={getLocalizedPath('/my-location/gps/', lang)} class="btn btn-primary">{c.calloutBtn}</a>
     </div>
   </div>
 
   <h2>{c.h2Browser}</h2>
   <p>{c.pBrowser}</p>
-
   <div class="step-container">
     <div class="step-card">
       <div class="step-number">1</div>
@@ -397,7 +727,6 @@ const c = translations[lang] || translations.en;
         <p class="step-desc">{c.step1Desc}</p>
       </div>
     </div>
-
     <div class="step-card">
       <div class="step-number">2</div>
       <div class="step-body">
@@ -405,7 +734,6 @@ const c = translations[lang] || translations.en;
         <p class="step-desc">{c.step2Desc}</p>
       </div>
     </div>
-
     <div class="step-card">
       <div class="step-number">3</div>
       <div class="step-body">
@@ -417,7 +745,7 @@ const c = translations[lang] || translations.en;
 
   <h2>{c.h2Android}</h2>
   <p>{c.pAndroid}</p>
-  <ol>
+  <ol style="line-height: 1.75; color: var(--color-text-secondary); display: flex; flex-direction: column; gap: var(--space-2);">
     <li>{c.and1}</li>
     <li>{c.and2}</li>
     <li>{c.and3}</li>
@@ -426,7 +754,7 @@ const c = translations[lang] || translations.en;
 
   <h2>{c.h2Ios}</h2>
   <p>{c.pIos}</p>
-  <ul>
+  <ul style="line-height: 1.75; color: var(--color-text-secondary); display: flex; flex-direction: column; gap: var(--space-2);">
     <li>{c.ios1}</li>
     <li>{c.ios2}</li>
     <li>{c.ios3}</li>
@@ -434,10 +762,60 @@ const c = translations[lang] || translations.en;
 
   <h2>{c.h2Detection}</h2>
   <p>{c.pDetection}</p>
-  <ul>
+  <ul style="line-height: 1.75; color: var(--color-text-secondary); display: flex; flex-direction: column; gap: var(--space-2);">
     <li>{c.det1}</li>
     <li>{c.det2}</li>
   </ul>
+
+  {c.workedExampleTitle && (
+    <div class="card card-flat" style="margin: var(--space-8) 0; padding: var(--space-6); background: var(--color-bg-secondary); border-left: 4px solid var(--color-accent-success); border-radius: var(--radius-md);">
+      <h3 style="margin-top: 0; margin-bottom: var(--space-2); color: var(--color-text-primary);">📍 {c.workedExampleTitle}</h3>
+      <p style="color: var(--color-text-secondary); margin-bottom: var(--space-4); line-height: 1.75;">{c.workedExampleIntro}</p>
+      <div style="display: flex; flex-direction: column; gap: var(--space-2); font-size: var(--text-sm); line-height: 1.75;">
+        <div style="padding: var(--space-2) var(--space-3); background: var(--color-bg-tertiary); border-radius: var(--radius-sm); font-family: var(--font-mono);">{c.workedExampleStep1}</div>
+        <div style="padding: var(--space-2) var(--space-3); background: var(--color-bg-tertiary); border-radius: var(--radius-sm); font-family: var(--font-mono);">{c.workedExampleStep2}</div>
+        <div style="padding: var(--space-2) var(--space-3); background: var(--color-bg-tertiary); border-radius: var(--radius-sm); font-family: var(--font-mono);">{c.workedExampleStep3}</div>
+        <div style="padding: var(--space-2) var(--space-3); background: var(--color-bg-tertiary); border-radius: var(--radius-sm); font-family: var(--font-mono);">{c.workedExampleStep4}</div>
+      </div>
+    </div>
+  )}
+
+  {c.commonMistakesTitle && (
+    <div style="margin: var(--space-10) 0;">
+      <h2>⚠️ {c.commonMistakesTitle}</h2>
+      <div style="display: grid; gap: var(--space-4); margin-top: var(--space-4);">
+        {c.commonMistakes.map((m: any) => (
+          <div class="card card-flat" style="padding: var(--space-4) var(--space-5); border-left: 3px solid var(--color-accent-warning);">
+            <strong style="display: block; color: var(--color-text-primary); margin-bottom: var(--space-1); font-size: var(--text-base);">{m.mistake}</strong>
+            <p style="margin: 0; color: var(--color-text-secondary); font-size: var(--text-sm); line-height: 1.75;">{m.explanation}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  )}
+
+  {c.faqs && (
+    <div style="margin: var(--space-10) 0;">
+      <h2>❓ Frequently Asked Questions</h2>
+      <FAQAccordion items={c.faqs} />
+    </div>
+  )}
+
+  {c.nextSteps && (
+    <div class="card card-flat" style="margin: var(--space-10) 0; padding: var(--space-6); background: var(--color-bg-secondary); border: 1px solid var(--color-border); border-radius: var(--radius-lg);">
+      <h3 style="margin-top: 0; margin-bottom: var(--space-4); font-size: var(--text-lg); display: flex; align-items: center; gap: var(--space-2);">
+        <span>🚀</span> {c.nextStepsTitle || "Next Steps"}
+      </h3>
+      <div style="display: grid; gap: var(--space-3);">
+        {c.nextSteps.map((step: any) => (
+          <a href={getLocalizedPath(step.href, lang)} class="card card-flat" style="display: flex; flex-direction: column; gap: var(--space-1); padding: var(--space-3) var(--space-4); text-decoration: none; border-left: 3px solid var(--color-accent-primary); background: var(--color-bg-card); transition: transform 0.15s ease;">
+            <strong style="color: var(--color-text-primary); font-size: var(--text-base);">{step.title} →</strong>
+            <span style="color: var(--color-text-secondary); font-size: var(--text-sm); line-height: 1.6;">{step.desc}</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  )}
 
   <div class="tool-callout">
     <div class="tool-callout-content">
@@ -474,8 +852,8 @@ const c = translations[lang] || translations.en;
           <div class="contextual-link-sub">{c.tool3Desc}</div>
         </div>
       </a>
-      <a href={getLocalizedPath('/guides/gps-privacy-and-security/', lang)} class="contextual-link-card">
-        <span class="contextual-link-icon">🔒</span>
+      <a href={getLocalizedPath('/guides/wrong-location/', lang)} class="contextual-link-card">
+        <span class="contextual-link-icon">🔧</span>
         <div class="contextual-link-info">
           <div class="contextual-link-title">{c.tool4Title}</div>
           <div class="contextual-link-sub">{c.tool4Desc}</div>

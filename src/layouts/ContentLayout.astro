@@ -52,6 +52,17 @@ const breadcrumbs = [
   { label: h1 },
 ];
 
+const metaLabels: Record<SupportedLang, { published: string; updated: string; read: string }> = {
+  en: { published: 'Published', updated: 'Updated', read: 'read' },
+  es: { published: 'Publicado', updated: 'Actualizado', read: 'de lectura' },
+  fr: { published: 'Publié', updated: 'Mis à jour', read: 'de lecture' },
+  de: { published: 'Veröffentlicht', updated: 'Aktualisiert', read: 'Lesezeit' },
+  pt: { published: 'Publicado', updated: 'Atualizado', read: 'de leitura' },
+  hi: { published: 'प्रकाशित', updated: 'अपडेटेड', read: 'पठन' },
+  id: { published: 'Diterbitkan', updated: 'Diperbarui', read: 'waktu baca' },
+};
+const currentLabels = metaLabels[lang] || metaLabels.en;
+
 const activeLangConfig = languages[lang] || languages.en;
 
 // Rich TechArticle schema
@@ -109,7 +120,7 @@ const allJsonLd = jsonLd
         <header class="article-header">
           <div class="article-meta-badge">
             <span class="badge badge-primary">{sectionLabel}</span>
-            <span class="article-read-time">{readTime} read</span>
+            <span class="article-read-time">{readTime} {currentLabels.read}</span>
           </div>
 
           <h1 itemprop="headline">{h1}</h1>
@@ -127,9 +138,9 @@ const allJsonLd = jsonLd
               </div>
             </div>
             <div class="byline-dates">
-              <time datetime={publishDate} itemprop="datePublished">Published: {publishDate}</time>
+              <time datetime={publishDate} itemprop="datePublished">{currentLabels.published}: {publishDate}</time>
               {modifiedDate !== publishDate && (
-                <time datetime={modifiedDate} itemprop="dateModified">Updated: {modifiedDate}</time>
+                <time datetime={modifiedDate} itemprop="dateModified">{currentLabels.updated}: {modifiedDate}</time>
               )}
             </div>
           </div>
@@ -141,6 +152,7 @@ const allJsonLd = jsonLd
 
         <!-- E-E-A-T Reviewer Badge at bottom of every article -->
         <AuthorEAT
+          lang={lang}
           reviewedBy={authorName}
           reviewerTitle={authorRole}
           lastUpdated={modifiedDate}

@@ -89,7 +89,7 @@ export const faqPageTranslations: Record<string, FAQPageContent> = {
       },
       {
         question: "¿Qué precisión tiene este sitio web al calcular mi posición?",
-        answerHtml: 'La precisión depende de su hardware y entorno: en smartphones con GPS activado al aire libre, suele ser de <strong>3 a 5 metros</strong>. En ordenadores portátiles conectados a Wi-Fi, suele rondar los <strong>15 a 40 metros</strong>. En conexiones de cable de escritorio, se recurre a la geolocalización por IP regional (margen de 10 a 50 km).'
+        answerHtml: 'La precisión depende de su hardware y entorno: en smartphones con GPS activado al aire libre, suele ser de <strong>3 a 5 metros</strong>. En ordenadores portátiles conectados a Wi-Fi, suele rondar los <strong>15 a 40 metros</strong>. En conexiones de cable de escritorio, se recurre a la geolocalización por IP regional (margen de 5 a 50 km según el proveedor).'
       },
       {
         question: "¿Se rastrean, registran o almacenan mis datos de ubicación en sus servidores?",
@@ -242,7 +242,7 @@ export const faqPageTranslations: Record<string, FAQPageContent> = {
       },
       {
         question: "Qual a precisão deste site ao determinar minha posição?",
-        answerHtml: 'A precisão varia conforme o dispositivo: em celulares ao ar livre com GPS ligado, a precisão típica é de <strong>3 a 5 metros</strong>. Em computadores portáteis via Wi-Fi, entre <strong>15 e 40 metros</strong>. Em conexões de cabo Ethernet, utiliza-se a geolocalização por IP (precisão regional de 10 a 50 km).'
+        answerHtml: 'A precisão varia conforme o dispositivo: em celulares ao ar livre com GPS ligado, a precisão típica é de <strong>3 a 5 metros</strong>. Em computadores portáteis via Wi-Fi, entre <strong>15 e 40 metros</strong>. Em conexões de cabo Ethernet, utiliza-se a geolocalização por IP (precisão regional de 5 a 50 km).'
       },
       {
         question: "Minhas coordenadas são rastreadas ou salvas nos seus servidores?",

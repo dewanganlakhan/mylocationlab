@@ -47,6 +47,11 @@ const hubSchema = {
       <p class="page-header-desc" style="max-width: 740px; margin: 0 auto;">
         {content.subtitle}
       </p>
+      <div style="margin-top: var(--space-4);">
+        <a href={getLocalizedPath('/glossary/', lang)} class="badge badge-neutral" style="text-decoration: none; font-size: var(--text-sm); padding: var(--space-2) var(--space-4);">
+          📖 {t('footer.link.glossary') || 'Explore our Geospatial & GPS Glossary →'}
+        </a>
+      </div>
     </section>
 
     <!-- Category Sections -->

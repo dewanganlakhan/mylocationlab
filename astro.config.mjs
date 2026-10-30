@@ -25,9 +25,27 @@ export default defineConfig({
   },
   integrations: [
     sitemap({
-      changefreq: 'weekly',
-      priority: 0.7,
-      lastmod: new Date(),
+      filter: (page) => !page.includes('/404') && !page.endsWith('/404.html'),
+      i18n: {
+        defaultLocale: 'en',
+        locales: {
+          en: 'en',
+          es: 'es',
+          fr: 'fr',
+          de: 'de',
+          pt: 'pt-BR',
+          hi: 'hi',
+          id: 'id',
+        },
+      },
+      serialize(item) {
+        // Return clean item without identical default changefreq/priority
+        return {
+          url: item.url,
+          lastmod: item.lastmod || new Date('2026-10-29T00:00:00Z'),
+          links: item.links,
+        };
+      },
     }),
   ],
   prefetch: {

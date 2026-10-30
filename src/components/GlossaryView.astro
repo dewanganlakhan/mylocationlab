@@ -21,6 +21,23 @@ const breadcrumbs = [
   { label: c.breadcrumb }
 ];
 
+// Map term index or English name to stable canonical anchor IDs
+const termSlugMap: Record<number, string> = {
+  0: 'a-gps',
+  1: 'bssid',
+  2: 'datum',
+  3: 'decimal-degrees',
+  4: 'hdop',
+  5: 'ephemeris',
+  6: 'geocoding',
+  7: 'geofencing',
+  8: 'haversine-formula',
+  9: 'ip-geolocation',
+  10: 'reverse-geocoding',
+  11: 'trilateration',
+  12: 'wgs-84',
+};
+
 const pageUrl = getLocalizedPath('/glossary/', lang);
 const glossarySchema = {
   '@context': 'https://schema.org',
@@ -28,10 +45,11 @@ const glossarySchema = {
   name: c.metaTitle,
   description: c.metaDescription,
   url: `https://mylocationlab.com${pageUrl}`,
-  hasDefinedTerm: c.terms.map((item) => ({
+  hasDefinedTerm: c.terms.map((item, idx) => ({
     '@type': 'DefinedTerm',
     name: item.term,
     description: item.definition,
+    url: `https://mylocationlab.com${pageUrl}#${termSlugMap[idx] || 'term-' + idx}`,
   })),
 };
 ---
@@ -54,16 +72,19 @@ const glossarySchema = {
     </section>
 
     <div class="grid grid-2" style="gap: var(--space-6); margin-bottom: var(--space-16);">
-      {c.terms.map((item) => (
-        <div class="card card-flat" style="padding: var(--space-6);">
-          <h2 style="font-size: var(--text-lg); color: var(--color-accent-primary); margin-bottom: var(--space-2); font-family: var(--font-mono);">
-            {item.term}
-          </h2>
-          <p style="font-size: var(--text-sm); color: var(--color-text-secondary); line-height: 1.7; margin: 0;">
-            {item.definition}
-          </p>
-        </div>
-      ))}
+      {c.terms.map((item, idx) => {
+        const anchorId = termSlugMap[idx] || `term-${idx}`;
+        return (
+          <div id={anchorId} class="card card-flat" style="padding: var(--space-6); scroll-margin-top: 100px;">
+            <h2 style="font-size: var(--text-lg); color: var(--color-accent-primary); margin-bottom: var(--space-2); font-family: var(--font-mono);">
+              {item.term}
+            </h2>
+            <p style="font-size: var(--text-sm); color: var(--color-text-secondary); line-height: 1.7; margin: 0;">
+              {item.definition}
+            </p>
+          </div>
+        );
+      })}
     </div>
 
     <!-- Cross-links to Tools and Guides -->

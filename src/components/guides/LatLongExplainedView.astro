@@ -3,7 +3,8 @@
  * LatLongExplainedView — Multilingual Guide: Latitude and Longitude Explained
  */
 import ContentLayout from '../../layouts/ContentLayout.astro';
-import { getLocalizedPath, type SupportedLang, defaultLang } from '../../i18n/config';
+import FAQAccordion from '../FAQAccordion.astro';
+import { getLocalizedPath, localizeHtml, type SupportedLang, defaultLang } from '../../i18n/config';
 
 interface Props {
   lang?: SupportedLang;
@@ -13,34 +14,51 @@ const { lang = defaultLang } = Astro.props;
 
 const translations: Record<string, any> = {
   en: {
-    title: "Latitude and Longitude Explained | MyLocationLab",
-    description: "Master the geographic coordinate system: how latitude and longitude define positions on Earth, decimal precision, and antipodes.",
+    title: "Latitude and Longitude Explained: Geodesy Guide | MyLocationLab",
+    description: "In short: Latitude measures north-south angular distance from the Equator, while Longitude measures east-west distance from the Prime Meridian. Master decimal precision and antipodes.",
     h1: "Latitude and Longitude Explained: Complete Geodesy Guide",
     subtitle: "A foundational exploration of geographic coordinate reference systems, degrees, minutes, seconds, decimal precision, and great-circle mathematics.",
-    pIntro1: "Every physical location on Earth—from the peak of Mount Everest to your living room—can be uniquely expressed using two numbers: latitude (φ) and longitude (λ).",
-    pIntro2: "Together, these angular coordinates form the universal grid of global cartography, geodesy, marine navigation, and modern web mapping engines like Google Maps, OpenStreetMap, and Leaflet.",
+    
+    inShort: "In short: Latitude and longitude are angles measured from the Earth's center that specify any point on the planet's surface. Latitude measures north-south position from 0° at the Equator to 90° at the poles, while longitude measures east-west position from 0° at the Greenwich Prime Meridian to 180° at the International Date Line.",
+
+    takeawaysTitle: "Key Takeaways",
+    takeaways: [
+      "Parallels of latitude are equidistant (~111 km per degree), whereas meridians of longitude converge to zero distance at the poles.",
+      "Decimal Degrees (DD) are the universal computing standard, while sexagesimal DMS remains common in aviation and marine charts.",
+      "Five decimal places in DD provides ~1.1 meter ground precision, perfectly matching consumer GNSS receiver limits.",
+      "Negative latitude denotes the Southern Hemisphere; negative longitude denotes the Western Hemisphere.",
+      "You can convert and project these spherical angles into metric planar coordinates."
+    ],
+
+    pIntro1: "Every physical location on Earth—from the peak of Mount Everest to your living room—can be uniquely expressed using two numbers: latitude (φ) and longitude (λ). You can inspect your live coordinates directly on our <a href='/my-location/latitude-longitude/'>My Latitude and Longitude page</a>.",
+    pIntro2: "Together, these angular coordinates form the universal grid of global cartography, geodesy, marine navigation, and web mapping engines. To translate coordinates between different recording conventions, test our <a href='/tools/coordinate-converter/'>Coordinate Converter</a>, or explore our side-by-side comparison of <a href='/comparisons/decimal-degrees-vs-dms/'>Decimal Degrees vs DMS</a>. When metric planar grids are required for surveying, consult our guide on <a href='/guides/utm-coordinates-and-datums/'>UTM coordinates and datums</a>, or see the glossary entry for <a href='/glossary/#decimal-degrees'>decimal degrees</a>.",
+
     calloutBadge: "🌐 Interactive Map Picker",
     calloutTitle: "Click Anywhere on Earth to Get Instant Coordinates",
     calloutDesc: "Pick any spot on our interactive satellite and vector map to view real-time Decimal Degrees, DMS, and elevation metrics.",
     calloutBtn: "Open Lat/Long Map →",
+
     h2Lat: "1. Understanding Latitude (The Parallels)",
     pLat1: "Latitude (φ) measures how far north or south a location is relative to the Earth's Equator. Lines of latitude run horizontally east-west around the globe and are called parallels because they remain equidistant from one another at all points.",
     latBullet1: "The Equator (0°): The fundamental baseline dividing Earth into the Northern (+ / N) and Southern (- / S) Hemispheres.",
     latBullet2: "North Pole (+90° N) & South Pole (-90° S): The rotational axis vertices of the planet.",
     latBullet3: "Distance per Degree: 1 degree of latitude is approximately 111 kilometers (69 miles) everywhere on Earth.",
+
     h2Long: "2. Understanding Longitude (The Meridians)",
     pLong1: "Longitude (λ) measures how far east or west a location is from the designated Prime Meridian (0° in Greenwich, London). Lines of longitude run vertically from pole to pole and are called meridians.",
     longBullet1: "Eastern Hemisphere (0° to +180° E) & Western Hemisphere (0° to -180° W).",
     longBullet2: "Convergence at the Poles: Distance per 1° longitude equals ~111.32 km × cos(Latitude). At the equator it is 111.3 km; at 48° it is 74.6 km; at the poles it is 0 km.",
+
     h2Formats: "3. Coordinate Formats: Decimal Degrees vs DMS vs UTM",
     ddTitle: "Decimal Degrees (DD) — The Web & GPS Standard",
     ddDesc: "Used by all modern software, JavaScript APIs, and GPS devices. Positive indicates North/East; negative indicates South/West. (e.g. 40.7128, -74.0060)",
     dmsTitle: "Degrees, Minutes, Seconds (DMS) — The Navigational Standard",
-    dmsDesc: "The sexagesimal system dividing 1 degree into 60 minutes (') and 1 minute into 60 seconds (\"). Used in aviation, marine charting, and military operations.",
+    dmsDesc: "The sexagesimal system dividing 1 degree into 60 minutes (') and 1 minute into 60 seconds (″). Used in aviation, marine charting, and military operations.",
     utmTitle: "Universal Transverse Mercator (UTM) — The Metric Grid",
     utmDesc: "Divides the world into 60 longitudinal zones of 6° each, measuring distance in meters (Easting and Northing) rather than spherical angles.",
+
     h2Precision: "4. How Many Decimal Places Do You Actually Need?",
-    pPrecision: "In web development and GIS data storage, storing excessive decimal places consumes memory and gives a false illusion of precision. Here is the official WGS 84 precision scale:",
+    pPrecision: "In web development and GIS data storage, storing excessive decimal places consumes memory and gives a false illusion of precision. Our <a href='/tools/latitude-longitude/'>Latitude & Longitude Finder</a> operates with standard 6-decimal floating points:",
     thPlaces: "Decimal Places",
     thFraction: "Degree Fraction",
     thGround: "Ground Precision (at Equator)",
@@ -48,326 +66,617 @@ const translations: Record<string, any> = {
     prec0: ["0", "1.0°", "~ 111 km (69 mi)", "Country or continent region"],
     prec1: ["1", "0.1°", "~ 11.1 km (6.9 mi)", "Large metropolitan area"],
     prec2: ["2", "0.01°", "~ 1.11 km (0.69 mi)", "Town, village, or park"],
-    prec3: ["3", "0.001°", "~ 111 meters", "Large parcel or airport runway"],
-    prec4: ["4", "0.0001°", "~ 11.1 meters", "Individual parcel or street identifier"],
-    prec5: ["5", "0.00001°", "~ 1.11 meters", "Doorway entrance, smartphone GPS"],
-    prec6: ["6", "0.000001°", "~ 11.1 cm", "Surveyor marker, civil engineering stake"],
-    ruleOfThumb: "Rule of Thumb: For all general web mapping, address lookups, and mobile navigation, 5 or 6 decimal places provide the ultimate balance between sub-meter accuracy and data efficiency.",
-    connectedGuides: "🔗 Connected Tools & Guides",
+    prec3: ["3", "0.001°", "~ 111 m (364 ft)", "Large agricultural field or neighborhood"],
+    prec4: ["4", "0.0001°", "~ 11.1 m (36.4 ft)", "Individual suburban land parcel"],
+    prec5: ["5", "0.00001°", "~ 1.11 m (3.64 ft)", "Commercial smartphone GPS threshold"],
+    prec6: ["6", "0.000001°", "~ 0.11 m (4.3 in)", "High-accuracy surveying and geodetic markers"],
+
+    workedExampleTitle: "Worked Geodesy Calculation: Distance of One Longitude Degree",
+    workedExampleIntro: "Problem: Calculate the ground width of 1 degree of longitude in London (Latitude = 51.5074° N).",
+    workedExampleStep1: "Formula: Width = 111.32 km × cos(Latitude)",
+    workedExampleStep2: "Step 1: Convert latitude to radians: 51.5074° × (π / 180) = 0.89897 rad",
+    workedExampleStep3: "Step 2: Calculate cosine: cos(0.89897) = 0.62243",
+    workedExampleStep4: "Step 3: Multiply: 111.32 km × 0.62243 = 69.29 km. In London, 1° of longitude spans only 69.3 km, compared to 111.3 km at the Equator.",
+
+    commonMistakesTitle: "Common Coordinate Mistakes",
+    commonMistakes: [
+      { mistake: "Swapping Latitude and Longitude order (Lat/Lng vs Lng/Lat)", explanation: "Mathematical notation and GeoJSON put Longitude (X) before Latitude (Y), whereas human conventions and Google Maps put Latitude before Longitude." },
+      { mistake: "Mixing up cardinal directions with negative signs", explanation: "Writing -40.7128° S is a double negative that incorrectly translates to North. Write either -40.7128° or 40.7128° S." },
+      { mistake: "Using more than 6 decimal places for consumer applications", explanation: "8 decimal places measures millimeter-level tectonic plate shifts, which smartphone GPS hardware can never physically measure." }
+    ],
+
+    faqs: [
+      { question: "Why is latitude always written before longitude in common speech?", answer: "Navigators historically determined latitude first using the angle of the North Star (Polaris) or the noon sun with an astrolabe, while determining longitude remained difficult until marine chronometers were invented in the 18th century." },
+      { question: "What is an antipode in geographic coordinates?", answer: "An antipode is the diametrically opposite point on Earth. To find it, take the negative of your latitude (-Lat) and add or subtract 180° from your longitude (180° - Lng)." },
+      { question: "Are latitude and longitude coordinates linear distances?", answer: "No. They are spherical angles measured in degrees. Because Earth is an ellipsoid, converting degrees to meters requires trigonometric projection formulas like Haversine or Vincenty." }
+    ],
+
+    nextStepsTitle: "Next Steps",
+    nextSteps: [
+      { title: "Convert Coordinate Formats", href: "/tools/coordinate-converter/", desc: "Translate coordinates between Decimal Degrees, DMS, and UTM with live rounding." },
+      { title: "Decimal Degrees vs DMS Comparison", href: "/comparisons/decimal-degrees-vs-dms/", desc: "Understand why modern GIS and web mapping engines standardized on decimals." },
+      { title: "UTM & Datums Guide", href: "/guides/utm-coordinates-and-datums/", desc: "Explore metric grid projections and the WGS 84 geodetic ellipsoid." }
+    ],
+
+    connectedGuides: "🔗 Connected Guides & Practical Tools",
     tool1Title: "Coordinate Converter",
-    tool1Desc: "Convert DD, DMS and UTM",
-    tool2Title: "UTM & Datums Guide",
-    tool2Desc: "Metric grid projections",
-    tool3Title: "Distance Calculator",
-    tool3Desc: "Great-circle distance solver",
-    tool4Title: "How GPS Works",
-    tool4Desc: "Satellite geodesy primer"
+    tool1Desc: "Convert DD, DMS & UTM",
+    tool2Title: "Decimals vs DMS",
+    tool2Desc: "Format comparison",
+    tool3Title: "UTM & Datums Guide",
+    tool3Desc: "Metric grid projections",
+    tool4Title: "Distance Calculator",
+    tool4Desc: "Haversine geodesic solver"
   },
   es: {
     title: "Latitud y Longitud Explicadas: Guía de Geodesia | MyLocationLab",
-    description: "Domine el sistema de coordenadas: cómo la latitud y la longitud definen puntos en la Tierra, precisión decimal y antípodas.",
+    description: "En resumen: La latitud mide la distancia angular norte-sur desde el ecuador, mientras que la longitud mide este-oeste desde el meridiano de Greenwich.",
     h1: "Latitud y Longitud Explicadas: Guía Completa de Geodesia",
-    subtitle: "Exploración de sistemas de referencia, grados, minutos, segundos, precisión decimal y trigonometría de círculos máximos.",
-    pIntro1: "Cualquier rincón del planeta —desde la cumbre del Everest hasta su salón— puede identificarse mediante dos números: latitud (φ) y longitud (λ).",
-    pIntro2: "Estas coordenadas angulares constituyen la cuadrícula universal de la cartografía, la navegación marítima y los motores cartográficos web como Google Maps, OpenStreetMap y Leaflet.",
-    calloutBadge: "🌐 Selector Interactivo",
-    calloutTitle: "Haga clic en cualquier punto del mapa",
-    calloutDesc: "Seleccione cualquier lugar en nuestro mapa satelital para consultar sus coordenadas en Grados Decimales, DMS y altitud.",
-    calloutBtn: "Abrir Mapa de Lat/Long →",
-    h2Lat: "1. Comprendiendo la Latitud (Los Paralelos)",
-    pLat1: "La latitud (φ) mide la distancia angular hacia el norte o el sur respecto a la línea del Ecuador. Las líneas de latitud corren horizontalmente y se denominan paralelos porque mantienen una distancia constante entre sí.",
-    latBullet1: "El Ecuador (0°): La línea de base que divide la Tierra en Hemisferio Norte (+ / N) y Hemisferio Sur (- / S).",
-    latBullet2: "Polo Norte (+90° N) y Polo Sur (-90° S): Los extremos del eje de rotación terrestre.",
-    latBullet3: "Distancia por Grado: 1 grado de latitud equivale a aproximadamente 111 kilómetros en cualquier lugar de la Tierra.",
-    h2Long: "2. Comprendiendo la Longitud (Los Meridianos)",
-    pLong1: "La longitud (λ) mide la distancia este u oeste respecto al Meridiano de Greenwich (0°). Las líneas de longitud van de polo a polo y se llaman meridianos.",
+    subtitle: "Exploración de sistemas de referencia geográfica, grados, minutos, segundos, precisión decimal y matemáticas esféricas.",
+    
+    inShort: "En resumen: La latitud y la longitud son ángulos medidos desde el centro de la Tierra que determinan cualquier punto sobre el globo. La latitud mide la posición norte-sur de 0° en el ecuador a 90° en los polos, mientras que la longitud mide la posición este-oeste de 0° a 180° respecto al meridiano de Greenwich.",
+
+    takeawaysTitle: "Puntos Clave",
+    takeaways: [
+      "Los paralelos de latitud son equidistantes (~111 km por grado), mientras que los meridianos de longitud convergen en los polos.",
+      "Los Grados Decimales (DD) son el estándar del software, mientras que DMS se usa en náutica y aviación.",
+      "Cinco decimales en DD otorgan ~1,1 metros de resolución, igualando la capacidad de los móviles.",
+      "Latitud negativa indica el hemisferio sur; longitud negativa indica el hemisferio occidental.",
+      "Es posible proyectar estos ángulos esféricos en cuadrículas métricas planas."
+    ],
+
+    pIntro1: "Cualquier rincón del planeta puede expresarse mediante dos valores: latitud (φ) y longitud (λ). Puede comprobar sus coordenadas en <a href='/my-location/latitude-longitude/'>Mi Latitud y Longitud</a>.",
+    pIntro2: "Ambos ángulos forman la base de la cartografía moderna. Para convertir formatos, pruebe nuestro <a href='/tools/coordinate-converter/'>Conversor de Coordenadas</a> o revise nuestra comparativa de <a href='/comparisons/decimal-degrees-vs-dms/'>Grados Decimales vs DMS</a>. Si necesita cuadrículas métricas, consulte la guía de <a href='/guides/utm-coordinates-and-datums/'>coordenadas UTM y dátums</a> o el término <a href='/glossary/#decimal-degrees'>grados decimales</a>.",
+
+    calloutBadge: "🌐 Selector de Mapa",
+    calloutTitle: "Haga Clic en Cualquier Punto para Obtener Coordenadas",
+    calloutDesc: "Seleccione cualquier punto en el mapa satelital para ver coordenadas en DD, DMS y altitud.",
+    calloutBtn: "Abrir Mapa de Coordenadas →",
+
+    h2Lat: "1. Qué es la Latitud (Los Paralelos)",
+    pLat1: "La latitud (φ) mide la distancia angular respecto al ecuador terrestre. Las líneas discurren horizontalmente de este a oeste y se denominan paralelos porque mantienen una distancia constante entre sí.",
+    latBullet1: "Ecuador (0°): Divide el planeta en Hemisferio Norte (+ / N) y Hemisferio Sur (- / S).",
+    latBullet2: "Polos Norte (+90°) y Sur (-90°): Extremos del eje de rotación de la Tierra.",
+    latBullet3: "Distancia por Grado: 1 grado de latitud equivale a unos 111 kilómetros en cualquier punto del globo.",
+
+    h2Long: "2. Qué es la Longitud (Los Meridianos)",
+    pLong1: "La longitud (λ) mide la distancia este u oeste respecto al meridiano de Greenwich (0°). Se extienden verticalmente de polo a polo.",
     longBullet1: "Hemisferio Este (0° a +180° E) y Hemisferio Oeste (0° a -180° O/W).",
-    longBullet2: "Convergencia Polar: La distancia de 1° de longitud disminuye con la latitud (~111,32 km × cos(Latitud)). En el Ecuador es de 111,3 km; a 48° es de 74,6 km; en los polos es de 0 km.",
-    h2Formats: "3. Formatos de Coordenadas: Decimales vs DMS vs UTM",
-    ddTitle: "Grados Decimales (DD) — El Estándar Web y GPS",
-    ddDesc: "Formato numérico empleado por APIs web, JavaScript y dispositivos GPS. Positivo para Norte/Este; negativo para Sur/Oeste (ej. 40.4168, -3.7038).",
-    dmsTitle: "Grados, Minutos, Segundos (DMS) — Estándar de Navegación",
-    dmsDesc: "Sistema sexagesimal que fracciona 1 grado en 60 minutos (') y 1 minuto en 60 segundos (\"). Utilizado en náutica, aviación y cartas topográficas.",
+    longBullet2: "Convergencia Polar: 1° de longitud equivale a 111,32 km × cos(Latitud). En el ecuador mide 111,3 km; a 48° mide 74,6 km; en los polos mide 0 km.",
+
+    h2Formats: "3. Formatos: Grados Decimales vs DMS vs UTM",
+    ddTitle: "Grados Decimales (DD) — Estándar Web y GPS",
+    ddDesc: "Utilizado por todo el software moderno y APIs web. Positivo es Norte/Este; negativo es Sur/Oeste (ej. 40.4168, -3.7038).",
+    dmsTitle: "Grados, Minutos, Segundos (DMS) — Estándar Náutico",
+    dmsDesc: "Sistema sexagesimal que divide 1 grado en 60 minutos (') y 1 minuto en 60 segundos (″). Empleado en aviación y navegación marítima.",
     utmTitle: "Universal Transverse Mercator (UTM) — Cuadrícula Métrica",
-    utmDesc: "Divide la Tierra en 60 husos de 6° de longitud, calculando la posición en metros planos (X Este, Y Norte) en vez de ángulos esféricos.",
-    h2Precision: "4. ¿Cuántos Decimales Necesita Realmente?",
-    pPrecision: "En desarrollo web y bases de datos SIG, guardar decimales excesivos consume memoria y aporta falsa exactitud. Escala oficial WGS 84:",
-    thPlaces: "Decimales",
+    utmDesc: "Divide la Tierra en 60 husos de 6° de ancho, midiendo distancias en metros planos (easting y northing).",
+
+    h2Precision: "4. ¿Cuántos Decimales se Necesitan Realmente?",
+    pPrecision: "Guardar decimales excesivos consume memoria y falsea la precisión. Con el <a href='/tools/latitude-longitude/'>Buscador de Latitud y Longitud</a> se procesan 6 cifras estándar:",
+    thPlaces: "Cifras Decimales",
     thFraction: "Fracción de Grado",
-    thGround: "Precisión en Suelo (Ecuador)",
-    thScale: "Escala y Caso de Uso Real",
+    thGround: "Precisión Terrestre",
+    thScale: "Escala y Uso Real",
     prec0: ["0", "1,0°", "~ 111 km", "País o región continental"],
     prec1: ["1", "0,1°", "~ 11,1 km", "Gran área metropolitana"],
-    prec2: ["2", "0,01°", "~ 1,11 km", "Ciudad, pueblo o parque"],
-    prec3: ["3", "0,001°", "~ 111 metros", "Parcela agrícola o pista aérea"],
-    prec4: ["4", "0,0001°", "~ 11,1 metros", "Identificación de parcela o portal"],
-    prec5: ["5", "0,00001°", "~ 1,11 metros", "Entrada de edificio, GPS de móvil"],
-    prec6: ["6", "0,000001°", "~ 11,1 centímetros", "Hito topográfico de ingeniería"],
-    ruleOfThumb: "Regla Práctica: Para cartografía web y navegación habitual, utilizar 5 o 6 decimales ofrece el equilibrio idóneo entre precisión submétrica y ligereza.",
-    connectedGuides: "🔗 Herramientas y Guías Conectadas",
-    tool1Title: "Conversor de Coordenadas",
-    tool1Desc: "Convierta DD, DMS y UTM",
-    tool2Title: "Guía UTM y Dátums",
-    tool2Desc: "Proyecciones métricas planas",
-    tool3Title: "Calculadora de Distancia",
-    tool3Desc: "Distancias geodésicas",
-    tool4Title: "Cómo Funciona el GPS",
-    tool4Desc: "Fundamentos de satélites"
+    prec2: ["2", "0,01°", "~ 1,11 km", "Municipio, pueblo o parque"],
+    prec3: ["3", "0,001°", "~ 111 m", "Polígono agrícola o barrio"],
+    prec4: ["4", "0,0001°", "~ 11,1 m", "Parcela residencial individual"],
+    prec5: ["5", "0,00001°", "~ 1,11 m", "Límite físico de GPS en smartphones"],
+    prec6: ["6", "0,000001°", "~ 0,11 m", "Topografía de precisión y geodesia"],
+
+    workedExampleTitle: "Cálculo Geodésico: Ancho de un Grado de Longitud",
+    workedExampleIntro: "Problema: Calcular el ancho en metros de 1 grado de longitud en Madrid (Latitud = 40,4168° N).",
+    workedExampleStep1: "Fórmula: Ancho = 111,32 km × cos(Latitud)",
+    workedExampleStep2: "Paso 1: Convertir a radianes: 40,4168° × (π / 180) = 0,7054 rad",
+    workedExampleStep3: "Paso 2: Calcular coseno: cos(0,7054) = 0,76135",
+    workedExampleStep4: "Paso 3: Multiplicar: 111,32 km × 0,76135 = 84,75 km. En Madrid 1° de longitud mide 84,7 km frente a los 111,3 km del ecuador.",
+
+    commonMistakesTitle: "Errores Frecuentes con Coordenadas",
+    commonMistakes: [
+      { mistake: "Invertir el orden de Latitud y Longitud", explanation: "GeoJSON coloca Longitud (X) antes que Latitud (Y), mientras que el lenguaje común y Google Maps sitúan Latitud primero." },
+      { mistake: "Duplicar signo negativo y letra de hemisferio", explanation: "Escribir -40,4168° Sur es una doble negación errónea. Escriba -40,4168° o 40,4168° S." },
+      { mistake: "Usar 8 decimales en aplicaciones civiles", explanation: "Ocho decimales miden desplazamientos milimétricos de placas tectónicas imposibles de captar por un smartphone." }
+    ],
+
+    faqs: [
+      { question: "¿Por qué la latitud se nombra antes que la longitud?", answer: "Históricamente, los navegantes medían la latitud con astrolabios observando la Estrella Polar, mientras que la longitud exigió el invento de los cronómetros marinos en el siglo XVIII." },
+      { question: "¿Qué son las antípodas de una coordenada?", answer: "Es el punto diametralmente opuesto en la Tierra. Se obtiene invirtiendo el signo de la latitud (-Lat) y restando o sumando 180° a la longitud (180° - Long)." },
+      { question: "¿Son las coordenadas distancias lineales?", answer: "No. Son ángulos esféricos medidos en grados. Convertirlos a distancias métricas exige fórmulas ortodrómicas como Haversine o Vincenty." }
+    ],
+
+    nextStepsTitle: "Siguientes Pasos",
+    nextSteps: [
+      { title: "Convertir Formatos de Coordenadas", href: "/tools/coordinate-converter/", desc: "Transforme coordenadas entre DD, DMS y UTM con cálculo instantáneo." },
+      { title: "Grados Decimales vs DMS", href: "/comparisons/decimal-degrees-vs-dms/", desc: "Conozca por qué los mapas web adoptaron el formato decimal." },
+      { title: "Guía UTM y Dátums", href: "/guides/utm-coordinates-and-datums/", desc: "Aprenda a trabajar con proyecciones métricas y el elipsoide WGS 84." }
+    ],
+
+    connectedGuides: "🔗 Guías y Herramientas Conectadas",
+    tool1Title: "Conversor Coordenadas",
+    tool1Desc: "DD, DMS y UTM",
+    tool2Title: "Decimales vs DMS",
+    tool2Desc: "Comparativa de formatos",
+    tool3Title: "Guía UTM y Dátums",
+    tool3Desc: "Proyecciones métricas",
+    tool4Title: "Calculadora de Distancia",
+    tool4Desc: "Distancia Haversine"
   },
   fr: {
-    title: "Latitude et Longitude Expliquées : Guide SIG | MyLocationLab",
-    description: "Comprenez le système de coordonnées géographiques : latitude, longitude, précision des décimales, méridiens et antipodes.",
-    h1: "Latitude et Longitude Expliquées : Le Guide Géodésique",
-    subtitle: "Les fondements des systèmes de référence géodésiques, degrés, minutes, secondes, précision décimale et calculs de grand cercle.",
-    pIntro1: "Tout point sur Terre peut être désigné avec une absolue certitude par deux valeurs numériques : la latitude (φ) et la longitude (λ).",
-    pIntro2: "Ces coordonnées angulaires constituent le maillage universel de la cartographie, du guidage par satellite et des moteurs web tels que Google Maps, OpenStreetMap et Leaflet.",
+    title: "Latitude et Longitude Expliquées : Guide Géodésique | MyLocationLab",
+    description: "En bref : La latitude mesure l'angle nord-sud depuis l'équateur, tandis que la longitude mesure l'écart est-ouest depuis le méridien de Greenwich.",
+    h1: "Latitude et Longitude Expliquées : Guide Complet de Géodésie",
+    subtitle: "Les systèmes de référence de coordonnées, degrés décimaux, notation sexagésimale et calculs sphériques.",
+    
+    inShort: "En bref : La latitude et la longitude sont des angles mesurés depuis le centre de la Terre définissant tout point géographique. La latitude varie de 0° à l'équateur jusqu'à 90° aux pôles, tandis que la longitude varie de 0° à 180° par rapport au méridien de Greenwich.",
+
+    takeawaysTitle: "Points Clés",
+    takeaways: [
+      "Les parallèles de latitude sont réguliers (~111 km par degré), alors que les méridiens de longitude se rejoignent aux pôles.",
+      "Les Degrés Décimaux (DD) sont le standard informatique, tandis que les DMS dominent en aviation et marine.",
+      "Cinq décimales en DD offrent ~1,1 mètre de précision, correspondant au matériel GPS grand public.",
+      "Une latitude négative indique l'hémisphère Sud ; une longitude négative indique l'hémisphère Ouest.",
+      "Ces angles sphériques peuvent être convertis en grilles métriques planes."
+    ],
+
+    pIntro1: "Tout lieu sur Terre peut être défini par deux coordonnées : la latitude (φ) et la longitude (λ). Retrouvez votre position sur <a href='/my-location/latitude-longitude/'>Ma Latitude et Longitude</a>.",
+    pIntro2: "Ces angles constituent la trame de la cartographie mondiale. Pour convertir vos données, utilisez notre <a href='/tools/coordinate-converter/'>Convertisseur de Coordonnées</a> ou lisez notre comparatif <a href='/comparisons/decimal-degrees-vs-dms/'>Degrés Décimaux vs DMS</a>. Pour les systèmes de projection métrique, explorez notre guide des <a href='/guides/utm-coordinates-and-datums/'>coordonnées UTM et datums</a> ou le glossaire des <a href='/glossary/#decimal-degrees'>degrés décimaux</a>.",
+
     calloutBadge: "🌐 Sélecteur Cartographique",
-    calloutTitle: "Cliquez sur la carte pour obtenir vos coordonnées",
-    calloutDesc: "Choisissez un emplacement sur notre carte vectorielle ou satellite pour afficher ses coordonnées en DD, DMS et son altitude.",
-    calloutBtn: "Ouvrir la Carte Lat/Long →",
+    calloutTitle: "Cliquez pour Obtenir les Coordonnées Immédiates",
+    calloutDesc: "Pointez n'importe quel endroit sur la carte interactive pour relever ses valeurs en DD, DMS et altitude.",
+    calloutBtn: "Ouvrir la Carte →",
+
     h2Lat: "1. Comprendre la Latitude (Les Parallèles)",
-    pLat1: "La latitude (φ) exprime la position nord ou sud d'un point par rapport à l'Équateur terrestre. Les lignes de latitude sont horizontales et appelées parallèles car elles restent équidistantes en tout point.",
-    latBullet1: "L'Équateur (0°) : La ligne de référence séparant l'Hémisphère Nord (+ / N) de l'Hémisphère Sud (- / S).",
-    latBullet2: "Pôle Nord (+90° N) et Pôle Sud (-90° S) : Les extrémités de l'axe de rotation planétaire.",
-    latBullet3: "Distance par degré : 1 degré de latitude équivaut à environ 111 kilomètres partout sur la planète.",
+    pLat1: "La latitude (φ) indique l'écartement angulaire par rapport à l'équateur. Les lignes sont appelées parallèles car elles restent à égale distance les unes des autres sur tout le globe.",
+    latBullet1: "Équateur (0°) : Sépare le globe en Hémisphère Nord (+ / N) et Hémisphère Sud (- / S).",
+    latBullet2: "Pôles Nord (+90°) et Sud (-90°) : Extrémités de l'axe de rotation terrestre.",
+    latBullet3: "Écart Métrique : 1 degré de latitude équivaut à environ 111 kilomètres partout sur Terre.",
+
     h2Long: "2. Comprendre la Longitude (Les Méridiens)",
-    pLong1: "La longitude (λ) indique l'écartement est ou ouest par rapport au Méridien de Greenwich (0°). Les méridiens relient verticalement les deux pôles.",
+    pLong1: "La longitude (λ) mesure l'écart est-ouest par rapport au méridien de Greenwich (0°). Les méridiens convergent tous vers les pôles.",
     longBullet1: "Hémisphère Est (0° à +180° E) et Hémisphère Ouest (0° à -180° O/W).",
-    longBullet2: "Convergence aux pôles : La distance métrique de 1° de longitude décroît selon la formule ~111,32 km × cos(Latitude). À l'équateur : 111,3 km ; à Paris (48°) : 74,6 km ; aux pôles : 0 km.",
-    h2Formats: "3. Formats de Coordonnées : Décimales vs DMS vs UTM",
-    ddTitle: "Degrés Décimaux (DD) — Le Standard Web & GPS",
-    ddDesc: "Format numérique utilisé par JavaScript et les récepteurs GPS. Positif au Nord/Est, négatif au Sud/Ouest (ex. 48.8566, 2.3522 pour Paris).",
-    dmsTitle: "Degrés, Minutes, Secondes (DMS) — Le Standard Nautique",
-    dmsDesc: "Système sexagésimal divisant 1 degré en 60 minutes (') et 1 minute en 60 secondes (\"). Préconisé pour la marine et l'aviation.",
-    utmTitle: "Universal Transverse Mercator (UTM) — La Grille Métrique",
-    utmDesc: "Découpe le monde en 60 fuseaux de 6° de longitude en mesurant les coordonnées planes en mètres (Esting et Northing).",
-    h2Precision: "4. Combien de Décimales Faut-il Conserver ?",
-    pPrecision: "En programmation et en gestion de bases SIG, enregistrer un excès de décimales est inutile. Échelle officielle WGS 84 :",
+    longBullet2: "Convergence Polaire : 1° de longitude = 111,32 km × cos(Latitude). À l'équateur = 111,3 km ; à 48° = 74,6 km ; aux pôles = 0 km.",
+
+    h2Formats: "3. Formats : Degrés Décimaux vs DMS vs UTM",
+    ddTitle: "Degrés Décimaux (DD) — Standard Web et SIG",
+    ddDesc: "Utilisé par les navigateurs et APIs web (ex. 48.8584, 2.2945). Positif = Nord/Est, Négatif = Sud/Ouest.",
+    dmsTitle: "Degrés, Minutes, Secondes (DMS) — Standard de Navigation",
+    dmsDesc: "Système sexagésimal divisant 1 degré en 60 minutes (') et 1 minute en 60 secondes (″).",
+    utmTitle: "Transverse Universelle de Mercator (UTM) — Grille Métrique",
+    utmDesc: "Découpe la Terre en 60 fuseaux de 6°, exprimant la position en mètres plans (Easting et Northing).",
+
+    h2Precision: "4. Combien de Décimales Faut-il Vraiment ?",
+    pPrecision: "Multiplier les décimales alourdit les bases sans gain de précision. Notre outil <a href='/tools/latitude-longitude/'>Recherche Latitude et Longitude</a> applique 6 décimales utiles :",
     thPlaces: "Décimales",
-    thFraction: "Fraction de Degré",
-    thGround: "Précision Terrain (Équateur)",
+    thFraction: "Fraction",
+    thGround: "Précision Sol",
     thScale: "Échelle et Cas d'Usage",
-    prec0: ["0", "1,0°", "~ 111 km", "Pays ou grand ensemble régional"],
-    prec1: ["1", "0,1°", "~ 11,1 km", "Agglomération métropolitaine"],
-    prec2: ["2", "0,01°", "~ 1,11 km", "Ville, bourg ou parc forestier"],
-    prec3: ["3", "0,001°", "~ 111 mètres", "Parcelle agricole ou piste d'aérodrome"],
-    prec4: ["4", "0,0001°", "~ 11,1 mètres", "Parcelle cadastrale ou tronçon de rue"],
-    prec5: ["5", "0,00001°", "~ 1,11 mètre", "Entrée d'immeuble, GPS smartphone"],
-    prec6: ["6", "0,000001°", "~ 11,1 centimètres", "Borne de géomètre-expert"],
-    ruleOfThumb: "Règle Générale : Conserver 5 ou 6 décimales fournit le compromis parfait entre précision submétrique et efficacité de calcul.",
-    connectedGuides: "🔗 Outils & Guides Liés",
-    tool1Title: "Convertisseur de Coordonnées",
-    tool1Desc: "Convertir DD, DMS et UTM",
-    tool2Title: "Guide UTM & Datums",
-    tool2Desc: "Projections cartographiques",
-    tool3Title: "Calculateur de Distance",
-    tool3Desc: "Distances orthodromiques",
-    tool4Title: "Comment Fonctionne le GPS",
-    tool4Desc: "Fondements de la géodésie"
+    prec0: ["0", "1,0°", "~ 111 km", "Pays ou sous-continent"],
+    prec1: ["1", "0,1°", "~ 11,1 km", "Grande agglomération"],
+    prec2: ["2", "0,01°", "~ 1,11 km", "Commune ou grand parc"],
+    prec3: ["3", "0,001°", "~ 111 m", "Quartier ou parcelle agricole"],
+    prec4: ["4", "0,0001°", "~ 11,1 m", "Parcelle cadastrale"],
+    prec5: ["5", "0,00001°", "~ 1,11 m", "Limite physique d'un GPS smartphone"],
+    prec6: ["6", "0,000001°", "~ 0,11 m", "Topographie et bornage géodésique"],
+
+    workedExampleTitle: "Calcul Géodésique : Largeur d'un Degré de Longitude",
+    workedExampleIntro: "Problème : Déterminer la largeur d'un degré de longitude à Paris (Latitude = 48,8566° N).",
+    workedExampleStep1: "Formule : Largeur = 111,32 km × cos(Latitude)",
+    workedExampleStep2: "Étape 1 : Conversion en radians : 48,8566° × (π / 180) = 0,8527 rad",
+    workedExampleStep3: "Étape 2 : Cosinus : cos(0,8527) = 0,6579",
+    workedExampleStep4: "Étape 3 : Résultat : 111,32 km × 0,6579 = 73,24 km. À Paris, 1° de longitude ne mesure que 73,2 km.",
+
+    commonMistakesTitle: "Erreurs Fréquentes de Manipulation",
+    commonMistakes: [
+      { mistake: "Inverser l'ordre Latitude et Longitude", explanation: "Le format GeoJSON place la Longitude (X) avant la Latitude (Y), contrairement à l'usage courant." },
+      { mistake: "Combiner signe négatif et lettre cardinale", explanation: "Écrire -48° Sud est une double négation fautive. Écrivez soit -48° soit 48° S." },
+      { mistake: "Conserver 8 décimales pour un usage civil", explanation: "Huit décimales mesurent le déplacement millimétrique des plaques tectoniques." }
+    ],
+
+    faqs: [
+      { question: "Pourquoi la latitude est-elle toujours citée en premier ?", answer: "Historiquement, la latitude s'obtenait facilement en mesurant la hauteur de l'étoile Polaire au sextant, bien avant que la longitude ne puisse être calculée au XVIIIe siècle." },
+      { question: "Qu'est-ce que l'antipode d'une coordonnée ?", answer: "C'est le point diamétralement opposé sur le globe. On l'obtient en inversant la latitude (-Lat) et en décalant la longitude de 180° (180° - Lng)." },
+      { question: "Les coordonnées sont-elles des distances métriques ?", answer: "Non. Ce sont des angles sphériques. Leur conversion en mètres nécessite des formules géodésiques comme Haversine." }
+    ],
+
+    nextStepsTitle: "Étapes Suivantes",
+    nextSteps: [
+      { title: "Convertir des Coordonnées", href: "/tools/coordinate-converter/", desc: "Passez instantanément de DD à DMS et UTM." },
+      { title: "Comparatif Décimaux vs DMS", href: "/comparisons/decimal-degrees-vs-dms/", desc: "Comprenez pourquoi le Web a standardisé sur les nombres décimaux." },
+      { title: "Guide UTM et Datums", href: "/guides/utm-coordinates-and-datums/", desc: "Explorez les projections métriques et l'ellipsoïde WGS 84." }
+    ],
+
+    connectedGuides: "🔗 Guides et Outils Associés",
+    tool1Title: "Convertisseur",
+    tool1Desc: "DD, DMS & UTM",
+    tool2Title: "Décimaux vs DMS",
+    tool2Desc: "Comparatif formats",
+    tool3Title: "Guide UTM & Datums",
+    tool3Desc: "Projections planes",
+    tool4Title: "Calcul Distance",
+    tool4Desc: "Solveur Haversine"
   },
   de: {
-    title: "Breiten- und Längengrad erklärt | MyLocationLab",
-    description: "Geografische Koordinaten verstehen: Breiten- und Längengrade, Gradnetz, Dezimalpräzision und Antipoden im Detail.",
-    h1: "Breitengrad & Längengrad erklärt: Der Geodäsie-Leitfaden",
-    subtitle: "Grundlagen geografischer Koordinatensysteme, Grad, Minuten, Sekunden, Dezimalstellen-Präzision und Kugelmathematik.",
-    pIntro1: "Jeder Punkt auf der Erde lässt sich eindeutig über zwei Zahlenwerte beschreiben: den Breitengrad (φ) und den Längengrad (λ).",
-    pIntro2: "Zusammen bilden diese Winkelmaße das Gradnetz der Erde für Kartografie, Seefahrt, Luftverkehr und Webkarten wie Google Maps und OpenStreetMap.",
-    calloutBadge: "🌐 Interaktive Koordinatenkarte",
-    calloutTitle: "Klicken Sie auf die Karte für exakte Koordinaten",
-    calloutDesc: "Wählen Sie einen beliebigen Ort auf der Satellitenkarte, um Dezimalgrad, GMS und Geländehöhe in Echtzeit abzurufen.",
+    title: "Breitengrad & Längengrad erklärt: Geodäsie-Guide | MyLocationLab",
+    description: "Kurz gesagt: Der Breitengrad misst die Nord-Süd-Winkeldistanz zum Äquator, während der Längengrad den Ost-West-Winkel zum Nullmeridian von Greenwich angibt.",
+    h1: "Breitengrad und Längengrad erklärt: Der Geodäsie-Leitfaden",
+    subtitle: "Grundlagen sphärischer Koordinatenreferenzsysteme, Dezimalpräzision, Grad-Minuten-Sekunden und Orthodrome.",
+    
+    inShort: "Kurz gesagt: Breitengrad und Längengrad sind Winkelangaben gemessen vom Erdmittelpunkt, die jeden Ort auf der Erde exakt bestimmen. Der Breitengrad misst die Nord-Süd-Position von 0° am Äquator bis 90° an den Polen, während der Längengrad die Ost-West-Lage von 0° in Greenwich bis 180° an der Datumsgrenze erfasst.",
+
+    takeawaysTitle: "Zentrale Erkenntnisse",
+    takeaways: [
+      "Breitenkreise verlaufen parallel (~111 km pro Grad), während Längenmeridiane an den Polen zusammenlaufen.",
+      "Dezimalgrad (DD) sind Standard in Software und Webkarten; GMS bleibt Standard in Luft- und Seefahrt.",
+      "Fünf Nachkommastellen in DD entsprechen ~1,1 Meter Bodenauflösung.",
+      "Negative Breiten bezeichnen die Südhalbkugel; negative Längen bezeichnen die Westhalbkugel.",
+      "Sphärische Winkel lassen sich in plane metrische UTM-Gitter umrechnen."
+    ],
+
+    pIntro1: "Jeder Punkt unseres Planeten lässt sich durch zwei Zahlen beschreiben: Breitengrad (φ) und Längengrad (λ). Prüfen Sie Ihre Werte unter <a href='/my-location/latitude-longitude/'>Mein Breiten- und Längengrad</a>.",
+    pIntro2: "Zusammen bilden diese Winkel das universelle Koordinatengitter. Zur Formatumrechnung nutzen Sie unseren <a href='/tools/coordinate-converter/'>Koordinaten-Konverter</a> oder vergleichen Sie Formate im Artikel <a href='/comparisons/decimal-degrees-vs-dms/'>Dezimalgrad vs. GMS</a>. Für metrische Vermessungsgitter empfiehlt sich der Leitfaden zu <a href='/guides/utm-coordinates-and-datums/'>UTM-Koordinaten und Bezugssystemen</a> sowie der Glossareintrag zu <a href='/glossary/#decimal-degrees'>Dezimalgrad</a>.",
+
+    calloutBadge: "🌐 Interaktiver Karten-Picker",
+    calloutTitle: "Klicken Sie auf die Karte für Sofort-Koordinaten",
+    calloutDesc: "Wählen Sie einen beliebigen Ort auf der Satellitenkarte, um Dezimalgrad, GMS und Höhe in Echtzeit anzuzeigen.",
     calloutBtn: "Koordinaten-Karte öffnen →",
-    h2Lat: "1. Den Breitengrad verstehen (Die Breitenkreise)",
-    pLat1: "Der Breitengrad (φ) misst den Abstand eines Ortes nördlich oder südlich des Äquators. Die Breitenkreise verlaufen horizontal um die Erde und liegen stets parallel zueinander.",
-    latBullet1: "Der Äquator (0°): Teilt die Erde in Nord- (+ / N) und Südhalbkugel (- / S).",
-    latBullet2: "Nordpol (+90° N) und Südpol (-90° S): Die Endpunkte der Erdrotationsachse.",
-    latBullet3: "Distanz pro Breitengrad: 1 Grad Breite entspricht auf der gesamten Erde etwa 111 Kilometern.",
+
+    h2Lat: "1. Den Breitengrad verstehen (Die Parallelen)",
+    pLat1: "Der Breitengrad (φ) gibt den Winkel nördlich oder südlich des Erdäquators an. Breitenkreise verlaufen horizontal von Ost nach West und sind parallel zueinander.",
+    latBullet1: "Äquator (0°): Teilt die Erde in Nord- (+ / N) und Südhalbkugel (- / S).",
+    latBullet2: "Nordpol (+90°) & Südpol (-90°): Endpunkte der irdischen Rotationsachse.",
+    latBullet3: "Bodendistanz: 1 Grad Breitengrad entspricht überall ca. 111 Kilometern.",
+
     h2Long: "2. Den Längengrad verstehen (Die Meridiane)",
-    pLong1: "Der Längengrad (λ) misst den Winkelabstand östlich oder westlich des Nullmeridians von Greenwich (0°). Meridiane verlaufen vertikal von Pol zu Pol.",
-    longBullet1: "Östliche Hemisphäre (0° bis +180° O/E) und Westliche Hemisphäre (0° bis -180° W).",
-    longBullet2: "Konvergenz an den Polen: Die Strecke von 1° Länge schrumpft polwärts gemäß ~111,32 km × cos(Breite). Am Äquator: 111,3 km; bei 48°: 74,6 km; an den Polen: 0 km.",
-    h2Formats: "3. Koordinatenformate: Dezimalgrad vs GMS vs UTM",
-    ddTitle: "Dezimalgrad (DD) — Der Standard für Web & GPS",
-    ddDesc: "Universell genutzt in APIs und Software. Positive Werte für Nord/Ost, negative Werte für Süd/West (z. B. 52.5200, 13.4050).",
-    dmsTitle: "Grad, Minuten, Sekunden (GMS) — Der Navigationsstandard",
-    dmsDesc: "Sexagesimalsystem: 1 Grad = 60 Bogenminuten ('), 1 Minute = 60 Bogensekunden (\"). Eingesetzt in Schifffahrt und Luftfahrt.",
-    utmTitle: "Universale Transversale Mercator-Projektion (UTM) — Metrisch",
-    utmDesc: "Unterteilt die Erde in 60 Zonen zu je 6° Länge und misst Positionen metrisch als Rechts- und Hochwert.",
-    h2Precision: "4. Wie viele Dezimalstellen braucht man wirklich?",
-    pPrecision: "Zu viele Nachkommastellen blähen Datenbanken auf und täuschen Genauigkeit vor. Die WGS-84-Präzisionsstufen:",
+    pLong1: "Der Längengrad (λ) misst den Winkelabstand östlich oder westlich des Nullmeridians von Greenwich (0°). Sie laufen an den Polen spitz zusammen.",
+    longBullet1: "Östliche Halbkugel (0° bis +180° O/E) & Westliche Halbkugel (0° bis -180° W).",
+    longBullet2: "Polkonvergenz: 1° Länge = 111,32 km × cos(Breite). Am Äquator 111,3 km; bei 48° ca. 74,6 km; an den Polen 0 km.",
+
+    h2Formats: "3. Koordinatenformate: Dezimalgrad vs. GMS vs. UTM",
+    ddTitle: "Dezimalgrad (DD) — Standard in Web & Software",
+    ddDesc: "Genutzt von Kartendiensten und APIs (z. B. 52.5200, 13.4050). Positiv = Nord/Ost; negativ = Süd/West.",
+    dmsTitle: "Grad, Minuten, Sekunden (GMS) — Navigationsstandard",
+    dmsDesc: "Das 60er-System teilt 1 Grad in 60 Minuten (') und 1 Minute in 60 Sekunden (″). Gebräuchlich in der Seefahrt.",
+    utmTitle: "Universal Transverse Mercator (UTM) — Metrisches Gitter",
+    utmDesc: "Teilt die Welt in 60 Zonen à 6° und gibt Positionen in ebenen Metern an (Rechts- und Hochwert).",
+
+    h2Precision: "4. Wie viele Nachkommastellen sind sinnvoll?",
+    pPrecision: "Zu viele Nachkommastellen belasten Speicher und täuschen Genauigkeit vor. Unser <a href='/tools/latitude-longitude/'>Breiten- und Längengrad-Finder</a> arbeitet mit praxisgerechten 6 Dezimalstellen:",
     thPlaces: "Nachkommastellen",
-    thFraction: "Bruchanteil",
-    thGround: "Genauigkeit am Äquator",
+    thFraction: "Bruchgrad",
+    thGround: "Bodenauflösung",
     thScale: "Maßstab & Anwendungsfall",
-    prec0: ["0", "1,0°", "~ 111 km", "Staat oder Großregion"],
-    prec1: ["1", "0,1°", "~ 11,1 km", "Metropolregion"],
-    prec2: ["2", "0,01°", "~ 1,11 km", "Gemeinde, Stadtteil oder Wald"],
-    prec3: ["3", "0,001°", "~ 111 Meter", "Flurstück oder Landebahn"],
-    prec4: ["4", "0,0001°", "~ 11,1 Meter", "Baugrundstück oder Straße"],
-    prec5: ["5", "0,00001°", "~ 1,11 Meter", "Hauseingang, Smartphone-GPS"],
-    prec6: ["6", "0,000001°", "~ 11,1 cm", "Vermessungspunkt im Tiefbau"],
-    ruleOfThumb: "Praxistipp: 5 bis 6 Dezimalstellen bieten die perfekte Balance aus metergenauer Ortung und schlankem Datenvolumen.",
-    connectedGuides: "🔗 Relevante Werkzeuge & Leitfäden",
-    tool1Title: "Koordinaten-Umrechner",
-    tool1Desc: "DD, GMS & UTM transformieren",
-    tool2Title: "UTM & Datums-Guide",
-    tool2Desc: "Metrische Kartenprojektionen",
-    tool3Title: "Entfernungsrechner",
-    tool3Desc: "Großkreis-Distanzen",
-    tool4Title: "Wie GPS funktioniert",
-    tool4Desc: "Grundlagen der Satellitennavigation"
+    prec0: ["0", "1,0°", "~ 111 km", "Land oder Kontinentalregion"],
+    prec1: ["1", "0,1°", "~ 11,1 km", "Große Metropolregion"],
+    prec2: ["2", "0,01°", "~ 1,11 km", "Kleinstadt oder Gemeinde"],
+    prec3: ["3", "0,001°", "~ 111 m", "Stadtviertel oder Ackerfläche"],
+    prec4: ["4", "0,0001°", "~ 11,1 m", "Grundstücksparzelle"],
+    prec5: ["5", "0,00001°", "~ 1,11 m", "Messgrenze mobiler GNSS-Chips"],
+    prec6: ["6", "0,000001°", "~ 0,11 m", "Präzisionsvermessung und Kataster"],
+
+    workedExampleTitle: "Geodätische Beispielrechnung: Längengradbreite in Berlin",
+    workedExampleIntro: "Aufgabe: Berechnen Sie die Bodenbreite von 1 Grad Längengrad in Berlin (Breite = 52,5200° N).",
+    workedExampleStep1: "Formel: Breite = 111,32 km × cos(Breitengrad)",
+    workedExampleStep2: "Schritt 1: Umrechnen in Bogenmaß: 52,5200° × (π / 180) = 0,9166 rad",
+    workedExampleStep3: "Schritt 2: Kosinus bilden: cos(0,9166) = 0,6085",
+    workedExampleStep4: "Schritt 3: Multiplikation: 111,32 km × 0,6085 = 67,74 km. In Berlin spannt 1° Länge nur 67,7 km auf.",
+
+    commonMistakesTitle: "Typische Fehler bei Koordinaten",
+    commonMistakes: [
+      { mistake: "Breite und Länge verwechseln (X vs. Y)", explanation: "GeoJSON erwartet Länge (X) vor Breite (Y), während Google Maps und der Sprachgebrauch die Breite voranstellen." },
+      { mistake: "Minuszeichen und Himmelsrichtung kombinieren", explanation: "-52° S ist eine falsche Doppelnegierung. Schreiben Sie entweder -52° oder 52° S." },
+      { mistake: "8 Nachkommastellen für Alltagsanwendungen nutzen", explanation: "Acht Nachkommastellen messen tektonische Kontinentalverschiebungen im Millimeterbereich." }
+    ],
+
+    faqs: [
+      { question: "Warum wird der Breitengrad stets vor dem Längengrad genannt?", answer: "Historisch konnte die geographische Breite schon in der Antike an Sternenhöhen abgelesen werden, während Längengrade erst mit Marine-Chronometern messbar wurden." },
+      { question: "Was bedeutet Antipode bei Koordinaten?", answer: "Der Antipode ist der genau gegenüberliegende Erdpunkt. Man invertiert das Vorzeichen der Breite (-Lat) und addiert/subtrahiert 180° bei der Länge (180° - Lng)." },
+      { question: "Sind Koordinaten direkte Streckenangaben?", answer: "Nein, es sind Raumwinkel. Die Umrechnung in Meter erfordert trigonometrische Formeln wie die Haversine-Gleichung." }
+    ],
+
+    nextStepsTitle: "Nächste Schritte",
+    nextSteps: [
+      { title: "Koordinaten umrechnen", href: "/tools/coordinate-converter/", desc: "Rechnen Sie zwischen Dezimalgrad, GMS und UTM live um." },
+      { title: "Vergleich Dezimalgrad vs. GMS", href: "/comparisons/decimal-degrees-vs-dms/", desc: "Erfahren Sie, warum Webkarten Dezimalzahlen bevorzugen." },
+      { title: "UTM & Bezugssysteme", href: "/guides/utm-coordinates-and-datums/", desc: "Verstehen Sie metrische Streifenprojektionen und WGS 84." }
+    ],
+
+    connectedGuides: "🔗 Verbundene Leitfäden & Werkzeuge",
+    tool1Title: "Koordinaten-Konverter",
+    tool1Desc: "DD, GMS & UTM",
+    tool2Title: "Dezimal vs. GMS",
+    tool2Desc: "Formatvergleich",
+    tool3Title: "UTM & Bezugssysteme",
+    tool3Desc: "Gitterprojektionen",
+    tool4Title: "Distanz-Rechner",
+    tool4Desc: "Haversine-Entfernung"
   },
   pt: {
-    title: "Latitude e Longitude Explicadas: Guia Completo | MyLocationLab",
-    description: "Entenda o sistema de coordenadas geográficas: como latitude e longitude definem posições no globo, precisão decimal e antípodas.",
-    h1: "Latitude e Longitude Explicadas: Guia de Geodésia",
-    subtitle: "Conceitos fundamentais de sistemas de coordenadas, graus, minutos, segundos, precisão de casas decimais e trigonometria esférica.",
-    pIntro1: "Qualquer local na superfície da Terra —do cume do monte Everest ao seu quarto— pode ser representado por dois números: latitude (φ) e longitude (λ).",
-    pIntro2: "Essas coordenadas angulares constituem a malha cartográfica mundial adotada pelo GPS, cartas náuticas e bibliotecas de mapas como Google Maps e OpenStreetMap.",
-    calloutBadge: "🌐 Seletor Interativo",
-    calloutTitle: "Clique no mapa para obter coordenadas instantâneas",
-    calloutDesc: "Selecione qualquer ponto no mapa de satélite para inspecionar Graus Decimais, GMS e altitude calculada.",
+    title: "Latitude e Longitude Explicadas: Guia Geodésico | MyLocationLab",
+    description: "Em resumo: A latitude mede o ângulo norte-sul em relação à linha do Equador, enquanto a longitude mede o ângulo leste-oeste a partir do Meridiano de Greenwich.",
+    h1: "Latitude e Longitude Explicadas: Guia Completo de Geodésia",
+    subtitle: "Sistemas de coordenadas geográficas, graus decimais, notação sexagesimal, precisão métrica e matemática esférica.",
+    
+    inShort: "Em resumo: Latitude e longitude são ângulos calculados a partir do centro da Terra que localizam qualquer ponto na superfície do planeta. A latitude mede a posição norte-sul de 0° no Equador a 90° nos polos, enquanto a longitude mede a posição leste-oeste de 0° a 180° a partir do Meridiano de Greenwich.",
+
+    takeawaysTitle: "Pontos Principais",
+    takeaways: [
+      "Paralelos de latitude mantêm distância constante (~111 km por grau), enquanto meridianos de longitude convergem nos polos.",
+      "Graus Decimais (DD) são o padrão de softwares e bancos de dados; DMS prevalece na navegação aérea e marítima.",
+      "Cinco casas decimais em DD oferecem precisão de ~1,1 metro, compatível com o hardware de celulares.",
+      "Latitude negativa indica o Hemisfério Sul; longitude negativa indica o Hemisfério Ocidental.",
+      "Esses ângulos esféricos podem ser projetados em malhas métricas planas de engenharia."
+    ],
+
+    pIntro1: "Qualquer ponto na Terra pode ser identificado por dois números: latitude (φ) e longitude (λ). Veja suas coordenadas ao vivo em <a href='/my-location/latitude-longitude/'>Minha Latitude e Longitude</a>.",
+    pIntro2: "Esses ângulos formam a base dos mapas digitais. Para alternar formatos, experimente o <a href='/tools/coordinate-converter/'>Conversor de Coordenadas</a> ou confira nossa comparação de <a href='/comparisons/decimal-degrees-vs-dms/'>Graus Decimais vs DMS</a>. Se precisar de coordenadas métricas, consulte nosso guia de <a href='/guides/utm-coordinates-and-datums/'>coordenadas UTM e datums</a> ou o verbete de <a href='/glossary/#decimal-degrees'>graus decimais</a>.",
+
+    calloutBadge: "🌐 Seletor no Mapa",
+    calloutTitle: "Clique no Mapa para Obter Coordenadas Imediatas",
+    calloutDesc: "Escolha qualquer local no mapa satelital para inspecionar valores em DD, DMS e altitude.",
     calloutBtn: "Abrir Mapa de Coordenadas →",
-    h2Lat: "1. Compreendendo a Latitude (Os Paralelos)",
-    pLat1: "A latitude (φ) mede o afastamento angular ao norte ou ao sul da linha do Equador. Os paralelos são linhas horizontais concêntricas com espaçamento uniforme.",
-    latBullet1: "O Equador (0°): Linha divisória entre o Hemisfério Norte (+ / N) e o Hemisfério Sul (- / S).",
-    latBullet2: "Polo Norte (+90° N) e Polo Sul (-90° S): Extremidades do eixo de rotação planetário.",
-    latBullet3: "Distância por Grau: 1 grau de latitude mede aproximadamente 111 quilômetros em qualquer região da Terra.",
-    h2Long: "2. Compreendendo a Longitude (Os Meridianos)",
-    pLong1: "A longitude (λ) afere a distância angular a leste ou a oeste do Meridiano de Greenwich (0°). Os meridianos convergem verticalmente de polo a polo.",
-    longBullet1: "Hemisfério Leste (0° a +180° L/E) e Hemisfério Oeste (0° a -180° O/W).",
-    longBullet2: "Convergência Polar: O comprimento de 1° de longitude encurta com a latitude (~111,32 km × cos(Latitude)). No Equador vale 111,3 km; a 48° vale 74,6 km; nos polos vale 0 km.",
-    h2Formats: "3. Formatos de Coordenadas: Decimais vs GMS vs UTM",
+
+    h2Lat: "1. O que é Latitude (Os Paralelos)",
+    pLat1: "A latitude (φ) indica o afastamento angular ao norte ou ao sul da linha do Equador. Suas linhas circulam a Terra horizontalmente e são chamadas de paralelos por manterem distância uniforme.",
+    latBullet1: "Equador (0°): Divide o globo entre Hemisfério Norte (+ / N) e Hemisfério Sul (- / S).",
+    latBullet2: "Polos Norte (+90°) e Sul (-90°): Vértices do eixo de rotação terrestre.",
+    latBullet3: "Distância por Grau: 1 grau de latitude mede aproximadamente 111 quilômetros em qualquer latitude.",
+
+    h2Long: "2. O que é Longitude (Os Meridianos)",
+    pLong1: "A longitude (λ) mede o arco angular a leste ou a oeste do Meridiano de Greenwich (0°). Suas linhas verticais convergem nos polos.",
+    longBullet1: "Hemisfério Oriental (0° a +180° E/L) e Hemisfério Ocidental (0° a -180° W/O).",
+    longBullet2: "Convergência Polar: 1° de longitude = 111,32 km × cos(Latitude). No equador mede 111,3 km; a 48° mede 74,6 km; nos polos mede 0 km.",
+
+    h2Formats: "3. Formatos: Graus Decimais vs DMS vs UTM",
     ddTitle: "Graus Decimais (DD) — O Padrão Web e GPS",
-    ddDesc: "Formato numérico adotado por navegadores, JavaScript e chips GPS. Valores positivos para Norte/Leste e negativos para Sul/Oeste (ex.: -23.5505, -46.6333 para São Paulo).",
-    dmsTitle: "Graus, Minutos, Segundos (GMS) — O Padrão de Navegação",
-    dmsDesc: "Sistema sexagesimal que fraciona 1 grau em 60 minutos (') e 1 minuto em 60 segundos (\"). Tradicional na marinha e aviação.",
-    utmTitle: "Universal Transversa de Mercator (UTM) — A Grade Métrica",
-    utmDesc: "Segmenta o globo em 60 fusos longitudinais de 6°, mensurando o deslocamento plano em metros (Easting e Northing).",
-    h2Precision: "4. Quantas Casas Decimais São Realmente Necessárias?",
-    pPrecision: "Armazenar casas decimais em excesso consome processamento e gera ilusão de precisão. Padrão oficial WGS 84:",
+    ddDesc: "Utilizado por sistemas modernos (ex.: -23.5505, -46.6333). Valores positivos indicam Norte/Leste; negativos indicam Sul/Oeste.",
+    dmsTitle: "Graus, Minutos, Segundos (DMS) — Padrão Náutico",
+    dmsDesc: "Formato sexagesimal que divide 1 grau em 60 minutos (') e 1 minuto em 60 segundos (″). Usado na marinha.",
+    utmTitle: "Universal Transversa de Mercator (UTM) — Malha Métrica",
+    utmDesc: "Divide o planeta em 60 fusos de 6°, medindo posições em metros planos cartesianos.",
+
+    h2Precision: "4. De Quantas Casas Decimais Você Realmente Precisa?",
+    pPrecision: "Excesso de casas decimais consome processamento sem ganho real. Nosso <a href='/tools/latitude-longitude/'>Localizador de Latitude e Longitude</a> adota 6 casas úteis:",
     thPlaces: "Casas Decimais",
-    thFraction: "Fração de Grau",
-    thGround: "Precisão em Solo (Equador)",
+    thFraction: "Fração do Grau",
+    thGround: "Resolução Terrestre",
     thScale: "Escala e Aplicação Prática",
     prec0: ["0", "1,0°", "~ 111 km", "País ou continente"],
     prec1: ["1", "0,1°", "~ 11,1 km", "Região metropolitana"],
-    prec2: ["2", "0,01°", "~ 1,11 km", "Bairro, distrito ou parque"],
-    prec3: ["3", "0,001°", "~ 111 metros", "Lote agrícola ou pista de aeroporto"],
-    prec4: ["4", "0,0001°", "~ 11,1 metros", "Identificação de rua ou lote urbano"],
-    prec5: ["5", "0,00001°", "~ 1,11 metro", "Entrada de prédio, GPS de celular"],
-    prec6: ["6", "0,000001°", "~ 11,1 cm", "Marco topográfico de engenharia"],
-    ruleOfThumb: "Regra Prática: Utilizar 5 ou 6 casas decimais assegura a melhor combinação entre exatidão submétrica e performance de processamento.",
-    connectedGuides: "🔗 Ferramentas e Guias Conectados",
-    tool1Title: "Conversor de Coordenadas",
-    tool1Desc: "Converta DD, GMS e UTM",
-    tool2Title: "Guia UTM e Datums",
-    tool2Desc: "Projeções métricas planas",
-    tool3Title: "Calculadora de Distância",
-    tool3Desc: "Distância ortodrômica",
-    tool4Title: "Como Funciona o GPS",
-    tool4Desc: "Princípios da navegação orbital"
+    prec2: ["2", "0,01°", "~ 1,11 km", "Cidade ou parque"],
+    prec3: ["3", "0,001°", "~ 111 m", "Bairro ou gleba agrícola"],
+    prec4: ["4", "0,0001°", "~ 11,1 m", "Lote residencial urbano"],
+    prec5: ["5", "0,00001°", "~ 1,11 m", "Limite físico de receptores de celular"],
+    prec6: ["6", "0,000001°", "~ 0,11 m", "Topografia de precisão e agrimensura"],
+
+    workedExampleTitle: "Cálculo Geodésico: Largura de um Grau em São Paulo",
+    workedExampleIntro: "Problema: Calcular a extensão em quilômetros de 1 grau de longitude em São Paulo (Latitude = -23,5505° S).",
+    workedExampleStep1: "Fórmula: Largura = 111,32 km × cos(Latitude)",
+    workedExampleStep2: "Passo 1: Converter para radianos: 23,5505° × (π / 180) = 0,4110 rad",
+    workedExampleStep3: "Passo 2: Calcular cosseno: cos(0,4110) = 0,9167",
+    workedExampleStep4: "Passo 3: Multiplicar: 111,32 km × 0,9167 = 102,04 km. Em São Paulo 1° de longitude abrange 102 km.",
+
+    commonMistakesTitle: "Erros Comuns ao Registrar Coordenadas",
+    commonMistakes: [
+      { mistake: "Inverter a ordem de Latitude e Longitude", explanation: "O formato GeoJSON adota Longitude (X) antes de Latitude (Y), enquanto mapas populares colocam a Latitude primeiro." },
+      { mistake: "Combinar sinal negativo com letra cardeal", explanation: "Gravar -23° Sul é uma dupla negação errada. Registre -23° ou 23° S." },
+      { mistake: "Usar 8 casas decimais em aplicações comuns", explanation: "Oito casas decimais medem movimentação milimétrica de placas tectônicas." }
+    ],
+
+    faqs: [
+      { question: "Por que a latitude é mencionada antes da longitude?", answer: "Navegadores da era das navegações mediam latitude facilmente com o astrolábio e a Estrela Polar, séculos antes de a longitude ser resolvida com relógios de precisão." },
+      { question: "O que é o antípoda de uma coordenada?", answer: "É o ponto diametralmente oposto na Terra. Inverte-se o sinal da latitude (-Lat) e ajusta-se a longitude em 180° (180° - Long)." },
+      { question: "Coordenadas geográficas representam metros lineares?", answer: "Não. Trata-se de ângulos esféricos. Para obter distâncias métricas é preciso usar trigonometria esférica como a fórmula de Haversine." }
+    ],
+
+    nextStepsTitle: "Próximos Passos",
+    nextSteps: [
+      { title: "Converter Coordenadas", href: "/tools/coordinate-converter/", desc: "Transforme dados entre DD, DMS e projeção métrica UTM." },
+      { title: "Comparação Graus Decimais vs DMS", href: "/comparisons/decimal-degrees-vs-dms/", desc: "Entenda por que sistemas web padronizaram em números decimais." },
+      { title: "Guia de Coordenadas UTM", href: "/guides/utm-coordinates-and-datums/", desc: "Aprenda sobre projeções cartográficas e o elipsoide WGS 84." }
+    ],
+
+    connectedGuides: "🔗 Guias e Ferramentas Conectadas",
+    tool1Title: "Conversor Coordenadas",
+    tool1Desc: "DD, DMS & UTM",
+    tool2Title: "Decimais vs DMS",
+    tool2Desc: "Comparativo prático",
+    tool3Title: "Guia UTM e Datums",
+    tool3Desc: "Projeções métricas",
+    tool4Title: "Calculadora Distância",
+    tool4Desc: "Distância geodésica"
   },
   hi: {
-    title: "अक्षांश और देशांतर की पूरी जानकारी | MyLocationLab",
-    description: "भौगोलिक निर्देशांक सिस्टम को समझें: अक्षांश और देशांतर पृथ्वी पर हर स्थिति कैसे तय करते हैं, दशमलव सटीकता और एंटीपोड्स की पूरी जानकारी यहाँ पाएँ।",
-    h1: "अक्षांश और देशांतर की पूरी जानकारी: संपूर्ण जियोडेसी गाइड",
-    subtitle: "भौगोलिक निर्देशांक रेफ़रेंस सिस्टम, डिग्री, मिनट, सेकंड, दशमलव सटीकता और ग्रेट-सर्कल गणित की बुनियादी खोज।",
-    pIntro1: "पृथ्वी का हर भौतिक स्थान—माउंट एवरेस्ट की चोटी से लेकर आपके बैठक कमरे तक—दो संख्याओं से अद्वितीय रूप से दर्शाया जा सकता है: अक्षांश (φ) और देशांतर (λ)।",
-    pIntro2: "ये कोणीय निर्देशांक मिलकर ग्लोबल कार्टोग्राफ़ी, जियोडेसी, समुद्री नेविगेशन और Google Maps, OpenStreetMap और Leaflet जैसे आधुनिक वेब मैपिंग इंजन का सार्वभौमिक ग्रिड बनाते हैं।",
-    calloutBadge: "🌐 इंटरैक्टिव मैप पिकर",
-    calloutTitle: "धरती पर कहीं भी क्लिक करें और तुरंत निर्देशांक पाएँ",
-    calloutDesc: "हमारे इंटरैक्टिव सैटेलाइट और वेक्टर मैप पर कोई भी जगह चुनें और रीयल-टाइम दशमलव डिग्री, DMS और ऊँचाई आँकड़े देखें।",
-    calloutBtn: "अक्षांश-देशांतर मैप खोलें →",
-    h2Lat: "1. अक्षांश को समझना (समानांतर रेखाएँ)",
-    pLat1: "अक्षांश (φ) मापता है कि कोई स्थान पृथ्वी की भूमध्य रेखा से उत्तर या दक्षिण में कितनी दूर है। अक्षांश रेखाएँ ग्लोब पर पूर्व-पश्चिम क्षैतिज रूप से चलती हैं और इन्हें समानांतर रेखाएँ (पैरेलल्स) कहा जाता है क्योंकि ये हर बिंदु पर एक-दूसरे से समान दूरी पर रहती हैं।",
-    latBullet1: "भूमध्य रेखा (0°): मूल आधार रेखा जो पृथ्वी को उत्तरी (+ / N) और दक्षिणी (- / S) गोलार्धों में बाँटती है।",
-    latBullet2: "उत्तरी ध्रुव (+90° N) और दक्षिणी ध्रुव (-90° S): ग्रह के घूर्णन अक्ष के शीर्ष बिंदु।",
-    latBullet3: "प्रति डिग्री दूरी: पृथ्वी पर हर जगह 1 डिग्री अक्षांश लगभग 111 किलोमीटर होता है।",
-    h2Long: "2. देशांतर को समझना (मध्याह्न रेखाएँ)",
-    pLong1: "देशांतर (λ) मापता है कि कोई स्थान निर्दिष्ट प्राइम मेरिडियन (लंदन के ग्रीनविच में 0°) से पूर्व या पश्चिम में कितनी दूर है। देशांतर रेखाएँ ध्रुव से ध्रुव तक लंबवत चलती हैं और इन्हें मध्याह्न रेखाएँ (मेरिडियन) कहा जाता है।",
+    title: "अक्षांश और देशांतर समझें: भूगणित संपूर्ण गाइड | MyLocationLab",
+    description: "संक्षेप में: अक्षांश भूमध्य रेखा से उत्तर-दक्षिण की कोणीय दूरी मापता है, जबकि देशांतर ग्रीनविच से पूर्व-पश्चिम की दूरी तय करता है।",
+    h1: "अक्षांश और देशांतर: संपूर्ण भूगणित मार्गदर्शिका",
+    subtitle: "भौगोलिक निर्देशांक संदर्भ प्रणाली, दशमलव सटीकता, डिग्री-मिनट-सेकंड और महान वृत्त गणित।",
+    
+    inShort: "संक्षेप में: अक्षांश और देशांतर पृथ्वी के केंद्र से मापे गए कोण हैं जो पृथ्वी की सतह पर किसी भी बिंदु की सटीक स्थिति तय करते हैं। अक्षांश भूमध्य रेखा (0°) से ध्रुवों (90°) तक उत्तर-दक्षिण स्थिति मापता है, जबकि देशांतर ग्रीनविच रेखा (0°) से 180° तक पूर्व-पश्चिम स्थिति मापता है।",
+
+    takeawaysTitle: "मुख्य बिंदु",
+    takeaways: [
+      "अक्षांश रेखाएं समानांतर होती हैं (~111 किमी प्रति डिग्री), जबकि देशांतर रेखाएं ध्रुवों पर आपस में मिल जाती हैं।",
+      "दशमलव डिग्री (DD) कंप्यूटर सॉफ्टवेयर का मानक है, जबकि DMS का उपयोग समुद्री और विमानन क्षेत्र में होता है।",
+      "DD में 5 दशमलव स्थान ~1.1 मीटर की सटीकता देते हैं, जो मोबाइल जीपीएस चिप के अनुकूल है।",
+      "ऋणात्मक अक्षांश दक्षिणी गोलार्ध और ऋणात्मक देशांतर पश्चिमी गोलार्ध को दर्शाता है।",
+      "इन कोणीय निर्देशांकों को समतल मीट्रिक ग्रिड में बदला जा सकता है।"
+    ],
+
+    pIntro1: "पृथ्वी पर प्रत्येक स्थान को दो संख्याओं में व्यक्त किया जा सकता है: अक्षांश (φ) और देशांतर (λ)। अपने लाइव निर्देशांक देखने के लिए <a href='/my-location/latitude-longitude/'>मेरा अक्षांश और देशांतर पेज</a> देखें।",
+    pIntro2: "ये दोनों कोण वैश्विक मानचित्रकला की रीढ़ हैं। प्रारूप बदलने के लिए हमारा <a href='/tools/coordinate-converter/'>निर्देशांक परिवर्तक</a> आज़माएं या <a href='/comparisons/decimal-degrees-vs-dms/'>दशमलव डिग्री बनाम DMS</a> की तुलना पढ़ें। समतल मीट्रिक ग्रिड के लिए <a href='/guides/utm-coordinates-and-datums/'>UTM निर्देशांक और डेटम गाइड</a> या <a href='/glossary/#decimal-degrees'>दशमलव डिग्री शब्दावली</a> देखें।",
+
+    calloutBadge: "🌐 इंटरैक्टिव मानचित्र",
+    calloutTitle: "सटीक निर्देशांक प्राप्त करने के लिए मानचित्र पर क्लिक करें",
+    calloutDesc: "उपग्रह मानचित्र पर किसी भी स्थान का चयन कर तुरंत DD, DMS और ऊंचाई देखें।",
+    calloutBtn: "मानचित्र खोलें →",
+
+    h2Lat: "1. अक्षांश क्या है (समानांतर रेखाएं)",
+    pLat1: "अक्षांश (φ) भूमध्य रेखा से उत्तर या दक्षिण की कोणीय दूरी को दर्शाता है। ये रेखाएं पूर्व-पश्चिम दिशा में समानांतर चलती हैं।",
+    latBullet1: "भूमध्य रेखा (0°): पृथ्वी को उत्तरी (+ / N) और दक्षिणी (- / S) गोलार्ध में बांटती है।",
+    latBullet2: "उत्तरी ध्रुव (+90°) और दक्षिणी ध्रुव (-90°): पृथ्वी की घूर्णन धुरी के छोर।",
+    latBullet3: "दूरी प्रति डिग्री: पृथ्वी पर 1 डिग्री अक्षांश लगभग 111 किलोमीटर के बराबर होता है।",
+
+    h2Long: "2. देशांतर क्या है (मध्याह्न रेखाएं)",
+    pLong1: "देशांतर (λ) ग्रीनविच रेखा (0°) से पूर्व या पश्चिम की दूरी मापता है। ये रेखाएं ध्रुवों पर जाकर मिलती हैं।",
     longBullet1: "पूर्वी गोलार्ध (0° से +180° E) और पश्चिमी गोलार्ध (0° से -180° W)।",
-    longBullet2: "ध्रुवों पर अभिसरण: प्रति 1° देशांतर दूरी = ~111.32 किमी × cos(अक्षांश)। भूमध्य रेखा पर 111.3 किमी; 48° पर 74.6 किमी; ध्रुवों पर 0 किमी।",
-    h2Formats: "3. निर्देशांक फ़ॉर्मैट: दशमलव डिग्री बनाम DMS बनाम UTM",
-    ddTitle: "दशमलव डिग्री (DD) — वेब और GPS का मानक",
-    ddDesc: "सभी आधुनिक सॉफ़्टवेयर, JavaScript API और GPS डिवाइस इस्तेमाल करते हैं। धनात्मक का अर्थ उत्तर/पूर्व; ऋणात्मक का अर्थ दक्षिण/पश्चिम। (जैसे 40.7128, -74.0060)",
-    dmsTitle: "डिग्री, मिनट, सेकंड (DMS) — नेविगेशन का मानक",
-    dmsDesc: "षषाधारी प्रणाली जो 1 डिग्री को 60 मिनट (') और 1 मिनट को 60 सेकंड (\") में बाँटती है। विमानन, समुद्री नक्शाकारी और सैन्य अभियानों में उपयोगी।",
-    utmTitle: "Universal Transverse Mercator (UTM) — मीट्रिक ग्रिड",
-    utmDesc: "दुनिया को 6° के 60 देशांतरीय ज़ोन में बाँटता है और गोलीय कोणों की जगह दूरी मीटर में (ईस्टिंग और नॉर्थिंग) मापता है।",
-    h2Precision: "4. आपको असल में कितने दशमलव स्थान चाहिए?",
-    pPrecision: "वेब डेवलपमेंट और GIS डेटा स्टोरेज में ज़रूरत से ज़्यादा दशमलव स्थान सेव करना मेमोरी खाता है और सटीकता का झूठा भ्रम देता है। यह है आधिकारिक WGS 84 सटीकता पैमाना:",
+    longBullet2: "ध्रुवों पर अभिसरण: 1° देशांतर = 111.32 किमी × cos(अक्षांश)। भूमध्य रेखा पर 111.3 किमी; 48° पर 74.6 किमी; ध्रुवों पर 0 किमी।",
+
+    h2Formats: "3. प्रारूप: दशमलव डिग्री बनाम DMS बनाम UTM",
+    ddTitle: "दशमलव डिग्री (DD) — वेब और जीपीएस मानक",
+    ddDesc: "आधुनिक सॉफ्टवेयर द्वारा प्रयुक्त (जैसे 28.6139, 77.2090)। धनात्मक = उत्तर/पूर्व; ऋणात्मक = दक्षिण/पश्चिम।",
+    dmsTitle: "डिग्री, मिनट, सेकंड (DMS) — नौवहन मानक",
+    dmsDesc: "षष्टक प्रणाली जो 1 डिग्री को 60 मिनट (') और 1 मिनट को 60 सेकंड (″) में बांटती है।",
+    utmTitle: "यूनिवर्सल ट्रांसवर्स मर्केटर (UTM) — मीट्रिक ग्रिड",
+    utmDesc: "विश्व को 60 क्षेत्रों में बांटकर दूरी को समतल मीटरों में मापता है।",
+
+    h2Precision: "4. आपको कितने दशमलव स्थानों की आवश्यकता है?",
+    pPrecision: "अनावश्यक दशमलव स्थान मेमोरी बढ़ाते हैं। हमारा <a href='/tools/latitude-longitude/'>अक्षांश और देशांतर खोजक</a> उपयोगी 6 दशमलव स्थानों पर कार्य करता है:",
     thPlaces: "दशमलव स्थान",
-    thFraction: "डिग्री अंश",
-    thGround: "ज़मीनी सटीकता (भूमध्य रेखा पर)",
-    thScale: "पैमाना और वास्तविक उपयोग",
-    prec0: ["0", "1.0°", "~ 111 किमी", "देश या महाद्वीपीय क्षेत्र"],
-    prec1: ["1", "0.1°", "~ 11.1 किमी", "बड़ा महानगरीय क्षेत्र"],
-    prec2: ["2", "0.01°", "~ 1.11 किमी", "कस्बा, गाँव या पार्क"],
-    prec3: ["3", "0.001°", "~ 111 मीटर", "बड़ा प्लॉट या हवाई अड्डा रनवे"],
-    prec4: ["4", "0.0001°", "~ 11.1 मीटर", "अलग प्लॉट या गली पहचानकर्ता"],
-    prec5: ["5", "0.00001°", "~ 1.11 मीटर", "दरवाज़े का प्रवेश द्वार, स्मार्टफ़ोन GPS"],
-    prec6: ["6", "0.000001°", "~ 11.1 सेमी", "सर्वेक्षण मार्कर, सिविल इंजीनियरिंग स्टेक"],
-    ruleOfThumb: "सामान्य नियम: सभी सामान्य वेब मैपिंग, पता खोज और मोबाइल नेविगेशन के लिए 5 या 6 दशमलव स्थान, सब-मीटर सटीकता और डेटा दक्षता के बीच सर्वोत्तम संतुलन देते हैं।",
-    connectedGuides: "🔗 संबंधित टूल और गाइड",
-    tool1Title: "कोऑर्डिनेट कन्वर्टर",
-    tool1Desc: "DD, DMS और UTM बदलें",
-    tool2Title: "UTM और डेटम गाइड",
-    tool2Desc: "मीट्रिक ग्रिड प्रोजेक्शन",
-    tool3Title: "दूरी कैलकुलेटर",
-    tool3Desc: "ग्रेट-सर्कल दूरी सॉल्वर",
-    tool4Title: "GPS कैसे काम करता है",
-    tool4Desc: "सैटेलाइट जियोडेसी परिचय"
+    thFraction: "अंश",
+    thGround: "जमीनी सटीकता",
+    thScale: "उपयोग का स्तर",
+    prec0: ["0", "1.0°", "~ 111 किमी", "देश या बड़ा क्षेत्र"],
+    prec1: ["1", "0.1°", "~ 11.1 किमी", "बड़ा महानगर"],
+    prec2: ["2", "0.01°", "~ 1.11 किमी", "कस्बा या बड़ा पार्क"],
+    prec3: ["3", "0.001°", "~ 111 मीटर", "मोहल्ला या खेत"],
+    prec4: ["4", "0.0001°", "~ 11.1 मीटर", "व्यक्तिगत भूखंड"],
+    prec5: ["5", "0.00001°", "~ 1.11 मीटर", "मोबाइल जीपीएस चिप की सीमा"],
+    prec6: ["6", "0.000001°", "~ 0.11 मीटर", "सटीक सर्वेक्षण और भूगणित"],
+
+    workedExampleTitle: "भूगणितीय गणना: दिल्ली में 1 देशांतर डिग्री की चौड़ाई",
+    workedExampleIntro: "समस्या: दिल्ली (अक्षांश = 28.6139° N) में 1 डिग्री देशांतर की जमीनी चौड़ाई की गणना करें।",
+    workedExampleStep1: "सूत्र: चौड़ाई = 111.32 किमी × cos(अक्षांश)",
+    workedExampleStep2: "चरण 1: रेडियन में बदलें: 28.6139° × (π / 180) = 0.4994 rad",
+    workedExampleStep3: "चरण 2: कोसाइन निकालें: cos(0.4994) = 0.8778",
+    workedExampleStep4: "चरण 3: गुणा करें: 111.32 किमी × 0.8778 = 97.71 किमी। दिल्ली में 1° देशांतर 97.7 किमी है।",
+
+    commonMistakesTitle: "निर्देशांक दर्ज करते समय आम गलतियां",
+    commonMistakes: [
+      { mistake: "अक्षांश और देशांतर का क्रम उलट देना", explanation: "GeoJSON देशांतर (X) को पहले रखता है, जबकि आम बोलचाल और गूगल मैप्स में अक्षांश पहले लिखा जाता है।" },
+      { mistake: "ऋणात्मक चिह्न के साथ दिशा भी लिखना", explanation: "-28° दक्षिण लिखना गलत है। या तो -28° लिखें या 28° S।" },
+      { mistake: "सामान्य कार्यों के लिए 8 दशमलव अंकों का प्रयोग", explanation: "8 दशमलव अंक मिलीमीटर स्तर पर टेक्टोनिक प्लेटों की गति मापते हैं।" }
+    ],
+
+    faqs: [
+      { question: "अक्षांश हमेशा देशांतर से पहले क्यों बोला जाता है?", answer: "ऐतिहासिक रूप से नाविक ध्रुव तारे से अक्षांश आसानी से माप लेते थे, जबकि देशांतर मापने के लिए 18वीं सदी में सटीक घड़ियों की जरूरत पड़ी।" },
+      { question: "एंटीपोड (Antipode) क्या होता है?", answer: "यह पृथ्वी पर ठीक विपरीत दिशा का बिंदु होता है। अक्षांश का चिह्न बदलकर (-Lat) और देशांतर में 180° जोड़कर निकाला जाता है।" },
+      { question: "क्या निर्देशांक सीधी दूरियां होते हैं?", answer: "नहीं, ये कोणीय माप हैं। इन्हें मीटर में बदलने के लिए हैवरसिन जैसे त्रिकोणमितीय सूत्रों की आवश्यकता होती है।" }
+    ],
+
+    nextStepsTitle: "अगले कदम",
+    nextSteps: [
+      { title: "निर्देशांक प्रारूप बदलें", href: "/tools/coordinate-converter/", desc: "DD, DMS और UTM के बीच लाइव रूपांतरण करें।" },
+      { title: "दशमलव डिग्री बनाम DMS तुलना", href: "/comparisons/decimal-degrees-vs-dms/", desc: "जानें कि वेब मैपिंग दशमलव प्रारूप को क्यों प्राथमिकता देती है।" },
+      { title: "UTM और डेटम मार्गदर्शिका", href: "/guides/utm-coordinates-and-datums/", desc: "मीट्रिक ग्रिड और WGS 84 संदर्भ प्रणाली को समझें।" }
+    ],
+
+    connectedGuides: "🔗 जुड़े मार्गदर्शक और उपकरण",
+    tool1Title: "निर्देशांक परिवर्तक",
+    tool1Desc: "DD, DMS और UTM",
+    tool2Title: "दशमलव बनाम DMS",
+    tool2Desc: "प्रारूप तुलना",
+    tool3Title: "UTM और डेटम गाइड",
+    tool3Desc: "मीट्रिक ग्रिड",
+    tool4Title: "दूरी कैलकुलेटर",
+    tool4Desc: "हैवरसिन दूरी"
   },
   id: {
-    title: "Lintang dan Bujur Dijelaskan: Panduan Geodesi | MyLocationLab",
-    description: "Kuasai sistem koordinat geografis: cara lintang dan bujur menentukan posisi di permukaan Bumi, presisi desimal yang dibutuhkan, serta antipode.",
-    h1: "Lintang dan Bujur Dijelaskan: Panduan Lengkap Geodesi",
-    subtitle: "Eksplorasi dasar sistem referensi koordinat geografis, derajat, menit, detik, presisi desimal, dan matematika lingkaran besar.",
-    pIntro1: "Setiap lokasi fisik di Bumi—dari puncak Gunung Everest hingga ruang keluarga Anda—dapat dinyatakan secara unik dengan dua angka: lintang (φ) dan bujur (λ).",
-    pIntro2: "Bersama-sama, koordinat sudut ini membentuk kisi universal kartografi global, geodesi, navigasi bahari, dan mesin pemetaan web modern seperti Google Maps, OpenStreetMap, dan Leaflet.",
+    title: "Penjelasan Lintang dan Bujur: Panduan Geodesi | MyLocationLab",
+    description: "Singkatnya: Lintang mengukur jarak sudut utara-selatan dari Khatulistiwa, sedangkan Bujur mengukur jarak timur-barat dari Meridian Utama Greenwich.",
+    h1: "Penjelasan Lintang dan Bujur: Panduan Geodesi Lengkap",
+    subtitle: "Sistem referensi koordinat geografis, derajat desimal, notasi seksagesimal, ketelitian metrik, dan matematika bola bumi.",
+    
+    inShort: "Singkatnya: Lintang dan bujur adalah sudut yang dihitung dari pusat bumi untuk menentukan posisi titik mana pun di permukaan bumi. Lintang mengukur posisi utara-selatan dari 0° di Khatulistiwa hingga 90° di kutub, sedangkan bujur mengukur posisi timur-barat dari 0° di Greenwich hingga 180° di Garis Batas Penanggalan.",
+
+    takeawaysTitle: "Poin-Poin Penting",
+    takeaways: [
+      "Garis lintang selalu sejajar (~111 km per derajat), sedangkan garis bujur menyempit dan bertemu di kedua kutub.",
+      "Derajat Desimal (DD) merupakan standar perangkat lunak komputer; DMS tetap populer di navigasi penerbangan dan laut.",
+      "Lima angka di belakang koma pada DD memberikan resolusi ~1,1 meter, setara dengan batas akurasi ponsel.",
+      "Lintang negatif menandakan Belahan Bumi Selatan; bujur negatif menandakan Belahan Bumi Barat.",
+      "Sudut bola ini dapat diproyeksikan menjadi kisi bidang datar metrik UTM."
+    ],
+
+    pIntro1: "Setiap lokasi di permukaan bumi dapat dinyatakan lewat dua angka: lintang (φ) dan bujur (λ). Anda dapat melihat koordinat langsung di halaman <a href='/my-location/latitude-longitude/'>Lintang dan Bujur Saya</a>.",
+    pIntro2: "Kedua sudut ini merupakan dasar pemetaan global. Untuk mengubah format koordinat, gunakan <a href='/tools/coordinate-converter/'>Konverter Koordinat</a> atau baca perbandingan <a href='/comparisons/decimal-degrees-vs-dms/'>Derajat Desimal vs DMS</a>. Untuk proyeksi metrik datar, pelajari panduan <a href='/guides/utm-coordinates-and-datums/'>koordinat UTM dan datum</a> atau lihat glosarium <a href='/glossary/#decimal-degrees'>derajat desimal</a>.",
+
     calloutBadge: "🌐 Pemilih Peta Interaktif",
-    calloutTitle: "Klik di Mana Saja di Bumi untuk Koordinat Instan",
-    calloutDesc: "Pilih titik mana pun pada peta satelit dan vektor interaktif kami untuk melihat Derajat Desimal, DMS, dan metrik elevasi secara waktu nyata.",
-    calloutBtn: "Buka Peta Lintang/Bujur →",
+    calloutTitle: "Klik di Mana Saja untuk Mendapatkan Koordinat",
+    calloutDesc: "Pilih titik mana pun pada peta satelit untuk melihat angka DD, DMS, dan elevasi seketika.",
+    calloutBtn: "Buka Peta Koordinat →",
+
     h2Lat: "1. Memahami Lintang (Garis Paralel)",
-    pLat1: "Lintang (φ) mengukur seberapa jauh utara atau selatan suatu lokasi dari Ekuator Bumi. Garis lintang membentang horizontal timur-barat mengelilingi bola dunia dan disebut garis paralel karena jaraknya selalu sama satu sama lain di semua titik.",
-    latBullet1: "Ekuator (0°): Garis dasar mendasar yang membagi Bumi menjadi Belahan Utara (+ / N) dan Belahan Selatan (- / S).",
-    latBullet2: "Kutub Utara (+90° N) & Kutub Selatan (-90° S): Titik ujung sumbu rotasi planet.",
-    latBullet3: "Jarak per Derajat: 1 derajat lintang kira-kira 111 kilometer di semua tempat di Bumi.",
+    pLat1: "Lintang (φ) mengukur sudut posisi di utara atau selatan garis Khatulistiwa bumi. Garis-garis ini melingkar secara horizontal dan saling sejajar dengan jarak yang sama.",
+    latBullet1: "Khatulistiwa (0°): Membagi bumi menjadi Belahan Utara (+ / N/U) dan Belahan Selatan (- / S).",
+    latBullet2: "Kutub Utara (+90°) & Kutub Selatan (-90°): Ujung poros rotasi bumi.",
+    latBullet3: "Jarak per Derajat: 1 derajat lintang setara dengan sekitar 111 kilometer di seluruh dunia.",
+
     h2Long: "2. Memahami Bujur (Garis Meridian)",
-    pLong1: "Bujur (λ) mengukur seberapa jauh timur atau barat suatu lokasi dari Meridian Utama yang ditetapkan (0° di Greenwich, London). Garis bujur membentang vertikal dari kutub ke kutub dan disebut garis meridian.",
-    longBullet1: "Belahan Timur (0° sampai +180° E) & Belahan Barat (0° sampai -180° W).",
-    longBullet2: "Konvergensi di Kutub: Jarak per 1° bujur sama dengan ~111,32 km × cos(Lintang). Di ekuator 111,3 km; pada 48° menjadi 74,6 km; di kutub 0 km.",
-    h2Formats: "3. Format Koordinat: Derajat Desimal vs DMS vs UTM",
+    pLong1: "Bujur (λ) mengukur jarak sudut ke arah timur atau barat dari Meridian Utama Greenwich (0°). Garis-garisnya membujur vertikal dan bertemu di kutub.",
+    longBullet1: "Belahan Timur (0° sampai +180° E/T) dan Belahan Barat (0° sampai -180° W/B).",
+    longBullet2: "Konvergensi di Kutub: 1° bujur = 111,32 km × cos(Lintang). Di khatulistiwa 111,3 km; pada 48° hanya 74,6 km; di kutub 0 km.",
+
+    h2Formats: "3. Format: Derajat Desimal vs DMS vs UTM",
     ddTitle: "Derajat Desimal (DD) — Standar Web & GPS",
-    ddDesc: "Digunakan semua perangkat lunak modern, API JavaScript, dan perangkat GPS. Nilai positif berarti Utara/Timur; negatif berarti Selatan/Barat. (mis. 40.7128, -74.0060)",
+    ddDesc: "Digunakan oleh semua aplikasi modern (misal -6.1754, 106.8272). Positif = Utara/Timur; Negatif = Selatan/Barat.",
     dmsTitle: "Derajat, Menit, Detik (DMS) — Standar Navigasi",
-    dmsDesc: "Sistem seksagesimal yang membagi 1 derajat menjadi 60 menit (') dan 1 menit menjadi 60 detik (\"). Dipakai dalam penerbangan, kartografi bahari, dan operasi militer.",
+    dmsDesc: "Sistem seksagesimal yang membagi 1 derajat menjadi 60 menit (') dan 1 menit menjadi 60 detik (″).",
     utmTitle: "Universal Transverse Mercator (UTM) — Kisi Metrik",
-    utmDesc: "Membagi dunia menjadi 60 zona bujur selebar 6°, mengukur jarak dalam meter (Easting dan Northing), bukan sudut bola.",
-    h2Precision: "4. Berapa Angka Desimal yang Benar-Benar Anda Butuhkan?",
-    pPrecision: "Dalam pengembangan web dan penyimpanan data GIS, menyimpan terlalu banyak angka desimal memboroskan memori dan memberi kesan presisi yang keliru. Berikut skala presisi resmi WGS 84:",
+    utmDesc: "Membagi bumi menjadi 60 zona bujur selebar 6° dan mengukur jarak dalam satuan meter datar.",
+
+    h2Precision: "4. Berapa Banyak Angka Desimal yang Benar-Benar Dibutuhkan?",
+    pPrecision: "Angka desimal berlebih memboroskan memori tanpa faedah nyata. Alat <a href='/tools/latitude-longitude/'>Pencari Lintang & Bujur</a> kami menerapkan 6 angka desimal standar:",
     thPlaces: "Angka Desimal",
-    thFraction: "Fraksi Derajat",
-    thGround: "Presisi di Permukaan (di Ekuator)",
-    thScale: "Skala & Kasus Penggunaan Nyata",
-    prec0: ["0", "1,0°", "~ 111 km", "Negara atau kawasan benua"],
+    thFraction: "Pecahan Derajat",
+    thGround: "Ketelitian Tanah",
+    thScale: "Skala & Penggunaan Nyata",
+    prec0: ["0", "1,0°", "~ 111 km", "Wilayah negara atau benua"],
     prec1: ["1", "0,1°", "~ 11,1 km", "Kawasan metropolitan besar"],
-    prec2: ["2", "0,01°", "~ 1,11 km", "Kota, desa, atau taman"],
-    prec3: ["3", "0,001°", "~ 111 meter", "Petakan besar atau landasan pacu bandara"],
-    prec4: ["4", "0,0001°", "~ 11,1 meter", "Petakan tunggal atau penanda jalan"],
-    prec5: ["5", "0,00001°", "~ 1,11 meter", "Pintu masuk bangunan, GPS ponsel"],
-    prec6: ["6", "0,000001°", "~ 11,1 cm", "Titik ukur survei, patok teknik sipil"],
-    ruleOfThumb: "Patokan Praktis: Untuk semua pemetaan web umum, pencarian alamat, dan navigasi seluler, 5 atau 6 angka desimal memberikan keseimbangan terbaik antara akurasi di bawah meter dan efisiensi data.",
-    connectedGuides: "🔗 Alat & Panduan Terkait",
+    prec2: ["2", "0,01°", "~ 1,11 km", "Kota kecil atau taman"],
+    prec3: ["3", "0,001°", "~ 111 m", "Kawasan pemukiman atau sawah"],
+    prec4: ["4", "0,0001°", "~ 11,1 m", "Petak tanah atau bangunan"],
+    prec5: ["5", "0,00001°", "~ 1,11 m", "Batas ketelitian antena ponsel"],
+    prec6: ["6", "0,000001°", "~ 0,11 m", "Survei geodesi dan pemetaan tanah"],
+
+    workedExampleTitle: "Perhitungan Geodesi: Lebar 1 Derajat Bujur di Jakarta",
+    workedExampleIntro: "Soal: Hitung bentang jarak 1 derajat bujur di Jakarta (Lintang = -6,2088° S).",
+    workedExampleStep1: "Rumus: Lebar = 111,32 km × cos(Lintang)",
+    workedExampleStep2: "Langkah 1: Ubah ke radian: 6,2088° × (π / 180) = 0,10836 rad",
+    workedExampleStep3: "Langkah 2: Hitung kosinus: cos(0,10836) = 0,9941",
+    workedExampleStep4: "Langkah 3: Kalikan: 111,32 km × 0,9941 = 110,66 km. Di Jakarta 1° bujur membentang 110,7 km.",
+
+    commonMistakesTitle: "Kesalahan Umum Penulisan Koordinat",
+    commonMistakes: [
+      { mistake: "Menukar urutan Lintang dan Bujur", explanation: "Format GeoJSON menaruh Bujur (X) sebelum Lintang (Y), sedangkan Google Maps dan bahasa umum mendahulukan Lintang." },
+      { mistake: "Menggabungkan tanda minus dengan huruf arah", explanation: "Menulis -6° Selatan adalah bentuk dobel negatif yang salah. Tulis -6° atau 6° S." },
+      { mistake: "Menggunakan 8 angka desimal untuk keperluan umum", explanation: "Delapan angka desimal mengukur pergeseran lempeng tektonik dalam skala milimeter." }
+    ],
+
+    faqs: [
+      { question: "Mengapa lintang selalu disebut sebelum bujur?", answer: "Pelaut zaman dahulu dapat mengukur lintang dengan mudah mengamati Bintang Kutub dengan astrolab, berabad-abad sebelum bujur dapat dihitung dengan jam presisi." },
+      { question: "Apa itu titik antipode koordinat?", answer: "Antipode adalah titik yang berada tepat berseberangan di sisi lain bola bumi. Dihitung dengan membalik tanda lintang (-Lat) dan menambah/mengurang 180° bujur." },
+      { question: "Apakah koordinat merupakan jarak linier?", answer: "Bukan. Koordinat adalah sudut bola bumi. Menghitung jaraknya dalam meter membutuhkan rumus lingkaran besar seperti rumus Haversine." }
+    ],
+
+    nextStepsTitle: "Langkah Berikutnya",
+    nextSteps: [
+      { title: "Konversi Format Koordinat", href: "/tools/coordinate-converter/", desc: "Ubah angka antara DD, DMS, dan UTM secara interaktif." },
+      { title: "Perbandingan Derajat Desimal vs DMS", href: "/comparisons/decimal-degrees-vs-dms/", desc: "Pahami alasan sistem pemetaan digital menstandarkan angka pecahan." },
+      { title: "Panduan Koordinat UTM & Datum", href: "/guides/utm-coordinates-and-datums/", desc: "Pelajari proyeksi kisi bidang datar metrik dan elipsoid WGS 84." }
+    ],
+
+    connectedGuides: "🔗 Panduan & Alat Terkait",
     tool1Title: "Konverter Koordinat",
-    tool1Desc: "Konversi DD, DMS, dan UTM",
-    tool2Title: "Panduan UTM & Datum",
-    tool2Desc: "Proyeksi kisi metrik",
-    tool3Title: "Kalkulator Jarak",
-    tool3Desc: "Penghitung jarak lingkaran besar",
-    tool4Title: "Cara Kerja GPS",
-    tool4Desc: "Pengantar geodesi satelit"
+    tool1Desc: "DD, DMS & UTM",
+    tool2Title: "Desimal vs DMS",
+    tool2Desc: "Perbandingan format",
+    tool3Title: "Panduan UTM & Datum",
+    tool3Desc: "Kisi metrik bumi",
+    tool4Title: "Kalkulator Jarak",
+    tool4Desc: "Jarak geodesik Haversine"
   }
 };
 
@@ -381,13 +690,34 @@ const c = translations[lang] || translations.en;
   h1={c.h1}
   subtitle={c.subtitle}
   section="guides"
-  sectionLabel={lang === 'es' ? 'Guías Educativas' : lang === 'fr' ? 'Guides Pédagogiques' : lang === 'de' ? 'Fachratgeber' : lang === 'pt' ? 'Guias Educativos' : lang === 'hi' ? 'शैक्षिक गाइड' : lang === 'id' ? 'Panduan Edukasi' : 'Educational Guides'}
+  sectionLabel={lang === 'es' ? 'Guías Prácticas' : lang === 'fr' ? 'Guides Pratiques' : lang === 'de' ? 'Praxis-Leitfäden' : lang === 'pt' ? 'Guias Práticos' : lang === 'hi' ? 'मार्गदर्शिका' : lang === 'id' ? 'Panduan Praktis' : 'Practical Guides'}
   readTime="8 min"
   publishDate="2026-09-15"
   modifiedDate="2026-09-22"
 >
-  <p>{c.pIntro1}</p>
-  <p>{c.pIntro2}</p>
+  {c.inShort && (
+    <div class="callout-box" style="margin-bottom: var(--space-6); background: var(--color-bg-secondary); border-left: 4px solid var(--color-accent-primary); padding: var(--space-4) var(--space-5); border-radius: var(--radius-md);">
+      <p style="margin: 0; font-weight: 500; font-size: var(--text-base); color: var(--color-text-primary); line-height: 1.75;">
+        {c.inShort}
+      </p>
+    </div>
+  )}
+
+  {c.takeaways && (
+    <div class="card card-flat" style="margin-bottom: var(--space-8); padding: var(--space-6); border: 1px solid var(--color-border); background: var(--color-bg-card); border-radius: var(--radius-lg);">
+      <h3 style="margin-top: 0; margin-bottom: var(--space-3); font-size: var(--text-lg); display: flex; align-items: center; gap: var(--space-2);">
+        <span>📌</span> {c.takeawaysTitle || "Key Takeaways"}
+      </h3>
+      <ul style="margin: 0; padding-left: var(--space-5); display: flex; flex-direction: column; gap: var(--space-2); color: var(--color-text-secondary); line-height: 1.75;">
+        {c.takeaways.map((item: string) => (
+          <li>{item}</li>
+        ))}
+      </ul>
+    </div>
+  )}
+
+  <p set:html={localizeHtml(c.pIntro1, lang)}></p>
+  <p set:html={localizeHtml(c.pIntro2, lang)}></p>
 
   <div class="tool-callout">
     <div class="tool-callout-content">
@@ -403,16 +733,16 @@ const c = translations[lang] || translations.en;
   <h2>{c.h2Lat}</h2>
   <p>{c.pLat1}</p>
   <ul>
-    <li><strong>{c.latBullet1}</strong></li>
-    <li><strong>{c.latBullet2}</strong></li>
-    <li><strong>{c.latBullet3}</strong></li>
+    <li>{c.latBullet1}</li>
+    <li>{c.latBullet2}</li>
+    <li>{c.latBullet3}</li>
   </ul>
 
   <h2>{c.h2Long}</h2>
   <p>{c.pLong1}</p>
   <ul>
-    <li><strong>{c.longBullet1}</strong></li>
-    <li><strong>{c.longBullet2}</strong></li>
+    <li>{c.longBullet1}</li>
+    <li>{c.longBullet2}</li>
   </ul>
 
   <h2>{c.h2Formats}</h2>
@@ -443,7 +773,7 @@ const c = translations[lang] || translations.en;
   </div>
 
   <h2>{c.h2Precision}</h2>
-  <p>{c.pPrecision}</p>
+  <p set:html={localizeHtml(c.pPrecision, lang)}></p>
 
   <table>
     <thead>
@@ -457,52 +787,98 @@ const c = translations[lang] || translations.en;
     <tbody>
       <tr>
         <td><strong>{c.prec0[0]}</strong></td>
-        <td>{c.prec0[1]}</td>
+        <td><code>{c.prec0[1]}</code></td>
         <td>{c.prec0[2]}</td>
         <td>{c.prec0[3]}</td>
       </tr>
       <tr>
         <td><strong>{c.prec1[0]}</strong></td>
-        <td>{c.prec1[1]}</td>
+        <td><code>{c.prec1[1]}</code></td>
         <td>{c.prec1[2]}</td>
         <td>{c.prec1[3]}</td>
       </tr>
       <tr>
         <td><strong>{c.prec2[0]}</strong></td>
-        <td>{c.prec2[1]}</td>
+        <td><code>{c.prec2[1]}</code></td>
         <td>{c.prec2[2]}</td>
         <td>{c.prec2[3]}</td>
       </tr>
       <tr>
         <td><strong>{c.prec3[0]}</strong></td>
-        <td>{c.prec3[1]}</td>
+        <td><code>{c.prec3[1]}</code></td>
         <td>{c.prec3[2]}</td>
         <td>{c.prec3[3]}</td>
       </tr>
       <tr>
         <td><strong>{c.prec4[0]}</strong></td>
-        <td>{c.prec4[1]}</td>
+        <td><code>{c.prec4[1]}</code></td>
         <td>{c.prec4[2]}</td>
         <td>{c.prec4[3]}</td>
       </tr>
       <tr>
         <td><strong>{c.prec5[0]}</strong></td>
-        <td>{c.prec5[1]}</td>
-        <td>{c.prec5[2]}</td>
+        <td><code>{c.prec5[1]}</code></td>
+        <td><strong>{c.prec5[2]}</strong></td>
         <td>{c.prec5[3]}</td>
       </tr>
       <tr>
         <td><strong>{c.prec6[0]}</strong></td>
-        <td>{c.prec6[1]}</td>
+        <td><code>{c.prec6[1]}</code></td>
         <td>{c.prec6[2]}</td>
         <td>{c.prec6[3]}</td>
       </tr>
     </tbody>
   </table>
 
-  <blockquote>
-    <strong>{c.ruleOfThumb}</strong>
-  </blockquote>
+  {c.workedExampleTitle && (
+    <div class="card card-flat" style="margin: var(--space-8) 0; padding: var(--space-6); background: var(--color-bg-secondary); border-left: 4px solid var(--color-accent-success); border-radius: var(--radius-md);">
+      <h3 style="margin-top: 0; margin-bottom: var(--space-2); color: var(--color-text-primary);">🧮 {c.workedExampleTitle}</h3>
+      <p style="color: var(--color-text-secondary); margin-bottom: var(--space-4); line-height: 1.75;">{c.workedExampleIntro}</p>
+      <div style="display: flex; flex-direction: column; gap: var(--space-2); font-size: var(--text-sm); line-height: 1.75;">
+        <div style="padding: var(--space-2) var(--space-3); background: var(--color-bg-tertiary); border-radius: var(--radius-sm); font-family: var(--font-mono);">{c.workedExampleStep1}</div>
+        <div style="padding: var(--space-2) var(--space-3); background: var(--color-bg-tertiary); border-radius: var(--radius-sm); font-family: var(--font-mono);">{c.workedExampleStep2}</div>
+        <div style="padding: var(--space-2) var(--space-3); background: var(--color-bg-tertiary); border-radius: var(--radius-sm); font-family: var(--font-mono);">{c.workedExampleStep3}</div>
+        <div style="padding: var(--space-2) var(--space-3); background: var(--color-bg-tertiary); border-radius: var(--radius-sm); font-family: var(--font-mono);">{c.workedExampleStep4}</div>
+      </div>
+    </div>
+  )}
+
+  {c.commonMistakes && (
+    <div style="margin: var(--space-10) 0;">
+      <h2>⚠️ {c.commonMistakesTitle || "Common Mistakes"}</h2>
+      <div style="display: grid; gap: var(--space-4); margin-top: var(--space-4);">
+        {c.commonMistakes.map((m: any) => (
+          <div class="card card-flat" style="padding: var(--space-4) var(--space-5); border-left: 3px solid var(--color-accent-warning);">
+            <strong style="display: block; color: var(--color-text-primary); margin-bottom: var(--space-1); font-size: var(--text-base);">{m.mistake}</strong>
+            <p style="margin: 0; color: var(--color-text-secondary); font-size: var(--text-sm); line-height: 1.75;">{m.explanation}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  )}
+
+  {c.faqs && c.faqs.length > 0 && (
+    <div style="margin-top: var(--space-10);">
+      <h2>❓ FAQ: Latitude & Longitude</h2>
+      <FAQAccordion items={c.faqs} includeSchema={true} />
+    </div>
+  )}
+
+  {c.nextSteps && (
+    <div class="card card-flat" style="margin: var(--space-10) 0; padding: var(--space-6); background: var(--color-bg-secondary); border: 1px solid var(--color-border); border-radius: var(--radius-lg);">
+      <h3 style="margin-top: 0; margin-bottom: var(--space-4); font-size: var(--text-lg); display: flex; align-items: center; gap: var(--space-2);">
+        <span>🚀</span> {c.nextStepsTitle || "Next Steps"}
+      </h3>
+      <div style="display: grid; gap: var(--space-3);">
+        {c.nextSteps.map((step: any) => (
+          <a href={getLocalizedPath(step.href, lang)} class="card card-flat" style="display: flex; flex-direction: column; gap: var(--space-1); padding: var(--space-3) var(--space-4); text-decoration: none; border-left: 3px solid var(--color-accent-primary); background: var(--color-bg-card); transition: transform 0.15s ease;">
+            <strong style="color: var(--color-text-primary); font-size: var(--text-base);">{step.title} →</strong>
+            <span style="color: var(--color-text-secondary); font-size: var(--text-sm); line-height: 1.6;">{step.desc}</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  )}
 
   <div class="contextual-next-box">
     <h3 class="contextual-next-title">{c.connectedGuides}</h3>
@@ -514,22 +890,22 @@ const c = translations[lang] || translations.en;
           <div class="contextual-link-sub">{c.tool1Desc}</div>
         </div>
       </a>
-      <a href={getLocalizedPath('/guides/utm-coordinates-and-datums/', lang)} class="contextual-link-card">
-        <span class="contextual-link-icon">🗺️</span>
+      <a href={getLocalizedPath('/comparisons/decimal-degrees-vs-dms/', lang)} class="contextual-link-card">
+        <span class="contextual-link-icon">⚖️</span>
         <div class="contextual-link-info">
           <div class="contextual-link-title">{c.tool2Title}</div>
           <div class="contextual-link-sub">{c.tool2Desc}</div>
         </div>
       </a>
-      <a href={getLocalizedPath('/tools/distance-calculator/', lang)} class="contextual-link-card">
-        <span class="contextual-link-icon">📏</span>
+      <a href={getLocalizedPath('/guides/utm-coordinates-and-datums/', lang)} class="contextual-link-card">
+        <span class="contextual-link-icon">🗺️</span>
         <div class="contextual-link-info">
           <div class="contextual-link-title">{c.tool3Title}</div>
           <div class="contextual-link-sub">{c.tool3Desc}</div>
         </div>
       </a>
-      <a href={getLocalizedPath('/guides/how-gps-location-works/', lang)} class="contextual-link-card">
-        <span class="contextual-link-icon">📡</span>
+      <a href={getLocalizedPath('/tools/distance-calculator/', lang)} class="contextual-link-card">
+        <span class="contextual-link-icon">📏</span>
         <div class="contextual-link-info">
           <div class="contextual-link-title">{c.tool4Title}</div>
           <div class="contextual-link-sub">{c.tool4Desc}</div>

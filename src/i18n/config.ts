@@ -93,17 +93,27 @@ export function isSupportedLang(lang: string): lang is SupportedLang {
  * e.g., '/tools/gps-coordinates/' -> { lang: 'en', cleanPath: '/tools/gps-coordinates/' }
  */
 export function extractLocaleFromPath(pathname: string): { lang: SupportedLang; cleanPath: string } {
-  const normalized = pathname.startsWith('/') ? pathname : `/${pathname}`;
+  // Separate hash fragment if present so trailing slash logic does not append after hash
+  let pathOnly = pathname;
+  let hash = '';
+  const hashIdx = pathname.indexOf('#');
+  if (hashIdx !== -1) {
+    pathOnly = pathname.slice(0, hashIdx);
+    hash = pathname.slice(hashIdx);
+  }
+
+  const normalized = pathOnly.startsWith('/') ? pathOnly : `/${pathOnly}`;
   const segments = normalized.split('/').filter(Boolean);
 
   if (segments.length > 0 && isSupportedLang(segments[0])) {
     const lang = segments[0] as SupportedLang;
     const remainingSegments = segments.slice(1);
-    const cleanPath = remainingSegments.length === 0 ? '/' : `/${remainingSegments.join('/')}/`;
+    const cleanPath = remainingSegments.length === 0 ? `/${hash}` : `/${remainingSegments.join('/')}/${hash}`;
     return { lang, cleanPath };
   }
 
-  return { lang: defaultLang, cleanPath: normalized.endsWith('/') ? normalized : `${normalized}/` };
+  const cleanPath = (normalized.endsWith('/') ? normalized : `${normalized}/`) + hash;
+  return { lang: defaultLang, cleanPath };
 }
 
 /**
@@ -158,4 +168,20 @@ export function getAlternateLinks(siteUrl: string, pathname: string) {
   }
 
   return alternates;
+}
+
+/**
+ * Automatically localizes internal links in HTML strings for non-default locales.
+ * E.g., href="/tools/gps-accuracy/" becomes href="/es/tools/gps-accuracy/" when lang="es".
+ */
+export function localizeHtml(html: string, targetLang: SupportedLang | string): string {
+  if (!html) return '';
+  const lang = isSupportedLang(targetLang) ? targetLang : defaultLang;
+  if (lang === defaultLang) return html;
+  return html.replace(/href=(["'])(\/[^"']*)\1/g, (match, quote, p) => {
+    if (/^\/(es|fr|de|pt|hi|id)(\/|$)/.test(p)) {
+      return `href=${quote}${p}${quote}`;
+    }
+    return `href=${quote}/${lang}${p}${quote}`;
+  });
 }

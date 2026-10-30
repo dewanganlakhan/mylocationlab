@@ -60,7 +60,7 @@ export const privacyPageTranslations: Record<string, PrivacyPageContent> = {
     tp2Desc: "Open-source map tiles are loaded directly from OpenStreetMap servers into Leaflet.js to render your map visually.",
     pThirdParty2: "Neither MyLocationLab nor OpenStreetMap links your coordinates to personal identifiers or tracking cookies.",
     h2Ip: "4. Approximate IP Location Fallback",
-    pIp: "If your browser denies GPS permission or satellite hardware is unavailable, our site can provide an approximate, city-level estimate using your IP address. IP lookups are general (typically ±5 to 40 km accuracy) and are never used to build tracking profiles.",
+    pIp: "If your browser denies GPS permission or satellite hardware is unavailable, our site can provide an approximate, city-level estimate using your IP address. IP lookups are general (typically within 5 to 50 km accuracy depending on regional ISP network routing) and are never used to build tracking profiles.",
     h2Cookies: "5. Cookies and Local Storage",
     pCookies: "MyLocationLab does not use cross-site tracking cookies, fingerprinting scripts, or ad profiling beacons. We only use browser localStorage to remember your preferences (such as Metric/Imperial units or Local Privacy Mode) and to optionally let you save favorite places privately on your own device.",
     h2Compliance: "6. GDPR, CCPA & Global Compliance",

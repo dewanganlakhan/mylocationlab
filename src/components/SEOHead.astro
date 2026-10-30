@@ -47,8 +47,8 @@ const canonical = customCanonical || `${siteUrl}${normalizedPath}`;
 // Image absolute URL
 const fullOgImage = ogImage.startsWith('http') ? ogImage : `${siteUrl}${ogImage}`;
 
-// Multilingual alternate links (hreflang)
-const alternateLinks = getAlternateLinks(siteUrl, normalizedPath);
+// Multilingual alternate links (hreflang) — suppress hreflang on 404 pages
+const alternateLinks = noindex ? [] : getAlternateLinks(siteUrl, normalizedPath);
 
 // Organization Schema (E-E-A-T Entity)
 const organizationSchema = {

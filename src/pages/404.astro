@@ -1,15 +1,19 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { getLangFromUrl, getLocalizedPath, type SupportedLang, defaultLang } from '../i18n/config';
+
+const lang = getLangFromUrl(Astro.url) as SupportedLang;
 
 const quickLinks = [
-  { href: '/', label: 'Find My Location', desc: 'Instant GPS coordinates, address, and map' },
-  { href: '/tools/', label: 'All Location Tools', desc: 'Geocoding, distance, converters, and more' },
-  { href: '/guides/', label: 'GPS Guides', desc: 'Accuracy fixes, privacy, and how GPS works' },
-  { href: '/sitemap/', label: 'HTML Sitemap', desc: 'Complete directory of every page' },
+  { href: getLocalizedPath('/', lang), label: 'Find My Location', desc: 'Instant GPS coordinates, address, and map' },
+  { href: getLocalizedPath('/tools/', lang), label: 'All Location Tools', desc: 'Geocoding, distance, converters, and more' },
+  { href: getLocalizedPath('/guides/', lang), label: 'GPS Guides', desc: 'Accuracy fixes, privacy, and how GPS works' },
+  { href: getLocalizedPath('/sitemap/', lang), label: 'HTML Sitemap', desc: 'Complete directory of every page' },
 ];
 ---
 
 <BaseLayout
+  lang={lang}
   title="Page Not Found (404) | MyLocationLab"
   description="The page you are looking for does not exist. Find your location, browse our GPS tools, or use the sitemap to find what you need."
   noindex={true}
@@ -34,7 +38,7 @@ const quickLinks = [
         ))}
       </div>
 
-      <a href="/" class="btn btn-primary">← Back to Home</a>
+      <a href={getLocalizedPath('/', lang)} class="btn btn-primary">← Back to Home</a>
     </div>
   </div>
 </BaseLayout>

@@ -239,7 +239,7 @@ export const homeTranslations: Record<string, HomeTranslation> = {
         },
         {
           question: 'Can I find my location without GPS?',
-          answer: 'Yes. If GPS is unavailable or blocked, our tool automatically offers an approximate city-level location using your IP address (usually within 10 to 40 km).',
+          answer: 'Yes. If GPS is unavailable or blocked, our tool automatically offers an approximate city-level location using your IP address (typically within 5 to 50 km depending on your ISP routing and regional infrastructure).',
         },
       ],
     },
@@ -662,7 +662,7 @@ export const homeTranslations: Record<string, HomeTranslation> = {
         },
         {
           question: 'Funktioniert die Ortung auch ohne GPS?',
-          answer: 'Ja. Fehlt ein GPS-Modul, ermittelt unser System Ihren ungefähren Standort anhand Ihrer IP-Adresse auf Stadt-Ebene (ca. 15 bis 40 km Genauigkeit).',
+          answer: 'Ja. Fehlt ein GPS-Modul, ermittelt unser System Ihren ungefähren Standort anhand Ihrer IP-Adresse auf Stadt-Ebene (typischerweise 5 bis 50 km Genauigkeit je nach Provider-Routing).',
         },
       ],
     },
