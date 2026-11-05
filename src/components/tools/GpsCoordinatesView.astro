@@ -6,6 +6,7 @@
 import ToolLayout from '../../layouts/ToolLayout.astro';
 import FAQAccordion from '../FAQAccordion.astro';
 import { getLocalizedPath, defaultLang, type SupportedLang } from '../../i18n/config';
+import { getToolFaqs, toolFaqTitles } from '../../data/toolFaqs';
 
 interface Props {
   lang?: SupportedLang | string;
@@ -13,6 +14,8 @@ interface Props {
 
 const { lang: customLang = defaultLang } = Astro.props;
 const lang = (customLang || defaultLang) as SupportedLang;
+const toolFaqs = getToolFaqs('gps-coordinates', lang);
+const faqTitle = toolFaqTitles[lang] || toolFaqTitles.en;
 
 const translations: Record<string, any> = {
   en: {
@@ -399,6 +402,10 @@ const locateTitle = ({
       <li>{c.tipLi4}</li>
     </ol>
 
+    <h2>{lang === 'es' ? 'Formatos de Coordenadas y el Elipsoide WGS 84' : lang === 'fr' ? 'Formats de Coordonnées et Datum WGS 84' : lang === 'de' ? 'Koordinatenformate und das WGS-84-Datum' : lang === 'pt' ? 'Formatos de Coordenadas e Datum WGS 84' : lang === 'hi' ? 'GPS निर्देशांक प्रारूप और WGS 84 डेटम' : lang === 'id' ? 'Format Koordinat GPS & Datum WGS 84' : 'GPS Coordinate Formats & the WGS 84 Datum'}</h2>
+    <p>{lang === 'es' ? 'Todos los receptores GPS modernos calculan posiciones sobre el sistema geodésico mundial WGS 84. La latitud mide la separación angular norte-sur del Ecuador (0° a ±90°), y la longitud la distancia este-oeste desde el meridiano de Greenwich (0° a ±180°).' : lang === 'fr' ? 'Les récepteurs GNSS actuels calculent leur point dans le système géodésique WGS 84. La latitude mesure la distance angulaire nord-sud par rapport à l\'Équateur (0° à ±90°), et la longitude la distance est-ouest depuis le méridien de Greenwich (0° à ±180°).' : lang === 'de' ? 'Moderne GNSS-Sensoren berechnen Standorte im weltweiten Referenzsystem WGS 84. Die geodätische Breite misst den Winkelabstand zum Äquator (0° bis ±90°), die Länge den Abstand zum Nullmeridian in Greenwich (0° bis ±180°).' : lang === 'pt' ? 'Os receptores GNSS calculam o posicionamento geodésico no referencial WGS 84. A latitude mede o afastamento norte-sul do Equador (0° a ±90°), e a longitude o deslocamento leste-oeste a partir de Greenwich (0° a ±180°).' : lang === 'hi' ? 'सभी आधुनिक GPS रिसीवर WGS 84 वैश्विक संदर्भ प्रणाली पर कार्य करते हैं। अक्षांश भूमध्य रेखा से उत्तर-दक्षिण की दूरी (0° से ±90°) और देशांतर ग्रीनविच से पूर्व-पश्चिम की दूरी (0° से ±180°) मापता है।' : lang === 'id' ? 'Semua perangkat GPS modern menghitung posisi spasial berdasarkan kerangka elipsoid WGS 84. Lintang mengukur sudut utara-selatan Khatulistiwa (0° hingga ±90°), sedangkan bujur mengukur sudut timur-barat dari Meridian Greenwich (0° hingga ±180°).' : 'All modern GPS devices compute positions using the World Geodetic System 1984 (WGS 84) coordinate reference frame. Latitude measures angular distance north or south of the Equator (0° to ±90°), while longitude measures angular distance east or west of the Prime Meridian in Greenwich, England (0° to ±180°).'}</p>
+    <p>{lang === 'es' ? 'Los Grados Decimales (DD) ofrecen la notación matemática óptima para cartografía web. Un valor con 5 decimales garantiza resolución de ~1,1 metros, mientras que 6 decimales alcanzan ~11 centímetros.' : lang === 'fr' ? 'Les Degrés Décimaux (DD) permettent un calcul rapide dans les systèmes SIG. Une valeur à 5 décimales offre une précision d\'environ 1,1 mètre, et 6 décimales descendent à 11 centimètres.' : lang === 'de' ? 'Dezimalgrade (DD) eignen sich ideal für digitale Karten. 5 Nachkommastellen bieten eine Auflösung von ca. 1,1 Metern, 6 Nachkommastellen erreichen ca. 11 Zentimeter.' : lang === 'pt' ? 'Os Graus Decimais (DD) são a notação ideal para sistemas digitais e SIG. Coordenadas com 5 casas decimais garantem resolução de ~1,1 metro e 6 casas alcançam ~11 centímetros.' : lang === 'hi' ? 'दशमलव डिग्री (DD) डिजिटल मैपिंग के लिए सबसे उपयुक्त प्रारूप है। 5 दशमलव स्थानों से ~1.1 मीटर और 6 दशमलव स्थानों से ~11 सेंटीमीटर तक की सूक्ष्म पहचान संभव होती है।' : lang === 'id' ? 'Derajat Desimal (DD) merupakan format komputasi standar pemetaan digital. Lima angka desimal memberikan resolusi ~1,1 meter, sedangkan enam angka desimal mencapai ~11 sentimeter.' : 'Decimal degrees provide a continuous mathematical notation ideal for web mapping and GIS engines. A coordinate with 5 decimal places provides spatial resolution down to ~1.1 meters at the equator, while 6 decimal places resolves positions down to ~0.11 meters (11 centimeters).'}</p>
+
     <div class="callout-box" style="margin-top: var(--space-6); line-height: 1.8;">
       <p style="margin: 0; font-size: var(--text-sm);">
         {lang === 'fr' ? (
@@ -487,8 +494,8 @@ const locateTitle = ({
   </div>
 
   <div style="margin-top: var(--space-12);">
-    <h2 class="mb-8">FAQ</h2>
-    <FAQAccordion items={c.faqItems} />
+    <h2 class="mb-8">{faqTitle}</h2>
+    <FAQAccordion items={toolFaqs} />
   </div>
 
   <script>

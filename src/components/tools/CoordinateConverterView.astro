@@ -4,7 +4,9 @@
  * Powers: /tools/coordinate-converter/ across en, es, fr, de, pt
  */
 import ToolLayout from '../../layouts/ToolLayout.astro';
+import FAQAccordion from '../FAQAccordion.astro';
 import { getLocalizedPath, defaultLang, type SupportedLang } from '../../i18n/config';
+import { getToolFaqs, toolFaqTitles } from '../../data/toolFaqs';
 
 interface Props {
   lang?: SupportedLang | string;
@@ -12,6 +14,8 @@ interface Props {
 
 const { lang: customLang = defaultLang } = Astro.props;
 const lang = (customLang || defaultLang) as SupportedLang;
+const toolFaqs = getToolFaqs('coordinate-converter', lang);
+const faqTitle = toolFaqTitles[lang] || toolFaqTitles.en;
 
 const translations: Record<string, any> = {
   en: {
@@ -220,6 +224,9 @@ const c = translations[lang] || translations.en;
       <a href={getLocalizedPath('/comparisons/decimal-degrees-vs-dms/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">{c.compLinkText} →</a>
     </p>
 
+    <h2>{lang === 'es' ? 'Escala de Precisión en Grados Decimales' : lang === 'fr' ? 'Échelle de Précision des Degrés Décimaux' : lang === 'de' ? 'Präzisionsstufen von Dezimalgraden' : lang === 'pt' ? 'Escala de Precisão de Graus Decimais' : lang === 'hi' ? 'दशमलव डिग्री सटीकता पैमाना' : lang === 'id' ? 'Skala Presisi Derajat Desimal' : 'Decimal Degrees Precision Scale'}</h2>
+    <p>{lang === 'es' ? 'Cada posición decimal proporciona un nivel de resolución específico: 1 decimal identifica una ciudad o región (~11,1 km); 2 decimales un pueblo (~1,1 km); 3 decimales un barrio (~111 m); 4 decimales una parcela o calle (~11 m); 5 decimales un árbol o entrada (~1,1 m); y 6 decimales identifica una baldosa o centímetro (~0,11 m).' : lang === 'fr' ? 'Chaque décimale affine la précision spatiale : 1 décimale couvre une région (~11 km), 2 décimales un village (~1,1 km), 3 décimales un quartier (~111 m), 4 décimales une parcelle (~11 m), 5 décimales un seuil de porte (~1,1 m) et 6 décimales descendent à l\'échelle du centimètre (~11 cm).' : lang === 'de' ? 'Jede Nachkommastelle verfeinert die Ortsauflösung: 1 Stelle entspricht einer Großregion (~11 km), 2 Stellen einer Ortschaft (~1,1 km), 3 Stellen einem Stadtteil (~111 m), 4 Stellen einem Grundstück (~11 m), 5 Stellen einem Hauseingang (~1,1 m) und 6 Stellen lösen zentimetergenau (~11 cm) auf.' : lang === 'pt' ? 'Cada casa decimal amplia o nível de detalhe espacial: 1 casa cobre um município (~11 km), 2 casas uma vila (~1,1 km), 3 casas uma rua (~111 m), 4 casas um lote (~11 m), 5 casas a porta de entrada (~1,1 m) e 6 casas atingem precisão de 11 centímetros.' : lang === 'hi' ? 'प्रत्येक दशमलव स्थान सटीकता बढ़ाता है: 1 दशमलव स्थान ~11 किमी, 2 स्थान ~1.1 किमी, 3 स्थान ~111 मीटर, 4 स्थान ~11 मीटर, 5 स्थान ~1.1 मीटर और 6 स्थान 11 सेंटीमीटर तक की सूक्ष्म दूरी पहचानते हैं।' : lang === 'id' ? 'Tiap angka desimal memperinci resolusi spasial: 1 desimal mencakup wilayah kota (~11 km), 2 desimal desa (~1,1 km), 3 desimal jalan (~111 m), 4 desimal persil tanah (~11 m), 5 desimal pintu gedung (~1,1 m), dan 6 desimal mencapai skala 11 sentimeter.' : 'Each decimal place refines spatial resolution: 1 decimal place spans an entire city or large district (~11.1 km); 2 decimal places isolates a town (~1.1 km); 3 decimal places identifies a neighborhood street (~111 m); 4 decimal places resolves an individual parcel (~11 m); 5 decimal places pinpoints a doorway (~1.1 m); and 6 decimal places resolves down to individual centimeters (~0.11 m).'}</p>
+
     <div class="callout-box" style="margin-top: var(--space-6); line-height: 1.8;">
       <p style="margin: 0; font-size: var(--text-sm);">
         {lang === 'fr' ? (
@@ -305,6 +312,11 @@ const c = translations[lang] || translations.en;
         </a>
       </div>
     </div>
+  </div>
+
+  <div style="margin-top: var(--space-12);">
+    <h2 class="mb-8">{faqTitle}</h2>
+    <FAQAccordion items={toolFaqs} />
   </div>
 
   <script>

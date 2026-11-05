@@ -6,6 +6,7 @@
 import ToolLayout from '../../layouts/ToolLayout.astro';
 import FAQAccordion from '../FAQAccordion.astro';
 import { getLocalizedPath, defaultLang, type SupportedLang } from '../../i18n/config';
+import { getToolFaqs, toolFaqTitles } from '../../data/toolFaqs';
 
 interface Props {
   lang?: SupportedLang | string;
@@ -13,6 +14,8 @@ interface Props {
 
 const { lang: customLang = defaultLang } = Astro.props;
 const lang = (customLang || defaultLang) as SupportedLang;
+const toolFaqs = getToolFaqs('location-qr-code', lang);
+const faqTitle = toolFaqTitles[lang] || toolFaqTitles.en;
 
 const translations: Record<string, any> = {
   en: {
@@ -467,12 +470,13 @@ const t = translations[lang] || translations.en;
     <h2>{t.h2Print}</h2>
     <p>{t.pPrint}</p>
 
-    {t.faqItems && t.faqItems.length > 0 && (
-      <div style="margin-top: var(--space-8);">
-        <h2>FAQ</h2>
-        <FAQAccordion items={t.faqItems} />
-      </div>
-    )}
+    <h2>{lang === 'es' ? 'Casos de Uso Óptimos y Comparativa Geo URI vs URLs Web' : lang === 'fr' ? 'Usages Optimaux et Comparatif Geo URI vs URLs Web' : lang === 'de' ? 'Einsatzbereiche & Geo-URI vs. Web-URLs' : lang === 'pt' ? 'Casos de Uso e Comparativo Geo URI vs URLs Web' : lang === 'hi' ? 'उपयोग के क्षेत्र और Geo URI बनाम वेब लिंक' : lang === 'id' ? 'Penggunaan Optimal & Perbandingan Geo URI vs URL Web' : 'Optimal Applications & Geo URI vs. Web URLs'}</h2>
+    <p>{lang === 'es' ? 'Los códigos QR de ubicación facilitan el acceso en invitaciones de eventos, carteles inmobiliarios, folletos turísticos e itinerarios de senderismo. La codificación en Geo URI (RFC 5870) permite que aplicaciones cartográficas sin conexión naveguen directamente sin consumir datos móviles.' : lang === 'fr' ? 'Les QR codes de géolocalisation facilitent l\'orientation sur les invitations événementielles, panneaux immobiliers et topo-guides de randonnée. Le protocole ouvert Geo URI (RFC 5870) permet aux applications GPS autonomes d\'ouvrir le repère sans connexion.' : lang === 'de' ? 'Standort-QR-Codes bieten schnellen Zugang auf Einladungen, Flyern und Beschilderungen. Das offene Geo-URI-Format (RFC 5870) ermöglicht Navigations-Apps die Offline-Routenführung ohne mobile Daten.' : lang === 'pt' ? 'QR Codes de geolocalização simplificam o acesso em convites de eventos, placas imobiliárias e guias de trilha. O protocolo Geo URI (RFC 5870) permite que apps de GPS operem em modo offline sem consumir franquia de internet.' : lang === 'hi' ? 'लोकेशन QR कोड शादी के कार्ड, संपत्ति बोर्ड और पर्यटन गाइड में तुरंत नेविगेशन की सुविधा देते हैं। खुला Geo URI मानक बिना इंटरनेट के भी ऑफ़लाइन मैप में रास्ता दिखाता है।' : lang === 'id' ? 'QR Code lokasi mempercepat navigasi pada undangan acara, papan properti, dan brosur wisata alam. Protokol terbuka Geo URI (RFC 5870) memungkinkan aplikasi peta offline membuka titik tanpa kuota internet.' : 'Location QR codes streamline navigation for wedding invitations, real estate signage, trailhead markers, and emergency rendezvous points. Using the open Geo URI standard (RFC 5870) ensures that devices with offline vector maps can navigate directly without cellular connectivity.'}</p>
+
+    <div style="margin-top: var(--space-8);">
+      <h2>{faqTitle}</h2>
+      <FAQAccordion items={toolFaqs} />
+    </div>
 
     <div class="callout-box" style="margin-top: var(--space-6); line-height: 1.8;">
       <p style="margin: 0; font-size: var(--text-sm);">

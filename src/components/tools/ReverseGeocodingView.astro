@@ -4,7 +4,9 @@
  * Powers: /tools/reverse-geocoding/ across en, es, fr, de, pt
  */
 import ToolLayout from '../../layouts/ToolLayout.astro';
+import FAQAccordion from '../FAQAccordion.astro';
 import { getLocalizedPath, defaultLang, type SupportedLang } from '../../i18n/config';
+import { getToolFaqs, toolFaqTitles } from '../../data/toolFaqs';
 
 interface Props {
   lang?: SupportedLang | string;
@@ -12,6 +14,8 @@ interface Props {
 
 const { lang: customLang = defaultLang } = Astro.props;
 const lang = (customLang || defaultLang) as SupportedLang;
+const toolFaqs = getToolFaqs('reverse-geocoding', lang);
+const faqTitle = toolFaqTitles[lang] || toolFaqTitles.en;
 
 const translations: Record<string, any> = {
   en: {
@@ -224,6 +228,9 @@ const t = translations[lang] || translations.en;
     <h2>{t.h2What}</h2>
     <p set:html={t.pWhat1}></p>
     <p set:html={t.pWhat2}></p>
+
+    <h2>{lang === 'es' ? 'Resolución Espacial y Algoritmos de Búsqueda' : lang === 'fr' ? 'Résolution Spatiale et Algorithmes Inverses' : lang === 'de' ? 'Räumliche Auflösung & Suchheuristiken' : lang === 'pt' ? 'Resolução Espacial e Algoritmos de Busca' : lang === 'hi' ? 'स्थानिक विभेदन और खोज कलन विधि' : lang === 'id' ? 'Resolusi Spasial & Heuristik Pencarian' : 'Spatial Resolution & Boundary Heuristics'}</h2>
+    <p>{lang === 'es' ? 'El motor de geocodificación inversa calcula la distancia radial euclidiana hacia los nodos y polígonos cartográficos más cercanos. Si una coordenada cae en un patio interior o camino privado, el algoritmo proyecta el punto perpendicularmente hacia el eje viario público más próximo.' : lang === 'fr' ? 'Le moteur de géocodage inverse calcule la distance radiale vers les nœuds et polygones cartographiques les plus proches. Si un point tombe dans une cour intérieure ou un parc, l\'algorithme projette la position sur l\'axe de voirie public le plus proche.' : lang === 'de' ? 'Die Umkehrgeokodierung misst die euklidische Distanz zu den nächstgelegenen Katasterknoten. Liegt ein Punkt in einem Innenhof oder einer Grünanlage, projiziert der Algorithmus die Koordinate senkrecht auf die nächste öffentliche Straße.' : lang === 'pt' ? 'O motor de geocodificação reversa calcula a proximidade euclidiana em relação aos nós cartográficos mais vizinhos. Ao identificar coordenadas em áreas internas, o sistema projeta o ponto no logradouro público oficial mais próximo.' : lang === 'hi' ? 'रिवर्स जियोकोडिंग निकटतम सड़क और भवन नोड्स की दूरी नापता है। यदि निर्देशांक किसी भीतरी परिसर या पार्क में हों, तो यह निकटतम सार्वजनिक सड़क मार्ग से मिलान करता है।' : lang === 'id' ? 'Mesin reverse geocoding menghitung kedekatan jarak spasial ke simpul jalan terdekat. Jika koordinat jatuh di area pekarangan dalam, algoritma memproyeksikan titik ke sumbu jalan umum terdekat.' : 'The reverse geocoding engine calculates radial distance to the nearest mapped nodes and polygons. If a coordinate falls inside an interior courtyard or unpaved private pathway, the algorithm projects the point orthogonally onto the nearest public road centerline.'}</p>
     <div class="callout-box" style="margin-top: var(--space-6); line-height: 1.8;">
       <p style="margin: 0; font-size: var(--text-sm);">
         {lang === 'fr' ? (
@@ -309,6 +316,11 @@ const t = translations[lang] || translations.en;
         </a>
       </div>
     </div>
+  </div>
+
+  <div style="margin-top: var(--space-12);">
+    <h2 class="mb-8">{faqTitle}</h2>
+    <FAQAccordion items={toolFaqs} />
   </div>
 
   <script define:vars={{ tData: t }}>

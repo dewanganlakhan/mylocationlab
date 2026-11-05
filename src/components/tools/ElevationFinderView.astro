@@ -4,7 +4,9 @@
  * Powers: /tools/elevation-finder/ across en, es, fr, de, pt
  */
 import ToolLayout from '../../layouts/ToolLayout.astro';
+import FAQAccordion from '../FAQAccordion.astro';
 import { getLocalizedPath, defaultLang, type SupportedLang } from '../../i18n/config';
+import { getToolFaqs, toolFaqTitles } from '../../data/toolFaqs';
 
 interface Props {
   lang?: SupportedLang | string;
@@ -12,6 +14,8 @@ interface Props {
 
 const { lang: customLang = defaultLang } = Astro.props;
 const lang = (customLang || defaultLang) as SupportedLang;
+const toolFaqs = getToolFaqs('elevation-finder', lang);
+const faqTitle = toolFaqTitles[lang] || toolFaqTitles.en;
 
 const translations: Record<string, any> = {
   en: {
@@ -378,6 +382,9 @@ const t = translations[lang] || translations.en;
     <h3>{t.h3Pressure}</h3>
     <p>{t.pPressure}</p>
 
+    <h2>{lang === 'es' ? 'Ondulación Geoidal: Altura Elipsoidal vs Ortométrica' : lang === 'fr' ? 'Ondulation du Géoïde : Hauteur Ellipsoïdale vs Orthométrique' : lang === 'de' ? 'Geoidundulation: Ellipsoidische vs. Orthometrische Höhe' : lang === 'pt' ? 'Ondulação Geoidal: Altura Elipsoidal vs Ortométrica' : lang === 'hi' ? 'जियोइड अनडुलेशन: दीर्घवृत्तीय बनाम ऑर्थोमेट्रिक ऊंचाई' : lang === 'id' ? 'Undulasi Geoid: Tinggi Elipsoid vs Tinggi Ortometrik' : 'Geoid Undulation: Ellipsoidal vs. Orthometric Height'}</h2>
+    <p>{lang === 'es' ? 'Los satélites GPS miden la altura sobre un elipsoide matemático perfecto (WGS 84), mientras que la elevación real sobre el nivel del mar sigue el geoide gravitacional (EGM96). La diferencia entre ambos valores, conocida como ondulación geoidal, puede variar entre -106 metros y +85 metros en diferentes regiones del planeta.' : lang === 'fr' ? 'Les satellites GNSS mesurent la hauteur géométrique par rapport à l\'ellipsoïde WGS 84, alors que l\'altitude réelle suit le géoïde équipotentiel terrestre (EGM96). Cette variation, appelée ondulation du géoïde, oscille entre -106 et +85 mètres à l\'échelle mondiale.' : lang === 'de' ? 'GPS-Satelliten berechnen Höhen bezogen auf das mathematische WGS-84-Ellipsoid, während die reale Meereshöhe dem Schwerefeld-Geoid (EGM96) folgt. Dieser Unterschied (Geoidundulation) variiert weltweit um bis zu 100 Meter.' : lang === 'pt' ? 'Os satélites medem a cota sobre o elipsoide matemático WGS 84, enquanto a altitude real segue o geoide equipotencial (EGM96). Essa diferença de ondulação geoidal pode ultrapassar 100 metros de desvio em certas regiões.' : lang === 'hi' ? 'GPS सैटेलाइट WGS 84 दीर्घवृत्त के सापेक्ष ऊंचाई नापते हैं, जबकि वास्तविक समुद्र तल पृथ्वी के गुरुत्वाकर्षण जियोइड (EGM96) के अनुसार चलता है। दोनों में 100 मीटर तक का अंतर हो सकता है जिसे जियोइड अनडुलेशन कहते हैं।' : lang === 'id' ? 'Satelit GPS mengukur tinggi geometris di atas elipsoid WGS 84, sedangkan elevasi permukaan laut sesungguhnya mengikuti geoid gravitasi bumi (EGM96). Selisih ini disebut undulasi geoid dan dapat berbeda hingga puluhan meter.' : 'GPS satellites compute geometric heights relative to a smooth mathematical reference ellipsoid (WGS 84). True topographic elevation above mean sea level is referenced to Earth\'s gravitational geoid (EGM96). The vertical gap between these two surfaces, known as geoidal undulation, ranges from -106 meters to +85 meters worldwide.'}</p>
+
     <div class="callout-box" style="margin-top: var(--space-6); line-height: 1.8;">
       <p style="margin: 0; font-size: var(--text-sm);">
         {lang === 'fr' ? (
@@ -463,6 +470,11 @@ const t = translations[lang] || translations.en;
         </a>
       </div>
     </div>
+  </div>
+
+  <div style="margin-top: var(--space-12);">
+    <h2 class="mb-8">{faqTitle}</h2>
+    <FAQAccordion items={toolFaqs} />
   </div>
 
   <script define:vars={{ tData: t }}>

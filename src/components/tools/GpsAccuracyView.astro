@@ -4,7 +4,9 @@
  * Powers: /tools/gps-accuracy/ across en, es, fr, de, pt
  */
 import ToolLayout from '../../layouts/ToolLayout.astro';
+import FAQAccordion from '../FAQAccordion.astro';
 import { getLocalizedPath, defaultLang, type SupportedLang } from '../../i18n/config';
+import { getToolFaqs, toolFaqTitles } from '../../data/toolFaqs';
 
 interface Props {
   lang?: SupportedLang | string;
@@ -12,6 +14,8 @@ interface Props {
 
 const { lang: customLang = defaultLang } = Astro.props;
 const lang = (customLang || defaultLang) as SupportedLang;
+const toolFaqs = getToolFaqs('gps-accuracy', lang);
+const faqTitle = toolFaqTitles[lang] || toolFaqTitles.en;
 
 const translations: Record<string, any> = {
   en: {
@@ -723,19 +727,13 @@ const t = translations[lang] || translations.en;
       </p>
     </div>
 
-    {t.faqs && (
-      <div style="margin: var(--space-10) 0;">
-        <h2>❓ {t.faqsTitle || "Frequently Asked Questions"}</h2>
-        <div style="display: grid; gap: var(--space-4); margin-top: var(--space-4);">
-          {t.faqs.map((f: any) => (
-            <div class="card card-flat" style="padding: var(--space-5); border: 1px solid var(--color-border);">
-              <h3 style="margin-top: 0; margin-bottom: var(--space-2); font-size: var(--text-base); color: var(--color-text-primary);">{f.q}</h3>
-              <p style="margin: 0; color: var(--color-text-secondary); font-size: var(--text-sm); line-height: 1.75;">{f.a}</p>
-            </div>
-          ))}
-        </div>
-      </div>
-    )}
+    <h2>{lang === 'es' ? 'Interferencia por Trayectos Múltiples y Retardo Atmosférico' : lang === 'fr' ? 'Interférences Multi-Trajets et Retards Atmosphériques' : lang === 'de' ? 'Mehrwegeffekte und atmosphärische Verzögerung' : lang === 'pt' ? 'Interferência de Multicaminho e Atraso Atmosférico' : lang === 'hi' ? 'मल्टीपाथ परावर्तन और वायुमंडलीय विलंब' : lang === 'id' ? 'Interferensi Multipath & Keterlambatan Atmosfer' : 'Multipath Interference & Atmospheric Delays'}</h2>
+    <p>{lang === 'es' ? 'La degradación de la señal GPS se produce principalmente por dos factores: la refracción electromagnética al cruzar la ionosfera y troposfera, y el rebote de ondas de radio en edificios y masas de agua (trayectos múltiples). Los receptores modernos de doble banda (L1+L5) corrigen ambos efectos simultáneamente.' : lang === 'fr' ? 'La dégradation du signal satellite provient essentiellement de la réfraction dans l\'ionosphère et la troposphère, ainsi que du rebond des ondes sur les structures métalliques ou vitrées (multi-trajets). Les récepteurs modernes bibandes (L1+L5) corrigent ces décalages temporels.' : lang === 'de' ? 'Genauigkeitsverluste entstehen primär durch Brechung in der Ionosphäre sowie durch Signalreflexionen an Bauwerken (Mehrwegeffekt). Dual-Frequenz-Empfänger (L1+L5) filtern diese Fehlerquellen heraus und erzielen Genauigkeiten unterhalb eines Meters.' : lang === 'pt' ? 'A perda de precisão GNSS decorre da refração na ionosfera e troposfera, e da reflexão das ondas em superfícies espelhadas ou metálicas (multicaminho). Receptores de frequência dupla (L1+L5) neutralizam esses atrasos.' : lang === 'hi' ? 'GPS सिग्नल में त्रुटि मुख्य रूप से आयनमंडल में परावर्तन और इमारतों से टकराकर लौटने (मल्टीपाथ) के कारण होती है। आधुनिक डुअल-बैंड (L1+L5) रिसीवर इन दोनों त्रुटियों को दूर करते हैं।' : lang === 'id' ? 'Penurunan akurasi GPS terutama disebabkan oleh pembiasan pada ionosfer dan troposfer, serta pantulan sinyal gelombang mikro pada dinding gedung bertingkat (multipath). Modul dual-band (L1+L5) mampu mengoreksi kedua gangguan tersebut.' : 'GNSS accuracy degradation stems primarily from two phenomena: atmospheric refraction as radio waves traverse the ionosphere and troposphere, and multipath interference caused by satellite signals bouncing off glass, metal, or water surfaces before reaching the antenna. Dual-frequency GNSS chips (L1+L5) compare the two carrier waves to calculate and eliminate atmospheric delays in real time.'}</p>
+
+    <div style="margin-top: var(--space-12);">
+      <h2 class="mb-8">{faqTitle}</h2>
+      <FAQAccordion items={toolFaqs} />
+    </div>
 
     {t.nextSteps && (
       <div class="card card-flat" style="margin: var(--space-10) 0; padding: var(--space-6); background: var(--color-bg-secondary); border: 1px solid var(--color-border); border-radius: var(--radius-lg);">

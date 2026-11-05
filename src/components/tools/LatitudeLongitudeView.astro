@@ -4,7 +4,9 @@
  * Supports en, es, fr, de, pt with interactive Leaflet map and instant geolocation.
  */
 import ToolLayout from '../../layouts/ToolLayout.astro';
+import FAQAccordion from '../FAQAccordion.astro';
 import { getLocalizedPath, defaultLang, type SupportedLang } from '../../i18n/config';
+import { getToolFaqs, toolFaqTitles } from '../../data/toolFaqs';
 
 interface Props {
   lang?: SupportedLang | string;
@@ -12,6 +14,8 @@ interface Props {
 
 const { lang: customLang = defaultLang } = Astro.props;
 const lang = (customLang || defaultLang) as SupportedLang;
+const toolFaqs = getToolFaqs('latitude-longitude', lang);
+const faqTitle = toolFaqTitles[lang] || toolFaqTitles.en;
 
 const toolData: Record<string, {
   title: string;
@@ -288,6 +292,9 @@ const locateTitle = ({
       {c.underText} <a href={getLocalizedPath('/guides/latitude-and-longitude-explained/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">{c.guideLinkText}</a> {lang === 'en' ? 'or check the' : '•'} <a href={getLocalizedPath('/glossary/', lang)} style="color: var(--color-accent-primary); font-weight: 600;">{c.glossaryLinkText}</a>.
     </p>
 
+    <h2>{lang === 'es' ? 'Paralelos de Latitud vs Meridianos de Longitud' : lang === 'fr' ? 'Parallèles de Latitude vs Méridiens de Longitude' : lang === 'de' ? 'Breitenkreise vs. Längenmeridiane' : lang === 'pt' ? 'Paralelos de Latitude vs Meridianos de Longitude' : lang === 'hi' ? 'अक्षांश समानांतर रेखाएं बनाम देशांतर याम्योत्तर' : lang === 'id' ? 'Garis Paralel Lintang vs Meridian Bujur' : 'Parallels of Latitude vs. Meridians of Longitude'}</h2>
+    <p style="line-height: 1.8; margin-bottom: 1.5rem;">{lang === 'es' ? 'Las líneas de latitud rodean el globo horizontalmente paralelas al Ecuador. Los meridianos de longitud convergen en los polos norte y sur geográficos. Esta cuadrícula esférica permite que cada punto de la Tierra tenga una coordenada unívoca en grados decimales.' : lang === 'fr' ? 'Les parallèles de latitude encerclent le globe parallèlement à l\'Équateur. Les méridiens de longitude relient les pôles géographiques. Cette grille sphérique attribue à chaque point une coordonnée angulaire unique.' : lang === 'de' ? 'Breitenkreise verlaufen parallel zum Äquator horizontal um die Erde. Längenmeridiane laufen an den geographischen Polen zusammen. Dieses Netz ermöglicht die weltweite Positionsbestimmung in Dezimalgraden.' : lang === 'pt' ? 'As linhas de latitude circundam o globo paralelamente ao Equador. Os meridianos de longitude convergem nos polos geográficos norte e sul. Essa malha esférica fornece uma identificação unívoca para qualquer local.' : lang === 'hi' ? 'अक्षांश रेखाएं भूमध्य रेखा के समानांतर चलती हैं, जबकि देशांतर रेखाएं दोनों ध्रुवों पर मिलती हैं। यह ग्रिड पृथ्वी के प्रत्येक स्थान को अद्वितीय मान प्रदान करता है।' : lang === 'id' ? 'Garis paralel lintang melingkari bumi sejajar dengan Khatulistiwa, sedangkan garis meridian bujur bertemu di kedua kutub bumi. Kisi koordinat ini memungkinkan setiap jengkal permukaan bumi memiliki koordinat unik.' : 'Lines of latitude circle the globe horizontally parallel to the Equator. Lines of longitude converge at the geographic North and South poles. This spherical grid allows any point on Earth to be uniquely referenced using angular decimal degrees.'}</p>
+
     <div class="callout-box" style="margin-top: var(--space-6); line-height: 1.8;">
       <p style="margin: 0; font-size: var(--text-sm);">
         {lang === 'fr' ? (
@@ -373,6 +380,11 @@ const locateTitle = ({
         </a>
       </div>
     </div>
+  </div>
+
+  <div style="margin-top: var(--space-12);">
+    <h2 class="mb-8">{faqTitle}</h2>
+    <FAQAccordion items={toolFaqs} />
   </div>
 
   <script>

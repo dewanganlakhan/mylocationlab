@@ -4,7 +4,9 @@
  * Powers: /tools/distance-calculator/ across en, es, fr, de, pt
  */
 import ToolLayout from '../../layouts/ToolLayout.astro';
+import FAQAccordion from '../FAQAccordion.astro';
 import { getLocalizedPath, defaultLang, type SupportedLang } from '../../i18n/config';
+import { getToolFaqs, toolFaqTitles } from '../../data/toolFaqs';
 
 interface Props {
   lang?: SupportedLang | string;
@@ -12,6 +14,8 @@ interface Props {
 
 const { lang: customLang = defaultLang } = Astro.props;
 const lang = (customLang || defaultLang) as SupportedLang;
+const toolFaqs = getToolFaqs('distance-calculator', lang);
+const faqTitle = toolFaqTitles[lang] || toolFaqTitles.en;
 
 const translations: Record<string, any> = {
   en: {
@@ -272,6 +276,9 @@ const t = translations[lang] || translations.en;
     <h2>{t.h2Map}</h2>
     <p set:html={t.pMap1}></p>
 
+    <h2>{lang === 'es' ? 'Rutas de Círculo Máximo vs Líneas de Rumbo' : lang === 'fr' ? 'Orthodromie vs Loxodromie' : lang === 'de' ? 'Großkreisdistanz vs. Loxodrome' : lang === 'pt' ? 'Rotas Ortodrômicas vs Linhas de Rumo' : lang === 'hi' ? 'ग्रेट-सर्कल दूरी बनाम लोक्सोड्रोम' : lang === 'id' ? 'Jarak Lingkaran Besar vs Garis Rhumb' : 'Great-Circle Distance vs. Rhumb Lines'}</h2>
+    <p>{lang === 'es' ? 'La trayectoria más corta entre dos puntos en una esfera se denomina ortodrómica o círculo máximo. A diferencia de una línea de rumbo (loxodrómica) de rumbo fijo, un arco de círculo máximo corta los meridianos con ángulos cambiantes, constituyendo la ruta óptima para vuelos de larga distancia y navegación marítima.' : lang === 'fr' ? 'La trajectoire la plus courte entre deux points sur une sphère est l\'orthodromie (grand cercle). Contrairement à la loxodromie qui conserve un cap constant mais allonge le parcours, l\'arc de grand cercle minimise la distance physique parcourue par les navires et aéronefs.' : lang === 'de' ? 'Der kürzeste Weg zwischen zwei Punkten auf einer Kugel ist die Orthodrome (Großkreis). Im Gegensatz zur Loxodrome mit konstantem Kompasskurs schneidet der Großkreisbogen Meridiane unter wechselnden Winkeln und minimiert die Wegstrecke.' : lang === 'pt' ? 'A trajetória mais curta sobre uma esfera chama-se rota ortodrômica (círculo máximo). Diferente da loxodrômica que mantém rumo constante mas percorre maior distância, o círculo máximo minimiza o consumo de combustível em voos e navegação marítima.' : lang === 'hi' ? 'पृथ्वी की सतह पर दो बिंदुओं के बीच का सबसे छोटा रास्ता ग्रेट-सर्कल कहलाता है। विमान और जहाज ईंधन और समय बचाने के लिए इसी घुमावदार रास्ते पर चलते हैं।' : lang === 'id' ? 'Lintasan terpendek antara dua titik pada bola bumi adalah rute lingkaran besar (orthodrome). Berbeda dengan garis rhumb yang mempertahankan sudut kompas tetap namun lebih panjang, busur lingkaran besar meminimalkan jarak tempuh penerbangan internasional.' : 'The shortest path between any two points on a sphere is known as a great-circle (orthodromic) track. Unlike a rhumb line (loxodrome), which maintains a constant compass heading but travels a longer distance, a great-circle arc continually changes its bearing relative to meridians to minimize flight and sailing distances.'}</p>
+
     <div class="callout-box" style="margin-top: var(--space-6); line-height: 1.8;">
       <p style="margin: 0; font-size: var(--text-sm);">
         {lang === 'fr' ? (
@@ -357,6 +364,11 @@ const t = translations[lang] || translations.en;
         </a>
       </div>
     </div>
+  </div>
+
+  <div style="margin-top: var(--space-12);">
+    <h2 class="mb-8">{faqTitle}</h2>
+    <FAQAccordion items={toolFaqs} />
   </div>
 
   <script define:vars={{ tData: t }}>

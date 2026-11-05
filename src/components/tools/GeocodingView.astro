@@ -4,7 +4,9 @@
  * Powers: /tools/geocoding/ across en, es, fr, de, pt
  */
 import ToolLayout from '../../layouts/ToolLayout.astro';
+import FAQAccordion from '../FAQAccordion.astro';
 import { getLocalizedPath, defaultLang, type SupportedLang } from '../../i18n/config';
+import { getToolFaqs, toolFaqTitles } from '../../data/toolFaqs';
 
 interface Props {
   lang?: SupportedLang | string;
@@ -12,6 +14,8 @@ interface Props {
 
 const { lang: customLang = defaultLang } = Astro.props;
 const lang = (customLang || defaultLang) as SupportedLang;
+const toolFaqs = getToolFaqs('geocoding', lang);
+const faqTitle = toolFaqTitles[lang] || toolFaqTitles.en;
 
 const translations: Record<string, any> = {
   en: {
@@ -204,6 +208,9 @@ const t = translations[lang] || translations.en;
   <div class="prose" style="margin-top: var(--space-12); line-height: 1.8;">
     <h2>{t.h2What}</h2>
     <p set:html={t.pWhat}></p>
+
+    <h2>{lang === 'es' ? 'Cómo Procesan las Direcciones los Motores de Geocodificación' : lang === 'fr' ? 'Fonctionnement de l\'Analyse d\'Adresse par le Géocodeur' : lang === 'de' ? 'So verarbeiten Geocoder Textadressen' : lang === 'pt' ? 'Como os Motores de Geocodificação Processam Endereços' : lang === 'hi' ? 'जियोकोडिंग इंजन पते का विश्लेषण कैसे करते हैं' : lang === 'id' ? 'Cara Kerja Penguraian Alamat pada Geocoder' : 'How Forward Geocoding Engines Parse Addresses'}</h2>
+    <p>{lang === 'es' ? 'El algoritmo de geocodificación normaliza el texto eliminando puntuaciones redundantes, segmenta los elementos en componentes semánticos (número, vial, código postal, localidad) y ejecuta búsquedas indexadas sobre nodos cartográficos para interpolar coordenadas precisas.' : lang === 'fr' ? 'L\'algorithme décompose la chaîne de texte en composants sémantiques (numéro de voirie, nom de rue, code postal, ville) puis interroge une base vectorielle afin d\'interpoler les coordonnées numériques optimales.' : lang === 'de' ? 'Der Geocoding-Algorithmus normalisiert den Eingabetext, zerlegt ihn in semantische Einheiten (Hausnummer, Straßenname, Postleitzahl, Ort) und führt eine gewichtete Ähnlichkeitssuche auf Vektorkarten durch.' : lang === 'pt' ? 'O motor de geocodificação normaliza o texto, divide a busca em blocos semânticos (logradouro, número, bairro, cidade, CEP) e consulta bases vetoriais para calcular coordenadas centrais com alta precisão.' : lang === 'hi' ? 'जियोकोडिंग प्रणाली पते को टुकड़ों में बांटती है (मकान नंबर, सड़क, शहर, पिन कोड) और डिजिटल मानचित्र सूचकांक से मिलाकर सटीक अक्षांश और देशांतर की गणना करती है।' : lang === 'id' ? 'Algoritma geocoding memecah teks pencarian menjadi elemen semantik (nomor jalan, nama jalan, kode pos, kota) dan mencari kecocokan pada indeks vektor peta untuk menghasilkan koordinat presisi.' : 'The geocoding algorithm normalizes text input, tokenizes elements into semantic address components (street number, thoroughfare, postal code, municipality), and executes fuzzy index matching against geographic vector databases to interpolate exact coordinates.'}</p>
     <div class="callout-box" style="margin-top: var(--space-6); line-height: 1.8;">
       <p style="margin: 0; font-size: var(--text-sm);">
         {lang === 'fr' ? (
@@ -289,6 +296,11 @@ const t = translations[lang] || translations.en;
         </a>
       </div>
     </div>
+  </div>
+
+  <div style="margin-top: var(--space-12);">
+    <h2 class="mb-8">{faqTitle}</h2>
+    <FAQAccordion items={toolFaqs} />
   </div>
 
   <script define:vars={{ tData: t }}>

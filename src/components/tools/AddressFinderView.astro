@@ -4,7 +4,9 @@
  * Powers: /tools/address-finder/ across en, es, fr, de, pt
  */
 import ToolLayout from '../../layouts/ToolLayout.astro';
+import FAQAccordion from '../FAQAccordion.astro';
 import { getLocalizedPath, defaultLang, type SupportedLang } from '../../i18n/config';
+import { getToolFaqs, toolFaqTitles } from '../../data/toolFaqs';
 
 interface Props {
   lang?: SupportedLang | string;
@@ -12,6 +14,8 @@ interface Props {
 
 const { lang: customLang = defaultLang } = Astro.props;
 const lang = (customLang || defaultLang) as SupportedLang;
+const toolFaqs = getToolFaqs('address-finder', lang);
+const faqTitle = toolFaqTitles[lang] || toolFaqTitles.en;
 
 const translations: Record<string, any> = {
   en: {
@@ -244,6 +248,9 @@ const t = translations[lang] || translations.en;
     <h2>{t.h2How}</h2>
     <p set:html={t.pHow1}></p>
     <p set:html={t.pHow2}></p>
+
+    <h2>{lang === 'es' ? 'Jerarquía de Resolución de Direcciones' : lang === 'fr' ? 'Hiérarchie de Résolution d\'Adresse' : lang === 'de' ? 'Hierarchie der Adressauflösung' : lang === 'pt' ? 'Hierarquia de Resolução de Endereços' : lang === 'hi' ? 'पता मिलान पदानुक्रम' : lang === 'id' ? 'Hierarki Resolusi Alamat' : 'How Reverse Geocoding Address Resolution Works'}</h2>
+    <p>{lang === 'es' ? 'La búsqueda de direcciones evalúa capas geoespaciales concéntricas: primero busca el polígono del edificio exacto; si no está delimitado, consulta el eje de la calle con su rango de numeración postal; y finalmente asigna el barrio, código postal y municipio.' : lang === 'fr' ? 'La résolution d\'adresse interroge plusieurs couches géographiques emboîtées : l\'empreinte du bâtiment en priorité, puis l\'axe de voirie avec son intervalle de numéros postaux, et enfin le quartier, code postal et commune.' : lang === 'de' ? 'Die Adressauflösung prüft Geodatenebenen kaskadierend: Zuerst den exakten Gebäudegrundriss, dann die Straßenachse mit Hausnummernbereichen und abschließend Ortsteil, Postleitzahl und Stadtbezirk.' : lang === 'pt' ? 'A resolução de endereços opera em camadas hierárquicas: primeiro tenta identificar o polígono do edifício; na ausência deste, pesquisa o eixo do logradouro com numeração interpolada, bairro e CEP.' : lang === 'hi' ? 'पता मिलान कई परतों में काम करता है: पहले सटीक इमारत का नक्शा, फिर सड़क की क्रम संख्या, और उसके बाद मोहल्ला, पिन कोड और शहर का निर्धारण होता है।' : lang === 'id' ? 'Resolusi alamat memindai lapisan spasial bertingkat: mendeteksi poligon gedung, lalu sumbu garis jalan dengan interpolasi penomoran pos, diikuti kelurahan, kode pos, dan kota.' : 'Address matching scans concentric geospatial layers: it first checks for an exact building polygon boundary; if unmapped, it queries the road centerline with postal numbering ranges; and finally assigns neighborhood, postal code, and municipality.'}</p>
     <div class="callout-box" style="margin-top: var(--space-6); line-height: 1.8;">
       <p style="margin: 0; font-size: var(--text-sm);">
         {lang === 'fr' ? (
@@ -329,6 +336,11 @@ const t = translations[lang] || translations.en;
         </a>
       </div>
     </div>
+  </div>
+
+  <div style="margin-top: var(--space-12);">
+    <h2 class="mb-8">{faqTitle}</h2>
+    <FAQAccordion items={toolFaqs} />
   </div>
 
   <script define:vars={{ tData: t }}>
