@@ -47,12 +47,6 @@ const homeFaqSchema = {
   <!-- Hero Section -->
   <section class="stitch-hero" id="find-location">
     <div class="container">
-      <!-- Free GPS Location Finder Badge -->
-      <div class="hero-pill-badge">
-        <span class="pulse-dot-cyan"></span>
-        <span>{content.heroBadge}</span>
-      </div>
-
       <!-- Main Headline -->
       <h1 class="hero-title-stitch">
         {content.heroTitle} <span class="hero-title-highlight">{content.heroTitleHighlight}</span>
@@ -66,12 +60,12 @@ const homeFaqSchema = {
       <!-- Action Buttons -->
       <div class="hero-actions-stitch">
         <button class="btn-stitch-primary" id="get-location-btn" type="button">
-          <span class="pulse-dot-cyan" style="background: #ffffff;"></span>
+          <span class="pulse-dot-cyan" ></span>
           <span>{content.btnGetLocation}</span>
         </button>
 
         <a href={getLocalizedPath('/tools/', lang)} class="btn-stitch-secondary">
-          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" />
           </svg>
           <span>{content.btnBrowseTools}</span>
@@ -80,7 +74,7 @@ const homeFaqSchema = {
 
       <!-- Permission Notice Banner -->
       <div class="privacy-banner-stitch" id="privacy-banner">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0; color: #d97706;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0; color: var(--color-accent-warning);" aria-hidden="true">
           <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/>
           <line x1="12" y1="9" x2="12" y2="13"/>
           <line x1="12" y1="17" x2="12.01" y2="17"/>
@@ -97,7 +91,7 @@ const homeFaqSchema = {
       <div class="telemetry-top-bar">
         <div class="telemetry-header-info">
           <div class="telemetry-radar-box">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <path d="M4.9 19.1C1 15.2 1 8.8 4.9 4.9"/>
               <path d="M7.8 16.2c-2.3-2.3-2.3-6.1 0-8.5"/>
               <circle cx="12" cy="12" r="2"/>
@@ -117,7 +111,7 @@ const homeFaqSchema = {
         <!-- Action Controls -->
         <div class="telemetry-controls">
           <button class="telemetry-ctrl-btn" id="copy-coords-btn" type="button" title={content.btnCopy}>
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <rect width="14" height="14" x="8" y="8" rx="2" ry="2"/>
               <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/>
             </svg>
@@ -125,17 +119,17 @@ const homeFaqSchema = {
           </button>
 
           <a class="telemetry-ctrl-btn" id="whatsapp-share-btn" href="#" target="_blank" rel="noopener noreferrer" title="Share via WhatsApp" aria-disabled="true">
-            <span style="font-size: 14px;">📲</span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
             <span>WhatsApp</span>
           </a>
 
           <button class="telemetry-ctrl-btn emergency-toggle-btn" id="emergency-btn" type="button" title="Emergency Readout Mode">
-            <span style="font-size: 13px;">🚨</span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
             <span>Emergency Mode</span>
           </button>
 
           <button class="telemetry-ctrl-btn" id="share-btn" type="button" title={content.btnShare}>
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <circle cx="18" cy="5" r="3"/>
               <circle cx="6" cy="12" r="3"/>
               <circle cx="18" cy="19" r="3"/>
@@ -146,7 +140,7 @@ const homeFaqSchema = {
           </button>
 
           <a class="telemetry-ctrl-btn" id="open-maps-btn" href="https://www.google.com/maps" target="_blank" rel="noopener noreferrer" title={content.btnOpenMaps} aria-disabled="true">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21"/>
               <line x1="9" y1="3" x2="9" y2="18"/>
               <line x1="15" y1="6" x2="15" y2="21"/>
@@ -155,7 +149,7 @@ const homeFaqSchema = {
           </a>
 
           <button class="telemetry-ctrl-btn telemetry-ctrl-icon-btn" id="refresh-btn" type="button" title="Refresh Position">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
               <path d="M3 3v5h5"/>
               <path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/>
@@ -168,41 +162,41 @@ const homeFaqSchema = {
       <!-- Emergency Mode Card (Triggered by 🚨 button) -->
       <div id="emergency-card" class="emergency-readout-card" style="display: none;">
         <div class="emergency-card-top">
-          <div class="emergency-card-badge">🚨 EMERGENCY READOUT MODE</div>
+          <div class="emergency-card-badge">Emergency Readout Mode</div>
           <button type="button" class="emergency-close-button" id="close-emergency-btn" aria-label="Close emergency mode">✕ Close</button>
         </div>
         <p class="emergency-instruction">Read this aloud to the emergency dispatcher (112 / 911 / 999):</p>
         <div class="emergency-text-box">
-          <div class="emergency-callout-heading">"I AM CURRENTLY AT:"</div>
+          <div class="emergency-callout-heading">“Current Location:”</div>
           <div class="emergency-location-address" id="emergency-address">Locating your current street address…</div>
           <div class="emergency-location-coords" id="emergency-coords">Coordinates: Awaiting fix</div>
         </div>
         <div class="emergency-action-buttons">
           <button type="button" class="btn btn-primary btn-sm" id="emergency-copy-btn">
-            📋 Copy Emergency Text
+            Copy Emergency Text
           </button>
           <a class="btn btn-whatsapp btn-sm" id="emergency-wa-btn" href="#" target="_blank" rel="noopener noreferrer">
-            📲 WhatsApp Location
+            WhatsApp Location
           </a>
           <a class="btn btn-secondary btn-sm" id="emergency-sms-btn" href="#">
-            💬 Send via SMS
+            Send via SMS
           </a>
         </div>
       </div>
 
       <!-- Low Accuracy Warning Banner -->
       <div id="accuracy-warning" class="accuracy-warning-strip" style="display: none;">
-        <span class="warning-icon">⚠️</span>
+        <span class="warning-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></span>
         <span id="accuracy-warning-text">Estimated location (accuracy ±800m). Your device is using Wi-Fi or cellular tower routing. Step outside for satellite GPS precision.</span>
       </div>
 
       <!-- Troubleshooting Accordion Panel -->
       <div id="troubleshoot-panel" class="troubleshoot-card" style="display: none;">
         <div class="troubleshoot-card-header">
-          <span class="troubleshoot-card-icon">🧭</span>
+          <span class="troubleshoot-card-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg></span>
           <div>
             <h3 class="troubleshoot-heading" id="troubleshoot-title">Location Permission Required</h3>
-            <p class="troubleshoot-subtitle" id="troubleshoot-desc">We couldn't get a GPS fix from your browser. Here is how to enable it:</p>
+            <p class="troubleshoot-subtitle" id="troubleshoot-desc">We couldn’t get a GPS fix from your browser. Here is how to enable it:</p>
           </div>
         </div>
         <div class="troubleshoot-steps-accordion">
@@ -210,7 +204,7 @@ const homeFaqSchema = {
             <summary class="troubleshoot-step-summary">
               <strong>Chrome</strong> (Mobile Android & Desktop)
             </summary>
-            <p class="troubleshoot-step-body">Tap the lock or page settings icon 🔒 next to the website address in your URL bar &rarr; Tap <strong>Permissions / Site Settings</strong> &rarr; Change <strong>Location</strong> to <strong>Allow</strong> &rarr; Refresh this page.</p>
+            <p class="troubleshoot-step-body">Tap the lock or page settings icon next to the website address in your URL bar &rarr; Tap <strong>Permissions / Site Settings</strong> &rarr; Change <strong>Location</strong> to <strong>Allow</strong> &rarr; Refresh this page.</p>
           </details>
           <details class="troubleshoot-step-detail">
             <summary class="troubleshoot-step-summary">
@@ -227,10 +221,10 @@ const homeFaqSchema = {
         </div>
         <div class="troubleshoot-footer-buttons">
           <button type="button" class="btn-stitch-primary btn-sm" id="troubleshoot-retry-btn">
-            🔄 Retry GPS
+            Retry GPS
           </button>
           <button type="button" class="btn-stitch-secondary btn-sm" id="troubleshoot-ip-btn">
-            🌐 Use Approximate IP Location
+            Use IP Location
           </button>
         </div>
       </div>
@@ -243,7 +237,7 @@ const homeFaqSchema = {
 
           <!-- Overlay Chips -->
           <div class="map-overlay-chip map-chip-topleft">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <circle cx="12" cy="12" r="10"/>
               <line x1="2" y1="12" x2="22" y2="12"/>
               <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
@@ -252,7 +246,7 @@ const homeFaqSchema = {
           </div>
 
           <div class="map-overlay-chip map-chip-botleft">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/>
               <circle cx="12" cy="10" r="3"/>
             </svg>
@@ -272,14 +266,14 @@ const homeFaqSchema = {
             <div class="telemetry-cell-top">
               <span class="telemetry-cell-label">{content.labels.latitude}</span>
               <span class="telemetry-cell-icon">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                   <line x1="12" y1="19" x2="12" y2="5"/>
                   <polyline points="5 12 12 5 19 12"/>
                 </svg>
               </span>
             </div>
             <div>
-              <div class="telemetry-cell-value" id="data-lat">—</div>
+              <div class="telemetry-cell-value" id="data-lat">--</div>
               <div class="telemetry-cell-sub" id="data-lat-dec">{content.labels.waiting}</div>
             </div>
           </div>
@@ -289,14 +283,14 @@ const homeFaqSchema = {
             <div class="telemetry-cell-top">
               <span class="telemetry-cell-label">{content.labels.longitude}</span>
               <span class="telemetry-cell-icon">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                   <line x1="19" y1="12" x2="5" y2="12"/>
                   <polyline points="12 19 5 12 12 5"/>
                 </svg>
               </span>
             </div>
             <div>
-              <div class="telemetry-cell-value" id="data-lng">—</div>
+              <div class="telemetry-cell-value" id="data-lng">--</div>
               <div class="telemetry-cell-sub" id="data-lng-dec">{content.labels.waiting}</div>
             </div>
           </div>
@@ -306,7 +300,7 @@ const homeFaqSchema = {
             <div class="telemetry-cell-top">
               <span class="telemetry-cell-label">{content.labels.streetAddress}</span>
               <span class="telemetry-cell-icon">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                   <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/>
                   <circle cx="12" cy="10" r="3"/>
                 </svg>
@@ -323,7 +317,7 @@ const homeFaqSchema = {
             <div class="telemetry-cell-top">
               <span class="telemetry-cell-label">{content.labels.city}</span>
               <span class="telemetry-cell-icon">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                   <rect x="4" y="2" width="16" height="20" rx="2" ry="2"/>
                   <line x1="9" y1="22" x2="9" y2="22.01"/>
                   <line x1="15" y1="22" x2="15" y2="22.01"/>
@@ -331,7 +325,7 @@ const homeFaqSchema = {
               </span>
             </div>
             <div>
-              <div class="telemetry-cell-value" id="data-city">—</div>
+              <div class="telemetry-cell-value" id="data-city">--</div>
               <div class="telemetry-cell-sub" id="data-city-sub">{content.labels.waiting}</div>
             </div>
           </div>
@@ -341,7 +335,7 @@ const homeFaqSchema = {
             <div class="telemetry-cell-top">
               <span class="telemetry-cell-label">{content.labels.state}</span>
               <span class="telemetry-cell-icon">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                   <polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21"/>
                   <line x1="9" y1="3" x2="9" y2="18"/>
                   <line x1="15" y1="6" x2="15" y2="21"/>
@@ -349,7 +343,7 @@ const homeFaqSchema = {
               </span>
             </div>
             <div>
-              <div class="telemetry-cell-value" id="data-state-country">—</div>
+              <div class="telemetry-cell-value" id="data-state-country">--</div>
               <div class="telemetry-cell-sub" id="data-state-sub">{content.labels.waiting}</div>
             </div>
           </div>
@@ -359,7 +353,7 @@ const homeFaqSchema = {
             <div class="telemetry-cell-top">
               <span class="telemetry-cell-label">{content.labels.accuracy}</span>
               <span class="telemetry-cell-icon">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                   <circle cx="12" cy="12" r="10"/>
                   <circle cx="12" cy="12" r="6"/>
                   <circle cx="12" cy="12" r="2"/>
@@ -367,7 +361,7 @@ const homeFaqSchema = {
               </span>
             </div>
             <div>
-              <div class="telemetry-cell-value text-emerald" id="data-accuracy">—</div>
+              <div class="telemetry-cell-value text-emerald" id="data-accuracy">--</div>
               <div class="telemetry-cell-sub" id="data-accuracy-sub">{content.labels.deviceReported}</div>
             </div>
           </div>
@@ -377,13 +371,13 @@ const homeFaqSchema = {
             <div class="telemetry-cell-top">
               <span class="telemetry-cell-label">{content.labels.elevation}</span>
               <span class="telemetry-cell-icon">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                   <path d="m8 3 4 8 5-5 5 15H2L8 3z"/>
                 </svg>
               </span>
             </div>
             <div>
-              <div class="telemetry-cell-value" id="data-altitude">—</div>
+              <div class="telemetry-cell-value" id="data-altitude">--</div>
               <div class="telemetry-cell-sub">{content.labels.aboveSeaLevel}</div>
             </div>
           </div>
@@ -394,7 +388,7 @@ const homeFaqSchema = {
       <div class="coordinate-formats-card" id="formats-card">
         <div class="formats-header">
           <div class="formats-title-row">
-            <span class="formats-title">📐 Coordinate Formats</span>
+            <span class="formats-title">Coordinate Formats</span>
             <span class="formats-sub">Copy your exact position in standard navigation and mapping notations</span>
           </div>
         </div>
@@ -404,28 +398,28 @@ const homeFaqSchema = {
               <span class="format-badge">Decimal Degrees</span>
               <button type="button" class="format-copy-btn" id="copy-dd-btn" title="Copy Decimal Degrees">Copy</button>
             </div>
-            <div class="format-value" id="val-dd">—</div>
+            <div class="format-value" id="val-dd">--</div>
           </div>
           <div class="format-cell">
             <div class="format-cell-head">
               <span class="format-badge">DMS (Degrees Minutes Seconds)</span>
               <button type="button" class="format-copy-btn" id="copy-dms-btn" title="Copy DMS">Copy</button>
             </div>
-            <div class="format-value" id="val-dms">—</div>
+            <div class="format-value" id="val-dms">--</div>
           </div>
           <div class="format-cell">
             <div class="format-cell-head">
               <span class="format-badge">Plus Code (Open Location)</span>
               <button type="button" class="format-copy-btn" id="copy-plus-btn" title="Copy Plus Code">Copy</button>
             </div>
-            <div class="format-value" id="val-plus">—</div>
+            <div class="format-value" id="val-plus">--</div>
           </div>
           <div class="format-cell">
             <div class="format-cell-head">
               <span class="format-badge">UTM Grid Coordinate</span>
               <button type="button" class="format-copy-btn" id="copy-utm-btn" title="Copy UTM">Copy</button>
             </div>
-            <div class="format-value" id="val-utm">—</div>
+            <div class="format-value" id="val-utm">--</div>
           </div>
         </div>
       </div>
@@ -433,28 +427,28 @@ const homeFaqSchema = {
       <!-- Nearby Services Quick Help -->
       <div class="nearby-services-card" id="nearby-card">
         <div class="nearby-header">
-          <span class="nearby-title">🧭 Nearby Help & Services</span>
+          <span class="nearby-title">Nearby Help & Services</span>
           <span class="nearby-sub">One-tap navigation to critical nearby places in Google Maps</span>
         </div>
         <div class="nearby-chips-grid">
           <a class="nearby-chip" id="nearby-hospitals" href="#" target="_blank" rel="noopener noreferrer">
-            <span class="nearby-emoji">🏥</span>
+            
             <span class="nearby-text">Nearby Hospitals</span>
           </a>
           <a class="nearby-chip" id="nearby-police" href="#" target="_blank" rel="noopener noreferrer">
-            <span class="nearby-emoji">🚓</span>
+            
             <span class="nearby-text">Police Stations</span>
           </a>
           <a class="nearby-chip" id="nearby-pharmacies" href="#" target="_blank" rel="noopener noreferrer">
-            <span class="nearby-emoji">💊</span>
+            
             <span class="nearby-text">Pharmacies</span>
           </a>
           <a class="nearby-chip" id="nearby-petrol" href="#" target="_blank" rel="noopener noreferrer">
-            <span class="nearby-emoji">⛽</span>
+            
             <span class="nearby-text">Fuel / Petrol Pumps</span>
           </a>
           <a class="nearby-chip" id="nearby-atms" href="#" target="_blank" rel="noopener noreferrer">
-            <span class="nearby-emoji">🏧</span>
+            
             <span class="nearby-text">ATMs & Cash</span>
           </a>
         </div>
@@ -463,18 +457,18 @@ const homeFaqSchema = {
       <!-- Advanced Technical Details & Privacy Options -->
       <details class="tech-accordion-box" id="tech-accordion">
         <summary class="tech-accordion-summary">
-          <span>⚙️ Advanced Details, Live Tracking & Privacy Mode</span>
+          <span>Advanced Details, Live Tracking & Privacy Mode</span>
           <span class="tech-accordion-arrow">▾</span>
         </summary>
         <div class="tech-accordion-content">
           <div class="tech-grid">
             <div class="tech-item">
               <span class="tech-label">Detected Time Zone:</span>
-              <span class="tech-val" id="tech-tz">—</span>
+              <span class="tech-val" id="tech-tz">--</span>
             </div>
             <div class="tech-item">
               <span class="tech-label">Live Movement / Speed:</span>
-              <span class="tech-val" id="tech-motion">—</span>
+              <span class="tech-val" id="tech-motion">--</span>
             </div>
             <div class="tech-item">
               <span class="tech-label">Coordinate Standard:</span>
@@ -483,7 +477,7 @@ const homeFaqSchema = {
             <div class="tech-item">
               <span class="tech-label">Local Device History:</span>
               <button type="button" class="btn btn-secondary btn-xs" id="btn-save-spot" style="display: inline-flex; align-items: center; gap: 4px; margin-top: 4px;">
-                <span>⭐</span> <span>Save this spot</span>
+                 <span>Save this spot</span>
               </button>
               <span id="save-status-msg" style="font-size: 11px; color: var(--color-accent-success); margin-left: 6px;"></span>
             </div>
@@ -492,11 +486,11 @@ const homeFaqSchema = {
           <div class="tech-options-row">
             <label class="tech-toggle-item">
               <input type="checkbox" id="live-track-checkbox" />
-              <span>🔴 <strong>Live GPS Tracking:</strong> Continuously monitor and update my location as I move</span>
+              <span><strong>Live GPS Tracking:</strong> Continuously monitor and update my location as I move</span>
             </label>
             <label class="tech-toggle-item">
               <input type="checkbox" id="nominatim-toggle" checked />
-              <span>🔒 <strong>Resolve Street Address:</strong> Query OpenStreetMap Nominatim for street address (uncheck for strict local coordinate mode without sending queries)</span>
+              <span><strong>Resolve Street Address:</strong> Query OpenStreetMap Nominatim for street address (uncheck for strict local coordinate mode without sending queries)</span>
             </label>
           </div>
 
@@ -510,8 +504,8 @@ const homeFaqSchema = {
       <!-- Accuracy Feedback -->
       <div class="accuracy-feedback-row" id="feedback-row">
         <span class="feedback-label">Was this location accurate?</span>
-        <button type="button" class="feedback-pill-btn" id="feedback-yes">👍 Yes</button>
-        <button type="button" class="feedback-pill-btn" id="feedback-no">👎 No, it's incorrect</button>
+        <button type="button" class="feedback-pill-btn" id="feedback-yes">Yes</button>
+        <button type="button" class="feedback-pill-btn" id="feedback-no">No, incorrect</button>
         <span class="feedback-msg" id="feedback-msg" style="display: none;"></span>
       </div>
     </div>
@@ -530,7 +524,7 @@ const homeFaqSchema = {
         {content.detailsSection.cards.map((card) => (
           <a href={card.href.startsWith('/') ? getLocalizedPath(card.href, lang) : card.href} class="stitch-card">
             <div class="card-squircle-icon">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                 <circle cx="12" cy="12" r="10"/>
                 <circle cx="12" cy="12" r="4"/>
                 <line x1="4.93" y1="4.93" x2="9.17" y2="9.17"/>
@@ -559,7 +553,7 @@ const homeFaqSchema = {
         {content.toolsSection.cards.map((tool) => (
           <a href={tool.href.startsWith('/') ? getLocalizedPath(tool.href, lang) : tool.href} class="stitch-card">
             <div class="card-squircle-icon">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                 <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/>
                 <circle cx="12" cy="10" r="3"/>
               </svg>
@@ -572,9 +566,8 @@ const homeFaqSchema = {
       </div>
 
       <div class="stitch-center-action">
-        <a href={getLocalizedPath('/tools/', lang)} class="btn-stitch-pill-outline">
+        <a href={getLocalizedPath('/tools/', lang)} class="btn-stitch-pill-outline" style="white-space: nowrap;">
           <span>{content.toolsSection.btnAll}</span>
-          <span>&rarr;</span>
         </a>
       </div>
     </div>
@@ -593,7 +586,7 @@ const homeFaqSchema = {
         {content.guidesSection.cards.map((guide) => (
           <a href={guide.href.startsWith('/') ? getLocalizedPath(guide.href, lang) : guide.href} class="stitch-card">
             <div class="card-squircle-icon">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                 <circle cx="12" cy="12" r="10"/>
                 <line x1="2" y1="12" x2="22" y2="12"/>
                 <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
@@ -1171,7 +1164,7 @@ const homeFaqSchema = {
         history.slice(0, 5).forEach((item: any, idx: number) => {
           const li = document.createElement('li');
           li.style.marginBottom = '6px';
-          li.innerHTML = `<span>📍 <strong>${item.name || 'Saved Spot'}</strong> (${item.lat.toFixed(4)}, ${item.lng.toFixed(4)}) - <a href="https://www.google.com/maps?q=${item.lat},${item.lng}" target="_blank" rel="noopener noreferrer" style="color:var(--color-accent-primary); text-decoration:underline;">Maps</a></span> <button type="button" data-del="${idx}" style="background:none; border:none; color:#ef4444; cursor:pointer; margin-left:8px; font-size:11px;">Remove</button>`;
+          li.innerHTML = `<span><strong>${item.name || 'Saved Spot'}</strong> (${item.lat.toFixed(4)}, ${item.lng.toFixed(4)}) - <a href="https://www.google.com/maps?q=${item.lat},${item.lng}" target="_blank" rel="noopener noreferrer" style="color:var(--color-accent-primary); text-decoration:underline;">Maps</a></span> <button type="button" data-del="${idx}" style="background:none; border:none; color:var(--color-error); cursor:pointer; margin-left:8px; font-size:11px;">Remove</button>`;
           list.appendChild(li);
         });
         list.querySelectorAll('button[data-del]').forEach(btn => {
@@ -1226,15 +1219,39 @@ const homeFaqSchema = {
   </script>
 
   <style>
+  :focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; }
+  button:active, a:active { transform: translateY(1px); }
+  button:disabled, a[aria-disabled="true"] { opacity: 0.5; cursor: not-allowed; }
+  h1, h2, h3, .hero-title-stitch, .telemetry-heading-title, .section-title-stitch {
+    overflow-wrap: break-word;
+    min-width: 0;
+    text-wrap: balance;
+  }
+  .stitch-hero {
+    padding-top: calc(var(--header-height) + var(--space-8)) !important;
+  }
+  .stitch-hero,
+  .stitch-hero .container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  .hero-title-stitch {
+    text-align: center;
+    margin-inline: auto;
+    max-width: 800px;
+  }
+
     /* Emergency Readout Card */
     .emergency-readout-card {
-      background: #7f1d1d;
-      color: #ffffff;
-      border: 2px solid #ef4444;
-      border-radius: var(--radius-xl);
+      background: var(--color-ink);
+      color: var(--color-paper-3);
+      border: var(--rule-bar) solid var(--color-error);
+      border-radius: var(--radius-card);
       padding: var(--space-5) var(--space-6);
       margin-bottom: var(--space-5);
-      box-shadow: 0 10px 25px -5px rgba(239, 68, 68, 0.4);
+      box-shadow: none;
     }
     .emergency-card-top {
       display: flex;
@@ -1247,39 +1264,39 @@ const homeFaqSchema = {
       display: inline-block;
       font-size: var(--text-xs);
       font-weight: 800;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      background: #ef4444;
-      color: #ffffff;
-      padding: 3px 10px;
+      letter-spacing: normal;
+      text-transform: none;
+      background: var(--color-error);
+      color: var(--color-paper-3);
+      padding: var(--space-1) var(--space-2);
       border-radius: var(--radius-sm);
     }
     .emergency-close-button {
       background: transparent;
-      border: 1px solid rgba(255, 255, 255, 0.3);
-      color: #ffffff;
+      border: 1px solid var(--color-rule);
+      color: var(--color-paper-3);
       font-size: var(--text-xs);
       font-weight: 600;
-      padding: 3px 8px;
+      padding: var(--space-1) var(--space-2);
       border-radius: var(--radius-sm);
       cursor: pointer;
     }
     .emergency-instruction {
       font-size: var(--text-sm);
-      color: #fecaca;
+      color: var(--color-muted);
       margin: 0 0 var(--space-3);
     }
     .emergency-text-box {
-      background: rgba(0, 0, 0, 0.35);
+      background: var(--color-paper-2);
       border-radius: var(--radius-lg);
       padding: var(--space-4);
       margin-bottom: var(--space-4);
-      border: 1px solid rgba(255, 255, 255, 0.15);
+      border: 1px solid var(--color-rule);
     }
     .emergency-callout-heading {
       font-size: var(--text-xs);
       font-weight: 700;
-      color: #fca5a5;
+      color: var(--color-error);
       letter-spacing: 0.05em;
       margin-bottom: 4px;
     }
@@ -1287,22 +1304,22 @@ const homeFaqSchema = {
       font-size: clamp(1.2rem, 3vw, 1.65rem);
       font-weight: 800;
       line-height: 1.35;
-      color: #ffffff;
-      margin-bottom: 6px;
+      color: var(--color-paper-3);
+      margin-bottom: var(--space-2);
     }
     .emergency-location-coords {
       font-size: var(--text-sm);
       font-family: var(--font-mono);
-      color: #fecaca;
+      color: var(--color-muted);
     }
     .emergency-action-buttons {
       display: flex;
       flex-wrap: wrap;
-      gap: 10px;
+      gap: var(--space-2);
     }
     .emergency-action-buttons .btn-whatsapp {
-      background: #25d366;
-      color: #ffffff;
+      background: var(--color-accent);
+      color: var(--color-paper-3);
       font-weight: 600;
     }
 
@@ -1310,26 +1327,26 @@ const homeFaqSchema = {
     .accuracy-warning-strip {
       display: flex;
       align-items: center;
-      gap: 10px;
-      background: #fffbeb;
-      border: 1px solid #fde68a;
-      color: #92400e;
-      padding: 10px 14px;
+      gap: var(--space-2);
+      background: var(--color-paper-2);
+      border: var(--rule-bar) solid var(--color-accent-2);
+      color: var(--color-ink);
+      padding: var(--space-2) var(--space-3);
       border-radius: var(--radius-lg);
       font-size: var(--text-xs);
       font-weight: 500;
       margin-bottom: var(--space-4);
     }
     html[data-theme="dark"] .accuracy-warning-strip {
-      background: rgba(245, 158, 11, 0.12);
-      border-color: rgba(245, 158, 11, 0.3);
-      color: #fde68a;
+      background: var(--color-paper-2);
+      border-color: var(--color-accent-2);
+      color: var(--color-ink);
     }
 
     /* Troubleshooting Card */
     .troubleshoot-card {
       background: var(--color-bg-card);
-      border: 1px solid #f59e0b;
+      border: var(--rule-bar) solid var(--color-rule);
       border-radius: var(--radius-xl);
       padding: var(--space-5);
       margin-bottom: var(--space-5);
@@ -1374,14 +1391,14 @@ const homeFaqSchema = {
       color: var(--color-text-primary);
     }
     .troubleshoot-step-body {
-      margin: 6px 0 0;
+      margin: var(--space-2) 0 0;
       color: var(--color-text-secondary);
       line-height: 1.6;
     }
     .troubleshoot-footer-buttons {
       display: flex;
       flex-wrap: wrap;
-      gap: 10px;
+      gap: var(--space-2);
     }
 
     /* Coordinate Formats Card */
@@ -1415,7 +1432,7 @@ const homeFaqSchema = {
       background: var(--color-bg-card);
       border: 1px solid var(--color-border);
       border-radius: var(--radius-lg);
-      padding: 10px 12px;
+      padding: var(--space-2) var(--space-3);
     }
     .format-cell-head {
       display: flex;
@@ -1427,22 +1444,22 @@ const homeFaqSchema = {
       font-size: 11px;
       font-weight: 600;
       color: var(--color-text-tertiary);
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
+      text-transform: none;
+      letter-spacing: normal;
     }
     .format-copy-btn {
       background: transparent;
       border: 1px solid var(--color-border);
       color: var(--color-text-secondary);
       font-size: 11px;
-      padding: 1px 6px;
+      padding: var(--space-1) var(--space-2);
       border-radius: var(--radius-sm);
       cursor: pointer;
-      transition: all 0.15s ease;
+      transition: background-color var(--dur-micro) steps(1), color var(--dur-micro) steps(1), border-color var(--dur-micro) steps(1);
     }
     .format-copy-btn:hover {
       background: var(--color-accent-primary);
-      color: #ffffff;
+      color: var(--color-paper-3);
       border-color: var(--color-accent-primary);
     }
     .format-value {
@@ -1478,7 +1495,7 @@ const homeFaqSchema = {
     .nearby-chips-grid {
       display: flex;
       flex-wrap: wrap;
-      gap: 10px;
+      gap: var(--space-2);
     }
     .nearby-chip {
       display: inline-flex;
@@ -1487,12 +1504,12 @@ const homeFaqSchema = {
       background: var(--color-bg-card);
       border: 1px solid var(--color-border);
       border-radius: var(--radius-full);
-      padding: 7px 14px;
+      padding: var(--space-2) var(--space-3);
       font-size: var(--text-xs);
       font-weight: 600;
       color: var(--color-text-primary);
       text-decoration: none;
-      transition: all 0.2s ease;
+      transition: border-color var(--dur-micro) steps(1), color var(--dur-micro) steps(1);
     }
     .nearby-chip:hover {
       border-color: var(--color-accent-primary);
@@ -1546,7 +1563,7 @@ const homeFaqSchema = {
     .tech-options-row {
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      gap: var(--space-2);
     }
     .tech-toggle-item {
       display: flex;
@@ -1564,7 +1581,7 @@ const homeFaqSchema = {
       display: flex;
       align-items: center;
       flex-wrap: wrap;
-      gap: 10px;
+      gap: var(--space-2);
       font-size: var(--text-xs);
     }
     .feedback-label {
@@ -1577,10 +1594,10 @@ const homeFaqSchema = {
       color: var(--color-text-primary);
       font-size: var(--text-xs);
       font-weight: 600;
-      padding: 4px 10px;
+      padding: var(--space-1) var(--space-2);
       border-radius: var(--radius-full);
       cursor: pointer;
-      transition: all 0.15s ease;
+      transition: background-color var(--dur-micro) steps(1), color var(--dur-micro) steps(1), border-color var(--dur-micro) steps(1);
     }
     .feedback-pill-btn:hover {
       border-color: var(--color-accent-primary);
@@ -1590,5 +1607,9 @@ const homeFaqSchema = {
       font-size: var(--text-xs);
       font-weight: 500;
     }
-  </style>
+  
+  @media (prefers-reduced-motion: reduce) {
+    * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+  }
+</style>
 </BaseLayout>

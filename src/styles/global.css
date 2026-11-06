@@ -1,183 +1,156 @@
+/* Hallmark · shape: Bento Grid (draw 5b116c) · genre: modern-minimal · theme: Wayfind (deal 1/3, seed gps-coordinates-address-elevation-ad88·301fffab·2026-11-06·r0) · redesign: full
+ * hero: Banner · nav: slab · footer: index columns · imagery: the product · signature: the live GPS telemetry readout and departure-style coordinates board · wayfind: platform
+ * axes: light/mono/cool · posture: committed · contrast: pass · fold: pass · v2.0.0 */
+/* Hallmark · pre-emit critique: P9 H9 E9 S9 R9 V9 · weakest: E, tightened borders and square 2px plates */
+@import url("./tokens.css");
+@import url("./base.css");
+@import url('https://fonts.googleapis.com/css2?family=Chivo+Mono:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
 /* ============================================================
-   MyLocationLab — Global Design System
-   Modern Dark/Light mode, CSS tokens, responsive typography, and layout.
+   MyLocationLab — Wayfind Modern-Minimal Design System
+   Sober grotesk mono cells, 2px square ink borders, cobalt live actions, amber telemetry
    ============================================================ */
 
-/* ---------- Google Fonts ---------- */
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
-
-/* ---------- CSS Custom Properties ---------- */
 :root {
-  /* Base Colors (Stitch GeoPrecision Light Mode Default) */
-  --color-bg-primary: #f8fafc;
-  --color-bg-secondary: #ffffff;
-  --color-bg-tertiary: #f1f5f9;
-  --color-bg-card: #ffffff;
-  --color-bg-card-hover: #faf8ff;
-  --color-bg-glass: rgba(255, 255, 255, 0.9);
-  --color-bg-input: #ffffff;
-  --color-bg-nav: rgba(255, 255, 255, 0.94);
-  --color-bg-mobile-menu: rgba(255, 255, 255, 0.98);
-  --color-bg-dropdown: #ffffff;
+  /* Wayfind Theme Palette Mapping */
+  --color-bg-primary: var(--color-paper);
+  --color-bg-secondary: var(--color-paper-3);
+  --color-bg-tertiary: var(--color-paper-2);
+  --color-bg-card: var(--color-paper-3);
+  --color-bg-card-hover: var(--color-paper-2);
+  --color-bg-glass: var(--color-paper-3);
+  --color-bg-input: var(--color-paper-3);
+  --color-bg-nav: var(--color-paper);
+  --color-bg-mobile-menu: var(--color-paper);
+  --color-bg-dropdown: var(--color-paper-3);
 
-  /* GeoPrecision Accent Colors */
-  --color-accent-primary: #2563eb;
-  --color-accent-secondary: #4f46e5;
-  --color-accent-tertiary: #0ea5e9;
-  --color-accent-success: #10b981;
-  --color-accent-warning: #f59e0b;
-  --color-accent-error: #ef4444;
-  --color-accent-glow: rgba(37, 99, 235, 0.12);
+  /* Wayfind Accent Colors */
+  --color-accent-primary: var(--color-accent);
+  --color-accent-secondary: var(--color-ink);
+  --color-accent-tertiary: var(--color-muted);
+  --color-accent-success: var(--color-success);
+  --color-accent-warning: var(--color-accent-2);
+  --color-accent-error: var(--color-error);
+  --color-accent-glow: transparent;
 
-  /* Gradients */
-  --gradient-primary: linear-gradient(135deg, #2563eb 0%, #4f46e5 100%);
-  --gradient-card: linear-gradient(135deg, rgba(37, 99, 235, 0.03) 0%, rgba(79, 70, 229, 0.03) 100%);
-  --gradient-hero: radial-gradient(ellipse at 50% 0%, rgba(37, 99, 235, 0.08) 0%, transparent 60%);
-  --gradient-border: linear-gradient(135deg, rgba(37, 99, 235, 0.2), rgba(79, 70, 229, 0.1), rgba(14, 165, 233, 0.2));
-  --gradient-footer: radial-gradient(ellipse at 50% 0%, rgba(241, 245, 249, 0.95) 0%, #f8fafc 100%);
+  /* No purple-to-blue gradients */
+  --gradient-primary: var(--color-accent);
+  --gradient-card: none;
+  --gradient-hero: none;
+  --gradient-border: none;
+  --gradient-footer: none;
 
   /* Text Colors */
-  --color-text-primary: #0f172a;
-  --color-text-secondary: #475569;
-  --color-text-tertiary: #64748b;
-  --color-text-accent: #2563eb;
-  --color-text-heading: #0f172a;
-  --color-btn-primary-text: #ffffff;
-  --color-nav-active-bg: #eff6ff;
+  --color-text-primary: var(--color-ink);
+  --color-text-secondary: var(--color-ink-2);
+  --color-text-tertiary: var(--color-muted);
+  --color-text-accent: var(--color-accent);
+  --color-text-heading: var(--color-ink);
+  --color-btn-primary-text: var(--color-accent-ink);
+  --color-nav-active-bg: var(--color-paper-2);
 
   /* Border Colors */
-  --color-border: #e2e8f0;
-  --color-border-hover: #cbd5e1;
-  --color-border-active: #2563eb;
+  --color-border: var(--color-rule);
+  --color-border-hover: var(--color-ink-rule);
+  --color-border-active: var(--color-accent);
 
   /* Badges */
-  --color-badge-bg: #eff6ff;
-  --color-badge-border: #bfdbfe;
-  --color-badge-neutral-bg: #f1f5f9;
-  --color-badge-neutral-border: #e2e8f0;
-  --color-badge-neutral-text: #475569;
+  --color-badge-bg: var(--color-paper-2);
+  --color-badge-border: var(--color-rule);
+  --color-badge-neutral-bg: var(--color-paper-2);
+  --color-badge-neutral-border: var(--color-rule);
+  --color-badge-neutral-text: var(--color-muted);
 
   /* Typography */
-  --font-display: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  --font-mono: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', monospace;
-
-  --text-xs: clamp(0.7rem, 0.65rem + 0.25vw, 0.75rem);
-  --text-sm: clamp(0.8rem, 0.75rem + 0.25vw, 0.875rem);
-  --text-base: clamp(0.9rem, 0.85rem + 0.25vw, 1rem);
-  --text-lg: clamp(1rem, 0.95rem + 0.25vw, 1.125rem);
-  --text-xl: clamp(1.15rem, 1.05rem + 0.5vw, 1.25rem);
-  --text-2xl: clamp(1.4rem, 1.2rem + 1vw, 1.5rem);
-  --text-3xl: clamp(1.7rem, 1.4rem + 1.5vw, 1.875rem);
-  --text-4xl: clamp(2rem, 1.5rem + 2.5vw, 2.5rem);
-  --text-5xl: clamp(2.5rem, 1.8rem + 3.5vw, 3.5rem);
+  --font-display: "Chivo Mono", ui-monospace, monospace;
+  --font-sans: "Chivo Mono", ui-monospace, monospace;
+  --font-mono: "Chivo Mono", ui-monospace, monospace;
 
   /* Spacing */
-  --space-1: 0.25rem;
-  --space-2: 0.5rem;
-  --space-3: 0.75rem;
-  --space-4: 1rem;
+  --space-1: var(--space-2xs);
+  --space-2: var(--space-xs);
+  --space-3: var(--space-sm);
+  --space-4: var(--space-md);
   --space-5: 1.25rem;
-  --space-6: 1.5rem;
-  --space-8: 2rem;
+  --space-6: var(--space-lg);
+  --space-8: var(--space-xl);
   --space-10: 2.5rem;
   --space-12: 3rem;
-  --space-16: 4rem;
-  --space-20: 5rem;
-  --space-24: 6rem;
+  --space-16: var(--space-2xl);
+  --space-20: var(--space-3xl);
+  --space-24: var(--space-4xl);
 
-  /* Border Radius */
-  --radius-sm: 0.375rem;
-  --radius-md: 0.5rem;
-  --radius-lg: 0.75rem;
-  --radius-xl: 1rem;
-  --radius-2xl: 1.25rem;
+  /* Border Radius - Wayfind is square 2px ink borders, radius 0 except pills */
+  --radius-sm: 0px;
+  --radius-md: 0px;
+  --radius-lg: 0px;
+  --radius-xl: 0px;
+  --radius-2xl: 0px;
   --radius-full: 9999px;
 
   /* Shadows */
-  --shadow-sm: 0 1px 3px 0 rgba(15, 23, 42, 0.04), 0 1px 2px -1px rgba(15, 23, 42, 0.02);
-  --shadow-md: 0 4px 14px rgba(15, 23, 42, 0.06);
-  --shadow-lg: 0 10px 25px -5px rgba(37, 99, 235, 0.06), 0 8px 10px -6px rgba(15, 23, 42, 0.03);
-  --shadow-xl: 0 20px 25px -5px rgba(15, 23, 42, 0.08);
-  --shadow-glow: 0 0 20px rgba(37, 99, 235, 0.1);
-  --shadow-glow-strong: 0 0 35px rgba(37, 99, 235, 0.18);
+  --shadow-sm: none;
+  --shadow-md: none;
+  --shadow-lg: var(--shadow-card);
+  --shadow-xl: var(--shadow-card);
+  --shadow-glow: none;
+  --shadow-glow-strong: none;
 
   /* Glass */
-  --glass-blur: blur(16px);
-  --glass-blur-heavy: blur(24px);
+  --glass-blur: none;
+  --glass-blur-heavy: none;
 
-  /* Transitions */
-  --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
-  --transition-base: 250ms cubic-bezier(0.4, 0, 0.2, 1);
-  --transition-slow: 400ms cubic-bezier(0.4, 0, 0.2, 1);
-  --transition-spring: 500ms cubic-bezier(0.34, 1.56, 0.64, 1);
+  /* Transitions - strictly property-specific */
+  --transition-fast: 120ms steps(1);
+  --transition-base: 180ms ease-out;
+  --transition-slow: 300ms ease-out;
+  --transition-spring: 200ms ease-out;
 
-  /* Layout */
+  /* Layout - Standard comfortable width */
   --max-width: 1120px;
   --max-width-narrow: 820px;
   --max-width-wide: 1120px;
-  --header-height: 4.5rem;
+  --header-height: 4rem;
   --sidebar-width: 280px;
 }
 
-/* ---------- Dark Mode Theme ---------- */
+/* ---------- Dark Mode Theme (Wayfind Night) ---------- */
 html[data-theme="dark"] {
-  /* Base Colors */
-  --color-bg-primary: #0a0f1d;
-  --color-bg-secondary: #0f172a;
-  --color-bg-tertiary: #1e293b;
-  --color-bg-card: rgba(15, 23, 42, 0.75);
-  --color-bg-card-hover: rgba(22, 33, 62, 0.9);
-  --color-bg-glass: rgba(15, 23, 42, 0.65);
-  --color-bg-input: rgba(15, 23, 42, 0.85);
-  --color-bg-nav: rgba(10, 15, 29, 0.88);
-  --color-bg-mobile-menu: rgba(10, 15, 29, 0.98);
-  --color-bg-dropdown: rgba(15, 23, 42, 0.95);
+  --color-paper: oklch(15% 0.012 262);
+  --color-paper-2: oklch(19% 0.012 262);
+  --color-paper-3: oklch(12% 0.012 262);
+  --color-ink: oklch(96% 0.005 250);
+  --color-ink-2: oklch(85% 0.005 250);
+  --color-muted: oklch(65% 0.01 250);
+  --color-rule: oklch(31% 0.014 262);
+  --color-ink-rule: oklch(45% 0.014 262);
+  --color-accent: oklch(62% 0.2 264);
+  --color-accent-2: oklch(81% 0.16 82);
+  --color-accent-ink: oklch(15% 0.012 262);
+  --color-focus: oklch(62% 0.2 264);
 
-  /* Accent Colors */
-  --color-accent-primary: #38bdf8;
-  --color-accent-secondary: #6366f1;
-  --color-accent-tertiary: #2563eb;
-  --color-accent-success: #10b981;
-  --color-accent-warning: #f59e0b;
-  --color-accent-error: #ef4444;
-  --color-accent-glow: rgba(56, 189, 248, 0.15);
+  --color-bg-primary: var(--color-paper);
+  --color-bg-secondary: var(--color-paper-3);
+  --color-bg-tertiary: var(--color-paper-2);
+  --color-bg-card: var(--color-paper-3);
+  --color-bg-card-hover: var(--color-paper-2);
+  --color-bg-glass: var(--color-paper-3);
+  --color-bg-input: var(--color-paper-3);
+  --color-bg-nav: var(--color-paper);
+  --color-bg-mobile-menu: var(--color-paper);
+  --color-bg-dropdown: var(--color-paper-3);
 
-  /* Gradients */
-  --gradient-primary: linear-gradient(135deg, #2563eb 0%, #4f46e5 100%);
-  --gradient-card: linear-gradient(135deg, rgba(37, 99, 235, 0.05) 0%, rgba(99, 102, 241, 0.05) 100%);
-  --gradient-hero: radial-gradient(ellipse at 50% 0%, rgba(37, 99, 235, 0.15) 0%, transparent 60%);
-  --gradient-border: linear-gradient(135deg, rgba(37, 99, 235, 0.35), rgba(99, 102, 241, 0.15), rgba(56, 189, 248, 0.35));
-  --gradient-footer: radial-gradient(ellipse at 50% 0%, rgba(15, 23, 42, 0.95) 0%, #0a0f1d 100%);
+  --color-text-primary: var(--color-ink);
+  --color-text-secondary: var(--color-ink-2);
+  --color-text-tertiary: var(--color-muted);
+  --color-text-accent: var(--color-accent);
+  --color-text-heading: var(--color-ink);
+  --color-btn-primary-text: var(--color-accent-ink);
+  --color-nav-active-bg: var(--color-paper-2);
 
-  /* Text Colors */
-  --color-text-primary: #f8fafc;
-  --color-text-secondary: #94a3b8;
-  --color-text-tertiary: #64748b;
-  --color-text-accent: #38bdf8;
-  --color-text-heading: #ffffff;
-  --color-btn-primary-text: #ffffff;
-  --color-nav-active-bg: rgba(37, 99, 235, 0.18);
-
-  /* Border Colors */
-  --color-border: rgba(148, 163, 184, 0.12);
-  --color-border-hover: rgba(56, 189, 248, 0.35);
-  --color-border-active: rgba(37, 99, 235, 0.6);
-
-  /* Badges */
-  --color-badge-bg: rgba(37, 99, 235, 0.12);
-  --color-badge-border: rgba(37, 99, 235, 0.25);
-  --color-badge-neutral-bg: var(--color-bg-tertiary);
-  --color-badge-neutral-border: var(--color-border);
-  --color-badge-neutral-text: var(--color-text-secondary);
-
-  /* Shadows */
-  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
-  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
-  --shadow-lg: 0 8px 30px rgba(0, 0, 0, 0.5);
-  --shadow-xl: 0 16px 50px rgba(0, 0, 0, 0.6);
-  --shadow-glow: 0 0 20px rgba(37, 99, 235, 0.15);
-  --shadow-glow-strong: 0 0 40px rgba(37, 99, 235, 0.28);
+  --color-border: var(--color-rule);
+  --color-border-hover: var(--color-ink-rule);
+  --color-border-active: var(--color-accent);
 }
 
 /* Smooth transition when toggling */
@@ -185,7 +158,7 @@ html.theme-transition,
 html.theme-transition *,
 html.theme-transition *::before,
 html.theme-transition *::after {
-  transition: background-color 250ms ease, border-color 250ms ease, color 250ms ease, box-shadow 250ms ease !important;
+  transition: background-color var(--dur-micro) steps(1), border-color var(--dur-micro) steps(1), color var(--dur-micro) steps(1) !important;
 }
 
 /* ---------- Reset & Base ---------- */
@@ -197,81 +170,102 @@ html.theme-transition *::after {
   padding: 0;
 }
 
+html, body {
+  overflow-x: clip;
+}
+
 html {
   scroll-behavior: smooth;
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
   scroll-padding-top: calc(var(--header-height) + var(--space-8));
+  scrollbar-color: var(--color-muted) var(--color-paper);
 }
 
 body {
-  font-family: var(--font-sans);
-  font-size: var(--text-base);
+  font-family: var(--font-body);
+  font-size: var(--text-md);
   font-weight: 400;
-  line-height: 1.75;
+  line-height: 1.55;
   color: var(--color-text-primary);
   background-color: var(--color-bg-primary);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  overflow-x: hidden;
   min-height: 100dvh;
+  font-variant-numeric: tabular-nums;
+  caret-color: var(--color-accent);
 }
 
-/* Background ambient glow */
-body::before {
-  content: '';
-  position: fixed;
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 100%;
-  height: 600px;
-  background: var(--gradient-hero);
-  pointer-events: none;
-  z-index: 0;
+::selection {
+  background: var(--color-accent-2);
+  color: var(--color-ink);
 }
 
-/* ---------- Typography (GeoPrecision Hierarchy) ---------- */
+:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+button:active, a:active {
+  transform: translateY(1px);
+}
+
+button:disabled, a[aria-disabled="true"] {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Typography */
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-display);
   color: var(--color-text-heading);
-  font-weight: 700;
-  line-height: 1.25;
-  letter-spacing: -0.02em;
+  font-weight: 800;
+  line-height: 1.18;
+  letter-spacing: var(--tracking-display);
+  overflow-wrap: break-word;
+  min-width: 0;
+  text-wrap: balance;
 }
 
-h1 { font-size: var(--text-5xl); font-weight: 800; letter-spacing: -0.03em; }
-h2 { font-size: var(--text-4xl); font-weight: 700; }
-h3 { font-size: var(--text-3xl); font-weight: 700; }
-h4 { font-size: var(--text-2xl); font-weight: 600; }
-h5 { font-size: var(--text-xl); font-weight: 600; }
-h6 { font-size: var(--text-lg); font-weight: 600; }
+h1 { font-size: var(--text-display); max-width: 34ch; margin-inline: auto; text-align: center; }
+h2 { font-size: var(--text-section); max-width: 36ch; }
+h3 { font-size: var(--text-title); max-width: 44ch; line-height: 1.25; }
+h4 { font-size: var(--text-xl); font-weight: 700; }
+h5 { font-size: var(--text-lg); font-weight: 700; }
+h6 { font-size: var(--text-md); font-weight: 700; }
 
-.telemetry-value,
-.location-data-value {
-  font-family: var(--font-sans);
-  font-variant-numeric: tabular-nums;
-  font-feature-settings: 'tnum' on, 'lnum' on;
+.lead {
+  font-size: var(--text-lead);
+  line-height: 1.45;
+  max-width: 52ch;
+  color: var(--color-text-secondary);
 }
 
 p {
-  line-height: 1.8;
+  line-height: 1.6;
   color: var(--color-text-secondary);
-  margin-bottom: var(--space-6);
+  margin-bottom: var(--space-4);
+  text-wrap: pretty;
+}
+
+p:not([class]) {
+  max-width: 65ch;
 }
 
 a {
-  color: var(--color-accent-primary);
-  text-decoration: none;
-  transition: color var(--transition-fast);
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.16em;
+  transition: color var(--dur-micro) steps(1);
 }
 
 a:hover {
-  color: var(--color-accent-secondary);
+  color: var(--color-accent);
 }
 
 strong {
-  font-weight: 600;
+  font-weight: 700;
   color: var(--color-text-primary);
 }
 
@@ -280,22 +274,35 @@ code {
   font-size: 0.9em;
   background: var(--color-bg-tertiary);
   padding: 0.15em 0.4em;
-  border-radius: var(--radius-sm);
-  color: var(--color-accent-primary);
+  border: 1px solid var(--color-border);
+  color: var(--color-ink);
 }
 
-img {
+img, video {
   max-width: 100%;
   height: auto;
   display: block;
 }
 
-/* ---------- Layout Utilities ---------- */
+svg {
+  display: block;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+button, input, select, textarea {
+  font: inherit;
+}
+
+/* Layout Utilities */
 .container {
   width: 100%;
-  max-width: calc(var(--max-width) + 2 * var(--space-4));
-  margin: 0 auto;
-  padding: 0 var(--space-4);
+  max-width: var(--container);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+  box-sizing: border-box;
 }
 
 .container-narrow {
@@ -303,11 +310,11 @@ img {
 }
 
 .container-wide {
-  max-width: calc(var(--max-width) + 2 * var(--space-4));
+  max-width: var(--container);
 }
 
 .section {
-  padding: var(--space-20) 0;
+  padding: var(--space-16) 0;
   position: relative;
 }
 
@@ -316,18 +323,18 @@ img {
 }
 
 .section-lg {
-  padding: var(--space-24) 0;
+  padding: var(--space-20) 0;
 }
 
-/* ---------- Grid System ---------- */
+/* Grid System */
 .grid {
   display: grid;
   gap: var(--space-6);
 }
 
-.grid-2 { grid-template-columns: repeat(2, 1fr); }
-.grid-3 { grid-template-columns: repeat(3, 1fr); }
-.grid-4 { grid-template-columns: repeat(4, 1fr); }
+.grid-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.grid-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.grid-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
 
 .grid-auto {
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -337,7 +344,7 @@ img {
   grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
 }
 
-/* ---------- Flex Utilities ---------- */
+/* Flex Utilities */
 .flex { display: flex; }
 .flex-col { flex-direction: column; }
 .flex-wrap { flex-wrap: wrap; }
@@ -351,18 +358,21 @@ img {
 .gap-6 { gap: var(--space-6); }
 .gap-8 { gap: var(--space-8); }
 
-/* ---------- Text Utilities ---------- */
+/* Text Utilities */
 .text-center { text-align: center; }
-.text-accent { color: var(--color-accent-primary); }
+.text-accent { color: var(--color-accent); }
 .text-secondary { color: var(--color-text-secondary); }
 .text-gradient {
-  background: var(--gradient-primary);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: var(--color-accent);
+  background: none;
 }
 
-/* ---------- Spacing Utilities ---------- */
+.num, .figure, td.num, .telemetry-value, .location-data-value {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: 'tnum' on, 'lnum' on;
+}
+
+/* Spacing Utilities */
 .mb-2 { margin-bottom: var(--space-2); }
 .mb-3 { margin-bottom: var(--space-3); }
 .mb-4 { margin-bottom: var(--space-4); }
@@ -372,8 +382,8 @@ img {
 .mt-4 { margin-top: var(--space-4); }
 .mt-8 { margin-top: var(--space-8); }
 
-/* ---------- Visibility Utilities ---------- */
-.sr-only {
+/* Visibility Utilities */
+.sr-only, .visually-hidden {
   position: absolute;
   width: 1px;
   height: 1px;
@@ -385,88 +395,32 @@ img {
   border-width: 0;
 }
 
-/* ---------- Animations ---------- */
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
+/* Wayfind Plate & Bands */
+.plate {
+  border: var(--rule-bar) solid var(--color-ink);
+  background: var(--color-ink);
+  color: var(--color-paper);
 }
 
-@keyframes fadeInUp {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
+.plate .figure {
+  font-weight: 800;
+  color: var(--color-accent-2);
 }
 
-@keyframes pulse-ring {
-  0% { transform: scale(0.8); opacity: 0.6; }
-  50% { transform: scale(1.2); opacity: 0; }
-  100% { transform: scale(0.8); opacity: 0; }
+.band--ink {
+  background: var(--color-ink);
+  color: var(--color-paper);
 }
 
-@keyframes shimmer {
-  0% { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
-}
-
-@keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-6px); }
-}
-
-@keyframes spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
-
-.animate-fade-in {
-  animation: fadeIn 0.5s var(--transition-base) both;
-}
-
-.animate-fade-in-up {
-  animation: fadeInUp 0.6s var(--transition-base) both;
-}
-
-.animate-float {
-  animation: float 3s ease-in-out infinite;
-}
-
-/* Staggered animation delays */
-.delay-1 { animation-delay: 100ms; }
-.delay-2 { animation-delay: 200ms; }
-.delay-3 { animation-delay: 300ms; }
-.delay-4 { animation-delay: 400ms; }
-.delay-5 { animation-delay: 500ms; }
-.delay-6 { animation-delay: 600ms; }
-
-/* ---------- Skeleton Loading ---------- */
-.skeleton {
-  background: linear-gradient(
-    90deg,
-    var(--color-bg-tertiary) 25%,
-    rgba(148, 163, 184, 0.08) 50%,
-    var(--color-bg-tertiary) 75%
-  );
-  background-size: 400% 100%;
-  animation: shimmer 1.5s ease-in-out infinite;
-  border-radius: var(--radius-md);
-}
-
-/* ---------- Responsive ---------- */
+/* Responsive */
 @media (max-width: 1024px) {
-  .grid-4 { grid-template-columns: repeat(2, 1fr); }
-  .grid-3 { grid-template-columns: repeat(2, 1fr); }
+  .grid-4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .grid-3 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 
 @media (max-width: 768px) {
   :root {
     --header-height: 3.5rem;
-  }
-
-  .container {
-    padding: 0 var(--space-4);
-  }
-
-  .section {
-    padding: var(--space-12) 0;
   }
 
   .grid-4,
@@ -486,7 +440,7 @@ img {
   }
 }
 
-/* ---------- Scrollbar ---------- */
+/* Scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
@@ -497,16 +451,18 @@ img {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--color-border);
-  border-radius: var(--radius-full);
+  background: var(--color-rule);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--color-text-tertiary);
+  background: var(--color-ink-rule);
 }
 
-/* ---------- Selection ---------- */
-::selection {
-  background: rgba(0, 212, 255, 0.25);
-  color: var(--color-text-heading);
+@media (prefers-reduced-motion: reduce) {
+  *:not(.keep-motion), *:not(.keep-motion)::before, *:not(.keep-motion)::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

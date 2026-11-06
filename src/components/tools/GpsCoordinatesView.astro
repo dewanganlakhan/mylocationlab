@@ -443,26 +443,25 @@ const locateTitle = ({
     <!-- Related Tools Grid -->
     <div class="contextual-next-box" style="margin-top: var(--space-8);">
       <h3 class="contextual-next-title">
-        <span>🛠️</span>
         <span>{lang === 'fr' ? 'Outils Géographiques Liés' : lang === 'es' ? 'Herramientas de Coordenadas Relacionadas' : lang === 'de' ? 'Verwandte Geodaten-Tools' : lang === 'pt' ? 'Ferramentas Geográficas Relacionadas' : lang === 'hi' ? 'संबंधित निर्देशांक टूल' : lang === 'id' ? 'Alat Terkait' : 'Connected Coordinate Tools'}</span>
       </h3>
       <div class="contextual-next-grid">
         <a href={getLocalizedPath('/tools/coordinate-converter/', lang)} class="contextual-link-card">
-          <span class="contextual-link-icon">🔀</span>
+          <span class="contextual-link-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></span>
           <div class="contextual-link-info">
             <div class="contextual-link-title">{lang === 'es' ? 'Conversor de Coordenadas' : lang === 'fr' ? 'Convertisseur de Coordonnées' : lang === 'de' ? 'Koordinaten-Konverter' : lang === 'pt' ? 'Conversor de Coordenadas' : lang === 'hi' ? 'निर्देशांक कनवर्टर' : lang === 'id' ? 'Konverter Koordinat' : 'Coordinate Converter'}</div>
             <div class="contextual-link-sub">{lang === 'es' ? 'DD, DMS, UTM y MGRS' : lang === 'fr' ? 'DD, DMS, UTM et MGRS' : lang === 'de' ? 'DD, GMS, UTM und MGRS' : 'DD, DMS, UTM, MGRS'}</div>
           </div>
         </a>
         <a href={getLocalizedPath('/tools/address-finder/', lang)} class="contextual-link-card">
-          <span class="contextual-link-icon">🏠</span>
+          <span class="contextual-link-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></span>
           <div class="contextual-link-info">
             <div class="contextual-link-title">{lang === 'es' ? 'Buscador de Dirección' : lang === 'fr' ? "Localisateur d'Adresse" : lang === 'de' ? 'Adressen-Finder' : lang === 'pt' ? 'Localizador de Endereço' : lang === 'hi' ? 'सड़क पता खोजक' : lang === 'id' ? 'Pencari Alamat' : 'Street Address Finder'}</div>
             <div class="contextual-link-sub">{lang === 'es' ? 'Dirección para estas coordenadas' : lang === 'fr' ? 'Adresse pour ces coordonnées' : lang === 'de' ? 'Adresse für diese Koordinaten' : 'Street address for coordinates'}</div>
           </div>
         </a>
         <a href={getLocalizedPath('/tools/latitude-longitude/', lang)} class="contextual-link-card">
-          <span class="contextual-link-icon">🌐</span>
+          <span class="contextual-link-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></span>
           <div class="contextual-link-info">
             <div class="contextual-link-title">{lang === 'es' ? 'Buscador de Latitud y Longitud' : lang === 'fr' ? 'Latitude et Longitude' : lang === 'de' ? 'Breiten- & Längengrad' : lang === 'pt' ? 'Latitude e Longitude' : lang === 'hi' ? 'अक्षांश और देशांतर खोजक' : lang === 'id' ? 'Lintang dan Bujur' : 'Latitude Longitude Finder'}</div>
             <div class="contextual-link-sub">{lang === 'es' ? 'Selección en mapa interactivo' : lang === 'fr' ? 'Sélection sur carte' : lang === 'de' ? 'Interaktive Karte' : 'Interactive map pinpoint'}</div>
@@ -476,14 +475,14 @@ const locateTitle = ({
           </div>
         </a>
         <a href={getLocalizedPath('/tools/gps-accuracy/', lang)} class="contextual-link-card">
-          <span class="contextual-link-icon">🎯</span>
+          <span class="contextual-link-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></span>
           <div class="contextual-link-info">
             <div class="contextual-link-title">{lang === 'es' ? 'Comprobador de Precisión GPS' : lang === 'fr' ? 'Testeur de Précision GPS' : lang === 'de' ? 'GPS-Genauigkeitsprüfer' : lang === 'pt' ? 'Verificador de Precisão GPS' : lang === 'hi' ? 'GPS सटीकता परीक्षक' : lang === 'id' ? 'Pemeriksa Akurasi GPS' : 'GPS Accuracy Checker'}</div>
             <div class="contextual-link-sub">{lang === 'es' ? 'Margen de error satelital' : lang === 'fr' ? 'Rayon d\'incertitude en mètres' : lang === 'de' ? 'Fehlerradius in Metern' : 'Satellite error radius in meters'}</div>
           </div>
         </a>
         <a href={getLocalizedPath('/tools/location-qr-code/', lang)} class="contextual-link-card">
-          <span class="contextual-link-icon">📱</span>
+          <span class="contextual-link-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></span>
           <div class="contextual-link-info">
             <div class="contextual-link-title">{lang === 'es' ? 'Código QR de Ubicación' : lang === 'fr' ? 'QR Code de Localisation' : lang === 'de' ? 'Standort-QR-Code' : lang === 'pt' ? 'QR Code de Localização' : lang === 'hi' ? 'लोकेशन QR कोड' : lang === 'id' ? 'QR Code Lokasi' : 'Location QR Code'}</div>
             <div class="contextual-link-sub">{lang === 'es' ? 'Pin escaneable para móviles' : lang === 'fr' ? 'Pin scannable mobile' : lang === 'de' ? 'Mobiler Wegpunkt-Code' : 'Scannable coordinate pin'}</div>

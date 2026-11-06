@@ -36,21 +36,20 @@ const isHome = currentPath === homePath || currentPath === '/' || currentPath ==
     <!-- Brand Logo -->
     <a href={homePath} class="nav-logo" aria-label="MyLocationLab Home">
       <span class="nav-logo-icon">
-        <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <rect width="32" height="32" rx="9" fill="#2563EB"/>
-          <circle cx="16" cy="16" r="8" stroke="#93C5FD" stroke-width="2"/>
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <rect width="32" height="32" fill="var(--color-accent)"/>
+          <circle cx="16" cy="16" r="8" stroke="var(--color-paper)" stroke-width="2"/>
           <circle cx="16" cy="16" r="4" stroke="white" stroke-width="2"/>
           <circle cx="16" cy="16" r="1.5" fill="white"/>
-          <line x1="16" y1="4.5" x2="16" y2="7.5" stroke="#93C5FD" stroke-width="1.5" stroke-linecap="round"/>
-          <line x1="16" y1="24.5" x2="16" y2="27.5" stroke="#93C5FD" stroke-width="1.5" stroke-linecap="round"/>
-          <line x1="4.5" y1="16" x2="7.5" y2="16" stroke="#93C5FD" stroke-width="1.5" stroke-linecap="round"/>
-          <line x1="24.5" y1="16" x2="27.5" y2="16" stroke="#93C5FD" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="16" y1="4.5" x2="16" y2="7.5" stroke="var(--color-paper)" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="16" y1="24.5" x2="16" y2="27.5" stroke="var(--color-paper)" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="4.5" y1="16" x2="7.5" y2="16" stroke="var(--color-paper)" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="24.5" y1="16" x2="27.5" y2="16" stroke="var(--color-paper)" stroke-width="1.5" stroke-linecap="round"/>
         </svg>
       </span>
       <div class="nav-brand-text">
         <span class="nav-brand-name">MyLocationLab</span>
-        <span class="sr-only"> — </span>
-        <span class="nav-brand-tagline">{t('nav.tagline')}</span>
+        <span class="nav-brand-tagline">: {t('nav.tagline')}</span>
       </div>
     </a>
 
@@ -147,7 +146,11 @@ const isHome = currentPath === homePath || currentPath === '/' || currentPath ==
         aria-label="Toggle navigation menu"
         aria-expanded="false"
       >
-        <span class="nav-mobile-toggle-icon">☰</span>
+        <svg class="icon-menu" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <line x1="3" y1="12" x2="21" y2="12"></line>
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
       </button>
     </div>
   </nav>
@@ -203,8 +206,8 @@ const isHome = currentPath === homePath || currentPath === '/' || currentPath ==
 
   <div style="padding: var(--space-4);">
     <a href={ctaPath} class="nav-cta-btn" style="width: 100%; justify-content: center;">
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-        <polygon points="3 11 22 2 13 21 11 13 3 11" fill="white" stroke="white" />
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <polygon points="3 11 22 2 13 21 11 13 3 11" fill="currentColor" stroke="currentColor" />
       </svg>
       <span>{t('nav.findLocation')}</span>
     </a>
@@ -220,7 +223,6 @@ const isHome = currentPath === homePath || currentPath === '/' || currentPath ==
     toggle.addEventListener('click', () => {
       const isOpen = menu.classList.toggle('open');
       toggle.setAttribute('aria-expanded', String(isOpen));
-      toggle.textContent = isOpen ? '✕' : '☰';
       document.body.style.overflow = isOpen ? 'hidden' : '';
     });
 
@@ -229,9 +231,15 @@ const isHome = currentPath === homePath || currentPath === '/' || currentPath ==
       link.addEventListener('click', () => {
         menu.classList.remove('open');
         toggle.setAttribute('aria-expanded', 'false');
-        toggle.textContent = '☰';
         document.body.style.overflow = '';
       });
     });
   }
 </script>
+
+<style>
+  :focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; }
+  a:active, button:active { transform: translateY(1px); }
+  button:disabled, a[aria-disabled="true"] { opacity: 0.5; cursor: not-allowed; }
+  .nav-logo { white-space: nowrap; }
+</style>

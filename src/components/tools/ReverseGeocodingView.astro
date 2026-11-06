@@ -268,19 +268,18 @@ const t = translations[lang] || translations.en;
     <!-- Related Tools Grid -->
     <div class="contextual-next-box" style="margin-top: var(--space-8);">
       <h3 class="contextual-next-title">
-        <span>🛠️</span>
         <span>{t.h3Related}</span>
       </h3>
       <div class="contextual-next-grid">
         <a href={getLocalizedPath('/tools/geocoding/', lang)} class="contextual-link-card">
-          <span class="contextual-link-icon">🎯</span>
+          <span class="contextual-link-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></span>
           <div class="contextual-link-info">
             <div class="contextual-link-title">{t.linkGeo}</div>
             <div class="contextual-link-sub">{lang === 'es' ? 'Dirección postal a coordenadas' : lang === 'fr' ? 'Adresse en coordonnées' : lang === 'de' ? 'Adresse in Koordinaten' : 'Address to GPS coordinates'}</div>
           </div>
         </a>
         <a href={getLocalizedPath('/tools/address-finder/', lang)} class="contextual-link-card">
-          <span class="contextual-link-icon">🏠</span>
+          <span class="contextual-link-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></span>
           <div class="contextual-link-info">
             <div class="contextual-link-title">{t.linkAddr}</div>
             <div class="contextual-link-sub">{lang === 'es' ? 'Buscador de dirección en mapa' : lang === 'fr' ? 'Recherche d\'adresse sur carte' : lang === 'de' ? 'Kartengestützte Adresssuche' : 'Interactive address finder'}</div>
@@ -294,21 +293,21 @@ const t = translations[lang] || translations.en;
           </div>
         </a>
         <a href={getLocalizedPath('/address/', lang)} class="contextual-link-card">
-          <span class="contextual-link-icon">📍</span>
+          <span class="contextual-link-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></span>
           <div class="contextual-link-info">
             <div class="contextual-link-title">{lang === 'es' ? 'Mi Dirección Actual' : lang === 'fr' ? 'Mon Adresse Actuelle' : lang === 'de' ? 'Meine Aktuelle Adresse' : lang === 'pt' ? 'Meu Endereço Atual' : lang === 'hi' ? 'मेरा वर्तमान पता' : lang === 'id' ? 'Alamat Saya Sekarang' : 'What Is My Current Address?'}</div>
             <div class="contextual-link-sub">{lang === 'es' ? 'Dirección física de su dispositivo' : lang === 'fr' ? 'Adresse physique détectée' : lang === 'de' ? 'Standortadresse des Geräts' : 'Physical device address'}</div>
           </div>
         </a>
         <a href={getLocalizedPath('/tools/coordinate-converter/', lang)} class="contextual-link-card">
-          <span class="contextual-link-icon">🔀</span>
+          <span class="contextual-link-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></span>
           <div class="contextual-link-info">
             <div class="contextual-link-title">{lang === 'es' ? 'Conversor de Coordenadas' : lang === 'fr' ? 'Convertisseur de Coordonnées' : lang === 'de' ? 'Koordinaten-Konverter' : lang === 'pt' ? 'Conversor de Coordenadas' : lang === 'hi' ? 'निर्देशांक कनवर्टर' : lang === 'id' ? 'Konverter Koordinat' : 'Coordinate Converter'}</div>
             <div class="contextual-link-sub">{lang === 'es' ? 'DD, DMS, UTM y MGRS' : lang === 'fr' ? 'DD, DMS, UTM et MGRS' : lang === 'de' ? 'DD, GMS, UTM und MGRS' : 'Convert DD, DMS, UTM'}</div>
           </div>
         </a>
         <a href={getLocalizedPath('/tools/location-qr-code/', lang)} class="contextual-link-card">
-          <span class="contextual-link-icon">📱</span>
+          <span class="contextual-link-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></span>
           <div class="contextual-link-info">
             <div class="contextual-link-title">{lang === 'es' ? 'Código QR de Ubicación' : lang === 'fr' ? 'QR Code de Localisation' : lang === 'de' ? 'Standort-QR-Code' : lang === 'pt' ? 'QR Code de Localização' : lang === 'hi' ? 'लोकेशन QR कोड' : lang === 'id' ? 'QR Code Lokasi' : 'Location QR Code'}</div>
             <div class="contextual-link-sub">{lang === 'es' ? 'Compartir dirección en QR' : lang === 'fr' ? 'Partage d\'adresse en QR code' : lang === 'de' ? 'Adresse als QR-Code' : 'Share address in mobile QR'}</div>

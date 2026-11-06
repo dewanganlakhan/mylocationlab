@@ -23,7 +23,7 @@ const intlSections = [
   {
     code: 'es',
     name: 'Español (Spanish)',
-    flag: '🇪🇸',
+    badge: 'ES',
     links: [
       { label: 'Página Principal (Buscador GPS)', href: '/es/' },
       { label: 'Mi Ubicación Actual', href: '/es/location/' },
@@ -39,7 +39,7 @@ const intlSections = [
   {
     code: 'fr',
     name: 'Français (French)',
-    flag: '🇫🇷',
+    badge: 'FR',
     links: [
       { label: 'Page d\'Accueil (Localisateur GPS)', href: '/fr/' },
       { label: 'Ma Position Actuelle', href: '/fr/location/' },
@@ -55,7 +55,7 @@ const intlSections = [
   {
     code: 'de',
     name: 'Deutsch (German)',
-    flag: '🇩🇪',
+    badge: 'DE',
     links: [
       { label: 'Startseite (GPS-Standortfinder)', href: '/de/' },
       { label: 'Mein Aktueller Standort', href: '/de/location/' },
@@ -71,7 +71,7 @@ const intlSections = [
   {
     code: 'pt',
     name: 'Português (Portuguese)',
-    flag: '🇵🇹',
+    badge: 'PT',
     links: [
       { label: 'Página Inicial (Localizador GPS)', href: '/pt/' },
       { label: 'Minha Localização Atual', href: '/pt/location/' },
@@ -87,7 +87,7 @@ const intlSections = [
   {
     code: 'hi',
     name: 'हिन्दी (Hindi)',
-    flag: '🇮🇳',
+    badge: 'HI',
     links: [
       { label: 'मुख्य पृष्ठ (GPS फाइंडर)', href: '/hi/' },
       { label: 'मेरा वर्तमान स्थान', href: '/hi/location/' },
@@ -103,7 +103,7 @@ const intlSections = [
   {
     code: 'id',
     name: 'Bahasa Indonesia (Indonesian)',
-    flag: '🇮🇩',
+    badge: 'ID',
     links: [
       { label: 'Halaman Utama (Pelacak GPS)', href: '/id/' },
       { label: 'Lokasi Saya Saat Ini', href: '/id/location/' },
@@ -176,13 +176,13 @@ const intlSections = [
       <!-- International Editions (Multilingual Directory) -->
       <div class="card" style="padding: var(--space-6);">
         <h2 style="font-size: var(--text-xl); color: var(--color-accent-primary); margin-bottom: var(--space-4); border-bottom: 1px solid var(--color-border); padding-bottom: var(--space-2);">
-          🌍 International Editions (Multilingual)
+          International Editions (Multilingual)
         </h2>
         <div style="display: flex; flex-direction: column; gap: var(--space-4);">
           {intlSections.map((sec) => (
             <div>
               <div style="font-weight: 600; font-size: var(--text-sm); color: var(--color-text-heading); margin-bottom: 4px; display: flex; align-items: center; gap: 6px;">
-                <span>{sec.flag}</span>
+                <span class="badge" style="font-family: var(--font-mono); font-size: 11px; padding: 2px 6px; border: 1px solid var(--color-border);">{sec.badge}</span>
                 <span>{sec.name}</span>
               </div>
               <ul style="list-style: none; padding-left: var(--space-4); margin: 0; display: flex; flex-direction: column; gap: 4px;">

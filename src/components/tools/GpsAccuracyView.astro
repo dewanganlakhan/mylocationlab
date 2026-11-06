@@ -753,26 +753,25 @@ const t = translations[lang] || translations.en;
 
     <div class="contextual-next-box" style="margin-top: var(--space-8);">
       <h3 class="contextual-next-title">
-        <span>🛠️</span>
         <span>{t.h2Related}</span>
       </h3>
       <div class="contextual-next-grid">
         <a href={getLocalizedPath('/tools/gps-coordinates/', lang)} class="contextual-link-card">
-          <span class="contextual-link-icon">📍</span>
+          <span class="contextual-link-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></span>
           <div class="contextual-link-info">
             <div class="contextual-link-title">{t.linkGps}</div>
             <div class="contextual-link-sub">{lang === 'es' ? 'Coordenadas y altitud' : lang === 'fr' ? 'Coordonnées et altitude' : lang === 'de' ? 'Koordinaten & Höhe' : 'Live satellite fix'}</div>
           </div>
         </a>
         <a href={getLocalizedPath('/guides/improve-gps-accuracy/', lang)} class="contextual-link-card">
-          <span class="contextual-link-icon">⚡</span>
+          <span class="contextual-link-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></span>
           <div class="contextual-link-info">
             <div class="contextual-link-title">{t.linkGuideAccuracy}</div>
             <div class="contextual-link-sub">{lang === 'es' ? 'Calibración en iOS y Android' : lang === 'fr' ? 'Calibrage iOS et Android' : lang === 'de' ? 'Kalibrierung für Android & iOS' : 'Calibration for iOS & Android'}</div>
           </div>
         </a>
         <a href={getLocalizedPath('/guides/wrong-location/', lang)} class="contextual-link-card">
-          <span class="contextual-link-icon">🔧</span>
+          <span class="contextual-link-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></span>
           <div class="contextual-link-info">
             <div class="contextual-link-title">{lang === 'es' ? 'Corregir Ubicación Errónea' : lang === 'fr' ? 'Corriger Position Erronée' : lang === 'de' ? 'Falschen Standort Beheben' : lang === 'pt' ? 'Corrigir Localização Errada' : lang === 'hi' ? 'गलत लोकेशन ठीक करें' : lang === 'id' ? 'Perbaiki Lokasi Salah' : 'Fix Wrong Location Issues'}</div>
             <div class="contextual-link-sub">{lang === 'es' ? 'Solución a errores de GPS' : lang === 'fr' ? 'Résoudre les erreurs GPS' : lang === 'de' ? 'Fehlerursachen beheben' : 'Troubleshoot jumpy pins'}</div>
@@ -793,7 +792,7 @@ const t = translations[lang] || translations.en;
           </div>
         </a>
         <a href={getLocalizedPath('/location/', lang)} class="contextual-link-card">
-          <span class="contextual-link-icon">🧭</span>
+          <span class="contextual-link-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></span>
           <div class="contextual-link-info">
             <div class="contextual-link-title">{lang === 'es' ? '¿Dónde Estoy Ahora?' : lang === 'fr' ? 'Où Suis-Je ?' : lang === 'de' ? 'Wo bin ich gerade?' : lang === 'pt' ? 'Onde Estou Agora?' : lang === 'hi' ? 'मेरी वर्तमान स्थिति' : lang === 'id' ? 'Di Mana Saya Sekarang?' : 'Where Am I Right Now?'}</div>
             <div class="contextual-link-sub">{lang === 'es' ? 'Panel de telemetría completo' : lang === 'fr' ? 'Télémétrie complète en direct' : lang === 'de' ? 'Vollständige Telemetrie' : 'Full real-time telemetry'}</div>

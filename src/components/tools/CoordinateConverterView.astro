@@ -264,47 +264,46 @@ const c = translations[lang] || translations.en;
     <!-- Related Tools Grid -->
     <div class="contextual-next-box" style="margin-top: var(--space-8);">
       <h3 class="contextual-next-title">
-        <span>🛠️</span>
         <span>{lang === 'fr' ? 'Outils de Coordonnées Associés' : lang === 'es' ? 'Herramientas de Coordenadas Relacionadas' : lang === 'de' ? 'Verwandte Koordinaten-Tools' : lang === 'pt' ? 'Ferramentas de Coordenadas Relacionadas' : lang === 'hi' ? 'संबंधित निर्देशांक टूल' : lang === 'id' ? 'Alat Koordinat Terkait' : 'Related Coordinate Tools'}</span>
       </h3>
       <div class="contextual-next-grid">
         <a href={getLocalizedPath('/tools/gps-coordinates/', lang)} class="contextual-link-card">
-          <span class="contextual-link-icon">📍</span>
+          <span class="contextual-link-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></span>
           <div class="contextual-link-info">
             <div class="contextual-link-title">{lang === 'es' ? 'Buscador de Coordenadas GPS' : lang === 'fr' ? 'Coordonnées GPS' : lang === 'de' ? 'GPS-Koordinaten-Finder' : lang === 'pt' ? 'Coordenadas GPS' : lang === 'hi' ? 'GPS निर्देशांक खोजक' : lang === 'id' ? 'Koordinat GPS' : 'GPS Coordinates Finder'}</div>
             <div class="contextual-link-sub">{lang === 'es' ? 'Latitud, longitud y altitud' : lang === 'fr' ? 'Latitude, longitude et altitude' : lang === 'de' ? 'Breite, Länge und Höhe' : 'Latitude, longitude & altitude'}</div>
           </div>
         </a>
         <a href={getLocalizedPath('/tools/latitude-longitude/', lang)} class="contextual-link-card">
-          <span class="contextual-link-icon">🌐</span>
+          <span class="contextual-link-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></span>
           <div class="contextual-link-info">
             <div class="contextual-link-title">{lang === 'es' ? 'Buscador de Latitud y Longitud' : lang === 'fr' ? 'Latitude et Longitude' : lang === 'de' ? 'Breiten- & Längengrad' : lang === 'pt' ? 'Latitude e Longitude' : lang === 'hi' ? 'अक्षांश और देशांतर खोजक' : lang === 'id' ? 'Lintang dan Bujur' : 'Latitude Longitude Finder'}</div>
             <div class="contextual-link-sub">{lang === 'es' ? 'Selección en mapa interactivo' : lang === 'fr' ? 'Sélection sur carte interactive' : lang === 'de' ? 'Interaktive Kartenauswahl' : 'Interactive map pinpoint'}</div>
           </div>
         </a>
         <a href={getLocalizedPath('/tools/reverse-geocoding/', lang)} class="contextual-link-card">
-          <span class="contextual-link-icon">🔄</span>
+          <span class="contextual-link-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></span>
           <div class="contextual-link-info">
             <div class="contextual-link-title">{lang === 'es' ? 'Geocodificador Inverso' : lang === 'fr' ? 'Géocodage Inverse' : lang === 'de' ? 'Rückwärts-Geocoder' : lang === 'pt' ? 'Geocodificador Reverso' : lang === 'hi' ? 'रिवर्स जियोकोडर' : lang === 'id' ? 'Reverse Geocoder' : 'Reverse Geocoder'}</div>
             <div class="contextual-link-sub">{lang === 'es' ? 'Coordenadas a dirección postal' : lang === 'fr' ? 'Coordonnées en adresse' : lang === 'de' ? 'Koordinaten in Adresse' : 'Coordinates to street address'}</div>
           </div>
         </a>
         <a href={getLocalizedPath('/tools/distance-calculator/', lang)} class="contextual-link-card">
-          <span class="contextual-link-icon">📏</span>
+          <span class="contextual-link-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></span>
           <div class="contextual-link-info">
             <div class="contextual-link-title">{lang === 'es' ? 'Calculadora de Distancia' : lang === 'fr' ? 'Calculateur de Distance' : lang === 'de' ? 'Entfernungsrechner' : lang === 'pt' ? 'Calculadora de Distância' : lang === 'hi' ? 'दूरी कैलकुलेटर' : lang === 'id' ? 'Kalkulator Jarak' : 'Distance Calculator'}</div>
             <div class="contextual-link-sub">{lang === 'es' ? 'Distancia ortodrómica exacta' : lang === 'fr' ? 'Distance entre coordonnées' : lang === 'de' ? 'Distanz zwischen Punkten' : 'Distance between coordinates'}</div>
           </div>
         </a>
         <a href={getLocalizedPath('/tools/location-qr-code/', lang)} class="contextual-link-card">
-          <span class="contextual-link-icon">📱</span>
+          <span class="contextual-link-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></span>
           <div class="contextual-link-info">
             <div class="contextual-link-title">{lang === 'es' ? 'Código QR de Ubicación' : lang === 'fr' ? 'QR Code de Localisation' : lang === 'de' ? 'Standort-QR-Code' : lang === 'pt' ? 'QR Code de Localização' : lang === 'hi' ? 'लोकेशन QR कोड' : lang === 'id' ? 'QR Code Lokasi' : 'Location QR Code'}</div>
             <div class="contextual-link-sub">{lang === 'es' ? 'Código escaneable de coordenadas' : lang === 'fr' ? 'QR code scannable' : lang === 'de' ? 'Scannbarer QR-Code' : 'Scannable coordinate code'}</div>
           </div>
         </a>
         <a href={getLocalizedPath('/coordinates/', lang)} class="contextual-link-card">
-          <span class="contextual-link-icon">🧭</span>
+          <span class="contextual-link-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></span>
           <div class="contextual-link-info">
             <div class="contextual-link-title">{lang === 'es' ? 'Mis Coordenadas Actuales' : lang === 'fr' ? 'Mes Coordonnées Directes' : lang === 'de' ? 'Meine Koordinaten' : lang === 'pt' ? 'Minhas Coordenadas' : lang === 'hi' ? 'मेरे वर्तमान निर्देशांक' : lang === 'id' ? 'Koordinat Saya' : 'My Coordinates Hub'}</div>
             <div class="contextual-link-sub">{lang === 'es' ? 'Lectura en todos los formatos' : lang === 'fr' ? 'Tous les formats géographiques' : lang === 'de' ? 'Alle globalen Formate' : 'Live formats in DD, DMS, UTM'}</div>

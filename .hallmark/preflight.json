@@ -1,0 +1,21 @@
+{
+  "scanned": "2026-11-06T14:05:00+05:30",
+  "findings": {
+    "fonts": "Plus Jakarta Sans, Inter, JetBrains Mono (src/styles/global.css:7)",
+    "palette": "CSS custom properties (:root, src/styles/global.css:10-58)",
+    "motion": "CSS transitions and keyframes (src/styles/components.css)",
+    "spacing": "CSS custom properties --space-1 to --space-24 (src/styles/global.css:76-87)",
+    "framework": "Astro 7.3.2 (package.json:19)"
+  },
+  "preserve": [
+    "every geolocation tool, map wiring, Leaflet integration, QR code generator, and i18n dictionaries across 7 languages",
+    "all form fields, copy buttons, telemetry data items, and functional scripts (src/scripts/*)"
+  ],
+  "introduce": [
+    "Hallmark tokens.css & base.css layout floor",
+    "zero purple-to-blue gradient, clean single anchor tone",
+    "proper outline focus-visible and explicit transitions (no transition: all)",
+    "SVG icons with aria-hidden, no raw emojis in UI",
+    "overflow-x: clip on html/body and typographic wrapping"
+  ]
+}

@@ -248,40 +248,39 @@ const t = translations[lang] || translations.en;
     <!-- Related Tools Grid -->
     <div class="contextual-next-box" style="margin-top: var(--space-8);">
       <h3 class="contextual-next-title">
-        <span>🛠️</span>
         <span>{t.h3Related}</span>
       </h3>
       <div class="contextual-next-grid">
         <a href={getLocalizedPath('/tools/reverse-geocoding/', lang)} class="contextual-link-card">
-          <span class="contextual-link-icon">🔄</span>
+          <span class="contextual-link-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></span>
           <div class="contextual-link-info">
             <div class="contextual-link-title">{t.linkRev}</div>
             <div class="contextual-link-sub">{lang === 'es' ? 'Coordenadas a dirección' : lang === 'fr' ? 'Coordonnées en adresse' : lang === 'de' ? 'Koordinaten in Adresse' : 'Coordinates to street address'}</div>
           </div>
         </a>
         <a href={getLocalizedPath('/tools/address-finder/', lang)} class="contextual-link-card">
-          <span class="contextual-link-icon">🏠</span>
+          <span class="contextual-link-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></span>
           <div class="contextual-link-info">
             <div class="contextual-link-title">{t.linkAddr}</div>
             <div class="contextual-link-sub">{lang === 'es' ? 'Buscador visual en mapa' : lang === 'fr' ? 'Recherche d\'adresse sur carte' : lang === 'de' ? 'Interaktive Adresssuche' : 'Interactive map address finder'}</div>
           </div>
         </a>
         <a href={getLocalizedPath('/tools/latitude-longitude/', lang)} class="contextual-link-card">
-          <span class="contextual-link-icon">🌐</span>
+          <span class="contextual-link-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></span>
           <div class="contextual-link-info">
             <div class="contextual-link-title">{lang === 'es' ? 'Buscador de Latitud y Longitud' : lang === 'fr' ? 'Latitude et Longitude' : lang === 'de' ? 'Breiten- & Längengrad' : lang === 'pt' ? 'Latitude e Longitude' : lang === 'hi' ? 'अक्षांश और देशांतर खोजक' : lang === 'id' ? 'Lintang dan Bujur' : 'Latitude Longitude Finder'}</div>
             <div class="contextual-link-sub">{lang === 'es' ? 'Ver paralelos en mapa' : lang === 'fr' ? 'Visualiser sur la carte' : lang === 'de' ? 'Koordinaten auf Karte prüfen' : 'Inspect coordinates on map'}</div>
           </div>
         </a>
         <a href={getLocalizedPath('/tools/distance-calculator/', lang)} class="contextual-link-card">
-          <span class="contextual-link-icon">📏</span>
+          <span class="contextual-link-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></span>
           <div class="contextual-link-info">
             <div class="contextual-link-title">{lang === 'es' ? 'Calculadora de Distancia' : lang === 'fr' ? 'Calculateur de Distance' : lang === 'de' ? 'Entfernungsrechner' : lang === 'pt' ? 'Calculadora de Distância' : lang === 'hi' ? 'दूरी कैलकुलेटर' : lang === 'id' ? 'Kalkulator Jarak' : 'Distance Calculator'}</div>
             <div class="contextual-link-sub">{lang === 'es' ? 'Distancia ortodrómica exacta' : lang === 'fr' ? 'Distance entre adresses' : lang === 'de' ? 'Distanz zwischen Adressen' : 'Distance between addresses'}</div>
           </div>
         </a>
         <a href={getLocalizedPath('/tools/coordinate-converter/', lang)} class="contextual-link-card">
-          <span class="contextual-link-icon">🔀</span>
+          <span class="contextual-link-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></span>
           <div class="contextual-link-info">
             <div class="contextual-link-title">{lang === 'es' ? 'Conversor de Coordenadas' : lang === 'fr' ? 'Convertisseur de Coordonnées' : lang === 'de' ? 'Koordinaten-Konverter' : lang === 'pt' ? 'Conversor de Coordenadas' : lang === 'hi' ? 'निर्देशांक कनवर्टर' : lang === 'id' ? 'Konverter Koordinat' : 'Coordinate Converter'}</div>
             <div class="contextual-link-sub">{lang === 'es' ? 'DD, DMS, UTM y MGRS' : lang === 'fr' ? 'DD, DMS, UTM et MGRS' : lang === 'de' ? 'DD, GMS, UTM und MGRS' : 'Convert DD, DMS, UTM'}</div>

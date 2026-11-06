@@ -1,0 +1,30 @@
+[
+ {
+  "shape": "Bento Grid",
+  "theme": "wayfind",
+  "axes": "light/mono/cool",
+  "hero": "Banner",
+  "nav": "slab",
+  "footer": "index columns",
+  "imagery": "the product",
+  "photos": [],
+  "entry": "2026-11-06",
+  "fingerprint": "wayfind-bento-grid-5b116c",
+  "sections": [
+   "Hero (Banner)",
+   "Telemetry Dashboard",
+   "Interactive Map",
+   "Tools Grid",
+   "Emergency Readout",
+   "FAQ Accordion",
+   "Footer"
+  ],
+  "signature": "Live GPS telemetry readout and departure-style coordinates board",
+  "waived": [],
+  "prompt": "Redesign this whole project",
+  "mode": "redesign",
+  "depth": "full",
+  "scope": "site",
+  "date": "2026-11-06"
+ }
+]

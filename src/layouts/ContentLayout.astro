@@ -118,16 +118,16 @@ const allJsonLd = jsonLd
       <!-- Main Content Column -->
       <article class="content-main" itemscope itemtype="https://schema.org/TechArticle">
         <header class="article-header">
-          <div class="article-meta-badge">
-            <span class="badge badge-primary">{sectionLabel}</span>
-            <span class="article-read-time">{readTime} {currentLabels.read}</span>
-          </div>
-
           <h1 itemprop="headline">{h1}</h1>
 
           {subtitle && (
             <p class="article-subtitle" itemprop="description">{subtitle}</p>
           )}
+
+          <div class="article-meta-badge">
+            <span class="badge badge-primary">{sectionLabel}</span>
+            <span class="article-read-time">{readTime} {currentLabels.read}</span>
+          </div>
 
           <div class="article-byline">
             <div class="byline-author">
