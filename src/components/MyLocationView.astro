@@ -44,7 +44,7 @@ const locateTitles: Record<string, string> = {
 };
 const locateTitle = locateTitles[lang] || locateTitles.en;
 
-const currentPath = getLocalizedPath('/my-location/', lang);
+const currentPath = getLocalizedPath('/location/', lang);
 
 const breadcrumbs = [
   { label: t('common.home'), href: getLocalizedPath('/', lang) },

@@ -20,7 +20,7 @@ const lang = customLang || getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 
 const homePath = getLocalizedPath('/', lang);
-const myLocationPath = getLocalizedPath('/my-location/', lang);
+const myLocationPath = getLocalizedPath('/location/', lang);
 const toolsPath = getLocalizedPath('/tools/', lang);
 const mapsPath = getLocalizedPath('/maps/', lang);
 const guidesPath = getLocalizedPath('/guides/', lang);
@@ -59,7 +59,7 @@ const isHome = currentPath === homePath || currentPath === '/' || currentPath ==
       <li role="none">
         <a
           href={myLocationPath}
-          class={`nav-link ${isHome || activeSection === 'my-location' || currentPath.includes('/my-location') ? 'active' : ''}`}
+          class={`nav-link ${isHome || activeSection === 'my-location' || currentPath.includes('/location') ? 'active' : ''}`}
           role="menuitem"
         >
           <span>{t('nav.myLocation')}</span>
@@ -182,7 +182,7 @@ const isHome = currentPath === homePath || currentPath === '/' || currentPath ==
 
   <hr style="border-color: var(--color-border); margin: var(--space-2) 0;" />
 
-  <a href={myLocationPath} class={`nav-mobile-link ${isHome || currentPath.includes('/my-location') ? 'active' : ''}`}>
+  <a href={myLocationPath} class={`nav-mobile-link ${isHome || currentPath.includes('/location') ? 'active' : ''}`}>
     <span>{t('nav.myLocation')}</span>
   </a>
   <a href={toolsPath} class={`nav-mobile-link ${currentPath.includes('/tools') ? 'active' : ''}`}>

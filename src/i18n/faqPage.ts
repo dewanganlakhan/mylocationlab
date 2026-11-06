@@ -34,7 +34,7 @@ export const faqPageTranslations: Record<string, FAQPageContent> = {
     faqs: [
       {
         question: "What is my current location and how do I find it?",
-        answerHtml: 'You can find your current location immediately by visiting our <a href="/my-location/">Where Am I</a> homepage and clicking <strong>"Get My Location"</strong>. Your browser will access your device\'s GPS or Wi-Fi positioning hardware to display your exact latitude, longitude, street address, city, state, and country.'
+        answerHtml: 'You can find your current location immediately by visiting our <a href="/location/">Where Am I</a> homepage and clicking <strong>"Get My Location"</strong>. Your browser will access your device\'s GPS or Wi-Fi positioning hardware to display your exact latitude, longitude, street address, city, state, and country.'
       },
       {
         question: "How accurate is this website in determining my position?",
@@ -85,7 +85,7 @@ export const faqPageTranslations: Record<string, FAQPageContent> = {
     faqs: [
       {
         question: "¿Cuál es mi ubicación actual y cómo puedo encontrarla?",
-        answerHtml: 'Puede localizar su posición al instante visitando nuestra página principal <a href="/my-location/">Dónde Estoy</a> y haciendo clic en <strong>"Obtener Mi Ubicación"</strong>. Su navegador consultará el hardware GPS o las redes Wi-Fi de su dispositivo para mostrar latitud, longitud, dirección de calle, ciudad y país exactos.'
+        answerHtml: 'Puede localizar su posición al instante visitando nuestra página principal <a href="/location/">Dónde Estoy</a> y haciendo clic en <strong>"Obtener Mi Ubicación"</strong>. Su navegador consultará el hardware GPS o las redes Wi-Fi de su dispositivo para mostrar latitud, longitud, dirección de calle, ciudad y país exactos.'
       },
       {
         question: "¿Qué precisión tiene este sitio web al calcular mi posición?",
@@ -136,7 +136,7 @@ export const faqPageTranslations: Record<string, FAQPageContent> = {
     faqs: [
       {
         question: "Quelle est ma position actuelle et comment la trouver ?",
-        answerHtml: 'Trouvez votre position instantanément sur notre page <a href="/my-location/">Où Suis-Je</a> en cliquant sur <strong>« Obtenir Ma Position »</strong>. Votre navigateur interrogera la puce GPS ou le réseau Wi-Fi de votre appareil pour afficher vos coordonnées, adresse, ville et pays.'
+        answerHtml: 'Trouvez votre position instantanément sur notre page <a href="/location/">Où Suis-Je</a> en cliquant sur <strong>« Obtenir Ma Position »</strong>. Votre navigateur interrogera la puce GPS ou le réseau Wi-Fi de votre appareil pour afficher vos coordonnées, adresse, ville et pays.'
       },
       {
         question: "Quelle est la précision de ce site web ?",
@@ -187,7 +187,7 @@ export const faqPageTranslations: Record<string, FAQPageContent> = {
     faqs: [
       {
         question: "Was ist mein aktueller Standort und wie ermittle ich ihn?",
-        answerHtml: 'Sie können Ihren Standort sofort feststellen: Besuchen Sie unsere Startseite <a href="/my-location/">Wo bin ich</a> und klicken Sie auf <strong>„Meinen Standort abrufen“</strong>. Ihr Browser greift auf GPS oder Wi-Fi zu, um Längen- und Breitengrad sowie Postadresse präzise anzuzeigen.'
+        answerHtml: 'Sie können Ihren Standort sofort feststellen: Besuchen Sie unsere Startseite <a href="/location/">Wo bin ich</a> und klicken Sie auf <strong>„Meinen Standort abrufen“</strong>. Ihr Browser greift auf GPS oder Wi-Fi zu, um Längen- und Breitengrad sowie Postadresse präzise anzuzeigen.'
       },
       {
         question: "Wie genau arbeitet diese Website bei der Positionsbestimmung?",
@@ -238,7 +238,7 @@ export const faqPageTranslations: Record<string, FAQPageContent> = {
     faqs: [
       {
         question: "Qual é a minha localização atual e como descobri-la?",
-        answerHtml: 'Descubra sua localização imediatamente acessando nossa página <a href="/my-location/">Onde Estou</a> e clicando em <strong>"Obter Minha Localização"</strong>. Seu navegador consultará os sensores GPS ou redes Wi-Fi para exibir latitude, longitude, endereço, cidade e país.'
+        answerHtml: 'Descubra sua localização imediatamente acessando nossa página <a href="/location/">Onde Estou</a> e clicando em <strong>"Obter Minha Localização"</strong>. Seu navegador consultará os sensores GPS ou redes Wi-Fi para exibir latitude, longitude, endereço, cidade e país.'
       },
       {
         question: "Qual a precisão deste site ao determinar minha posição?",
@@ -289,7 +289,7 @@ export const faqPageTranslations: Record<string, FAQPageContent> = {
     faqs: [
       {
         question: "मेरी वर्तमान लोकेशन क्या है और मैं उसे कैसे पता करूं?",
-        answerHtml: '<a href="/my-location/">मैं कहां हूं</a> होमपेज पर जाकर <strong>"मेरी लोकेशन प्राप्त करें"</strong> पर क्लिक करके आप तुरंत अपनी वर्तमान लोकेशन पा सकते हैं। आपका ब्राउज़र आपके डिवाइस के GPS या वाई-फाई पोज़िशनिंग हार्डवेयर तक पहुंचकर आपका सटीक अक्षांश, देशांतर, सड़क का पता, शहर, राज्य और देश दिखाएगा।'
+        answerHtml: '<a href="/location/">मैं कहां हूं</a> होमपेज पर जाकर <strong>"मेरी लोकेशन प्राप्त करें"</strong> पर क्लिक करके आप तुरंत अपनी वर्तमान लोकेशन पा सकते हैं। आपका ब्राउज़र आपके डिवाइस के GPS या वाई-फाई पोज़िशनिंग हार्डवेयर तक पहुंचकर आपका सटीक अक्षांश, देशांतर, सड़क का पता, शहर, राज्य और देश दिखाएगा।'
       },
       {
         question: "मेरी स्थिति बताने में यह वेबसाइट कितनी सटीक है?",
@@ -340,7 +340,7 @@ export const faqPageTranslations: Record<string, FAQPageContent> = {
     faqs: [
       {
         question: "Apa lokasi saya saat ini dan bagaimana cara menemukannya?",
-        answerHtml: 'Anda dapat menemukan lokasi Anda saat ini segera dengan mengunjungi beranda <a href="/my-location/">Di Mana Saya</a> dan mengeklik <strong>"Dapatkan Lokasi Saya"</strong>. Peramban Anda akan mengakses GPS atau perangkat keras posisi Wi-Fi perangkat Anda untuk menampilkan lintang, bujur, alamat jalan, kota, provinsi, dan negara Anda yang persis.'
+        answerHtml: 'Anda dapat menemukan lokasi Anda saat ini segera dengan mengunjungi beranda <a href="/location/">Di Mana Saya</a> dan mengeklik <strong>"Dapatkan Lokasi Saya"</strong>. Peramban Anda akan mengakses GPS atau perangkat keras posisi Wi-Fi perangkat Anda untuk menampilkan lintang, bujur, alamat jalan, kota, provinsi, dan negara Anda yang persis.'
       },
       {
         question: "Seberapa akurat situs web ini dalam menentukan posisi saya?",

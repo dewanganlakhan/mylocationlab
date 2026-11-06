@@ -303,7 +303,7 @@ const c = translations[lang] || translations.en;
             <div class="contextual-link-sub">{lang === 'es' ? 'Código escaneable de coordenadas' : lang === 'fr' ? 'QR code scannable' : lang === 'de' ? 'Scannbarer QR-Code' : 'Scannable coordinate code'}</div>
           </div>
         </a>
-        <a href={getLocalizedPath('/my-location/coordinates/', lang)} class="contextual-link-card">
+        <a href={getLocalizedPath('/coordinates/', lang)} class="contextual-link-card">
           <span class="contextual-link-icon">🧭</span>
           <div class="contextual-link-info">
             <div class="contextual-link-title">{lang === 'es' ? 'Mis Coordenadas Actuales' : lang === 'fr' ? 'Mes Coordonnées Directes' : lang === 'de' ? 'Meine Koordinaten' : lang === 'pt' ? 'Minhas Coordenadas' : lang === 'hi' ? 'मेरे वर्तमान निर्देशांक' : lang === 'id' ? 'Koordinat Saya' : 'My Coordinates Hub'}</div>

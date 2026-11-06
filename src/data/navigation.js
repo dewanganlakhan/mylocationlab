@@ -4,7 +4,7 @@
  */
 
 export const mainNav = [
-  { label: 'My Location', href: '/my-location/', id: 'my-location', icon: '📍' },
+  { label: 'My Location', href: '/location/', id: 'my-location', icon: '📍' },
   { label: 'Tools', href: '/tools/', id: 'tools', icon: '🛠️' },
   { label: 'Maps', href: '/maps/', id: 'maps', icon: '🗺️' },
   { label: 'Guides', href: '/guides/', id: 'guides', icon: '📚' },
@@ -21,15 +21,15 @@ export const moreNav = [
 ];
 
 export const myLocationSubNav = [
-  { label: 'Current Location', href: '/my-location/' },
-  { label: 'My GPS Coordinates', href: '/my-location/gps/' },
-  { label: 'My Coordinates', href: '/my-location/coordinates/' },
-  { label: 'My Latitude & Longitude', href: '/my-location/latitude-longitude/' },
-  { label: 'My Address', href: '/my-location/address/' },
-  { label: 'My City', href: '/my-location/city/' },
-  { label: 'My State', href: '/my-location/state/' },
-  { label: 'My Country', href: '/my-location/country/' },
-  { label: 'My IP Location', href: '/my-location/ip/' },
+  { label: 'Current Location', href: '/location/' },
+  { label: 'My GPS Coordinates', href: '/gps/' },
+  { label: 'My Coordinates', href: '/coordinates/' },
+  { label: 'My Latitude & Longitude', href: '/latitude-longitude/' },
+  { label: 'My Address', href: '/address/' },
+  { label: 'My City', href: '/city/' },
+  { label: 'My State', href: '/state/' },
+  { label: 'My Country', href: '/country/' },
+  { label: 'My IP Location', href: '/ip/' },
 ];
 
 export const toolsNav = [
@@ -73,7 +73,7 @@ export const comparisonsNav = [
  */
 export const localizedNavLabels = {
   // — myLocationSubNav —
-  '/my-location/': {
+  '/location/': {
     en: 'Current Location',
     es: 'Ubicación Actual',
     fr: 'Position Actuelle',
@@ -82,7 +82,7 @@ export const localizedNavLabels = {
     hi: 'वर्तमान स्थान',
     id: 'Lokasi Saat Ini',
   },
-  '/my-location/gps/': {
+  '/gps/': {
     en: 'My GPS Coordinates',
     es: 'Mis Coordenadas GPS',
     fr: 'Mes Coordonnées GPS',
@@ -91,7 +91,7 @@ export const localizedNavLabels = {
     hi: 'मेरे GPS निर्देशांक',
     id: 'Koordinat GPS Saya',
   },
-  '/my-location/coordinates/': {
+  '/coordinates/': {
     en: 'My Coordinates',
     es: 'Mis Coordenadas',
     fr: 'Mes Coordonnées',
@@ -100,7 +100,7 @@ export const localizedNavLabels = {
     hi: 'मेरे निर्देशांक',
     id: 'Koordinat Saya',
   },
-  '/my-location/latitude-longitude/': {
+  '/latitude-longitude/': {
     en: 'My Latitude & Longitude',
     es: 'Mi Latitud y Longitud',
     fr: 'Ma Latitude et Longitude',
@@ -109,7 +109,7 @@ export const localizedNavLabels = {
     hi: 'मेरा अक्षांश-देशांतर',
     id: 'Lintang & Bujur Saya',
   },
-  '/my-location/address/': {
+  '/address/': {
     en: 'My Current Address',
     es: 'Mi Dirección Actual',
     fr: 'Mon Adresse Actuelle',
@@ -118,7 +118,7 @@ export const localizedNavLabels = {
     hi: 'मेरा वर्तमान पता',
     id: 'Alamat Saya Saat Ini',
   },
-  '/my-location/city/': {
+  '/city/': {
     en: 'My City',
     es: 'Mi Ciudad',
     fr: 'Ma Ville',
@@ -127,7 +127,7 @@ export const localizedNavLabels = {
     hi: 'मेरा शहर',
     id: 'Kota Saya',
   },
-  '/my-location/state/': {
+  '/state/': {
     en: 'My State',
     es: 'Mi Estado / Región',
     fr: 'Ma Région',
@@ -136,7 +136,7 @@ export const localizedNavLabels = {
     hi: 'मेरा राज्य',
     id: 'Provinsi Saya',
   },
-  '/my-location/country/': {
+  '/country/': {
     en: 'My Country',
     es: 'Mi País',
     fr: 'Mon Pays',
@@ -145,7 +145,7 @@ export const localizedNavLabels = {
     hi: 'मेरा देश',
     id: 'Negara Saya',
   },
-  '/my-location/ip/': {
+  '/ip/': {
     en: 'My IP Location',
     es: 'Mi Ubicación por IP',
     fr: 'Ma Position par IP',
@@ -378,15 +378,15 @@ export const footerCategoryIcons = {
 
 export const footerNav = {
   'My Location': [
-    { label: 'Where Am I Right Now?', href: '/my-location/', icon: '🎯' },
-    { label: 'My GPS Coordinates', href: '/my-location/gps/', icon: '🛰️' },
-    { label: 'My Coordinates (Multi-format)', href: '/my-location/coordinates/', icon: '🧭' },
-    { label: 'My Latitude & Longitude', href: '/my-location/latitude-longitude/', icon: '🌐' },
-    { label: 'My Street Address', href: '/my-location/address/', icon: '🏠' },
-    { label: 'What City Am I In?', href: '/my-location/city/', icon: '🏙️' },
-    { label: 'What State Am I In?', href: '/my-location/state/', icon: '🏛️' },
-    { label: 'What Country Am I In?', href: '/my-location/country/', icon: '🗺️' },
-    { label: 'My IP Geolocation', href: '/my-location/ip/', icon: '📡' },
+    { label: 'Where Am I Right Now?', href: '/location/', icon: '🎯' },
+    { label: 'My GPS Coordinates', href: '/gps/', icon: '🛰️' },
+    { label: 'My Coordinates (Multi-format)', href: '/coordinates/', icon: '🧭' },
+    { label: 'My Latitude & Longitude', href: '/latitude-longitude/', icon: '🌐' },
+    { label: 'My Street Address', href: '/address/', icon: '🏠' },
+    { label: 'What City Am I In?', href: '/city/', icon: '🏙️' },
+    { label: 'What State Am I In?', href: '/state/', icon: '🏛️' },
+    { label: 'What Country Am I In?', href: '/country/', icon: '🗺️' },
+    { label: 'My IP Geolocation', href: '/ip/', icon: '📡' },
   ],
   'Geospatial Tools': [
     { label: 'GPS Coordinates Finder', href: '/tools/gps-coordinates/', icon: '📍' },

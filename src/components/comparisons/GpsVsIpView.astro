@@ -40,13 +40,13 @@ const translations: Record<string, any> = {
 
     h2Gps: "How GPS Location Works",
     pGps1: "GPS determines location through direct radio wave physics. Your phone contains a miniaturized antenna that captures radio waves transmitted from 20,200 km above in medium Earth orbit. As detailed in our guide on <a href='/guides/how-gps-location-works/'>how GPS location works</a>, satellite signals allow your phone to resolve its ground position within meters.",
-    pGps2: "Because the signals travel at the speed of light, calculating arrival time differences allows your phone's processor to compute its precise latitude, longitude, and altitude relative to the WGS 84 ellipsoid. You can test your receiver's live fix on our <a href='/my-location/gps/'>My GPS Location page</a>.",
+    pGps2: "Because the signals travel at the speed of light, calculating arrival time differences allows your phone's processor to compute its precise latitude, longitude, and altitude relative to the WGS 84 ellipsoid. You can test your receiver's live fix on our <a href='/gps/'>My GPS Location page</a>.",
 
     h2Ip: "How IP Geolocation Works",
     pIp1: "IP geolocation is not a physical measurement—it is a database correlation. Every packet sent across the internet contains your public IP address. As explored in our deep-dive on <a href='/guides/ip-geolocation-accuracy/'>IP geolocation accuracy and limits</a>, companies like MaxMind and IPinfo maintain proprietary databases mapping IP blocks to regional ISP gateways.",
     ipBullet1: "The ISP owning that block of IP addresses (e.g., Comcast, AT&T, Vodafone).",
     ipBullet2: "The geographical coordinates of the ISP's regional gateway router or data center.",
-    pIp2: "Because an ISP might assign the same block of IPs across an entire metropolitan area, IP-based positioning cannot identify your street address. You can view your current detected gateway on our <a href='/my-location/ip/'>My IP Location page</a>. If your detected city looks completely incorrect, consult our <a href='/guides/wrong-location/'>Wrong Location Guide</a>.",
+    pIp2: "Because an ISP might assign the same block of IPs across an entire metropolitan area, IP-based positioning cannot identify your street address. You can view your current detected gateway on our <a href='/ip/'>My IP Location page</a>. If your detected city looks completely incorrect, consult our <a href='/guides/wrong-location/'>Wrong Location Guide</a>.",
 
     h2Privacy: "Privacy Comparison: Which Is Safer?",
     h3GpsPrivacy: "Browser W3C Geolocation (GPS):",
@@ -80,8 +80,8 @@ const translations: Record<string, any> = {
 
     nextStepsTitle: "Next Steps",
     nextSteps: [
-      { title: "Inspect Your GPS Antenna", href: "/my-location/gps/", desc: "Check your live satellite fix, latitude, longitude, and current accuracy radius." },
-      { title: "Inspect Your Network IP", href: "/my-location/ip/", desc: "Check your public IP address, ISP name, Autonomous System Number, and regional city." },
+      { title: "Inspect Your GPS Antenna", href: "/gps/", desc: "Check your live satellite fix, latitude, longitude, and current accuracy radius." },
+      { title: "Inspect Your Network IP", href: "/ip/", desc: "Check your public IP address, ISP name, Autonomous System Number, and regional city." },
       { title: "Troubleshoot Wrong Location", href: "/guides/wrong-location/", desc: "Learn how to resolve ISP discrepancies, Wi-Fi cache mismatches, and browser permission blocks." }
     ],
 
@@ -122,13 +122,13 @@ const translations: Record<string, any> = {
 
     h2Gps: "Cómo Funciona la Ubicación GPS",
     pGps1: "El GPS calcula la posición mediante física pura. Su teléfono posee una antena miniaturizada que sintoniza ondas de radio emitidas desde 20.200 km de altitud en órbita terrestre media. Como detallamos en nuestra guía sobre <a href='/guides/how-gps-location-works/'>cómo funciona la ubicación GPS</a>, los satélites permiten resolver su posición con precisión métrica.",
-    pGps2: "Al viajar las señales a la velocidad de la luz, el procesador calcula las diferencias de tiempo de llegada para computar latitud, longitud y altitud. Puede comprobar la señal de su antena en la página de <a href='/my-location/gps/'>Mi Ubicación GPS</a>.",
+    pGps2: "Al viajar las señales a la velocidad de la luz, el procesador calcula las diferencias de tiempo de llegada para computar latitud, longitud y altitud. Puede comprobar la señal de su antena en la página de <a href='/gps/'>Mi Ubicación GPS</a>.",
 
     h2Ip: "Cómo Funciona la Geolocalización IP",
     pIp1: "La geolocalización IP no es una medición física: es una correlación en bases de datos. Cada paquete de red contiene su IP pública. Como explicamos en nuestro informe sobre <a href='/guides/ip-geolocation-accuracy/'>precisión y límites de la geolocalización IP</a>, empresas como MaxMind mantienen registros que asocian bloques IP con centrales de telecomunicaciones.",
     ipBullet1: "El proveedor ISP propietario del bloque (ej. Telefónica, Movistar, Vodafone, Claro).",
     ipBullet2: "Las coordenadas de la central o centro de datos del proveedor.",
-    pIp2: "Dado que un proveedor puede asignar un mismo rango de direcciones IP a toda una comarca, la posición por IP jamás podrá identificar el nombre de su calle. Compruebe su nodo de red en <a href='/my-location/ip/'>Mi Ubicación IP</a>. Si la ciudad mostrada es incorrecta, revise nuestra <a href='/guides/wrong-location/'>Guía de Ubicación Errónea</a>.",
+    pIp2: "Dado que un proveedor puede asignar un mismo rango de direcciones IP a toda una comarca, la posición por IP jamás podrá identificar el nombre de su calle. Compruebe su nodo de red en <a href='/ip/'>Mi Ubicación IP</a>. Si la ciudad mostrada es incorrecta, revise nuestra <a href='/guides/wrong-location/'>Guía de Ubicación Errónea</a>.",
 
     h2Privacy: "Comparativa de Privacidad: ¿Cuál es más segura?",
     h3GpsPrivacy: "Geolocalización W3C del Navegador (GPS):",
@@ -162,8 +162,8 @@ const translations: Record<string, any> = {
 
     nextStepsTitle: "Siguientes Pasos",
     nextSteps: [
-      { title: "Inspeccionar Antena GPS", href: "/my-location/gps/", desc: "Compruebe sus coordenadas satelitales en vivo y el radio de precisión." },
-      { title: "Inspeccionar Red IP", href: "/my-location/ip/", desc: "Consulte su dirección IP pública, proveedor ISP y ciudad de enrutamiento." },
+      { title: "Inspeccionar Antena GPS", href: "/gps/", desc: "Compruebe sus coordenadas satelitales en vivo y el radio de precisión." },
+      { title: "Inspeccionar Red IP", href: "/ip/", desc: "Consulte su dirección IP pública, proveedor ISP y ciudad de enrutamiento." },
       { title: "Corregir Ubicación Errónea", href: "/guides/wrong-location/", desc: "Descubra cómo solucionar discrepancias causadas por VPN o cachés Wi-Fi." }
     ],
 
@@ -204,13 +204,13 @@ const translations: Record<string, any> = {
 
     h2Gps: "Comment Fonctionne la Localisation GPS",
     pGps1: "Le GPS repose sur les lois de propagation des ondes radio. Votre téléphone intègre une antenne miniaturisée captant les signaux émis à 20 200 km d'altitude. Comme expliqué dans notre guide sur <a href='/guides/how-gps-location-works/'>le fonctionnement du GPS</a>, les satellites permettent de calculer une position terrestre métrique.",
-    pGps2: "Le processeur mesure les écarts de temps de trajet à la vitesse de la lumière pour calculer la latitude, la longitude et l'altitude. Vous pouvez inspecter votre signal direct sur <a href='/my-location/gps/'>Ma Position GPS</a>.",
+    pGps2: "Le processeur mesure les écarts de temps de trajet à la vitesse de la lumière pour calculer la latitude, la longitude et l'altitude. Vous pouvez inspecter votre signal direct sur <a href='/gps/'>Ma Position GPS</a>.",
 
     h2Ip: "Comment Fonctionne la Géolocalisation IP",
     pIp1: "La géolocalisation IP est une mise en correspondance logicielle. Chaque paquet internet véhicule votre adresse IP publique. Comme détaillé dans notre étude sur <a href='/guides/ip-geolocation-accuracy/'>la précision de la géolocalisation IP</a>, des prestataires comme MaxMind cartographient les plages d'adresses vers des centres de commutation.",
     ipBullet1: "Le fournisseur d'accès (ex. Orange, Free, SFR, Bouygues Telecom).",
     ipBullet2: "Les coordonnées géographiques du routeur de passerelle régionale du FAI.",
-    pIp2: "Le FAI pouvant attribuer une même plage d'adresses à toute une agglomération, l'adresse IP ne peut en aucun cas identifier votre rue. Découvrez votre passerelle sur <a href='/my-location/ip/'>Ma Position IP</a>. Si la ville indiquée est erronée, lisez notre <a href='/guides/wrong-location/'>Guide de Résolution de Localisation Erronée</a>.",
+    pIp2: "Le FAI pouvant attribuer une même plage d'adresses à toute une agglomération, l'adresse IP ne peut en aucun cas identifier votre rue. Découvrez votre passerelle sur <a href='/ip/'>Ma Position IP</a>. Si la ville indiquée est erronée, lisez notre <a href='/guides/wrong-location/'>Guide de Résolution de Localisation Erronée</a>.",
 
     h2Privacy: "Comparatif de Confidentialité : Quel Système est le Plus Sûr ?",
     h3GpsPrivacy: "Géolocalisation W3C du Navigateur (GPS) :",
@@ -244,8 +244,8 @@ const translations: Record<string, any> = {
 
     nextStepsTitle: "Étapes Suivantes",
     nextSteps: [
-      { title: "Tester l'Antenne GPS", href: "/my-location/gps/", desc: "Inspectez vos coordonnées satellite et le rayon de précision actuel." },
-      { title: "Vérifier le Réseau IP", href: "/my-location/ip/", desc: "Consultez votre IP publique, le nom de votre FAI et la ville détectée." },
+      { title: "Tester l'Antenne GPS", href: "/gps/", desc: "Inspectez vos coordonnées satellite et le rayon de précision actuel." },
+      { title: "Vérifier le Réseau IP", href: "/ip/", desc: "Consultez votre IP publique, le nom de votre FAI et la ville détectée." },
       { title: "Corriger une Position Erronée", href: "/guides/wrong-location/", desc: "Découvrez comment résoudre les erreurs d'adresses et de FAI." }
     ],
 
@@ -286,13 +286,13 @@ const translations: Record<string, any> = {
 
     h2Gps: "So funktioniert GPS-Standortbestimmung",
     pGps1: "GPS basiert auf reiner Funkphysik. Ihr Smartphone besitzt eine Miniaturantenne, die Signale aus 20.200 km Höhe auffängt. Wie in unserem Leitfaden <a href='/guides/how-gps-location-works/'>Wie GPS funktioniert</a> beschrieben, ermöglichen Satellitensignale metergenaue Bodenkoordinaten.",
-    pGps2: "Durch Laufzeitberechnungen mit Lichtgeschwindigkeit ermittelt der Prozessor Breitengrad, Längengrad und Höhe. Prüfen Sie Ihren Empfang auf <a href='/my-location/gps/'>Mein GPS-Standort</a>.",
+    pGps2: "Durch Laufzeitberechnungen mit Lichtgeschwindigkeit ermittelt der Prozessor Breitengrad, Längengrad und Höhe. Prüfen Sie Ihren Empfang auf <a href='/gps/'>Mein GPS-Standort</a>.",
 
     h2Ip: "So funktioniert IP-Geolokalisierung",
     pIp1: "IP-Geolokalisierung ist keine physikalische Messung, sondern eine Datenbankkorrelation. Wie in unserer Analyse zu <a href='/guides/ip-geolocation-accuracy/'>Genauigkeit und Grenzen der IP-Ortung</a> dargelegt, führen Anbieter wie MaxMind Tabellen, die IP-Bereiche zuordnen:",
     ipBullet1: "Dem zuständigen Internet-Provider (z. B. Deutsche Telekom, Vodafone, Telefónica).",
     ipBullet2: "Den geographischen Koordinaten des regionalen Einwahlknotens oder Rechenzentrums.",
-    pIp2: "Da ein Provider denselben IP-Bereich einer ganzen Region zuweisen kann, kann die IP-Ortung niemals Ihre Hausnummer ermitteln. Prüfen Sie Ihren Knoten auf <a href='/my-location/ip/'>Mein IP-Standort</a>. Bei Abweichungen hilft der <a href='/guides/wrong-location/'>Leitfaden für falschen Standort</a>.",
+    pIp2: "Da ein Provider denselben IP-Bereich einer ganzen Region zuweisen kann, kann die IP-Ortung niemals Ihre Hausnummer ermitteln. Prüfen Sie Ihren Knoten auf <a href='/ip/'>Mein IP-Standort</a>. Bei Abweichungen hilft der <a href='/guides/wrong-location/'>Leitfaden für falschen Standort</a>.",
 
     h2Privacy: "Datenschutz-Vergleich: Was ist sicherer?",
     h3GpsPrivacy: "W3C-Browser-Geolokalisierung (GPS):",
@@ -326,8 +326,8 @@ const translations: Record<string, any> = {
 
     nextStepsTitle: "Nächste Schritte",
     nextSteps: [
-      { title: "GPS-Antenne prüfen", href: "/my-location/gps/", desc: "Prüfen Sie Ihre Satellitenkoordinaten und den aktuellen Fehlerradius." },
-      { title: "IP-Netzwerk prüfen", href: "/my-location/ip/", desc: "Überprüfen Sie Ihre öffentliche IP, den Provider und den Routing-Standort." },
+      { title: "GPS-Antenne prüfen", href: "/gps/", desc: "Prüfen Sie Ihre Satellitenkoordinaten und den aktuellen Fehlerradius." },
+      { title: "IP-Netzwerk prüfen", href: "/ip/", desc: "Überprüfen Sie Ihre öffentliche IP, den Provider und den Routing-Standort." },
       { title: "Standortfehler beheben", href: "/guides/wrong-location/", desc: "Erfahren Sie, wie Sie Diskrepanzen durch VPN oder WLAN-Caches korrigieren." }
     ],
 
@@ -368,13 +368,13 @@ const translations: Record<string, any> = {
 
     h2Gps: "Como Funciona a Localização GPS",
     pGps1: "O GPS opera com base na física de ondas de rádio. Seu smartphone possui uma antena miniaturizada que capta transmissões emitidas a 20.200 km de altitude. Conforme abordado em nosso guia sobre <a href='/guides/how-gps-location-works/'>como funciona a localização GPS</a>, esses pulsos resolvem sua posição métrica.",
-    pGps2: "Ao calcular os tempos de percurso à velocidade da luz, o processador calcula latitude, longitude e altitude. Veja o sinal do seu sensor na página <a href='/my-location/gps/'>Minha Localização GPS</a>.",
+    pGps2: "Ao calcular os tempos de percurso à velocidade da luz, o processador calcula latitude, longitude e altitude. Veja o sinal do seu sensor na página <a href='/gps/'>Minha Localização GPS</a>.",
 
     h2Ip: "Como Funciona a Geolocalização IP",
     pIp1: "A geolocalização por IP é uma correlação em bancos de dados. Conforme detalhado em nossa análise de <a href='/guides/ip-geolocation-accuracy/'>precisão e limites da geolocalização por IP</a>, empresas como MaxMind mapeiam faixas de IP para centrais de roteamento.",
     ipBullet1: "O provedor proprietário do bloco (ex.: Claro, Vivo, TIM, Oi).",
     ipBullet2: "As coordenadas geográficas do roteador ou datacenter regional do provedor.",
-    pIp2: "Como um provedor pode atribuir a mesma faixa de IPs a uma região inteira, a posição por IP jamais identificará sua rua. Verifique seu nó de rede em <a href='/my-location/ip/'>Minha Localização IP</a>. Se a cidade estiver incorreta, consulte nosso <a href='/guides/wrong-location/'>Guia de Localização Errada</a>.",
+    pIp2: "Como um provedor pode atribuir a mesma faixa de IPs a uma região inteira, a posição por IP jamais identificará sua rua. Verifique seu nó de rede em <a href='/ip/'>Minha Localização IP</a>. Se a cidade estiver incorreta, consulte nosso <a href='/guides/wrong-location/'>Guia de Localização Errada</a>.",
 
     h2Privacy: "Comparativo de Privacidade: Qual é Mais Seguro?",
     h3GpsPrivacy: "Geolocalização W3C do Navegador (GPS):",
@@ -408,8 +408,8 @@ const translations: Record<string, any> = {
 
     nextStepsTitle: "Próximos Passos",
     nextSteps: [
-      { title: "Verificar Antena GPS", href: "/my-location/gps/", desc: "Confira suas coordenadas de satélite e a precisão horizontal atual." },
-      { title: "Verificar Rede IP", href: "/my-location/ip/", desc: "Veja seu IP público, nome da operadora e cidade detectada." },
+      { title: "Verificar Antena GPS", href: "/gps/", desc: "Confira suas coordenadas de satélite e a precisão horizontal atual." },
+      { title: "Verificar Rede IP", href: "/ip/", desc: "Veja seu IP público, nome da operadora e cidade detectada." },
       { title: "Corrigir Localização Errada", href: "/guides/wrong-location/", desc: "Aprenda a solucionar conflitos causados por VPN ou cache de Wi-Fi." }
     ],
 
@@ -450,13 +450,13 @@ const translations: Record<string, any> = {
 
     h2Gps: "जीपीएस लोकेशन कैसे काम करती है",
     pGps1: "जीपीएस भौतिकी के नियमों पर कार्य करता है। आपके फोन में एक एंटीना होता है जो 20,200 किमी ऊंचाई से आने वाले सिग्नलों को पकड़ता है। जैसा कि हमारे मार्गदर्शक <a href='/guides/how-gps-location-works/'>जीपीएस कैसे काम करता है</a> में वर्णित है, उपग्रह सटीक निर्देशांक तय करते हैं।",
-    pGps2: "सिग्नल के पहुंचने के समय से प्रोसेसर अक्षांश, देशांतर और ऊंचाई निकालता है। आप <a href='/my-location/gps/'>मेरा जीपीएस लोकेशन पेज</a> पर अपने लाइव सेंसर की जांच कर सकते हैं।",
+    pGps2: "सिग्नल के पहुंचने के समय से प्रोसेसर अक्षांश, देशांतर और ऊंचाई निकालता है। आप <a href='/gps/'>मेरा जीपीएस लोकेशन पेज</a> पर अपने लाइव सेंसर की जांच कर सकते हैं।",
 
     h2Ip: "आईपी जियोलोकेशन कैसे काम करती है",
     pIp1: "आईपी जियोलोकेशन कोई भौतिक माप नहीं बल्कि डेटाबेस मिलान है। जैसा कि हमारे <a href='/guides/ip-geolocation-accuracy/'>आईपी सटीकता और सीमाएं गाइड</a> में बताया गया है, कंपनियां आईपी पतों को क्षेत्रीय रूटिंग केंद्रों से जोड़ती हैं:",
     ipBullet1: "उस आईपी ब्लॉक का स्वामी इंटरनेट प्रदाता (जैसे जियो, एयरटेल, वोडाफोन)।",
     ipBullet2: "प्रदाता के मुख्य डेटा हब या गेटवे राउटर के निर्देशांक।",
-    pIp2: "क्योंकि आईएसपी एक ही आईपी ब्लॉक पूरे जिले को दे सकता है, इसलिए आईपी कभी सड़क का पता नहीं बता सकती। अपना नेटवर्क हब <a href='/my-location/ip/'>मेरा आईपी लोकेशन</a> पर देखें। यदि शहर गलत दिखे, तो <a href='/guides/wrong-location/'>गलत लोकेशन सुधार गाइड</a> पढ़ें।",
+    pIp2: "क्योंकि आईएसपी एक ही आईपी ब्लॉक पूरे जिले को दे सकता है, इसलिए आईपी कभी सड़क का पता नहीं बता सकती। अपना नेटवर्क हब <a href='/ip/'>मेरा आईपी लोकेशन</a> पर देखें। यदि शहर गलत दिखे, तो <a href='/guides/wrong-location/'>गलत लोकेशन सुधार गाइड</a> पढ़ें।",
 
     h2Privacy: "गोपनीयता तुलना: कौन सा अधिक सुरक्षित है?",
     h3GpsPrivacy: "ब्राउज़र W3C जियोलोकेशन (GPS):",
@@ -490,8 +490,8 @@ const translations: Record<string, any> = {
 
     nextStepsTitle: "अगले कदम",
     nextSteps: [
-      { title: "जीपीएस एंटीना जांचें", href: "/my-location/gps/", desc: "अपने लाइव उपग्रह निर्देशांक और त्रुटि दायरा देखें।" },
-      { title: "आईपी नेटवर्क जांचें", href: "/my-location/ip/", desc: "अपना सार्वजनिक आईपी, आईएसपी का नाम और शहर देखें।" },
+      { title: "जीपीएस एंटीना जांचें", href: "/gps/", desc: "अपने लाइव उपग्रह निर्देशांक और त्रुटि दायरा देखें।" },
+      { title: "आईपी नेटवर्क जांचें", href: "/ip/", desc: "अपना सार्वजनिक आईपी, आईएसपी का नाम और शहर देखें।" },
       { title: "गलत लोकेशन सुधारें", href: "/guides/wrong-location/", desc: "वीपीएन और वाई-फाई विसंगतियों को ठीक करना सीखें।" }
     ],
 
@@ -532,13 +532,13 @@ const translations: Record<string, any> = {
 
     h2Gps: "Cara Kerja Lokasi GPS",
     pGps1: "GPS menentukan lokasi melalui hukum gelombang radio. Ponsel Anda menangkap gelombang yang dipancarkan dari orbit 20.200 km di atas bumi. Sebagaimana diulas dalam panduan <a href='/guides/how-gps-location-works/'>cara kerja lokasi GPS</a>, satelit menentukan posisi tanah Anda secara akurat.",
-    pGps2: "Prosesor menghitung selisih waktu tempuh cahaya untuk menentukan lintang, bujur, dan ketinggian. Uji sensor Anda pada <a href='/my-location/gps/'>Halaman Lokasi GPS Saya</a>.",
+    pGps2: "Prosesor menghitung selisih waktu tempuh cahaya untuk menentukan lintang, bujur, dan ketinggian. Uji sensor Anda pada <a href='/gps/'>Halaman Lokasi GPS Saya</a>.",
 
     h2Ip: "Cara Kerja Geolokasi IP",
     pIp1: "Geolokasi IP adalah korelasi data jaringan, bukan pengukuran fisik. Seperti dijelaskan dalam panduan <a href='/guides/ip-geolocation-accuracy/'>akurasi dan batasan geolokasi IP</a>, penyedia seperti MaxMind memetakan blok IP ke gerbang perutean:",
     ipBullet1: "Perusahaan ISP pemilik blok IP (misalnya Telkomsel, Indosat, Biznet, XL).",
     ipBullet2: "Koordinat pusat data atau router gateway regional ISP.",
-    pIp2: "Karena ISP membagikan blok IP yang sama untuk satu wilayah kota, IP tidak akan pernah bisa melacak nama jalan Anda. Lihat simpul jaringan Anda di <a href='/my-location/ip/'>Lokasi IP Saya</a>. Jika kotanya salah, pelajari <a href='/guides/wrong-location/'>Panduan Lokasi Salah</a>.",
+    pIp2: "Karena ISP membagikan blok IP yang sama untuk satu wilayah kota, IP tidak akan pernah bisa melacak nama jalan Anda. Lihat simpul jaringan Anda di <a href='/ip/'>Lokasi IP Saya</a>. Jika kotanya salah, pelajari <a href='/guides/wrong-location/'>Panduan Lokasi Salah</a>.",
 
     h2Privacy: "Perbandingan Privasi: Mana yang Lebih Aman?",
     h3GpsPrivacy: "Geolokasi W3C Browser (GPS):",
@@ -572,8 +572,8 @@ const translations: Record<string, any> = {
 
     nextStepsTitle: "Langkah Berikutnya",
     nextSteps: [
-      { title: "Periksa Antena GPS", href: "/my-location/gps/", desc: "Lihat koordinat satelit langsung dan radius galat saat ini." },
-      { title: "Periksa Jaringan IP", href: "/my-location/ip/", desc: "Lihat IP publik, nama ISP, dan kota perutean jaringan." },
+      { title: "Periksa Antena GPS", href: "/gps/", desc: "Lihat koordinat satelit langsung dan radius galat saat ini." },
+      { title: "Periksa Jaringan IP", href: "/ip/", desc: "Lihat IP publik, nama ISP, dan kota perutean jaringan." },
       { title: "Atasi Lokasi Salah", href: "/guides/wrong-location/", desc: "Pelajari cara mengatasi selisih lokasi akibat VPN atau perutean ISP." }
     ],
 
@@ -679,7 +679,7 @@ const c = translations[lang] || translations.en;
       <button class="btn btn-primary" id="btn-run-gps">
         Query Hardware GPS Satellites
       </button>
-      <a href={getLocalizedPath('/my-location/ip/', lang)} class="btn btn-secondary">
+      <a href={getLocalizedPath('/ip/', lang)} class="btn btn-secondary">
         {c.calloutBtn}
       </a>
     </div>

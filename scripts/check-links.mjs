@@ -137,7 +137,8 @@ htmlFiles.forEach(f => {
   const isGuide = sourceRoute.includes("/guides/") && !sourceRoute.endsWith("/guides/");
   const isComparison = sourceRoute.includes("/comparisons/") && !sourceRoute.endsWith("/comparisons/");
   const isTool = sourceRoute.includes("/tools/") && !sourceRoute.endsWith("/tools/");
-  const isMyLocation = sourceRoute.includes("/my-location/") && !sourceRoute.endsWith("/my-location/");
+  const locationSubpages = ["/gps/", "/coordinates/", "/latitude-longitude/", "/address/", "/city/", "/state/", "/country/", "/ip/"];
+  const isMyLocation = locationSubpages.some(p => sourceRoute.endsWith(p));
 
   let minExpected = 0;
   let pageType = "";

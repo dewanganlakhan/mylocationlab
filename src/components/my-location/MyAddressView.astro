@@ -313,7 +313,7 @@ const contentData: Record<SupportedLang, AddressPageData> = {
         icon: "🛰️",
         title: "My GPS Coordinates",
         sub: "View exact latitude, longitude, and altitude telemetry",
-        path: "/my-location/gps/",
+        path: "/gps/",
       },
       {
         icon: "🎯",
@@ -542,7 +542,7 @@ const contentData: Record<SupportedLang, AddressPageData> = {
         icon: "🛰️",
         title: "Mis Coordenadas GPS",
         sub: "Vea latitud, longitud y altitud por satélite",
-        path: "/es/my-location/gps/",
+        path: "/es/gps/",
       },
       {
         icon: "📍",
@@ -554,7 +554,7 @@ const contentData: Record<SupportedLang, AddressPageData> = {
         icon: "🏙️",
         title: "¿En Qué Ciudad Estoy?",
         sub: "Verifique su municipio y límites urbanos",
-        path: "/es/my-location/city/",
+        path: "/es/city/",
       },
       {
         icon: "🎯",
@@ -790,7 +790,7 @@ const contentData: Record<SupportedLang, AddressPageData> = {
         icon: "🛰️",
         title: "Mes Coordonnées GPS",
         sub: "Latitude, longitude et altitude par satellite",
-        path: "/fr/my-location/gps/",
+        path: "/fr/gps/",
       },
       {
         icon: "📍",
@@ -802,7 +802,7 @@ const contentData: Record<SupportedLang, AddressPageData> = {
         icon: "🏙️",
         title: "Dans Quelle Ville Suis-Je ?",
         sub: "Vérifier votre commune et vos limites urbaines",
-        path: "/fr/my-location/city/",
+        path: "/fr/city/",
       },
       {
         icon: "🎯",
@@ -1041,7 +1041,7 @@ const contentData: Record<SupportedLang, AddressPageData> = {
         icon: "🛰️",
         title: "Meine GPS-Koordinaten",
         sub: "Genaue Breiten- und Längengrade abrufen",
-        path: "/de/my-location/gps/",
+        path: "/de/gps/",
       },
       {
         icon: "📍",
@@ -1053,7 +1053,7 @@ const contentData: Record<SupportedLang, AddressPageData> = {
         icon: "🏙️",
         title: "In Welcher Stadt Bin Ich?",
         sub: "Gemeinde und Stadtgrenzen feststellen",
-        path: "/de/my-location/city/",
+        path: "/de/city/",
       },
       {
         icon: "🎯",
@@ -1311,7 +1311,7 @@ const contentData: Record<SupportedLang, AddressPageData> = {
         icon: "🛰️",
         title: "Coordenadas GPS Atuais",
         sub: "Ver latitude, longitude e altitude via satélite em tempo real",
-        path: "/my-location/gps/",
+        path: "/gps/",
       },
       {
         icon: "🎯",
@@ -1556,7 +1556,7 @@ const contentData: Record<SupportedLang, AddressPageData> = {
         icon: "🛰️",
         title: "मेरे GPS निर्देशांक",
         sub: "सटीक अक्षांश, देशांतर और ऊंचाई देखें",
-        path: "/my-location/gps/",
+        path: "/gps/",
       },
       {
         icon: "🎯",
@@ -1814,7 +1814,7 @@ const contentData: Record<SupportedLang, AddressPageData> = {
         icon: "🛰️",
         title: "Koordinat GPS Saya",
         sub: "Lihat lintang, bujur, dan ketinggian satelit secara real-time",
-        path: "/my-location/gps/",
+        path: "/gps/",
       },
       {
         icon: "🎯",
@@ -1835,7 +1835,7 @@ const contentData: Record<SupportedLang, AddressPageData> = {
 const c = contentData[lang] || contentData.en;
 
 const homePath = lang === "en" ? "/" : `/${lang}/`;
-const myLocPath = getLocalizedPath("/my-location/", lang);
+const myLocPath = getLocalizedPath("/location/", lang);
 
 const breadcrumbs = [
   {
@@ -1875,7 +1875,7 @@ const breadcrumbs = [
   { label: c.breadcrumbLabel },
 ];
 
-const currentUrl = `https://mylocationlab.com${getLocalizedPath("/my-location/address/", lang)}`;
+const currentUrl = `https://mylocationlab.com${getLocalizedPath("/address/", lang)}`;
 
 const webAppSchema = {
   "@context": "https://schema.org",
@@ -1921,31 +1921,31 @@ const siloLinkLabels: Record<
     links: [
       {
         label: "My GPS Coordinates",
-        href: getLocalizedPath("/my-location/gps/", lang),
+        href: getLocalizedPath("/gps/", lang),
       },
       {
         label: "My Coordinates Hub",
-        href: getLocalizedPath("/my-location/coordinates/", lang),
+        href: getLocalizedPath("/coordinates/", lang),
       },
       {
         label: "Latitude and Longitude",
-        href: getLocalizedPath("/my-location/latitude-longitude/", lang),
+        href: getLocalizedPath("/latitude-longitude/", lang),
       },
       {
         label: "What City Am I In?",
-        href: getLocalizedPath("/my-location/city/", lang),
+        href: getLocalizedPath("/city/", lang),
       },
       {
         label: "What State Am I In?",
-        href: getLocalizedPath("/my-location/state/", lang),
+        href: getLocalizedPath("/state/", lang),
       },
       {
         label: "What Country Am I In?",
-        href: getLocalizedPath("/my-location/country/", lang),
+        href: getLocalizedPath("/country/", lang),
       },
       {
         label: "IP Geolocation Check",
-        href: getLocalizedPath("/my-location/ip/", lang),
+        href: getLocalizedPath("/ip/", lang),
       },
       {
         label: "Address Finder (any coordinates)",
@@ -1962,31 +1962,31 @@ const siloLinkLabels: Record<
     links: [
       {
         label: "Mis Coordenadas GPS",
-        href: getLocalizedPath("/my-location/gps/", lang),
+        href: getLocalizedPath("/gps/", lang),
       },
       {
         label: "Panel de Coordenadas",
-        href: getLocalizedPath("/my-location/coordinates/", lang),
+        href: getLocalizedPath("/coordinates/", lang),
       },
       {
         label: "Latitud y Longitud",
-        href: getLocalizedPath("/my-location/latitude-longitude/", lang),
+        href: getLocalizedPath("/latitude-longitude/", lang),
       },
       {
         label: "¿En Qué Ciudad Estoy?",
-        href: getLocalizedPath("/my-location/city/", lang),
+        href: getLocalizedPath("/city/", lang),
       },
       {
         label: "¿En Qué Estado Estoy?",
-        href: getLocalizedPath("/my-location/state/", lang),
+        href: getLocalizedPath("/state/", lang),
       },
       {
         label: "¿En Qué País Estoy?",
-        href: getLocalizedPath("/my-location/country/", lang),
+        href: getLocalizedPath("/country/", lang),
       },
       {
         label: "Comprobar Ubicación IP",
-        href: getLocalizedPath("/my-location/ip/", lang),
+        href: getLocalizedPath("/ip/", lang),
       },
       {
         label: "Buscador de Dirección",
@@ -2003,31 +2003,31 @@ const siloLinkLabels: Record<
     links: [
       {
         label: "Mes Coordonnées GPS",
-        href: getLocalizedPath("/my-location/gps/", lang),
+        href: getLocalizedPath("/gps/", lang),
       },
       {
         label: "Centre de Coordonnées",
-        href: getLocalizedPath("/my-location/coordinates/", lang),
+        href: getLocalizedPath("/coordinates/", lang),
       },
       {
         label: "Latitude et Longitude",
-        href: getLocalizedPath("/my-location/latitude-longitude/", lang),
+        href: getLocalizedPath("/latitude-longitude/", lang),
       },
       {
         label: "Dans Quelle Ville Suis-Je ?",
-        href: getLocalizedPath("/my-location/city/", lang),
+        href: getLocalizedPath("/city/", lang),
       },
       {
         label: "Dans Quel Département Suis-Je ?",
-        href: getLocalizedPath("/my-location/state/", lang),
+        href: getLocalizedPath("/state/", lang),
       },
       {
         label: "Dans Quel Pays Suis-Je ?",
-        href: getLocalizedPath("/my-location/country/", lang),
+        href: getLocalizedPath("/country/", lang),
       },
       {
         label: "Test Localisation IP",
-        href: getLocalizedPath("/my-location/ip/", lang),
+        href: getLocalizedPath("/ip/", lang),
       },
       {
         label: "Localisateur d'Adresse",
@@ -2044,31 +2044,31 @@ const siloLinkLabels: Record<
     links: [
       {
         label: "Meine GPS-Koordinaten",
-        href: getLocalizedPath("/my-location/gps/", lang),
+        href: getLocalizedPath("/gps/", lang),
       },
       {
         label: "Koordinaten-Zentrale",
-        href: getLocalizedPath("/my-location/coordinates/", lang),
+        href: getLocalizedPath("/coordinates/", lang),
       },
       {
         label: "Breitengrad & Längengrad",
-        href: getLocalizedPath("/my-location/latitude-longitude/", lang),
+        href: getLocalizedPath("/latitude-longitude/", lang),
       },
       {
         label: "In Welcher Stadt Bin Ich?",
-        href: getLocalizedPath("/my-location/city/", lang),
+        href: getLocalizedPath("/city/", lang),
       },
       {
         label: "In Welchem Bundesland Bin Ich?",
-        href: getLocalizedPath("/my-location/state/", lang),
+        href: getLocalizedPath("/state/", lang),
       },
       {
         label: "In Welchem Land Bin Ich?",
-        href: getLocalizedPath("/my-location/country/", lang),
+        href: getLocalizedPath("/country/", lang),
       },
       {
         label: "IP-Standort Überprüfen",
-        href: getLocalizedPath("/my-location/ip/", lang),
+        href: getLocalizedPath("/ip/", lang),
       },
       {
         label: "Adressen-Finder (beliebige Koordinaten)",
@@ -2085,31 +2085,31 @@ const siloLinkLabels: Record<
     links: [
       {
         label: "Minhas Coordenadas GPS",
-        href: getLocalizedPath("/my-location/gps/", lang),
+        href: getLocalizedPath("/gps/", lang),
       },
       {
         label: "Central de Coordenadas",
-        href: getLocalizedPath("/my-location/coordinates/", lang),
+        href: getLocalizedPath("/coordinates/", lang),
       },
       {
         label: "Latitude e Longitude",
-        href: getLocalizedPath("/my-location/latitude-longitude/", lang),
+        href: getLocalizedPath("/latitude-longitude/", lang),
       },
       {
         label: "Em Que Cidade Estou?",
-        href: getLocalizedPath("/my-location/city/", lang),
+        href: getLocalizedPath("/city/", lang),
       },
       {
         label: "Em Que Estado Estou?",
-        href: getLocalizedPath("/my-location/state/", lang),
+        href: getLocalizedPath("/state/", lang),
       },
       {
         label: "Em Que País Estou?",
-        href: getLocalizedPath("/my-location/country/", lang),
+        href: getLocalizedPath("/country/", lang),
       },
       {
         label: "Verificar Localização por IP",
-        href: getLocalizedPath("/my-location/ip/", lang),
+        href: getLocalizedPath("/ip/", lang),
       },
       {
         label: "Localizador de Endereço (quaisquer coordenadas)",
@@ -2126,31 +2126,31 @@ const siloLinkLabels: Record<
     links: [
       {
         label: "मेरे GPS निर्देशांक",
-        href: getLocalizedPath("/my-location/gps/", lang),
+        href: getLocalizedPath("/gps/", lang),
       },
       {
         label: "मेरे निर्देशांक हब",
-        href: getLocalizedPath("/my-location/coordinates/", lang),
+        href: getLocalizedPath("/coordinates/", lang),
       },
       {
         label: "अक्षांश और देशांतर",
-        href: getLocalizedPath("/my-location/latitude-longitude/", lang),
+        href: getLocalizedPath("/latitude-longitude/", lang),
       },
       {
         label: "मैं किस शहर में हूं?",
-        href: getLocalizedPath("/my-location/city/", lang),
+        href: getLocalizedPath("/city/", lang),
       },
       {
         label: "मैं किस राज्य में हूं?",
-        href: getLocalizedPath("/my-location/state/", lang),
+        href: getLocalizedPath("/state/", lang),
       },
       {
         label: "मैं किस देश में हूं?",
-        href: getLocalizedPath("/my-location/country/", lang),
+        href: getLocalizedPath("/country/", lang),
       },
       {
         label: "IP लोकेशन चेक",
-        href: getLocalizedPath("/my-location/ip/", lang),
+        href: getLocalizedPath("/ip/", lang),
       },
       {
         label: "पता खोजक (Address Finder)",
@@ -2167,31 +2167,31 @@ const siloLinkLabels: Record<
     links: [
       {
         label: "Koordinat GPS Saya",
-        href: getLocalizedPath("/my-location/gps/", lang),
+        href: getLocalizedPath("/gps/", lang),
       },
       {
         label: "Pusat Koordinat Lengkap",
-        href: getLocalizedPath("/my-location/coordinates/", lang),
+        href: getLocalizedPath("/coordinates/", lang),
       },
       {
         label: "Garis Lintang & Bujur",
-        href: getLocalizedPath("/my-location/latitude-longitude/", lang),
+        href: getLocalizedPath("/latitude-longitude/", lang),
       },
       {
         label: "Saya di Kota Mana?",
-        href: getLocalizedPath("/my-location/city/", lang),
+        href: getLocalizedPath("/city/", lang),
       },
       {
         label: "Saya di Provinsi Mana?",
-        href: getLocalizedPath("/my-location/state/", lang),
+        href: getLocalizedPath("/state/", lang),
       },
       {
         label: "Saya di Negara Mana?",
-        href: getLocalizedPath("/my-location/country/", lang),
+        href: getLocalizedPath("/country/", lang),
       },
       {
         label: "Cek Lokasi IP",
-        href: getLocalizedPath("/my-location/ip/", lang),
+        href: getLocalizedPath("/ip/", lang),
       },
       {
         label: "Pencari Alamat (koordinat apa pun)",

@@ -119,16 +119,19 @@ The platform operates on a **client-first, zero-knowledge** architecture designe
 - **GPS Accuracy Checker** (`/tools/gps-accuracy/`): Live browser hardware signal diagnostic, horizontal dilution estimation, and tips to resolve GPS drift.
 - **Location QR Code Generator** (`/tools/location-qr-code/`): Dynamic QR code generator formatting standard `geo:` URIs and Google Maps deep-links for seamless scanning.
 
-### 📍 Granular Location Silos (`/my-location/`)
-Dedicated, indexable, high-speed pages tailored to specific device attributes:
-- `/my-location/` — Complete consolidated location dashboard
-- `/my-location/ip/` — Public IP address and network ISP geolocation
-- `/my-location/gps/` — Hardware GPS sensor telemetry
-- `/my-location/latitude-longitude/` — Coordinates breakdown
-- `/my-location/address/` — Resolved street address
-- `/my-location/city/` — City and municipality data
-- `/my-location/state/` — State / province / administrative region
-- `/my-location/country/` — Country-level boundaries and ISO codes
+### 📍 Granular Location Silos (Simplified URLs)
+Dedicated, indexable, ultra-fast pages tailored to specific device attributes with clean, simplified root routes (with permanent 301 redirects from legacy `/my-location/*` URLs):
+- `/location/` — Complete consolidated location dashboard
+- `/ip/` — Public IP address and network ISP geolocation
+- `/gps/` — Hardware GPS sensor telemetry
+- `/latitude-longitude/` — Detailed latitude and longitude breakdown
+- `/coordinates/` — Multi-format coordinate breakdown (DD, DMS, UTM)
+- `/address/` — Resolved physical street address
+- `/city/` — City and municipality boundaries
+- `/state/` — State / province / administrative region
+- `/country/` — Country-level sovereign boundaries and ISO codes
+
+> **Note on URL Architecture:** All legacy `/my-location/*` URLs (including international variations such as `/es/my-location/*`) automatically 301 permanently redirect at the Cloudflare Edge to their simplified counterparts (`/location/`, `/gps/`, `/address/`, etc.).
 
 ### 🗺️ Interactive Maps & Location Sharing
 - **Full-Screen Interactive Map** (`/maps/`): High-performance OpenStreetMap-powered Leaflet explorer with custom pins, coordinate readouts, and tile layer controls.

@@ -602,7 +602,7 @@ export const toolFaqsData: Record<string, Record<string, FaqBuilder>> = {
       },
       {
         question: "Can I check my current physical address using this tool?",
-        answer: `Yes, click <strong>Use My Location</strong> to query your device's live coordinates, or explore our dedicated <a href="${getLocalizedPath('/my-location/address/', l)}">What Is My Current Address?</a> diagnostic page.`
+        answer: `Yes, click <strong>Use My Location</strong> to query your device's live coordinates, or explore our dedicated <a href="${getLocalizedPath('/address/', l)}">What Is My Current Address?</a> diagnostic page.`
       }
     ],
     es: (l) => [
@@ -628,7 +628,7 @@ export const toolFaqsData: Record<string, Record<string, FaqBuilder>> = {
       },
       {
         question: "¿Puedo averiguar la dirección física de mi propio móvil?",
-        answer: `Sí, pulse <strong>Usar Mi Ubicación</strong> o visite nuestra página especializada <a href="${getLocalizedPath('/my-location/address/', l)}">Mi Dirección Actual</a>.`
+        answer: `Sí, pulse <strong>Usar Mi Ubicación</strong> o visite nuestra página especializada <a href="${getLocalizedPath('/address/', l)}">Mi Dirección Actual</a>.`
       }
     ],
     fr: (l) => [
@@ -654,7 +654,7 @@ export const toolFaqsData: Record<string, Record<string, FaqBuilder>> = {
       },
       {
         question: "Puis-je vérifier l'adresse actuelle de mon terminal ?",
-        answer: `Oui, cliquez sur <strong>Utiliser Ma Position</strong> ou ouvrez notre page diagnostic dédiée <a href="${getLocalizedPath('/my-location/address/', l)}">Mon Adresse Actuelle</a>.`
+        answer: `Oui, cliquez sur <strong>Utiliser Ma Position</strong> ou ouvrez notre page diagnostic dédiée <a href="${getLocalizedPath('/address/', l)}">Mon Adresse Actuelle</a>.`
       }
     ],
     de: (l) => [
@@ -680,7 +680,7 @@ export const toolFaqsData: Record<string, Record<string, FaqBuilder>> = {
       },
       {
         question: "Kann ich die Adresse meines aktuellen Standorts abfragen?",
-        answer: `Klicken Sie auf <strong>Meinen Standort nutzen</strong> oder prüfen Sie die Daten auf <a href="${getLocalizedPath('/my-location/address/', l)}">Meine Aktuelle Adresse</a>.`
+        answer: `Klicken Sie auf <strong>Meinen Standort nutzen</strong> oder prüfen Sie die Daten auf <a href="${getLocalizedPath('/address/', l)}">Meine Aktuelle Adresse</a>.`
       }
     ],
     pt: (l) => [
@@ -706,7 +706,7 @@ export const toolFaqsData: Record<string, Record<string, FaqBuilder>> = {
       },
       {
         question: "Posso descobrir o endereço físico atual do meu aparelho?",
-        answer: `Sim, clique em <strong>Usar Minha Localização</strong> ou abra a página especializada <a href="${getLocalizedPath('/my-location/address/', l)}">Meu Endereço Atual</a>.`
+        answer: `Sim, clique em <strong>Usar Minha Localização</strong> ou abra a página especializada <a href="${getLocalizedPath('/address/', l)}">Meu Endereço Atual</a>.`
       }
     ],
     hi: (l) => [
@@ -732,7 +732,7 @@ export const toolFaqsData: Record<string, Record<string, FaqBuilder>> = {
       },
       {
         question: "क्या मैं अपने फ़ोन का वर्तमान पता जान सकता हूँ?",
-        answer: `हाँ, <strong>मेरा स्थान उपयोग करें</strong> पर क्लिक करें या सीधे <a href="${getLocalizedPath('/my-location/address/', l)}">मेरा वर्तमान पता</a> पेज पर जाएं।`
+        answer: `हाँ, <strong>मेरा स्थान उपयोग करें</strong> पर क्लिक करें या सीधे <a href="${getLocalizedPath('/address/', l)}">मेरा वर्तमान पता</a> पेज पर जाएं।`
       }
     ],
     id: (l) => [
@@ -758,7 +758,7 @@ export const toolFaqsData: Record<string, Record<string, FaqBuilder>> = {
       },
       {
         question: "Bisakah memeriksa alamat fisik perangkat saya sekarang?",
-        answer: `Ya, klik <strong>Gunakan Lokasi Saya</strong> atau kunjungi laman diagnostik <a href="${getLocalizedPath('/my-location/address/', l)}">Alamat Saya Sekarang</a>.`
+        answer: `Ya, klik <strong>Gunakan Lokasi Saya</strong> atau kunjungi laman diagnostik <a href="${getLocalizedPath('/address/', l)}">Alamat Saya Sekarang</a>.`
       }
     ]
   },
