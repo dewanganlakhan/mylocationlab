@@ -149,15 +149,21 @@ const allJsonLd = jsonLd
       }
     </script>
 
-    <!-- PWA Service Worker Registration -->
+    <!-- Service Worker Cleanup / Unregistration -->
     <script is:inline>
-      if (
-        "serviceWorker" in navigator &&
-        window.location.protocol.startsWith("http")
-      ) {
-        window.addEventListener("load", function () {
-          navigator.serviceWorker.register("/sw.js").catch(function () {});
+      if ("serviceWorker" in navigator) {
+        navigator.serviceWorker.getRegistrations().then(function (registrations) {
+          for (var registration of registrations) {
+            registration.unregister();
+          }
         });
+        if ("caches" in window) {
+          caches.keys().then(function (names) {
+            for (var name of names) {
+              caches.delete(name);
+            }
+          });
+        }
       }
     </script>
   </body>

@@ -806,6 +806,34 @@ html[data-theme="dark"] .nav-inner {
   flex-shrink: 0;
 }
 
+.github-nav-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.125rem;
+  height: 2.125rem;
+  border-radius: var(--radius-full);
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  color: var(--color-text-primary);
+  text-decoration: none;
+  transition: all var(--transition-base);
+  padding: 0;
+  flex-shrink: 0;
+}
+
+.github-nav-btn:hover {
+  background: var(--color-bg-card-hover);
+  border-color: var(--color-border-hover);
+  color: var(--color-accent-primary);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-glow);
+}
+
+.github-nav-btn:active {
+  transform: scale(0.94);
+}
+
 .theme-toggle-btn:hover {
   background: var(--color-bg-card-hover);
   border-color: var(--color-border-hover);
@@ -881,6 +909,31 @@ html[data-theme="light"] .theme-toggle-btn .icon-moon {
   font-weight: 500;
   color: var(--color-text-primary);
   font-size: var(--text-base);
+}
+
+.github-mobile-row {
+  padding: 0 var(--space-4) var(--space-2);
+}
+
+.github-mobile-link {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  color: var(--color-text-primary);
+  text-decoration: none;
+  font-weight: 500;
+  font-size: var(--text-base);
+  transition: all var(--transition-base);
+}
+
+.github-mobile-link:hover {
+  background: var(--color-bg-card-hover);
+  border-color: var(--color-border-hover);
+  color: var(--color-accent-primary);
 }
 
 @media (max-width: 1024px) {
