@@ -7,7 +7,6 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Breadcrumbs from '../Breadcrumbs.astro';
 import LocationFinder from '../LocationFinder.astro';
-import SiloNav from '../SiloNav.astro';
 import FAQAccordion from '../FAQAccordion.astro';
 import { getLocalizedPath, defaultLang, type SupportedLang, localizeHtml } from '../../i18n/config';
 import { useTranslations } from '../../i18n/ui';
@@ -1504,7 +1503,6 @@ const faqSchema = faq ? {
 >
   <div class="container">
     <Breadcrumbs items={breadcrumbs} lang={lang} />
-    <SiloNav silo="my-location" lang={lang} title={c.h3Related} />
 
     <section class="page-header">
       <h1>{c.h1Prefix} <span class="text-gradient">{c.h1Accent}</span></h1>

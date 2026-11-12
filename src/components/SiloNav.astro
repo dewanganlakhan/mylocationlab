@@ -1,9 +1,7 @@
 ---
 /**
- * SiloNav — Compact silo quick-nav strip
- * A slim, single-row chip strip that keeps the internal silo interlinking
- * (every hub + spoke link) without pushing the page's main tool/content
- * below the fold. Replaces the old boxed "Geospatial Utilities & Tools" card.
+ * SiloNav — Sidebar navigation list for content/guide/comparison pages
+ * Displays a clean vertical list of guides, comparisons, or tools with active state indicators.
  */
 import { myLocationSubNav, toolsNav, guidesNav, comparisonsNav, localizedNavLabels } from '../data/navigation.js';
 import { getLangFromUrl, getLocalizedPath, type SupportedLang } from '../i18n/config';
@@ -24,43 +22,43 @@ const lang = (customLang || getLangFromUrl(Astro.url)) as SupportedLang;
 const navLabels = localizedNavLabels as Record<string, Partial<Record<string, string>>>;
 const chipLabel = (href: string, fallback: string) => navLabels[href]?.[lang] || fallback;
 
-// Per-silo section title + hub label per language (en holds the current strings).
+// Per-silo section title + hub label per language
 const siloCopy: Record<string, Record<string, { siloTitle: string; hubLabel: string }>> = {
   'my-location': {
-    en: { siloTitle: 'Related Location Tools', hubLabel: 'Where Am I' },
-    es: { siloTitle: 'Herramientas de Ubicación Relacionadas', hubLabel: '¿Dónde Estoy?' },
-    fr: { siloTitle: 'Outils de Localisation Associés', hubLabel: 'Où Suis-Je ?' },
-    de: { siloTitle: 'Verwandte Standort-Tools', hubLabel: 'Wo Bin Ich?' },
-    pt: { siloTitle: 'Ferramentas de Localização Relacionadas', hubLabel: 'Onde Estou?' },
-    hi: { siloTitle: 'संबंधित लोकेशन टूल्स', hubLabel: 'मैं कहाँ हूँ' },
-    id: { siloTitle: 'Alat Lokasi Terkait', hubLabel: 'Saya di Mana' },
+    en: { siloTitle: 'Related Location Tools', hubLabel: 'All Location Tools' },
+    es: { siloTitle: 'Herramientas de Ubicación', hubLabel: 'Todas las Herramientas' },
+    fr: { siloTitle: 'Outils de Localisation', hubLabel: 'Tous les Outils' },
+    de: { siloTitle: 'Verwandte Standort-Tools', hubLabel: 'Alle Tools' },
+    pt: { siloTitle: 'Ferramentas de Localização', hubLabel: 'Todas as Ferramentas' },
+    hi: { siloTitle: 'संबंधित लोकेशन टूल्स', hubLabel: 'सभी टूल्स' },
+    id: { siloTitle: 'Alat Lokasi Terkait', hubLabel: 'Semua Alat' },
   },
   tools: {
-    en: { siloTitle: 'Geospatial Utilities & Tools', hubLabel: 'All Tools' },
-    es: { siloTitle: 'Utilidades y Herramientas Geoespaciales', hubLabel: 'Todas las Herramientas' },
-    fr: { siloTitle: 'Utilitaires et Outils Géospatiaux', hubLabel: 'Tous les Outils' },
-    de: { siloTitle: 'Geodaten-Utilities & Tools', hubLabel: 'Alle Tools' },
-    pt: { siloTitle: 'Utilitários e Ferramentas Geoespaciais', hubLabel: 'Todas as Ferramentas' },
-    hi: { siloTitle: 'भू-स्थानिक यूटिलिटीज़ और टूल्स', hubLabel: 'सभी टूल्स' },
-    id: { siloTitle: 'Utilitas & Alat Geospasial', hubLabel: 'Semua Alat' },
+    en: { siloTitle: 'Geospatial Tools', hubLabel: 'All Tools' },
+    es: { siloTitle: 'Herramientas Geoespaciales', hubLabel: 'Todas las Herramientas' },
+    fr: { siloTitle: 'Outils Géospatiaux', hubLabel: 'Tous les Outils' },
+    de: { siloTitle: 'Geodaten-Tools', hubLabel: 'Alle Tools' },
+    pt: { siloTitle: 'Ferramentas Geoespaciais', hubLabel: 'Todas as Ferramentas' },
+    hi: { siloTitle: 'भू-स्थानिक टूल्स', hubLabel: 'सभी टूल्स' },
+    id: { siloTitle: 'Alat Geospasial', hubLabel: 'Semua Alat' },
   },
   guides: {
-    en: { siloTitle: 'Location Guides & Tutorials', hubLabel: 'All Guides' },
-    es: { siloTitle: 'Guías y Tutoriales de Ubicación', hubLabel: 'Todas las Guías' },
-    fr: { siloTitle: 'Guides et Tutoriels de Localisation', hubLabel: 'Tous les Guides' },
-    de: { siloTitle: 'Standort-Guides & Tutorials', hubLabel: 'Alle Guides' },
-    pt: { siloTitle: 'Guias e Tutoriais de Localização', hubLabel: 'Todos os Guias' },
-    hi: { siloTitle: 'लोकेशन गाइड और ट्यूटोरियल', hubLabel: 'सभी गाइड' },
-    id: { siloTitle: 'Panduan & Tutorial Lokasi', hubLabel: 'Semua Panduan' },
+    en: { siloTitle: 'All Guides & Tutorials', hubLabel: 'Browse Guides' },
+    es: { siloTitle: 'Guías y Tutoriales', hubLabel: 'Ver Guías' },
+    fr: { siloTitle: 'Guides et Tutoriels', hubLabel: 'Tous les Guides' },
+    de: { siloTitle: 'Guides & Tutorials', hubLabel: 'Alle Guides' },
+    pt: { siloTitle: 'Guias e Tutoriais', hubLabel: 'Ver Guias' },
+    hi: { siloTitle: 'सभी गाइड और ट्यूटोरियल', hubLabel: 'गाइड देखें' },
+    id: { siloTitle: 'Semua Panduan', hubLabel: 'Lihat Panduan' },
   },
   comparisons: {
-    en: { siloTitle: 'Accuracy & Tech Comparisons', hubLabel: 'All Comparisons' },
-    es: { siloTitle: 'Comparativas de Precisión y Tecnología', hubLabel: 'Todas las Comparativas' },
-    fr: { siloTitle: 'Comparatifs de Précision et Technologie', hubLabel: 'Tous les Comparatifs' },
-    de: { siloTitle: 'Genauigkeits- & Tech-Vergleiche', hubLabel: 'Alle Vergleiche' },
-    pt: { siloTitle: 'Comparações de Precisão e Tecnologia', hubLabel: 'Todas as Comparações' },
-    hi: { siloTitle: 'सटीकता और टेक तुलना', hubLabel: 'सभी तुलनाएं' },
-    id: { siloTitle: 'Perbandingan Akurasi & Teknologi', hubLabel: 'Semua Perbandingan' },
+    en: { siloTitle: 'Tech Comparisons', hubLabel: 'All Comparisons' },
+    es: { siloTitle: 'Comparativas Técnicas', hubLabel: 'Todas las Comparativas' },
+    fr: { siloTitle: 'Comparatifs Techniques', hubLabel: 'Tous les Comparatifs' },
+    de: { siloTitle: 'Tech-Vergleiche', hubLabel: 'Alle Vergleiche' },
+    pt: { siloTitle: 'Comparações Técnicas', hubLabel: 'Todas as Comparações' },
+    hi: { siloTitle: 'तकनीकी तुलनाएं', hubLabel: 'सभी तुलनाएं' },
+    id: { siloTitle: 'Perbandingan Teknis', hubLabel: 'Semua Perbandingan' },
   },
 };
 
@@ -96,25 +94,40 @@ if (copy) {
 ---
 
 {items.length > 0 && (
-  <nav class="quicknav" aria-label={`${title || siloTitle} quick links`}>
-    <a href={getLocalizedPath(siloHubHref, lang)} class="quicknav-hub">
-      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-        <rect x="3" y="3" width="7" height="7" rx="1.5"/>
-        <rect x="14" y="3" width="7" height="7" rx="1.5"/>
-        <rect x="3" y="14" width="7" height="7" rx="1.5"/>
-        <rect x="14" y="14" width="7" height="7" rx="1.5"/>
-      </svg>
-      <span>{hubLabel}</span>
-    </a>
-    <span class="quicknav-divider" aria-hidden="true"></span>
-    <ul class="quicknav-track quicknav-list" role="list">
+  <nav class="sidebar-nav-card" aria-label={`${title || siloTitle} links`}>
+    <div class="sidebar-nav-header">
+      <h4 class="sidebar-nav-title">{title || siloTitle}</h4>
+      <a href={getLocalizedPath(siloHubHref, lang)} class="sidebar-nav-hub-badge">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <rect x="3" y="3" width="7" height="7" rx="1.5"/>
+          <rect x="14" y="3" width="7" height="7" rx="1.5"/>
+          <rect x="3" y="14" width="7" height="7" rx="1.5"/>
+          <rect x="14" y="14" width="7" height="7" rx="1.5"/>
+        </svg>
+        <span>{hubLabel}</span>
+      </a>
+    </div>
+
+    <ul class="sidebar-nav-list" role="list">
       {items.map((item) => {
         const itemLocalizedHref = getLocalizedPath(item.href, lang);
         const isActive = currentPath === itemLocalizedHref || currentPath === item.href;
         return (
           <li role="listitem">
-            <a href={itemLocalizedHref} class={`quicknav-chip ${isActive ? 'active' : ''}`} aria-current={isActive ? 'page' : undefined}>
-              {chipLabel(item.href, item.label)}
+            <a
+              href={itemLocalizedHref}
+              class={`sidebar-nav-item ${isActive ? 'active' : ''}`}
+              aria-current={isActive ? 'page' : undefined}
+            >
+              <span class="sidebar-nav-bullet" aria-hidden="true"></span>
+              <span class="sidebar-nav-label">{chipLabel(item.href, item.label)}</span>
+              {isActive && (
+                <span class="sidebar-nav-active-pill" aria-hidden="true">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="20 6 9 17 4 12" />
+                  </svg>
+                </span>
+              )}
             </a>
           </li>
         );
@@ -124,102 +137,121 @@ if (copy) {
 )}
 
 <style>
-  .quicknav {
-    display: flex;
-    align-items: center;
-    gap: var(--space-2);
-    margin: var(--space-1) 0 var(--space-4);
-    min-width: 0;
+  .sidebar-nav-card {
+    background: var(--color-bg-card);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-xl);
+    padding: var(--space-6);
+    box-shadow: 0 4px 12px -2px rgba(15, 23, 42, 0.03);
   }
 
-  .quicknav-hub {
+  .sidebar-nav-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-2);
+    margin-bottom: var(--space-4);
+    padding-bottom: var(--space-3);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .sidebar-nav-title {
+    margin: 0;
+    font-size: var(--text-sm);
+    font-weight: 700;
+    color: var(--color-text-heading);
+    letter-spacing: -0.01em;
+  }
+
+  .sidebar-nav-hub-badge {
     display: inline-flex;
     align-items: center;
-    gap: 6px;
-    flex-shrink: 0;
-    padding: 7px 13px;
-    border-radius: 999px;
-    font-size: 0.78rem;
-    font-weight: 700;
-    text-decoration: none;
+    gap: 4px;
+    padding: 3px 8px;
+    border-radius: var(--radius-full);
+    font-size: 11px;
+    font-weight: 600;
     color: var(--color-accent-primary);
-    background: var(--color-bg-tertiary);
+    background: var(--color-bg-secondary);
     border: 1px solid var(--color-border);
+    text-decoration: none;
+    transition: all var(--dur-short) var(--ease-out);
     white-space: nowrap;
-    transition: all var(--transition-fast);
   }
 
-  .quicknav-hub:hover {
+  .sidebar-nav-hub-badge:hover {
+    background: var(--color-bg-card-hover);
     border-color: var(--color-accent-primary);
+    color: var(--color-accent-primary);
   }
 
-  .quicknav-divider {
-    width: 1px;
-    height: 18px;
-    background: var(--color-border);
-    flex-shrink: 0;
-  }
-
-  .quicknav-track {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    overflow-x: auto;
-    min-width: 0;
-    scrollbar-width: none;
-    -webkit-overflow-scrolling: touch;
+  .sidebar-nav-list {
     list-style: none;
     margin: 0;
     padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
   }
 
-  .quicknav-track::-webkit-scrollbar {
-    display: none;
-  }
-
-  .quicknav-chip {
-    display: inline-block;
-    padding: 6px 12px;
-    border-radius: 999px;
-    font-size: 0.78rem;
-    font-weight: 500;
+  .sidebar-nav-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 10px;
+    border-radius: var(--radius-md);
     text-decoration: none;
-    white-space: nowrap;
     color: var(--color-text-secondary);
-    background: var(--color-bg-tertiary);
+    font-size: var(--text-sm);
+    font-weight: 500;
     border: 1px solid transparent;
-    transition: all var(--transition-fast);
+    transition: all var(--dur-short) var(--ease-out);
+    line-height: 1.4;
   }
 
-  .quicknav-chip:hover {
-    color: var(--color-text-primary);
-    background: var(--color-bg-card);
-    border-color: var(--color-border);
+  .sidebar-nav-bullet {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--color-border);
+    flex-shrink: 0;
+    transition: all var(--dur-short) var(--ease-out);
   }
 
-  .quicknav-chip.active {
-    background: var(--gradient-primary);
-    color: var(--color-btn-primary-text);
-    font-weight: 700;
+  .sidebar-nav-item:hover {
+    background: var(--color-bg-card-hover);
+    border-color: rgba(14, 165, 233, 0.2);
+    color: var(--color-accent-primary);
+    transform: translateX(3px);
   }
 
-  @media (max-width: 640px) {
-    .quicknav-track {
-      mask-image: linear-gradient(to right, transparent, #000 16px, #000 calc(100% - 24px), transparent);
-      -webkit-mask-image: linear-gradient(to right, transparent, #000 16px, #000 calc(100% - 24px), transparent);
-    }
+  .sidebar-nav-item:hover .sidebar-nav-bullet {
+    background: var(--color-accent-primary);
+    transform: scale(1.3);
+  }
+
+  .sidebar-nav-item.active {
+    background: rgba(14, 165, 233, 0.08);
+    border-color: rgba(14, 165, 233, 0.25);
+    color: var(--color-accent-primary);
+    font-weight: 600;
+  }
+
+  .sidebar-nav-item.active .sidebar-nav-bullet {
+    background: var(--color-accent-primary);
+    box-shadow: 0 0 0 2px rgba(14, 165, 233, 0.2);
+  }
+
+  .sidebar-nav-label {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .sidebar-nav-active-pill {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-accent-primary);
+    flex-shrink: 0;
   }
 </style>
-
-<script>
-  // Bring the current page's chip into view so the active state is never
-  // hidden past the scroll edge on narrow screens.
-  const track = document.querySelector('.quicknav-track');
-  const activeChip = track?.querySelector('.quicknav-chip.active');
-  if (track && activeChip) {
-    const trackRect = track.getBoundingClientRect();
-    const chipRect = activeChip.getBoundingClientRect();
-    const offset = chipRect.left - trackRect.left;
-    track.scrollTo({ left: Math.max(0, offset - 24), behavior: 'instant' });
-  }
-</script>

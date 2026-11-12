@@ -47,6 +47,12 @@ const homeFaqSchema = {
   <!-- Hero Section -->
   <section class="stitch-hero" id="find-location">
     <div class="container">
+      <!-- Pill Badge -->
+      <div class="hero-pill-badge">
+        <span class="pulse-dot-cyan"></span>
+        <span>Instant GPS & Location Telemetry</span>
+      </div>
+
       <!-- Main Headline -->
       <h1 class="hero-title-stitch">
         {content.heroTitle} <span class="hero-title-highlight">{content.heroTitleHighlight}</span>
@@ -1318,8 +1324,8 @@ const homeFaqSchema = {
       gap: var(--space-2);
     }
     .emergency-action-buttons .btn-whatsapp {
-      background: var(--color-accent);
-      color: var(--color-paper-3);
+      background: #25D366;
+      color: #ffffff;
       font-weight: 600;
     }
 
@@ -1404,10 +1410,11 @@ const homeFaqSchema = {
     /* Coordinate Formats Card */
     .coordinate-formats-card {
       margin-top: var(--space-6);
-      background: var(--color-bg-secondary);
+      background: var(--color-bg-card);
       border: 1px solid var(--color-border);
-      border-radius: var(--radius-xl);
+      border-radius: 18px;
       padding: var(--space-5);
+      box-shadow: 0 4px 12px -2px rgba(15, 23, 42, 0.04);
     }
     .formats-title-row {
       margin-bottom: var(--space-3);
@@ -1429,10 +1436,15 @@ const homeFaqSchema = {
       gap: 12px;
     }
     .format-cell {
-      background: var(--color-bg-card);
+      background: var(--color-bg-secondary);
       border: 1px solid var(--color-border);
-      border-radius: var(--radius-lg);
-      padding: var(--space-2) var(--space-3);
+      border-radius: 12px;
+      padding: 10px 14px;
+      transition: all var(--transition-fast);
+    }
+    .format-cell:hover {
+      border-color: rgba(14, 165, 233, 0.4);
+      background: var(--color-paper);
     }
     .format-cell-head {
       display: flex;
@@ -1448,19 +1460,19 @@ const homeFaqSchema = {
       letter-spacing: normal;
     }
     .format-copy-btn {
-      background: transparent;
+      background: var(--color-paper);
       border: 1px solid var(--color-border);
       color: var(--color-text-secondary);
       font-size: 11px;
-      padding: var(--space-1) var(--space-2);
-      border-radius: var(--radius-sm);
+      padding: 3px 8px;
+      border-radius: 6px;
       cursor: pointer;
-      transition: background-color var(--dur-micro) steps(1), color var(--dur-micro) steps(1), border-color var(--dur-micro) steps(1);
+      transition: all var(--transition-fast);
     }
     .format-copy-btn:hover {
-      background: var(--color-accent-primary);
-      color: var(--color-paper-3);
-      border-color: var(--color-accent-primary);
+      background: var(--gradient-primary);
+      color: #ffffff;
+      border-color: transparent;
     }
     .format-value {
       font-family: var(--font-mono);
@@ -1473,10 +1485,11 @@ const homeFaqSchema = {
     /* Nearby Services Quick Help */
     .nearby-services-card {
       margin-top: var(--space-5);
-      background: var(--color-bg-secondary);
+      background: var(--color-bg-card);
       border: 1px solid var(--color-border);
-      border-radius: var(--radius-xl);
+      border-radius: 18px;
       padding: var(--space-5);
+      box-shadow: 0 4px 12px -2px rgba(15, 23, 42, 0.04);
     }
     .nearby-header {
       margin-bottom: var(--space-3);
@@ -1501,20 +1514,22 @@ const homeFaqSchema = {
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      background: var(--color-bg-card);
+      background: var(--color-bg-secondary);
       border: 1px solid var(--color-border);
       border-radius: var(--radius-full);
-      padding: var(--space-2) var(--space-3);
+      padding: 8px 16px;
       font-size: var(--text-xs);
       font-weight: 600;
       color: var(--color-text-primary);
       text-decoration: none;
-      transition: border-color var(--dur-micro) steps(1), color var(--dur-micro) steps(1);
+      transition: all var(--transition-fast);
     }
     .nearby-chip:hover {
-      border-color: var(--color-accent-primary);
+      border-color: rgba(14, 165, 233, 0.5);
+      background: var(--color-paper);
       color: var(--color-accent-primary);
       transform: translateY(-1px);
+      box-shadow: 0 4px 10px rgba(14, 165, 233, 0.1);
     }
 
     /* Technical Details Accordion */
@@ -1597,7 +1612,7 @@ const homeFaqSchema = {
       padding: var(--space-1) var(--space-2);
       border-radius: var(--radius-full);
       cursor: pointer;
-      transition: background-color var(--dur-micro) steps(1), color var(--dur-micro) steps(1), border-color var(--dur-micro) steps(1);
+      transition: background-color var(--dur-short) var(--ease-out), color var(--dur-short) var(--ease-out), border-color var(--dur-short) var(--ease-out);
     }
     .feedback-pill-btn:hover {
       border-color: var(--color-accent-primary);

@@ -1,20 +1,59 @@
 :root {
   color-scheme: light;
   --space-3xs: 2px; --space-2xs: 4px; --space-xs: 8px; --space-sm: 12px; --space-md: 16px; --space-lg: 24px; --space-xl: 40px; --space-2xl: 64px; --space-3xl: 96px; --space-4xl: 144px;
-  --text-xs: 0.8125rem; --text-sm: 0.875rem; --text-md: 1rem; --text-lg: 1.25rem; --text-xl: 1.5625rem; --text-2xl: 1.953rem; --text-3xl: 2.441rem;
-  --text-display-s: clamp(1.75rem, 1.3rem + 1vw, 2.25rem); --text-display: clamp(2rem, 1.4rem + 1.25vw, 2.75rem);
-  --text-section: clamp(1.5rem, 1.2rem + 0.8vw, 2rem); --text-title: clamp(1.15rem, 1rem + 0.4vw, 1.375rem); --text-lead: clamp(1rem, 0.95rem + 0.25vw, 1.15rem);
+  --text-xs: 0.8125rem; --text-sm: 0.875rem; --text-md: 1rem; --text-lg: 1.125rem; --text-xl: 1.35rem; --text-2xl: 1.85rem; --text-3xl: 2.35rem; --text-4xl: clamp(1.85rem, 1.4rem + 1.2vw, 2.35rem); --text-5xl: clamp(2.2rem, 1.6rem + 1.8vw, 2.85rem);
+  --text-display-s: clamp(1.85rem, 1.4rem + 1.2vw, 2.35rem); --text-display: clamp(1.85rem, 1.4rem + 1.2vw, 2.35rem);
+  --text-section: clamp(1.6rem, 1.25rem + 1vw, 2.25rem); --text-title: clamp(1.15rem, 1rem + 0.4vw, 1.375rem); --text-lead: clamp(1.05rem, 0.95rem + 0.3vw, 1.25rem);
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1); --ease-in: cubic-bezier(0.7, 0, 0.84, 0); --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
-  --dur-micro: 120ms; --dur-short: 220ms; --dur-long: 420ms;
-  --color-error: oklch(52% 0.19 27); --color-success: oklch(50% 0.12 150);
-  --container: 1120px; --gutter: 24px; --gap-columns: 24px; --section-gap-s: 80px; --section-gap: 96px; --section-gap-l: 120px;
+  --dur-micro: 120ms; --dur-short: 200ms; --dur-long: 350ms;
+  --color-error: #ef4444; --color-success: #10b981;
+  --container: 1120px; --gutter: 24px; --gap-columns: 24px; --section-gap-s: 72px; --section-gap: 96px; --section-gap-l: 120px;
   --z-base: 1; --z-raised: 10; --z-dropdown: 100; --z-sticky: 200; --z-sticky-nav: 300; --z-modal: 400; --z-toast: 500; --z-tooltip: 600;
-  --color-paper: oklch(95.5% 0.006 250); --color-paper-2: oklch(91% 0.009 250); --color-paper-3: oklch(99.5% 0.005 250);
-  --color-ink: oklch(16% 0.014 262); --color-ink-2: oklch(29% 0.014 262); --color-muted: oklch(47% 0.016 260);
-  --color-rule: oklch(80% 0.011 250); --color-ink-rule: oklch(34% 0.014 262);
-  --color-accent: oklch(51% 0.22 264); --color-accent-2: oklch(81% 0.16 82); --color-accent-ink: oklch(99.5% 0.003 250); --color-focus: oklch(51% 0.22 264);
-  --font-display: "Chivo Mono", ui-monospace, monospace; --font-body: var(--font-display); --font-outlier: var(--font-body);
-  --radius-card: 0; --radius-pill: 999px; --rule-hair: 1px; --rule-bar: 2px;
-  --shadow-card: 0 24px 40px -24px oklch(8% 0.01 260 / 0.6);
-  --tracking-display: -0.03em; --display-weight: 800;
+
+  /* Bazzly-inspired modern SaaS palette */
+  --color-paper: #ffffff;
+  --color-paper-2: #f8fafc;
+  --color-paper-3: #ffffff;
+  --color-ink: #0f172a;
+  --color-ink-2: #334155;
+  --color-muted: #64748b;
+  --color-rule: #e2e8f0;
+  --color-ink-rule: #cbd5e1;
+
+  /* Bazzly signature gradient accents: Sky to Indigo */
+  --color-accent: #0ea5e9;
+  --color-accent-indigo: #6366f1;
+  --color-accent-2: #f97316;
+  --color-accent-ink: #ffffff;
+  --color-focus: #0ea5e9;
+
+  /* Typography: Geist & Geist Mono */
+  --font-display: "Geist", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+  --font-sans: "Geist", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+  --font-body: "Geist", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+  --font-mono: "Geist Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  --font-outlier: var(--font-body);
+
+  /* Modern rounded radii */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 20px;
+  --radius-2xl: 24px;
+  --radius-card: 20px;
+  --radius-pill: 9999px;
+  --radius-full: 9999px;
+  --rule-hair: 1px;
+  --rule-bar: 2px;
+
+  /* Soft diffused modern shadows */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.03);
+  --shadow-lg: 0 10px 15px -3px rgba(15, 23, 42, 0.08), 0 4px 6px -4px rgba(15, 23, 42, 0.04);
+  --shadow-xl: 0 20px 25px -5px rgba(15, 23, 42, 0.08), 0 8px 10px -6px rgba(15, 23, 42, 0.03);
+  --shadow-card: 0 10px 25px -5px rgba(15, 23, 42, 0.05), 0 8px 10px -6px rgba(15, 23, 42, 0.02);
+  --shadow-button: 0 4px 14px 0 rgba(14, 165, 233, 0.35);
+
+  --tracking-display: -0.03em;
+  --display-weight: 700;
 }

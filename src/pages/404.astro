@@ -28,7 +28,7 @@ const quickLinks = [
 
       <div style="display: grid; gap: var(--space-3); text-align: left; margin-bottom: var(--space-8);">
         {quickLinks.map((link) => (
-          <a href={link.href} class="card card-flat" style="display: flex; align-items: center; justify-content: space-between; gap: var(--space-4); padding: var(--space-4) var(--space-5); text-decoration: none; transition: border-color var(--dur-micro) steps(1);">
+          <a href={link.href} class="card card-flat" style="display: flex; align-items: center; justify-content: space-between; gap: var(--space-4); padding: var(--space-4) var(--space-5); text-decoration: none; transition: all var(--dur-short) var(--ease-out); border-radius: var(--radius-xl);">
             <span>
               <span style="display: block; font-weight: 700; color: var(--color-text-primary);">{link.label}</span>
               <span style="display: block; font-size: var(--text-sm); color: var(--color-text-tertiary);">{link.desc}</span>

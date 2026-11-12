@@ -6,7 +6,6 @@
  */
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Breadcrumbs from './Breadcrumbs.astro';
-import SiloNav from './SiloNav.astro';
 import FAQAccordion from './FAQAccordion.astro';
 import AuthorEAT from './AuthorEAT.astro';
 import { myLocationTranslations } from '../i18n/myLocation';
@@ -343,7 +342,6 @@ const connectedToolsHeading: Record<SupportedLang, { title: string; accent: stri
 >
   <div class="container">
     <Breadcrumbs items={breadcrumbs} lang={lang} />
-    <SiloNav silo="my-location" lang={lang} />
 
     <section class="page-header" style="margin-bottom: var(--space-4);">
       <h1>{content.pageTitle} <span class="text-gradient">{content.pageTitleAccent}</span></h1>
