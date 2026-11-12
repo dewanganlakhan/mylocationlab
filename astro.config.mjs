@@ -45,10 +45,10 @@ export default defineConfig({
         },
       },
       serialize(item) {
-        // Return clean item without identical default changefreq/priority
+        // Return clean item with dynamic build-time lastmod
         return {
           url: item.url,
-          lastmod: item.lastmod || new Date('2026-10-29T00:00:00Z'),
+          lastmod: item.lastmod || new Date(),
           links: item.links,
         };
       },
