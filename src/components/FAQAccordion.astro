@@ -2,6 +2,8 @@
 /**
  * FAQAccordion — Expandable FAQ items with FAQPage JSON-LD schema
  */
+import { localizeHtml, defaultLang, type SupportedLang } from '../i18n/config';
+
 interface FAQItem {
   question: string;
   answer: string;
@@ -10,9 +12,11 @@ interface FAQItem {
 interface Props {
   items: FAQItem[];
   includeSchema?: boolean;
+  lang?: SupportedLang | string;
 }
 
-const { items, includeSchema = true } = Astro.props;
+const { items, includeSchema = true, lang = defaultLang } = Astro.props;
+const currentLang = (lang || defaultLang) as SupportedLang;
 
 const jsonLd = includeSchema ? {
   '@context': 'https://schema.org',
@@ -22,7 +26,7 @@ const jsonLd = includeSchema ? {
     name: item.question,
     acceptedAnswer: {
       '@type': 'Answer',
-      text: item.answer,
+      text: localizeHtml(item.answer, currentLang),
     },
   })),
 } : null;
@@ -48,7 +52,7 @@ const jsonLd = includeSchema ? {
         role="region"
         aria-labelledby={`faq-question-${index}`}
       >
-        <div class="faq-answer-inner" set:html={item.answer} />
+        <div class="faq-answer-inner" set:html={localizeHtml(item.answer, currentLang)} />
       </div>
     </div>
   ))}

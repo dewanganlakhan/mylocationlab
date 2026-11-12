@@ -826,7 +826,7 @@ const c = translations[lang] || translations.en;
   {c.faqs && c.faqs.length > 0 && (
     <div style="margin-top: var(--space-10);">
       <h2>❓ FAQ: Wrong Location Fixes</h2>
-      <FAQAccordion items={c.faqs} includeSchema={true} />
+      <FAQAccordion items={c.faqs} includeSchema={true} lang={lang} />
     </div>
   )}
 

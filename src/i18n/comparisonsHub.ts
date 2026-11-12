@@ -241,5 +241,101 @@ export const comparisonsHubTranslations: Record<string, ComparisonsHubContent> =
         tags: ["Koordinat", "GIS", "Datum"]
       }
     ]
+  },
+  ja: {
+    metaTitle: "GPS＆位置情報技術の比較・ベンチマーク | MyLocationLab",
+    metaDescription: "GPSとIP位置情報の精度差、正ジオコーディングと逆ジオコーディングの違い、十進角（DD）と度分秒（DMS）のフォーマット比較を徹底解説。",
+    breadcrumb: "技術比較",
+    titlePrefix: "地理空間技術の",
+    titleHighlight: "徹底比較とベンチマーク",
+    subtitle: "測位技術、座標エンコーディング、空間インデックスアルゴリズムをエンジニアリング視点で詳細に比較。",
+    viewComparison: "比較記事を読む →",
+    items: [
+      {
+        title: "GPS位置情報 vs. IP位置情報：精度・プライバシー・仕組みの違い",
+        description: "衛星測位とインターネットのルーティングテーブル検索を徹底比較。精度（3メートル vs 50キロメートル）、レイテンシ、プライバシーの違いを解明。",
+        url: "/comparisons/gps-vs-ip-location/",
+        icon: "⚖️",
+        tags: ["測位精度", "ネットワーク", "GNSS"]
+      },
+      {
+        title: "正ジオコーディング vs. 逆ジオコーディング：どちらを使うべきか？",
+        description: "住所から座標を求めるフォワードジオコーディングと、座標ペアから住所を特定するリバースジオコーディングのアルゴリズムとデータベースの差異。",
+        url: "/comparisons/geocoding-vs-reverse-geocoding/",
+        icon: "🔄",
+        tags: ["API", "ジオコーディング", "住所"]
+      },
+      {
+        title: "十進角 (DD) vs. 度分秒 (DMS)：座標フォーマット比較",
+        description: "座標表記システムの技術的比較。変換計算式、GISデータベースでの格納効率、人間にとっての可読性のトレードオフを解説。",
+        url: "/comparisons/decimal-degrees-vs-dms/",
+        icon: "📐",
+        tags: ["座標フォーマット", "GIS", "測地基準系"]
+      }
+    ]
+  },
+  it: {
+    metaTitle: "Confronti GPS & Geolocalizzazione | MyLocationLab",
+    metaDescription: "Confronta l'accuratezza di GPS vs localizzazione IP, Geocodifica Diretta vs Inversa, e Gradi Decimali vs DMS con analisi tecniche dettagliate.",
+    breadcrumb: "Confronti Tecnici",
+    titlePrefix: "Confronti & Benchmark",
+    titleHighlight: "Geospaziali",
+    subtitle: "Analisi tecniche approfondite su tecnologie di posizionamento, codifica delle coordinate e algoritmi di indicizzazione geospaziale.",
+    viewComparison: "Visualizza Confronto →",
+    items: [
+      {
+        title: "Posizione GPS vs. Geolocalizzazione IP: Accuratezza, Privacy e Meccanismi",
+        description: "Confronto tra posizionamento satellitare nello spazio e tabelle di routing internet. Differenze di precisione (3 metri vs 50 chilometri), latenza e privacy.",
+        url: "/comparisons/gps-vs-ip-location/",
+        icon: "⚖️",
+        tags: ["Accuratezza", "Rete", "GNSS"]
+      },
+      {
+        title: "Geocodifica Diretta vs. Inversa: Quale Ti Occorre?",
+        description: "Differenze matematiche e di database tra la conversione di indirizzi in coordinate e la risoluzione di coordinate in indirizzi stradali.",
+        url: "/comparisons/geocoding-vs-reverse-geocoding/",
+        icon: "🔄",
+        tags: ["API", "Geocodifica", "Indirizzi"]
+      },
+      {
+        title: "Gradi Decimali (DD) vs. Gradi Minuti Secondi (DMS)",
+        description: "Confronto tecnico tra i sistemi di notazione delle coordinate, formule di conversione, efficienza nei database GIS e leggibilità.",
+        url: "/comparisons/decimal-degrees-vs-dms/",
+        icon: "📐",
+        tags: ["Coordinate", "GIS", "Datum"]
+      }
+    ]
+  },
+  ru: {
+    metaTitle: "Сравнение Технологий GPS и Геолокации | MyLocationLab",
+    metaDescription: "Сравнение точности GPS и IP-геолокации, прямого и обратного геокодирования, а также форматов десятичных градусов (DD) и DMS.",
+    breadcrumb: "Технические Сравнения",
+    titlePrefix: "Геопространственные",
+    titleHighlight: "Сравнения и Бенчмарки",
+    subtitle: "Технический анализ технологий позиционирования, кодирования координат и геопространственных алгоритмов.",
+    viewComparison: "Открыть Сравнение →",
+    items: [
+      {
+        title: "GPS-Локация vs. IP-Геолокация: Точность, Приватность и Механизмы",
+        description: "Сравнение спутникового позиционирования и таблиц маршрутизации провайдеров. Разница в точности (3 метра против 50 км), задержке и приватности.",
+        url: "/comparisons/gps-vs-ip-location/",
+        icon: "⚖️",
+        tags: ["Точность", "Сеть", "GNSS"]
+      },
+      {
+        title: "Прямое Геокодирование vs. Обратное: Что Выбрать?",
+        description: "Математические и архитектурные различия между конвертацией текстового адреса в координаты и получением улицы по координатам.",
+        url: "/comparisons/geocoding-vs-reverse-geocoding/",
+        icon: "🔄",
+        tags: ["API", "Геокодирование", "Адреса"]
+      },
+      {
+        title: "Десятичные Градусы (DD) vs. Градусы Минуты Секунды (DMS)",
+        description: "Техническое сравнение систем записи координат, формулы перевода, эффективность хранения в базах данных ГИС и читаемость.",
+        url: "/comparisons/decimal-degrees-vs-dms/",
+        icon: "📐",
+        tags: ["Координаты", "ГИС", "Датумы"]
+      }
+    ]
   }
 };

@@ -18,11 +18,7 @@ interface Props {
 }
 
 const { lang: customLang = defaultLang } = Astro.props;
-const lang = (
-  customLang in { en: 1, es: 1, fr: 1, de: 1, pt: 1, hi: 1, id: 1 }
-    ? customLang
-    : defaultLang
-) as SupportedLang;
+const lang = (customLang || defaultLang) as SupportedLang;
 const t = useTranslations(lang);
 
 interface PolicyData {
@@ -445,6 +441,186 @@ const policyContent: Record<SupportedLang, PolicyData> = {
       "Kirimkan laporan ke editorial@mylocationlab.com dengan menyertakan URL halaman terkait.",
       "Sertakan rincian kekeliruan dan sumber rujukan resmi (W3C, EPSG, atau institusi pemetaan).",
       "Dewan teknis kami meninjau laporan dalam waktu maksimal 48 jam kerja.",
+    ],
+  },
+  ja: {
+    metaTitle: "編集方針および品質基準 | MyLocationLab",
+    metaDesc:
+      "MyLocationLabの専門家監修体制、GIS測地計算の検証基準、独立性、および誤り訂正プロトコルについて。",
+    breadcrumb: "編集方針",
+    badge: "E-E-A-T 検証基準",
+    h1: "編集方針および品質検証基準",
+    subtitle:
+      "厳格な測地精度、クライアント側プライバシーの保証、専門家による監修プロセスを公開しています。",
+    h2Board: "1. 編集レビュー委員会および専門家による監修",
+    pBoard:
+      "MyLocationLabで公開されるすべての技術ガイド、座標計算式、測地変換ツールは、地理情報システム（GIS）およびウェブ工学の専門家によって作成または検証されています。未検証の自動生成テキストは採用していません。",
+    boardPoints: [
+      {
+        title: "測地学的検証:",
+        desc: "Haversine、Vincenty等の数学的計算式は、測地基準点ベンチマークと照合して検証されています。",
+      },
+      {
+        title: "W3C API標準準拠:",
+        desc: "ブラウザの位置情報取得手順は、W3C Geolocation API勧告に厳格に準拠しています。",
+      },
+      {
+        title: "実機テスト:",
+        desc: "iOS Safari、Android Chrome、macOS、Windowsの主要環境で測位動作と権限フローをテストしています。",
+      },
+    ],
+    h2Standards: "2. 技術仕様・情報源の透明性",
+    pStandards:
+      "すべてのツールおよび解説記事は、検証可能な国際標準およびオープン規格に依拠しています:",
+    standards: [
+      {
+        title: "測地系基準:",
+        desc: "GPS基準のWGS 84（EPSG:4326）およびWebメルカトル（EPSG:3857）の仕様を明示。",
+      },
+      {
+        title: "地図データ帰属:",
+        desc: "OpenStreetMap財団のオープンデータベースライセンス（ODbL）に準拠。",
+      },
+      {
+        title: "ブラウザ互換性:",
+        desc: "MDN Web DocsおよびW3C勧告に基づく正確なブラウザサポート情報を提供。",
+      },
+    ],
+    h2Independence: "3. 商業的独立性および客観性",
+    pIndependence:
+      "MyLocationLabの技術評価、精度評価、ハードウェア解説は、特定のVPN、GPS機器メーカー、位置情報ブローカーから商業的影響を受けません。客観的な事実に基づき執筆されています。",
+    h2Privacy: "4. クライアント側プライバシー最優先原則",
+    pPrivacy:
+      "お客様の位置情報座標はブラウザのローカルメモリ上でのみ処理され、当社のサーバーに送信・保存されることは一切ありません。",
+    h2Corrections: "5. 修正プロトコルおよび誤り訂正",
+    pCorrections:
+      "計算式の不一致や情報の誤りを発見された場合は、以下の手順でご連絡ください:",
+    correctionSteps: [
+      {
+        "0": "URLを記載の上、editorial@mylocationlab.com までメールをお送りください。",
+      }[0],
+      {
+        "0": "誤りの詳細と公式参照資料（W3C、EPSG仕様書等）を添えてください。",
+      }[0],
+      {
+        "0": "編集技術チームが48営業時間以内に検証し、速やかに修正を公開します。",
+      }[0],
+    ],
+  },
+  it: {
+    metaTitle: "Politica Editoriale e Standard di Accuratezza | MyLocationLab",
+    metaDesc:
+      "Scopri il comitato editoriale di MyLocationLab, gli standard matematici GIS, l'indipendenza editoriale e i protocolli di correzione degli errori.",
+    breadcrumb: "Politica Editoriale",
+    badge: "Standard di Verifica E-E-A-T",
+    h1: "Politica Editoriale e Standard di Accuratezza",
+    subtitle:
+      "Come MyLocationLab garantisce rigore geodetico, privacy lato client e autorevolezza tecnica in ogni strumento e articolo.",
+    h2Board: "1. Comitato Editoriale e Autorialità Esperti",
+    pBoard:
+      "Ogni guida tecnica, formula di coordinate e convertitore geospaziale pubblicato su MyLocationLab è redatto o revisionato da professionisti con comprovata esperienza in Sistemi Informativi Geografici (GIS), geodesia e ingegneria web. I nostri contenuti non si basano su generazione automatica non verificata.",
+    boardPoints: [
+      {
+        title: "Verifica Geodetica:",
+        desc: "Le formule matematiche (Haversine, Vincenty, conversioni DMS) sono verificate rispetto ai benchmark geodetici internazionali.",
+      },
+      {
+        title: "Conformità W3C:",
+        desc: "Tutte le procedure di geolocalizzazione nel browser rispettano rigorosamente le specifiche W3C Geolocation API.",
+      },
+      {
+        title: "Test su Dispositivi Reali:",
+        desc: "I percorsi di autorizzazione sono regolarmente testati su iOS Safari, Android Chrome e browser desktop.",
+      },
+    ],
+    h2Standards: "2. Standard Tecnici e Fonti Verificabili",
+    pStandards:
+      "Tutti gli strumenti e gli articoli fanno riferimento a standard internazionali e documentazione ufficiale:",
+    standards: [
+      {
+        title: "Sistemi Geodetici:",
+        desc: "Specifiche WGS 84 (EPSG:4326) e Web Mercator (EPSG:3857) chiaramente definite.",
+      },
+      {
+        title: "Dati Cartografici:",
+        desc: "Attribuzione trasparente OpenStreetMap e licenza Open Database License (ODbL).",
+      },
+      {
+        title: "Compatibilità Browser:",
+        desc: "Metriche di supporto documentate tramite MDN Web Docs e standard W3C.",
+      },
+    ],
+    h2Independence: "3. Indipendenza Editoriale e Assenza di Conflitti",
+    pIndependence:
+      "Le recensioni tecniche e le analisi di precisione di MyLocationLab sono totalmente indipendenti da fornitori di VPN, produttori di hardware GPS o broker di dati di localizzazione.",
+    h2Privacy: "4. Garanzia di Privacy Lato Client",
+    pPrivacy:
+      "Le coordinate della tua posizione vengono elaborate esclusivamente nella memoria temporanea del tuo browser e non vengono mai salvate né trasmesse ai nostri server.",
+    h2Corrections: "5. Protocollo di Correzione Errori",
+    pCorrections:
+      "Se riscontri un'inesattezza tecnica, una discrepanza di calcolo o un errore nei contenuti:",
+    correctionSteps: [
+      "Invia una segnalazione a editorial@mylocationlab.com indicando l'URL della pagina interessata.",
+      "Includi i dettagli tecnici dell'inesattezza e le fonti autorevoli di riferimento (W3C, EPSG o istituti cartografici).",
+      "Il nostro comitato tecnico esamina ogni segnalazione entro 48 ore lavorative.",
+    ],
+  },
+  ru: {
+    metaTitle: "Редакционная политика и стандарты точности | MyLocationLab",
+    metaDesc:
+      "Узнайте о редакционном совете MyLocationLab, математических стандартах ГИС, политике независимости и регламенте исправления ошибок.",
+    breadcrumb: "Редакционная политика",
+    badge: "Стандарты верификации E-E-A-T",
+    h1: "Редакционная политика и стандарты точности",
+    subtitle:
+      "Как MyLocationLab обеспечивает геодезическую точность, конфиденциальность на стороне клиента и экспертную достоверность материалов.",
+    h2Board: "1. Экспертный редакционный совет",
+    pBoard:
+      "Каждое техническое руководство, формула координат и конвертер на MyLocationLab разрабатываются или рецензируются специалистами в области геоинформационных систем (ГИС), геодезии и веб-инженерии. Мы не публикуем непроверенные автоматически сгенерированные тексты.",
+    boardPoints: [
+      {
+        title: "Геодезическая верификация:",
+        desc: "Математические формулы (гаверсинусы, формула Винсенти, конвертация DMS) сверяются с государственными геодезическими эталонами.",
+      },
+      {
+        title: "Соответствие стандартам W3C:",
+        desc: "Все процедуры определения координат строго следуют спецификации W3C Geolocation API.",
+      },
+      {
+        title: "Тестирование на реальных устройствах:",
+        desc: "Запросы разрешений проверяются на iOS Safari, Android Chrome и настольных браузерах.",
+      },
+    ],
+    h2Standards: "2. Технические стандарты и источники",
+    pStandards:
+      "Все инструменты и статьи опираются на проверяемые международные стандарты:",
+    standards: [
+      {
+        title: "Геодезические параметры:",
+        desc: "Четкое соблюдение спецификаций WGS 84 (EPSG:4326) и Web Mercator (EPSG:3857).",
+      },
+      {
+        title: "Картографические данные:",
+        desc: "Соблюдение лицензии Open Database License (ODbL) проекта OpenStreetMap.",
+      },
+      {
+        title: "Совместимость браузеров:",
+        desc: "Проверенные данные о поддержке браузеров на основе MDN Web Docs и рекомендаций W3C.",
+      },
+    ],
+    h2Independence: "3. Редакционная независимость",
+    pIndependence:
+      "Технические оценки точности и аналитические материалы MyLocationLab свободны от коммерческого влияния поставщиков VPN, производителей GPS-чипов или брокеров геолокационных данных.",
+    h2Privacy: "4. Конфиденциальность на стороне клиента",
+    pPrivacy:
+      "Координаты вашего местоположения обрабатываются исключительно в оперативной памяти вашего браузера и никогда не сохраняются и не передаются на наши серверы.",
+    h2Corrections: "5. Регламент исправления ошибок",
+    pCorrections:
+      "Если вы обнаружили техническую неточность или ошибку в расчетах:",
+    correctionSteps: [
+      "Отправьте сообщение на editorial@mylocationlab.com с указанием URL соответствующей страницы.",
+      "Приложите описание ошибки и ссылку на авторитетный первоисточник (стандарты W3C, спецификации EPSG).",
+      "Редакционный совет рассматривает все обращения в течение 48 рабочих часов.",
     ],
   },
 };

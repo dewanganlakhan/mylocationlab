@@ -52,7 +52,7 @@ let lowContextualLinkPages = [];
 // Determine locale of a route
 function getLocale(r) {
   const m = r.match(/^\/([a-z]{2})\//);
-  if (m && ["es", "fr", "de", "pt", "hi", "id"].includes(m[1])) return m[1];
+  if (m && ["es", "fr", "de", "pt", "hi", "id", "ja", "it", "ru"].includes(m[1])) return m[1];
   return "en";
 }
 

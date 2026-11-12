@@ -10,7 +10,7 @@ export async function onRequest(context) {
   // 301 Permanent Redirects: Simplified Location Silo URLs (/my-location/* -> /*)
   const pathname = url.pathname;
   if (pathname.includes('/my-location')) {
-    const match = pathname.match(/^(\/(?:es|fr|de|pt|hi|id)\/)?my-location(?:\/(.*))?$/);
+    const match = pathname.match(/^(\/(?:es|fr|de|pt|hi|id|ja|it|ru)\/)?my-location(?:\/(.*))?$/);
     if (match) {
       const localePrefix = match[1] || '/';
       const subpath = match[2];

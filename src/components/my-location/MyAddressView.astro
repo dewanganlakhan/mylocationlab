@@ -2323,7 +2323,7 @@ const siloData = siloLinkLabels[lang] || siloLinkLabels.en;
           {
             c.useCases.map((u) => (
               <li>
-                <strong>{u.title}:</strong> <span set:html={u.desc} />
+                <strong>{u.title}:</strong> <span set:html={localizeHtml(u.desc, lang)} />
               </li>
             ))
           }
@@ -2337,7 +2337,7 @@ const siloData = siloLinkLabels[lang] || siloLinkLabels.en;
               <li>
                 <>
                   <strong>{t.split(":")[0]}:</strong>
-                  <span set:html={t.substring(t.indexOf(":") + 1)} />
+                  <span set:html={localizeHtml(t.substring(t.indexOf(":") + 1), lang)} />
                 </>
               </li>
             ))
@@ -2378,7 +2378,7 @@ const siloData = siloLinkLabels[lang] || siloLinkLabels.en;
 
         <div style="margin-top: var(--space-10);">
           <h2>{c.h2Faq}</h2>
-          <FAQAccordion items={c.faqs} includeSchema={true} />
+          <FAQAccordion items={c.faqs} includeSchema={true} lang={lang} />
         </div>
 
         <div class="contextual-next-box" style="margin-top: var(--space-12);">

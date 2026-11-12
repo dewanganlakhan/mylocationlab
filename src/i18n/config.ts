@@ -74,6 +74,33 @@ export const languages = {
     hreflang: 'id',
     dir: 'ltr',
   },
+  ja: {
+    code: 'ja',
+    name: 'Japanese',
+    nativeName: '日本語',
+    flag: '🇯🇵',
+    locale: 'ja_JP',
+    hreflang: 'ja',
+    dir: 'ltr',
+  },
+  it: {
+    code: 'it',
+    name: 'Italian',
+    nativeName: 'Italiano',
+    flag: '🇮🇹',
+    locale: 'it_IT',
+    hreflang: 'it',
+    dir: 'ltr',
+  },
+  ru: {
+    code: 'ru',
+    name: 'Russian',
+    nativeName: 'Русский',
+    flag: '🇷🇺',
+    locale: 'ru_RU',
+    hreflang: 'ru',
+    dir: 'ltr',
+  },
 } as const;
 
 export type SupportedLang = keyof typeof languages;
@@ -179,7 +206,7 @@ export function localizeHtml(html: string, targetLang: SupportedLang | string): 
   const lang = isSupportedLang(targetLang) ? targetLang : defaultLang;
   if (lang === defaultLang) return html;
   return html.replace(/href=(["'])(\/[^"']*)\1/g, (match, quote, p) => {
-    if (/^\/(es|fr|de|pt|hi|id)(\/|$)/.test(p)) {
+    if (/^\/(es|fr|de|pt|hi|id|ja|it|ru)(\/|$)/.test(p)) {
       return `href=${quote}${p}${quote}`;
     }
     return `href=${quote}/${lang}${p}${quote}`;

@@ -81,6 +81,9 @@ export const localizedNavLabels = {
     pt: 'Localização Atual',
     hi: 'वर्तमान स्थान',
     id: 'Lokasi Saat Ini',
+    ja: "現在地",
+    it: "Posizione Attuale",
+    ru: "Текущее Местоположение",
   },
   '/gps/': {
     en: 'My GPS Coordinates',
@@ -90,6 +93,9 @@ export const localizedNavLabels = {
     pt: 'Minhas Coordenadas GPS',
     hi: 'मेरे GPS निर्देशांक',
     id: 'Koordinat GPS Saya',
+    ja: "GPS座標",
+    it: "Coordinate GPS",
+    ru: "Мои GPS Координаты",
   },
   '/coordinates/': {
     en: 'My Coordinates',
@@ -99,6 +105,9 @@ export const localizedNavLabels = {
     pt: 'Minhas Coordenadas',
     hi: 'मेरे निर्देशांक',
     id: 'Koordinat Saya',
+    ja: "座標形式",
+    it: "Le Mie Coordinate",
+    ru: "Мои Координаты",
   },
   '/latitude-longitude/': {
     en: 'My Latitude & Longitude',
@@ -108,6 +117,9 @@ export const localizedNavLabels = {
     pt: 'Minha Latitude e Longitude',
     hi: 'मेरा अक्षांश-देशांतर',
     id: 'Lintang & Bujur Saya',
+    ja: "緯度・経度",
+    it: "Latitudine e Longitudine",
+    ru: "Широта и Долгота",
   },
   '/address/': {
     en: 'My Current Address',
@@ -117,6 +129,9 @@ export const localizedNavLabels = {
     pt: 'Meu Endereço Atual',
     hi: 'मेरा वर्तमान पता',
     id: 'Alamat Saya Saat Ini',
+    ja: "現在の住所",
+    it: "Indirizzo Attuale",
+    ru: "Мой Адрес",
   },
   '/city/': {
     en: 'My City',
@@ -126,6 +141,9 @@ export const localizedNavLabels = {
     pt: 'Minha Cidade',
     hi: 'मेरा शहर',
     id: 'Kota Saya',
+    ja: "市区町村",
+    it: "La Mia Città",
+    ru: "Мой Город",
   },
   '/state/': {
     en: 'My State',
@@ -135,6 +153,9 @@ export const localizedNavLabels = {
     pt: 'Meu Estado',
     hi: 'मेरा राज्य',
     id: 'Provinsi Saya',
+    ja: "都道府県・地域",
+    it: "Provincia / Regione",
+    ru: "Мой Регион",
   },
   '/country/': {
     en: 'My Country',
@@ -144,6 +165,9 @@ export const localizedNavLabels = {
     pt: 'Meu País',
     hi: 'मेरा देश',
     id: 'Negara Saya',
+    ja: "国・国コード",
+    it: "Il Mio Paese",
+    ru: "Моя Страна",
   },
   '/ip/': {
     en: 'My IP Location',
@@ -153,6 +177,9 @@ export const localizedNavLabels = {
     pt: 'Minha Localização por IP',
     hi: 'मेरी IP लोकेशन',
     id: 'Lokasi IP Saya',
+    ja: "IPロケーション",
+    it: "Posizione IP",
+    ru: "IP Местоположение",
   },
 
   // — toolsNav —
@@ -164,6 +191,9 @@ export const localizedNavLabels = {
     pt: 'Localizador de Coordenadas GPS',
     hi: 'GPS निर्देशांक फाइंडर',
     id: 'Pelacak Koordinat GPS',
+    ja: "GPS座標検索",
+    it: "Trova Coordinate GPS",
+    ru: "Поиск GPS Координат",
   },
   '/tools/latitude-longitude/': {
     en: 'Latitude Longitude Finder',
@@ -173,6 +203,9 @@ export const localizedNavLabels = {
     pt: 'Localizador de Latitude e Longitude',
     hi: 'अक्षांश-देशांतर फाइंडर',
     id: 'Pelacak Lintang Bujur',
+    ja: "緯度経度マップ",
+    it: "Mappa Latitudine Longitudine",
+    ru: "Карта Широты и Долготы",
   },
   '/tools/address-finder/': {
     en: 'Address Finder',
@@ -182,6 +215,9 @@ export const localizedNavLabels = {
     pt: 'Localizador de Endereço',
     hi: 'पता खोजें',
     id: 'Pencari Alamat',
+    ja: "住所検索ツール",
+    it: "Trova Indirizzo",
+    ru: "Поиск Адреса",
   },
   '/tools/reverse-geocoding/': {
     en: 'Reverse Geocoder',
@@ -191,6 +227,9 @@ export const localizedNavLabels = {
     pt: 'Geocodificador Reverso',
     hi: 'रिवर्स जियोकोडर',
     id: 'Reverse Geocoder',
+    ja: "逆ジオコーディング",
+    it: "Geocodifica Inversa",
+    ru: "Обратное Геокодирование",
   },
   '/tools/geocoding/': {
     en: 'Geocoder',
@@ -200,6 +239,9 @@ export const localizedNavLabels = {
     pt: 'Geocodificador Direto',
     hi: 'जियोकोडर',
     id: 'Geocoder',
+    ja: "ジオコーダー",
+    it: "Geocodifica Diretta",
+    ru: "Прямое Геокодирование",
   },
   '/tools/distance-calculator/': {
     en: 'Distance Calculator',
@@ -209,6 +251,9 @@ export const localizedNavLabels = {
     pt: 'Calculadora de Distância',
     hi: 'दूरी कैलकुलेटर',
     id: 'Kalkulator Jarak',
+    ja: "距離計算ツール",
+    it: "Calcolatore di Distanza",
+    ru: "Калькулятор Расстояния",
   },
   '/tools/coordinate-converter/': {
     en: 'Coordinate Converter',
@@ -218,6 +263,9 @@ export const localizedNavLabels = {
     pt: 'Conversor de Coordenadas',
     hi: 'निर्देशांक कनवर्टर',
     id: 'Konverter Koordinat',
+    ja: "座標変換ツール",
+    it: "Convertitore di Coordinate",
+    ru: "Конвертер Координат",
   },
   '/tools/elevation-finder/': {
     en: 'Elevation Finder',
@@ -227,6 +275,9 @@ export const localizedNavLabels = {
     pt: 'Localizador de Altitude',
     hi: 'ऊंचाई फाइंडर',
     id: 'Pencari Elevasi',
+    ja: "標高・高度検索",
+    it: "Rilevatore di Altitudine",
+    ru: "Определение Высоты",
   },
   '/tools/gps-accuracy/': {
     en: 'GPS Accuracy Checker',
@@ -236,6 +287,9 @@ export const localizedNavLabels = {
     pt: 'Precisão do GPS',
     hi: 'GPS सटीकता चेकर',
     id: 'Pemeriksa Akurasi GPS',
+    ja: "GPS精度チェッカー",
+    it: "Verifica Precisione GPS",
+    ru: "Проверка Точности GPS",
   },
   '/tools/location-qr-code/': {
     en: 'Location QR Code',
@@ -245,6 +299,9 @@ export const localizedNavLabels = {
     pt: 'QR Code de Localização',
     hi: 'लोकेशन QR कोड',
     id: 'Kode QR Lokasi',
+    ja: "位置情報QRコード",
+    it: "Codice QR Posizione",
+    ru: "QR-код Местоположения",
   },
 
   // — guidesNav —
@@ -256,6 +313,9 @@ export const localizedNavLabels = {
     pt: 'Como Funciona o GPS',
     hi: 'GPS कैसे काम करता है',
     id: 'Cara Kerja GPS',
+    ja: "GPSの仕組み",
+    it: "Come Funziona il GPS",
+    ru: "Как Работает GPS",
   },
   '/guides/improve-gps-accuracy/': {
     en: 'Improve GPS Accuracy',
@@ -265,6 +325,9 @@ export const localizedNavLabels = {
     pt: 'Melhorar a Precisão do GPS',
     hi: 'GPS सटीकता सुधारें',
     id: 'Tingkatkan Akurasi GPS',
+    ja: "GPS精度の向上",
+    it: "Migliorare Precisione GPS",
+    ru: "Улучшить Точность GPS",
   },
   '/guides/wrong-location/': {
     en: 'Fix Wrong Location',
@@ -274,6 +337,9 @@ export const localizedNavLabels = {
     pt: 'Corrigir Localização Errada',
     hi: 'गलत लोकेशन ठीक करें',
     id: 'Perbaiki Lokasi Salah',
+    ja: "位置情報のズレ修正",
+    it: "Correggere Posizione Errata",
+    ru: "Исправить Неверную Геолокацию",
   },
   '/guides/latitude-and-longitude-explained/': {
     en: 'Lat & Long Explained',
@@ -283,6 +349,9 @@ export const localizedNavLabels = {
     pt: 'Latitude e Longitude Explicadas',
     hi: 'अक्षांश-देशांतर व्याख्या',
     id: 'Penjelasan Lintang Bujur',
+    ja: "緯度と経度の解説",
+    it: "Latitudine e Longitudine Spiegate",
+    ru: "Широта и Долгота: Объяснение",
   },
   '/guides/how-to-share-location/': {
     en: 'Share Location Safely',
@@ -292,6 +361,9 @@ export const localizedNavLabels = {
     pt: 'Compartilhar Localização com Segurança',
     hi: 'लोकेशन सुरक्षित साझा करें',
     id: 'Bagikan Lokasi dengan Aman',
+    ja: "安全な位置情報共有",
+    it: "Condividere la Posizione in Sicurezza",
+    ru: "Как Безопасно Делиться Геолокацией",
   },
   '/guides/ip-geolocation-accuracy/': {
     en: 'IP Geolocation Accuracy',
@@ -301,6 +373,9 @@ export const localizedNavLabels = {
     pt: 'Precisão do GeoIP',
     hi: 'IP जियोलोकेशन सटीकता',
     id: 'Akurasi Geolokasi IP',
+    ja: "IP位置情報の精度限界",
+    it: "Precisione Geolocalizzazione IP",
+    ru: "Точность IP-Геолокации",
   },
   '/guides/browser-geolocation-api-guide/': {
     en: 'HTML5 Geolocation API',
@@ -310,6 +385,9 @@ export const localizedNavLabels = {
     pt: 'API de Geolocalização HTML5',
     hi: 'HTML5 Geolocation API',
     id: 'HTML5 Geolocation API',
+    ja: "HTML5 Geolocation API ガイド",
+    it: "Guida API Geolocation HTML5",
+    ru: "Руководство по HTML5 Geolocation API",
   },
   '/guides/utm-coordinates-and-datums/': {
     en: 'UTM Coordinates & Datums',
@@ -319,6 +397,9 @@ export const localizedNavLabels = {
     pt: 'Coordenadas UTM e Datums',
     hi: 'UTM निर्देशांक और डेटम',
     id: 'Koordinat UTM & Datum',
+    ja: "UTM座標と測地系",
+    it: "Coordinate UTM e Datum Geodetici",
+    ru: "Координаты UTM и Геодезические Датумы",
   },
   '/guides/gps-privacy-and-security/': {
     en: 'GPS Privacy & Security',
@@ -328,6 +409,9 @@ export const localizedNavLabels = {
     pt: 'Privacidade & Segurança GPS',
     hi: 'GPS गोपनीयता और सुरक्षा',
     id: 'Privasi & Keamanan GPS',
+    ja: "GPSのプライバシーとセキュリティ",
+    it: "Privacy e Sicurezza GPS",
+    ru: "Конфиденциальность и Безопасность GPS",
   },
   '/guides/how-to-fake-or-mock-location/': {
     en: 'Mock Locations & Testing',
@@ -337,6 +421,9 @@ export const localizedNavLabels = {
     pt: 'Localizações Fictícias',
     hi: 'मॉक लोकेशन',
     id: 'Lokasi Mock',
+    ja: "モック位置情報とテスト",
+    it: "Posizioni Fittizie e Test",
+    ru: "Имитация Местоположения и Тестирование",
   },
 
   // — comparisonsNav —
@@ -348,6 +435,9 @@ export const localizedNavLabels = {
     pt: 'GPS vs Geolocalização IP',
     hi: 'GPS बनाम IP लोकेशन',
     id: 'GPS vs Geolokasi IP',
+    ja: "GPS vs IP位置情報",
+    it: "GPS vs Posizione IP",
+    ru: "GPS против IP-Геолокации",
   },
   '/comparisons/geocoding-vs-reverse-geocoding/': {
     en: 'Geocoding vs Reverse Geocoding',
@@ -357,6 +447,9 @@ export const localizedNavLabels = {
     pt: 'Geocodificação Direta vs Reversa',
     hi: 'फॉरवर्ड बनाम रिवर्स जियोकोडिंग',
     id: 'Geocoding Langsung vs Terbalik',
+    ja: "正ジオコーディング vs 逆ジオコーディング",
+    it: "Geocodifica Diretta vs Inversa",
+    ru: "Прямое vs Обратное Геокодирование",
   },
   '/comparisons/decimal-degrees-vs-dms/': {
     en: 'Decimal Degrees vs DMS',
@@ -366,6 +459,9 @@ export const localizedNavLabels = {
     pt: 'Graus Decimais vs DMS',
     hi: 'दशमलव डिग्री बनाम DMS',
     id: 'Derajat Desimal vs DMS',
+    ja: "十進角 (DD) vs 度分秒 (DMS)",
+    it: "Gradi Decimali vs DMS",
+    ru: "Десятичные Градусы vs DMS",
   },
 };
 

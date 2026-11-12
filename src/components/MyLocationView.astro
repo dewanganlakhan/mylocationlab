@@ -635,7 +635,7 @@ const connectedToolsHeading: Record<SupportedLang, { title: string; accent: stri
         <!-- 10 High-Intent FAQ Accordion -->
         <div style="margin-top: var(--space-10);">
           <h2>{content.faqTitle} <span class="text-gradient">{content.faqTitleAccent}</span></h2>
-          <FAQAccordion items={content.faqItems} includeSchema={false} />
+          <FAQAccordion items={content.faqItems} includeSchema={false} lang={lang} />
         </div>
 
         <!-- Sub-pages Navigation Hub-and-Spoke Grid with Rich Descriptions -->

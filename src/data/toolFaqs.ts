@@ -17,7 +17,10 @@ export const toolFaqTitles: Record<string, string> = {
   de: "Häufig Gestellte Fragen",
   pt: "Perguntas Frequentes",
   hi: "अक्सर पूछे जाने वाले सवाल",
-  id: "Pertanyaan yang Sering Diajukan"
+  id: "Pertanyaan yang Sering Diajukan",
+  ja: "よくある質問",
+  it: "Domande Frequenti",
+  ru: "Часто Задаваемые Вопросы",
 };
 
 type FaqBuilder = (l: SupportedLang) => ToolFAQItem[];
@@ -1879,5 +1882,5 @@ export function getToolFaqs(toolId: string, lang: SupportedLang | string): ToolF
   if (!toolGroup) return [];
   const currentLang = (lang in toolGroup ? lang : defaultLang) as SupportedLang;
   const builder = toolGroup[currentLang] || toolGroup[defaultLang];
-  return builder ? builder(currentLang) : [];
+  return builder ? builder(lang as SupportedLang) : [];
 }

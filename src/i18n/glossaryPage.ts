@@ -479,5 +479,203 @@ export const glossaryPageTranslations: Record<string, GlossaryPageContent> = {
         definition: "Kerangka acuan geodesik standar global (EPSG:4326) yang ditetapkan oleh National Geospatial-Intelligence Agency Amerika Serikat, yang mendefinisikan elipsoid acuan matematis untuk GPS."
       }
     ]
+  },
+  ja: {
+    metaTitle: "GPS＆地理空間用語集 — 測地学用語の定義 | MyLocationLab",
+    metaDescription: "三辺測量、WGS 84、HDOP、A-GPS、逆ジオコーディング、Haversine公式、測地系など、GPSとWeb地図の主要用語を解説。",
+    breadcrumb: "用語集",
+    titlePrefix: "GPS＆地理空間",
+    titleHighlight: "用語集",
+    subtitle: "衛星測位、測地基準系、空間コンピューティングにおける重要概念の包括的リファレンス。",
+    crossLinkTitle: "これらの概念をツールで実際に体験",
+    tool1Btn: "🔀 座標変換ツール",
+    tool2Btn: "🎯 リアルタイムHDOP測定",
+    guideBtn: "📡 GPSの仕組みガイド",
+    terms: [
+      {
+        term: "A-GPS (Assisted GPS)",
+        definition: "携帯電話基地局やインターネット回線を利用して衛星の軌道情報（エフェメリス）を高速取得し、初回測位時間（TTFF）を数分から数秒へと大幅に短縮する測位支援システム。"
+      },
+      {
+        term: "BSSID (Basic Service Set Identifier)",
+        definition: "Wi-Fiルーター固有のMACアドレス。端末のOSが周囲のBSSIDをスキャンし、世界規模のWi-Fi位置情報データベースと照合することで、GPSの届かない屋内でも位置を特定します。"
+      },
+      {
+        term: "測地系 (Geodetic Datum)",
+        definition: "地球表面の位置を正確に測定するための基準座標系および地球幾何学モデル。GPSが採用する国際標準測地系はWGS 84です。"
+      },
+      {
+        term: "十進角 (Decimal Degrees / DD)",
+        definition: "緯度経度を度単位の十進小数で表す標準表記形式（例：35.6812, 139.7671）。Web地図APIやGISソフトウェアで世界的に標準採用されています。"
+      },
+      {
+        term: "精度低下率 (DOP / HDOP)",
+        definition: "上空における測位衛星の幾何学的配置の良し悪しを示す指標（水平精度低下率）。値が小さい（HDOP < 2.0）ほど衛星が広く分散しており、測位精度が高くなります。"
+      },
+      {
+        term: "エフェメリス (Ephemeris)",
+        definition: "GPS衛星から常時送信される高精度な軌道パラメータデータ。衛星の現在の軌道位置、飛行速度、原子時計の補正値を示します。"
+      },
+      {
+        term: "ジオコーディング (Geocoding)",
+        definition: "「東京都千代田区千代田1-1」のような住所やランドマークの文字列を、緯度経度の数値座標ペアに変換する空間検索処理。"
+      },
+      {
+        term: "ジオフェンシング (Geofencing)",
+        definition: "指定した緯度経度座標を中心とする仮想的な境界線（エリア）。スマートフォンがその領域に出入りした際に関連アクションをトリガーします。"
+      },
+      {
+        term: "Haversine（半正矢）公式",
+        definition: "地球を球体と仮定し、2地点の緯度経度から球面上の大圏距離（最短距離）を正確に計算する航法数学の公式。"
+      },
+      {
+        term: "IP位置情報 (IP Geolocation)",
+        definition: "インターネットに接続された端末のIPアドレス帯域を、プロバイダやデータセンターの所在地データベースと照合して推定位置を割り出す技術。"
+      },
+      {
+        term: "逆ジオコーディング (Reverse Geocoding)",
+        definition: "緯度経度座標から、最寄りの番地、道路名、市区町村、郵便番号などの文字列表記の住所を逆引き特定する処理。"
+      },
+      {
+        term: "三辺測量 (Trilateration)",
+        definition: "既知の位置にある複数の基準点（GPS衛星など）からの距離を計測することで、未知の観測点の空間位置を特定する幾何学的測位技術。"
+      },
+      {
+        term: "WGS 84 (世界測地系1984)",
+        definition: "米国国家地理空間情報局が策定した国際標準測地座標系（EPSG:4326）。NAVSTAR GPS衛星網が地球モデルの基礎として採用しています。"
+      }
+    ]
+  },
+  it: {
+    metaTitle: "Glossario GPS & Geospaziale — Definizioni | MyLocationLab",
+    metaDescription: "Padroneggia la terminologia di GPS, geodesia e cartografia web: Trilaterazione, WGS 84, HDOP, A-GPS, Geocodifica Inversa, formula di Haversine e Datum.",
+    breadcrumb: "Glossario",
+    titlePrefix: "Glossario Geospaziale",
+    titleHighlight: "& GPS",
+    subtitle: "Definizioni esaustive dei concetti cardine della navigazione satellitare, dei datum geodetici e dell'analisi spaziale.",
+    crossLinkTitle: "Applica Questi Concetti con Strumenti dal Vivo",
+    tool1Btn: "🔀 Convertitore Coordinate",
+    tool2Btn: "🎯 Misura HDOP in Tempo Reale",
+    guideBtn: "📡 Guida: Come Funziona il GPS",
+    terms: [
+      {
+        term: "A-GPS (GPS Assistito)",
+        definition: "Sistema che utilizza antenne cellulari e connessioni dati per scaricare rapidamente i dati orbitali dei satelliti (effemeridi), riducendo il tempo di prima localizzazione (TTFF) da minuti a secondi."
+      },
+      {
+        term: "BSSID (Basic Service Set Identifier)",
+        definition: "L'indirizzo MAC univoco di un router Wi-Fi. I sistemi operativi mobili confrontano i BSSID rilevati con database geospaziali per stimare la posizione all'interno degli edifici dove il segnale GPS non arriva."
+      },
+      {
+        term: "Datum (Datum Geodetico)",
+        definition: "Sistema di coordinate di riferimento e modello geometrico della Terra utilizzato per misurare posizioni sulla superficie. Il datum standard globale adottato dal GPS è il WGS 84."
+      },
+      {
+        term: "Gradi Decimali (DD)",
+        definition: "Formato standard che esprime le coordinate geografiche come frazioni decimali di un grado (es. 41.9028, 12.4964), preferito nelle API cartografiche e nei software GIS."
+      },
+      {
+        term: "Diluizione della Precisione (DOP / HDOP)",
+        definition: "Moltiplicatore geometrico della configurazione satellitare visibile in cielo. Valori bassi (es. HDOP < 2.0) indicano satelliti ben distribuiti e maggiore accuratezza."
+      },
+      {
+        term: "Effemeridi (Ephemeris)",
+        definition: "Parametri orbitali trasmessi costantemente dai satelliti GPS che ne descrivono orbita, velocità e correzioni orarie con altissima precisione."
+      },
+      {
+        term: "Geocodifica (Geocoding)",
+        definition: "Processo di conversione di un indirizzo testuale (es. 'Via del Corso 1, Roma') in coordinate geografiche (latitudine e longitudine)."
+      },
+      {
+        term: "Geofencing",
+        definition: "Perimetro geografico virtuale definito attorno a un punto con raggio prestabilito. I dispositivi attivano notifiche o azioni all'ingresso o all'uscita dall'area."
+      },
+      {
+        term: "Formula di Haversine",
+        definition: "Equazione trigonometrica per calcolare la distanza sul cerchio massimo (ortodromica) tra due punti sferici della Terra a partire dalle loro coordinate."
+      },
+      {
+        term: "Geolocalizzazione IP",
+        definition: "Metodo che stima la posizione geografica di un dispositivo interrogando database commerciali che collegano blocchi di indirizzi IP a nodi di rete regionali."
+      },
+      {
+        term: "Geocodifica Inversa (Reverse Geocoding)",
+        definition: "Processo spaziale che converte una coppia di coordinate GPS in un indirizzo civico comprensibile con via, numero, comune e CAP."
+      },
+      {
+        term: "Trilaterazione",
+        definition: "Metodo geometrico che calcola una posizione ignota misurando la distanza da almeno tre punti di riferimento noti (come i satelliti GPS)."
+      },
+      {
+        term: "WGS 84 (World Geodetic System 1984)",
+        definition: "Sistema geodetico di riferimento standard mondiale (EPSG:4326) definito per la navigazione satellitare, base di riferimento del GPS."
+      }
+    ]
+  },
+  ru: {
+    metaTitle: "Глоссарий GPS и Геопространственных Терминов | MyLocationLab",
+    metaDescription: "Справочник терминов спутниковой навигации, геодезии и картографии: Трилатерация, WGS 84, HDOP, A-GPS, Обратное Геокодирование, формула Гаверсинусов и Датумы.",
+    breadcrumb: "Глоссарий",
+    titlePrefix: "Глоссарий GPS &",
+    titleHighlight: "Геодезии",
+    subtitle: "Точные определения ключевых понятий спутниковой навигации, геодезических датумов и пространственных расчетов.",
+    crossLinkTitle: "Примените Эти Понятия на Практике",
+    tool1Btn: "🔀 Конвертер Координат",
+    tool2Btn: "🎯 Тест HDOP в Реальном Времени",
+    guideBtn: "📡 Как Работает GPS: Руководство",
+    terms: [
+      {
+        term: "A-GPS (Assisted GPS)",
+        definition: "Технология, использующая базовые станции сотовой связи и интернет для быстрой загрузки альманаха и эфемерид спутников, сокращая время первого определения координат (TTFF) с минут до секунд."
+      },
+      {
+        term: "BSSID (Basic Service Set Identifier)",
+        definition: "Уникальный MAC-адрес Wi-Fi роутера. Мобильные устройства сопоставляют видимые BSSID с глобальными геобазами для определения местоположения внутри помещений, куда не проникают радиосигналы GPS."
+      },
+      {
+        term: "Датум (Геодезический Датум)",
+        definition: "Базовая система координат и математическая модель формы Земли (эллипсоид), используемая для привязки координат на поверхности. Мировой стандарт для GPS — система WGS 84."
+      },
+      {
+        term: "Десятичные Градусы (DD)",
+        definition: "Стандартный формат записи координат в виде десятичной дроби (например, 55.7558, 37.6173), повсеместно применяемый в веб-картах, API и программном обеспечении ГИС."
+      },
+      {
+        term: "Снижение Точности (DOP / HDOP)",
+        definition: "Геометрический коэффициент взаимного расположения видимых спутников на небесном своде. Низкие значения (HDOP < 2.0) означают оптимальное распределение спутников и высокую точность."
+      },
+      {
+        term: "Эфемериды (Ephemeris)",
+        definition: "Высокоточные параметры орбиты, передаваемые каждым спутником GPS, описывающие его точное положение в космосе, скорость и поправки бортовых атомных часов."
+      },
+      {
+        term: "Геокодирование (Geocoding)",
+        definition: "Процесс преобразования текстового описания адреса (например, «Красная площадь, 1») в числовые географические координаты (широту и долготу)."
+      },
+      {
+        term: "Геозонирование (Geofencing)",
+        definition: "Виртуальный географический периметр заданного радиуса вокруг точки координат. Мобильные устройства инициируют события при входе или выходе из этой зоны."
+      },
+      {
+        term: "Формула Гаверсинусов (Haversine)",
+        definition: "Тригонометрическая навигационная формула, рассчитывающая кратчайшее расстояние по дуге большого круга (ортодромию) между двумя точками на сфере по их координатам."
+      },
+      {
+        term: "IP-Геолокация",
+        definition: "Метод приблизительного определения местоположения сетевого устройства путем сопоставления его публичного IP-адреса с базами данных магистральных интернет-провайдеров."
+      },
+      {
+        term: "Обратное Геокодирование (Reverse Geocoding)",
+        definition: "Преобразование числовых координат GPS (широты и долготы) в читаемый адрес с указанием улицы, дома, почтового индекса и города."
+      },
+      {
+        term: "Трилатерация (Trilateration)",
+        definition: "Геометрический метод вычисления координат неизвестной точки на основе измерения расстояний до как минимум трех опорных точек с известными координатами (спутников GPS)."
+      },
+      {
+        term: "WGS 84 (World Geodetic System 1984)",
+        definition: "Глобальная геодезическая система параметров Земли (EPSG:4326), определяющая референц-эллипсоид, гравитационную модель и систему координат спутниковой группировки NAVSTAR GPS."
+      }
+    ]
   }
 };

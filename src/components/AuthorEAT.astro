@@ -21,7 +21,7 @@ const {
   lang: customLang = defaultLang,
 } = Astro.props;
 
-const lang = (customLang in { en: 1, es: 1, fr: 1, de: 1, pt: 1, hi: 1, id: 1 } ? customLang : defaultLang) as SupportedLang;
+const lang = (customLang || defaultLang) as SupportedLang;
 
 const eatTranslations: Record<string, { badge: string; updated: string; read: string; privacy: string; linkTitle: string }> = {
   en: {
@@ -73,6 +73,27 @@ const eatTranslations: Record<string, { badge: string; updated: string; read: st
     privacy: 'Privasi Klien Terverifikasi',
     linkTitle: 'Pelajari lebih lanjut tentang dewan editorial dan standar SIG kami',
   },
+  ja: {
+    badge: '編集部監修済み',
+    updated: '更新日:',
+    read: '所要時間',
+    privacy: 'クライアント側プライバシー検証済み',
+    linkTitle: '編集レビュー委員会およびGIS標準について詳しく見る',
+  },
+  it: {
+    badge: 'REVISIONE EDITORIALE',
+    updated: 'Aggiornato:',
+    read: 'tempo di lettura',
+    privacy: 'Privacy Lato Client Verificata',
+    linkTitle: 'Scopri di più sul nostro comitato editoriale e sugli standard GIS',
+  },
+  ru: {
+    badge: 'ПРОВЕРЕНО РЕДАКЦИЕЙ',
+    updated: 'Обновлено:',
+    read: 'время чтения',
+    privacy: 'Конфиденциальность на стороне клиента подтверждена',
+    linkTitle: 'Узнайте больше о нашем редакционном совете и стандартах ГИС',
+  },
 };
 
 const tEat = eatTranslations[lang] || eatTranslations.en;
@@ -89,6 +110,9 @@ if (lastUpdated.includes('September') || lastUpdated.includes('Septembre')) {
     pt: 'Setembro de 2026',
     hi: 'सितंबर 2026',
     id: 'September 2026',
+    ja: '2026年9月',
+    it: 'Settembre 2026',
+    ru: 'Сентябрь 2026',
   };
   displayUpdated = monthMap[lang] || 'September 2026';
 }

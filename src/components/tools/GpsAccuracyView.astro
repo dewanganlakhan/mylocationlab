@@ -5,7 +5,7 @@
  */
 import ToolLayout from '../../layouts/ToolLayout.astro';
 import FAQAccordion from '../FAQAccordion.astro';
-import { getLocalizedPath, defaultLang, type SupportedLang } from '../../i18n/config';
+import { getLocalizedPath, defaultLang, type SupportedLang, localizeHtml } from '../../i18n/config';
 import { getToolFaqs, toolFaqTitles } from '../../data/toolFaqs';
 
 interface Props {
@@ -518,6 +518,201 @@ const translations: Record<string, any> = {
     linkGps: "Pencari Koordinat GPS",
     linkGuideAccuracy: "Panduan Lengkap Meningkatkan Akurasi GPS",
     linkComp: "Perbandingan GPS vs Lokasi IP"
+  },
+  ja: {
+    title: "GPS精度チェッカー — リアルタイム精度測定 | MyLocationLab",
+    description: "ブラウザ上でGPSの水平精度誤差半径、HDOP、進行方位、移動速度をリアルタイムに測定します。データ保存なし。",
+    h1: "GPS精度チェッカー",
+    subtitle: "端末のGNSS衛星測位精度、水平誤差半径、各種センサーテレメトリをリアルタイムに監視します。",
+    inShort: "端末の内蔵GNSS受信機からリアルタイムテレメトリを取得し、水平精度半径（メートル）と精度低下率（HDOP）を測定します。",
+    btnStart: "🛰️ リアルタイムGPS監視を開始",
+    btnStop: "⏹️ 監視を停止",
+    statusStandby: "待機中",
+    statusAcquiring: "衛星を捕捉中...",
+    statusActive: "GNSSアクティブ (受信中)",
+    liveRadiusTitle: "リアルタイム水平測位精度（誤差半径）",
+    awaitingLock: "GPSロック待機中",
+    updatesEverySec: "毎秒更新",
+    lblHdop: "推定 HDOP",
+    lblSpeed: "対地速度",
+    lblHeading: "進行方位",
+    lblAlt: "標高 / 高度",
+    lblValt: "垂直測位精度",
+    lblCoords: "現在の座標",
+    btnCopy: "📋 スナップショットをコピー",
+    btnCopied: "✅ コピー完了！",
+    ratingExceptional: "最高精度（デュアルバンド測位）",
+    ratingHigh: "高精度（標準GNSSロック）",
+    ratingModerate: "中精度（Wi-Fi / 複合測位）",
+    ratingLow: "低精度（基地局 / 地域推定）",
+    hdopExcellent: "極めて優秀 (Excellent)",
+    hdopGood: "良好 (Good)",
+    hdopModerate: "普通 (Moderate)",
+    speedStationary: "停止中 / 0 km/h",
+    headingStatic: "静止（方位なし）",
+    notAvailable: "利用不可",
+    h2Understanding: "GPS精度の見方と信頼区間",
+    pUnderstanding: "スマートフォンの位置情報精度は<strong>95%信頼区間の半径</strong>で表されます。±5mと表示された場合、真の位置がその円内に存在する確率が95%であることを意味します。",
+    h2Scale: "GNSS測位精度スケール",
+    thLevel: "精度レベル",
+    thRadius: "誤差半径",
+    thSource: "測位ソース",
+    thUse: "推奨用途",
+    row1Level: "デュアルバンド (L1 + L5)",
+    row1Radius: "< 3 メートル",
+    row1Source: "マルチGNSS直接衛星受信",
+    row1Use: "精密測量、レーン別カーナビ",
+    row2Level: "標準GNSS",
+    row2Radius: "3 〜 8 メートル",
+    row2Source: "単一周波数 (L1/E1) 衛星ロック",
+    row2Use: "徒歩ナビ、位置情報共有",
+    row3Level: "Wi-Fi測位 (WPS)",
+    row3Radius: "10 〜 30 メートル",
+    row3Source: "近隣Wi-Fiアクセスポイント照合",
+    row3Use: "屋内測位、建物レベル特定",
+    row4Level: "セルラー基地局 / IP",
+    row4Radius: "> 100 メートル",
+    row4Source: "携帯基地局三角測量 / IP推定",
+    row4Use: "大まかな都市・地域判別",
+    h2Improve: "GPS精度を向上させる方法",
+    li1: "<strong>Wi-FiとBluetoothスキャンを有効にする:</strong> 周囲のWi-Fiルーター情報を活用して衛星の初期捕捉（A-GPS）を大幅に高速化します。",
+    li2: "<strong>ビルの谷間（アーバンキャニオン）を避ける:</strong> 高層ビルの反射波によるマルチパス誤差を避けるため、空が開けた場所へ移動してください。",
+    li3: "<strong>電子コンパスを校正する:</strong> 端末を空中で「8の字」に動かして地磁気センサーを再調整します。",
+    li4: "<strong>上空の視界を確保する:</strong> 厚い屋根、地下、金属構造物から離れて屋外で測定してください。",
+    h2Related: "関連ツール",
+    linkGps: "GPS座標ファインダー",
+    linkGuideAccuracy: "GPS精度向上完全ガイド",
+    linkComp: "GPS vs IP位置情報の比較"
+  },
+  it: {
+    title: "Verifica Precisione GPS — Test Accuratezza Live | MyLocationLab",
+    description: "Misura in tempo reale il raggio di accuratezza orizzontale del tuo GPS, l'HDOP, la rotta e la velocità direttamente nel browser a zero dati salvati.",
+    h1: "Verifica Precisione GPS",
+    subtitle: "Monitora in tempo reale l'accuratezza satellitare GNSS, il raggio di precisione orizzontale e la telemetria dei sensori del dispositivo.",
+    inShort: "Questo strumento riceve la telemetria continua dal modulo GNSS del tuo dispositivo, misurando il raggio di errore orizzontale in metri e la diluizione della precisione (HDOP).",
+    btnStart: "🛰️ Avvia Monitoraggio GPS Live",
+    btnStop: "⏹️ Ferma Monitoraggio",
+    statusStandby: "In attesa",
+    statusAcquiring: "Acquisizione satelliti in corso...",
+    statusActive: "Segnale GNSS Attivo",
+    liveRadiusTitle: "Raggio di Precisione Orizzontale Live",
+    awaitingLock: "In attesa del fix GPS",
+    updatesEverySec: "Aggiornamento ogni secondo",
+    lblHdop: "HDOP Stimato",
+    lblSpeed: "Velocità al Suolo",
+    lblHeading: "Rotta / Bussola",
+    lblAlt: "Altitudine",
+    lblValt: "Accuratezza Verticale",
+    lblCoords: "Coordinate Rilevate",
+    btnCopy: "📋 Copia Telemetria",
+    btnCopied: "✅ Copiato!",
+    ratingExceptional: "Precisione Eccezionale (Dual-Band)",
+    ratingHigh: "Alta Precisione (Fix GNSS Standard)",
+    ratingModerate: "Precisione Moderata (Wi-Fi / Ibrido)",
+    ratingLow: "Bassa Precisione (Celle / Rete)",
+    hdopExcellent: "Eccellente",
+    hdopGood: "Buono",
+    hdopModerate: "Moderato",
+    speedStationary: "Fermo / 0 km/h",
+    headingStatic: "Statico (Nessuna direzione)",
+    notAvailable: "Non disponibile",
+    h2Understanding: "Interpretazione della Precisione GPS",
+    pUnderstanding: "L'accuratezza del GPS nei dispositivi mobili è definita come un <strong>raggio di confidenza al 95%</strong>: un valore di ±5 m indica che c'è il 95% di probabilità che la posizione reale si trovi entro quel cerchio.",
+    h2Scale: "Scala dei Livelli di Precisione GNSS",
+    thLevel: "Livello",
+    thRadius: "Raggio di Errore",
+    thSource: "Fonte Dati",
+    thUse: "Utilizzo Raccomandato",
+    row1Level: "Doppia Frequenza (L1 + L5)",
+    row1Radius: "< 3 metri",
+    row1Source: "Satelliti Multi-Costellazione",
+    row1Use: "Rilievi topografici, navigazione corsia",
+    row2Level: "GNSS Singola Frequenza",
+    row2Radius: "3 - 8 metri",
+    row2Source: "Lock satellitare standard",
+    row2Use: "Navigazione pedonale, condivisione",
+    row3Level: "Posizionamento Wi-Fi (WPS)",
+    row3Radius: "10 - 30 metri",
+    row3Source: "Database hotspot Wi-Fi",
+    row3Use: "Geolocalizzazione indoor",
+    row4Level: "Triangolazione Celle / IP",
+    row4Radius: "> 100 metri",
+    row4Source: "Antenne telefoniche / Provider",
+    row4Use: "Rilevamento approssimativo cittadino",
+    h2Improve: "Come Migliorare la Precisione del Tuo GPS",
+    li1: "<strong>Abilita Wi-Fi e Bluetooth:</strong> Permette al sistema operativo di utilizzare l'Assisted GPS per agganciare i satelliti istantaneamente.",
+    li2: "<strong>Evita i 'Canyon Urbani':</strong> Gli edifici a specchio riflettono il segnale provocando errori multipath.",
+    li3: "<strong>Calibra il Magnetometro:</strong> Muovi lo smartphone a forma di '8' per ricalibrare la bussola.",
+    li4: "<strong>Vista Libera del Cielo:</strong> Allontanati da tettoie metalliche e piani interrati.",
+    h2Related: "Strumenti Correlati",
+    linkGps: "Coordinate GPS",
+    linkGuideAccuracy: "Guida per Migliorare il GPS",
+    linkComp: "Confronto GPS vs Geolocalizzazione IP"
+  },
+  ru: {
+    title: "Проверка точности GPS — Мониторинг погрешности онлайн | MyLocationLab",
+    description: "Проверьте в реальном времени радиус горизонтальной погрешности GPS, коэффициент HDOP, курс и скорость прямо в браузере без сохранения данных.",
+    h1: "Проверка точности GPS",
+    subtitle: "Мониторинг спутниковой точности GNSS в реальном времени, радиус погрешности и телеметрия датчиков устройства.",
+    inShort: "Инструмент считывает непрерывную телеметрию с чипа GNSS вашего устройства, измеряя радиус горизонтальной ошибки в метрах и снижение точности (HDOP).",
+    btnStart: "🛰️ Начать мониторинг GPS",
+    btnStop: "⏹️ Остановить",
+    statusStandby: "Ожидание",
+    statusAcquiring: "Поиск спутников...",
+    statusActive: "Сигнал GNSS активен",
+    liveRadiusTitle: "Текущий радиус горизонтальной погрешности",
+    awaitingLock: "Ожидание захвата спутников",
+    updatesEverySec: "Обновление каждую секунду",
+    lblHdop: "Расчетный HDOP",
+    lblSpeed: "Скорость перемещения",
+    lblHeading: "Курс / Компас",
+    lblAlt: "Высота",
+    lblValt: "Вертикальная погрешность",
+    lblCoords: "Текущие координаты",
+    btnCopy: "📋 Скопировать замер",
+    btnCopied: "✅ Скопировано!",
+    ratingExceptional: "Исключительная точность (двухчастотный L1+L5)",
+    ratingHigh: "Высокая точность (стандартный GNSS захват)",
+    ratingModerate: "Умеренная точность (Wi-Fi / гибридный)",
+    ratingLow: "Низкая точность (вышки связи / GeoIP)",
+    hdopExcellent: "Отлично (Excellent)",
+    hdopGood: "Хорошо (Good)",
+    hdopModerate: "Средне (Moderate)",
+    speedStationary: "Неподвижно / 0 км/ч",
+    headingStatic: "Статично (курс отсутствует)",
+    notAvailable: "Недоступно",
+    h2Understanding: "Оценка погрешности измерений",
+    pUnderstanding: "Точность потребительского GPS выражается как <strong>95% доверительный радиус</strong>: погрешность ±5 метров означает, что с вероятностью 95% ваше реальное положение находится внутри 5-метрового круга.",
+    h2Scale: "Градация уровней точности GNSS",
+    thLevel: "Уровень",
+    thRadius: "Радиус ошибки",
+    thSource: "Источник сигнала",
+    thUse: "Применение",
+    row1Level: "Двухчастотный GNSS (L1 + L5)",
+    row1Radius: "< 3 метров",
+    row1Source: "Прямой сигнал мультисистемных спутников",
+    row1Use: "Геодезия, навигация по полосам движения",
+    row2Level: "Одночастотный GNSS",
+    row2Radius: "3 - 8 метров",
+    row2Source: "Стандартный спутниковый захват L1",
+    row2Use: "Пешеходная и автомобильная навигация",
+    row3Level: "Позиционирование по Wi-Fi",
+    row3Radius: "10 - 30 метров",
+    row3Source: "Базы BSSID точек доступа Wi-Fi",
+    row3Use: "Определение положения внутри зданий",
+    row4Level: "Вышки сотовой связи / IP",
+    row4Radius: "> 100 метров",
+    row4Source: "Триангуляция базовых станций оператора",
+    row4Use: "Примерное определение населенного пункта",
+    h2Improve: "Как повысить точность работы GPS",
+    li1: "<strong>Включите Wi-Fi и Bluetooth:</strong> Это активирует Assisted GPS (A-GPS) для мгновенной загрузки альманаха спутников.",
+    li2: "<strong>Избегайте плотной городской застройки:</strong> Стены небоскребов отражают радиосигнал, вызывая погрешность многолучевости (multipath).",
+    li3: "<strong>Откалибруйте компас:</strong> Покрутите устройство в воздухе по траектории восьмерки для настройки магнитометра.",
+    li4: "<strong>Обеспечьте прямой обзор неба:</strong> Металлические козырьки, листва деревьев и железобетон ослабляют радиосигнал.",
+    h2Related: "Полезные инструменты",
+    linkGps: "Координаты GPS",
+    linkGuideAccuracy: "Руководство по улучшению точности GPS",
+    linkComp: "Сравнение: GPS против геолокации по IP"
   }
 };
 
@@ -631,7 +826,7 @@ const t = translations[lang] || translations.en;
     )}
 
     <h2>{t.h2Understanding}</h2>
-    <p set:html={t.pUnderstanding}></p>
+    <p set:html={localizeHtml(t.pUnderstanding, lang)}></p>
 
     <h3>{t.h3Classifications}</h3>
     <table>
@@ -687,10 +882,10 @@ const t = translations[lang] || translations.en;
 
     <h2>{t.h2Improve}</h2>
     <ul>
-      <li set:html={t.li1}></li>
-      <li set:html={t.li2}></li>
-      <li set:html={t.li3}></li>
-      <li set:html={t.li4}></li>
+      <li set:html={localizeHtml(t.li1, lang)}></li>
+      <li set:html={localizeHtml(t.li2, lang)}></li>
+      <li set:html={localizeHtml(t.li3, lang)}></li>
+      <li set:html={localizeHtml(t.li4, lang)}></li>
     </ul>
 
     <div class="callout-box" style="margin-top: var(--space-6); line-height: 1.8;">
@@ -732,7 +927,7 @@ const t = translations[lang] || translations.en;
 
     <div style="margin-top: var(--space-12);">
       <h2 class="mb-8">{faqTitle}</h2>
-      <FAQAccordion items={toolFaqs} />
+      <FAQAccordion items={toolFaqs} lang={lang} />
     </div>
 
     {t.nextSteps && (

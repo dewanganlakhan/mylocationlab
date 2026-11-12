@@ -835,5 +835,350 @@ export const guidesHubTranslations: Record<string, GuidesHubContent> = {
         ]
       }
     ]
+  },
+  ja: {
+    metaTitle: "GPS＆位置情報ガイドハブ | MyLocationLab",
+    metaDescription: "GPS技術の仕組み、端末の測位精度改善、位置情報のズレ修正、測地座標モデル、Web開発者向けAPIの完全ガイド。",
+    badge: "地理空間ナレッジベース",
+    titlePrefix: "位置情報＆GPS",
+    titleHighlight: "技術ガイド・ナレッジ",
+    subtitle: "地理空間エンジニアが執筆した、信頼性の高い技術チュートリアル、測位精度最適化マニュアル、測地学入門。",
+    readGuide: "ガイドを読む →",
+    ctaTitle: "知識を実際のツールで試してみませんか？",
+    ctaDesc: "座標特定、距離測定、標高検索、フォーマット変換など、完全無料の地理空間ツールをご活用ください。",
+    ctaGpsBtn: "🛰️ GPS座標検索",
+    ctaConverterBtn: "🧭 座標変換ツール",
+    ctaElevationBtn: "⛰️ 標高検索ツール",
+    ctaAllToolsBtn: "すべてのツールを見る →",
+    categories: [
+      {
+        category: "🛰️ 衛星物理学と測地学の基礎",
+        description: "軌道上のGNSSコンステレーション、三辺測量の数学的原理、WGS 84とUTMの基準系を学ぶ。",
+        guides: [
+          {
+            title: "GPS位置情報の仕組み：衛星からスマートフォンまでの測位原理",
+            description: "NAVSTAR、Galileo、GLONASSが地球周回軌道から三辺測量と原子時計を用いて現在地を特定する物理的仕組み。",
+            url: "/guides/how-gps-location-works/",
+            icon: "🛰️",
+            readTime: "読了時間: 8分",
+            tag: "基礎技術"
+          },
+          {
+            title: "UTM座標と測地基準系：WebメルカトルからEPSGまで",
+            description: "ユニバーサルトランスバースメルカトル図法、WGS 84楕円体、NAD83の解説とGISエンジニア向け変換。",
+            url: "/guides/utm-coordinates-and-datums/",
+            icon: "🗺️",
+            readTime: "読了時間: 10分",
+            tag: "測地学・GIS"
+          },
+          {
+            title: "緯度と経度の完全解説：座標表記法と精度の単位",
+            description: "赤道と子午線から、十進角（DD）と度分秒（DMS）の数学的変換、小数点桁数と実距離の関係まで。",
+            url: "/guides/latitude-and-longitude-explained/",
+            icon: "📐",
+            readTime: "読了時間: 7分",
+            tag: "座標システム"
+          }
+        ]
+      },
+      {
+        category: "⚡ 信号診断とハードウェアトラブルシューティング",
+        description: "位置情報のズレを修正し、都市部でのマルチパス反射を克服し、GPSアンテナの感度を最大化する。",
+        guides: [
+          {
+            title: "スマートフォンとPCのGPS精度を劇的に改善する方法",
+            description: "デュアル周波数L1+L5の活用、Wi-Fi測位の併用、マルチパスエラーの回避とHDOP最適化の実践手法。",
+            url: "/guides/improve-gps-accuracy/",
+            icon: "⚡",
+            readTime: "読了時間: 6分",
+            tag: "精度向上"
+          },
+          {
+            title: "なぜ現在地が違う？位置情報のズレを直す完全トラブルシュート",
+            description: "VPNの影響、Wi-Fiルーターの移転によるBSSIDキャッシュの古さ、プロバイダのIPプロキシ起因のズレを解消。",
+            url: "/guides/wrong-location/",
+            icon: "🔧",
+            readTime: "読了時間: 8分",
+            tag: "トラブルシューティング"
+          },
+          {
+            title: "IP位置情報の精度と限界：GeoIPの仕組みと失敗する理由",
+            description: "GeoIPデータベース（MaxMind、DB-IP等）がIPアドレスを特定する仕組みと、物理測位とは根本的に異なる理由。",
+            url: "/guides/ip-geolocation-accuracy/",
+            icon: "📡",
+            readTime: "読了時間: 8分",
+            tag: "ネットワークGeoIP"
+          }
+        ]
+      },
+      {
+        category: "🔒 プライバシー・Web開発・テスト手法",
+        description: "開発者向けAPI実装、モック位置情報テスト、位置情報のプライバシー保護対策。",
+        guides: [
+          {
+            title: "HTML5 Geolocation API：Web開発者と利用者のための完全ガイド",
+            description: "JavaScriptでのnavigator.geolocation実装、enableHighAccuracyフラグ、タイムアウトとパーミッション制御。",
+            url: "/guides/browser-geolocation-api-guide/",
+            icon: "💻",
+            readTime: "読了時間: 9分",
+            tag: "開発者ガイド"
+          },
+          {
+            title: "安全な位置情報共有ガイド：リスクのない共有方法",
+            description: "iPhone、Android、LINE、Googleマップ、WebブラウザQRコードを用いた、安全でプライベートな位置共有。",
+            url: "/guides/how-to-share-location/",
+            icon: "🔗",
+            readTime: "読了時間: 7分",
+            tag: "セキュリティ・共有"
+          },
+          {
+            title: "GPSプライバシーとセキュリティ：追跡者を防ぐための完全防衛策",
+            description: "アプリアクセス権限の監査、写真のEXIF位置情報の削除、基地局トラッキングや広告ビーコンからの自己防衛。",
+            url: "/guides/gps-privacy-and-security/",
+            icon: "🔒",
+            readTime: "読了時間: 8分",
+            tag: "プライバシー保護"
+          },
+          {
+            title: "モック位置情報の仕組み：開発者のためのGPSスプーフィングとテスト",
+            description: "Androidの仮の現在地情報アプリ、XcodeのGPXシミュレーション、Chrome DevToolsのセンサー偽装手法。",
+            url: "/guides/how-to-fake-or-mock-location/",
+            icon: "🧪",
+            readTime: "読了時間: 8分",
+            tag: "QA・検証テスト"
+          }
+        ]
+      }
+    ]
+  },
+  it: {
+    metaTitle: "Hub delle Guide su GPS & Geolocalizzazione | MyLocationLab",
+    metaDescription: "Approfondisci la tecnologia GPS, ottimizza la precisione del dispositivo, risolvi posizioni errate, impara i modelli geodetici e le API per sviluppatori.",
+    badge: "Knowledge Base Geospaziale",
+    titlePrefix: "Guide & Conoscenza",
+    titleHighlight: "Geospaziale",
+    subtitle: "Tutorial tecnici autorevoli, manuali di ottimizzazione e basi di geodesia scritti da ingegneri geospaziali.",
+    readGuide: "Leggi la Guida →",
+    ctaTitle: "Pronto a Mettere in Pratica le Conoscenze?",
+    ctaDesc: "Esplora la nostra suite completa di strumenti gratuiti per trovare coordinate, misurare distanze, rilevare quote e convertire formati.",
+    ctaGpsBtn: "🛰️ Trova Coordinate GPS",
+    ctaConverterBtn: "🧭 Convertitore Coordinate",
+    ctaElevationBtn: "⛰️ Rilevatore Altitudine",
+    ctaAllToolsBtn: "Esplora Tutti gli Strumenti →",
+    categories: [
+      {
+        category: "🛰️ Fisica Satellitare & Fondamenti di Geodesia",
+        description: "Comprendi le costellazioni GNSS in orbita, la matematica della trilaterazione e i sistemi WGS 84 e UTM.",
+        guides: [
+          {
+            title: "Come Funziona il GPS: Dai Satelliti in Orbita allo Smartphone",
+            description: "Come NAVSTAR, Galileo e GLONASS utilizzano la trilaterazione e gli orologi atomici per localizzare la tua posizione.",
+            url: "/guides/how-gps-location-works/",
+            icon: "🛰️",
+            readTime: "lettura 8 min",
+            tag: "Fisica Satellitare"
+          },
+          {
+            title: "Coordinate UTM e Datum Geodetici: Da Web Mercator a EPSG",
+            description: "Guida alla proiezione Universale Trasversa di Mercatore, all'ellissoide WGS 84 e alle trasformazioni GIS.",
+            url: "/guides/utm-coordinates-and-datums/",
+            icon: "🗺️",
+            readTime: "lettura 10 min",
+            tag: "Geodesia & GIS"
+          },
+          {
+            title: "Latitudine e Longitudine Spiegate: Gradi, Notazioni e Risoluzione",
+            description: "Dall'equatore e meridiano zero alle formule di conversione tra Gradi Decimali e DMS, con scala di precisione a terra.",
+            url: "/guides/latitude-and-longitude-explained/",
+            icon: "📐",
+            readTime: "lettura 7 min",
+            tag: "Sistemi di Coordinate"
+          }
+        ]
+      },
+      {
+        category: "⚡ Diagnostica del Segnale & Risoluzione Errori Hardware",
+        description: "Correggi posizioni sfalsate, supera gli ostacoli urbani e massimizza la ricezione dell'antenna GPS.",
+        guides: [
+          {
+            title: "Come Migliorare la Precisione del GPS su Smartphone e PC",
+            description: "Tecniche per sfruttare il GNSS a doppia frequenza (L1+L5), triangolazione Wi-Fi ed eliminazione degli errori multipath.",
+            url: "/guides/improve-gps-accuracy/",
+            icon: "⚡",
+            readTime: "lettura 6 min",
+            tag: "Ottimizzazione"
+          },
+          {
+            title: "Perché la Mia Posizione è Sbagliata? Guida Completa alla Risoluzione",
+            description: "Risolvi letture imprecise causate da VPN, database BSSID di router Wi-Fi trasferiti e proxy del fornitore di rete.",
+            url: "/guides/wrong-location/",
+            icon: "🔧",
+            readTime: "lettura 8 min",
+            tag: "Risoluzione Errori"
+          },
+          {
+            title: "Accuratezza della Geolocalizzazione IP: Come Funziona e Limiti",
+            description: "Come i database GeoIP associano indirizzi IP alle città e perché la ricerca geografica per IP non è mai fisica.",
+            url: "/guides/ip-geolocation-accuracy/",
+            icon: "📡",
+            readTime: "lettura 8 min",
+            tag: "GeoIP di Rete"
+          }
+        ]
+      },
+      {
+        category: "🔒 Privacy, Sviluppo Web & Test",
+        description: "Integrazione API per sviluppatori, simulazione posizioni fittizie e protezione della privacy dei dati di localizzazione.",
+        guides: [
+          {
+            title: "API Geolocation HTML5: Guida Completa per Sviluppatori",
+            description: "Implementa navigator.geolocation in JavaScript con flag di alta precisione, gestione timeout e criteri di consenso.",
+            url: "/guides/browser-geolocation-api-guide/",
+            icon: "💻",
+            readTime: "lettura 9 min",
+            tag: "Guida Sviluppatori"
+          },
+          {
+            title: "Come Condividere la Posizione in Modo Sicuro: Guida Completa",
+            description: "Condividi percorsi dal vivo o coordinate statiche su iPhone, Android, WhatsApp, Google Maps e codici QR del browser.",
+            url: "/guides/how-to-share-location/",
+            icon: "🔗",
+            readTime: "lettura 7 min",
+            tag: "Sicurezza & Condivisione"
+          },
+          {
+            title: "Privacy e Sicurezza GPS: Chi Ti Traccia e Come Bloccarlo",
+            description: "Verifica i permessi delle app, rimuovi i metadati EXIF dalle foto e difenditi dal tracciamento delle antenne cellulari.",
+            url: "/guides/gps-privacy-and-security/",
+            icon: "🔒",
+            readTime: "lettura 8 min",
+            tag: "Tutela Privacy"
+          },
+          {
+            title: "Come Funzionano le Posizioni Fittizie: Test e Simulazione GPS",
+            description: "Simula coordinate geografiche con le Mock Locations di Android, rotte GPX in Xcode e override in Chrome DevTools.",
+            url: "/guides/how-to-fake-or-mock-location/",
+            icon: "🧪",
+            readTime: "lettura 8 min",
+            tag: "Testing & QA"
+          }
+        ]
+      }
+    ]
+  },
+  ru: {
+    metaTitle: "Центр Руководств по GPS и Геолокации | MyLocationLab",
+    metaDescription: "Принципы работы GPS, калибровка точности устройства, исправление неверной геопозиции, геодезические датумы и API для разработчиков.",
+    badge: "База Знаний по Геопространственным Данным",
+    titlePrefix: "Руководства и База Знаний",
+    titleHighlight: "по Геолокации",
+    subtitle: "Авторитетные технические статьи, практические руководства по калибровке точности и геодезические справочники от инженеров ГИС.",
+    readGuide: "Читать Руководство →",
+    ctaTitle: "Готовы Применить Знания на Практике?",
+    ctaDesc: "Используйте наш полный набор бесплатных инструментов для поиска координат, измерения расстояний, вычисления высоты и конвертации форматов.",
+    ctaGpsBtn: "🛰️ Поиск GPS Координат",
+    ctaConverterBtn: "🧭 Конвертер Координат",
+    ctaElevationBtn: "⛰️ Определение Высоты",
+    ctaAllToolsBtn: "Все Инструменты →",
+    categories: [
+      {
+        category: "🛰️ Спутниковая Физика и Основы Геодезии",
+        description: "Изучите принципы орбитальных группировок GNSS, математику трилатерации и координатные модели WGS 84 и UTM.",
+        guides: [
+          {
+            title: "Как Работает GPS: От Орбитальных Спутников до Экрана Смартфона",
+            description: "Как группировки NAVSTAR, Galileo и ГЛОНАСС используют атомные часы и трилатерацию для вычисления координат.",
+            url: "/guides/how-gps-location-works/",
+            icon: "🛰️",
+            readTime: "8 мин чтения",
+            tag: "Физика Навигации"
+          },
+          {
+            title: "Координаты UTM и Геодезические Датумы: От Web Mercator до EPSG",
+            description: "Универсальная поперечная проекция Меркатора, эллипсоид WGS 84 и преобразования систем координат в ГИС.",
+            url: "/guides/utm-coordinates-and-datums/",
+            icon: "🗺️",
+            readTime: "10 мин чтения",
+            tag: "Геодезия и ГИС"
+          },
+          {
+            title: "Широта и Долгота: Градусы, Форматы Записи и Масштаб Точности",
+            description: "От экватора и начального меридиана до формул перевода десятичных градусов в DMS и масштаба точности знаков.",
+            url: "/guides/latitude-and-longitude-explained/",
+            icon: "📐",
+            readTime: "7 мин чтения",
+            tag: "Системы Координат"
+          }
+        ]
+      },
+      {
+        category: "⚡ Диагностика Сигнала и Устранение Аппаратных Ошибок",
+        description: "Устраняйте смещения координат, многолучевые переотражения сигналов в городской застройке и оптимизируйте антенну GPS.",
+        guides: [
+          {
+            title: "Как Улучшить Точность GPS на Смартфоне и Компьютере",
+            description: "Использование двухчастотного GNSS (L1+L5), содействие Wi-Fi позиционирования и минимизация погрешности HDOP.",
+            url: "/guides/improve-gps-accuracy/",
+            icon: "⚡",
+            readTime: "6 мин чтения",
+            tag: "Оптимизация"
+          },
+          {
+            title: "Почему Местоположение Отображается Неверно? Руководство по Исправлению",
+            description: "Устранение неверных координат, вызванных работой VPN, устаревшими базами BSSID Wi-Fi роутеров и маршрутизацией провайдера.",
+            url: "/guides/wrong-location/",
+            icon: "🔧",
+            readTime: "8 мин чтения",
+            tag: "Устранение Ошибок"
+          },
+          {
+            title: "Точность IP-Геолокации: Как Работает GeoIP и Почему Она Ошибается",
+            description: "Как базы данных GeoIP привязывают IP-адреса к городам и почему сетевая геолокация не отражает реальное физическое положение.",
+            url: "/guides/ip-geolocation-accuracy/",
+            icon: "📡",
+            readTime: "8 мин чтения",
+            tag: "Сетевой GeoIP"
+          }
+        ]
+      },
+      {
+        category: "🔒 Конфиденциальность, Веб-Разработка и Тестирование",
+        description: "Руководства по API для программистов, имитация фиктивных координат и надежная защита персональных геоданных.",
+        guides: [
+          {
+            title: "HTML5 Geolocation API: Практическое Руководство для Разработчиков",
+            description: "Использование navigator.geolocation в JavaScript, флаг highAccuracy, обработка таймаутов и разрешений браузера.",
+            url: "/guides/browser-geolocation-api-guide/",
+            icon: "💻",
+            readTime: "9 мин чтения",
+            tag: "Для Разработчиков"
+          },
+          {
+            title: "Как Безопасно Делиться Местоположением: Полное Руководство",
+            description: "Безопасная передача координат на iPhone, Android, в мессенджерах, Google Картах и через сканируемый QR-код.",
+            url: "/guides/how-to-share-location/",
+            icon: "🔗",
+            readTime: "7 мин чтения",
+            tag: "Безопасность"
+          },
+          {
+            title: "Приватность GPS: Кто Следит за Вашим Местоположением и Как Защититься",
+            description: "Аудит разрешений мобильных приложений, очистка метаданных EXIF на фотографиях и защита от трекеров сотовых вышек.",
+            url: "/guides/gps-privacy-and-security/",
+            icon: "🔒",
+            readTime: "8 мин чтения",
+            tag: "Защита Приватности"
+          },
+          {
+            title: "Имитация Местоположения: Тестирование и Спуфинг GPS для QA-Инженеров",
+            description: "Симуляция координат с помощью Mock Locations в Android, маршрутов GPX в Xcode и эмуляции сенсоров в Chrome DevTools.",
+            url: "/guides/how-to-fake-or-mock-location/",
+            icon: "🧪",
+            readTime: "8 мин чтения",
+            tag: "Тестирование и QA"
+          }
+        ]
+      }
+    ]
   }
 };

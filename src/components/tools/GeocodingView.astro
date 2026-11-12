@@ -185,6 +185,78 @@ const translations: Record<string, any> = {
     linkComp: "Perbandingan Forward vs Reverse Geocoding",
     linkGlossary: "Glosarium Geodesi",
     locateTitle: "Perbesar ke lokasi saya saat ini"
+  },
+  ja: {
+    title: "ジオコーダー — 住所から座標を検索 | MyLocationLab",
+    description: "住所、都市名、建物名、観光地から正確なGPS緯度経度を瞬時に取得する順ジオコーディングツール。",
+    h1: "ジオコーダー (Geocoder)",
+    subtitle: "住所、都市名、名所旧跡を入力して、対応するGPS座標（緯度・経度）を特定します。",
+    labelInput: "住所、都市名、または場所の名前を入力",
+    placeholder: "例: 東京タワー、東京都港区芝公園",
+    btnFind: "座標を検索",
+    h3Results: "検索結果",
+    noResults: "該当する場所が見つかりませんでした。",
+    lblLocation: "該当住所",
+    lblCoords: "GPS座標",
+    alertEmpty: "住所または場所の名前を入力してください。",
+    alertFailed: "ジオコーディングに失敗しました。もう一度お試しください。",
+    toastCopied: "座標をコピーしました！",
+    h2What: "ジオコーディングとは？",
+    pWhat: "<strong>ジオコーディング (Forward Geocoding)</strong> は、日常的な地名や住所を地図上の数値座標（緯度・経度）に変換する技術です。",
+    h3Related: "関連ツール＆ガイド",
+    linkRev: "逆ジオコーダー (座標から住所)",
+    linkAddr: "番地住所検索",
+    linkComp: "正ジオコーディングと逆ジオコーディングの技術比較",
+    linkGlossary: "測地学用語集",
+    locateTitle: "現在地にズーム"
+  },
+  it: {
+    title: "Geocodificatore — Da Indirizzo a Coordinate GPS | MyLocationLab",
+    description: "Converti qualsiasi indirizzo, città o toponimo in coordinate GPS decimali. Geocodifica diretta rapida e gratuita.",
+    h1: "Geocodificatore Diretto",
+    subtitle: "Trova latitudine e longitudine geografica a partire da un indirizzo stradale, città o monumento.",
+    labelInput: "Inserisci un indirizzo, città o monumento",
+    placeholder: "es. Colosseo, Roma",
+    btnFind: "Trova Coordinate",
+    h3Results: "Risultati Trovati",
+    noResults: "Nessun risultato trovato.",
+    lblLocation: "Posizione",
+    lblCoords: "Coordinate GPS",
+    alertEmpty: "Inserisci un indirizzo o un nome di luogo.",
+    alertFailed: "Geocodifica fallita. Riprova con termini diversi.",
+    toastCopied: "Coordinate copiate negli appunti!",
+    h2What: "Cos'è la Geocodifica Diretta?",
+    pWhat: "La <strong>geocodifica diretta</strong> converte descrizioni testuali in coordinate numeriche su WGS84, consentendo la localizzazione esatta su mappe digitali.",
+    h3Related: "Strumenti e Guide Correlati",
+    linkRev: "Geocodifica Inversa (Da Coordinate a Indirizzo)",
+    linkAddr: "Trova Indirizzo",
+    linkComp: "Confronto tra Geocodifica Diretta e Inversa",
+    linkGlossary: "Glossario Geospaziale",
+    locateTitle: "Centra sulla mia posizione"
+  },
+  ru: {
+    title: "Геокодер — Поиск координат по адресу | MyLocationLab",
+    description: "Прямое геокодирование: преобразуйте любой адрес, город или название места в точные координаты широты и долготы GPS.",
+    h1: "Геокодер",
+    subtitle: "Определите географические координаты GPS (широту и долготу) по названию улицы, города или достопримечательности.",
+    labelInput: "Введите адрес, город или название места",
+    placeholder: "например: Красная площадь, Москва",
+    btnFind: "Найти координаты",
+    h3Results: "Результаты поиска",
+    noResults: "Ничего не найдено.",
+    lblLocation: "Найденный адрес",
+    lblCoords: "Координаты GPS",
+    alertEmpty: "Пожалуйста, введите название или адрес.",
+    alertFailed: "Ошибка геокодирования. Попробуйте уточнить запрос.",
+    toastCopied: "Координаты скопированы в буфер обмена!",
+    h2What: "Что такое прямое геокодирование?",
+    pWhat: "<strong>Прямое геокодирование (Forward Geocoding)</strong> — процесс преобразования понятного текстового адреса или топонима в точные числовые координаты GPS.",
+    h3Related: "Связанные инструменты",
+    linkRev: "Обратный геокодер (по координатам в адрес)",
+    linkAddr: "Поиск почтового адреса",
+    linkComp: "Прямое и обратное геокодирование: сравнение",
+    linkGlossary: "Глоссарий терминов ГИС",
+    locateTitle: "Показать текущую позицию"
   }
 };
 
@@ -299,7 +371,7 @@ const t = translations[lang] || translations.en;
 
   <div style="margin-top: var(--space-12);">
     <h2 class="mb-8">{faqTitle}</h2>
-    <FAQAccordion items={toolFaqs} />
+    <FAQAccordion items={toolFaqs} lang={lang} />
   </div>
 
   <script define:vars={{ tData: t }}>

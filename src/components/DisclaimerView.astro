@@ -14,7 +14,7 @@ interface Props {
 }
 
 const { lang: customLang = defaultLang } = Astro.props;
-const lang = (customLang in { en: 1, es: 1, fr: 1, de: 1, pt: 1, hi: 1, id: 1 } ? customLang : defaultLang) as SupportedLang;
+const lang = (customLang || defaultLang) as SupportedLang;
 const t = useTranslations(lang);
 
 interface DisclaimerData {
@@ -205,6 +205,78 @@ const disclaimerContent: Record<SupportedLang, DisclaimerData> = {
     pThirdParty: "Data peta dan geocoding bersumber dari OpenStreetMap di bawah lisensi terbuka ODbL.",
     h2Contact: "5. Kontak Hukum",
     pContact: "Pertanyaan regulasi dan kepatuhan dapat dikirim ke support@mylocationlab.com."
+  },
+  ja: {
+    metaTitle: "免責事項・法的通知 | MyLocationLab",
+    metaDesc: "MyLocationLabのGPS精度、緊急通報（110/119）に関する安全通知、および情報利用に関する法的免責事項。",
+    breadcrumb: "免責事項",
+    badge: "重要な法的通知",
+    h1: "法的免責事項・緊急通報に関する通知",
+    subtitle: "MyLocationLabを利用する際の技術的制約、緊急通報時の注意事項、情報提供目的の利用規約。",
+    h2Emergency: "1. 生命の安全および緊急通報に関する重要通知",
+    pEmergencyAlert: "人命に関わる緊急事態においては、本ウェブサイトに依存しないでください。警察（110）、消防・救急（119）、海上保安庁（118）等の緊急機関が必要な場合は、直ちに電話で直接ダイヤルしてください。携帯電話キャリアの緊急位置通報システムは、ブラウザ上のウェブアプリよりもはるかに正確で暗号化された位置情報を司令センターに直接送信します。",
+    h2Accuracy: "2. 位置情報の精度および物理的限界",
+    pAccuracy: "MyLocationLabで算出される位置情報は、端末のハードウェアおよびブラウザ標準APIに基づく推定値です。屋外では高精度（3〜5m）が得られますが、以下の要因により誤差が生じる場合があります:",
+    accuracyFactors: [
+      { title: "大気・電離層の影響:", desc: "太陽活動や電離層の乱れにより、衛星信号の伝播に微細な遅延が発生します。" },
+      { title: "都市部マルチパス反射:", desc: "超高層ビルやガラス壁面により衛星信号が反射し、位置のずれ（マルチパス誤差）が生じることがあります。" },
+      { title: "屋内・地下の遮蔽:", desc: "建物の屋根、地下街、鉄筋コンクリートによりGPS衛星の直接電波が遮断されます。" },
+      { title: "Wi-Fi・IPアドレスの推定誤差:", desc: "Wi-FiアクセスポイントやISPルーティング情報に基づく測位は、プロバイダ基地局の位置を示し数十キロ離れることがあります。" }
+    ],
+    h2Informational: "3. 情報提供・学習目的の利用",
+    pInformational: "本サイトのすべてのツール、計算機、地図データは一般的な参考・学習・利便性向上目的で「現状有姿」で提供されています。公的な測量、境界確定、船舶・航空航行の公式証明書として使用することはできません。",
+    h2ThirdParty: "4. 地図データ・第三者帰属表示",
+    pThirdParty: "地図表示および逆ジオコーディングデータはOpenStreetMapおよびNominatimよりODbLライセンスに基づき提供されています。",
+    h2Contact: "5. 法務・コンプライアンスに関するお問い合わせ",
+    pContact: "法的通知、利用規約、技術仕様に関するお問い合わせは support@mylocationlab.com までご連絡ください。"
+  },
+  it: {
+    metaTitle: "Disclaimer Legale ed Emergenze | MyLocationLab",
+    metaDesc: "Leggi il disclaimer di MyLocationLab sui limiti di precisione GPS, avvisi per i servizi di emergenza (112) e uso a scopo informativo.",
+    breadcrumb: "Disclaimer",
+    badge: "Avviso Legale Importante",
+    h1: "Disclaimer Legale e di Emergenza",
+    subtitle: "Limitazioni tecniche essenziali, avvisi di pubblica sicurezza e condizioni d'uso informativo di MyLocationLab.",
+    h2Emergency: "1. Avviso Critico di Sicurezza e Chiamate di Emergenza",
+    pEmergencyAlert: "NON AFFIDARTI A QUESTO SITO IN SITUAZIONI DI ATTIVO PERICOLO DI VITA. Se necessiti di polizia, vigili del fuoco o ambulanza, componi immediatamente il Numero Unico Europeo 112 (o il 911 / 999). I sistemi nativi degli operatori telefonici (AML ed ELS) trasmettono dati cellulari certificati direttamente alle centrali di soccorso (CUR NUE 112) con affidabilità immensamente superiore.",
+    h2Accuracy: "2. Tolleranze di Geolocalizzazione e Limiti Fisici",
+    pAccuracy: "Le stime di posizione fornite da MyLocationLab sono calcolate tramite i sensori del dispositivo e le API del browser. All'aperto il GPS garantisce una precisione di 3-5 metri, ma possono verificarsi scostamenti dovuti a fattori naturali:",
+    accuracyFactors: [
+      { title: "Ritardo Atmosferico e Ionosferico:", desc: "Le tempeste solari e la ionosfera deviano le onde radio dei satelliti GNSS." },
+      { title: "Interferenza Multipath Urbana:", desc: "Facciate in vetro e cemento riflettono il segnale satellitare generando falsi ritardi." },
+      { title: "Attenuazione Indoor e Sotterranea:", desc: "Soffitti in cemento armato e livelli interrati schermano la visibilità ottica dei satelliti." },
+      { title: "Drift Database Wi-Fi e IP:", desc: "La geolocalizzazione su desktop tramite IP fa capo alle centrali dell'operatore internet, distanti spesso decine di chilometri." }
+    ],
+    h2Informational: "3. Finalità Esclusivamente Informativa",
+    pInformational: "Tutti gli strumenti, calcolatori e mappe sono forniti 'così come sono' a puro scopo informativo e didattico. Non costituiscono perizie catastali, certificazioni di confine o rilievi topografici legali.",
+    h2ThirdParty: "4. Attribuzione Cartografica di Terze Parti",
+    pThirdParty: "La visualizzazione della mappa e i dati di geocodifica sono concessi da OpenStreetMap e Nominatim con licenza Open Database License (ODbL).",
+    h2Contact: "5. Domande Legali e Conformità",
+    pContact: "Per richieste relative a note legali, termini o politiche tecniche, scrivi a support@mylocationlab.com."
+  },
+  ru: {
+    metaTitle: "Отказ от ответственности и экстренные вызовы | MyLocationLab",
+    metaDesc: "Отказ от ответственности MyLocationLab касательно погрешности GPS, предупреждения для экстренных служб (112) и информационного использования.",
+    breadcrumb: "Отказ от ответственности",
+    badge: "Важное юридическое уведомление",
+    h1: "Отказ от ответственности и безопасность",
+    subtitle: "Технические ограничения геолокации, предупреждения для экстренных служб и правила использования сайта.",
+    h2Emergency: "1. Критическое предупреждение для экстренных ситуаций",
+    pEmergencyAlert: "НЕ ИСПОЛЬЗУЙТЕ ДАННЫЙ ВЕБ-САЙТ В СИТУАЦИЯХ, УГРОЖАЮЩИХ ЖИЗНИ И ЗДОРОВЬЮ. Если вам или окружающим требуется полиция, скорая помощь или спасатели МЧС, немедленно звоните по единому номеру экстренных служб 112 (или 911 / 999). Системы сотовых операторов передают проверенные координаты непосредственно диспетчерским службам намного надежнее любого браузерного скрипта.",
+    h2Accuracy: "2. Погрешности геолокации и физические ограничения",
+    pAccuracy: "Оценки местоположения в MyLocationLab рассчитываются аппаратурой вашего устройства и стандартным API браузера. На открытом воздухе GPS обеспечивает точность 3–5 метров, однако возможны отклонения по естественным причинам:",
+    accuracyFactors: [
+      { title: "Ионосферные задержки:", desc: "Солнечная активность и возмущения в ионосфере замедляют радиоволны спутников GNSS." },
+      { title: "Городское многолучевое отражение:", desc: "Стены высотных зданий отражают спутниковый сигнал, вызывая погрешность запаздывания (multipath)." },
+      { title: "Затухание в помещениях:", desc: "Крыши, подземные этажи и железобетонные перекрытия блокируют прямую видимость спутников." },
+      { title: "Погрешности Wi-Fi и баз IP:", desc: "Геолокация по IP определяет лишь маршрутизатор интернет-провайдера, находящийся за десятки километров." }
+    ],
+    h2Informational: "3. Информационное и учебное назначение",
+    pInformational: "Все инструменты, калькуляторы и карты предоставляются на условиях «как есть» исключительно для информационных и справочных целей. Они не являются официальными геодезическими изысканиями или кадастровыми планами.",
+    h2ThirdParty: "4. Атрибуция картографических данных",
+    pThirdParty: "Картографические слои и данные обратного геокодирования предоставлены OpenStreetMap и Nominatim по лицензии Open Database License (ODbL).",
+    h2Contact: "5. Юридические вопросы",
+    pContact: "По вопросам правовых уведомлений, условий и технической политики обращайтесь на support@mylocationlab.com."
   }
 };
 

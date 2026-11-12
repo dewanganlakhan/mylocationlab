@@ -8,7 +8,7 @@ export default defineConfig({
   output: 'static',
   i18n: {
     defaultLocale: 'en',
-    locales: ['en', 'es', 'fr', 'de', 'pt', 'hi', 'id'],
+    locales: ['en', 'es', 'fr', 'de', 'pt', 'hi', 'id', 'ja', 'it', 'ru'],
     fallback: {
       es: 'en',
       fr: 'en',
@@ -16,6 +16,9 @@ export default defineConfig({
       pt: 'en',
       hi: 'en',
       id: 'en',
+      ja: 'en',
+      it: 'en',
+      ru: 'en',
     },
     routing: {
       prefixDefaultLocale: false,
@@ -36,6 +39,9 @@ export default defineConfig({
           pt: 'pt-BR',
           hi: 'hi',
           id: 'id',
+          ja: 'ja',
+          it: 'it',
+          ru: 'ru',
         },
       },
       serialize(item) {

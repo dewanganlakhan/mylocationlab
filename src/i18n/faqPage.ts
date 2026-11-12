@@ -375,5 +375,158 @@ export const faqPageTranslations: Record<string, FAQPageContent> = {
         answerHtml: 'Klik ikon gembok atau pengaturan di bilah alamat peramban Anda, cari <strong>Lokasi</strong>, ubah izinnya menjadi <strong>Diizinkan</strong>, lalu muat ulang halaman web.'
       }
     ]
+  },
+  ja: {
+    metaTitle: "位置情報＆GPSに関するよくある質問 (FAQ) | MyLocationLab",
+    metaDescription: "現在地の特定方法、GPS精度、ブラウザのプライバシー、市町村のズレ修正、座標変換に関するよくある質問と回答を網羅。",
+    breadcrumb: "よくある質問",
+    titlePrefix: "よくある",
+    titleHighlight: "ご質問 (FAQ)",
+    subtitle: "ブラウザ測位、GPS衛星精度、座標系、データプライバシーに関する疑問を分かりやすく解説します。",
+    stillQuestionsTitle: "解決しない質問がありますか？",
+    stillQuestionsDesc: "技術ガイドを参照するか、地理空間エンジニアリングチームまで直接お問い合わせください。",
+    browseGuidesBtn: "📚 ガイド一覧を見る",
+    glossaryBtn: "📖 測地学用語集",
+    contactBtn: "✉️ サポートに連絡",
+    faqs: [
+      {
+        question: "私の現在地はどこですか？どうやって調べられますか？",
+        answerHtml: '当サイトのトップページ <a href="/location/">現在地確認</a> を開き、<strong>「現在地を取得」</strong>をクリックしてください。ブラウザが端末のGPSやWi-Fi測位と連携し、正確な緯度経度、番地・住所、市区町村、都道府県を瞬時に表示します。'
+      },
+      {
+        question: "このWebサイトの位置情報測定精度はどのくらいですか？",
+        answerHtml: '端末と利用環境によって異なります：GPSが有効な屋外のスマートフォンでは通常<strong>3〜5メートル以内</strong>の極めて高い精度です。Wi-Fi接続のノートPCでは通常<strong>15〜40メートル以内</strong>となります。有線LANのデスクトップPCではプロバイダのIP位置情報に基づくため、10〜50km程度の誤差が生じる場合があります。'
+      },
+      {
+        question: "位置情報データがサーバーに記録・追跡されることはありますか？",
+        answerHtml: '<strong>いいえ、絶対にありません。</strong>すべての測位計算、座標変換、地図のレンダリングは、W3C標準APIを用いてブラウザ内でのみ実行されます。サーバーへ座標ログを蓄積・販売することは一切ありません。詳細は <a href="/privacy/">プライバシーポリシー</a> をご覧ください。'
+      },
+      {
+        question: "なぜ現在地が違う市区町村や県で表示されるのですか？",
+        answerHtml: '位置が数十キロずれている場合、GPSのないPCでプロバイダ（ISP）のIPアドレスが参照されているか、VPNを利用している、または最近引っ越してルーターを移動した可能性があります。詳しい解決手順は <a href="/guides/wrong-location/">位置情報のズレ修正ガイド</a> をご確認ください。'
+      },
+      {
+        question: "GPS座標とIPアドレス位置情報の違いは何ですか？",
+        answerHtml: 'GPSは地上20,200kmを周回する衛星からの電波を直接受信し、約3メートルの精度で物理座標を割り出します。IP位置情報はインターネットのルーティングデータベースを参照するため、プロバイダの基地局やデータセンターの所在地を示します。詳しくは <a href="/comparisons/gps-vs-ip-location/">GPS vs IP位置情報の比較</a> をご覧ください。'
+      },
+      {
+        question: "GPSの緯度経度座標を住所に変換するにはどうすればいいですか？",
+        answerHtml: '無料の <a href="/tools/reverse-geocoding/">逆ジオコーダー</a> または <a href="/tools/address-finder/">住所検索ツール</a> をご利用ください。緯度と経度を入力すると、OpenStreetMapの住所インデックスから該当する番地、郵便番号、自治体名を特定します。'
+      },
+      {
+        question: "現在の標高や海抜高度を調べることはできますか？",
+        answerHtml: 'はい、<a href="/tools/elevation-finder/">標高・高度検索</a> ツールで衛星地形データと端末センサーを活用し、現在地の海抜高度をメートルおよびフィート単位で測定できます。'
+      },
+      {
+        question: "自分の位置情報を安全に誰かに共有する方法はありますか？",
+        answerHtml: '<a href="/share-location/">位置情報共有ツール</a> をご利用ください。ワンクリックで安全な共有リンクや、Googleマップ・Appleマップで直接開ける <a href="/tools/location-qr-code/">位置情報QRコード</a> を生成できます。'
+      },
+      {
+        question: '位置情報の許可で誤って「ブロック」を押してしまった場合はどうすればいいですか？',
+        answerHtml: 'ブラウザのアドレスバーにある鍵アイコンまたはサイト設定アイコンをクリックし、<strong>「位置情報」</strong>の設定を<strong>「許可」</strong>に変更してからページを再読み込みしてください。'
+      }
+    ]
+  },
+  it: {
+    metaTitle: "FAQ su Posizione e GPS — Tutte le Risposte | MyLocationLab",
+    metaDescription: "Risposte alle domande più frequenti su geolocalizzazione, precisione GPS, privacy del browser, correzione della città errata e conversioni di coordinate.",
+    breadcrumb: "Domande Frequenti",
+    titlePrefix: "Domande",
+    titleHighlight: "Frequenti (FAQ)",
+    subtitle: "Tutto quello che devi sapere sulla geolocalizzazione da browser, accuratezza satellitare, sistemi di coordinate e tutela della privacy.",
+    stillQuestionsTitle: "Hai Ancora Domande?",
+    stillQuestionsDesc: "Approfondisci con le nostre guide tecniche o contatta direttamente il team di ingegneria geospaziale.",
+    browseGuidesBtn: "📚 Esplora Tutte le Guide",
+    glossaryBtn: "📖 Glossario di Geodesia",
+    contactBtn: "✉️ Contatta il Supporto",
+    faqs: [
+      {
+        question: "Qual è la mia posizione attuale e come posso trovarla?",
+        answerHtml: 'Puoi trovare la tua posizione all\'istante visitando la nostra pagina <a href="/location/">Dove Mi Trovo</a> e cliccando su <strong>"Ottieni la Mia Posizione"</strong>. Il tuo browser interrogherà il sensore GPS o il modulo Wi-Fi per mostrarti latitudine, longitudine, indirizzo, città, provincia e CAP.'
+      },
+      {
+        question: "Quanto è accurato questo sito nel determinare la mia posizione?",
+        answerHtml: 'La precisione varia a seconda dell\'hardware: su smartphone all\'aperto con GPS attivo, la precisione tipica è compresa tra <strong>3 e 5 metri</strong>. Su laptop o desktop collegati via Wi-Fi è di circa <strong>15–40 metri</strong>. Su connessioni fisse ethernet via cavo, il sistema ripiega sulla geolocalizzazione IP (con un margine di 10–50 chilometri).'
+      },
+      {
+        question: "I miei dati di posizione vengono salvati o tracciati sui vostri server?",
+        answerHtml: '<strong>No, mai.</strong> Tutti i calcoli di geolocalizzazione, conversioni di coordinate e visualizzazione su mappa avvengono al 100% nel tuo browser locale tramite le API standard W3C. Non memorizziamo, né tracciamo o vendiamo le tue coordinate. Leggi la nostra <a href="/privacy/">Informativa sulla Privacy</a>.'
+      },
+      {
+        question: "Perché la posizione mostra una città o una regione errata?",
+        answerHtml: 'Se la posizione è sfalsata di decine di chilometri, è probabile che tu stia navigando da un computer fisso tramite l\'indirizzo IP del fornitore di rete (ISP) anziché via GPS, oppure stai utilizzando una VPN o un router recentemente trasferito. Consulta la nostra guida su <a href="/guides/wrong-location/">Come Correggere la Posizione Errata</a>.'
+      },
+      {
+        question: "Che differenza c'è tra coordinate GPS e localizzazione IP?",
+        answerHtml: 'Il GPS riceve segnali radio da satelliti in orbita a 20.200 km di quota per calcolare la tua posizione reale con uno scarto di pochi metri. La localizzazione IP consulta invece database commerciali di instradamento internet, identificando solo il nodo centrale del provider. Scopri di più nel nostro confronto <a href="/comparisons/gps-vs-ip-location/">GPS vs Posizione IP</a>.'
+      },
+      {
+        question: "Come posso convertire le coordinate GPS in un indirizzo civico?",
+        answerHtml: 'Usa il nostro <a href="/tools/reverse-geocoding/">Geocodificatore Inverso</a> o lo strumento <a href="/tools/address-finder/">Trova Indirizzo</a> gratuito. Inserisci latitudine e longitudine per ottenere nome della via, numero civico, CAP e comune.'
+      },
+      {
+        question: "Posso conoscere la mia altitudine ed elevazione sul livello del mare?",
+        answerHtml: 'Sì! Il nostro <a href="/tools/elevation-finder/">Rilevatore di Altitudine</a> misura l\'altezza sul livello medio del mare in metri e piedi combinando modelli topografici satellitari e sensori di pressione.'
+      },
+      {
+        question: "Come posso condividere la mia posizione con altri in sicurezza?",
+        answerHtml: 'Visita il nostro strumento <a href="/share-location/">Condividi Posizione</a> per generare un link privato o un <a href="/tools/location-qr-code/">Codice QR</a> scansionabile che apre la tua posizione direttamente su Google Maps o Apple Maps.'
+      },
+      {
+        question: 'Cosa devo fare se ho cliccato per sbaglio "Blocca" sui permessi?',
+        answerHtml: 'Clicca sull\'icona a forma di lucchetto nella barra degli indirizzi del tuo browser, cerca <strong>Posizione</strong>, modifica l\'impostazione su <strong>Consenti</strong> e ricarica la pagina.'
+      }
+    ]
+  },
+  ru: {
+    metaTitle: "Часто Задаваемые Вопросы о GPS и Геолокации | MyLocationLab",
+    metaDescription: "Ответы на популярные вопросы: как определить местоположение, точность спутников GPS, приватность в браузере, исправление неверного города и конвертация координат.",
+    breadcrumb: "Часто Задаваемые Вопросы",
+    titlePrefix: "Часто Задаваемые",
+    titleHighlight: "Вопросы (FAQ)",
+    subtitle: "Все, что вам нужно знать о геолокации в браузере, точности спутников GPS, геодезических координатах и защите персональных данных.",
+    stillQuestionsTitle: "Остались Вопросы?",
+    stillQuestionsDesc: "Ознакомьтесь с нашими подробными руководствами или обратитесь напрямую к инженерам проекта.",
+    browseGuidesBtn: "📚 Все Руководства",
+    glossaryBtn: "📖 Глоссарий Геодезии",
+    contactBtn: "✉️ Связаться с Поддержкой",
+    faqs: [
+      {
+        question: "Где я нахожусь прямо сейчас и как это узнать?",
+        answerHtml: 'Вы можете мгновенно узнать свое местоположение на главной странице <a href="/location/">Где Я Нахожусь</a>, нажав кнопку <strong>«Определить Мое Местоположение»</strong>. Браузер опросит датчик GPS или модуль Wi-Fi вашего устройства и покажет точные координаты, улицу, номер дома, город и страну.'
+      },
+      {
+        question: "Насколько точно веб-сайт определяет мое местоположение?",
+        answerHtml: 'Точность зависит от оборудования: на смартфонах на открытом воздухе с включенным GPS погрешность составляет всего <strong>3–5 метров</strong>. На ноутбуках при подключении по Wi-Fi точность составляет <strong>15–40 метров</strong>. На стационарных компьютерах с кабельным интернетом точность определяется по IP провайдера (погрешность от 10 до 50 км).'
+      },
+      {
+        question: "Сохраняются ли мои координаты на ваших серверах?",
+        answerHtml: '<strong>Нет, никогда.</strong> Все вычисления координат, расчеты расстояний и показ карты производятся локально в браузере через стандартный W3C Geolocation API. Мы не собираем и не продаем историю ваших перемещений. Подробнее в нашей <a href="/privacy/">Политике Конфиденциальности</a>.'
+      },
+      {
+        question: "Почему отображается не тот город или регион?",
+        answerHtml: 'Если ошибка составляет десятки километров, вы, скорее всего, используете настольный ПК без GPS, и сайт определяет позицию по IP интернет-провайдера, либо у вас включен VPN. Подробные инструкции по устранению читайте в нашем <a href="/guides/wrong-location/">Руководстве по Исправлению Неверного Местоположения</a>.'
+      },
+      {
+        question: "В чем разница между координатами GPS и геолокацией по IP?",
+        answerHtml: 'GPS принимает радиосигналы спутников на высоте 20 200 км и вычисляет реальные координаты с точностью до 3 метров. Определение по IP использует коммерческие таблицы маршрутизации, показывая лишь узел связи вашего провайдера. Читайте подробнее в статье <a href="/comparisons/gps-vs-ip-location/">GPS против IP-Геолокации</a>.'
+      },
+      {
+        question: "Как преобразовать координаты GPS в точный адрес?",
+        answerHtml: 'Воспользуйтесь бесплатным инструментом <a href="/tools/reverse-geocoding/">Обратное Геокодирование</a> или <a href="/tools/address-finder/">Поиск Адреса</a>. Введите широту и долготу, и система сопоставит их с базой данных OpenStreetMap, вернув точный адрес.'
+      },
+      {
+        question: "Можно ли узнать высоту над уровнем моря в моем местоположении?",
+        answerHtml: 'Да! Инструмент <a href="/tools/elevation-finder/">Определение Высоты</a> вычисляет точную топографическую высоту над уровнем моря в метрах и футах по спутниковым моделям рельефа.'
+      },
+      {
+        question: "Как безопасно отправить свои координаты другому человеку?",
+        answerHtml: 'Используйте раздел <a href="/share-location/">Поделиться Геопозицией</a>. Вы можете создать защищенную ссылку или <a href="/tools/location-qr-code/">QR-код Местоположения</a> для открытия в Google Картах или Яндекс Картах.'
+      },
+      {
+        question: 'Что делать, если я случайно нажал «Заблокировать» доступ к геопозиции?',
+        answerHtml: 'Нажмите на значок замка слева в адресной строке браузера, найдите пункт <strong>«Геолокация»</strong> или <strong>«Местоположение»</strong>, переключите его в положение <strong>«Разрешить»</strong> и обновите страницу.'
+      }
+    ]
   }
 };

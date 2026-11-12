@@ -213,6 +213,90 @@ const translations: Record<string, any> = {
     linkGeo: "Geocoder",
     linkMyAddr: "Alamat Saya",
     locateTitle: "Perbesar ke lokasi saya saat ini"
+  },
+  ja: {
+    title: "住所検索 — あらゆる場所の住所特定 | MyLocationLab",
+    description: "現在地や任意のGPS座標から番地を含む正確な郵便住所を逆ジオコーディングで瞬時に検索します。",
+    h1: "住所検索 (Address Finder)",
+    subtitle: "逆ジオコーディング技術により、現在地や任意の緯度経度から正式な住所を即座に特定します。",
+    btnGps: "📍 現在地を使用",
+    orEnterCoords: "または座標を入力:",
+    placeholder: "座標を入力 (例: 35.6762, 139.6503)",
+    btnSearch: "住所を検索",
+    labelFull: "完全な住所",
+    labelStreet: "番地・街路名",
+    labelCity: "市区町村",
+    labelState: "都道府県",
+    labelPostcode: "郵便番号",
+    labelCountry: "国",
+    labelCoords: "座標",
+    btnCopy: "📋 住所をコピー",
+    alertUnable: "指定された座標の住所が見つかりませんでした。",
+    alertInvalid: "有効な座標を入力してください (例: 35.6762, 139.6503)",
+    h2How: "住所検索の仕組み",
+    pHow1: "このツールは<strong>逆ジオコーディング (Reverse Geocoding)</strong> を使用し、数値のGPS座標を人間が読める住所に変換します。座標はOpenStreetMapのグローバル住所データベースと照合されます。",
+    pHow2: "精度は地域の地理データ密度に依存します。都市部では番地レベルの正確な建物名が特定され、農村部では行政区画や集落の代表点が表示されます。",
+    h3Related: "関連ツール",
+    linkRev: "逆ジオコーダー",
+    linkGeo: "正ジオコーダー",
+    linkMyAddr: "私の住所",
+    locateTitle: "現在地にズーム"
+  },
+  it: {
+    title: "Trova Indirizzo — Indirizzo da Coordinate | MyLocationLab",
+    description: "Trova l'indirizzo civico esatto per la tua posizione attuale o per qualsiasi coordinata GPS tramite geocodifica inversa gratuita.",
+    h1: "Trova Indirizzo",
+    subtitle: "Ottieni l'indirizzo stradale completo per la tua posizione o coordinate geospaziali tramite geocodifica inversa.",
+    btnGps: "📍 Usa la Mia Posizione",
+    orEnterCoords: "oppure inserisci coordinate:",
+    placeholder: "Inserisci coordinate (es. 41.9028, 12.4964)",
+    btnSearch: "Trova Indirizzo",
+    labelFull: "Indirizzo Completo",
+    labelStreet: "Via / Piazza",
+    labelCity: "Comune",
+    labelState: "Provincia / Regione",
+    labelPostcode: "CAP",
+    labelCountry: "Nazione",
+    labelCoords: "Coordinate",
+    btnCopy: "📋 Copia Indirizzo",
+    alertUnable: "Impossibile trovare l'indirizzo per queste coordinate.",
+    alertInvalid: "Inserisci coordinate valide (es. 41.9028, 12.4964)",
+    h2How: "Come Funziona la Ricerca Indirizzo",
+    pHow1: "Questo strumento utilizza la <strong>geocodifica inversa</strong>, il processo algoritmico che converte le coordinate GPS in un indirizzo postale leggibile. I dati vengono elaborati tramite l'archivio globale OpenStreetMap.",
+    pHow2: "La precisione varia a seconda della mappatura locale: nelle aree urbane si raggiunge il dettaglio del numero civico, mentre nelle zone rurali la risoluzione fa riferimento al baricentro del borgo.",
+    h3Related: "Strumenti Correlati",
+    linkRev: "Geocodifica Inversa",
+    linkGeo: "Geocodifica Diretta",
+    linkMyAddr: "Il Mio Indirizzo",
+    locateTitle: "Centra sulla mia posizione"
+  },
+  ru: {
+    title: "Поиск адреса — Адрес по координатам | MyLocationLab",
+    description: "Определите точный почтовый адрес текущего местоположения или любых координат GPS с помощью обратного геокодирования.",
+    h1: "Поиск адреса",
+    subtitle: "Узнайте полный почтовый адрес для вашего текущего местоположения или любых координат на карте.",
+    btnGps: "📍 Мое местоположение",
+    orEnterCoords: "или введите координаты:",
+    placeholder: "Введите координаты (например: 55.7558, 37.6173)",
+    btnSearch: "Найти адрес",
+    labelFull: "Полный адрес",
+    labelStreet: "Улица и дом",
+    labelCity: "Город / Населенный пункт",
+    labelState: "Регион / Область",
+    labelPostcode: "Почтовый индекс",
+    labelCountry: "Страна",
+    labelCoords: "Координаты",
+    btnCopy: "📋 Скопировать адрес",
+    alertUnable: "Не удалось найти адрес для указанных координат.",
+    alertInvalid: "Пожалуйста, введите корректные координаты (например: 55.7558, 37.6173)",
+    h2How: "Как работает поиск адреса",
+    pHow1: "Инструмент использует <strong>обратное геокодирование</strong> — процесс сопоставления спутниковых координат GPS с базой данных OpenStreetMap для получения понятного почтового адреса.",
+    pHow2: "Точность зависит от детализации картографии в вашем регионе. В мегаполисах определяется конкретное здание и подъезд, в сельской местности — границы населенного пункта.",
+    h3Related: "Похожие инструменты",
+    linkRev: "Обратный геокодер",
+    linkGeo: "Прямой геокодер",
+    linkMyAddr: "Мой адрес",
+    locateTitle: "Показать текущую позицию"
   }
 };
 
@@ -339,7 +423,7 @@ const t = translations[lang] || translations.en;
 
   <div style="margin-top: var(--space-12);">
     <h2 class="mb-8">{faqTitle}</h2>
-    <FAQAccordion items={toolFaqs} />
+    <FAQAccordion items={toolFaqs} lang={lang} />
   </div>
 
   <script define:vars={{ tData: t }}>

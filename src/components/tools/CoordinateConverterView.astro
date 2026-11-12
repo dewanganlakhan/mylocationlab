@@ -178,6 +178,75 @@ const translations: Record<string, any> = {
     fmt4: "Geohash — ttncygjf8 — Encoding alfanumerik ringkas",
     fmt5: "Plus Code — 7JVW52GR+2V — Open Location Code dari Google",
     compLinkText: "Perbandingan Derajat Desimal vs DMS"
+  },
+  ja: {
+    title: "座標変換ツール — DD, DMS, UTM, Plus Code | MyLocationLab",
+    description: "10進数度(DD)、度分秒(DMS)、UTM、ジオハッシュ、Plus Code間の座標相互変換をブラウザ上で瞬時に実行。",
+    h1: "座標変換ツール (Coordinate Converter)",
+    subtitle: "10進数度(DD)、度分秒(DMS)、UTM、Geohash、Plus Code形式を瞬時に相互変換します。",
+    labelInput: "座標を入力 (任意の形式に対応)",
+    placeholder: "例: 35.6762, 139.6503 または 35°40'34\"N 139°39'01\"E",
+    btnConvert: "変換を実行",
+    btnGps: "📍 現在地の座標を使用",
+    lblDd: "10進数度 (Decimal Degrees - DD)",
+    lblDmsLat: "度分秒 緯度 (DMS Lat)",
+    lblDmsLng: "度分秒 経度 (DMS Lng)",
+    lblUtm: "UTM (ユニバーサル横メルカトル)",
+    lblGeohash: "ジオハッシュ (Geohash)",
+    lblPlusCode: "Plus Code (Open Location Code)",
+    h2Formats: "対応している座標フォーマット",
+    fmt1: "10進数度 (DD) — 35.676200, 139.650300 — デジタル地図の標準",
+    fmt2: "度分秒 (DMS) — 35°40'34.3\"N 139°39'01.1\"E — 伝統的な測地表記",
+    fmt3: "UTM — 54S 377725 3949012 — 測量・軍事利用に最適な平面直角座標",
+    fmt4: "Geohash — xn774c0 — 英数字による階層的文字列表記",
+    fmt5: "Plus Code — 8Q7XMPGF+44 — Google提唱のオープン位置コード",
+    compLinkText: "10進数度(DD)と度分秒(DMS)の違いを比較"
+  },
+  it: {
+    title: "Convertitore Coordinate — DD, DMS, UTM, Geohash | MyLocationLab",
+    description: "Converti coordinate tra Gradi Decimali, DMS, UTM, Geohash e Plus Code istantaneamente online a zero raccolta dati.",
+    h1: "Convertitore di Coordinate",
+    subtitle: "Converti facilmente le coordinate geografiche tra i formati Gradi Decimali, DMS, UTM, Geohash e Plus Code.",
+    labelInput: "Inserisci Coordinate (qualsiasi formato)",
+    placeholder: "es. 41.9028, 12.4964 oppure 41°54'10\"N 12°29'47\"E",
+    btnConvert: "Converti",
+    btnGps: "📍 Usa Coordinate GPS",
+    lblDd: "Gradi Decimali (DD)",
+    lblDmsLat: "DMS Latitudine",
+    lblDmsLng: "DMS Longitudine",
+    lblUtm: "UTM (Universal Transverse Mercator)",
+    lblGeohash: "Geohash",
+    lblPlusCode: "Plus Code",
+    h2Formats: "Formati di Coordinate Supportati",
+    fmt1: "Gradi Decimali (DD) — 41.902800, 12.496400 — Standard web mapping",
+    fmt2: "Gradi Minuti Secondi (DMS) — 41°54'10.1\"N 12°29'47.0\"E — Notazione cartografica classica",
+    fmt3: "UTM — 33T 292150 4635600 — Notazione metrica per rilievi catastali",
+    fmt4: "Geohash — sr2yk — Stringa alfanumerica compatta",
+    fmt5: "Plus Code — 8FHJVF3W+4H — Codice Open Location Code di Google",
+    compLinkText: "Confronto tra Gradi Decimali e DMS"
+  },
+  ru: {
+    title: "Конвертер координат — DD, DMS, UTM, Plus Code | MyLocationLab",
+    description: "Конвертация географических координат между десятичными градусами, DMS, UTM, Geohash и Plus Code прямо в браузере.",
+    h1: "Конвертер координат",
+    subtitle: "Мгновенное преобразование координат между форматами DD, DMS, UTM, Geohash и Plus Code.",
+    labelInput: "Введите координаты в любом формате",
+    placeholder: "например: 55.7558, 37.6173 или 55°45'21\"N 37°37'02\"E",
+    btnConvert: "Конвертировать",
+    btnGps: "📍 Мое местоположение",
+    lblDd: "Десятичные градусы (DD)",
+    lblDmsLat: "DMS Широта",
+    lblDmsLng: "DMS Долгота",
+    lblUtm: "UTM",
+    lblGeohash: "Geohash",
+    lblPlusCode: "Plus Code",
+    h2Formats: "Поддерживаемые форматы координат",
+    fmt1: "Десятичные градусы (DD) — 55.755800, 37.617300 — базовый стандарт веб-карт",
+    fmt2: "Градусы, минуты, секунды (DMS) — 55°45'20.9\"N 37°37'02.3\"E — классическая запись",
+    fmt3: "UTM — 37U 413200 6179900 — прямоугольная система проекции Меркатора",
+    fmt4: "Geohash — ucfu5 — компактный буквенно-цифровой хеш",
+    fmt5: "Plus Code — 9G8VRJ48+8W — глобальный открытый код локации Google",
+    compLinkText: "Сравнение форматов: десятичные градусы против DMS"
   }
 };
 
@@ -315,7 +384,7 @@ const c = translations[lang] || translations.en;
 
   <div style="margin-top: var(--space-12);">
     <h2 class="mb-8">{faqTitle}</h2>
-    <FAQAccordion items={toolFaqs} />
+    <FAQAccordion items={toolFaqs} lang={lang} />
   </div>
 
   <script>

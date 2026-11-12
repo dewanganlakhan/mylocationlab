@@ -213,6 +213,81 @@ const toolData: Record<string, {
     guideLinkText: 'Panduan Penjelasan Lintang dan Bujur',
     glossaryLinkText: 'Glosarium Geodesi',
   },
+  ja: {
+    title: '緯度経度ファインダー — 座標の特定と検索 | MyLocationLab',
+    desc: '地図をクリックするかGPSを使用して、任意の場所の正確な緯度と経度を特定・検索します。',
+    h1: '緯度経度ファインダー',
+    subtitle: '地図上をクリック、住所を検索、または現在地GPSを利用して正確な緯度と経度を取得します。',
+    promptText: '位置情報を自動検出中 — または下の地図上の任意の場所をクリックしてください。',
+    searchPlaceholder: '住所、都市名、または座標を検索...',
+    searchBtn: '検索',
+    btnUseLocation: '📍 現在地を使用',
+    labelLat: '緯度 (Latitude)',
+    labelLng: '経度 (Longitude)',
+    labelAddr: '住所',
+    btnCopy: '📋 コピー',
+    btnShare: '🔗 共有',
+    howTitle: 'ツールの使い方',
+    steps: [
+      '「現在地を使用」をクリックしてGPSから現在の緯度経度を取得します。',
+      '地図上の任意の場所をクリックして、その地点の座標を特定します。',
+      'ボタンをクリックして座標をクリップボードにコピーまたは共有します。',
+    ],
+    underTitle: '緯度と経度の基本',
+    underText: '緯度は赤道からの南北の角度（-90°〜+90°）、経度は本初子午線からの東西の角度（-180°〜+180°）を表します。',
+    guideLinkText: '緯度と経度の詳細解説ガイド',
+    glossaryLinkText: '測地学用語集',
+  },
+  it: {
+    title: 'Trova Latitudine e Longitudine — Coordinate Mappa | MyLocationLab',
+    desc: 'Trova latitudine e longitudine di qualsiasi luogo con un clic sulla mappa o tramite il sensore GPS del dispositivo.',
+    h1: 'Rilevatore di Latitudine e Longitudine',
+    subtitle: 'Individua latitudine e longitudine per qualsiasi punto della Terra cliccando sulla mappa, cercando un indirizzo o usando il GPS.',
+    promptText: 'Rilevamento posizione in corso — oppure clicca ovunque sulla mappa interattiva.',
+    searchPlaceholder: 'Cerca indirizzo, città o coordinate...',
+    searchBtn: 'Cerca',
+    btnUseLocation: '📍 Usa la Mia Posizione',
+    labelLat: 'Latitudine',
+    labelLng: 'Longitudine',
+    labelAddr: 'Indirizzo',
+    btnCopy: '📋 Copia',
+    btnShare: '🔗 Condividi',
+    howTitle: 'Come Usare lo Strumento',
+    steps: [
+      'Clicca su "Usa la Mia Posizione" per ottenere latitudine e longitudine tramite GPS.',
+      'Clicca in qualsiasi punto della mappa per rilevare le coordinate di quella posizione.',
+      'Copia o condividi i dati geospaziali con i pulsanti dedicati.',
+    ],
+    underTitle: 'Informazioni su Latitudine e Longitudine',
+    underText: 'La latitudine misura la distanza angolare a nord o sud dell\'equatore (-90° a +90°). La longitudine misura la distanza a est o ovest dal meridiano di Greenwich (-180° a +180°).',
+    guideLinkText: 'Guida Completa a Latitudine e Longitudine',
+    glossaryLinkText: 'Glossario Geodesico',
+  },
+  ru: {
+    title: 'Поиск широты и долготы — Координаты на карте | MyLocationLab',
+    desc: 'Определите точную широту и долготу любого места кликом по карте или с помощью спутникового чипа GPS.',
+    h1: 'Поиск широты и долготы',
+    subtitle: 'Узнайте точные географические координаты точки на карте, введите адрес или используйте спутники GPS.',
+    promptText: 'Автоматическое определение координат — или кликните в любом месте карты.',
+    searchPlaceholder: 'Поиск адреса, города или координат...',
+    searchBtn: 'Найти',
+    btnUseLocation: '📍 Мое местоположение',
+    labelLat: 'Широта',
+    labelLng: 'Долгота',
+    labelAddr: 'Адрес',
+    btnCopy: '📋 Скопировать',
+    btnShare: '🔗 Поделиться',
+    howTitle: 'Как пользоваться инструментом',
+    steps: [
+      'Нажмите "Мое местоположение", чтобы определить широту и долготу по GPS.',
+      'Кликните в любой точке интерактивной карты для снятия точных координат.',
+      'Скопируйте координаты в буфер обмена или поделитесь ссылкой.',
+    ],
+    underTitle: 'Что означают широта и долгота',
+    underText: 'Широта показывает угол к северу или югу от экватора (от -90° до +90°), а долгота — расстояние к востоку или западу от Гринвичского меридиана (от -180° до +180°).',
+    guideLinkText: 'Руководство: все о широте и долготе',
+    glossaryLinkText: 'Глоссарий терминов ГИС',
+  },
 };
 
 const c = toolData[lang] || toolData.en;
@@ -224,7 +299,10 @@ const locateTitle = ({
   de: "Auf meinen aktuellen Standort zoomen",
   pt: "Aproximar da minha localização atual",
   hi: "मेरी वर्तमान लोकेशन पर ज़ूम करें",
-  id: "Perbesar ke lokasi saya saat ini"
+  id: "Perbesar ke lokasi saya saat ini",
+  ja: "現在地にズーム",
+  it: "Centra sulla mia posizione",
+  ru: "Показать текущую позицию",
 })[lang] || "Zoom to my current location";
 ---
 
@@ -383,7 +461,7 @@ const locateTitle = ({
 
   <div style="margin-top: var(--space-12);">
     <h2 class="mb-8">{faqTitle}</h2>
-    <FAQAccordion items={toolFaqs} />
+    <FAQAccordion items={toolFaqs} lang={lang} />
   </div>
 
   <script>

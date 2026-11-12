@@ -199,6 +199,87 @@ const translations: Record<string, any> = {
     linkAddr: "Pencari Alamat Jalan",
     linkComp: "Perbandingan Teknis Geocoding vs Reverse Geocoding",
     linkGlossary: "Glosarium Geodesi"
+  },
+  ja: {
+    title: "逆ジオコーダー — 座標から住所へ変換 | MyLocationLab",
+    description: "GPS座標（緯度経度）を人間が読める正式な郵便住所に変換する無料の逆ジオコーディングツール。",
+    h1: "逆ジオコーダー (Reverse Geocoder)",
+    subtitle: "任意の緯度・経度を入力して、対応する街路名、郵便番号、行政区分を特定します。",
+    lblLat: "緯度 (Latitude)",
+    lblLng: "経度 (Longitude)",
+    lblCoords: "座標",
+    btnConvert: "住所に変換",
+    btnGps: "📍 現在地を使用",
+    labelFull: "完全な住所",
+    labelCity: "市区町村",
+    labelState: "都道府県",
+    labelCountry: "国",
+    labelPostcode: "郵便番号",
+    btnCopy: "📋 住所をコピー",
+    alertInvalid: "有効な座標を入力してください。",
+    alertUnable: "指定された座標の住所を特定できませんでした。",
+    h2What: "逆ジオコーディングとは？",
+    pWhat1: "<strong>逆ジオコーディング (Reverse Geocoding)</strong> は、数値の地理座標（緯度経度）を郵便住所や地名に逆変換するプロセスです。",
+    pWhat2: "本ツールはOpenStreetMapのNominatimインデックスを参照し、最も近い建物や街路を特定します。",
+    h3Related: "関連ツール＆ガイド",
+    linkGeo: "正ジオコーダー (住所から座標)",
+    linkAddr: "番地住所検索",
+    linkComp: "正ジオコーディングと逆ジオコーディングの比較",
+    linkGlossary: "測地学用語集"
+  },
+  it: {
+    title: "Geocodifica Inversa — Da Coordinate ad Indirizzo | MyLocationLab",
+    description: "Converti coordinate GPS in un indirizzo postale leggibile. Inserisci latitudine e longitudine per ottenere il recapito civico completo.",
+    h1: "Geocodificatore Inverso",
+    subtitle: "Trasforma coppie di coordinate GPS in un indirizzo postale completo con via, comune, provincia e CAP.",
+    lblLat: "Latitudine",
+    lblLng: "Longitudine",
+    lblCoords: "Coordinate",
+    btnConvert: "Converti in Indirizzo",
+    btnGps: "📍 Usa Coordinate GPS",
+    labelFull: "Indirizzo Completo",
+    labelCity: "Comune",
+    labelState: "Provincia",
+    labelCountry: "Nazione",
+    labelPostcode: "CAP",
+    btnCopy: "📋 Copia Indirizzo",
+    alertInvalid: "Inserisci coordinate numeriche valide.",
+    alertUnable: "Impossibile ricavare un indirizzo per queste coordinate.",
+    h2What: "Cos'è la Geocodifica Inversa?",
+    pWhat1: "La <strong>geocodifica inversa</strong> è il processo che mappa un punto nello spazio (latitudine e longitudine) sull'archivio civico e toponomastico locale.",
+    pWhat2: "Il servizio interroga i dati vettoriali di OpenStreetMap per restituire l'edificio e la strada più vicini.",
+    h3Related: "Strumenti e Guide Correlati",
+    linkGeo: "Geocodificatore (Da Indirizzo a Coordinate)",
+    linkAddr: "Trova Indirizzo",
+    linkComp: "Confronto Tecnico tra Geocodifica e Reverse Geocoding",
+    linkGlossary: "Glossario Geospaziale"
+  },
+  ru: {
+    title: "Обратный геокодер — Координаты в адрес | MyLocationLab",
+    description: "Преобразование координат GPS (широты и долготы) в полный почтовый адрес здания или улицы онлайн.",
+    h1: "Обратный геокодер",
+    subtitle: "Перевод числовых координат широты и долготы в понятный почтовый адрес с улицей, домом и индексом.",
+    lblLat: "Широта",
+    lblLng: "Долгота",
+    lblCoords: "Координаты",
+    btnConvert: "Определить адрес",
+    btnGps: "📍 Мое местоположение",
+    labelFull: "Полный адрес",
+    labelCity: "Город",
+    labelState: "Область / Край",
+    labelCountry: "Страна",
+    labelPostcode: "Почтовый индекс",
+    btnCopy: "📋 Скопировать адрес",
+    alertInvalid: "Пожалуйста, укажите корректные координаты.",
+    alertUnable: "Не удалось сопоставить данные координаты с адресом.",
+    h2What: "Что такое обратное геокодирование?",
+    pWhat1: "<strong>Обратное геокодирование (Reverse Geocoding)</strong> позволяет по числовым координатам спутникового позиционирования определить точный почтовый адрес объекта.",
+    pWhat2: "Инструмент сверяет полученную точку с базой OpenStreetMap и выбирает ближайшее строение или дорогу.",
+    h3Related: "Полезные ссылки",
+    linkGeo: "Прямой геокодер",
+    linkAddr: "Поиск адреса",
+    linkComp: "Сравнение: прямое и обратное геокодирование",
+    linkGlossary: "Глоссарий терминов ГИС"
   }
 };
 
@@ -319,7 +400,7 @@ const t = translations[lang] || translations.en;
 
   <div style="margin-top: var(--space-12);">
     <h2 class="mb-8">{faqTitle}</h2>
-    <FAQAccordion items={toolFaqs} />
+    <FAQAccordion items={toolFaqs} lang={lang} />
   </div>
 
   <script define:vars={{ tData: t }}>

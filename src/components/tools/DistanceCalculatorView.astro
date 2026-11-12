@@ -220,6 +220,93 @@ const translations: Record<string, any> = {
     h2Map: "Ukur Jarak dengan Mengklik Peta",
     pMap1: "Klik di mana saja pada peta untuk menempatkan <strong>Titik A</strong>, lalu klik lagi untuk <strong>Titik B</strong>. Garis langsung ditarik di antara kedua titik dan jaraknya dihitung seketika — tanpa perlu menekan tombol. Anda juga dapat menyeret penanda untuk menyempurnakan pengukuran, atau mengetik koordinat langsung ke kolom di atas.",
     locateTitle: "Perbesar ke lokasi saya saat ini"
+  },
+  ja: {
+    title: "距離計算ツール — 2地点間の距離測定 | MyLocationLab",
+    description: "地球上の2地点間のGPS直線距離を大圏航路（Haversineの公式）で正確に計算。キロメートル、マイル、海里対応。",
+    h1: "距離計算ツール (Distance Calculator)",
+    subtitle: "地図上の2点をクリック、または座標を入力して、地球上の任意の2点間の正確な最短距離を測定します。",
+    pointA: "地点 A",
+    pointB: "地点 B",
+    latitude: "緯度",
+    longitude: "経度",
+    useMyLocationA: "📍 地点Aに現在地を設定",
+    calculate: "距離を計算",
+    reset: "リセット",
+    distanceKm: "距離 (km)",
+    distanceMi: "距離 (マイル)",
+    distanceM: "距離 (メートル)",
+    distanceNm: "距離 (海里 / ノティカルマイル)",
+    bearing: "地点AからBへの方位角",
+    copyResult: "📋 結果をコピー",
+    hintInit: "地図上をクリックして<strong>地点 A</strong>を配置し、再度クリックして<strong>地点 B</strong>を指定してください。",
+    hintPointAPlaced: "地点 A が配置されました。続いて<strong>地点 B をクリック</strong>して距離を測定してください。",
+    hintDone: "測定完了 — ピンをドラッグして微調整、または地図を再クリックして新規測定が可能です。",
+    alertMissing: "両地点の有効な座標を入力するか、地図上の2点をクリックしてください。",
+    h2Calc: "距離計算の計算モデル",
+    pCalc1: "本ツールは球面三角法に基づく<strong>Haversine（半正矢）の公式</strong>を使用し、地球の曲率に沿った大圏距離（最短地上ルート）を算出します。",
+    pCalc2: "Haversine法は地球を回転楕円体に近い球体として計算するため、中長距離の航法計算において平面直角計算より遥かに高い精度を保ちます。",
+    h2Map: "地図クリックによる簡単測定",
+    pMap1: "インタラクティブ地図をクリックするだけで2地点間の測地線が引かれ、即座に計算結果が表示されます。",
+    locateTitle: "現在地にズーム"
+  },
+  it: {
+    title: "Calcolatore di Distanza — Tra Due Punti GPS | MyLocationLab",
+    description: "Calcola la distanza geodesica esatta tra due coordinate GPS o punti sulla mappa con la formula dell'emisenoverso (Haversine).",
+    h1: "Calcolatore di Distanza Geografica",
+    subtitle: "Fai clic su due punti della mappa interattiva o inserisci le coordinate per misurare la distanza esatta in km, miglia e miglia nautiche.",
+    pointA: "Punto A",
+    pointB: "Punto B",
+    latitude: "Latitudine",
+    longitude: "Longitudine",
+    useMyLocationA: "📍 Usa Posizione Attuale per Punto A",
+    calculate: "Calcola Distanza",
+    reset: "Azzera",
+    distanceKm: "Distanza (km)",
+    distanceMi: "Distanza (miglia)",
+    distanceM: "Distanza (metri)",
+    distanceNm: "Distanza (miglia nautiche)",
+    bearing: "Azimut / Rilevamento da A a B",
+    copyResult: "📋 Copia Risultato",
+    hintInit: "Fai clic sulla mappa per posizionare il <strong>Punto A</strong>, poi clicca di nuovo per il <strong>Punto B</strong>.",
+    hintPointAPlaced: "Punto A fissato — ora <strong>clicca di nuovo</strong> per posizionare il <strong>Punto B</strong>.",
+    hintDone: "Misurazione completata — trascina i puntatori per regolare o clicca sulla mappa per un nuovo calcolo.",
+    alertMissing: "Inserisci coordinate valide per entrambi i punti o clicca su due posizioni della mappa.",
+    h2Calc: "Come Viene Calcolata la Distanza",
+    pCalc1: "Questo calcolatore applica la <strong>formula dell'emisenoverso (Haversine)</strong> per determinare la distanza ortodromica su una sfera, corrispondente alla rotta più breve sulla superficie terrestre.",
+    pCalc2: "Tenendo conto della curvatura terrestre, la formula garantisce una precisione nettamente superiore rispetto alle formule piane pitagoriche.",
+    h2Map: "Misura con un Clic sulla Mappa",
+    pMap1: "Basta cliccare due punti per tracciare la rotta e visualizzare all'istante la distanza metrica e marina.",
+    locateTitle: "Centra sulla mia posizione"
+  },
+  ru: {
+    title: "Калькулятор расстояний — Расстояние между точками GPS | MyLocationLab",
+    description: "Точный расчет расстояния по формуле гаверсинусов между двумя точками координат GPS на интерактивной карте.",
+    h1: "Калькулятор расстояния",
+    subtitle: "Измерьте кратчайшее расстояние между двумя точками на Земле: кликните по карте или введите координаты.",
+    pointA: "Точка A",
+    pointB: "Точка B",
+    latitude: "Широта",
+    longitude: "Долгота",
+    useMyLocationA: "📍 Использовать мое положение для точки A",
+    calculate: "Рассчитать расстояние",
+    reset: "Сбросить",
+    distanceKm: "Расстояние (км)",
+    distanceMi: "Расстояние (мили)",
+    distanceM: "Расстояние (метры)",
+    distanceNm: "Расстояние (морские мили)",
+    bearing: "Азимут от точки A к точке B",
+    copyResult: "📋 Скопировать результат",
+    hintInit: "Кликните по карте для выбора <strong>Точки A</strong>, затем повторите клик для <strong>Точки B</strong>.",
+    hintPointAPlaced: "Точка A установлена — теперь <strong>кликните</strong>, чтобы разместить <strong>Точку B</strong>.",
+    hintDone: "Измерение готово — перемещайте маркеры мышью для точной подгонки или кликните заново.",
+    alertMissing: "Пожалуйста, задайте корректные координаты или выберите две точки на карте.",
+    h2Calc: "Математическая модель расчета",
+    pCalc1: "Используется <strong>формула гаверсинусов (Haversine formula)</strong> для вычисления ортодромического расстояния по дуге большого круга земного сфероида.",
+    pCalc2: "Учет кривизны Земли обеспечивает точные значения даже при измерении расстояний в тысячи километров между континентами.",
+    h2Map: "Быстрое измерение кликом по карте",
+    pMap1: "Отрезок между выбранными точками строится автоматически без дополнительных запросов к серверу.",
+    locateTitle: "Показать текущую позицию"
   }
 };
 
@@ -367,7 +454,7 @@ const t = translations[lang] || translations.en;
 
   <div style="margin-top: var(--space-12);">
     <h2 class="mb-8">{faqTitle}</h2>
-    <FAQAccordion items={toolFaqs} />
+    <FAQAccordion items={toolFaqs} lang={lang} />
   </div>
 
   <script define:vars={{ tData: t }}>
